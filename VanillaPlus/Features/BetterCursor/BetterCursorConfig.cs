@@ -8,5 +8,6 @@ public class BetterCursorConfig : GameModificationConfig<BetterCursorConfig> {
 
     public Vector4 Color = Vector4.One;
     public bool Animations = true;
+    public bool HideOnCameraMove = true;
     public float Size = 96.0f;
 }

@@ -76,7 +76,7 @@ public unsafe class BetterCursor : GameModification {
             var isLeftHeld = (cursorData.MouseButtonHeldFlags & MouseButtonFlags.LBUTTON) != 0;
             var isRightHeld = (cursorData.MouseButtonHeldFlags & MouseButtonFlags.RBUTTON) != 0;
             
-            animationContainer.IsVisible = !isLeftHeld && !isRightHeld;
+            animationContainer.IsVisible = (!isLeftHeld && !isRightHeld) || !config.HideOnCameraMove;
         }
     }
 

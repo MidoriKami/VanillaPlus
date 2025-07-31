@@ -20,6 +20,10 @@ public class BetterCursorConfigWindow(BetterCursorConfig config, Action onColorC
             toggleAnimation();
             config.Save();
         }
+
+        if (ImGui.Checkbox("Hide on Left-Hold or Right-Hold", ref config.HideOnCameraMove)) {
+            config.Save();
+        }
     }
 
     public override void OnClose()
