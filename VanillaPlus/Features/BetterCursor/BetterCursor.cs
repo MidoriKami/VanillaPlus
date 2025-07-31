@@ -112,7 +112,7 @@ public unsafe class BetterCursor : GameModification {
               .AddFrame(30, scale: new Vector2(1.0f, 1.0f))
               .EndFrameSet()
               .BeginFrameSet(31, 60)
-              .AddFrame(1, scale: new Vector2(1.0f, 1.0f))
+              .AddFrame(31, scale: new Vector2(1.0f, 1.0f))
               .EndFrameSet()
               .Build());
         
