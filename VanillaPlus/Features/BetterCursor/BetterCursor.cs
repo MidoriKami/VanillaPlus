@@ -28,6 +28,8 @@ public unsafe class BetterCursor : GameModification {
     private BetterCursorConfig config = null!;
     private BetterCursorConfigWindow configWindow = null!;
 
+    public override string ImageName => "BetterCursor.png";
+
     public override void OnEnable() {
         config = BetterCursorConfig.Load();
         configWindow = new BetterCursorConfigWindow(config, OnColorChanged, OnAnimationToggled, OnSizeChanged);
