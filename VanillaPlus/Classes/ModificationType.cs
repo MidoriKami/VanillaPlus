@@ -5,6 +5,17 @@ namespace VanillaPlus.Classes;
 public enum ModificationType {
     
     /// <summary>
+    /// Not intended for actual use, only used to prevent loading SampleGameModification
+    /// </summary>
+    Hidden,
+
+    /// <summary>
+    /// Not intended for actual use
+    /// </summary>
+    [Description("Debug")]
+    Debug,
+    
+    /// <summary>
     /// Modifies some type of base game functionality to make it behave differently
     /// </summary>
     [Description("Game Behavior Modification")]
