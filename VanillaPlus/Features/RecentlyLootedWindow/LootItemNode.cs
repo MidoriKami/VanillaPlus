@@ -99,6 +99,10 @@ public unsafe class LootItemNode : SimpleComponentNode {
 
     public void SetItem(InventoryItemAddedArgs item) {
         Item = item.Item;
+
+        if (item.Item.Quantity > 1) {
+            itemNameNode.Text += $" x{item.Item.Quantity}";
+        }
     }
 
     public void SetItem(InventoryItemChangedArgs item) {
