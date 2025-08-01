@@ -16,16 +16,16 @@ public enum ModificationType {
     Debug,
     
     /// <summary>
-    /// Modifies some type of base game functionality to make it behave differently
-    /// </summary>
-    [Description("Game Behavior Modification")]
-    GameBehavior,
-    
-    /// <summary>
     /// Modifies some aspect of the base games user interface
     /// </summary>
     [Description("UI Modification")]
     UserInterface,
+    
+    /// <summary>
+    /// Modifies some type of base game functionality to make it behave differently
+    /// </summary>
+    [Description("Game Behavior Modification")]
+    GameBehavior,
     
     /// <summary>
     /// Adds a new native window to the game
