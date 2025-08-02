@@ -37,15 +37,32 @@ public class PetSizeContextMenu : GameModification {
         var isPetOwnerTarget = Services.ObjectTable.FirstOrDefault(obj => obj.IsPet() && obj.OwnerId == Services.TargetManager.Target?.EntityId) is not null;
         if (!isPetTarget && !isPetOwnerTarget) return;
 
+        var currentPetSize = GetPetSize();
+        
         args.AddMenuItem(new MenuItem {
             IsSubmenu = true,
             UseDefaultPrefix = true,
             Name = "Pet Size",
             OnClicked = clickedArgs => {
                 clickedArgs.OpenSubmenu([
-                    new MenuItem { UseDefaultPrefix = true, Name = "Small", OnClicked = _ => SetPetSize(0) },
-                    new MenuItem { UseDefaultPrefix = true, Name = "Medium", OnClicked = _ => SetPetSize(1) },
-                    new MenuItem { UseDefaultPrefix = true, Name = "Large", OnClicked = _ => SetPetSize(2) },
+                    new MenuItem {
+                        IsEnabled = currentPetSize is not 0,
+                        UseDefaultPrefix = true, 
+                        Name = "Small", 
+                        OnClicked = _ => SetPetSize(0),
+                    },
+                    new MenuItem {
+                        IsEnabled = currentPetSize is not 1,
+                        UseDefaultPrefix = true, 
+                        Name = "Medium", 
+                        OnClicked = _ => SetPetSize(1),
+                    },
+                    new MenuItem {
+                        IsEnabled = currentPetSize is not 2,
+                        UseDefaultPrefix = true, 
+                        Name = "Large", 
+                        OnClicked = _ => SetPetSize(2),
+                    },
                 ]);
             },
         });
@@ -56,4 +73,11 @@ public class PetSizeContextMenu : GameModification {
             Services.GameConfig.Set(configEntry, size);
         }
     }
+
+    private uint? GetPetSize()
+        => configEntries
+           .Select(configKey => Services.GameConfig.TryGet(configKey, out uint value) ? value : 0)
+           .GroupBy(configValue => configValue)
+           .MaxBy(group => group.Count())?
+           .Key;
 }
