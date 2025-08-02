@@ -2,6 +2,8 @@
 using Dalamud.Game.Addon.Events;
 using Dalamud.Game.Inventory;
 using Dalamud.Game.Inventory.InventoryEventArgTypes;
+using Dalamud.Game.Text.SeStringHandling.Payloads;
+using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
@@ -82,23 +84,37 @@ public unsafe class LootItemNode : SimpleComponentNode {
         set {
             field = value;
 
-            if (Services.DataManager.GetExcelSheet<Item>().TryGetRow(value.BaseItemId, out var itemData)) {
-                iconImageNode.IconId = itemData.Icon;
-                itemNameNode.Text = itemData.Name.ToString();
-                itemNameNode.TextColor = itemData.RarityColor();
-            } else if (Services.DataManager.GetExcelSheet<EventItem>().TryGetRow(value.ItemId, out var eventItemData)) {
-                iconImageNode.IconId = eventItemData.Icon;
-                itemNameNode.Text = eventItemData.Name.ToString();
-            }
-            else {
-                iconImageNode.IconId = 60071;
-                itemNameNode.Text = $"Unknown Item Type, ID: {value.ItemId}";
+            var (itemBaseId, itemKind) = ItemUtil.GetBaseId(value.ItemId);
+            switch (itemKind) {
+                case ItemPayload.ItemKind.Normal:
+                case ItemPayload.ItemKind.Collectible:
+                case ItemPayload.ItemKind.Hq:
+                    var item = Services.DataManager.GetExcelSheet<Item>().GetRow(itemBaseId);
+                    iconImageNode.IconId = item.Icon;
+                    itemNameNode.Text = item.Name.ToString();
+                    itemNameNode.TextColor = item.RarityColor();
+                    break;
+
+                case ItemPayload.ItemKind.EventItem:
+                    var eventItem = Services.DataManager.GetExcelSheet<EventItem>().GetRow(itemBaseId);
+                    iconImageNode.IconId = eventItem.Icon;
+                    itemNameNode.Text = eventItem.Name.ToString();
+                    break;
+
+                default:
+                    iconImageNode.IconId = 60071;
+                    itemNameNode.Text = $"Unknown Item Type, ID: {value.ItemId}";
+                    break;
             }
         }
     }
 
     public void SetItem(InventoryItemAddedArgs item) {
         Item = item.Item;
+
+        if (item.Item.Quantity > 1) {
+            itemNameNode.Text += $" x{item.Item.Quantity}";
+        }
     }
 
     public void SetItem(InventoryItemChangedArgs item) {
