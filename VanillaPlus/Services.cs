@@ -27,6 +27,8 @@ public class Services {
     [PluginService] public static IFateTable FateTable { get; set; } = null!;
     [PluginService] public static IKeyState KeyState { get; set; } = null!;
     [PluginService] public static ICondition Condition { get; set; } = null!;
+    [PluginService] public static IContextMenu ContextMenu { get; set; } = null!;
+    [PluginService] public static IObjectTable ObjectTable { get; set; } = null!;
     
 #pragma warning disable SeStringEvaluator
     [PluginService] public static ISeStringEvaluator SeStringEvaluator { get; set; } = null!;
