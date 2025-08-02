@@ -21,7 +21,6 @@ public class AddonRecentlyLooted(AddonConfig config) : NativeAddon {
             ContentHeight = 100,
         };
         scrollingAreaNode.ContentNode.FitContents = true;
-        scrollingAreaNode.ContentNode.MaxNodes = 30;
         AttachNode(scrollingAreaNode);
 
         RebuildList();
@@ -34,6 +33,10 @@ public class AddonRecentlyLooted(AddonConfig config) : NativeAddon {
 
     public void AddInventoryItem(InventoryEventArgs itemEvent) {
         itemEvents.Add(itemEvent);
+
+        if (itemEvents.Count >= 30) {
+            itemEvents.RemoveAt(0);
+        }
 
         if (IsOpen) {
             RebuildList();
