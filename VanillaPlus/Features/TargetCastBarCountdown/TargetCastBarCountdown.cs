@@ -50,19 +50,19 @@ public unsafe class TargetCastBarCountdown : GameModification {
         configWindow.AddToWindowSystem();
         OpenConfigAction = configWindow.Toggle;
 
-        targetInfoCastBarController = new AddonController<AtkUnitBase>(Services.PluginInterface, "_TargetInfoCastBar");
+        targetInfoCastBarController = new AddonController<AtkUnitBase>("_TargetInfoCastBar");
         targetInfoCastBarController.OnAttach += AttachNode;
         targetInfoCastBarController.OnDetach += DetachNode;
         targetInfoCastBarController.OnUpdate += UpdateNode;
         targetInfoCastBarController.Enable();
         
-        targetInfoController = new AddonController<AtkUnitBase>(Services.PluginInterface, "_TargetInfo");
+        targetInfoController = new AddonController<AtkUnitBase>("_TargetInfo");
         targetInfoController.OnAttach += AttachNode;
         targetInfoController.OnDetach += DetachNode;
         targetInfoController.OnUpdate += UpdateNode;
         targetInfoController.Enable();
         
-        focusTargetController = new AddonController<AtkUnitBase>(Services.PluginInterface, "_FocusTargetInfo");
+        focusTargetController = new AddonController<AtkUnitBase>("_FocusTargetInfo");
         focusTargetController.OnAttach += AttachNode;
         focusTargetController.OnDetach += DetachNode;
         focusTargetController.OnUpdate += UpdateNode;
