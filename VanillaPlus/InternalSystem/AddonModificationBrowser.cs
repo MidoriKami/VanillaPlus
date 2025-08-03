@@ -59,7 +59,8 @@ public class AddonModificationBrowser : NativeAddon {
         
         var groupedOptions = System.ModificationManager.LoadedModifications
                                    .Select(option => option)
-                                   .GroupBy(option => option.Modification.ModificationInfo.Type);
+                                   .GroupBy(option => option.Modification.ModificationInfo.Type)
+                                   .OrderBy(option => option.Key);
 
         foreach (var category in groupedOptions) {
             var newCategoryNode = new TreeListCategoryNode {

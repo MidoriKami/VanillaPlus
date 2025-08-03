@@ -42,7 +42,7 @@ public unsafe class EnhancedLootWindow : GameModification {
         configWindow.AddToWindowSystem();
         OpenConfigAction = configWindow.Toggle;
 
-        needGreedController = new AddonController<AddonNeedGreed>(Services.PluginInterface, "NeedGreed");
+        needGreedController = new AddonController<AddonNeedGreed>("NeedGreed");
         needGreedController.OnAttach += AttachNodes;
         needGreedController.OnDetach += DetachNodes;
         needGreedController.OnRefresh += RefreshNodes;

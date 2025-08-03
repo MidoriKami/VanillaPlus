@@ -18,7 +18,7 @@ public class FasterScroll : GameModification {
     };
 
     [Signature("40 55 53 56 41 54 41 55 41 56 41 57 48 8B EC 48 81 EC ?? ?? ?? ??", DetourName = nameof(AtkComponentScrollBarReceiveEvent))]
-    private readonly Hook<AtkComponentScrollBar.Delegates.ReceiveEvent>? scrollbarInitializeHook = null;
+    private readonly Hook<AtkComponentScrollBar.Delegates.ReceiveEvent>? scrollBarReceiveEventHook = null;
 
     private FasterScrollConfig config = null!;
     private FasterScrollConfigWindow configWindow = null!;
@@ -30,17 +30,17 @@ public class FasterScroll : GameModification {
         OpenConfigAction = configWindow.Toggle;
 
         Services.GameInteropProvider.InitializeFromAttributes(this);
-        scrollbarInitializeHook?.Enable();
+        scrollBarReceiveEventHook?.Enable();
     }
 
     public override void OnDisable() {
-        scrollbarInitializeHook?.Dispose();
+        scrollBarReceiveEventHook?.Dispose();
         configWindow.RemoveFromWindowSystem();
     }
 
     private unsafe void AtkComponentScrollBarReceiveEvent(AtkComponentScrollBar* thisPtr, AtkEventType type, int param, AtkEvent* eventPointer, AtkEventData* dataPointer) {
         thisPtr->MouseWheelSpeed = (short) ( config.SpeedMultiplier * thisPtr->MouseWheelSpeed );
-        scrollbarInitializeHook!.Original(thisPtr, type, param, eventPointer, dataPointer);
+        scrollBarReceiveEventHook!.Original(thisPtr, type, param, eventPointer, dataPointer);
         thisPtr->MouseWheelSpeed = (short) ( thisPtr->MouseWheelSpeed / config.SpeedMultiplier );
     }
 }
