@@ -4,20 +4,20 @@ using ImGuiNET;
 
 namespace VanillaPlus.BetterCursor;
 
-public class BetterCursorConfigWindow(BetterCursorConfig config, Action onColorChanged, Action toggleAnimation, Action sizeChanged) : Window("Better Cursor Config", ImGuiWindowFlags.AlwaysAutoResize) {
+public class BetterCursorConfigWindow(BetterCursorConfig config, Action onConfigChanged) : Window("Better Cursor Config", ImGuiWindowFlags.AlwaysAutoResize) {
     public override void Draw() {
         if (ImGui.ColorEdit4("Color", ref config.Color)) {
-            onColorChanged();
+            onConfigChanged();
             config.Save();
         }
 
         if (ImGui.DragFloat("Size", ref config.Size)) {
-            sizeChanged();
+            onConfigChanged();
             config.Save();
         }
 
         if (ImGui.Checkbox("Enable Animation", ref config.Animations)) {
-            toggleAnimation();
+            onConfigChanged();
             config.Save();
         }
 
