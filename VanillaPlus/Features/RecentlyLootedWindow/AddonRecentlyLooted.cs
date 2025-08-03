@@ -32,6 +32,7 @@ public class AddonRecentlyLooted(AddonConfig config) : NativeAddon {
     }
 
     public void AddInventoryItem(InventoryEventArgs itemEvent) {
+        if (!Services.ClientState.IsLoggedIn) return;
         if (itemEvent is not (InventoryItemAddedArgs or InventoryItemChangedArgs)) return;
         if (itemEvent is InventoryItemChangedArgs changedArgs && changedArgs.OldItemState.Quantity >= changedArgs.Item.Quantity) return;
 
