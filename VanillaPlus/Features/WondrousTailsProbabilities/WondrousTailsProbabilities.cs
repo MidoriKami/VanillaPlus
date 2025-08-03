@@ -28,7 +28,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
     public override void OnEnable() {
         perfectTails = new PerfectTails();
 
-        weeklyBingoController = new AddonController<AddonWeeklyBingo>(Services.PluginInterface,"WeeklyBingo");
+        weeklyBingoController = new AddonController<AddonWeeklyBingo>("WeeklyBingo");
         weeklyBingoController.OnAttach += AttachNodes;
         weeklyBingoController.OnDetach += DetachNodes;
         weeklyBingoController.OnRefresh += RefreshNodes;
@@ -74,9 +74,6 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             existingTextNode->SetHeight((ushort)(existingTextNode->GetHeight() * 3.0f / 2.0f));
         }
 
-        System.NativeController.DetachNode(probabilityTextNode, () => {
-            probabilityTextNode?.Dispose();
-            probabilityTextNode = null;
-        });
+        System.NativeController.DisposeNode(ref probabilityTextNode);
     }
 }
