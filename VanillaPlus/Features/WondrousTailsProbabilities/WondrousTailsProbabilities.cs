@@ -19,11 +19,14 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
+        CompatabilityModule = new PluginCompatabilityModule("WondrousTailsSolver"),
     };
 
     private AddonController<AddonWeeklyBingo> weeklyBingoController = null!;
     private TextNode? probabilityTextNode;
     private PerfectTails perfectTails = null!;
+
+    public override string ImageName => "WondrousTailsProbabilities.png";
 
     public override void OnEnable() {
         perfectTails = new PerfectTails();
