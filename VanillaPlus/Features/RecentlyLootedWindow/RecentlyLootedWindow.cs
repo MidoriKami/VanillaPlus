@@ -9,7 +9,7 @@ using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
 using VanillaPlus.Modals;
 
-namespace VanillaPlus.RecentlyLootedWindow;
+namespace VanillaPlus.Features.RecentlyLootedWindow;
 
 public class RecentlyLootedWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {

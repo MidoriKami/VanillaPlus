@@ -5,7 +5,7 @@ using KamiToolKit.Addon;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 
-namespace VanillaPlus.RecentlyLootedWindow;
+namespace VanillaPlus.Features.RecentlyLootedWindow;
 
 public class AddonRecentlyLooted(AddonConfig config) : NativeAddon {
 

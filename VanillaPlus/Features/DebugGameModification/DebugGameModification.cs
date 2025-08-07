@@ -1,6 +1,6 @@
 ﻿using VanillaPlus.Classes;
 
-namespace VanillaPlus.DebugGameModification;
+namespace VanillaPlus.Features.DebugGameModification;
 
 #if DEBUG
 /// <summary>

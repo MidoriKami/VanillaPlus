@@ -1,7 +1,7 @@
 ﻿using Dalamud.Utility.Signatures;
 using VanillaPlus.Classes;
 
-namespace VanillaPlus.FastMouseClick;
+namespace VanillaPlus.Features.FastMouseClick;
 
 public class FastMouseClick : GameModification {
     public override ModificationInfo ModificationInfo => new() {

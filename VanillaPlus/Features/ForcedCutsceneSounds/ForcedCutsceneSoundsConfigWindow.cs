@@ -1,7 +1,7 @@
-﻿using Dalamud.Interface.Windowing;
-using ImGuiNET;
+﻿using Dalamud.Bindings.ImGui;
+using Dalamud.Interface.Windowing;
 
-namespace VanillaPlus.ForcedCutsceneSounds;
+namespace VanillaPlus.Features.ForcedCutsceneSounds;
 
 public class ForcedCutsceneSoundsConfigWindow(ForcedCutsceneSoundsConfig config) : Window("Forced Cutscene Sounds Config", ImGuiWindowFlags.AlwaysAutoResize) {
     public override void Draw() {
