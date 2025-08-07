@@ -4,7 +4,7 @@ using Dalamud.Game.Gui.ContextMenu;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
 
-namespace VanillaPlus.PetSizeContextMenu;
+namespace VanillaPlus.Features.PetSizeContextMenu;
 
 public class PetSizeContextMenu : GameModification {
     public override ModificationInfo ModificationInfo => new() {
