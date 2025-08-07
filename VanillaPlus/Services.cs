@@ -29,6 +29,8 @@ public class Services {
     [PluginService] public static ICondition Condition { get; set; } = null!;
     [PluginService] public static ISeStringEvaluator SeStringEvaluator { get; set; } = null!;
     [PluginService] public static IDtrBar DtrBar { get; set; } = null!;
+    [PluginService] public static IContextMenu ContextMenu { get; set; } = null!;
+    [PluginService] public static IObjectTable ObjectTable { get; set; } = null!;
 
     // I dislike the name GameInteropProvider, so this is my mini rebellion on a bad name.
     // It's just an alias, use whichever you want.
