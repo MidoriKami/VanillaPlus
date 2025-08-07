@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
-using ImGuiNET;
+using VanillaPlus.LocationDisplay;
 
-namespace VanillaPlus.LocationDisplay;
+namespace VanillaPlus.Features.LocationDisplay;
 
 public class LocationDisplayConfigWindow(LocationDisplayConfig config, Action onConfigChanged) : Window("Location Display Config Window", ImGuiWindowFlags.AlwaysAutoResize) {
 

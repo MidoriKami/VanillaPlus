@@ -9,6 +9,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
+using VanillaPlus.Features.LocationDisplay;
 
 namespace VanillaPlus.LocationDisplay;
 
@@ -52,7 +53,7 @@ public unsafe class LocationDisplay : GameModification {
         OpenConfigAction = configWindow.Toggle;
         
         dtrBarEntry = Services.DtrBar.Get("VanillaPlus - LocationDisplay");
-        dtrBarEntry.OnClick = configWindow.Toggle;
+        dtrBarEntry.OnClick = _ => configWindow.Toggle();
         
         Services.Framework.Update += OnFrameworkUpdate;
 		Services.ClientState.TerritoryChanged += OnZoneChange;
