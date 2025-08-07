@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Numerics;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
-using ImGuiNET;
+using VanillaPlus.MiniCactpotHelper;
 
-namespace VanillaPlus.MiniCactpotHelper;
+namespace VanillaPlus.Features.MiniCactpotHelper;
 
 public class MiniCactpotHelperConfigWindow(MiniCactpotHelperConfig config, Action onConfigChanged) : Window("Mini Cactpot Helper Config", ImGuiWindowFlags.AlwaysAutoResize) {
     public override void Draw() {
@@ -86,7 +87,7 @@ public class MiniCactpotHelperConfigWindow(MiniCactpotHelperConfig config, Actio
     private bool GameIconButton(uint iconId) {
         var iconTexture = Services.TextureProvider.GetFromGameIcon(iconId);
         
-        return ImGui.ImageButton(iconTexture.GetWrapOrEmpty().ImGuiHandle, new Vector2(48.0f, 48.0f));
+        return ImGui.ImageButton(iconTexture.GetWrapOrEmpty().Handle, new Vector2(48.0f, 48.0f));
     }
         
     public override void OnClose()

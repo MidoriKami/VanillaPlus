@@ -6,6 +6,7 @@ using KamiToolKit;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
+using VanillaPlus.Features.MiniCactpotHelper;
 using Exception = System.Exception;
 using OperationCanceledException = System.OperationCanceledException;
 
