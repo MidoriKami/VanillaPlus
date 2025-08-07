@@ -6,7 +6,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
 
-namespace VanillaPlus.SelectNextLootItem;
+namespace VanillaPlus.Features.SelectNextLootItem;
 
 public unsafe class SelectNextLootItem : GameModification {
     public override ModificationInfo ModificationInfo => new() {

@@ -4,12 +4,12 @@ using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
-using VanillaPlus.Extensions;
 using KamiToolKit.Extensions;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
+using VanillaPlus.Extensions;
 
-namespace VanillaPlus;
+namespace VanillaPlus.Features.WindowBackground;
 
 public unsafe class WindowBackground : GameModification {
     public override ModificationInfo ModificationInfo => new() {

@@ -1,6 +1,6 @@
 ﻿using VanillaPlus.Classes;
 
-namespace VanillaPlus.EnhancedLootWindow;
+namespace VanillaPlus.Features.EnhancedLootWindow;
 
 public class EnhancedLootWindowConfig : GameModificationConfig<EnhancedLootWindowConfig> {
     protected override string FileName => "EnhancedLootWindow.config.json";

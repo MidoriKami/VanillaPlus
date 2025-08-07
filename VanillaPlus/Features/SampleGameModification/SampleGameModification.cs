@@ -1,6 +1,6 @@
 ﻿using VanillaPlus.Classes;
 
-namespace VanillaPlus.SampleGameModification;
+namespace VanillaPlus.Features.SampleGameModification;
 
 // Template GameModification for more easily creating your own, can copy this entire folder and rename it.
 public class SampleGameModification : GameModification {

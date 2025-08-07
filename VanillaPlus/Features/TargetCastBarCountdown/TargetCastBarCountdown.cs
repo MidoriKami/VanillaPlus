@@ -1,11 +1,11 @@
 ﻿using System.Drawing;
 using System.IO;
 using System.Numerics;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface;
 using Dalamud.Interface.Utility.Raii;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using ImGuiNET;
 using KamiToolKit;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
@@ -13,7 +13,7 @@ using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
 using VanillaPlus.Utilities;
 
-namespace VanillaPlus.TargetCastBarCountdown;
+namespace VanillaPlus.Features.TargetCastBarCountdown;
 
 public unsafe class TargetCastBarCountdown : GameModification {
     public override ModificationInfo ModificationInfo => new() {

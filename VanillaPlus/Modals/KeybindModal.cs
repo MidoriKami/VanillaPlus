@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.GameFonts;
 using Dalamud.Interface.ManagedFontAtlas;
 using Dalamud.Interface.Utility;
@@ -9,7 +10,6 @@ using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Client.System.Input;
 using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using ImGuiNET;
 using VanillaPlus.Extensions;
 
 namespace VanillaPlus.Modals;

@@ -4,7 +4,7 @@ using System.Numerics;
 using Dalamud.Interface;
 using VanillaPlus.Classes;
 
-namespace VanillaPlus;
+namespace VanillaPlus.Features.WindowBackground;
 
 public class WindowBackgroundConfig : GameModificationConfig<WindowBackgroundConfig> {
     protected override string FileName => "WindowBackground.config.json";

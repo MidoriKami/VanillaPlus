@@ -4,5 +4,5 @@ namespace VanillaPlus.Extensions;
 
 public static unsafe class AddonArgsExtensions {
     public static T* GetAddon<T>(this AddonArgs args) where T : unmanaged
-        => (T*)args.Addon;
+        => (T*)args.Addon.Address;
 }

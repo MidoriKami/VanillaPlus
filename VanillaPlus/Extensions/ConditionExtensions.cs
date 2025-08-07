@@ -30,7 +30,7 @@ public static class ConditionExtensions {
         => condition.Any(ConditionFlag.Performing);
 
     public static unsafe bool IsIslandDoingSomethingMode()
-        => MJIManager.Instance()->CurrentMode is not 0 && MJIManager.Instance()->IsPlayerInSanctuary is not 0;
+        => MJIManager.Instance()->CurrentMode is not 0 && MJIManager.Instance()->IsPlayerInSanctuary;
 
     public static bool IsInQuestEvent(this ICondition condition)
         => condition.Any(ConditionFlag.OccupiedInQuestEvent) || IsIslandDoingSomethingMode();

@@ -5,7 +5,7 @@ using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
 
-namespace VanillaPlus.HideGuildhestObjectivePopup;
+namespace VanillaPlus.Features.HideGuildhestObjectivePopup;
 
 public class HideGuildhestObjectivePopup : GameModification {
     public override ModificationInfo ModificationInfo => new() {
