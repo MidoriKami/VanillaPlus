@@ -8,7 +8,7 @@ using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
 
-namespace VanillaPlus.CastBarAetheryteNames;
+namespace VanillaPlus.Features.CastBarAetheryteNames;
 
 public unsafe class CastBarAetheryteNames : GameModification {
     public override ModificationInfo ModificationInfo => new() {
@@ -28,15 +28,18 @@ public unsafe class CastBarAetheryteNames : GameModification {
     public override string ImageName => "CastBarAetheryteNames.png";
 
     public override void OnEnable() {
+        UpdateTeleportList();
         teleportHook = Services.GameInteropProvider.HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
         teleportHook?.Enable();
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+        Services.ClientState.Login += UpdateTeleportList;
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "_CastBar", OnCastBarRefresh);
     }
 
     public override void OnDisable() {
         Services.AddonLifecycle.UnregisterListener(OnCastBarRefresh);
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
+        Services.ClientState.Login -= UpdateTeleportList;
         teleportHook?.Dispose();
     }
     
@@ -65,6 +68,11 @@ public unsafe class CastBarAetheryteNames : GameModification {
                 textNode->SetText(aetheryte.PlaceName.Value.Name.ExtractText());
                 break;
         }
+    }
+
+    private void UpdateTeleportList() {
+        if (!Services.ClientState.IsLoggedIn) return;
+        Telepo.Instance()->UpdateAetheryteList();
     }
     
     private bool OnTeleport(Telepo* thisPtr, uint aetheryteId, byte subIndex) {

@@ -5,7 +5,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
 
-namespace VanillaPlus.HideUnwantedBanners;
+namespace VanillaPlus.Features.HideUnwantedBanners;
 
 public unsafe class HideUnwantedBanners : GameModification {
     public override ModificationInfo ModificationInfo => new() {

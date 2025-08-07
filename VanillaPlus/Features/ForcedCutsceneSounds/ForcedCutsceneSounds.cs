@@ -6,7 +6,7 @@ using FFXIVClientStructs.FFXIV.Client.System.Scheduler.Base;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
 
-namespace VanillaPlus.ForcedCutsceneSounds;
+namespace VanillaPlus.Features.ForcedCutsceneSounds;
 
 public unsafe class ForcedCutsceneSounds : GameModification {
     public override ModificationInfo ModificationInfo => new() {

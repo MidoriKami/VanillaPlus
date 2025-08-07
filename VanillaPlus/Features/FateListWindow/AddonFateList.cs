@@ -7,7 +7,7 @@ using KamiToolKit.Addon;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 
-namespace VanillaPlus.FateListWindow;
+namespace VanillaPlus.Features.FateListWindow;
 
 public class AddonFateList(AddonConfig config) : NativeAddon {
 

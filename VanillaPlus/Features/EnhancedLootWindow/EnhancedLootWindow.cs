@@ -13,7 +13,7 @@ using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
 
-namespace VanillaPlus.EnhancedLootWindow;
+namespace VanillaPlus.Features.EnhancedLootWindow;
 
 public unsafe class EnhancedLootWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
