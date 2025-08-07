@@ -65,8 +65,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
 
         modificationNameNode = new TextNode {
             IsVisible = true,
-            TextFlags = TextFlags.AutoAdjustNodeSize,
-            TextFlags2 = TextFlags2.Ellipsis,
+            TextFlags = TextFlags.AutoAdjustNodeSize | TextFlags.Ellipsis,
             AlignmentType = AlignmentType.BottomLeft,
         };
         System.NativeController.AttachNode(modificationNameNode, this);
@@ -80,8 +79,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
         authorNamesNode = new TextNode {
             IsVisible = true,
             FontType = FontType.Axis,
-            TextFlags = TextFlags.AutoAdjustNodeSize,
-            TextFlags2 = TextFlags2.Ellipsis,
+            TextFlags = TextFlags.AutoAdjustNodeSize | TextFlags.Ellipsis,
             AlignmentType = AlignmentType.TopLeft,
             TextColor = ColorHelper.GetColor(3),
         };

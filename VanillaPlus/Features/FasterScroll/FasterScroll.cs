@@ -4,7 +4,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
 
-namespace VanillaPlus.FasterScroll;
+namespace VanillaPlus.Features.FasterScroll;
 
 public class FasterScroll : GameModification {
     public override ModificationInfo ModificationInfo => new() {

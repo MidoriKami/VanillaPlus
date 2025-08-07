@@ -8,7 +8,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes.TimelineBuilding;
 using KamiToolKit.Nodes;
 
-namespace VanillaPlus.FateListWindow;
+namespace VanillaPlus.Features.FateListWindow;
 
 public unsafe class FateEntryNode : SimpleComponentNode {
 
@@ -44,7 +44,7 @@ public unsafe class FateEntryNode : SimpleComponentNode {
             NodeId = 4,
             IsVisible = true,
             AlignmentType = AlignmentType.BottomLeft,
-            TextFlags2 = TextFlags2.Ellipsis,
+            TextFlags = TextFlags.Ellipsis,
         };
         System.NativeController.AttachNode(nameNode, this);
 
@@ -85,7 +85,7 @@ public unsafe class FateEntryNode : SimpleComponentNode {
             
             var agentMap = AgentMap.Instance();
             agentMap->OpenMap(agentMap->CurrentMapId, agentMap->CurrentTerritoryId);
-            agentMap->IsFlagMarkerSet = false;
+            agentMap->FlagMarkerCount = 0;
             agentMap->SetFlagMapMarker(agentMap->CurrentTerritoryId, agentMap->CurrentMapId, Fate.Position, Fate.MapIconId);
         });
         

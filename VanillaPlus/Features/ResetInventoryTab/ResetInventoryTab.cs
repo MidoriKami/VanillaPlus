@@ -6,7 +6,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using ValueType = FFXIVClientStructs.FFXIV.Component.GUI.ValueType;
 
-namespace VanillaPlus.ResetInventoryTab;
+namespace VanillaPlus.Features.ResetInventoryTab;
 
 public unsafe class ResetInventoryTab : GameModification {
     public override ModificationInfo ModificationInfo => new() {
@@ -30,7 +30,7 @@ public unsafe class ResetInventoryTab : GameModification {
         if (args is not AddonRefreshArgs refreshArgs || refreshArgs.AtkValues is 0 || refreshArgs.AtkValueCount is 0)
             return;
 
-        var addon = (AtkUnitBase*)args.Addon;
+        var addon = (AtkUnitBase*)args.Addon.Address;
         if (addon->IsVisible)
             return; // Skipping: Addon is visible (using games logic)
 

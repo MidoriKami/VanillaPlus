@@ -1,11 +1,12 @@
 ﻿using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
 
-namespace VanillaPlus.ClearSelectedDuties;
+namespace VanillaPlus.Features.ClearSelectedDuties;
 
 public class ClearSelectedDuties : GameModification {
     public override ModificationInfo ModificationInfo => new() {
@@ -18,16 +19,36 @@ public class ClearSelectedDuties : GameModification {
         ],
     };
 
-    public override void OnEnable()
-        => Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "ContentsFinder", OnContentsFinderSetup);
+    private ClearSelectedDutiesConfig config = null!;
+    private ClearSelectedDutiesConfigWindow configWindow = null!;
 
-    public override void OnDisable()
-        => Services.AddonLifecycle.UnregisterListener(OnContentsFinderSetup);
+    public override void OnEnable() {
+        config = ClearSelectedDutiesConfig.Load();
+        configWindow = new ClearSelectedDutiesConfigWindow(config);
+        configWindow.AddToWindowSystem();
+        OpenConfigAction = configWindow.Toggle;
+        
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "ContentsFinder", OnContentsFinderSetup);
+    }
+
+    public override void OnDisable() {
+        configWindow.RemoveFromWindowSystem();
+        Services.AddonLifecycle.UnregisterListener(OnContentsFinderSetup);
+    }
 
     private unsafe void OnContentsFinderSetup(AddonEvent type, AddonArgs args) {
-        if (ContentsFinder.Instance()->QueueInfo.QueueState is not ContentsFinderQueueInfo.QueueStates.None)
+        var contentsFinder = ContentsFinder.Instance();
+        var agent = AgentContentsFinder.Instance();
+        var addon = args.GetAddon<AddonContentsFinder>();
+
+        if (contentsFinder->QueueInfo.QueueState is not ContentsFinderQueueInfo.QueueStates.None)
             return;
 
-        AgentContentsFinder.Instance()->AgentInterface.SendCommand(0, [ 12, 1 ]);
+        if (!IsRouletteTab(addon) && config.DisableWhenUnrestricted && contentsFinder->IsUnrestrictedParty) return;
+
+        agent->AgentInterface.SendCommand(0, [ 12, 1 ]);
     }
+
+    private unsafe bool IsRouletteTab(AddonContentsFinder* addon)
+        => addon->SelectedRadioButton is 0;
 }

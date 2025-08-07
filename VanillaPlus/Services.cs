@@ -27,10 +27,7 @@ public class Services {
     [PluginService] public static IFateTable FateTable { get; set; } = null!;
     [PluginService] public static IKeyState KeyState { get; set; } = null!;
     [PluginService] public static ICondition Condition { get; set; } = null!;
-    
-#pragma warning disable SeStringEvaluator
     [PluginService] public static ISeStringEvaluator SeStringEvaluator { get; set; } = null!;
-#pragma warning restore SeStringEvaluator
 
     // I dislike the name GameInteropProvider, so this is my mini rebellion on a bad name.
     // It's just an alias, use whichever you want.
