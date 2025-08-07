@@ -1,8 +1,9 @@
 ﻿using System;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Windowing;
-using ImGuiNET;
+using VanillaPlus.BetterCursor;
 
-namespace VanillaPlus.BetterCursor;
+namespace VanillaPlus.Features.BetterCursor;
 
 public class BetterCursorConfigWindow(BetterCursorConfig config, Action onConfigChanged) : Window("Better Cursor Config", ImGuiWindowFlags.AlwaysAutoResize) {
     public override void Draw() {

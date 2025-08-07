@@ -7,6 +7,7 @@ using KamiToolKit.Classes.TimelineBuilding;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
+using VanillaPlus.Features.BetterCursor;
 
 namespace VanillaPlus.BetterCursor;
 
