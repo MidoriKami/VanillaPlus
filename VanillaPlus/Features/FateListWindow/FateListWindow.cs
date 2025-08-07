@@ -7,7 +7,7 @@ using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
 using VanillaPlus.Modals;
 
-namespace VanillaPlus.FateListWindow;
+namespace VanillaPlus.Features.FateListWindow;
 
 public class FateListWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
