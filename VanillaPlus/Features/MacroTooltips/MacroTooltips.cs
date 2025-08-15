@@ -11,7 +11,6 @@ using Action = Lumina.Excel.Sheets.Action;
 
 namespace VanillaPlus.Features.MacroTooltips;
 
-#if DEBUG
 /// <summary>
 /// Debug Game Modification for use with playing around with ideas, DO NOT commit changes to this file
 /// </summary>
@@ -104,4 +103,3 @@ public unsafe class MacroTooltips : GameModification {
         return null;
     }
 }
-#endif
