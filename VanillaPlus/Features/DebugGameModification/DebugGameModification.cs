@@ -1,4 +1,5 @@
-﻿using VanillaPlus.Classes;
+﻿using System.Numerics;
+using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.DebugGameModification;
 
@@ -17,10 +18,24 @@ public class DebugGameModification : GameModification {
         ],
     };
 
+    // This is probably a horrible idea...
+    
+    private AddonWhmGauge? whmGauge;
+    
     public override void OnEnable() {
+        whmGauge = new AddonWhmGauge {
+            NativeController = System.NativeController,
+            InternalName = "WhiteMageGauge",
+            Title = "White Mage Gauge",
+            Size = new Vector2(200.0f, 100.0f),
+        };
+        
+        whmGauge.Open();
     }
 
     public override void OnDisable() {
+        whmGauge?.Dispose();
+        whmGauge = null;
     }
 }
 #endif
