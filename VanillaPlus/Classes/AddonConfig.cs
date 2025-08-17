@@ -24,4 +24,5 @@ public class AddonConfig {
 
     public HashSet<SeVirtualKey> OpenKeyCombo = [];
     public Vector2? WindowPosition = null;
+    public Vector2? WindowSize = null;
 }
