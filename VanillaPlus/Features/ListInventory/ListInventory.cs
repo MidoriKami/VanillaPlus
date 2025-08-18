@@ -1,11 +1,8 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using Dalamud.Plugin.Services;
-using FFXIVClientStructs.FFXIV.Client.UI;
+﻿using System.Numerics;
+using Dalamud.Game.ClientState.Keys;
 using VanillaPlus.Classes;
-using VanillaPlus.Modals;
 using VanillaPlus.Extensions;
+using VanillaPlus.Modals;
 
 namespace VanillaPlus.Features.ListInventory;
 
@@ -23,20 +20,10 @@ public class ListInventory : GameModification {
     private AddonListInventory? listInventory;
     private AddonConfig? config;
     private KeybindModal? keybindModal;
-    
-    private readonly Stopwatch stopwatch = Stopwatch.StartNew();
+    private KeybindListener? keybindListener;
     
     public override void OnEnable() {
-        config = AddonConfig.Load("ListInventory.addon.config", [SeVirtualKey.CONTROL, SeVirtualKey.N]);
-        OpenConfigAction = () => {
-            keybindModal ??= new KeybindModal {
-                KeybindSetCallback = keyBind => {
-                    config.OpenKeyCombo = keyBind;
-                    config.Save();
-                    keybindModal = null;
-                },
-            };
-        };
+        config = AddonConfig.Load("ListInventory.addon.config", [VirtualKey.SHIFT, VirtualKey.CONTROL, VirtualKey.I]);
         
         listInventory = new AddonListInventory {
             NativeController = System.NativeController,
@@ -53,31 +40,32 @@ public class ListInventory : GameModification {
         if (config.WindowSize is { } windowSize) {
             listInventory.Size = windowSize;
         }
+
+        keybindListener = new KeybindListener {
+            KeybindCallback = listInventory.Toggle,
+            KeyCombo = config.OpenKeyCombo,
+        };
         
-        Services.Framework.Update += OnFrameworkUpdate;
-        
-#if DEBUG
-        listInventory.Open();
-#endif
+        keybindModal = new KeybindModal {
+            KeybindSetCallback = keyBind => {
+                config.OpenKeyCombo = keyBind;
+                config.Save();
+                    
+                keybindListener.KeyCombo = keyBind;
+            },
+        };
+
+        OpenConfigAction = keybindModal.Open;
     }
 
     public override void OnDisable() {
         listInventory?.Dispose();
         listInventory = null;
-    }
-    
-    private unsafe void OnFrameworkUpdate(IFramework framework) {
-        if (config is null || listInventory is null) return;
         
-        if (UIInputData.Instance()->IsComboPressed(config.OpenKeyCombo.ToArray()) && stopwatch.ElapsedMilliseconds >= 250) {
-            if (listInventory.IsOpen) {
-                listInventory.Close();
-            }
-            else {
-                listInventory.Open();
-            }
-            
-            stopwatch.Restart();
-        }
+        keybindModal?.Dispose();
+        keybindModal = null;
+        
+        keybindListener?.Dispose();
+        keybindListener = null;
     }
 }
