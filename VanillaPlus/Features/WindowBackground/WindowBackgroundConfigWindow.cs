@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
@@ -16,6 +17,7 @@ public unsafe class WindowBackgroundConfigWindow : Window {
     private readonly WindowBackgroundConfig config;
     private readonly Action configChangedCallback;
     private readonly Action styleChanged;
+    private string searchString = string.Empty;
 
     public WindowBackgroundConfigWindow(WindowBackgroundConfig config, Action configChangedCallback, Action styleChanged) : base("Window Background Config") {
         this.config = config;
@@ -61,8 +63,12 @@ public unsafe class WindowBackgroundConfigWindow : Window {
         using var child = ImRaii.Child("All_Addons_Select", ImGui.GetContentRegionAvail());
         if (!child) return;
         ImGui.Spacing();
+
+        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X);
+        ImGui.InputTextWithHint("##Search", "Search...", ref searchString);
+        ImGui.Spacing();
         
-        var addonList = GetAddonNames();
+        var addonList = GetAddonNames().Where(name => name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
         ImGuiClip.ClippedDraw(addonList, DrawAddonOption, 25.0f * ImGuiHelpers.GlobalScale);
     }
 

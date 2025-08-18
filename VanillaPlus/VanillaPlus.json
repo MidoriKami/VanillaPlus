@@ -1,9 +1,10 @@
 {
-  "Author": "MidoriKami",
-  "Name": "VanillaPlus",
-  "Punchline": "A collection of various game modifications",
-  "Description": "This plugin is primarily focused on various UI adjustments, behavior adjustments, and adding new native elements to the game.",
-  "Tags": [
-    "UI"
-  ]
+    "Author": "MidoriKami",
+    "Name": "VanillaPlus",
+    "Punchline": "A collection of various game modifications",
+    "Description": "This plugin is primarily focused on various UI adjustments, behavior adjustments, and adding new native elements to the game.",
+    "Tags": [
+        "UI"
+    ],
+    "AcceptsFeedback": false
 }

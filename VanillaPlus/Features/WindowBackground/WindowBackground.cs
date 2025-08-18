@@ -20,6 +20,8 @@ public unsafe class WindowBackground : GameModification {
         Type = ModificationType.UserInterface,
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
+            new ChangeLogInfo(2, "Added search bar to search 'All Windows' in config"),
+            new ChangeLogInfo(3, "Fixed incorrectly cleaning up removed backgrounds"),
         ],
         CompatabilityModule = new SimpleTweaksCompatabilityModule("UiAdjustments@DutyListBackground"),
     };
@@ -59,11 +61,12 @@ public unsafe class WindowBackground : GameModification {
             }
         }
 
-        var orphanedBackgrounds = addonBackgrounds.Where(background => !config.Addons.Any(option => option == background.AddonName));
+        var orphanedBackgrounds = addonBackgrounds.Where(background => !config.Addons.Any(option => option == background.AddonName)).ToList();
         foreach (var background in orphanedBackgrounds) {
             System.NativeController.DetachNode(background.ImageNode, () => {
                 background.ImageNode.Dispose();
             });
+            addonBackgrounds.Remove(background);
         }
     }
 

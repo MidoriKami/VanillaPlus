@@ -67,6 +67,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
             IsVisible = true,
             TextFlags = TextFlags.AutoAdjustNodeSize | TextFlags.Ellipsis,
             AlignmentType = AlignmentType.BottomLeft,
+            TextColor = ColorHelper.GetColor(1),
         };
         System.NativeController.AttachNode(modificationNameNode, this);
 

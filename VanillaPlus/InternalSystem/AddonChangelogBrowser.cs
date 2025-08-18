@@ -2,6 +2,7 @@
 using System.Linq;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addon;
+using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 
@@ -43,6 +44,7 @@ public class AddonChangelogBrowser : NativeAddon {
                     FontSize = 14,
                     LineSpacing = 22,
                     Text = changelog.Description,
+                    TextColor = ColorHelper.GetColor(1),
                 };
 
                 newTextNode.Height = newTextNode.GetTextDrawSize(newTextNode.Text).Y;

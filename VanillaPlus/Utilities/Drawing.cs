@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Bindings.ImGui;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
-using FFXIVClientStructs.FFXIV.Client.UI;
 
 namespace VanillaPlus.Utilities;
 
@@ -16,7 +16,7 @@ public static class Drawing {
         return ImGui.Button(icon.ToIconString(), ImGuiHelpers.ScaledVector2(25.0f, 25.0f));
     }
 
-    public static bool KeybindConfig(HashSet<SeVirtualKey> keys, ref SeVirtualKey newKey) {
+    public static bool KeybindConfig(HashSet<VirtualKey> keys, ref VirtualKey newKey) {
         var result = false;
         
         foreach (var keybind in keys.ToList()) {
@@ -39,7 +39,7 @@ public static class Drawing {
 
         using var dropDown = ImRaii.Combo("##newKeyCombo", newKey.ToString(), ImGuiComboFlags.HeightLarge | ImGuiComboFlags.PopupAlignLeft);
         if (dropDown) {
-            foreach (var key in Enum.GetValues<SeVirtualKey>()) {
+            foreach (var key in Enum.GetValues<VirtualKey>()) {
                 if (ImGui.Selectable(key.ToString(), key == newKey)) {
                     newKey = key;
                     result = true;

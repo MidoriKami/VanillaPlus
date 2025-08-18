@@ -149,6 +149,7 @@ public class AddonModificationBrowser : NativeAddon {
             FontType = FontType.Axis,
             IsVisible = true,
             Text = "Please select an option on the left",
+            TextColor = ColorHelper.GetColor(1),
         };
         System.NativeController.AttachNode(descriptionTextNode, descriptionContainerNode);
         
@@ -159,6 +160,7 @@ public class AddonModificationBrowser : NativeAddon {
             LineSpacing = 22,
             FontType = FontType.Axis,
             IsVisible = true,
+            TextColor = ColorHelper.GetColor(1),
         };
         System.NativeController.AttachNode(descriptionImageTextNode, descriptionContainerNode);
 
