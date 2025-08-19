@@ -13,7 +13,6 @@ using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.DraggableWindowDeadSpace;
 
-// Template GameModification for more easily creating your own, can copy this entire folder and rename it.
 public unsafe class DraggableWindowDeadSpace : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Draggable Window Dead Space",
@@ -27,11 +26,13 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
 
     private ViewportEventListener? cursorEventListener;
 
-    private readonly Dictionary<string, ResNode> windowInteractionNodes = [];
+    private Dictionary<string, ResNode>? windowInteractionNodes;
     private Vector2 dragStart = Vector2.Zero;
     private bool isDragging;
     
     public override void OnEnable() {
+        windowInteractionNodes = [];
+        
         cursorEventListener = new ViewportEventListener(OnViewportEvent);
         
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, string.Empty, OnAddonSetup);
@@ -40,13 +41,15 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
 
     public override void OnDisable() {
         cursorEventListener?.Dispose();
+        cursorEventListener = null;
 
-        foreach (var node in windowInteractionNodes.Values) {
+        foreach (var (_, node) in windowInteractionNodes ?? []) {
             System.NativeController.DetachNode(node);
             node.Dispose();
         }
         
-        windowInteractionNodes.Clear();
+        windowInteractionNodes?.Clear();
+        windowInteractionNodes = null;
     }
     
     private void OnAddonSetup(AddonEvent type, AddonArgs args) {
@@ -66,15 +69,15 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
             newInteractionNode.AddEvent(AddonEventType.MouseDown, OnWindowMouseDown);
             
             System.NativeController.AttachNode(newInteractionNode, addon->RootNode, NodePosition.AsFirstChild);
-            windowInteractionNodes.Add(args.AddonName, newInteractionNode);
+            windowInteractionNodes?.Add(args.AddonName, newInteractionNode);
         }
     }
 
     private void OnAddonFinalize(AddonEvent type, AddonArgs args) {
-        if (windowInteractionNodes.TryGetValue(args.AddonName, out var node)) {
+        if (windowInteractionNodes?.TryGetValue(args.AddonName, out var node) ?? false) {
             System.NativeController.DetachNode(node);
             node.Dispose();
-            windowInteractionNodes.Remove(args.AddonName);
+            windowInteractionNodes?.Remove(args.AddonName);
         }
     }
     
