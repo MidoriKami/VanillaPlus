@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addon;
 using KamiToolKit.Classes;
@@ -38,8 +39,9 @@ public class AddonChangelogBrowser : NativeAddon {
                 var newTextNode = new TextNode {
                     Height = 32.0f,
                     AlignmentType = AlignmentType.TopLeft,
-                    TextFlags = TextFlags.MultiLine | TextFlags.WordWrap,
-                    Width = ContentSize.X,
+                    TextFlags = TextFlags.MultiLine | TextFlags.WordWrap | TextFlags.AutoAdjustNodeSize,
+                    Position = new Vector2(6.0f, 2.0f),
+                    Width = ContentSize.X - 32.0f,
                     IsVisible = true,
                     FontSize = 14,
                     LineSpacing = 22,

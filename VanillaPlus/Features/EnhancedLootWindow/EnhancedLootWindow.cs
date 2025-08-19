@@ -51,7 +51,12 @@ public unsafe class EnhancedLootWindow : GameModification {
 
     public override void OnDisable() {
         needGreedController?.Dispose();
+        needGreedController = null;
+        
         configWindow?.RemoveFromWindowSystem();
+        configWindow = null;
+        
+        config = null;
     }
 
     private void AttachNodes(AddonNeedGreed* addon) {

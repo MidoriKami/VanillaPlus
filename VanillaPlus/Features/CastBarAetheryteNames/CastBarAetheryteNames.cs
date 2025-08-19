@@ -31,16 +31,23 @@ public unsafe class CastBarAetheryteNames : GameModification {
         UpdateTeleportList();
         teleportHook = Services.GameInteropProvider.HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
         teleportHook?.Enable();
+        
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
         Services.ClientState.Login += UpdateTeleportList;
+        
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "_CastBar", OnCastBarRefresh);
     }
 
     public override void OnDisable() {
         Services.AddonLifecycle.UnregisterListener(OnCastBarRefresh);
+        
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
         Services.ClientState.Login -= UpdateTeleportList;
+        
         teleportHook?.Dispose();
+        teleportHook = null;
+        
+        teleportInfo = null;
     }
     
     private void OnTerritoryChanged(ushort obj)

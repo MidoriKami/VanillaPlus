@@ -11,9 +11,10 @@ public class AddonRecentlyLooted(AddonConfig config) : NativeAddon {
 
     private readonly List<InventoryEventArgs> itemEvents = [];
 
-    private ScrollingAreaNode<VerticalListNode> scrollingAreaNode = null!;
+    private ScrollingAreaNode<VerticalListNode>? scrollingAreaNode;
+    private VerticalListNode? ListNode => scrollingAreaNode?.ContentNode;
 
-    public int ItemCountLimit { get; set; } = 100;
+    private const int ItemCountLimit = 100;
 
     protected override unsafe void OnSetup(AtkUnitBase* addon) {
         scrollingAreaNode = new ScrollingAreaNode<VerticalListNode> {
@@ -22,7 +23,7 @@ public class AddonRecentlyLooted(AddonConfig config) : NativeAddon {
             IsVisible = true,
             ContentHeight = 100,
         };
-        scrollingAreaNode.ContentNode.FitContents = true;
+        ListNode!.FitContents = true;
         AttachNode(scrollingAreaNode);
 
         RebuildList();
@@ -32,6 +33,9 @@ public class AddonRecentlyLooted(AddonConfig config) : NativeAddon {
         config.WindowPosition = Position;
         config.Save();
     }
+
+    protected override unsafe void OnFinalize(AtkUnitBase* addon)
+        => System.NativeController.DisposeNode(ref scrollingAreaNode);
 
     public void AddInventoryItem(InventoryEventArgs itemEvent) {
         if (!Services.ClientState.IsLoggedIn) return;
@@ -50,7 +54,7 @@ public class AddonRecentlyLooted(AddonConfig config) : NativeAddon {
     }
 
     private void RebuildList() {
-        scrollingAreaNode.ContentNode.Clear();
+        ListNode?.Clear();
 
         for (var index = itemEvents.Count - 1; index >= 0; index--) {
             AddItemNode(itemEvents[index]);
@@ -58,6 +62,8 @@ public class AddonRecentlyLooted(AddonConfig config) : NativeAddon {
     }
 
     private void AddItemNode(InventoryEventArgs itemEvent) {
+        if (scrollingAreaNode is null) return;
+        
         var newItemNode = new LootItemNode {
             Height = 36.0f,
             Width = scrollingAreaNode.ContentNode.Width,
@@ -77,7 +83,7 @@ public class AddonRecentlyLooted(AddonConfig config) : NativeAddon {
                 return;
         }
 
-        scrollingAreaNode.ContentNode.AddNode(newItemNode);
-        scrollingAreaNode.ContentHeight = scrollingAreaNode.ContentNode.Height;
+        ListNode?.AddNode(newItemNode);
+        scrollingAreaNode.ContentHeight = ListNode?.Height ?? 100.0f;
     }
 }

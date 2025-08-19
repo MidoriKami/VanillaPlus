@@ -71,10 +71,16 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
     public override void OnDisable() {
         configWindow?.RemoveFromWindowSystem();
+        configWindow = null;
         
         targetInfoCastBarController?.Dispose();
+        targetInfoCastBarController = null;
+        
         targetInfoController?.Dispose();
+        targetInfoController = null;
+        
         focusTargetController?.Dispose();
+        focusTargetController = null;
     }
     
     private void DrawNodeConfigs() {
@@ -161,24 +167,15 @@ public unsafe class TargetCastBarCountdown : GameModification {
     private void DetachNode(AtkUnitBase* addon) {
         switch (addon->NameString) {
             case "_TargetInfoCastBar":
-                System.NativeController.DetachNode(primaryTargetTextNode, () => {
-                    primaryTargetTextNode?.Dispose();
-                    primaryTargetTextNode = null;
-                });
+                System.NativeController.DisposeNode(ref primaryTargetTextNode);
                 break;
             
             case "_TargetInfo":
-                System.NativeController.DetachNode(primaryTargetAltTextNode, () => {
-                    primaryTargetAltTextNode?.Dispose();
-                    primaryTargetAltTextNode = null;
-                });
+                System.NativeController.DisposeNode(ref primaryTargetAltTextNode);
                 break;
             
             case "_FocusTargetInfo":
-                System.NativeController.DetachNode(focusTargetTextNode, () => {
-                    focusTargetTextNode?.Dispose();
-                    focusTargetTextNode = null;
-                });
+                System.NativeController.DisposeNode(ref focusTargetTextNode);
                 break;
         }
     }

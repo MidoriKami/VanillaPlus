@@ -62,9 +62,15 @@ public unsafe class LocationDisplay : GameModification {
 
     public override void OnDisable() {
         configWindow?.RemoveFromWindowSystem();
+        configWindow = null;
+        
         Services.Framework.Update -= OnFrameworkUpdate;
 		Services.ClientState.TerritoryChanged -= OnZoneChange;
+        
         dtrBarEntry?.Remove();
+        dtrBarEntry = null;
+        
+        config = null;
     }
 
     private void OnZoneChange(ushort obj)		

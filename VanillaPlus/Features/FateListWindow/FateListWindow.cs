@@ -64,5 +64,7 @@ public class FateListWindow : GameModification {
         
         keybindListener?.Dispose();
         keybindListener = null;
+
+        config = null;
     }
 }

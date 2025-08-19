@@ -32,8 +32,12 @@ public class ClearSelectedDuties : GameModification {
     }
 
     public override void OnDisable() {
-        configWindow?.RemoveFromWindowSystem();
         Services.AddonLifecycle.UnregisterListener(OnContentsFinderSetup);
+       
+        configWindow?.RemoveFromWindowSystem();
+        configWindow = null;
+        
+        config = null;
     }
 
     private unsafe void OnContentsFinderSetup(AddonEvent type, AddonArgs args) {

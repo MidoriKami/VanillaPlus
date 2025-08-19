@@ -48,7 +48,12 @@ public unsafe class BetterCursor : GameModification {
 
     public override void OnDisable() {
         screenTextController?.Dispose();
+        screenTextController = null;
+        
         configWindow?.RemoveFromWindowSystem();
+        configWindow = null;
+        
+        config = null;
     }
 
     private void UpdateNodeConfig() {

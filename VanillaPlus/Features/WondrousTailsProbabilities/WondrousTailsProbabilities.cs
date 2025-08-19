@@ -1,13 +1,17 @@
-﻿using System.Linq;
+﻿using System.Drawing;
+using System.Linq;
 using System.Numerics;
 using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
+using KamiToolKit.Classes.TimelineBuilding;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
+using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.WondrousTailsProbabilities;
 
@@ -19,6 +23,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         Type = ModificationType.UserInterface,
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
+            new ChangeLogInfo(2, "Add Current Duty Indicator"),
         ],
         CompatabilityModule = new PluginCompatabilityModule("WondrousTailsSolver"),
     };
@@ -26,6 +31,8 @@ public unsafe class WondrousTailsProbabilities : GameModification {
     private AddonController<AddonWeeklyBingo>? weeklyBingoController;
     private TextNode? probabilityTextNode;
     private PerfectTails? perfectTails;
+    private ResNode? animationContainer;
+    private NineGridNode? currentDutyNode;
 
     public override string ImageName => "WondrousTailsProbabilities.png";
 
@@ -39,8 +46,12 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         weeklyBingoController.Enable();
     }
 
-    public override void OnDisable()
-        => weeklyBingoController?.Dispose();
+    public override void OnDisable() {
+        weeklyBingoController?.Dispose();
+        weeklyBingoController = null;
+        
+        perfectTails = null;
+    }
 
     private void AttachNodes(AddonWeeklyBingo* addon) {
         if (perfectTails is null) return;
@@ -62,6 +73,45 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             IsVisible = true,
         };
         System.NativeController.AttachNode(probabilityTextNode, (AtkResNode*)existingTextNode, NodePosition.AfterTarget);
+
+        animationContainer = new ResNode {
+            Size = new Vector2(72.0f, 48.0f),
+            IsVisible = true,
+        };
+        
+        animationContainer.AddTimeline(new TimelineBuilder()
+            .BeginFrameSet(1, 60)
+            .AddLabel(1, 1, AtkTimelineJumpBehavior.Start, 0)
+            .AddLabel(60, 0, AtkTimelineJumpBehavior.LoopForever, 1)
+            .EndFrameSet()
+            .Build());
+        
+        System.NativeController.AttachNode(animationContainer, addon->DutySlotList.DutyContainer);
+        
+        currentDutyNode = new SimpleNineGridNode {
+            Size = new Vector2(72.0f, 48.0f),
+            Origin = new Vector2(72.0f, 48.0f) / 2.0f,
+            TexturePath = "ui/uld/WeeklyBingo.tex",
+            TextureCoordinates = new Vector2(0.0f, 182.0f),
+            TextureSize = new Vector2(52.0f, 52.0f),
+            LeftOffset = 10,
+            RightOffset = 10,
+            IsVisible = true,
+            Color = Vector4.Zero with { W = 0.66f },
+            AddColor = KnownColor.OrangeRed.Vector().AsVector3(),
+        }; 
+        
+        currentDutyNode.AddTimeline(new TimelineBuilder()
+            .BeginFrameSet(1, 60)
+            .AddFrame(1, alpha: 155, scale: new Vector2(1.0f, 1.0f) )
+            .AddFrame(30, alpha: 255, scale: new Vector2(1.05f, 1.05f) )
+            .AddFrame(60, alpha: 155, scale: new Vector2(1.0f, 1.0f) )
+            .EndFrameSet()
+            .Build());
+        
+        System.NativeController.AttachNode(currentDutyNode, animationContainer);
+        
+        animationContainer.Timeline?.PlayAnimation(1);
     }
     
     private void RefreshNodes(AddonWeeklyBingo* addon) {
@@ -103,17 +153,44 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         if (probabilityTextNode is not null) {
             probabilityTextNode.Text = perfectTails.SolveAndGetProbabilitySeString();
         }
+
+        AdjustCurrentDutyIndicator(addon);
     }
-    
+
     private void DetachNodes(AddonWeeklyBingo* addon) {
         var existingTextNode = addon->GetTextNodeById(34);
         if (existingTextNode is not null) {
             existingTextNode->SetHeight((ushort)(existingTextNode->GetHeight() * 3.0f / 2.0f));
         }
 
-        System.NativeController.DetachNode(probabilityTextNode, () => {
-            probabilityTextNode?.Dispose();
-            probabilityTextNode = null;
-        });
+        System.NativeController.DisposeNode(ref probabilityTextNode);
+        System.NativeController.DisposeNode(ref currentDutyNode);
+    }
+    
+    private void AdjustCurrentDutyIndicator(AddonWeeklyBingo* addon) {
+        if (animationContainer is null || currentDutyNode is null) return;
+        if (GetTaskForCurrentTerritory(Services.ClientState.TerritoryType) is { } dutySlot) {
+            var nativeDutySlot = addon->DutySlotList[dutySlot].DutyButton->OwnerNode;
+            var nativeDutySlotPosition = new Vector2(nativeDutySlot->X, nativeDutySlot->Y - 2.0f);
+
+            animationContainer.Position = nativeDutySlotPosition;
+            animationContainer.IsVisible = true;
+
+        }
+        else {
+            animationContainer.IsVisible = false;
+        }
+    }
+
+    private static int? GetTaskForCurrentTerritory(uint territory) {
+        foreach (var index in Enumerable.Range(0, 16)) {
+            var territoriesForSlot = Services.DataManager.GetTerritoriesForOrderData(PlayerState.Instance()->WeeklyBingoOrderData[index]);
+
+            if (territoriesForSlot.Any(terr => terr.RowId == territory)) {
+                return index;
+            }
+        }
+
+        return null;
     }
 }
