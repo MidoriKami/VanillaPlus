@@ -67,5 +67,7 @@ public class ListInventory : GameModification {
         
         keybindListener?.Dispose();
         keybindListener = null;
+
+        config = null;
     }
 }
