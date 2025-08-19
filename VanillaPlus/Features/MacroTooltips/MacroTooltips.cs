@@ -28,7 +28,7 @@ public unsafe class MacroTooltips : GameModification {
     private delegate void ShowMacroTooltipDelegate(AddonActionBarBase* a1, AtkResNode* a2, NumberArrayData* a3, StringArrayData* a4, int a5, int a6);
     
     [Signature("E8 ?? ?? ?? ?? 4C 8B 64 24 ?? 48 8B 7C 24 ?? 48 8B 74 24 ?? 4C 8B 6C 24 ??", DetourName = nameof(OnShowMacroTooltip))]
-    private readonly Hook<ShowMacroTooltipDelegate>? showTooltipHook = null;
+    private Hook<ShowMacroTooltipDelegate>? showTooltipHook;
 
     public override string ImageName => "MacroTooltips.png";
 
@@ -39,6 +39,7 @@ public unsafe class MacroTooltips : GameModification {
 
     public override void OnDisable() {
         showTooltipHook?.Dispose();
+        showTooltipHook = null;
     }
 
     private void OnShowMacroTooltip(AddonActionBarBase* a1, AtkResNode* a2, NumberArrayData* numberArray, StringArrayData* a4, int numberArrayIndex, int stringArrayIndex) {
