@@ -1,4 +1,5 @@
 # Vanilla Plus
+[![Download count](https://img.shields.io/endpoint?url=https://qzysathwfhebdai6xgauhz4q7m0mzmrf.lambda-url.us-east-1.on.aws/VanillaPlus)](https://github.com/MidoriKami/VanillaPlus)
 
 This plugin is a collection of smaller ui-focused modifcations to the game. Using KamiToolKit we are able to have more control than ever over adding or modifing native user interface elements.
 
