@@ -17,6 +17,10 @@ public class BetterCursorConfigWindow(BetterCursorConfig config, Action onConfig
             onConfigChanged();
             config.Save();
         }
+        
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
 
         if (ImGui.Checkbox("Enable Animation", ref config.Animations)) {
             onConfigChanged();
@@ -27,7 +31,21 @@ public class BetterCursorConfigWindow(BetterCursorConfig config, Action onConfig
             config.Save();
         }
         
-        ImGuiHelpers.ScaledDummy(5.0f);
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        if (ImGui.Checkbox("Only Show in Combat", ref config.OnlyShowInCombat)) {
+            config.Save();
+        }
+
+        if (ImGui.Checkbox("Only Show in Duties", ref config.OnlyShowInDuties)) {
+            config.Save();
+        }
+        
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
 
         if (ImGui.InputUInt("IconId", ref config.IconId, 1)) {
             onConfigChanged();

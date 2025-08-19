@@ -17,7 +17,8 @@ public unsafe class LootItemNode : SimpleComponentNode {
 
     private readonly NineGridNode hoveredBackgroundNode;
     private readonly IconImageNode iconImageNode;
-    private readonly TextNode itemNameNode;
+    private readonly TextNode itemNameTextNode;
+    private readonly TextNode itemQuantityTextNode;
     
     public LootItemNode() {
         hoveredBackgroundNode = new SimpleNineGridNode {
@@ -42,13 +43,24 @@ public unsafe class LootItemNode : SimpleComponentNode {
         };
         System.NativeController.AttachNode(iconImageNode, this);
 
-        itemNameNode = new TextNode {
+        itemQuantityTextNode = new TextNode {
             NodeId = 4,
+            Size = new Vector2(32.0f, 8.0f),
+            Position = new Vector2(0.0f, 28.0f), 
+            IsVisible = true,
+            AlignmentType = AlignmentType.BottomRight,
+            TextFlags = TextFlags.Edge,
+            FontSize = 12,
+        };
+        System.NativeController.AttachNode(itemQuantityTextNode, this);
+
+        itemNameTextNode = new TextNode {
+            NodeId = 5,
             TextFlags = TextFlags.Ellipsis,
             AlignmentType = AlignmentType.Left,
             IsVisible = true,
         };
-        System.NativeController.AttachNode(itemNameNode, this);
+        System.NativeController.AttachNode(itemNameTextNode, this);
         
         CollisionNode.AddEvent(AddonEventType.MouseOver, _ => {
             IsHovered = true;
@@ -94,19 +106,19 @@ public unsafe class LootItemNode : SimpleComponentNode {
                 case ItemKind.Hq:
                     var item = Services.DataManager.GetExcelSheet<Item>().GetRow(itemBaseId);
                     iconImageNode.IconId = item.Icon;
-                    itemNameNode.Text = item.Name.ToString();
-                    itemNameNode.TextColor = item.RarityColor();
+                    itemNameTextNode.Text = item.Name.ToString();
+                    itemNameTextNode.TextColor = item.RarityColor();
                     break;
 
                 case ItemKind.EventItem:
                     var eventItem = Services.DataManager.GetExcelSheet<EventItem>().GetRow(itemBaseId);
                     iconImageNode.IconId = eventItem.Icon;
-                    itemNameNode.Text = eventItem.Name.ToString();
+                    itemNameTextNode.Text = eventItem.Name.ToString();
                     break;
 
                 default:
                     iconImageNode.IconId = 60071;
-                    itemNameNode.Text = $"Unknown Item Type, ID: {value.ItemId}";
+                    itemNameTextNode.Text = $"Unknown Item Type, ID: {value.ItemId}";
                     break;
             }
         }
@@ -116,7 +128,6 @@ public unsafe class LootItemNode : SimpleComponentNode {
         Item = item.Item;
 
         if (item.Item.Quantity > 1) {
-            itemNameNode.Text += $" x{item.Item.Quantity}";
         }
     }
 
@@ -124,13 +135,15 @@ public unsafe class LootItemNode : SimpleComponentNode {
         var quantity = item.Item.Quantity - item.OldItemState.Quantity;
 
         Item = item.Item;
-        itemNameNode.Text += $" x{quantity}";
+        if (quantity > 1) {
+            itemQuantityTextNode.Text = quantity.ToString();
+        }
     }
     
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
-        itemNameNode.Size = Size - new Vector2(iconImageNode.X + iconImageNode.Width + 4.0f, 0.0f);
-        itemNameNode.Position = new Vector2(iconImageNode.X + iconImageNode.Width + 4.0f, 0.0f);
+        itemNameTextNode.Size = Size - new Vector2(iconImageNode.X + iconImageNode.Width + 4.0f, 0.0f);
+        itemNameTextNode.Position = new Vector2(iconImageNode.X + iconImageNode.Width + 4.0f, 0.0f);
         
         hoveredBackgroundNode.Size = Size;
     }

@@ -11,4 +11,7 @@ public class BetterCursorConfig : GameModificationConfig<BetterCursorConfig> {
     public bool HideOnCameraMove = true;
     public float Size = 96.0f;
     public uint IconId = 60498;
+
+    public bool OnlyShowInCombat = false;
+    public bool OnlyShowInDuties = false;
 }

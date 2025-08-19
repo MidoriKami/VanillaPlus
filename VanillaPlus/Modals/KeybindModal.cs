@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Interface.GameFonts;
 using Dalamud.Interface.ManagedFontAtlas;
 using Dalamud.Interface.Utility;
@@ -14,15 +17,17 @@ using VanillaPlus.Extensions;
 
 namespace VanillaPlus.Modals;
 
-public unsafe class KeybindModal : Window {
-    public required Action<HashSet<SeVirtualKey>> KeybindSetCallback { get; set; }
+public unsafe class KeybindModal : Window, IDisposable {
+    public required Action<HashSet<VirtualKey>> KeybindSetCallback { get; init; }
 
-    private readonly HashSet<SeVirtualKey> combo = [SeVirtualKey.NO_KEY];
+    private readonly HashSet<VirtualKey> combo = [VirtualKey.NO_KEY];
     private readonly IFontHandle largeAxisFontHandle;
 
     private readonly List<string> conflicts = [];
     
     public KeybindModal() : base("Set Keybind Modal") {
+        WindowName += $"##{new StackTrace().GetFrame(1)?.GetMethod()?.ReflectedType?.Name}";
+        
         this.AddToWindowSystem();
 
         SizeConstraints = new WindowSizeConstraints {
@@ -36,17 +41,16 @@ public unsafe class KeybindModal : Window {
             BaseSkewStrength = 16f,
         });
         
-        System.KeyListener.OnSeKeyPressed += OnSeKeyPressed;
-        
-        Toggle();
+        System.KeyListener.OnKeyPressed += KeyPressed;
     }
 
-    private void OnSeKeyPressed(SeVirtualKey changedKey, bool isPressed) {
+    private void KeyPressed(VirtualKey arg1, bool isPressed) {
+        if (!IsOpen) return;
         if (!isPressed) return;
 
         combo.Clear();
-        foreach (var key in Enum.GetValues<SeVirtualKey>()) {
-            if (UIInputData.Instance()->IsKeyDown(key)) {
+        foreach (var key in Services.KeyState.GetValidVirtualKeys()) {
+            if (Services.KeyState[(int)key]) {
                 combo.Add(key);
             }
         }
@@ -62,11 +66,42 @@ public unsafe class KeybindModal : Window {
             
             using var utfString = new Utf8String(nameString);
             UIInputData.Instance()->GetKeybind(&utfString, &keybind);
+            if (keybind.Key is SeVirtualKey.NO_KEY && keybind.AltKey is SeVirtualKey.NO_KEY) continue;
 
-            if (combo.Contains(keybind.Key)) {
+            var keyMatches = IsComboMatch(combo, keybind, false);
+            var altKeyMatches = IsComboMatch(combo, keybind, true);
+
+            if (keyMatches || altKeyMatches) {
                 conflicts.Add(nameString);
             }
         }
+        
+        Services.KeyState.ResetKeyCombo(combo);
+    }
+
+    private static bool IsComboMatch(HashSet<VirtualKey> keyCombo, UIInputData.Keybind keybind, bool useAltCombo) {
+        var key = useAltCombo ? keybind.AltKey : keybind.Key;
+        var flags = useAltCombo ? keybind.AltModifier : keybind.Modifier;
+
+        var comboModifies = keyCombo.Where(comboKey => comboKey is (VirtualKey.CONTROL or VirtualKey.MENU or VirtualKey.SHIFT)).ToList();
+        var comboKey = keyCombo.FirstOrDefault(comboKey => comboKey is not (VirtualKey.CONTROL  or VirtualKey.MENU or VirtualKey.SHIFT));
+
+        // If our base key doesn't match, we don't match.
+        if ((int)comboKey != (int)key) return false;
+
+        // Game combo does not have a modifier, but we do
+        if (flags is 0 && comboModifies.Count != 0) return false;
+        
+        // Game combo wants Control, but we don't have Control in our combo
+        if (flags.HasFlag(ModifierFlag.Ctrl) && !comboModifies.Contains(VirtualKey.CONTROL)) return false;
+        
+        // Game combo wants Alt, but we don't have Alt in our combo
+        if (flags.HasFlag(ModifierFlag.Alt) && !comboModifies.Contains(VirtualKey.MENU)) return false;
+        
+        // Game combo wants Shift, but we don't have Shift in our combo
+        if (flags.HasFlag(ModifierFlag.Shift) && !comboModifies.Contains(VirtualKey.SHIFT)) return false;
+
+        return true;
     }
 
     public override void Draw() {
@@ -122,22 +157,9 @@ public unsafe class KeybindModal : Window {
         }
     }
 
-    public override void OnClose() {
-        System.KeyListener.OnSeKeyPressed -= OnSeKeyPressed;
+    public void Dispose() {
+        System.KeyListener.OnKeyPressed -= KeyPressed;
+        largeAxisFontHandle.Dispose();
         this.RemoveFromWindowSystem();
     }
-
-    // private bool ComboContainsModifiers(UIInputData.Keybind keybind) {
-    //     if (keybind.Modifier is 0) return false;
-    //     
-    //     var isAlt = keybind.Modifier is ModifierFlag.Alt;
-    //     var isCtrl = keybind.Modifier is ModifierFlag.Ctrl;
-    //     var isShift = keybind.Modifier is ModifierFlag.Shift;
-    //
-    //     if (isAlt && !combo.Contains(SeVirtualKey.MENU)) return false;
-    //     if (isCtrl && !combo.Contains(SeVirtualKey.SHIFT)) return false;
-    //     if (isShift && !combo.Contains(SeVirtualKey.CONTROL)) return false;
-    //
-    //     return true;
-    // }
 }

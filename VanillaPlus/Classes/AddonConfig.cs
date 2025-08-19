@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
-using FFXIVClientStructs.FFXIV.Client.UI;
+using Dalamud.Game.ClientState.Keys;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Classes;
@@ -8,7 +8,7 @@ namespace VanillaPlus.Classes;
 public class AddonConfig {
     private string fileName = null!;
    
-    public static AddonConfig Load(string fileName, HashSet<SeVirtualKey> defaultKeyCombo) {
+    public static AddonConfig Load(string fileName, HashSet<VirtualKey> defaultKeyCombo) {
         var loadedConfig = Config.LoadConfig<AddonConfig>(fileName);
         loadedConfig.fileName = fileName;
 
@@ -22,6 +22,6 @@ public class AddonConfig {
     public void Save()
         => Config.SaveConfig(this, fileName);
 
-    public HashSet<SeVirtualKey> OpenKeyCombo = [];
+    public HashSet<VirtualKey> OpenKeyCombo = [];
     public Vector2? WindowPosition = null;
 }

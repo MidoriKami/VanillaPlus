@@ -17,7 +17,7 @@ public class FastMouseClick : GameModification {
     };
 
     [Signature("EB 3F B8 ?? ?? ?? ?? 48 8B D7")]
-    private readonly nint? memoryAddress = null;
+    private nint? memoryAddress;
 
     private MemoryReplacement? memoryPatch;
 
@@ -32,5 +32,8 @@ public class FastMouseClick : GameModification {
 
     public override void OnDisable() {
         memoryPatch?.Dispose();
+        memoryPatch = null;
+        
+        memoryAddress = nint.Zero;
     }
 }

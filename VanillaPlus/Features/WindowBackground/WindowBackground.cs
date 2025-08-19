@@ -20,11 +20,13 @@ public unsafe class WindowBackground : GameModification {
         Type = ModificationType.UserInterface,
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
+            new ChangeLogInfo(2, "Added search bar to search 'All Windows' in config"),
+            new ChangeLogInfo(3, "Fixed incorrectly cleaning up removed backgrounds"),
         ],
         CompatabilityModule = new SimpleTweaksCompatabilityModule("UiAdjustments@DutyListBackground"),
     };
 
-    private readonly List<AddonBackground> addonBackgrounds = [];
+    private List<AddonBackground>? addonBackgrounds;
     private WindowBackgroundConfig? config;
     private WindowBackgroundConfigWindow? configWindow;
 
@@ -33,6 +35,8 @@ public unsafe class WindowBackground : GameModification {
     public override bool IsExperimental => true;
 
     public override void OnEnable() {
+        addonBackgrounds = [];
+        
         config = WindowBackgroundConfig.Load();
         configWindow = new WindowBackgroundConfigWindow(config, UpdateListeners, OnStyleChanged);
         configWindow.AddToWindowSystem();
@@ -41,6 +45,25 @@ public unsafe class WindowBackground : GameModification {
         UpdateListeners();
     }
 
+    public override void OnDisable() {
+        if (configWindow is null) return;
+        
+        configWindow.RemoveFromWindowSystem();
+        configWindow = null;
+        
+        Services.AddonLifecycle.UnregisterListener(OnAddonSetup, OnAddonFinalize, OnAddonUpdate);
+
+        foreach (var background in addonBackgrounds ?? []) {
+            System.NativeController.DetachNode(background.ImageNode, () => {
+                background.ImageNode.Dispose();
+            });
+        }
+        addonBackgrounds?.Clear();
+        addonBackgrounds = null;
+
+        config = null;
+    }
+    
     private void UpdateListeners() {
         if (config is null) return;
         
@@ -59,26 +82,13 @@ public unsafe class WindowBackground : GameModification {
             }
         }
 
-        var orphanedBackgrounds = addonBackgrounds.Where(background => !config.Addons.Any(option => option == background.AddonName));
+        var orphanedBackgrounds = addonBackgrounds?.Where(background => !config.Addons.Any(option => option == background.AddonName)).ToList() ?? [];
         foreach (var background in orphanedBackgrounds) {
             System.NativeController.DetachNode(background.ImageNode, () => {
                 background.ImageNode.Dispose();
             });
+            addonBackgrounds?.Remove(background);
         }
-    }
-
-    public override void OnDisable() {
-        if (configWindow is null) return;
-        
-        configWindow.RemoveFromWindowSystem();
-        Services.AddonLifecycle.UnregisterListener(OnAddonSetup, OnAddonFinalize, OnAddonUpdate);
-
-        foreach (var background in addonBackgrounds) {
-            System.NativeController.DetachNode(background.ImageNode, () => {
-                background.ImageNode.Dispose();
-            });
-        }
-        addonBackgrounds.Clear();
     }
     
     private void OnAddonSetup(AddonEvent type, AddonArgs args)
@@ -87,13 +97,13 @@ public unsafe class WindowBackground : GameModification {
     private void OnAddonUpdate(AddonEvent type, AddonArgs args) {
         if (config is null) return;
         
-        if (addonBackgrounds.FirstOrDefault(background => background.AddonName == args.AddonName) is { } info) {
+        if (addonBackgrounds?.FirstOrDefault(background => background.AddonName == args.AddonName) is { } info) {
             info.ImageNode.Size = args.GetAddon<AtkUnitBase>()->Size() + config.Padding;
         }
     }
     
     private void OnAddonFinalize(AddonEvent type, AddonArgs args) {
-        if (addonBackgrounds.FirstOrDefault(background => background.AddonName == args.AddonName) is { } info) {
+        if (addonBackgrounds?.FirstOrDefault(background => background.AddonName == args.AddonName) is { } info) {
             System.NativeController.DetachNode(info.ImageNode, () => {
                 info.ImageNode.Dispose();
             });
@@ -105,7 +115,7 @@ public unsafe class WindowBackground : GameModification {
     private void AttachNode(AtkUnitBase* addon) {
         if (config is null) return;
         
-        if (!addonBackgrounds.Any(background => background.AddonName == addon->NameString)) {
+        if (!addonBackgrounds?.Any(background => background.AddonName == addon->NameString) ?? false) return; {
             var newBackgroundNode = new BackgroundImageNode {
                 Size = addon->Size() + config.Padding,
                 Position = -config.Padding / 2.0f,
@@ -115,7 +125,7 @@ public unsafe class WindowBackground : GameModification {
 
             if (addon->RootNode->ChildNode is not null) {
                 System.NativeController.AttachNode(newBackgroundNode, addon->RootNode->ChildNode, NodePosition.BeforeAllSiblings);
-                addonBackgrounds.Add(new AddonBackground(addon->NameString, newBackgroundNode));
+                addonBackgrounds?.Add(new AddonBackground(addon->NameString, newBackgroundNode));
             }
         }
     }
@@ -123,7 +133,7 @@ public unsafe class WindowBackground : GameModification {
     private void OnStyleChanged() {
         if (config is null) return;
         
-        foreach (var background in addonBackgrounds) {
+        foreach (var background in addonBackgrounds ?? []) {
             var addon = Services.GameGui.GetAddonByName<AtkUnitBase>(background.AddonName);
             if (addon is not null) {
                 background.ImageNode.Color = config.Color;
