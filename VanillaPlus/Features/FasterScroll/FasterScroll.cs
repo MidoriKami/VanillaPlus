@@ -19,7 +19,7 @@ public class FasterScroll : GameModification {
     };
 
     [Signature("40 55 53 56 41 54 41 55 41 56 41 57 48 8B EC 48 81 EC ?? ?? ?? ??", DetourName = nameof(AtkComponentScrollBarReceiveEvent))]
-    private readonly Hook<AtkComponentScrollBar.Delegates.ReceiveEvent>? scrollBarReceiveEventHook = null;
+    private Hook<AtkComponentScrollBar.Delegates.ReceiveEvent>? scrollBarReceiveEventHook;
 
     private FasterScrollConfig? config;
     private FasterScrollConfigWindow? configWindow;
@@ -36,7 +36,12 @@ public class FasterScroll : GameModification {
 
     public override void OnDisable() {
         scrollBarReceiveEventHook?.Dispose();
+        scrollBarReceiveEventHook = null;
+        
         configWindow?.RemoveFromWindowSystem();
+        configWindow = null;
+
+        config = null;
     }
 
     private unsafe void AtkComponentScrollBarReceiveEvent(AtkComponentScrollBar* thisPtr, AtkEventType type, int param, AtkEvent* eventPointer, AtkEventData* dataPointer) {

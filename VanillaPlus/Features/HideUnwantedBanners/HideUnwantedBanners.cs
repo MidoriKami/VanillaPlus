@@ -22,7 +22,7 @@ public unsafe class HideUnwantedBanners : GameModification {
     private delegate void ImageSetImageTextureDelegate(AtkUnitBase* addon, int bannerId, int a3, int sfxId);
 
     [Signature("48 89 5C 24 ?? 57 48 83 EC 30 48 8B D9 89 91", DetourName = nameof(OnSetImageTexture))]
-    private readonly Hook<ImageSetImageTextureDelegate>? setImageTextureHook = null;
+    private Hook<ImageSetImageTextureDelegate>? setImageTextureHook;
 
     private HideUnwantedBannersConfig? config;
     private HideUnwantedBannersConfigWindow? configWindow;
@@ -39,7 +39,12 @@ public unsafe class HideUnwantedBanners : GameModification {
 
     public override void OnDisable() {
         configWindow?.RemoveFromWindowSystem();
+        configWindow = null;
+        
         setImageTextureHook?.Dispose();
+        setImageTextureHook = null;
+        
+        config = null;
     }
 
     private void OnSetImageTexture(AtkUnitBase* addon, int bannerId, int a3, int soundEffectId) {

@@ -41,8 +41,8 @@ public sealed class VanillaPlus : IDalamudPlugin {
         Services.PluginInterface.UiBuilder.Draw += System.WindowSystem.Draw;
         Services.PluginInterface.UiBuilder.OpenConfigUi += OpenModificationBrowser;
 
-        System.ModificationManager = new ModificationManager();
         System.KeyListener = new KeyListener();
+        System.ModificationManager = new ModificationManager();
         
         #if DEBUG
         Services.Framework.RunOnTick(OpenModificationBrowser, delayTicks: 5);

@@ -37,6 +37,8 @@ public unsafe class MiniCactpotHelper : GameModification {
     public override string ImageName => "MiniCactpotHelper.png";
 
     public override void OnEnable() {
+        boardState = [];
+        
         perfectCactpot = new PerfectCactpot();
         
         config = MiniCactpotHelperConfig.Load();
@@ -53,8 +55,15 @@ public unsafe class MiniCactpotHelper : GameModification {
 
     public override void OnDisable() {
         gameTask?.Dispose();
+        gameTask = null;
+        
         configWindow?.RemoveFromWindowSystem();
+        configWindow = null;
+        
         lotteryDailyController?.Dispose();
+        lotteryDailyController = null;
+        
+        config = null;
     }
 
     private void ApplyConfigStyle() {
