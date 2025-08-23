@@ -107,7 +107,7 @@ public class StickyShopCategories : GameModification {
         if (currentShopConfig == null) return;
         var agent = AgentModule.Instance()->GetAgentByInternalId(AgentId.InclusionShop);
         if (agent == null) return;
-        var addon = RaptureAtkUnitManager.Instance()->GetAddonById((ushort)agent->GetAddonId());
+        var addon = (AtkUnitBase*)actualArgs.Addon.Address;
         if (addon == null)
             return;
         var categoryDropDown = (AtkComponentDropDownList*)addon->GetComponentByNodeId(7);
