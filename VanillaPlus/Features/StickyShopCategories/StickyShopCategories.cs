@@ -3,11 +3,11 @@ using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using Lumina.Excel;
 using Lumina.Excel.Sheets;
 using System;
 using System.Linq;
 using VanillaPlus.Classes;
+using VanillaPlus.Extensions;
 using static VanillaPlus.Features.StickyShopCategories.StickyShopCategoriesConfig;
 
 namespace VanillaPlus.Features.StickyShopCategories;
@@ -29,20 +29,15 @@ public class StickyShopCategories : GameModification {
     private ShopConfig? currentShopConfig = null;
     private StickyShopCategoriesConfig? config;
 
-    internal static ExcelSheet<InclusionShopWelcomText> InclusionShopWelcomeTextSheet { get; } = Services.DataManager.GetExcelSheet<InclusionShopWelcomText>()!;
-
     public override void OnEnable() {
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, ["InclusionShop"], OnPreFinalize);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreRefresh, ["InclusionShop"], OnPreRefresh);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, ["InclusionShop"], OnPostRefresh);
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, "InclusionShop", OnPreFinalize);
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PreRefresh, "InclusionShop", OnPreRefresh);
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "InclusionShop", OnPostRefresh);
         config = StickyShopCategoriesConfig.Load();
-        config ??= new StickyShopCategoriesConfig();
     }
 
     public override void OnDisable() {
-        Services.AddonLifecycle.UnregisterListener(AddonEvent.PreFinalize, ["InclusionShop"], OnPreFinalize);
-        Services.AddonLifecycle.UnregisterListener(AddonEvent.PreRefresh, ["InclusionShop"], OnPreRefresh);
-        Services.AddonLifecycle.UnregisterListener(AddonEvent.PostRefresh, ["InclusionShop"], OnPostRefresh);
+        Services.AddonLifecycle.UnregisterListener(OnPreFinalize, OnPreRefresh, OnPostRefresh);
         config?.Save();
         config = null;
     }
@@ -54,7 +49,7 @@ public class StickyShopCategories : GameModification {
         }
         var agent = AgentModule.Instance()->GetAgentByInternalId(AgentId.InclusionShop);
         if (agent == null) return;
-        var addon = RaptureAtkUnitManager.Instance()->GetAddonById((ushort)agent->GetAddonId());
+        var addon = (AtkUnitBase*)actualArgs.Addon.Address;
         if (addon == null)
             return;
         var categoryDropDown = (AtkComponentDropDownList*)addon->GetComponentByNodeId(7);
@@ -88,15 +83,8 @@ public class StickyShopCategories : GameModification {
             vals[99].SetUInt(currentShopConfig.CategoryId);
             vals[100].SetUInt(currentShopConfig.SubCategoryId);
 
-            // update category
-            values[0].SetInt(12);
-            values[1].SetUInt((uint)currentShopConfig.CategoryIndex);
-            agent->ReceiveEvent(retVal, values, 2, 1);
-
-            // update subcategory
-            values[0].SetInt(13);
-            values[1].SetUInt((uint)currentShopConfig.SubCategoryIndex);
-            agent->ReceiveEvent(retVal, values, 2, 1);
+            agent->SendCommand(1, [12, currentShopConfig.CategoryIndex]);
+            agent->SendCommand(1, [13, currentShopConfig.SubCategoryIndex]);
 
 
             if (categoryDropDown != null && categoryDropDown->GetComponentType() == ComponentType.DropDownList)
@@ -119,6 +107,7 @@ public class StickyShopCategories : GameModification {
             Services.PluginLog.Error("InclusionShop: OnPostRefresh received null or invalid args.");
             return;
         }
+        if (currentShopConfig == null) return;
         var agent = AgentModule.Instance()->GetAgentByInternalId(AgentId.InclusionShop);
         if (agent == null) return;
         var addon = RaptureAtkUnitManager.Instance()->GetAddonById((ushort)agent->GetAddonId());
@@ -130,7 +119,7 @@ public class StickyShopCategories : GameModification {
         var subcategoryDropDown = (AtkComponentDropDownList*)addon->GetComponentByNodeId(9);
         if (subcategoryDropDown == null)
             return;
-        currentShopConfig!.CategoryId = addon->AtkValues[99].UInt;
+        currentShopConfig.CategoryId = addon->AtkValues[99].UInt;
         currentShopConfig.SubCategoryId = addon->AtkValues[100].UInt;
         currentShopConfig.CategoryIndex = categoryDropDown->GetSelectedItemIndex();
         currentShopConfig.SubCategoryIndex = subcategoryDropDown->GetSelectedItemIndex();
@@ -139,7 +128,8 @@ public class StickyShopCategories : GameModification {
     private unsafe void OnPreFinalize(AddonEvent type, AddonArgs args) {
         hasIgnoredFirstEvent = false;
         hasSetCategory = false;
-        SaveShopConfig(currentShopConfig!);
+        if (currentShopConfig != null)
+            SaveShopConfig(currentShopConfig);
     }
 
     private ShopConfig? GetShopConfig(string searchText) {
@@ -170,7 +160,7 @@ public class StickyShopCategories : GameModification {
     }
 
     private static uint GetShopRow(string searchText) {
-        var search = InclusionShopWelcomeTextSheet.FirstOrDefault(x => x.Unknown0.ExtractText().Contains(searchText, StringComparison.OrdinalIgnoreCase));
+        var search = Services.DataManager.GetExcelSheet<InclusionShopWelcomText>().FirstOrDefault(x => x.Unknown0.ExtractText().Contains(searchText, StringComparison.OrdinalIgnoreCase));
         if (search.RowId < 0) {
             Services.PluginLog.Error($"InclusionShop: Could not find shop row for search text: {searchText}");
             return 0;
