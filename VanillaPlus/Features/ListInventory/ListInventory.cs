@@ -16,6 +16,7 @@ public class ListInventory : GameModification {
             new ChangeLogInfo(1, "InitialChangelog"),
             new ChangeLogInfo(2, "Added Sort by Quantity"),
             new ChangeLogInfo(3, "Added `/listinventory` command to open window"),
+            new ChangeLogInfo(4, "Sort Dropdown is now on another line, added reverse sort direction button"),
         ],
     };
     

@@ -7,6 +7,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addon;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
+using KamiToolKit.System;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.ListInventory;
@@ -19,27 +20,60 @@ public unsafe class AddonListInventory : NativeAddon {
     private TextInputNode? textInputNode;
     private TextNode? searchLabelNode;
     private TextDropDownNode? sortDropdownNode;
+    
+    private VerticalListNode? mainContainerNode;
+    private HorizontalFlexNode? searchContainerNode;
+    private HorizontalListNode? widgetsContainerNode;
+    private CircleButtonNode? reverseButtonNode;
 
     public required AddonConfig Config { get; init; }
+
+    private bool reverseSort;
 
     protected override void OnSetup(AtkUnitBase* addon) {
         addon->SubscribeAtkArrayData(0, (int)StringArrayType.Inventory);
         addon->SubscribeAtkArrayData(1, (int)NumberArrayType.Inventory);
 
         const float dropDownWidth = 175.0f;
+
+        mainContainerNode = new VerticalListNode {
+            Position = ContentStartPosition,
+            Size = ContentSize,
+            IsVisible = true,
+        };
+
+        searchContainerNode = new HorizontalFlexNode {
+            Size = new Vector2(ContentSize.X, 28.0f),
+            AlignmentFlags = FlexFlags.FitHeight | FlexFlags.FitWidth,
+            IsVisible = true,
+        };
+
+        widgetsContainerNode = new HorizontalListNode {
+            Size = new Vector2(ContentSize.X, 28.0f),
+            Alignment = HorizontalListAnchor.Right,
+            IsVisible = true,
+        };
         
         sortDropdownNode = new TextDropDownNode {
             Size = new Vector2(dropDownWidth, 28.0f),
-            Position = ContentStartPosition + new Vector2(ContentSize.X, 0.0f) - new Vector2(dropDownWidth, 0.0f) + new Vector2(0.0f, 1.0f),
             MaxListOptions = 7,
             Options = ["Alphabetically", "Quantity", "Level", "Item Level", "Rarity", "Item Id", "Item Category"],
             IsVisible = true,
             OnOptionSelected = _ => UpdateInventoryList(),
         };
+
+        reverseButtonNode = new CircleButtonNode {
+            Size = new Vector2(28.0f, 28.0f),
+            Icon = ButtonIcon.Sort,
+            IsVisible = true,
+            OnClick = () => {
+                reverseSort = !reverseSort;
+                UpdateInventoryList();
+            },
+            Tooltip = "Reverse Sort Direction",
+        };
         
         textInputNode = new TextInputNode {
-            Size = new Vector2(ContentSize.X - sortDropdownNode.Width - 4.0f, 28.0f),
-            Position = ContentStartPosition,
             IsVisible = true,
         };
 
@@ -67,26 +101,25 @@ public unsafe class AddonListInventory : NativeAddon {
         const float listPadding = 4.0f;
         
         scrollingAreaNode = new ScrollingAreaNode<VerticalListNode> {
-            Size = ContentSize - new Vector2(0.0f, textInputNode.Height + listPadding),
-            Position = ContentStartPosition + new Vector2(0.0f, textInputNode.Height + listPadding),
+            Size = ContentSize - new Vector2(0.0f, searchContainerNode.Height + widgetsContainerNode.Height + listPadding),
+            Position = new Vector2(0.0f, listPadding),
             ContentHeight = 1000.0f,
             IsVisible = true,
         };
         
-        AttachNode(scrollingAreaNode);
-        AttachNode(textInputNode);
-        AttachNode(searchLabelNode, textInputNode);
-        AttachNode(sortDropdownNode);
+        AttachNode(mainContainerNode);
+        mainContainerNode.AddNode(searchContainerNode);
+        searchContainerNode.AddNode(textInputNode);
+        mainContainerNode.AddNode(widgetsContainerNode);
+        widgetsContainerNode.AddNode(reverseButtonNode);
 
-        foreach (var _ in Enumerable.Range(0, 140)) {
-            var newItemNode = new InventoryItemNode { 
-                Size = new Vector2(scrollingAreaNode.ContentNode.Width, 32.0f),
-                IsVisible = false,
-                OnHovered = OnItemHovered,
-            };
-            
-            ListNode?.AddNode(newItemNode);
-        }
+        sortDropdownNode.Width = widgetsContainerNode.AreaRemaining;
+        widgetsContainerNode.AddNode(sortDropdownNode);
+        
+        AttachNode(searchLabelNode, textInputNode);
+        
+        mainContainerNode.AddDummy(4.0f);
+        mainContainerNode.AddNode(scrollingAreaNode);
 
         if (ListNode is not null) {
             ListNode.ItemSpacing = 3.0f;
@@ -102,7 +135,6 @@ public unsafe class AddonListInventory : NativeAddon {
         if (!itemNode.IsVisible) return;
         if (itemNode.Item is null) return;
         if (!sortDropdownNode?.IsCollapsed ?? true) return;
-        if (itemNode.ScreenY < scrollingAreaNode?.ScreenY) return;
         
         if (isHovered && !tooltipShowing) {
             var tooltipArgs = stackalloc AtkTooltipManager.AtkTooltipArgs[1];
@@ -133,46 +165,50 @@ public unsafe class AddonListInventory : NativeAddon {
     }
 
     private void UpdateInventoryList() {
-        if (ListNode?.Nodes.Count is 0) return;
+        if (ListNode is null) return;
+        if (scrollingAreaNode is null) return;
         
         AtkStage.Instance()->TooltipManager.HideTooltip((ushort)AddonId);
-        
-        foreach (var node in ListNode?.GetNodes<InventoryItemNode>() ?? []) {
-            node.IsVisible = false;
-            node.Item = null;
-        }
 
-        var nodeIndex = 0;
+        ListNode.SyncWithListData(GetInventoryItems(), GetDataFromNode, CreateInventoryNode);
+        ListNode.ReorderNodes(Comparison);
         
-        foreach (var itemInfo in GetOrderedInventoryItems()) {
-            if (ListNode?.Nodes[nodeIndex] is InventoryItemNode node) {
-                node.Item = itemInfo;
-                node.IsVisible = true;
-                nodeIndex++;
-            }
-        }
-
-        ListNode?.RecalculateLayout();
         RecalculateContentHeight();
     }
 
-    private IOrderedEnumerable<ItemInfo> GetOrderedInventoryItems() {
-        IEnumerable<ItemInfo> inventoryItems = GetInventoryItems();
+    private InventoryItemNode CreateInventoryNode(ItemInfo data) => new() {
+        Size = new Vector2(scrollingAreaNode!.ContentNode.Width, 32.0f), 
+        Item = data, 
+        IsVisible = true, 
+        OnHovered = OnItemHovered,
+    };
 
-        if (textInputNode?.String.ToString() is { Length: > 0 } searchString) {
-            inventoryItems = inventoryItems.Where(item => item.IsRegexMatch(searchString));
-        }
+    private static ItemInfo? GetDataFromNode(InventoryItemNode node)
+        => node.Item;
 
-        return sortDropdownNode?.SelectedOption switch {
-            "Alphabetically" => inventoryItems.OrderBy(item => item.Name),
-            "Level" => inventoryItems.OrderByDescending(item => item.Level).ThenBy(item => item.Name),
-            "Item Level" => inventoryItems.OrderByDescending(item => item.ItemLevel).ThenBy(item => item.Name),
-            "Rarity" => inventoryItems.OrderByDescending(item => item.Rarity).ThenBy(item => item.Name),
-            "Item Id" => inventoryItems.OrderByDescending(item => item.Item.ItemId),
-            "Item Category" => inventoryItems.OrderBy(item => item.UiCategory).ThenBy(item => item.Name),
-            "Quantity" => inventoryItems.OrderByDescending(item => item.ItemCount).ThenBy(item => item.Name),
-            _ => inventoryItems.OrderBy(item => item.Name),
+    private int Comparison(NodeBase x, NodeBase y) {
+        if (x is not InventoryItemNode left || y is not InventoryItemNode right) return 0;
+
+        var leftItem = left.Item;
+        var rightItem = right.Item;
+        if (leftItem is null || rightItem is null) return 0;
+
+        // Note: Compares in opposite direction to be descending instead of ascending, except for alphabetically
+
+        var result = sortDropdownNode?.SelectedOption switch {
+            "Alphabetically" => string.CompareOrdinal(leftItem.Name, rightItem.Name),
+            "Level" => rightItem.Level.CompareTo(leftItem.Level),
+            "Item Level" => rightItem.ItemLevel.CompareTo(leftItem.ItemLevel),
+            "Rarity" => rightItem.Rarity.CompareTo(leftItem.Rarity),
+            "Item Id" => rightItem.Item.ItemId.CompareTo(leftItem.Item.ItemId),
+            "Item Category" => rightItem.UiCategory.CompareTo(leftItem.UiCategory),
+            "Quantity" => rightItem.ItemCount.CompareTo(leftItem.ItemCount),
+            _ => string.CompareOrdinal(leftItem.Name, rightItem.Name),
         };
+
+        var reverseModifier = reverseSort ? -1 : 1;
+        
+        return ( result is 0 ? string.CompareOrdinal(leftItem.Name, rightItem.Name) : result ) * reverseModifier;
     }
 
     protected override void OnFinalize(AtkUnitBase* addon) {

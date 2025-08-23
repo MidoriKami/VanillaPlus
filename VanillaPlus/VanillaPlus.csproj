@@ -2,6 +2,7 @@
     <PropertyGroup>
         <Version>0.1.1.1</Version>
         <LangVersion>Preview</LangVersion>
+        <DebugType>portable</DebugType>
     </PropertyGroup>
 
     <ItemGroup>

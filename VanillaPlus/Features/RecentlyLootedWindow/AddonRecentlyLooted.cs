@@ -3,18 +3,19 @@ using Dalamud.Game.Inventory.InventoryEventArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addon;
 using KamiToolKit.Nodes;
+using KamiToolKit.System;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.RecentlyLootedWindow;
 
+public record IndexedItemEvent(InventoryEventArgs Event, int Index);
+
 public class AddonRecentlyLooted(AddonConfig config) : NativeAddon {
 
-    private readonly List<InventoryEventArgs> itemEvents = [];
+    private readonly List<IndexedItemEvent> itemEvents = [];
 
     private ScrollingAreaNode<VerticalListNode>? scrollingAreaNode;
     private VerticalListNode? ListNode => scrollingAreaNode?.ContentNode;
-
-    private const int ItemCountLimit = 100;
 
     protected override unsafe void OnSetup(AtkUnitBase* addon) {
         scrollingAreaNode = new ScrollingAreaNode<VerticalListNode> {
@@ -42,11 +43,7 @@ public class AddonRecentlyLooted(AddonConfig config) : NativeAddon {
         if (itemEvent is not (InventoryItemAddedArgs or InventoryItemChangedArgs)) return;
         if (itemEvent is InventoryItemChangedArgs changedArgs && changedArgs.OldItemState.Quantity >= changedArgs.Item.Quantity) return;
 
-        itemEvents.Add(itemEvent);
-
-        if (itemEvents.Count >= ItemCountLimit) {
-            itemEvents.RemoveAt(0);
-        }
+        itemEvents.Add(new IndexedItemEvent(itemEvent, itemEvents.Count));
 
         if (IsOpen) {
             RebuildList();
@@ -54,36 +51,24 @@ public class AddonRecentlyLooted(AddonConfig config) : NativeAddon {
     }
 
     private void RebuildList() {
-        ListNode?.Clear();
-
-        for (var index = itemEvents.Count - 1; index >= 0; index--) {
-            AddItemNode(itemEvents[index]);
-        }
-    }
-
-    private void AddItemNode(InventoryEventArgs itemEvent) {
         if (scrollingAreaNode is null) return;
-        
-        var newItemNode = new LootItemNode {
+        if (ListNode is null) return;
+
+        ListNode.SyncWithListData(itemEvents, node => node.Item, data => new LootItemNode {
             Height = 36.0f,
             Width = scrollingAreaNode.ContentNode.Width,
             IsVisible = true,
-        };
-
-        switch (itemEvent) {
-            case InventoryItemAddedArgs added:
-                newItemNode.SetItem(added);
-                break;
-
-            case InventoryItemChangedArgs changed:
-                newItemNode.SetItem(changed);
-                break;
-
-            default:
-                return;
-        }
-
-        ListNode?.AddNode(newItemNode);
+            Item = data,
+        });
+        
+        ListNode.ReorderNodes(Comparison);
+        
         scrollingAreaNode.ContentHeight = ListNode?.Height ?? 100.0f;
+    }
+
+    private static int Comparison(NodeBase x, NodeBase y) {
+        if (x is not LootItemNode left ||  y is not LootItemNode right) return 0;
+        
+        return left.Item.Index > right.Item.Index ? -1 : 1;
     }
 }

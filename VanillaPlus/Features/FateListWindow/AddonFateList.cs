@@ -31,23 +31,11 @@ public class AddonFateList(AddonConfig config) : NativeAddon {
         if (scrollingAreaNode is null) return;
         
         var validFates = Services.FateTable.Where(fate => fate is { State: FateState.Running }).ToList();
-        
-        var toRemove =  FateListNode.GetNodes<FateEntryNode>().Where(node => !validFates.Any(fate => node.Fate.FateId == fate.FateId)).ToList();
-        foreach (var node in toRemove) {
-            FateListNode.RemoveNode(node);
-            node.Dispose();
-        }
-        
-        var toAdd = validFates.Where(fate => !FateListNode.GetNodes<FateEntryNode>().Any(node => node.Fate.FateId == fate.FateId)).ToList();
-        foreach (var fate in toAdd) {
-            var newNode = new FateEntryNode {
-                Size = new Vector2(FateListNode.Width, 53.0f),
-                IsVisible = true,
-                Fate = fate,
-            };
-            
-            FateListNode.AddNode(newNode);
-        }
+        FateListNode.SyncWithListData(validFates, node => node.Fate, data => new FateEntryNode {
+            Size = new Vector2(FateListNode.Width, 53.0f),
+            IsVisible = true,
+            Fate = data,
+        });
 
         foreach (var fateNode in FateListNode.GetNodes<FateEntryNode>()) {
             fateNode.Update();

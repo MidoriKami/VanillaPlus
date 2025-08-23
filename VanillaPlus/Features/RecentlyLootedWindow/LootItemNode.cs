@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using Dalamud.Game.Addon.Events;
-using Dalamud.Game.Inventory;
 using Dalamud.Game.Inventory.InventoryEventArgTypes;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Enums;
@@ -72,7 +71,7 @@ public unsafe class LootItemNode : SimpleComponentNode {
                 tooltipArgs.Ctor();
                 tooltipArgs.ItemArgs = new AtkItemTooltipArgs {
                     Kind = DetailKind.ItemId,
-                    ItemId = (int) Item.BaseItemId,
+                    ItemId = (int) Item!.Event.Item.BaseItemId,
                 };
                 
                 AtkStage.Instance()->TooltipManager.ShowTooltip(
@@ -94,12 +93,12 @@ public unsafe class LootItemNode : SimpleComponentNode {
         set => hoveredBackgroundNode.IsVisible = value;
     }
 
-    private GameInventoryItem Item {
+    public required IndexedItemEvent Item {
         get;
         set {
             field = value;
 
-            var (itemBaseId, itemKind) = ItemUtil.GetBaseId(value.ItemId);
+            var (itemBaseId, itemKind) = ItemUtil.GetBaseId(value.Event.Item.ItemId);
             switch (itemKind) {
                 case ItemKind.Normal:
                 case ItemKind.Collectible:
@@ -118,26 +117,25 @@ public unsafe class LootItemNode : SimpleComponentNode {
 
                 default:
                     iconImageNode.IconId = 60071;
-                    itemNameTextNode.Text = $"Unknown Item Type, ID: {value.ItemId}";
+                    itemNameTextNode.Text = $"Unknown Item Type, ID: {value.Event.Item.ItemId}";
                     break;
             }
-        }
-    }
 
-    public void SetItem(InventoryItemAddedArgs item) {
-        Item = item.Item;
+            switch (value.Event) {
+                case InventoryItemAddedArgs addedArgs:
+                    if (addedArgs.Item.Quantity > 1) {
+                        itemQuantityTextNode.Text = addedArgs.Item.Quantity.ToString();
+                    }
+                    break;
+                
+                case InventoryItemChangedArgs changedArgs:
+                    var quantity = changedArgs.Item.Quantity - changedArgs.OldItemState.Quantity;
 
-        if (item.Item.Quantity > 1) {
-            itemQuantityTextNode.Text = Item.Quantity.ToString();
-        }
-    }
-
-    public void SetItem(InventoryItemChangedArgs item) {
-        var quantity = item.Item.Quantity - item.OldItemState.Quantity;
-
-        Item = item.Item;
-        if (quantity > 1) {
-            itemQuantityTextNode.Text = quantity.ToString();
+                    if (quantity > 1) {
+                        itemQuantityTextNode.Text = quantity.ToString();
+                    }
+                    break;
+            }
         }
     }
     
