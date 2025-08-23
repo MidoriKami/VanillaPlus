@@ -3,8 +3,8 @@ using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.StickyShopCategories;
 
-public class StickyShopCategoriesConfig : GameModificationConfig<StickyShopCategoriesConfig> {
-    protected override string FileName => "StickyShopCategories.config.json";
+public class StickyShopCategoriesData : GameModificationData<StickyShopCategoriesData> {
+    protected override string FileName => "StickyShopCategories.data.json";
 
     public List<ShopConfig> ShopConfigs { get; set; } = [];
 

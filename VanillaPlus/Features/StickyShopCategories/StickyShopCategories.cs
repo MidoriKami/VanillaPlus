@@ -8,7 +8,7 @@ using System;
 using System.Linq;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
-using static VanillaPlus.Features.StickyShopCategories.StickyShopCategoriesConfig;
+using static VanillaPlus.Features.StickyShopCategories.StickyShopCategoriesData;
 
 namespace VanillaPlus.Features.StickyShopCategories;
 
@@ -27,13 +27,13 @@ public class StickyShopCategories : GameModification {
     private bool hasSetCategory = false;
     private bool hasIgnoredFirstEvent = false;
     private ShopConfig? currentShopConfig = null;
-    private StickyShopCategoriesConfig? config;
+    private StickyShopCategoriesData? config;
 
     public override void OnEnable() {
         Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, "InclusionShop", OnPreFinalize);
         Services.AddonLifecycle.RegisterListener(AddonEvent.PreRefresh, "InclusionShop", OnPreRefresh);
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "InclusionShop", OnPostRefresh);
-        config = StickyShopCategoriesConfig.Load();
+        config = StickyShopCategoriesData.Load();
     }
 
     public override void OnDisable() {
