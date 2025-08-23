@@ -76,10 +76,7 @@ public class StickyShopCategories : GameModification {
         if (!hasSetCategory) {
             hasSetCategory = true;
 
-            var retVal = stackalloc AtkValue[1];
-            var values = stackalloc AtkValue[2];
-
-            AtkValue* vals = (AtkValue*)actualArgs.AtkValues;
+            var vals = (AtkValue*)actualArgs.AtkValues;
             vals[99].SetUInt(currentShopConfig.CategoryId);
             vals[100].SetUInt(currentShopConfig.SubCategoryId);
 
