@@ -6,13 +6,13 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 namespace VanillaPlus.Extensions;
 
 public record LoggedAddonEvents {
-    public bool Setup { get; set; } = true;
-    public bool Refresh { get; set; } = true;
-    public bool ReceiveEvent { get; set; } = false;
-    public bool RequestedUpdate { get; set; } = true;
-    public bool Update { get; set; } = false;
-    public bool Draw { get; set; } = false;
-    public bool Finalize { get; set; } = true;
+    public bool Setup { get; set; }
+    public bool Refresh { get; set; }
+    public bool ReceiveEvent { get; set; }
+    public bool RequestedUpdate { get; set; }
+    public bool Update { get; set; }
+    public bool Draw { get; set; }
+    public bool Finalize { get; set; }
 }
 
 public static class AddonLifecycleExtensions {
@@ -36,10 +36,14 @@ public static class AddonLifecycleExtensions {
     }
 
     private static void Logger(AddonEvent type, AddonArgs args) {
-        Services.PluginLog.Debug($"{args.AddonName} called {type.ToString().Replace("Post", string.Empty)}");
-
-        if (args is AddonReceiveEventArgs receiveEventArgs) {
-            Services.PluginLog.Debug($"\t{(AtkEventType)receiveEventArgs.AtkEventType}: {receiveEventArgs.EventParam}");
+        switch (args) {
+            case AddonReceiveEventArgs receiveEventArgs:
+                Services.PluginLog.Debug($"[{args.AddonName}] {(AtkEventType)receiveEventArgs.AtkEventType}: {receiveEventArgs.EventParam}");
+                break;
+            
+            default:
+                Services.PluginLog.Debug($"{args.AddonName} called {type.ToString().Replace("Post", string.Empty)}");
+                break;
         }
     }
 

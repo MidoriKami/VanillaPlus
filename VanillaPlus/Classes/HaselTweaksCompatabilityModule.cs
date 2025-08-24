@@ -5,11 +5,19 @@ using Newtonsoft.Json.Linq;
 
 namespace VanillaPlus.Classes;
 
-public class HaselTweaksCompatabilityModule(string moduleName, IncompatibilityType type = IncompatibilityType.OldVersion) : CompatabilityModule(type) {
-    public override string TargetModule => moduleName;
-    public override string TargetPluginInternalName => "HaselTweaks";
+public class HaselTweaksCompatabilityModule(string moduleName) : CompatabilityModule {
+    public override bool ShouldLoadGameModification() {
+        // If HaselTweaks is not loaded, we can load our module
+        if (!IsHaselTweaksLoaded()) return true;
+        
+        // If HaselTweaks is loaded, but doesn't contain our module, then we can load our module
+        return !GetTargetPluginLoadedModules().Contains(moduleName);
+    }
 
-    protected override List<string> GetTargetPluginLoadedModules() {
+    public override string GetErrorMessage()
+        => $"The original version of this feature is already active in Hasel Tweaks Plugin.\n\nID: {moduleName}";
+
+    private static List<string> GetTargetPluginLoadedModules() {
         var configFileInfo = GetConfigFileInfo();
         if (configFileInfo.Exists) {
             var fileText = File.ReadAllText(configFileInfo.FullName);
@@ -32,9 +40,12 @@ public class HaselTweaksCompatabilityModule(string moduleName, IncompatibilityTy
         return [];
     }
     
-    private string GetConfigFilePath()
+    private static bool IsHaselTweaksLoaded()
+        => IsPluginLoaded("HaselTweaks");
+    
+    private static string GetConfigFilePath()
         => Path.Combine(Services.PluginInterface.GetPluginConfigDirectory().Replace("VanillaPlus", "HaselTweaks.json"));
     
-    private FileInfo GetConfigFileInfo()
+    private static FileInfo GetConfigFileInfo()
         => new(GetConfigFilePath());
 }

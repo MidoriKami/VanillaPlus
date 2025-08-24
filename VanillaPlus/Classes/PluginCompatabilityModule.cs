@@ -1,15 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿namespace VanillaPlus.Classes;
 
-namespace VanillaPlus.Classes;
+public class PluginCompatabilityModule(params string[] pluginNames) : CompatabilityModule {
 
-public class PluginCompatabilityModule(string pluginName) : CompatabilityModule(IncompatibilityType.Plugin) {
-    public override string TargetModule => pluginName;
-    public override string TargetPluginInternalName => pluginName;
+    private string erroringPluginName = string.Empty;
+    
+    public override bool ShouldLoadGameModification() {
+        foreach (var pluginName in pluginNames) {
+            if (IsPluginLoaded(pluginName)) {
+                erroringPluginName = pluginName;
+                return false;
+            }
+        }
 
-    protected override List<string> GetTargetPluginLoadedModules()
-        => Services.PluginInterface.InstalledPlugins
-                   .Where(plugin => plugin is { IsLoaded: true })
-                   .Select(plugin => plugin.InternalName)
-                   .ToList();
+        return true;
+    }
+
+    public override string GetErrorMessage()
+        => $"The original version of this feature is from a plugin that is currently active: {erroringPluginName}.";
 }

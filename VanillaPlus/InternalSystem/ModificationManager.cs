@@ -100,7 +100,7 @@ public class ModificationManager : IDisposable {
                     modification.State = LoadedState.CompatError;
                     modification.ErrorMessage = compatabilityModule.GetErrorMessage();
                     
-                    Services.PluginLog.Warning($"Attempted to load {modification.Name}, but it's already enabled in {compatabilityModule.TargetPluginInternalName}");
+                    Services.PluginLog.Warning(compatabilityModule.GetErrorMessage());
                     return;
                 }
             }

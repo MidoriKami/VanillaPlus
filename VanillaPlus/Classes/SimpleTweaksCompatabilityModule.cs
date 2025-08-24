@@ -5,11 +5,23 @@ using Newtonsoft.Json.Linq;
 
 namespace VanillaPlus.Classes;
 
-public class SimpleTweaksCompatabilityModule(string targetModuleName, IncompatibilityType type = IncompatibilityType.OldVersion) : CompatabilityModule(type) {
-    public override string TargetModule => targetModuleName;
-    public override string TargetPluginInternalName => "SimpleTweaksPlugin";
+public class SimpleTweaksCompatabilityModule(string targetModuleName) : CompatabilityModule {
 
-    protected override List<string> GetTargetPluginLoadedModules() {
+    public override bool ShouldLoadGameModification() {
+        // If SimpleTweaks is not loaded, we can load our module
+        if (!IsSimpleTweaksLoaded()) return true;
+        
+        // If SimpleTweaks is loaded, but doesn't contain our module, then we can load our module
+        return !GetTargetPluginLoadedModules().Contains(targetModuleName);
+    }
+
+    public override string GetErrorMessage()
+        => $"The original version of this feature is already active in Simple Tweaks Plugin.\n\nID: {targetModuleName}";
+
+    private static bool IsSimpleTweaksLoaded()
+        => IsPluginLoaded("SimpleTweaksPlugin");
+
+    private static List<string> GetTargetPluginLoadedModules() {
         var configFileInfo = GetConfigFileInfo();
         if (configFileInfo.Exists) {
             var fileText = File.ReadAllText(configFileInfo.FullName);
@@ -32,9 +44,9 @@ public class SimpleTweaksCompatabilityModule(string targetModuleName, Incompatib
         return [];
     }
 
-    private string GetConfigFilePath()
+    private static string GetConfigFilePath()
         => Path.Combine(Services.PluginInterface.GetPluginConfigDirectory().Replace("VanillaPlus", "SimpleTweaksPlugin.json"));
     
-    private FileInfo GetConfigFileInfo()
+    private static FileInfo GetConfigFileInfo()
         => new(GetConfigFilePath());
 }
