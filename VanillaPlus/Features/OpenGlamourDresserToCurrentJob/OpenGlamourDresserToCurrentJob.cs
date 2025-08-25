@@ -14,7 +14,7 @@ public class OpenGlamourDresserToCurrentJob : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
-        CompatabilityModule = new SimpleTweaksCompatabilityModule("UiAdjustments@OpenGlamourDresserToCurrentJob"),
+        CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@OpenGlamourDresserToCurrentJob"),
     };
     
     public override void OnEnable()

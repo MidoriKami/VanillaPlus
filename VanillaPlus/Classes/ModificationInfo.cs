@@ -15,10 +15,10 @@ public class ModificationInfo {
     public List<string> Tags { get; init; } = [];
     
     /// <summary>
-    /// Compatability Module prevents loading this GameModification if the
+    /// Compatibility Module prevents loading this GameModification if the
     /// associated plugin has the equivalent module enabled.
     /// </summary>
-    public CompatabilityModule? CompatabilityModule { get; init; }
+    public CompatibilityModule? CompatibilityModule { get; init; }
 
     public bool IsMatch(string searchTerm) {
         if (DisplayName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) return true;

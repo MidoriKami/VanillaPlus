@@ -18,7 +18,7 @@ public unsafe class SelectNextLootItem : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
-        CompatabilityModule = new SimpleTweaksCompatabilityModule("UiAdjustments@LootWindowSelectNext"),
+        CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@LootWindowSelectNext"),
     };
     
     public override void OnEnable() {

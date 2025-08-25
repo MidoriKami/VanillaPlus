@@ -27,7 +27,7 @@ public unsafe class InstancedWaymarks : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "InitialChangelog"),
         ],
-        CompatabilityModule = new PluginCompatabilityModule("WaymarkPresetPlugin", "MemoryMarker"),
+        CompatibilityModule = new PluginCompatibilityModule("WaymarkPresetPlugin", "MemoryMarker"),
     };
 
     private uint previousCfc;

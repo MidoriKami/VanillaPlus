@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace VanillaPlus.Classes;
 
-public class SimpleTweaksCompatabilityModule(string targetModuleName) : CompatabilityModule {
+public class SimpleTweaksCompatibilityModule(string targetModuleName) : CompatibilityModule {
 
     public override bool ShouldLoadGameModification() {
         // If SimpleTweaks is not loaded, we can load our module

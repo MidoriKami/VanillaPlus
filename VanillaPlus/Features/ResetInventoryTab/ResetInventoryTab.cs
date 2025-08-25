@@ -17,7 +17,7 @@ public unsafe class ResetInventoryTab : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
-        CompatabilityModule = new HaselTweaksCompatabilityModule("FixInventoryOpenTab"),
+        CompatibilityModule = new HaselTweaksCompatibilityModule("FixInventoryOpenTab"),
     };
 
     public override void OnEnable()

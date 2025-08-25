@@ -24,7 +24,7 @@ public unsafe class EnhancedLootWindow : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
-        CompatabilityModule = new SimpleTweaksCompatabilityModule("UiAdjustments@LootWindowDuplicateUniqueItemIndicator"),
+        CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@LootWindowDuplicateUniqueItemIndicator"),
     };
 
     private EnhancedLootWindowConfigWindow? configWindow;

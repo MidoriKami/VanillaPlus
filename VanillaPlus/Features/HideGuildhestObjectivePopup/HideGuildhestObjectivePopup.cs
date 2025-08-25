@@ -17,7 +17,7 @@ public class HideGuildhestObjectivePopup : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
-        CompatabilityModule = new SimpleTweaksCompatabilityModule("UiAdjustments@HideGuildhestObjectivePopup"),
+        CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@HideGuildhestObjectivePopup"),
     };
 
     public override string ImageName => "HideGuildhestObjective.png";

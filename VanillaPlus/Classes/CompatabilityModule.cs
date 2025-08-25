@@ -2,7 +2,7 @@
 
 namespace VanillaPlus.Classes;
 
-public abstract class CompatabilityModule {
+public abstract class CompatibilityModule {
     public abstract bool ShouldLoadGameModification();
 
     protected static bool IsPluginLoaded(string internalName)

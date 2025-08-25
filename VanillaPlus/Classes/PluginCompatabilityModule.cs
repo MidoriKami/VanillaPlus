@@ -1,6 +1,6 @@
 ﻿namespace VanillaPlus.Classes;
 
-public class PluginCompatabilityModule(params string[] pluginNames) : CompatabilityModule {
+public class PluginCompatibilityModule(params string[] pluginNames) : CompatibilityModule {
 
     private string erroringPluginName = string.Empty;
     

@@ -22,7 +22,7 @@ public unsafe class LocationDisplay : GameModification {
             new ChangeLogInfo(1, "Initial Implementation"),
             new ChangeLogInfo(2, "Fix instance id not updating when it should"),
         ],
-        CompatabilityModule = new PluginCompatabilityModule("WhereAmIAgain"),
+        CompatibilityModule = new PluginCompatibilityModule("WhereAmIAgain"),
     };
 
     private IDtrBarEntry? dtrBarEntry;

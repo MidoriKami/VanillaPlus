@@ -12,7 +12,7 @@ public class DutyTimer : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
-        CompatabilityModule = new SimpleTweaksCompatabilityModule("DutyTimer"),
+        CompatibilityModule = new SimpleTweaksCompatibilityModule("DutyTimer"),
     };
 
     private DateTime startTimestamp;

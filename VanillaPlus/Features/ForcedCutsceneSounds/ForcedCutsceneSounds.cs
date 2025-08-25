@@ -17,7 +17,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
-        CompatabilityModule = new HaselTweaksCompatabilityModule("ForcedCutsceneMusic"),
+        CompatibilityModule = new HaselTweaksCompatibilityModule("ForcedCutsceneMusic"),
     };
 
     private static readonly string[] ConfigOptions = [

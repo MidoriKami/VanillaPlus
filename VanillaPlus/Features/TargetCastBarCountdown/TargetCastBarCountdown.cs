@@ -26,7 +26,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
             new ChangeLogInfo(1, "Initial Implementation"),
             new ChangeLogInfo(2, "Added support for 10 'CastBarEnemy' nodes"),
         ],
-        CompatabilityModule = new SimpleTweaksCompatabilityModule("UiAdjustments@TargetCastbarCountdown"),
+        CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@TargetCastbarCountdown"),
     };
 
     private AddonController<AtkUnitBase>? targetInfoCastBarController;

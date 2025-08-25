@@ -25,7 +25,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             new ChangeLogInfo(1, "Initial Implementation"),
             new ChangeLogInfo(2, "Add Current Duty Indicator"),
         ],
-        CompatabilityModule = new PluginCompatabilityModule("WondrousTailsSolver"),
+        CompatibilityModule = new PluginCompatibilityModule("WondrousTailsSolver"),
     };
 
     private AddonController<AddonWeeklyBingo>? weeklyBingoController;

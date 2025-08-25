@@ -13,7 +13,7 @@ public class FastMouseClick : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "InitialVersion"),
         ],
-        CompatabilityModule = new HaselTweaksCompatabilityModule("FastMouseClickFix"),
+        CompatibilityModule = new HaselTweaksCompatibilityModule("FastMouseClickFix"),
     };
 
     [Signature("EB 3F B8 ?? ?? ?? ?? 48 8B D7")]

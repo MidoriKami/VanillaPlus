@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace VanillaPlus.Classes;
 
-public class HaselTweaksCompatabilityModule(string moduleName) : CompatabilityModule {
+public class HaselTweaksCompatibilityModule(string moduleName) : CompatibilityModule {
     public override bool ShouldLoadGameModification() {
         // If HaselTweaks is not loaded, we can load our module
         if (!IsHaselTweaksLoaded()) return true;

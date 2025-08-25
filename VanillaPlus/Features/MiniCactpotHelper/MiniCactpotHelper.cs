@@ -20,7 +20,7 @@ public unsafe class MiniCactpotHelper : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
-        CompatabilityModule = new PluginCompatabilityModule("MiniCactpotSolver"),
+        CompatibilityModule = new PluginCompatibilityModule("MiniCactpotSolver"),
     };
 
     private AddonController<AddonLotteryDaily>? lotteryDailyController;

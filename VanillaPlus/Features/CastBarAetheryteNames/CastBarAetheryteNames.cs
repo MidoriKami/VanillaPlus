@@ -19,7 +19,7 @@ public unsafe class CastBarAetheryteNames : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
-        CompatabilityModule = new HaselTweaksCompatabilityModule("CastBarAetheryteNames"),
+        CompatibilityModule = new HaselTweaksCompatibilityModule("CastBarAetheryteNames"),
     };
 
     private Hook<Telepo.Delegates.Teleport>? teleportHook;

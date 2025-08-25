@@ -23,7 +23,7 @@ public unsafe class WindowBackground : GameModification {
             new ChangeLogInfo(2, "Added search bar to search 'All Windows' in config"),
             new ChangeLogInfo(3, "Fixed incorrectly cleaning up removed backgrounds"),
         ],
-        CompatabilityModule = new SimpleTweaksCompatabilityModule("UiAdjustments@DutyListBackground"),
+        CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@DutyListBackground"),
     };
 
     private List<AddonBackground>? addonBackgrounds;

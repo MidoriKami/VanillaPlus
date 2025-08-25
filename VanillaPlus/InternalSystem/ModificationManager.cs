@@ -57,13 +57,13 @@ public class ModificationManager : IDisposable {
                 
                 // We only care about currently enabled modules
                 if (modification.State is not LoadedState.Enabled) continue;
-                if (modification.Modification.ModificationInfo.CompatabilityModule is { } compatabilityModule) {
+                if (modification.Modification.ModificationInfo.CompatibilityModule is { } compatibilityModule) {
                     
                     // It was loaded, but shouldn't be anymore, unload it.
-                    if (!compatabilityModule.ShouldLoadGameModification()) {
+                    if (!compatibilityModule.ShouldLoadGameModification()) {
                         TryDisableModification(modification, false);
                         modification.State = LoadedState.CompatError;
-                        modification.ErrorMessage = compatabilityModule.GetErrorMessage();
+                        modification.ErrorMessage = compatibilityModule.GetErrorMessage();
                     }
                 }
             }
@@ -75,10 +75,10 @@ public class ModificationManager : IDisposable {
                 
                 // We only care about compat error modules
                 if (modification.State is not LoadedState.CompatError) continue;
-                if (modification.Modification.ModificationInfo.CompatabilityModule is { } compatabilityModule) {
+                if (modification.Modification.ModificationInfo.CompatibilityModule is { } compatibilityModule) {
                     
                     // It tried to load earlier, but failed due to compat, if compat says we're good, load it
-                    if (compatabilityModule.ShouldLoadGameModification()) {
+                    if (compatibilityModule.ShouldLoadGameModification()) {
                         TryEnableModification(modification);
                     }
                 }
@@ -95,12 +95,12 @@ public class ModificationManager : IDisposable {
         }
 
         try {
-            if (modification.Modification.ModificationInfo.CompatabilityModule is { } compatabilityModule) {
-                if (!compatabilityModule.ShouldLoadGameModification()) {
+            if (modification.Modification.ModificationInfo.CompatibilityModule is { } compatibilityModule) {
+                if (!compatibilityModule.ShouldLoadGameModification()) {
                     modification.State = LoadedState.CompatError;
-                    modification.ErrorMessage = compatabilityModule.GetErrorMessage();
+                    modification.ErrorMessage = compatibilityModule.GetErrorMessage();
                     
-                    Services.PluginLog.Warning(compatabilityModule.GetErrorMessage());
+                    Services.PluginLog.Warning(compatibilityModule.GetErrorMessage());
                     return;
                 }
             }
