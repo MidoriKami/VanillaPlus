@@ -8,9 +8,11 @@ This plugin uses the term "GameModification" to describe a singular purposed mod
 > [!IMPORTANT]  
 > All features of this plugin must comply with Dalamuds Plugin Rules and Policies
 > 
-> No automating server interactions, no modifications that would give clear unfair advantages to other players will be accepted
+> No automating server interactions
+>
+> No modifications that would give clear unfair advantages to other players
 > 
-> No modifications that specifically target PvP parts or components of any form will be accepted
+> No modifications that specifically target PvP parts or components of any form
 
 The purpose of this plugin is to enhance the game through quality of life features, displaying available information in smarter ways, and addressing quirky problems with the games design/implementation.
 
