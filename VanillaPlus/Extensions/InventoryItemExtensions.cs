@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Dalamud.Game.Text;
+using System.Diagnostics.CodeAnalysis;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.Sheets;
@@ -9,69 +8,59 @@ namespace VanillaPlus.Extensions;
 
 public static class InventoryItemExtensions {
     public static uint GetIconId(ref this InventoryItem item) {
-        uint baseIconId = 0;
+        uint iconId = 0;
         
-        if (ItemUtil.IsEventItem(item.ItemId)) {
-            if (item.TryGetEventItem(out var eventItem)) {
-                baseIconId = eventItem.Value.Icon;
-            }
+        if (item.TryGetEventItem(out var eventItem)) {
+            iconId = eventItem.Value.Icon;
         }
-        else if (ItemUtil.IsNormalItem(item.ItemId)) {
-            if (item.TryGetItem(out var baseItem)) {
-                baseIconId = baseItem.Value.Icon;
+        else if (item.TryGetItem(out var baseItem)) {
+            iconId = baseItem.Value.Icon;
+
+            if (item.IsHighQuality()) {
+                iconId += 1_000_000;
             }
         }
 
-        if (item.IsHighQuality()) {
-            baseIconId += 1_000_000;
-        }
-
-        Services.PluginLog.Debug($"Resolved {item.ItemId}'s iconId to: {baseIconId}");
-        return baseIconId;
+        Services.PluginLog.Debug($"Resolved {item.GetItemId()}'s iconId to: {iconId}");
+        return iconId;
     }
 
     public static ReadOnlySeString GetItemName(ref this InventoryItem item) {
-        var itemName = ItemUtil.IsEventItem(item.ItemId)
-                           ? Services.DataManager.GetExcelSheet<EventItem>().TryGetRow(item.ItemId, out var eventItem) ? eventItem.Name : default
-                           : Services.DataManager.GetExcelSheet<Item>().TryGetRow(ItemUtil.GetBaseId(item.ItemId).ItemId, out var baseItem) ? baseItem.Name : default;
+        var itemId = item.GetItemId();
+        var itemName = ItemUtil.GetItemName(itemId);
 
-        if (item.IsHighQuality())
-            itemName += " " + SeIconChar.HighQuality.ToIconString();
-        else if (item.IsCollectable())
-            itemName += " " + SeIconChar.Collectible.ToIconString();
-
-        Services.PluginLog.Debug($"Resolved {item.ItemId}'s name to to: {itemName}");
+        Services.PluginLog.Debug($"Resolved {itemId}'s name to to: {itemName}");
         
         return new Lumina.Text.SeStringBuilder()
-            .PushColorType(ItemUtil.GetItemRarityColorType(item.ItemId))
+            .PushColorType(ItemUtil.GetItemRarityColorType(itemId))
             .Append(itemName)
             .PopColorType()
             .ToReadOnlySeString();
     }
 
     public static bool TryGetItem(ref this InventoryItem inventoryItem, [NotNullWhen(returnValue: true)] out Item? item) {
-        item = null;
-        
-        if (ItemUtil.IsNormalItem(inventoryItem.ItemId)) {
-            if (Services.DataManager.GetExcelSheet<Item>().TryGetRow(ItemUtil.GetBaseId(inventoryItem.ItemId).ItemId, out var baseItem)) {
-                item = baseItem;
-                return true;
-            }
+        var baseItemId = inventoryItem.GetBaseItemId();
+
+        if (ItemUtil.IsNormalItem(baseItemId) &&
+            Services.DataManager.GetExcelSheet<Item>().TryGetRow(baseItemId, out var baseItem)) {
+            item = baseItem;
+            return true;
         }
 
+        item = null;
         return false;
     }
 
     public static bool TryGetEventItem(ref this InventoryItem inventoryItem, [NotNullWhen(returnValue: true)] out EventItem? item) {
-        item = null;
-        
-        if (ItemUtil.IsEventItem(inventoryItem.ItemId)) {
-            if (Services.DataManager.GetExcelSheet<EventItem>().TryGetRow(ItemUtil.GetBaseId(inventoryItem.ItemId).ItemId, out var eventItem)) {
-                item = eventItem;
-                return true;
-            }
+        var baseItemId = inventoryItem.GetBaseItemId();
+
+        if (ItemUtil.IsEventItem(baseItemId) &&
+            Services.DataManager.GetExcelSheet<EventItem>().TryGetRow(baseItemId, out var eventItem)) {
+            item = eventItem;
+            return true;
         }
 
+        item = null;
         return false;
     }
 }
