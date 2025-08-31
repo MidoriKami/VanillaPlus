@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Numerics;
 using Dalamud.Game.ClientState.Keys;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using KamiToolKit.Nodes;
 using KamiToolKit.System;
+using Lumina.Excel.Sheets;
 using VanillaPlus.Basic_Addons;
 using VanillaPlus.Classes;
+using Map = FFXIVClientStructs.FFXIV.Client.Game.UI.Map;
 
 namespace VanillaPlus.Features.QuestListWindow;
 
@@ -34,13 +35,14 @@ public unsafe class QuestListWindow : GameModification {
             InternalName = "QuestList",
             Title = "Quest List",
             UpdateListFunction = UpdateList,
-            DropDownOptions = ["Alphabetically", "Level", "Type" ],
+            DropDownOptions = [ "Type", "Alphabetically", "Level", "Distance", "Issuer Name", ],
             OnFilterUpdated = OnFilterUpdated,
             OnSearchUpdated = OnSearchUpdated,
             OpenCommand = "/questlist",
         };
         
         addonQuestList.Initialize([VirtualKey.MENU, VirtualKey.CONTROL, VirtualKey.J]);
+        OnFilterUpdated("Type", false);
 
         OpenConfigAction = addonQuestList.OpenAddonConfig;
     }
@@ -69,13 +71,17 @@ public unsafe class QuestListWindow : GameModification {
             .ToList();
 
         var listUpdated = listNode.SyncWithListData(filteredInventoryItems, node => node.QuestInfo, data => new QuestEntryNode {
-            Size = new Vector2(listNode.Width, 32.0f),
+            Size = new Vector2(listNode.Width, 48.0f),
             QuestInfo = data,
             IsVisible = true,
         });
 
-        if (listUpdated || updateRequested) {
+        if (listUpdated || updateRequested || filterString is "Distance") {
             listNode.ReorderNodes(Comparison);
+        }
+
+        foreach (var questNode in listNode.GetNodes<QuestEntryNode>()) {
+            questNode.Update();
         }
         
         updateRequested = false;
@@ -90,8 +96,10 @@ public unsafe class QuestListWindow : GameModification {
 
         var result = filterString switch {
             "Alphabetically" => string.CompareOrdinal(leftQuest.Name.ToString(), rightQuest.Name.ToString()),
-            "Type" => rightQuest.MarkerData.IconId.CompareTo(leftQuest.MarkerData.IconId),
+            "Type" => rightQuest.IconId.CompareTo(leftQuest.IconId),
             "Level" => rightQuest.Level.CompareTo(leftQuest.Level),
+            "Distance" => leftQuest.Distance.CompareTo(rightQuest.Distance),
+            "Issuer Name" => string.CompareOrdinal(leftQuest.IssuerName.ToString(), rightQuest.IssuerName.ToString()),
             _ => string.CompareOrdinal(leftQuest.Name.ToString(), rightQuest.Name.ToString()),
         };
 
@@ -103,13 +111,22 @@ public unsafe class QuestListWindow : GameModification {
     private static List<QuestInfo> GetQuests() {
 
         List<QuestInfo> quests = [];
-        quests.AddRange(from questMarker in Map.Instance()->UnacceptedQuestMarkers 
-                        where questMarker is not { ObjectiveId: 0 } 
-                        select new QuestInfo(
-                            questMarker.MarkerData.First->IconId, 
-                            questMarker.Label.AsSpan(), 
-                            questMarker.RecommendedLevel,
-                            *questMarker.MarkerData.First));
+        foreach (var questMarker in Map.Instance()->UnacceptedQuestMarkers) {
+            if (questMarker.ObjectiveId is 0) continue;
+            
+            var questInfo = Services.DataManager.GetExcelSheet<Quest>().GetRow(questMarker.ObjectiveId + ushort.MaxValue + 1);
+
+            var newQuestInfo = new QuestInfo{
+                ObjectiveId = questMarker.ObjectiveId,
+                IconId = questMarker.MarkerData.First->IconId, 
+                Name = questMarker.Label.AsSpan(),
+                Level = questInfo.ClassJobLevel.First(),
+                Position = questMarker.MarkerData.First->Position,
+                IssuerName = questInfo.IssuerStart.GetValueOrDefault<ENpcResident>()?.Singular ?? string.Empty,
+            };
+
+            quests.Add(newQuestInfo);
+        }
 
         return quests;
     }
