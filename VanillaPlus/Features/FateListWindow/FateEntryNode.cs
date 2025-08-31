@@ -3,6 +3,7 @@ using System.Numerics;
 using Dalamud.Game.Addon.Events;
 using Dalamud.Game.ClientState.Fates;
 using Dalamud.Game.Text;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes.TimelineBuilding;
@@ -87,6 +88,7 @@ public unsafe class FateEntryNode : SimpleComponentNode {
             agentMap->OpenMap(agentMap->CurrentMapId, agentMap->CurrentTerritoryId);
             agentMap->FlagMarkerCount = 0;
             agentMap->SetFlagMapMarker(agentMap->CurrentTerritoryId, agentMap->CurrentMapId, Fate.Position, Fate.MapIconId);
+            RaptureAtkModule.Instance()->FocusAddon(agentMap->AddonId);
         });
         
         CollisionNode.AddEvent(AddonEventType.MouseOut, _ => {
@@ -103,16 +105,16 @@ public unsafe class FateEntryNode : SimpleComponentNode {
             .Build());
 
         timeRemainingNode.AddTimeline(new TimelineBuilder()
-          .BeginFrameSet(1, 60)
-          .AddFrame(1, multiplyColor: new Vector3(100.0f, 100.0f, 100.0f))
-          .EndFrameSet()
-          .BeginFrameSet(61, 120)
-          .AddFrame(61, multiplyColor: new Vector3(100.0f, 100.0f, 100.0f))
-          .AddFrame(80, multiplyColor: new Vector3(100.0f, 50.0f, 50.0f))
-          .AddFrame(100, multiplyColor: new Vector3(100.0f, 50.0f, 50.0f))
-          .AddFrame(120, multiplyColor: new Vector3(100.0f, 100.0f, 100.0f))
-          .EndFrameSet()
-          .Build());
+            .BeginFrameSet(1, 60)
+            .AddFrame(1, multiplyColor: new Vector3(100.0f, 100.0f, 100.0f))
+            .EndFrameSet()
+            .BeginFrameSet(61, 120)
+            .AddFrame(61, multiplyColor: new Vector3(100.0f, 100.0f, 100.0f))
+            .AddFrame(80, multiplyColor: new Vector3(100.0f, 50.0f, 50.0f))
+            .AddFrame(100, multiplyColor: new Vector3(100.0f, 50.0f, 50.0f))
+            .AddFrame(120, multiplyColor: new Vector3(100.0f, 100.0f, 100.0f))
+            .EndFrameSet()
+            .Build());
         
         Timeline?.PlayAnimation(1);
     }
