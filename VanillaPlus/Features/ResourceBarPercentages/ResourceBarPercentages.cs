@@ -25,9 +25,6 @@ public unsafe class ResourceBarPercentages : GameModification {
     private ResourceBarPercentagesConfig? config;
     private ResourceBarPercentagesConfigWindow? configWindow;
 
-    private bool parameterWidgetEnabled;
-    private bool partyListEnabled;
-
     public override void OnEnable() {
         config = ResourceBarPercentagesConfig.Load();
         configWindow = new ResourceBarPercentagesConfigWindow(config, OnConfigChanged);
@@ -38,26 +35,17 @@ public unsafe class ResourceBarPercentages : GameModification {
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_ParameterWidget", OnParameterDraw);
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_PartyList", OnPartyListDraw);
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
-
-        parameterWidgetEnabled = config.ParameterWidgetEnabled;
-        partyListEnabled = config.PartyListEnabled;
     }
 
-    public void OnConfigChanged() {
+    private void OnConfigChanged() {
         if (config is null) return;
 
-        if (config.ParameterWidgetEnabled != parameterWidgetEnabled) {
-            if (!config.ParameterWidgetEnabled)
-                OnParameterDisable();
-
-            parameterWidgetEnabled = config.ParameterWidgetEnabled;
+        if (!config.ParameterWidgetEnabled) {
+            OnParameterDisable();
         }
 
-        if (config.PartyListEnabled != partyListEnabled) {
-            if (!config.PartyListEnabled)
-                OnPartyListDisable();
-
-            partyListEnabled = config.PartyListEnabled;
+        if (!config.PartyListEnabled) {
+            OnPartyListDisable();
         }
     }
 
@@ -76,6 +64,8 @@ public unsafe class ResourceBarPercentages : GameModification {
 
     private void OnParameterDraw(AddonEvent type, AddonArgs args) {
         if (config is null) return;
+        if (!config.ParameterWidgetEnabled) return;
+
         var addon = args.GetAddon<AddonParameterWidget>();
         if (Services.ClientState.LocalPlayer is not { } localPlayer) return;
 
@@ -96,6 +86,8 @@ public unsafe class ResourceBarPercentages : GameModification {
 
     private void OnPartyListDraw(AddonEvent type, AddonArgs args) {
         if (config is null) return;
+        if (!config.PartyListEnabled) return;
+        
         var addon = args.GetAddon<AddonPartyList>();
         if (Services.ClientState.LocalPlayer is null) return;
 
