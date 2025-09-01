@@ -8,8 +8,13 @@ public class ResourceBarPercentagesConfig : GameModificationConfig<ResourceBarPe
     public bool PartyListEnabled = true;
     public bool PartyListSelf = true;
     public bool PartyListOtherMembers = true;
-    public bool ParameterWidgetEnabled = true;
-    public bool PercentageSignEnabled = true;
 
+    public bool ParameterWidgetEnabled = true;
+    public bool ParameterHpEnabled = true;
+    public bool ParameterMpEnabled = true;
+    public bool ParameterGpEnabled = true;
+    public bool ParameterCpEnabled = true;
+
+    public bool PercentageSignEnabled = true;
     public int DecimalPlaces = 0;
 }

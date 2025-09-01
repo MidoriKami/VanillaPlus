@@ -78,11 +78,10 @@ public unsafe class ResourceBarPercentages : GameModification {
         var addon = args.GetAddon<AddonParameterWidget>();
         if (Services.ClientState.LocalPlayer is not { } localPlayer) return;
 
-        addon->HealthAmount->SetText(FormatPercentage(localPlayer.CurrentHp, localPlayer.MaxHp, config));
+        addon->HealthAmount->SetText(GetCorrectText(localPlayer.CurrentHp, localPlayer.MaxHp, config.ParameterHpEnabled));
 
         var activeResource = GetActiveResource(localPlayer);
-        if (activeResource.Max > 0)
-            addon->ManaAmount->SetText(FormatPercentage(activeResource.Current, activeResource.Max, config));
+        addon->ManaAmount->SetText(GetCorrectText(activeResource.Current, activeResource.Max, activeResource.Enabled));
     }
 
     private void OnParameterEnable() {
@@ -96,7 +95,8 @@ public unsafe class ResourceBarPercentages : GameModification {
         if (Services.ClientState.LocalPlayer is not { } localPlayer) return;
 
         addon->HealthAmount->SetText(localPlayer.CurrentHp.ToString());
-        addon->ManaAmount->SetText(localPlayer.CurrentMp.ToString());
+        var activeResource = GetActiveResource(localPlayer);
+        addon->ManaAmount->SetText(GetCorrectText(activeResource.Current, activeResource.Max, false));
 
         Services.AddonLifecycle.UnregisterListener(OnParameterDraw);
     }
@@ -104,6 +104,7 @@ public unsafe class ResourceBarPercentages : GameModification {
     private void OnPartyListDraw(AddonEvent type, AddonArgs args) {
         if (config is null) return;
         var addon = args.GetAddon<AddonPartyList>();
+        if (Services.ClientState.LocalPlayer is null) return;
 
         foreach (var hudMember in AgentHUD.Instance()->PartyMembers) {
             var hudPartyMember = PartyListNumberArray.Instance()->PartyMembers[hudMember.Index];
@@ -112,7 +113,7 @@ public unsafe class ResourceBarPercentages : GameModification {
             if (hpGaugeTextNode is not null) {
                 var isSelf = hudMember.Index == 0;
                 if ((isSelf && config.PartyListSelf) || (!isSelf && config.PartyListOtherMembers)) {
-                    hpGaugeTextNode->SetText(FormatPercentage((uint)hudPartyMember.CurrentHealth, (uint)hudPartyMember.MaxHealth, config));
+                    hpGaugeTextNode->SetText(GetCorrectText((uint)hudPartyMember.CurrentHealth, (uint)hudPartyMember.MaxHealth));
                 } else {
                     hpGaugeTextNode->SetText(hudPartyMember.CurrentHealth.ToString());
                 }
@@ -128,6 +129,7 @@ public unsafe class ResourceBarPercentages : GameModification {
     private void OnPartyListDisable() {
         if (config is null) return;
         var addon = (AddonPartyList*)Services.GameGui.GetAddonByName("_PartyList").Address;
+        if (Services.ClientState.LocalPlayer is null) return;
 
         foreach (var hudMember in AgentHUD.Instance()->PartyMembers) {
             var hudPartyMember = PartyListNumberArray.Instance()->PartyMembers[hudMember.Index];
@@ -140,23 +142,30 @@ public unsafe class ResourceBarPercentages : GameModification {
         Services.AddonLifecycle.UnregisterListener(OnPartyListDraw);
     }
 
-    private string FormatPercentage(uint current, uint max, ResourceBarPercentagesConfig resourceBarConfig)
+    private string GetCorrectText(uint current, uint max, bool enabled = true) {
+        return !enabled ? current.ToString() : FormatPercentage(current, max);
+    }
+
+    private string FormatPercentage(uint current, uint max)
     {
-        if (max == 0) return "0" + (resourceBarConfig.PercentageSignEnabled ? "%" : "");
+        if (config is null) return current.ToString();
+        if (max == 0) return "0" + (config.PercentageSignEnabled ? "%" : "");
         var percentage = current / (float)max * 100f;
-        var percentSign = resourceBarConfig.PercentageSignEnabled ? "%" : "";
-        return percentage.ToString($"F{resourceBarConfig.DecimalPlaces}", CultureInfo.InvariantCulture) + percentSign;
+        var percentSign = config.PercentageSignEnabled ? "%" : "";
+        return percentage.ToString($"F{config.DecimalPlaces}", CultureInfo.InvariantCulture) + percentSign;
     }
 
     private ActiveResource GetActiveResource(IPlayerCharacter player) {
+        var defaultResource = new ActiveResource(0, 0, false);
+        if (config is null) return defaultResource;
         if (player.MaxMp > 0)
-            return new ActiveResource(player.CurrentMp, player.MaxMp);
+            return new ActiveResource(player.CurrentMp, player.MaxMp, config.ParameterMpEnabled);
         if (player.MaxGp > 0)
-            return new ActiveResource (player.CurrentGp, player.MaxGp);
+            return new ActiveResource (player.CurrentGp, player.MaxGp, config.ParameterGpEnabled);
         if (player.MaxCp > 0)
-            return new ActiveResource (player.CurrentCp, player.MaxCp);
-        return new ActiveResource(0,0);
+            return new ActiveResource (player.CurrentCp, player.MaxCp, config.ParameterCpEnabled);
+        return defaultResource;
     }
 
-    private record ActiveResource(uint Current, uint Max);
+    private record ActiveResource(uint Current, uint Max, bool Enabled);
 }
