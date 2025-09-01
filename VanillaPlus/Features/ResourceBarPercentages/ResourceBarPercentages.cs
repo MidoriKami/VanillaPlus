@@ -104,8 +104,9 @@ public unsafe class ResourceBarPercentages : GameModification {
             var hudPartyMember = PartyListNumberArray.Instance()->PartyMembers[hudMember.Index];
 
             var hpGaugeTextNode = addon->PartyMembers[hudMember.Index].HPGaugeComponent->GetTextNodeById(2);
-            if(hpGaugeTextNode is not null)
+            if (hpGaugeTextNode is not null) {
                 hpGaugeTextNode->SetText(hudPartyMember.CurrentHealth.ToString());
+            }
         }
     }
 
