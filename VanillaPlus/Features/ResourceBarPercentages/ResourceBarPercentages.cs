@@ -107,6 +107,8 @@ public unsafe class ResourceBarPercentages : GameModification {
 
     private void OnPartyListDisable() {
         var addon = (AddonPartyList*)Services.GameGui.GetAddonByName("_PartyList").Address;
+        var addon = Services.GameGui.GetAddonByName<AddonPartyList>("_PartyList");
+        if (addon is null) return;
         if (Services.ClientState.LocalPlayer is null) return;
 
         foreach (var hudMember in AgentHUD.Instance()->GetSizedHudMemberSpan()) {
@@ -120,6 +122,8 @@ public unsafe class ResourceBarPercentages : GameModification {
 
     private string GetCorrectText(uint current, uint max, bool enabled = true) {
         return !enabled ? current.ToString() : FormatPercentage(current, max);
+        var addon = Services.GameGui.GetAddonByName<AddonParameterWidget>("_ParameterWidget");
+        if (addon is null) return;
     }
 
     private string FormatPercentage(uint current, uint max)
