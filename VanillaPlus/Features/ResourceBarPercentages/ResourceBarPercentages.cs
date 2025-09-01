@@ -34,38 +34,39 @@ public unsafe class ResourceBarPercentages : GameModification {
         configWindow.AddToWindowSystem();
         OpenConfigAction = configWindow.Toggle;
 
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_ParameterWidget", OnParameterDraw);
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_PartyList", OnPartyListDraw);
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
+
         parameterWidgetEnabled = config.ParameterWidgetEnabled;
         partyListEnabled = config.PartyListEnabled;
-
-        if (config.ParameterWidgetEnabled) OnParameterEnable();
-        if (config.PartyListEnabled) OnPartyListEnable();
     }
 
     public void OnConfigChanged() {
         if (config is null) return;
 
         if (config.ParameterWidgetEnabled != parameterWidgetEnabled) {
-            if (config.ParameterWidgetEnabled)
-                OnParameterEnable();
-            else
+            if (!config.ParameterWidgetEnabled)
                 OnParameterDisable();
+
             parameterWidgetEnabled = config.ParameterWidgetEnabled;
         }
 
         if (config.PartyListEnabled != partyListEnabled) {
-            if (config.PartyListEnabled)
-                OnPartyListEnable();
-            else
+            if (!config.PartyListEnabled)
                 OnPartyListDisable();
+
             partyListEnabled = config.PartyListEnabled;
         }
     }
 
     public override void OnDisable() {
-        if (config is null) return;
-
         OnParameterDisable();
         OnPartyListDisable();
+
+        Services.AddonLifecycle.UnregisterListener(OnParameterDraw);
+        Services.AddonLifecycle.UnregisterListener(OnPartyListDraw);
 
         configWindow?.RemoveFromWindowSystem();
         configWindow = null;
@@ -84,21 +85,13 @@ public unsafe class ResourceBarPercentages : GameModification {
         addon->ManaAmount->SetText(GetCorrectText(activeResource.Current, activeResource.Max, activeResource.Enabled));
     }
 
-    private void OnParameterEnable() {
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_ParameterWidget", OnParameterDraw);
-    }
-
     private void OnParameterDisable() {
-        if (config is null) return;
         var addon = (AddonParameterWidget*)Services.GameGui.GetAddonByName("_ParameterWidget").Address;
         if (Services.ClientState.LocalPlayer is not { } localPlayer) return;
 
         addon->HealthAmount->SetText(localPlayer.CurrentHp.ToString());
         var activeResource = GetActiveResource(localPlayer);
         addon->ManaAmount->SetText(GetCorrectText(activeResource.Current, activeResource.Max, false));
-
-        Services.AddonLifecycle.UnregisterListener(OnParameterDraw);
     }
 
     private void OnPartyListDraw(AddonEvent type, AddonArgs args) {
@@ -121,13 +114,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         }
     }
 
-    private void OnPartyListEnable() {
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_PartyList", OnPartyListDraw);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
-    }
-
     private void OnPartyListDisable() {
-        if (config is null) return;
         var addon = (AddonPartyList*)Services.GameGui.GetAddonByName("_PartyList").Address;
         if (Services.ClientState.LocalPlayer is null) return;
 
@@ -138,8 +125,6 @@ public unsafe class ResourceBarPercentages : GameModification {
             if(hpGaugeTextNode is not null)
                 hpGaugeTextNode->SetText(hudPartyMember.CurrentHealth.ToString());
         }
-
-        Services.AddonLifecycle.UnregisterListener(OnPartyListDraw);
     }
 
     private string GetCorrectText(uint current, uint max, bool enabled = true) {
