@@ -22,6 +22,7 @@ public class ResourceBarPercentagesConfigWindow(ResourceBarPercentagesConfig con
 
         if (config.ParameterWidgetEnabled) {
             using var indent = ImRaii.PushIndent();
+
             if (ImGui.Checkbox("HP", ref config.ParameterHpEnabled)) SaveConfigWithCallback();
             if (ImGui.Checkbox("MP", ref config.ParameterMpEnabled)) SaveConfigWithCallback();
             if (ImGui.Checkbox("GP", ref config.ParameterGpEnabled)) SaveConfigWithCallback();
