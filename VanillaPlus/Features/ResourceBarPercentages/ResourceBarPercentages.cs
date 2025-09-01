@@ -108,12 +108,15 @@ public unsafe class ResourceBarPercentages : GameModification {
         foreach (var hudMember in AgentHUD.Instance()->PartyMembers) {
             var hudPartyMember = PartyListNumberArray.Instance()->PartyMembers[hudMember.Index];
 
-            if (config.PartyListSelfOnly && hudMember.Index != 0)
-                continue;
-
             var hpGaugeTextNode = addon->PartyMembers[hudMember.Index].HPGaugeComponent->UldManager.SearchNodeById<AtkTextNode>(2);
-            if(hpGaugeTextNode is not null)
-                hpGaugeTextNode->SetText(FormatPercentage((uint)hudPartyMember.CurrentHealth, (uint)hudPartyMember.MaxHealth, config));
+            if (hpGaugeTextNode is not null) {
+                var isSelf = hudMember.Index == 0;
+                if ((isSelf && config.PartyListSelf) || (!isSelf && config.PartyListOtherMembers)) {
+                    hpGaugeTextNode->SetText(FormatPercentage((uint)hudPartyMember.CurrentHealth, (uint)hudPartyMember.MaxHealth, config));
+                } else {
+                    hpGaugeTextNode->SetText(hudPartyMember.CurrentHealth.ToString());
+                }
+            }
         }
     }
 

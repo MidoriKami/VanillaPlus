@@ -6,7 +6,8 @@ public class ResourceBarPercentagesConfig : GameModificationConfig<ResourceBarPe
     protected override string FileName => "ResourceBarPercentages.config.json";
 
     public bool PartyListEnabled = true;
-    public bool PartyListSelfOnly = false;
+    public bool PartyListSelf = true;
+    public bool PartyListOtherMembers = true;
     public bool ParameterWidgetEnabled = true;
     public bool PercentageSignEnabled = true;
 

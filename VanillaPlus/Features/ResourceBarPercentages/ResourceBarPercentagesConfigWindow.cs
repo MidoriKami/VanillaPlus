@@ -10,7 +10,8 @@ public class ResourceBarPercentagesConfigWindow(ResourceBarPercentagesConfig con
             onConfigChanged();
             config.Save();
         }
-        if (ImGui.Checkbox("Show Only Self on Party List", ref config.PartyListSelfOnly)) config.Save();
+        if (ImGui.Checkbox("Show On Self on Party List", ref config.PartyListSelf)) config.Save();
+        if (ImGui.Checkbox("Show On Other Members on Party List", ref config.PartyListOtherMembers)) config.Save();
 
         ImGui.Spacing();
         ImGui.Spacing();
