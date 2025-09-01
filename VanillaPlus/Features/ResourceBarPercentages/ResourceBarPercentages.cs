@@ -90,7 +90,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         var addon = args.GetAddon<AddonPartyList>();
         if (Services.ClientState.LocalPlayer is null) return;
 
-        foreach (var hudMember in AgentHUD.Instance()->PartyMembers) {
+        foreach (var hudMember in AgentHUD.Instance()->GetSizedHudMemberSpan()) {
             var hudPartyMember = PartyListNumberArray.Instance()->PartyMembers[hudMember.Index];
 
             var hpGaugeTextNode = addon->PartyMembers[hudMember.Index].HPGaugeComponent->UldManager.SearchNodeById<AtkTextNode>(2);
@@ -109,7 +109,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         var addon = (AddonPartyList*)Services.GameGui.GetAddonByName("_PartyList").Address;
         if (Services.ClientState.LocalPlayer is null) return;
 
-        foreach (var hudMember in AgentHUD.Instance()->PartyMembers) {
+        foreach (var hudMember in AgentHUD.Instance()->GetSizedHudMemberSpan()) {
             var hudPartyMember = PartyListNumberArray.Instance()->PartyMembers[hudMember.Index];
 
             var hpGaugeTextNode = addon->PartyMembers[hudMember.Index].HPGaugeComponent->UldManager.SearchNodeById<AtkTextNode>(2);
