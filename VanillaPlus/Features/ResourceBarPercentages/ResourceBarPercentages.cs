@@ -5,7 +5,6 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Arrays;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
 
@@ -74,15 +73,6 @@ public unsafe class ResourceBarPercentages : GameModification {
         addon->ManaAmount->SetText(GetCorrectText(activeResource.Current, activeResource.Max, activeResource.Enabled));
     }
 
-    private void OnParameterDisable() {
-        var addon = (AddonParameterWidget*)Services.GameGui.GetAddonByName("_ParameterWidget").Address;
-        if (Services.ClientState.LocalPlayer is not { } localPlayer) return;
-
-        addon->HealthAmount->SetText(localPlayer.CurrentHp.ToString());
-        var activeResource = GetActiveResource(localPlayer);
-        addon->ManaAmount->SetText(GetCorrectText(activeResource.Current, activeResource.Max, false));
-    }
-
     private void OnPartyListDraw(AddonEvent type, AddonArgs args) {
         if (config is null) return;
         if (!config.PartyListEnabled) return;
@@ -96,7 +86,7 @@ public unsafe class ResourceBarPercentages : GameModification {
             var hpGaugeTextNode = addon->PartyMembers[hudMember.Index].HPGaugeComponent->GetTextNodeById(2);
             if (hpGaugeTextNode is not null) {
                 var isSelf = hudMember.Index == 0;
-                if ((isSelf && config.PartyListSelf) || (!isSelf && config.PartyListOtherMembers)) {
+                if (isSelf && config.PartyListSelf || !isSelf && config.PartyListOtherMembers) {
                     hpGaugeTextNode->SetText(GetCorrectText((uint)hudPartyMember.CurrentHealth, (uint)hudPartyMember.MaxHealth));
                 } else {
                     hpGaugeTextNode->SetText(hudPartyMember.CurrentHealth.ToString());
@@ -105,8 +95,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         }
     }
 
-    private void OnPartyListDisable() {
-        var addon = (AddonPartyList*)Services.GameGui.GetAddonByName("_PartyList").Address;
+    private static void OnPartyListDisable() {
         var addon = Services.GameGui.GetAddonByName<AddonPartyList>("_PartyList");
         if (addon is null) return;
         if (Services.ClientState.LocalPlayer is null) return;
@@ -120,14 +109,20 @@ public unsafe class ResourceBarPercentages : GameModification {
         }
     }
 
-    private string GetCorrectText(uint current, uint max, bool enabled = true) {
-        return !enabled ? current.ToString() : FormatPercentage(current, max);
+    private void OnParameterDisable() {
         var addon = Services.GameGui.GetAddonByName<AddonParameterWidget>("_ParameterWidget");
         if (addon is null) return;
+        if (Services.ClientState.LocalPlayer is not { } localPlayer) return;
+
+        addon->HealthAmount->SetText(localPlayer.CurrentHp.ToString());
+        var activeResource = GetActiveResource(localPlayer);
+        addon->ManaAmount->SetText(GetCorrectText(activeResource.Current, activeResource.Max, false));
     }
 
-    private string FormatPercentage(uint current, uint max)
-    {
+    private string GetCorrectText(uint current, uint max, bool enabled = true)
+        => !enabled ? current.ToString() : FormatPercentage(current, max);
+
+    private string FormatPercentage(uint current, uint max) {
         if (config is null) return current.ToString();
         if (max == 0) return "0" + (config.PercentageSignEnabled ? "%" : "");
         var percentage = current / (float)max * 100f;
@@ -138,12 +133,16 @@ public unsafe class ResourceBarPercentages : GameModification {
     private ActiveResource GetActiveResource(IPlayerCharacter player) {
         var defaultResource = new ActiveResource(0, 0, false);
         if (config is null) return defaultResource;
+
         if (player.MaxMp > 0)
             return new ActiveResource(player.CurrentMp, player.MaxMp, config.ParameterMpEnabled);
+        
         if (player.MaxGp > 0)
             return new ActiveResource (player.CurrentGp, player.MaxGp, config.ParameterGpEnabled);
+        
         if (player.MaxCp > 0)
             return new ActiveResource (player.CurrentCp, player.MaxCp, config.ParameterCpEnabled);
+
         return defaultResource;
     }
 
