@@ -93,7 +93,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         foreach (var hudMember in AgentHUD.Instance()->GetSizedHudMemberSpan()) {
             var hudPartyMember = PartyListNumberArray.Instance()->PartyMembers[hudMember.Index];
 
-            var hpGaugeTextNode = addon->PartyMembers[hudMember.Index].HPGaugeComponent->UldManager.SearchNodeById<AtkTextNode>(2);
+            var hpGaugeTextNode = addon->PartyMembers[hudMember.Index].HPGaugeComponent->GetTextNodeById(2);
             if (hpGaugeTextNode is not null) {
                 var isSelf = hudMember.Index == 0;
                 if ((isSelf && config.PartyListSelf) || (!isSelf && config.PartyListOtherMembers)) {
@@ -112,7 +112,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         foreach (var hudMember in AgentHUD.Instance()->GetSizedHudMemberSpan()) {
             var hudPartyMember = PartyListNumberArray.Instance()->PartyMembers[hudMember.Index];
 
-            var hpGaugeTextNode = addon->PartyMembers[hudMember.Index].HPGaugeComponent->UldManager.SearchNodeById<AtkTextNode>(2);
+            var hpGaugeTextNode = addon->PartyMembers[hudMember.Index].HPGaugeComponent->GetTextNodeById(2);
             if(hpGaugeTextNode is not null)
                 hpGaugeTextNode->SetText(hudPartyMember.CurrentHealth.ToString());
         }
