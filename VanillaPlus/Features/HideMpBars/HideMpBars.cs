@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.Game.Group;
@@ -48,7 +50,11 @@ public unsafe class HideMpBars : GameModification {
             mpGaugeNode->ToggleVisibility(manaUsingClassJobs.Contains(localPlayer.ClassJob.RowId));
         }
         else {
-            foreach (var hudMember in AgentHUD.Instance()->PartyMembers) {
+            var hudMembers = Unsafe.AsPointer(ref AgentHUD.Instance()->PartyMembers[0]);
+            var hudMemberCount = AgentHUD.Instance()->PartyMemberCount;
+            var hudMemberSpan = new Span<HudPartyMember>(hudMembers, hudMemberCount);
+            
+            foreach (var hudMember in hudMemberSpan) {
                 var mpGaugeNode = addon->PartyMembers[hudMember.Index].MPGaugeBar->OwnerNode;
                 mpGaugeNode->ToggleVisibility(manaUsingClassJobs.Contains(hudMember.Object->ClassJob));
             }
