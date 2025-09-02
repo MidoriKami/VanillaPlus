@@ -99,8 +99,7 @@ public unsafe class EnhancedLootWindow : GameModification {
                 Scale = new Vector2(0.80f, 0.80f),
                 Position = new Vector2(12.0f, 13.0f),
                 IconId = 61502,
-                WrapMode = 2,
-                ImageNodeFlags = 0,
+                FitTexture = true,
             };
             
             crossNodes.Add(newCrossNode);
@@ -113,8 +112,7 @@ public unsafe class EnhancedLootWindow : GameModification {
                 Size = new Vector2(20.0f, 24.0f),
                 Position = new Vector2(22.0f, 20.0f),
                 Alpha = 175,
-                WrapMode = 1,
-                ImageNodeFlags = 0,
+                FitTexture = true,
             };
             
             padlockNodes.Add(newPadlockNode);

@@ -103,6 +103,7 @@ public unsafe class BetterCursor : GameModification {
 
         imageNode = new IconImageNode {
             IconId = 60498,
+            FitTexture = true,
             IsVisible = true,
         };
         System.NativeController.AttachNode(imageNode, animationContainer);

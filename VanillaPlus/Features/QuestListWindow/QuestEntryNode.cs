@@ -34,6 +34,7 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
         questIconNode = new IconImageNode {
             NodeId = 3,
             IsVisible = true,
+            FitTexture = true,
         };
         System.NativeController.AttachNode(questIconNode, this);
 

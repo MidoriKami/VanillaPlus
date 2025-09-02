@@ -12,6 +12,7 @@ public class IconWithCountNode : ResNode {
     public IconWithCountNode() {
         iconNode = new IconImageNode {
             IsVisible = true,
+            FitTexture = true,
         };
         System.NativeController.AttachNode(iconNode, this);
 

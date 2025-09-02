@@ -38,6 +38,7 @@ public unsafe class FateEntryNode : SimpleComponentNode {
         iconNode = new IconImageNode {
             NodeId = 3,
             IsVisible = true,
+            FitTexture = true,
         };
         System.NativeController.AttachNode(iconNode, this);
 

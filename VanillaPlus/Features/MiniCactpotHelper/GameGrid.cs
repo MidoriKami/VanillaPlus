@@ -33,6 +33,7 @@ public class GameGrid : ResNode {
 				Size = new Vector2(54.0f, 54.0f),
 				Origin = new Vector2(27.0f, 27.0f),
 				Scale = new Vector2(0.8f, 0.8f),
+                FitTexture = true,
 				IsVisible = true,
 			};
 
@@ -59,6 +60,7 @@ public class GameGrid : ResNode {
 				Position = new Vector2(0.0f, 40.0f + 54.0f * index) + gameGridOffset,
 				Size = new Vector2(34.0f, 34.0f),
 				Origin = new Vector2(17.0f, 17.0f),
+                FitTexture = true,
 				IsVisible = true,
 				IconId = 60934,
 			};
@@ -75,6 +77,7 @@ public class GameGrid : ResNode {
 				Size = new Vector2(34.0f, 34.0f),
 				Origin = new Vector2(17.0f, 17.0f),
 				IsVisible = true,
+                FitTexture = true,
 				IconId = 60934,
 			};
 			
@@ -86,6 +89,7 @@ public class GameGrid : ResNode {
 			Position = new Vector2(0.0f, 0.0f) + gameGridOffset,
 			Size = new Vector2(34.0f, 34.0f),
 			Origin = new Vector2(17.0f, 17.0f),
+            FitTexture = true,
 			IsVisible = true,
 			IconId = 60934,
 		};
@@ -97,6 +101,7 @@ public class GameGrid : ResNode {
 			Position = new Vector2(190.0f, 0.0f) + gameGridOffset,
 			Size = new Vector2(34.0f, 34.0f),
 			Origin = new Vector2(17.0f, 17.0f),
+            FitTexture = true,
 			IsVisible = true,
 			IconId = 60934,
 		};

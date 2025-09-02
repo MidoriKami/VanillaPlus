@@ -181,8 +181,7 @@ public class AddonModificationBrowser : NativeAddon {
         System.NativeController.AttachNode(descriptionVersionTextNode, descriptionContainerNode);
                         
         descriptionImageNode = new ImGuiImageNode {
-            WrapMode = 2,
-            ImageNodeFlags = 0,
+            FitTexture = true,
             EventFlagsSet = true,
         };
         
