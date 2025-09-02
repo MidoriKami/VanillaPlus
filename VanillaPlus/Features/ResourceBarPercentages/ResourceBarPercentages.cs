@@ -49,10 +49,10 @@ public unsafe class ResourceBarPercentages : GameModification {
     }
 
     public override void OnDisable() {
+        Services.AddonLifecycle.UnregisterListener(OnParameterDraw, OnPartyListDraw);
+       
         OnParameterDisable();
         OnPartyListDisable();
-
-        Services.AddonLifecycle.UnregisterListener(OnParameterDraw, OnPartyListDraw);
 
         configWindow?.RemoveFromWindowSystem();
         configWindow = null;
