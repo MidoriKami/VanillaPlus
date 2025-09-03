@@ -101,8 +101,10 @@ public unsafe class MissingJobStoneLockout : GameModification {
     }
 
     private void OnUpdate(AddonContentsFinder* addon) {
+        if (animationContainer is null) return;
         var showWarning = !HasJobStoneEquipped() && CouldHaveJobStoneEquipped();
         
+        animationContainer.IsVisible = showWarning && !suppressed;
         addon->JoinButton->SetEnabledState(!showWarning || suppressed);
     }
 
