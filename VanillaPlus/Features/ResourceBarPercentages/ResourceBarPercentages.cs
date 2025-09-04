@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Game.ClientState.Objects.SubKinds;
@@ -77,11 +77,12 @@ public unsafe class ResourceBarPercentages : GameModification {
     private void OnPartyListDraw(AddonEvent type, AddonArgs args) {
         if (config is null) return;
         if (!config.PartyListEnabled) return;
-        
+
         var addon = args.GetAddon<AddonPartyList>();
         if (Services.ClientState.LocalPlayer is null) return;
 
         foreach (var hudMember in AgentHUD.Instance()->GetSizedHudMemberSpan()) {
+            if (hudMember.EntityId == 0) continue;
             ref var hudPartyMember = ref PartyListNumberArray.Instance()->PartyMembers[hudMember.Index];
             ref var partyMember = ref addon->PartyMembers[hudMember.Index];
 
@@ -103,6 +104,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         if (Services.ClientState.LocalPlayer is null) return;
 
         foreach (var hudMember in AgentHUD.Instance()->GetSizedHudMemberSpan()) {
+            if (hudMember.EntityId == 0) continue;
             ref var hudPartyMember = ref PartyListNumberArray.Instance()->PartyMembers[hudMember.Index];
             ref var partyMember = ref addon->PartyMembers[hudMember.Index];
 
