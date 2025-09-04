@@ -11,9 +11,24 @@ public class ResourceBarPercentagesConfigWindow(ResourceBarPercentagesConfig con
 
         if (config.PartyListEnabled) {
             using var indent = ImRaii.PushIndent();
-            
+
             if (ImGui.Checkbox("Player", ref config.PartyListSelf)) SaveConfigWithCallback();
             if (ImGui.Checkbox("Other Party Members", ref config.PartyListOtherMembers)) SaveConfigWithCallback();
+            ImGui.Spacing();
+            if (ImGui.Checkbox("HP##Party", ref config.PartyListHpEnabled)) SaveConfigWithCallback();
+            if (ImGui.Checkbox("MP##Party", ref config.PartyListMpEnabled)) SaveConfigWithCallback();
+            if (ImGui.Checkbox("GP##Party", ref config.PartyListGpEnabled)) SaveConfigWithCallback();
+            if (ImGui.IsItemHovered()) {
+                ImGui.BeginTooltip();
+                ImGui.Text("GP is only shown on the player.");
+                ImGui.EndTooltip();
+            }
+            if (ImGui.Checkbox("CP##Party", ref config.PartyListCpEnabled)) SaveConfigWithCallback();
+            if (ImGui.IsItemHovered()) {
+                ImGui.BeginTooltip();
+                ImGui.Text("CP is only shown on the player.");
+                ImGui.EndTooltip();
+            }
         }
 
         ImGui.Spacing();
@@ -23,18 +38,18 @@ public class ResourceBarPercentagesConfigWindow(ResourceBarPercentagesConfig con
         if (config.ParameterWidgetEnabled) {
             using var indent = ImRaii.PushIndent();
 
-            if (ImGui.Checkbox("HP", ref config.ParameterHpEnabled)) SaveConfigWithCallback();
-            if (ImGui.Checkbox("MP", ref config.ParameterMpEnabled)) SaveConfigWithCallback();
-            if (ImGui.Checkbox("GP", ref config.ParameterGpEnabled)) SaveConfigWithCallback();
-            if (ImGui.Checkbox("CP", ref config.ParameterCpEnabled)) SaveConfigWithCallback();
+            if (ImGui.Checkbox("HP##Parameter", ref config.ParameterHpEnabled)) SaveConfigWithCallback();
+            if (ImGui.Checkbox("MP##Parameter", ref config.ParameterMpEnabled)) SaveConfigWithCallback();
+            if (ImGui.Checkbox("GP##Parameter", ref config.ParameterGpEnabled)) SaveConfigWithCallback();
+            if (ImGui.Checkbox("CP##Parameter", ref config.ParameterCpEnabled)) SaveConfigWithCallback();
         }
 
         ImGui.Spacing();
 
         if (ImGui.Checkbox("Show Percentage Sign (%)", ref config.PercentageSignEnabled)) SaveConfigWithCallback();
-        
+
         ImGui.Spacing();
-        
+
         if (ImGui.SliderInt("Decimal Places", ref config.DecimalPlaces, 0, 2)) SaveConfigWithCallback();
     }
 
