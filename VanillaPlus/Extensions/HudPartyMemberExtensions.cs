@@ -3,17 +3,18 @@ using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Extensions;
 
-public static class HudPartyMemberExtensions
-{
-    public record HealthValues(int Current, int Max);
+public record HealthValues(int Current, int Max);
 
-    public static unsafe HealthValues GetHealth(this HudPartyMember hudMember)
-        => hudMember.Object != null
-               ? new HealthValues((int)hudMember.Object->Health, (int)hudMember.Object->MaxHealth)
-               : new HealthValues(0, 0);
+public static class HudPartyMemberExtensions {
+    public static unsafe HealthValues? GetHealth(this HudPartyMember hudMember) {
+        if (hudMember.Object is null) return null;
 
-    public static unsafe ClassJob GetClassJob(this HudPartyMember hudMember)
-        => hudMember.Object != null
-               ? Services.DataManager.GetClassJobById(hudMember.Object->ClassJob)
-               : new ClassJob();
+        return new HealthValues((int)hudMember.Object->Health, (int)hudMember.Object->MaxHealth);
+    }
+
+    public static unsafe ClassJob? GetClassJob(this HudPartyMember hudMember) {
+        if (hudMember.Object is null) return null;
+
+        return Services.DataManager.GetClassJobById(hudMember.Object->ClassJob);
+    }
 }

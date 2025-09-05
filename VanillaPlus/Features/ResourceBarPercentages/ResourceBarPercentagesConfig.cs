@@ -7,8 +7,7 @@ public class ResourceBarPercentagesConfig : GameModificationConfig<ResourceBarPe
 
     public bool PartyListEnabled = true;
     public bool PartyListSelf = true;
-    public bool PartyListPlayerMembers = true;
-    public bool PartyListTrustMembers = true;
+    public bool PartyListMembers = true;
     public bool PartyListHpEnabled = true;
     public bool PartyListMpEnabled = true;
     public bool PartyListGpEnabled = true;

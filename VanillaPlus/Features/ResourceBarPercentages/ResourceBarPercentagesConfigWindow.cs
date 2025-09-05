@@ -13,18 +13,22 @@ public class ResourceBarPercentagesConfigWindow(ResourceBarPercentagesConfig con
             using var indent = ImRaii.PushIndent();
 
             if (ImGui.Checkbox("Player", ref config.PartyListSelf)) SaveConfigWithCallback();
-            if (ImGui.Checkbox("Player Party Members", ref config.PartyListPlayerMembers)) SaveConfigWithCallback();
-            if (ImGui.Checkbox("Trust Party Members", ref config.PartyListTrustMembers)) SaveConfigWithCallback();
+            if (ImGui.Checkbox("Party Members", ref config.PartyListMembers)) SaveConfigWithCallback();
+            
             ImGui.Spacing();
+            
             if (ImGui.Checkbox("HP##Party", ref config.PartyListHpEnabled)) SaveConfigWithCallback();
             if (ImGui.Checkbox("MP##Party", ref config.PartyListMpEnabled)) SaveConfigWithCallback();
             if (ImGui.Checkbox("GP##Party", ref config.PartyListGpEnabled)) SaveConfigWithCallback();
+            
             if (ImGui.IsItemHovered()) {
                 ImGui.BeginTooltip();
                 ImGui.Text("GP is only shown on the player.");
                 ImGui.EndTooltip();
             }
+            
             if (ImGui.Checkbox("CP##Party", ref config.PartyListCpEnabled)) SaveConfigWithCallback();
+            
             if (ImGui.IsItemHovered()) {
                 ImGui.BeginTooltip();
                 ImGui.Text("CP is only shown on the player.");
@@ -52,7 +56,6 @@ public class ResourceBarPercentagesConfigWindow(ResourceBarPercentagesConfig con
         ImGui.Spacing();
 
         if (ImGui.SliderInt("Decimal Places", ref config.DecimalPlaces, 0, 2)) SaveConfigWithCallback();
-
         if (ImGui.Checkbox("Show decimals only below 100%", ref config.ShowDecimalsBelowHundredOnly)) SaveConfigWithCallback();
     }
 
