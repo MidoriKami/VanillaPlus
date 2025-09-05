@@ -18,4 +18,7 @@ public static class DataManagerExtensions {
             .Where(group => group.Value)
             .Select(group => group.Key);
     }
+
+    public static ClassJob GetClassJobById(this IDataManager dataManager, uint id)
+        => dataManager.GetExcelSheet<ClassJob>().GetRow(id);
 }

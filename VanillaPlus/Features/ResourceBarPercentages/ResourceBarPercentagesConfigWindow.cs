@@ -13,7 +13,8 @@ public class ResourceBarPercentagesConfigWindow(ResourceBarPercentagesConfig con
             using var indent = ImRaii.PushIndent();
 
             if (ImGui.Checkbox("Player", ref config.PartyListSelf)) SaveConfigWithCallback();
-            if (ImGui.Checkbox("Other Party Members", ref config.PartyListOtherMembers)) SaveConfigWithCallback();
+            if (ImGui.Checkbox("Player Party Members", ref config.PartyListPlayerMembers)) SaveConfigWithCallback();
+            if (ImGui.Checkbox("Trust Party Members", ref config.PartyListTrustMembers)) SaveConfigWithCallback();
             ImGui.Spacing();
             if (ImGui.Checkbox("HP##Party", ref config.PartyListHpEnabled)) SaveConfigWithCallback();
             if (ImGui.Checkbox("MP##Party", ref config.PartyListMpEnabled)) SaveConfigWithCallback();
@@ -51,6 +52,8 @@ public class ResourceBarPercentagesConfigWindow(ResourceBarPercentagesConfig con
         ImGui.Spacing();
 
         if (ImGui.SliderInt("Decimal Places", ref config.DecimalPlaces, 0, 2)) SaveConfigWithCallback();
+
+        if (ImGui.Checkbox("Show decimals only below 100%", ref config.ShowDecimalsBelowHundredOnly)) SaveConfigWithCallback();
     }
 
     private void SaveConfigWithCallback() {

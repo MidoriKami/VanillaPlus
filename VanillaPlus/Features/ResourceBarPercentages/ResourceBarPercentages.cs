@@ -1,10 +1,7 @@
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Arrays;
@@ -30,6 +27,9 @@ public unsafe class ResourceBarPercentages : GameModification {
     private ResourceBarPercentagesConfig? config;
     private ResourceBarPercentagesConfigWindow? configWindow;
 
+    private const short MpDisabledXOffset = -17;
+    private const short MpEnabledXOffset = 4;
+
     public override void OnEnable() {
         config = ResourceBarPercentagesConfig.Load();
         configWindow = new ResourceBarPercentagesConfigWindow(config, OnConfigChanged);
@@ -39,7 +39,9 @@ public unsafe class ResourceBarPercentages : GameModification {
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_ParameterWidget", OnParameterDraw);
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_PartyList", OnPartyListDraw);
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_PartyList", OnTrustListDraw);
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnTrustListDraw);
     }
 
     private void OnConfigChanged() {
@@ -51,14 +53,24 @@ public unsafe class ResourceBarPercentages : GameModification {
 
         if (!config.PartyListEnabled) {
             OnPartyListDisable();
+            OnTrustListDisable();
+        }
+
+        if (!config.PartyListTrustMembers) {
+            OnTrustListDisable();
+        }
+
+        if (!config.PartyListPlayerMembers) {
+            OnPartyListDisable();
         }
     }
 
     public override void OnDisable() {
-        Services.AddonLifecycle.UnregisterListener(OnParameterDraw, OnPartyListDraw);
+        Services.AddonLifecycle.UnregisterListener(OnParameterDraw, OnPartyListDraw, OnTrustListDraw);
 
         OnParameterDisable();
         OnPartyListDisable();
+        OnTrustListDisable();
 
         configWindow?.RemoveFromWindowSystem();
         configWindow = null;
@@ -84,91 +96,113 @@ public unsafe class ResourceBarPercentages : GameModification {
         if (!config.PartyListEnabled) return;
 
         var addon = args.GetAddon<AddonPartyList>();
-        if (Services.ClientState.LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob }, EntityId: var playerId } ) return;
+        if (Services.ClientState.LocalPlayer is not { EntityId: var playerId } ) return;
 
         var isTrustParty = addon->TrustCount > 0;
-
-        var trustMemberMap = new Dictionary<ulong, TrustMember>();
-        if (isTrustParty) {
-            trustMemberMap = CreateTrustMemberMap(addon);
-        }
 
         foreach (var hudMember in AgentHUD.Instance()->GetSizedHudMemberSpan()) {
             if (hudMember.EntityId == 0) continue;
             var isSelf = hudMember.EntityId == playerId;
             var isTrustMember = !isSelf && isTrustParty;
 
-            if (isTrustMember && trustMemberMap.TryGetValue(hudMember.EntityId, out var trustMember)) {
-                ref var partyMember = ref addon->TrustMembers[trustMember.Index];
-                HandlePartyMember(ref partyMember, hudMember, isSelf, isTrustMember, classJob, trustMember.Chara);
-            } else {
-                ref var partyMember = ref addon->PartyMembers[hudMember.Index];
-                HandlePartyMember(ref partyMember, hudMember, isSelf, isTrustMember, classJob);
-            }
+            if (isTrustMember || (!isSelf && !config.PartyListPlayerMembers)) continue;
+
+            ref var partyMember = ref addon->PartyMembers[hudMember.Index];
+            HandlePartyMember(ref partyMember, hudMember, isSelf, isTrustMember);
         }
     }
 
-    private void HandlePartyMember(ref AddonPartyList.PartyListMemberStruct partyMember, HudPartyMember hudMember, bool isSelf, bool isTrustMember, ClassJob classJob, IGameObject? gameObject = null, bool revertToDefault = false) {
+    private void OnTrustListDraw(AddonEvent type, AddonArgs args) {
         if (config is null) return;
-        ref var hudPartyMember = ref PartyListNumberArray.Instance()->PartyMembers[hudMember.Index];
-        var currentHealth = hudPartyMember.CurrentHealth;
-        var maxHealth = hudPartyMember.MaxHealth;
+        if (!config.PartyListEnabled || !config.PartyListTrustMembers) return;
 
-        if (isTrustMember && gameObject is not null) {
-            if (gameObject is not IBattleChara battleChara) return;
-            currentHealth = (int)battleChara.CurrentHp;
-            maxHealth = (int)battleChara.MaxHp;
-        }
+        var addon = args.GetAddon<AddonPartyList>();
+        var isTrustParty = addon->TrustCount > 0;
+        if (!isTrustParty) return;
 
-        var hpGaugeTextNode = partyMember.HPGaugeComponent->GetTextNodeById(2);
-        if (hpGaugeTextNode is not null) {
-            if ((isSelf && config.PartyListSelf || (!isSelf && config.PartyListOtherMembers)) && !revertToDefault) {
-                hpGaugeTextNode->SetText(GetCorrectText((uint)currentHealth, (uint)maxHealth, config.PartyListHpEnabled));
-            } else {
-                hpGaugeTextNode->SetText(currentHealth.ToString());
-            }
-        }
+        if (Services.ClientState.LocalPlayer is not { EntityId: var playerId } ) return;
 
-        var resourceGaugeNode = partyMember.MPGaugeBar;
-        if (resourceGaugeNode is not null && !isTrustMember) {
-            var isCombatClass = !classJob.IsCrafter() && !classJob.IsGatherer();
-            if (!isSelf && !isCombatClass) return;
+        var index = 0;
+        foreach (var hudMember in AgentHUD.Instance()->GetSizedHudMemberSpan()) {
+            if (hudMember.EntityId == 0) continue;
+            var isSelf = hudMember.EntityId == playerId;
+            var isTrustMember = !isSelf && isTrustParty;
 
-            var shouldRevertResource = (isSelf && !config.PartyListSelf) || (!isSelf && !config.PartyListOtherMembers) || revertToDefault;
-            var isMpDisabled = (!config.PartyListMpEnabled || shouldRevertResource) && isCombatClass;
-            var resourceGaugeTextNode = resourceGaugeNode->GetTextNodeById(2);
-            var resourceGaugeTextSubNode = resourceGaugeNode->GetTextNodeById(3);
+            if (!isTrustMember) continue;
 
-            resourceGaugeTextNode->SetXShort((short)(isMpDisabled ? -17 : 4));
-            resourceGaugeTextNode->SetText(GetCorrectPartyResourceText((uint)hudPartyMember.CurrentMana, (uint)hudPartyMember.MaxMana, classJob, IsResourcePercentageEnabled(config, classJob), shouldRevertResource));
-            resourceGaugeTextSubNode->ToggleVisibility(isMpDisabled);
+            ref var partyMember = ref addon->TrustMembers[index];
+            index++;
+            HandlePartyMember(ref partyMember, hudMember, isSelf, isTrustMember);
         }
     }
 
     private void OnPartyListDisable() {
         var addon = Services.GameGui.GetAddonByName<AddonPartyList>("_PartyList");
         if (addon is null) return;
-        if (Services.ClientState.LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob }, EntityId: var playerId } ) return;
+        if (Services.ClientState.LocalPlayer is not { EntityId: var playerId } ) return;
 
         var isTrustParty = addon->TrustCount > 0;
-
-        var trustMemberMap = new Dictionary<ulong, TrustMember>();
-        if (isTrustParty) {
-            trustMemberMap = CreateTrustMemberMap(addon);
-        }
 
         foreach (var hudMember in AgentHUD.Instance()->GetSizedHudMemberSpan()) {
             if (hudMember.EntityId == 0) continue;
             var isSelf = hudMember.EntityId == playerId;
             var isTrustMember = !isSelf && isTrustParty;
 
-            if (isTrustMember && trustMemberMap.TryGetValue(hudMember.EntityId, out var trustMember)) {
-                ref var partyMember = ref addon->TrustMembers[trustMember.Index];
-                HandlePartyMember(ref partyMember, hudMember, isSelf, isTrustMember, classJob, trustMember.Chara, true);
+            if (isTrustMember) continue;
+            ref var partyMember = ref addon->PartyMembers[hudMember.Index];
+            HandlePartyMember(ref partyMember, hudMember, isSelf, isTrustMember, revertToDefault: true);
+        }
+    }
+
+    private void OnTrustListDisable() {
+        var addon = Services.GameGui.GetAddonByName<AddonPartyList>("_PartyList");
+        if (addon is null) return;
+        var isTrustParty = addon->TrustCount > 0;
+        if (!isTrustParty) return;
+
+        if (Services.ClientState.LocalPlayer is not { EntityId: var playerId } ) return;
+
+        var index = 0;
+        foreach (var hudMember in AgentHUD.Instance()->GetSizedHudMemberSpan()) {
+            if (hudMember.EntityId == 0) continue;
+            var isSelf = hudMember.EntityId == playerId;
+            var isTrustMember = !isSelf && isTrustParty;
+
+            if (!isTrustMember) continue;
+
+            ref var partyMember = ref addon->TrustMembers[index];
+            index++;
+            HandlePartyMember(ref partyMember, hudMember, isSelf, isTrustMember, revertToDefault: true);
+        }
+    }
+
+    private void HandlePartyMember(ref AddonPartyList.PartyListMemberStruct partyMember, HudPartyMember hudMember, bool isSelf, bool isTrustMember, bool revertToDefault = false) {
+        if (config is null) return;
+        ref var hudPartyMember = ref PartyListNumberArray.Instance()->PartyMembers[hudMember.Index];
+        var health = hudMember.GetHealth();
+        var classJob = hudMember.GetClassJob();
+
+        var hpGaugeTextNode = partyMember.HPGaugeComponent->GetTextNodeById(2);
+        if (hpGaugeTextNode is not null) {
+            if (((isSelf && config.PartyListSelf) || !isSelf) && !revertToDefault) {
+                hpGaugeTextNode->SetText(GetCorrectText((uint)health.Current, (uint)health.Max, config.PartyListHpEnabled));
             } else {
-                ref var partyMember = ref addon->PartyMembers[hudMember.Index];
-                HandlePartyMember(ref partyMember, hudMember, isSelf, isTrustMember, classJob, revertToDefault: true);
+                hpGaugeTextNode->SetText(health.Current.ToString());
             }
+        }
+
+        var resourceGaugeNode = partyMember.MPGaugeBar;
+        if (resourceGaugeNode is not null && !isTrustMember) {
+            if (!isSelf && !classJob.IsNotCrafterGatherer()) return;
+
+            var shouldRevertResource = ShouldRevertResource(isSelf, isTrustMember, config, revertToDefault);
+            var isMpDisabled = IsMpDisabled(classJob, config, shouldRevertResource);
+            var resourceGaugeTextNode = resourceGaugeNode->GetTextNodeById(2);
+            var resourceGaugeTextSubNode = resourceGaugeNode->GetTextNodeById(3);
+
+            resourceGaugeTextNode->SetXShort(isMpDisabled ? MpDisabledXOffset : MpEnabledXOffset);
+            resourceGaugeTextNode->SetText(GetCorrectPartyResourceText((uint)hudPartyMember.CurrentMana, (uint)hudPartyMember.MaxMana, classJob, IsResourcePercentageEnabled(config, classJob), shouldRevertResource));
+            resourceGaugeTextSubNode->ToggleVisibility(isMpDisabled);
         }
     }
 
@@ -186,24 +220,12 @@ public unsafe class ResourceBarPercentages : GameModification {
         => !enabled ? current.ToString() : FormatPercentage(current, max);
 
     private string GetCorrectPartyResourceText(uint current, uint max, ClassJob classJob, bool enabled = true, bool revertToDefault = false) {
-        if (revertToDefault || (!classJob.IsCrafter() && !classJob.IsGatherer() && !enabled)) {
-            if (!classJob.IsCrafter() && !classJob.IsGatherer())
-                current /= 100; // Only divide MP for combat classes
+        if (revertToDefault || (classJob.IsNotCrafterGatherer() && !enabled)) {
+            if (classJob.IsNotCrafterGatherer())
+                current /= 100;
             return current.ToString();
         }
         return GetCorrectText(current, max, enabled);
-    }
-
-    private Dictionary<ulong, TrustMember> CreateTrustMemberMap(AddonPartyList* addon) {
-        var trustMemberMap = new Dictionary<ulong, TrustMember>();
-        for (var i = 0; i < addon->TrustCount; i++) {
-            var trustName = addon->TrustMembers[i].Name->GetText().ToString();
-            var trustChara = Services.ObjectTable.CharacterManagerObjects
-                .FirstOrDefault(member => member.Name.TextValue == SanitizeName(trustName));
-            if (trustChara != null)
-                trustMemberMap[trustChara.EntityId] = new TrustMember(i, trustChara);
-        }
-        return trustMemberMap;
     }
 
     private string FormatPercentage(uint current, uint max) {
@@ -211,7 +233,8 @@ public unsafe class ResourceBarPercentages : GameModification {
         if (max == 0) return "0" + (config.PercentageSignEnabled ? "%" : "");
         var percentage = current / (float)max * 100f;
         var percentSign = config.PercentageSignEnabled ? "%" : "";
-        return percentage.ToString($"F{config.DecimalPlaces}", CultureInfo.InvariantCulture) + percentSign;
+        var format = config.ShowDecimalsBelowHundredOnly && percentage >= 100f ? "F0" : $"F{config.DecimalPlaces}";
+        return percentage.ToString(format, CultureInfo.InvariantCulture) + percentSign;
     }
 
     private bool IsResourcePercentageEnabled(ResourceBarPercentagesConfig resourceConfig, ClassJob classJob) {
@@ -220,6 +243,16 @@ public unsafe class ResourceBarPercentages : GameModification {
         if (classJob.IsGatherer())
             return resourceConfig.PartyListGpEnabled;
         return resourceConfig.PartyListMpEnabled;
+    }
+
+    private bool IsMpDisabled(ClassJob classJob, ResourceBarPercentagesConfig resourceConfig, bool shouldRevertResource) {
+        return (!resourceConfig.PartyListMpEnabled || shouldRevertResource) && classJob.IsNotCrafterGatherer();
+    }
+
+    private bool ShouldRevertResource(bool isSelf, bool isTrustMember, ResourceBarPercentagesConfig resourceConfig, bool revertToDefault) {
+        if (isTrustMember) return revertToDefault;
+        if (isSelf) return !resourceConfig.PartyListSelf || revertToDefault;
+        return revertToDefault;
     }
 
     private ActiveResource GetActiveResource(IPlayerCharacter player) {
@@ -238,11 +271,5 @@ public unsafe class ResourceBarPercentages : GameModification {
         return defaultResource;
     }
 
-    private string SanitizeName(string name) {
-        return new string(name.Where(c => !char.IsSurrogate(c) && (c < '\uE000' || c > '\uF8FF')).ToArray()).Trim();
-    }
-
     private record ActiveResource(uint Current, uint Max, bool Enabled);
-
-    private record TrustMember(int Index, IGameObject Chara);
 }
