@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Numerics;
 using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
@@ -9,6 +11,7 @@ using KamiToolKit.Nodes;
 using Lumina.Extensions;
 using VanillaPlus.Classes;
 using VanillaPlus.Extensions;
+using SeStringBuilder = Lumina.Text.SeStringBuilder;
 
 namespace VanillaPlus.Features.InventorySearchBar;
 
@@ -30,6 +33,10 @@ public unsafe class InventorySearchBar : GameModification {
     private TextInputNode? expandedInventorySearchBoxNode;
     private TextInputNode? largeInventorySearchBoxNode;
     private TextInputNode? inventorySearchBoxNode;
+
+    private ImageNode? expandedHelpNode;
+    private ImageNode? largeHelpNode;
+    private ImageNode? inventoryHelpNode;
 
     private int inventoryLargeSelectedTab;
     private int inventorySelectedTab;
@@ -64,18 +71,39 @@ public unsafe class InventorySearchBar : GameModification {
         inventoryController = null;
     }
 
+    private static TextInputNode GetInputTextNode(Action<SeString> searchCallback, Vector2 headerSize, Vector2 searchBoxSize) => new() {
+        Position = headerSize / 2.0f - searchBoxSize / 2.0f + new Vector2(0.0f, 10.0f),
+        Size = searchBoxSize,
+        PlaceholderString = "Search . . .",
+        OnInputReceived = searchCallback,
+        IsVisible = true,
+    };
+
+    private static ImageNode GetTooltipNode(Vector2 headerSize, Vector2 searchBoxSize) => new SimpleImageNode {
+        Position = headerSize / 2.0f + new Vector2(searchBoxSize.X / 2.0f, - searchBoxSize.Y / 2) + new Vector2(5.0f, 10.0f),
+        Size = new Vector2(28.0f, 28.0f),
+        TexturePath = "ui/uld/CircleButtons.tex",
+        TextureCoordinates = new Vector2(112.0f, 84.0f),
+        TextureSize = new Vector2(28.0f, 28.0f),
+        Tooltip = new SeStringBuilder()
+            .Append("[VanillaPlus]: Supports Regex Search")
+            .AppendNewLine()
+            .Append("Start input with '$' to search by description")
+            .ToReadOnlySeString()
+            .ToDalamudString(),
+        EventFlagsSet = true,
+        IsVisible = true,
+    };
+
     private void AttachExpansionNodes(AddonInventoryExpansion* addon) {
         var headerSize = new Vector2(addon->WindowHeaderCollisionNode->Width, addon->WindowHeaderCollisionNode->Height);
         var searchBoxSize = new Vector2(250.0f, 28.0f);
-        
-        expandedInventorySearchBoxNode = new TextInputNode {
-            Position = headerSize / 2.0f - searchBoxSize / 2.0f + new Vector2(0.0f, 10.0f),
-            Size = searchBoxSize,
-            PlaceholderString = "Search . . .",
-            OnInputReceived = searchString => UpdateInventoryExpansion(addon, searchString),
-            IsVisible = true,
-        };
+
+        expandedInventorySearchBoxNode = GetInputTextNode(searchString => UpdateInventoryExpansion(addon, searchString), headerSize, searchBoxSize);
         System.NativeController.AttachNode(expandedInventorySearchBoxNode, addon->WindowNode);
+        
+        expandedHelpNode = GetTooltipNode(headerSize, searchBoxSize);
+        System.NativeController.AttachNode(expandedHelpNode, addon->WindowNode);
     }
 
     private static void UpdateInventoryExpansion(AddonInventoryExpansion* _, SeString searchString) {
@@ -98,20 +126,18 @@ public unsafe class InventorySearchBar : GameModification {
     private void DetachExpansionNodes(AddonInventoryExpansion* addon) {
         UpdateInventoryExpansion(addon, string.Empty);
         System.NativeController.DisposeNode(ref expandedInventorySearchBoxNode);
+        System.NativeController.DisposeNode(ref expandedHelpNode);
     }
 
     private void AttachLargeNodes(AddonInventoryLarge* addon) {
         var headerSize = new Vector2(addon->WindowHeaderCollisionNode->Width, addon->WindowHeaderCollisionNode->Height);
         var searchBoxSize = new Vector2(250.0f, 28.0f);
         
-        largeInventorySearchBoxNode = new TextInputNode {
-            Position = headerSize / 2.0f - searchBoxSize / 2.0f + new Vector2(0.0f, 10.0f),
-            Size = searchBoxSize,
-            PlaceholderString = "Search . . .",
-            OnInputReceived = searchString => UpdateInventoryLarge(addon, searchString),
-            IsVisible = true,
-        };
+        largeInventorySearchBoxNode = GetInputTextNode(searchString => UpdateInventoryLarge(addon, searchString), headerSize, searchBoxSize);
         System.NativeController.AttachNode(largeInventorySearchBoxNode, addon->WindowNode);
+        
+        largeHelpNode = GetTooltipNode(headerSize, searchBoxSize);
+        System.NativeController.AttachNode(largeHelpNode, addon->WindowNode);
     }
 
     private static void UpdateInventoryLarge(AddonInventoryLarge* addon, SeString searchString) {
@@ -143,20 +169,18 @@ public unsafe class InventorySearchBar : GameModification {
     private void DetachLargeNodes(AddonInventoryLarge* addon) {
         UpdateInventoryLarge(addon, string.Empty);
         System.NativeController.DisposeNode(ref largeInventorySearchBoxNode);
+        System.NativeController.DisposeNode(ref largeHelpNode);
     }
 
     private void AttachInventoryNodes(AddonInventory* addon) {
         var headerSize = new Vector2(addon->WindowHeaderCollisionNode->Width, addon->WindowHeaderCollisionNode->Height);
         var searchBoxSize = new Vector2(100.0f, 28.0f);
         
-        inventorySearchBoxNode = new TextInputNode {
-            Position = headerSize / 2.0f - searchBoxSize / 2.0f + new Vector2(0.0f, 10.0f),
-            Size = searchBoxSize,
-            PlaceholderString = "Search . . .",
-            OnInputReceived = searchString => UpdateInventory(addon, searchString),
-            IsVisible = true,
-        };
+        inventorySearchBoxNode = GetInputTextNode(searchString => UpdateInventory(addon, searchString), headerSize, searchBoxSize);
         System.NativeController.AttachNode(inventorySearchBoxNode, addon->WindowNode);
+        
+        inventoryHelpNode = GetTooltipNode(headerSize, searchBoxSize);
+        System.NativeController.AttachNode(inventoryHelpNode, addon->WindowNode);
     }
 
     private static void UpdateInventory(AddonInventory* addon, SeString searchString) {
@@ -178,6 +202,7 @@ public unsafe class InventorySearchBar : GameModification {
     private void DetachInventoryNodes(AddonInventory* addon) {
         UpdateInventory(addon, string.Empty);
         System.NativeController.DisposeNode(ref inventorySearchBoxNode);
+        System.NativeController.DisposeNode(ref inventoryHelpNode);
     }
 
     private static void FadeInventoryNodes(SeString searchString, AddonInventoryGrid* inventoryGrid, int inventoryType) {
