@@ -66,9 +66,10 @@ public static class InventoryItemExtensions {
         const RegexOptions regexOptions = RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
 
         var itemData = Services.DataManager.GetExcelSheet<Item>().GetRow(item.ItemId);
-        
+
+        if (Regex.IsMatch(item.ItemId.ToString(), searchString)) return true;
         if (Regex.IsMatch(itemData.Name.ToString(), searchString, regexOptions)) return true;
-        if (Regex.IsMatch(itemData.Description.ToString(), searchString, regexOptions)) return true;
+        if (Regex.IsMatch(itemData.Description.ToString(), searchString, regexOptions) && searchString.StartsWith('$')) return true;
         if (Regex.IsMatch(itemData.LevelEquip.ToString(), searchString, regexOptions)) return true;
         if (Regex.IsMatch(itemData.LevelItem.RowId.ToString(), searchString, regexOptions)) return true;
 
