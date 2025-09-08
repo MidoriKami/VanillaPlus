@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Numerics;
 using Dalamud.Game.Text.SeStringHandling;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using KamiToolKit;
 using Lumina.Extensions;
+using VanillaPlus.Basic_Nodes;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.InventorySearchBar;
@@ -179,12 +179,14 @@ public unsafe class InventorySearchBar : GameModification {
     }
 
     private static void FadeInventoryNodes(SeString searchString, AddonInventoryGrid* inventoryGrid, int inventoryType) {
+        var sorter = ItemOrderModule.Instance()->InventorySorter;
+
         foreach (var index in Enumerable.Range(0, inventoryGrid->Slots.Length)) {
-            var sorterItem = ItemOrderModule.Instance()->InventorySorter->Items
+            var sorterItem = sorter->Items
                 .FirstOrNull(item => item.Value->Page == inventoryType && item.Value->Slot == index);
             if (sorterItem is null) continue;
 
-            var inventoryItem = GetInventoryItem(ItemOrderModule.Instance()->InventorySorter, sorterItem);
+            var inventoryItem = sorter->GetInventoryItem(sorterItem);
             if (inventoryItem is null) continue;
 
             var inventorySlot = inventoryGrid->Slots[index].Value;
@@ -200,24 +202,5 @@ public unsafe class InventorySearchBar : GameModification {
                 slotNode->FadeNode(0.5f);
             }
         }
-    }
-    
-    private static long GetSlotIndex(ItemOrderModuleSorter* sorter, ItemOrderModuleSorterItemEntry* entry)
-        => entry->Slot + sorter->ItemsPerPage * entry->Page;
-    
-    private static InventoryItem* GetInventoryItem(ItemOrderModuleSorter* sorter, ItemOrderModuleSorterItemEntry* entry)
-        => GetInventoryItem(sorter, GetSlotIndex(sorter, entry));
-
-    private static InventoryItem* GetInventoryItem(ItemOrderModuleSorter* sorter, long slotIndex) {
-        if (sorter == null) return null;
-        if (sorter->Items.LongCount <= slotIndex) return null;
-
-        var item = sorter->Items[slotIndex].Value;
-        if (item == null) return null;
-
-        var container = InventoryManager.Instance()->GetInventoryContainer(sorter->InventoryType + item->Page);
-        if (container == null) return null;
-
-        return container->GetInventorySlot(item->Slot);
     }
 }
