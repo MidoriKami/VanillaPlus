@@ -65,6 +65,9 @@ public static class InventoryItemExtensions {
     public static bool IsRegexMatch(this ref InventoryItem item, string searchString) {
         const RegexOptions regexOptions = RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
 
+        // Skip any data access if string is empty
+        if (searchString.IsNullOrEmpty()) return true;
+
         var itemData = Services.DataManager.GetExcelSheet<Item>().GetRow(item.ItemId);
 
         if (Regex.IsMatch(item.ItemId.ToString(), searchString)) return true;
