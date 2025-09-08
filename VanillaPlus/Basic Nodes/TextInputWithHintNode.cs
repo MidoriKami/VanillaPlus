@@ -5,7 +5,7 @@ using KamiToolKit.Nodes;
 using Lumina.Text;
 using SeString = Dalamud.Game.Text.SeStringHandling.SeString;
 
-namespace VanillaPlus.Features.InventorySearchBar;
+namespace VanillaPlus.Basic_Nodes;
 
 public class TextInputWithHintNode : SimpleComponentNode {
     private readonly TextInputNode textInputNode;
