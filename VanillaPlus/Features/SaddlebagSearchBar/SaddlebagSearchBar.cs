@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Numerics;
 using Dalamud.Game.Text.SeStringHandling;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -72,11 +73,11 @@ public unsafe class SaddlebagSearchBar : GameModification {
     }
 
     private static void FadeInventoryNodes(SeString searchString, AddonInventoryBuddy* inventoryGrid) {
-        var sorter = ItemOrderModule.Instance()->SaddleBagSorter;
-
-        if (inventoryGrid->TabIndex is not 0) {
-            sorter = ItemOrderModule.Instance()->PremiumSaddleBagSorter;
-        }
+        var sorter = inventoryGrid->TabIndex switch {
+            0 => ItemOrderModule.Instance()->SaddleBagSorter,
+            1 => ItemOrderModule.Instance()->PremiumSaddleBagSorter,
+            _ => throw new Exception($"Saddlebag Tab Not Supported: {inventoryGrid->TabIndex}"),
+        };
 
         foreach (var index in Enumerable.Range(0, inventoryGrid->Slots.Length)) {
             var sorterItem = sorter->Items
