@@ -78,7 +78,7 @@ public class AddonSavePreset : NativeAddon {
         };
         System.NativeController.AttachNode(warningTextNode, warningContainerNode);
 
-        var presetNames = PresetManager.GetPresetNames();
+        var presetNames = PresetManager.GetPresetNames().Where(preset => preset != PresetManager.DontUseString).ToList();
         anyPresets = presetNames.All(preset => preset != PresetManager.DefaultString);
         
         noPresetsTextNode = new TextNode {
