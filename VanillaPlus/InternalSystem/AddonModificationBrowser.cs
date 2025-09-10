@@ -61,6 +61,8 @@ public class AddonModificationBrowser : NativeAddon {
         BuildOptionsContainer();
         BuildSearchContainer();
         BuildDescriptionContainer();
+
+        addon->AdditionalFocusableNodes[0] = (AtkResNode*)descriptionImageNode.Node;
         
         var groupedOptions = System.ModificationManager.LoadedModifications
                                    .Select(option => option)
@@ -206,6 +208,7 @@ public class AddonModificationBrowser : NativeAddon {
             isImageHovered = false;
         });
         System.NativeController.AttachNode(descriptionImageNode, descriptionImageFrame);
+        
         
         borderNineGridNode = new BorderNineGridNode {
             IsVisible = true,
