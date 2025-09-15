@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -274,7 +275,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
         switch (addon->NameString) {
             case "_TargetInfoCastBar" when primaryTargetTextNode is not null:
                 if (Services.TargetManager.Target is IBattleChara primaryTarget && primaryTarget.CurrentCastTime < primaryTarget.TotalCastTime && config.PrimaryTarget) {
-                    var castTime = (primaryTarget.TotalCastTime - primaryTarget.CurrentCastTime).ToString("00.00");
+                    var castTime = (primaryTarget.TotalCastTime - primaryTarget.CurrentCastTime).ToString("00.00", CultureInfo.InvariantCulture);
 
                     primaryTargetTextNode.String = castTime;
                 }
@@ -282,7 +283,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
             case "_TargetInfo" when primaryTargetAltTextNode is not null:
                 if (Services.TargetManager.Target is IBattleChara target && target.CurrentCastTime < target.TotalCastTime && config.PrimaryTarget) {
-                    var castTime = (target.TotalCastTime - target.CurrentCastTime).ToString("00.00");
+                    var castTime = (target.TotalCastTime - target.CurrentCastTime).ToString("00.00", CultureInfo.InvariantCulture);
 
                     primaryTargetAltTextNode.String = castTime;
                 }
@@ -290,7 +291,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
             
             case "_FocusTargetInfo" when focusTargetTextNode is not null:
                 if (Services.TargetManager.FocusTarget is IBattleChara focusTarget && focusTarget.CurrentCastTime < focusTarget.TotalCastTime && config.FocusTarget) {
-                    var castTime = (focusTarget.TotalCastTime - focusTarget.CurrentCastTime).ToString("00.00");
+                    var castTime = (focusTarget.TotalCastTime - focusTarget.CurrentCastTime).ToString("00.00", CultureInfo.InvariantCulture);
 
                     focusTargetTextNode.String = castTime;
                 }
@@ -305,7 +306,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
                     
                     var targetObject = Services.ObjectTable.FirstOrDefault(obj => obj.EntityId == info.ObjectId.ObjectId);
                     if (targetObject is IBattleNpc enemyTarget && enemyTarget.CurrentCastTime < enemyTarget.TotalCastTime) {
-                        var castTime = (enemyTarget.TotalCastTime - enemyTarget.CurrentCastTime).ToString("00.00");
+                        var castTime = (enemyTarget.TotalCastTime - enemyTarget.CurrentCastTime).ToString("00.00", CultureInfo.InvariantCulture);
 
                         if (node is not null) {
                             node.String = castTime;
