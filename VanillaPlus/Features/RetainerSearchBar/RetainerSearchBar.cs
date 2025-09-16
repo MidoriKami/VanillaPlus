@@ -8,8 +8,8 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using FFXIVClientStructs.Interop;
 using KamiToolKit;
 using Lumina.Extensions;
-using VanillaPlus.Basic_Nodes;
 using VanillaPlus.Classes;
+using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.RetainerSearchBar;
 
