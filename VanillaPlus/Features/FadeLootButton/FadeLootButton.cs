@@ -42,7 +42,7 @@ public unsafe class FadeLootButton : GameModification {
         
         notificationLootController = new AddonController("_NotificationLoot");
         notificationLootController.OnUpdate += OnLootRefresh;
-        notificationLootController.OnPostDisable += OnLootDisable;
+        notificationLootController.OnDetach += OnLootDisable;
         notificationLootController.Enable();
     }
 
