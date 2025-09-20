@@ -27,12 +27,6 @@ public unsafe class MacroTooltips : GameModification {
     [Signature("E8 ?? ?? ?? ?? 4C 8B 64 24 ?? 48 8B 7C 24 ?? 48 8B 74 24 ?? 4C 8B 6C 24 ??", DetourName = nameof(OnShowMacroTooltip))]
     private Hook<ShowMacroTooltipDelegate>? showTooltipHook;
     
-    private delegate byte ResolveMacroIconDelegate(RaptureMacroModule* thisPtr, UIModule* uiModule, 
-        RaptureHotbarModule.HotbarSlotType* outType, uint* outRowId, int setId, uint macroId, uint* outItemId);
-
-    [Signature("E8 ?? ?? ?? ?? 84 C0 74 ?? 0F B6 74 24")]
-    private ResolveMacroIconDelegate? resolveMacroIconFunction;
-
     public override string ImageName => "MacroTooltips.png";
 
     public override void OnEnable() {
@@ -43,8 +37,6 @@ public unsafe class MacroTooltips : GameModification {
     public override void OnDisable() {
         showTooltipHook?.Dispose();
         showTooltipHook = null;
-
-        resolveMacroIconFunction = null;
     }
 
     private void OnShowMacroTooltip(AddonActionBarBase* a1, AtkResNode* macroResNode, NumberArrayData* numberArray, StringArrayData* stringArray, int numberArrayIndex, int stringArrayIndex) {
@@ -69,7 +61,7 @@ public unsafe class MacroTooltips : GameModification {
                 var rowId = stackalloc uint[1];
                 var itemId = stackalloc uint[1];
 
-                resolveMacroIconFunction?.Invoke(RaptureMacroModule.Instance(), UIModule.Instance(), slotType, rowId, isShared ? 1 : 0, macroIndex, itemId);
+                RaptureMacroModule.Instance()->TryResolveMacroIcon(UIModule.Instance(), slotType, rowId, isShared ? 1 : 0, macroIndex, itemId);
 
                 macroResNode->ShowActionTooltip(*rowId, originalTooltip);
             }
