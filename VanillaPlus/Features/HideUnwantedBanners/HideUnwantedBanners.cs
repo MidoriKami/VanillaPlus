@@ -18,7 +18,7 @@ public unsafe class HideUnwantedBanners : GameModification {
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@HideUnwantedBanner"),
     };
 
-    private delegate void ImageSetImageTextureDelegate(AtkUnitBase* addon, int bannerId, int a3, int sfxId);
+    private delegate void ImageSetImageTextureDelegate(AtkUnitBase* addon, int bannerId, IconSubFolder language, int sfxId);
 
     [Signature("48 89 5C 24 ?? 57 48 83 EC 30 48 8B D9 89 91", DetourName = nameof(OnSetImageTexture))]
     private Hook<ImageSetImageTextureDelegate>? setImageTextureHook;
@@ -46,12 +46,12 @@ public unsafe class HideUnwantedBanners : GameModification {
         config = null;
     }
 
-    private void OnSetImageTexture(AtkUnitBase* addon, int bannerId, int a3, int soundEffectId) {
+    private void OnSetImageTexture(AtkUnitBase* addon, int bannerId, IconSubFolder language, int soundEffectId) {
         var skipOriginal = false;
 
         try {
             if (config is null) {
-                setImageTextureHook!.Original(addon, skipOriginal ? 0 : bannerId, a3, skipOriginal ? 0 : soundEffectId);
+                setImageTextureHook!.Original(addon, skipOriginal ? 0 : bannerId, language, skipOriginal ? 0 : soundEffectId);
                 return;
             }
             
@@ -60,6 +60,6 @@ public unsafe class HideUnwantedBanners : GameModification {
             Services.PluginLog.Error(e, "Exception in OnSetImageTexture");
         }
 
-        setImageTextureHook!.Original(addon, skipOriginal ? 0 : bannerId, a3, skipOriginal ? 0 : soundEffectId);
+        setImageTextureHook!.Original(addon, skipOriginal ? 0 : bannerId, language, skipOriginal ? 0 : soundEffectId);
     }
 }
