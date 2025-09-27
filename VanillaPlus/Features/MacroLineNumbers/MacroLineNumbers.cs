@@ -36,7 +36,7 @@ public unsafe class MacroLineNumbers : GameModification {
             var textInputNode = addon->GetNodeById<AtkComponentNode>(119);
             if (textInputNode is null) return;
             
-            AdjustInputSize(textInputNode, sizeOffset);
+            RepositionNode(textInputNode, sizeOffset);
             
             foreach (var index in Enumerable.Range(0, 15)) {
                 var newTextNode = new TextNode {
@@ -57,7 +57,7 @@ public unsafe class MacroLineNumbers : GameModification {
             var textInputNode = addon->GetNodeById<AtkComponentNode>(119);
             if (textInputNode is null) return;
 
-            AdjustInputSize(textInputNode, -sizeOffset);
+            RepositionNode(textInputNode, -sizeOffset);
             
             foreach (var node in textNodes) {
                 System.NativeController.DetachNode(node, () => {
@@ -79,7 +79,7 @@ public unsafe class MacroLineNumbers : GameModification {
         textNodes = null;
     }
 
-    private static void AdjustInputSize(AtkComponentNode* inputComponentNode, Vector2 offset) {
+    private static void RepositionNode(AtkComponentNode* inputComponentNode, Vector2 offset) {
         var collisionNode = inputComponentNode->SearchNodeById<AtkCollisionNode>(20);
         var backgroundNode = inputComponentNode->SearchNodeById<AtkNineGridNode>(19);
         var borderNode = inputComponentNode->SearchNodeById<AtkNineGridNode>(18);
