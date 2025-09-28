@@ -29,10 +29,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@TargetCastbarCountdown"),
     };
 
-    private AddonController<AtkUnitBase>? targetInfoCastBarController;
-    private AddonController<AtkUnitBase>? targetInfoController;
-    private AddonController<AtkUnitBase>? focusTargetController;
-    private AddonController<AtkUnitBase>? castBarEnemyController;
+    private MultiAddonController? addonController;
     
     private TextNode? primaryTargetTextNode;
     private TextNode? primaryTargetAltTextNode;
@@ -52,50 +49,28 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
     public override void OnEnable() {
         config = TargetCastBarCountdownConfig.Load();
-        configWindow = new TargetCastBarCountdownConfigWindow(config, DrawNodeConfigs, SaveNodes);
+        configWindow = new TargetCastBarCountdownConfigWindow(config, DrawNodeConfigs, () => {
+            primaryTargetTextNode?.Save(PrimaryTargetStylePath);
+            primaryTargetAltTextNode?.Save(PrimaryTargetAltStylePath);
+            focusTargetTextNode?.Save(FocusTargetStylePath);
+            castBarEnemyTextNode?.First()?.Save(CastBarEnemyStylePath);
+        });
         configWindow.AddToWindowSystem();
         OpenConfigAction = configWindow.Toggle;
 
-        targetInfoCastBarController = new AddonController<AtkUnitBase>("_TargetInfoCastBar");
-        targetInfoCastBarController.OnAttach += AttachNode;
-        targetInfoCastBarController.OnDetach += DetachNode;
-        targetInfoCastBarController.OnUpdate += UpdateNode;
-        targetInfoCastBarController.Enable();
-        
-        targetInfoController = new AddonController<AtkUnitBase>("_TargetInfo");
-        targetInfoController.OnAttach += AttachNode;
-        targetInfoController.OnDetach += DetachNode;
-        targetInfoController.OnUpdate += UpdateNode;
-        targetInfoController.Enable();
-        
-        focusTargetController = new AddonController<AtkUnitBase>("_FocusTargetInfo");
-        focusTargetController.OnAttach += AttachNode;
-        focusTargetController.OnDetach += DetachNode;
-        focusTargetController.OnUpdate += UpdateNode;
-        focusTargetController.Enable();
-
-        castBarEnemyController = new AddonController<AtkUnitBase>("CastBarEnemy");
-        castBarEnemyController.OnAttach += AttachNode;
-        castBarEnemyController.OnDetach += DetachNode;
-        castBarEnemyController.OnUpdate += UpdateNode;
-        castBarEnemyController.Enable();
+        addonController = new MultiAddonController("_TargetInfoCastBar", "_TargetInfo", "_FocusTargetInfo", "CastBarEnemy");
+        addonController.OnAttach += AttachNode;
+        addonController.OnDetach += DetachNode;
+        addonController.OnUpdate += UpdateNode;
+        addonController.Enable();
     }
 
     public override void OnDisable() {
         configWindow?.RemoveFromWindowSystem();
         configWindow = null;
-        
-        targetInfoCastBarController?.Dispose();
-        targetInfoCastBarController = null;
-        
-        targetInfoController?.Dispose();
-        targetInfoController = null;
-        
-        focusTargetController?.Dispose();
-        focusTargetController = null;
-        
-        castBarEnemyController?.Dispose();
-        castBarEnemyController = null;
+
+        addonController?.Dispose();
+        addonController = null;
 
         castBarEnemyTextNode = null;
     }
@@ -141,65 +116,47 @@ public unsafe class TargetCastBarCountdown : GameModification {
             }
         }
     }
-    
-    private void SaveNodes() {
-        primaryTargetTextNode?.Save(PrimaryTargetStylePath);
-        primaryTargetAltTextNode?.Save(PrimaryTargetAltStylePath);
-        focusTargetTextNode?.Save(FocusTargetStylePath);
-        castBarEnemyTextNode?.First()?.Save(CastBarEnemyStylePath);
-    }
+
+    private static TextNode BuildTextNode(Vector2 position) => new() {
+        Size = new Vector2(82.0f, 22.0f),
+        Position = position,
+        FontSize = 20,
+        TextFlags = TextFlags.Edge,
+        TextOutlineColor = ColorHelper.GetColor(54),
+        FontType = FontType.Miedinger,
+        AlignmentType = AlignmentType.Right,
+        IsVisible = true,
+    };
 
     private void AttachNode(AtkUnitBase* addon) {
         switch (addon->NameString) {
             case "_TargetInfoCastBar":
-                primaryTargetTextNode = new TextNode {
-                    Size = new Vector2(82.0f, 22.0f),
-                    Position = new Vector2(0.0f, 16.0f),
-                    FontSize = 20,
-                    TextFlags = TextFlags.Edge,
-                    TextOutlineColor = ColorHelper.GetColor(54),
-                    FontType = FontType.Miedinger,
-                    AlignmentType = AlignmentType.Right,
-                    IsVisible = true,
-                };
+                primaryTargetTextNode = BuildTextNode(new Vector2(0.0f, 16.0f));
+
                 primaryTargetTextNode.Load(PrimaryTargetStylePath);
                 primaryTargetTextNode.IsVisible = true;
-                
+
                 System.NativeController.AttachNode(primaryTargetTextNode, addon->GetNodeById(7), NodePosition.AsLastChild);
                 break;
-            
+
             case "_TargetInfo":
-                primaryTargetAltTextNode = new TextNode {
-                    Size = new Vector2(82.0f, 22.0f),
-                    Position = new Vector2(0.0f, -16.0f),
-                    FontSize = 20,
-                    TextFlags = TextFlags.Edge,
-                    TextOutlineColor = ColorHelper.GetColor(54),
-                    FontType = FontType.Miedinger,
-                    AlignmentType = AlignmentType.Right,
-                    IsVisible = true,
-                };
+                primaryTargetAltTextNode = BuildTextNode(new Vector2(0.0f, -16.0f));
+
                 primaryTargetAltTextNode.Load(PrimaryTargetAltStylePath);
                 primaryTargetAltTextNode.IsVisible = true;
+
                 System.NativeController.AttachNode(primaryTargetAltTextNode, addon->GetNodeById(15), NodePosition.AsLastChild);
                 break;
-            
+
             case "_FocusTargetInfo":
-                focusTargetTextNode = new TextNode {
-                    Size = new Vector2(82.0f, 22.0f),
-                    Position = new Vector2(0.0f, -16.0f),
-                    FontSize = 20,
-                    TextFlags = TextFlags.Edge,
-                    TextOutlineColor = ColorHelper.GetColor(54),
-                    FontType = FontType.Miedinger,
-                    AlignmentType = AlignmentType.Right,
-                    IsVisible = true,
-                };
+                focusTargetTextNode = BuildTextNode(new Vector2(0.0f, -16.0f));
+
                 focusTargetTextNode.Load(FocusTargetStylePath);
                 focusTargetTextNode.IsVisible = true;
+
                 System.NativeController.AttachNode(focusTargetTextNode, addon->GetNodeById(8), NodePosition.AsLastChild);
                 break;
-            
+
             case "CastBarEnemy":
                 var castBarAddon = (AddonCastBarEnemy*)addon;
                 castBarEnemyTextNode = new TextNode[10];
@@ -207,16 +164,11 @@ public unsafe class TargetCastBarCountdown : GameModification {
                 foreach (var index in Enumerable.Range(0, 10)) {
                     ref var info = ref castBarAddon->CastBarNodes[index];
 
-                    var newNode = new TextNode {
-                        Size = new Vector2(82.0f, 24.0f),
-                        Position = new Vector2(0.0f, -12.0f),
-                        FontSize = 12,
-                        TextFlags = TextFlags.Edge,
-                        TextOutlineColor = ColorHelper.GetColor(54),
-                        FontType = FontType.Miedinger,
-                        AlignmentType = AlignmentType.BottomRight,
-                        IsVisible = true,
-                    };
+                    var newNode = BuildTextNode(new Vector2(0.0f, -12.0f)); 
+
+                    newNode.Size = new Vector2(82.0f, 24.0f);
+                    newNode.AlignmentType = AlignmentType.BottomRight;
+                    newNode.FontSize = 12;
                     
                     castBarEnemyTextNode[index] = newNode;
                     newNode.Load(CastBarEnemyStylePath);
@@ -274,27 +226,15 @@ public unsafe class TargetCastBarCountdown : GameModification {
         
         switch (addon->NameString) {
             case "_TargetInfoCastBar" when primaryTargetTextNode is not null:
-                if (Services.TargetManager.Target is IBattleChara primaryTarget && primaryTarget.CurrentCastTime < primaryTarget.TotalCastTime && config.PrimaryTarget) {
-                    var castTime = (primaryTarget.TotalCastTime - primaryTarget.CurrentCastTime).ToString("00.00", CultureInfo.InvariantCulture);
-
-                    primaryTargetTextNode.String = castTime;
-                }
+                primaryTargetTextNode.String = GetCastTime(GetTarget(), config.PrimaryTarget);
                 break;
 
             case "_TargetInfo" when primaryTargetAltTextNode is not null:
-                if (Services.TargetManager.Target is IBattleChara target && target.CurrentCastTime < target.TotalCastTime && config.PrimaryTarget) {
-                    var castTime = (target.TotalCastTime - target.CurrentCastTime).ToString("00.00", CultureInfo.InvariantCulture);
-
-                    primaryTargetAltTextNode.String = castTime;
-                }
+                primaryTargetAltTextNode.String = GetCastTime(GetTarget(), config.PrimaryTarget);
                 break;
             
             case "_FocusTargetInfo" when focusTargetTextNode is not null:
-                if (Services.TargetManager.FocusTarget is IBattleChara focusTarget && focusTarget.CurrentCastTime < focusTarget.TotalCastTime && config.FocusTarget) {
-                    var castTime = (focusTarget.TotalCastTime - focusTarget.CurrentCastTime).ToString("00.00", CultureInfo.InvariantCulture);
-
-                    focusTargetTextNode.String = castTime;
-                }
+                focusTargetTextNode.String = GetCastTime(GetFocusTarget(), config.FocusTarget);
                 break;
             
             case "CastBarEnemy" when castBarEnemyTextNode is not null:
@@ -303,17 +243,29 @@ public unsafe class TargetCastBarCountdown : GameModification {
                 foreach (var index in Enumerable.Range(0, 10)) {
                     var info = castBarAddon->CastBarInfo[index];
                     var node = castBarEnemyTextNode[index];
-                    
-                    var targetObject = Services.ObjectTable.FirstOrDefault(obj => obj.EntityId == info.ObjectId.ObjectId);
-                    if (targetObject is IBattleNpc enemyTarget && enemyTarget.CurrentCastTime < enemyTarget.TotalCastTime) {
-                        var castTime = (enemyTarget.TotalCastTime - enemyTarget.CurrentCastTime).ToString("00.00", CultureInfo.InvariantCulture);
 
-                        if (node is not null) {
-                            node.String = castTime;
-                        }
+                    if (node is not null) {
+                        node.String = GetCastTime(GetEntity(info.ObjectId.ObjectId), true);
                     }
                 }
                 break;
         }
     }
+
+    private static string GetCastTime(IBattleChara? target, bool enabled) {
+        if (!enabled) return string.Empty;
+        if (target is null) return string.Empty;
+        if (target.CurrentCastTime >= target.TotalCastTime) return string.Empty;
+        
+        return (target.TotalCastTime - target.CurrentCastTime).ToString("00.00", CultureInfo.InvariantCulture);
+    }
+    
+    private static IBattleChara? GetTarget()
+        => Services.TargetManager.Target as IBattleChara ?? Services.TargetManager.SoftTarget as IBattleChara;
+
+    private static IBattleChara? GetFocusTarget()
+        => Services.TargetManager.FocusTarget as IBattleChara;
+
+    private static IBattleChara? GetEntity(uint entityId)
+        => Services.ObjectTable.FirstOrDefault(obj => obj.EntityId == entityId) as IBattleChara;
 }
