@@ -166,7 +166,6 @@ public unsafe class WindowBackground : GameModification {
                             Position = -config.Padding / 2.0f,
                             Color = config.Color,
                             IsVisible = true,
-                            FitTexture = true,
                         };
 
                         System.NativeController.AttachNode(newBackgroundNode, node, NodePosition.BeforeTarget);
@@ -184,7 +183,6 @@ public unsafe class WindowBackground : GameModification {
                     Size = (addon->Size() + config.Padding) * addon->Scale,
                     Position = addon->Position() - config.Padding / 2.0f,
                     Color = config.Color,
-                    FitTexture = true,
                 };
 
                 System.NativeController.AttachNode(newBackgroundNode, nameplateOverlayNode);
