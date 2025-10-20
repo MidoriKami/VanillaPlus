@@ -37,10 +37,10 @@ public unsafe class ConfigAddon : NativeAddon {
         configurationListNode.ContentHeight = configurationListNode.ContentNode.Nodes.Sum(node => node.Height);
 
         if (configurationListNode.ContentHeight < MaximumHeight) {
-            Size = new Vector2(Width, configurationListNode.ContentHeight + ContentStartPosition.Y + 16.0f);
+            Size = new Vector2(Width, configurationListNode.ContentHeight + ContentStartPosition.Y + 24.0f);
         }
         else {
-            Size = new Vector2(Width, MaximumHeight + ContentStartPosition.Y + 16.0f);
+            Size = new Vector2(Width, MaximumHeight + ContentStartPosition.Y + 24.0f);
         }
 
         addon->SetSize((ushort)Size.X, (ushort)Size.Y);
