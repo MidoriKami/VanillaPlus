@@ -27,12 +27,13 @@ public unsafe class ConfigAddon : NativeAddon {
         AttachNode(configurationListNode);
 
         foreach (var category in configCategories) {
-            var listNode = category.BuildNode();
-            configurationListNode.ContentNode.AddNode(listNode);
-
-            listNode.Width = configurationListNode.ContentNode.Width;
-            listNode.RecalculateLayout();
+            configurationListNode.ContentNode.AddNode(category.BuildNode());
         }
+        RecalculateWindowSize();
+    }
+
+    private void RecalculateWindowSize() {
+        if (configurationListNode is null) return;
 
         configurationListNode.ContentHeight = configurationListNode.ContentNode.Nodes.Sum(node => node.Height);
 
@@ -42,11 +43,17 @@ public unsafe class ConfigAddon : NativeAddon {
         else {
             Size = new Vector2(Width, MaximumHeight + ContentStartPosition.Y + 24.0f);
         }
-
-        addon->SetSize((ushort)Size.X, (ushort)Size.Y);
-        WindowNode.Size = Size;
+        
+        ChangeWindowSize(Size);
+        
         configurationListNode.Size = ContentSize + new Vector2(0.0f, ContentPadding.Y);
         configurationListNode.Position = ContentStartPosition - new Vector2(0.0f, ContentPadding.Y);
+        configurationListNode.ContentNode.RecalculateLayout();
+
+        foreach (var node in configurationListNode.ContentNode.GetNodes<TabbedVerticalListNode>()) {
+            node.Width = configurationListNode.ContentNode.Width;
+            node.RecalculateLayout();
+        }
     }
 
     public ConfigCategory AddCategory(string label) {
@@ -57,5 +64,13 @@ public unsafe class ConfigAddon : NativeAddon {
         
         configCategories.Add(newCategory);
         return newCategory;
+    }
+
+    public override void Dispose() {
+        base.Dispose();
+
+        foreach (var category in configCategories) {
+            category.Dispose();
+        }
     }
 }
