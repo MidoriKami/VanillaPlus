@@ -40,7 +40,6 @@ public unsafe class EnhancedLootWindow : GameModification {
         config = EnhancedLootWindowConfig.Load();
         configWindow = new ConfigAddon {
             NativeController = System.NativeController,
-            Size = new Vector2(300.0f, 150.0f),
             InternalName = "EnhancedLootWindowConfig",
             Title = "Enhanced Loot Window Config",
             Config = config,
