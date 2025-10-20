@@ -10,4 +10,6 @@ public abstract class BaseConfigEntry : IConfigEntry {
     public required ISavable Config { get; init; }
 
     public abstract NodeBase BuildNode();
+
+    public virtual void Dispose() { }
 }

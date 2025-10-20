@@ -1,7 +1,8 @@
-﻿using KamiToolKit.System;
+﻿using System;
+using KamiToolKit.System;
 
 namespace VanillaPlus.NativeElements.Config.ConfigEntries;
 
-public interface IConfigEntry {
+public interface IConfigEntry : IDisposable {
     NodeBase BuildNode();
 }
