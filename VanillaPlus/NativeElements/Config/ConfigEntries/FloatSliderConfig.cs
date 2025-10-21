@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 using KamiToolKit.Nodes.Slider;
 using KamiToolKit.System;
@@ -18,11 +17,12 @@ public class FloatSliderConfig : BaseConfigEntry {
         var layoutNode = new HorizontalListNode {
             Height = 24.0f,
             IsVisible = true,
-            ItemSpacing = 20.0f,
+            ItemSpacing = 40.0f,
         };
 
         var sliderNode = new SliderNode {
             Size = new Vector2(175.0f, 24.0f),
+            Position = new Vector2(0.0f, 4.0f),
             IsVisible = true,
             DecimalPlaces = DecimalPlaces,
             Range = (int)(MinValue * Math.Pow(10, DecimalPlaces))..(int)(MaxValue * Math.Pow(10, DecimalPlaces)),
@@ -31,15 +31,8 @@ public class FloatSliderConfig : BaseConfigEntry {
             Step = (int)(StepSpeed * MathF.Pow(10, DecimalPlaces)),
         };
 
-        var labelNode = new SimpleLabelNode {
-            IsVisible = true,
-            Size = new Vector2(0.0f, 24.0f),
-            AlignmentType = AlignmentType.TopLeft,
-            String = Label,
-        };
-
         layoutNode.AddNode(sliderNode);
-        layoutNode.AddNode(labelNode);
+        layoutNode.AddNode(GetLabelNode());
 
         return layoutNode;
     }
