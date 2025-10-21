@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using KamiToolKit.Nodes;
@@ -7,7 +8,7 @@ using VanillaPlus.NativeElements.Config.ConfigEntries;
 
 namespace VanillaPlus.NativeElements.Config;
 
-public class ConfigCategory {
+public class ConfigCategory : IDisposable {
     public required string CategoryLabel { get; init; }
     public required ISavable ConfigObject { get; init; }
 
@@ -101,5 +102,81 @@ public class ConfigCategory {
     public ConfigCategory AddIndent() {
         configEntries.Add(new IndentEntry());
         return this;
+    }
+
+    public ConfigCategory AddColorEdit(string label, string memberName, Vector4? defaultColor = null) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<Vector4>(ConfigObject);
+
+        configEntries.Add(new ColorConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            Color = initialValue,
+            DefaultColor = defaultColor,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddInputInt(string label, int step, Range range, string memberName) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+        
+        var initialValue = memberInfo.GetValue<int>(ConfigObject);
+        
+        configEntries.Add(new IntInputConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            Step = step,
+            Range = range,
+            InitialValue = initialValue,
+        });
+
+        return this;
+    }
+
+    // Input elements can't represent floats, so it will be truncated to an int
+    public ConfigCategory AddInputFloat(string label, int step, Range range, string memberName) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+        
+        var initialValue = memberInfo.GetValue<float>(ConfigObject);
+
+        configEntries.Add(new FloatInputConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            Step = step,
+            Range = range,
+            InitialValue = initialValue,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddSelectIcon(string label, string memberName) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+        
+        var initialValue = memberInfo.GetValue<uint>(ConfigObject);
+        
+        configEntries.Add(new SelectIconConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            InitialIcon = initialValue,
+        });
+
+        return this;
+    }
+
+    public void Dispose() {
+        foreach (var entry in configEntries) {
+            entry.Dispose();
+        }
     }
 }
