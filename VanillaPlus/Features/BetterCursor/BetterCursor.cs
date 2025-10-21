@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿using System.Drawing;
+using System.Numerics;
+using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Client.System.Input;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -6,6 +8,7 @@ using KamiToolKit;
 using KamiToolKit.Classes.TimelineBuilding;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
+using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.BetterCursor;
 
@@ -28,14 +31,37 @@ public unsafe class BetterCursor : GameModification {
     private AddonController<AtkUnitBase>? screenTextController;
 
     private BetterCursorConfig? config;
-    private BetterCursorConfigWindow? configWindow;
+    private ConfigAddon? configWindow;
 
     public override string ImageName => "BetterCursor.png";
 
     public override void OnEnable() {
         config = BetterCursorConfig.Load();
-        configWindow = new BetterCursorConfigWindow(config, UpdateNodeConfig);
-        configWindow.AddToWindowSystem();
+
+        configWindow = new ConfigAddon {
+            NativeController = System.NativeController,
+            InternalName = "BetterCursorConfig",
+            Title = "Better Cursor Config",
+            Config = config,
+        };
+
+        configWindow.AddCategory("Style")
+            .AddColorEdit("Color", nameof(config.Color), KnownColor.White.Vector())
+            .AddInputFloat("Size", 16, 16..512, nameof(config.Size));
+
+        configWindow.AddCategory("Functions")
+            .AddCheckbox("Enable Animation", nameof(config.Animations))
+            .AddCheckbox("Hide on Left-Hold or Right-Hold", nameof(config.HideOnCameraMove));
+        
+        configWindow.AddCategory("Visibility")
+            .AddCheckbox("Only show in Combat", nameof(config.OnlyShowInCombat))
+            .AddCheckbox("Only Show in Duties", nameof(config.OnlyShowInDuties));
+
+        configWindow.AddCategory("Icon Selection")
+            .AddSelectIcon("Icon", nameof(config.IconId));
+
+        config.OnSave += UpdateNodeConfig;
+
         OpenConfigAction = configWindow.Toggle;
 
         screenTextController = new AddonController<AtkUnitBase>("_ScreenText");
@@ -49,7 +75,7 @@ public unsafe class BetterCursor : GameModification {
         screenTextController?.Dispose();
         screenTextController = null;
         
-        configWindow?.RemoveFromWindowSystem();
+        configWindow?.Dispose();
         configWindow = null;
         
         config = null;
