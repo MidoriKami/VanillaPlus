@@ -29,8 +29,6 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
     private Vector2 dragStart = Vector2.Zero;
     private bool isDragging;
 
-    public override bool IsExperimental => true;
-
     public override void OnEnable() {
         windowInteractionNodes = [];
         
@@ -55,22 +53,27 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
     
     private void OnAddonSetup(AddonEvent type, AddonArgs args) {
         var addon = (AtkUnitBase*)args.Addon.Address;
-        
+
         if (addon->WindowNode is not null) {
-            var newInteractionNode = new ResNode {
-                Size = new Vector2(addon->WindowNode->Width, addon->WindowNode->Height),
-                Position = new Vector2(addon->WindowNode->X, addon->WindowNode->Y),
-                IsVisible = true,
-                EventFlagsSet = true,
-            };
+            foreach (var node in addon->WindowNode->Component->UldManager.Nodes) {
+                if (node.Value is null) continue;
+                if (node.Value->GetNodeType() is NodeType.NineGrid) {
+                    var newInteractionNode = new ResNode {
+                        Size = node.Value->Size(),
+                        IsVisible = true,
+                        EventFlagsSet = true,
+                    };
             
-            newInteractionNode.AddEvent(AddonEventType.MouseOver, OnWindowMouseOver);
-            newInteractionNode.AddEvent(AddonEventType.MouseClick, OnWindowMouseClick, addClickHelpers: false);
-            newInteractionNode.AddEvent(AddonEventType.MouseOut, OnWindowMouseOut);
-            newInteractionNode.AddEvent(AddonEventType.MouseDown, OnWindowMouseDown);
+                    newInteractionNode.AddEvent(AddonEventType.MouseOver, OnWindowMouseOver);
+                    newInteractionNode.AddEvent(AddonEventType.MouseClick, OnWindowMouseClick, addClickHelpers: false);
+                    newInteractionNode.AddEvent(AddonEventType.MouseOut, OnWindowMouseOut);
+                    newInteractionNode.AddEvent(AddonEventType.MouseDown, OnWindowMouseDown);
             
-            System.NativeController.AttachNode(newInteractionNode, addon->RootNode, NodePosition.AsFirstChild);
-            windowInteractionNodes?.Add(args.AddonName, newInteractionNode);
+                    System.NativeController.AttachNode(newInteractionNode, node, NodePosition.BeforeTarget);
+                    windowInteractionNodes?.Add(args.AddonName, newInteractionNode);
+                    return;
+                }
+            }
         }
     }
 
@@ -82,9 +85,8 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         }
     }
     
-    private void OnWindowMouseOver(AddonEventData addonEventData) {
-        Services.AddonEventManager.SetCursor(AddonCursorType.Hand);
-    }
+    private static void OnWindowMouseOver(AddonEventData addonEventData)
+        => Services.AddonEventManager.SetCursor(AddonCursorType.Hand);
 
     private void OnWindowMouseClick(AddonEventData obj) {
         if (!isDragging) {
