@@ -26,7 +26,7 @@ public class IntSliderConfig : BaseConfigEntry {
             Value = InitialValue,
         };
 
-        var labelNode = new SimpleLabelNode {
+        var labelNode = new LabelTextNode {
             IsVisible = true,
             Size = new Vector2(0.0f, 24.0f),
             String = Label,

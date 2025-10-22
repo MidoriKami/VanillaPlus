@@ -25,7 +25,7 @@ public class ConfigCategory : IDisposable {
             IsVisible = true,
         });
         
-        tabbedListNode.AddNode(new SimpleLabelNode {
+        tabbedListNode.AddNode(new LabelTextNode {
             String = CategoryLabel,
             IsVisible = true,
         });
