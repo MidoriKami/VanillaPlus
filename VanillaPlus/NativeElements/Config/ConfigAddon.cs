@@ -44,7 +44,7 @@ public unsafe class ConfigAddon : NativeAddon {
             Size = new Vector2(Width, MaximumHeight + ContentStartPosition.Y + 24.0f);
         }
         
-        ChangeWindowSize(Size);
+        SetWindowSize(Size);
         
         configurationListNode.Size = ContentSize + new Vector2(0.0f, ContentPadding.Y);
         configurationListNode.Position = ContentStartPosition - new Vector2(0.0f, ContentPadding.Y);
