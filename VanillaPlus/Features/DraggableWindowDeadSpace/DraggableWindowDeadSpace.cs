@@ -96,6 +96,19 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
     }
 
     private void OnWindowMouseDown(AddonEventData obj) {
+        var targetAddon = (AtkUnitBase*)obj.AddonPointer;
+        if (targetAddon is null) return;
+
+        var addonHeaderNode = targetAddon->WindowHeaderCollisionNode;
+        if (addonHeaderNode is null) return;
+
+        ref var mouseData = ref ((AtkEventData*)obj.AtkEventDataPointer)->MouseData;
+        var mousePosition = new Vector2(mouseData.PosX, mouseData.PosY);
+
+        if (addonHeaderNode->CheckCollisionAtCoords((short)mousePosition.X, (short)mousePosition.Y, true)) {
+            return;
+        }
+
         if (!isDragging) {
             dragStart = obj.GetMousePosition();
             Services.AddonEventManager.SetCursor(AddonCursorType.Grab);
@@ -117,14 +130,11 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         var targetAddon = RaptureAtkUnitManager.Instance()->GetAddonByNode(atkEvent->Node);
         if (targetAddon is null) return;
 
-        var addonHeaderNode = targetAddon->WindowHeaderCollisionNode;
-        if (addonHeaderNode is null) return;
-        
         ref var mouseData = ref atkEventData->MouseData;
         var mousePosition = new Vector2(mouseData.PosX, mouseData.PosY);
         
         switch (eventType) {
-            case AtkEventType.MouseMove when !addonHeaderNode->CheckCollisionAtCoords((short)mousePosition.X, (short)mousePosition.Y, true):
+            case AtkEventType.MouseMove:
                 var position = new Vector2(targetAddon->X, targetAddon->Y);
                 var dragDelta = dragStart - mousePosition;
                 dragStart = mousePosition;
