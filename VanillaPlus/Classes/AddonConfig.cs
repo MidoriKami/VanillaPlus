@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 using Dalamud.Game.ClientState.Keys;
+using Dalamud.Utility;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Classes;
@@ -8,21 +8,24 @@ namespace VanillaPlus.Classes;
 public class AddonConfig {
     private string fileName = null!;
    
-    public static AddonConfig Load(string fileName, HashSet<VirtualKey> defaultKeyCombo) {
+    public static AddonConfig Load(string fileName, Keybind defaultKeyCombo) {
         var loadedConfig = Config.LoadConfig<AddonConfig>(fileName);
         loadedConfig.fileName = fileName;
 
-        if (loadedConfig.OpenKeyCombo.Count is 0) {
-            loadedConfig.OpenKeyCombo = defaultKeyCombo;
+        if (loadedConfig.Keybind is { Key: VirtualKey.NO_KEY, Modifiers.Count: 0 }) {
+            loadedConfig.Keybind = defaultKeyCombo;
             loadedConfig.Save();
         }
         return loadedConfig;
     }
 
-    public void Save()
-        => Config.SaveConfig(this, fileName);
+    public void Save() {
+        if (fileName.IsNullOrEmpty()) return;
+        Config.SaveConfig(this, fileName);
+    }
 
-    public HashSet<VirtualKey> OpenKeyCombo = [];
     public Vector2 WindowSize = Vector2.Zero;
     public bool KeybindEnabled = true;
+
+    public Keybind Keybind = new();
 }
