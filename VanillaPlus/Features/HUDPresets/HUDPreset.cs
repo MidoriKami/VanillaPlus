@@ -170,7 +170,7 @@ public unsafe class HUDPresets : GameModification {
 
         renameAddon.PlaceholderString = "New Preset Name";
         renameAddon.DefaultString = string.Empty;
-        renameAddon.ResultCallback = newName => {
+        renameAddon.OnRenameComplete = newName => {
             HUDPresetManager.SavePreset(newName);
             if (presetDropdownNode?.Options is not null) {
                 presetDropdownNode.Options.Add(newName);

@@ -139,7 +139,7 @@ public unsafe class InstancedWaymarks : GameModification {
             defaultName = Services.DataManager.GetExcelSheet<ContentFinderCondition>().GetRow(cfc).Name.ToString();
         }
 
-        renameWindow.ResultCallback = newString => {
+        renameWindow.OnRenameComplete = newString => {
             config.NamedWaymarks.TryAdd(cfc, []);
             config.NamedWaymarks[cfc].TryAdd(slotClicked, newString);
             config.NamedWaymarks[cfc][slotClicked] = newString;

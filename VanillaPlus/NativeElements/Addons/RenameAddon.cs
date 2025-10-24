@@ -11,7 +11,7 @@ public class RenameAddon : NativeAddon {
     private TextButtonNode? confirmButton;
     private TextButtonNode? cancelButton;
 
-    public Action<string>? ResultCallback { get; set; }
+    public Action<string>? OnRenameComplete { get; set; }
     
     protected override unsafe void OnSetup(AtkUnitBase* addon) {
         inputNode = new TextInputNode {
@@ -33,7 +33,7 @@ public class RenameAddon : NativeAddon {
             IsVisible = true,
             String = "Confirm",
             OnClick = () => {
-                ResultCallback?.Invoke(inputNode.String);
+                OnRenameComplete?.Invoke(inputNode.String);
                 Close();
             },
         };
