@@ -14,6 +14,8 @@ public class RenameAddon : NativeAddon {
     public Action<string>? OnRenameComplete { get; set; }
     
     protected override unsafe void OnSetup(AtkUnitBase* addon) {
+        SetWindowSize(250.0f, 125.0f);
+
         inputNode = new TextInputNode {
             Position = ContentStartPosition + new Vector2(0.0f, ContentPadding.Y),
             Size = new Vector2(ContentSize.X, 28.0f),
