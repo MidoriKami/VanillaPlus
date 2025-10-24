@@ -23,6 +23,11 @@ public class RenameAddon : NativeAddon {
             PlaceholderString = PlaceholderString,
             String = DefaultString,
             AutoSelectAll = AutoSelectAll,
+            OnInputReceived = s => {
+                if (IsInputValid is not null) {
+                    inputNode!.IsError = !IsInputValid(s.ToString());
+                }
+            },
         };
         AttachNode(inputNode);
 
@@ -54,4 +59,5 @@ public class RenameAddon : NativeAddon {
     public string PlaceholderString { get; set; } = string.Empty;
     public string DefaultString { get; set; } = string.Empty;
     public bool AutoSelectAll { get; set; }
+    public Func<string, bool>? IsInputValid { get; set; }
 }
