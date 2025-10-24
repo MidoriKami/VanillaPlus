@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using KamiToolKit.Addon;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.DebugCustomAddon;
@@ -18,7 +19,7 @@ public class DebugCustomAddon : GameModification {
         ],
     };
 
-    private DebugAddon? debugAddon;
+    private NativeAddon? debugAddon;
 
     public override void OnEnable() {
         debugAddon = new DebugAddon {
