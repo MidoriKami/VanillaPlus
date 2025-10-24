@@ -8,7 +8,9 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addon;
 using KamiToolKit.Nodes;
+using Lumina.Extensions;
 using Keybind = VanillaPlus.Classes.Keybind;
+using VirtualKeyExtensions = VanillaPlus.Extensions.VirtualKeyExtensions;
 
 namespace VanillaPlus.NativeElements.Addons;
 
@@ -28,7 +30,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
     private readonly HashSet<VirtualKey> combo = [VirtualKey.NO_KEY];
     private readonly List<InputId> conflicts = [];
     
-    public required Keybind CurrentKeybind { get; init; }
+    public required Keybind InitialKeybind { get; init; }
     
     protected override void OnSetup(AtkUnitBase* addon) {
         SetWindowSize(500.0f, 333.0f);
@@ -100,6 +102,14 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             Size = new Vector2(100.0f, 24.0f),
             String = "Confirm",
             IsVisible = true,
+            OnClick = () => {
+                var newKeybind = new Keybind {
+                    Key = combo.FirstOrNull(VirtualKeyExtensions.IsKey) ?? VirtualKey.NO_KEY,
+                    Modifiers = combo.Where(VirtualKeyExtensions.IsModifier).ToHashSet(),
+                };
+                OnKeybindChanged(newKeybind); 
+                Close();
+            },
         };
         AttachNode(confirmButtonNode);
 
@@ -108,6 +118,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             Size = new Vector2(100.0f, 24.0f),
             String = "Cancel",
             IsVisible = true,
+            OnClick = Close,
         };
         AttachNode(cancelButtonNode);
 
