@@ -28,10 +28,10 @@ public unsafe class KeybindListener : IDisposable {
         // Don't process keybinds if any input text is active
         if (RaptureAtkModule.Instance()->IsTextInputActive()) return;
         
-        if (Services.KeyState.IsKeybindPressed(AddonConfig.OpenKeyCombo) && debouncer.ElapsedMilliseconds >= 250) {
-            Services.KeyState.ResetKeyCombo(AddonConfig.OpenKeyCombo);
+        if (AddonConfig.Keybind.IsPressed() && debouncer.ElapsedMilliseconds >= 25) {
+            AddonConfig.Keybind.Reset();
             debouncer.Restart();
-            
+
             KeybindCallback?.Invoke();
         }
     }
