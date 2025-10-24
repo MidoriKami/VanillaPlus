@@ -36,7 +36,10 @@ public class FateListWindow : GameModification {
             UpdateListFunction = UpdateList,
         };
 
-        addonFateList.Initialize([VirtualKey.CONTROL, VirtualKey.F] );
+        addonFateList.Initialize(new Keybind {
+            Key = VirtualKey.F,
+            Modifiers = [ VirtualKey.CONTROL ],
+        });
 
         OpenConfigAction = addonFateList.OpenAddonConfig;
     }

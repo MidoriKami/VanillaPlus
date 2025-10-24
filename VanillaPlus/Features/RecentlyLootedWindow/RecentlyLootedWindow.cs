@@ -44,8 +44,11 @@ public unsafe class RecentlyLootedWindow : GameModification {
             OpenCommand = "/recentloot",
             UpdateListFunction = UpdateList,
         };
-        
-        addonRecentlyLooted.Initialize([VirtualKey.CONTROL, VirtualKey.L]);
+
+        addonRecentlyLooted.Initialize(new Keybind {
+            Key = VirtualKey.L,
+            Modifiers = [ VirtualKey.CONTROL ],
+        });
 
         OpenConfigAction = addonRecentlyLooted.OpenAddonConfig;
 

@@ -47,7 +47,10 @@ public class ListInventory : GameModification {
             OpenCommand = "/listinventory",
         };
 
-        addonListInventory.Initialize([VirtualKey.SHIFT, VirtualKey.CONTROL, VirtualKey.I]);
+        addonListInventory.Initialize(new Keybind {
+            Key = VirtualKey.I,
+            Modifiers = [ VirtualKey.CONTROL, VirtualKey.SHIFT ],
+        });
 
         OpenConfigAction = addonListInventory.OpenAddonConfig;
 

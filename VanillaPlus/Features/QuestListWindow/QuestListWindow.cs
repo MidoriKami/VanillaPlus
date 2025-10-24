@@ -42,8 +42,12 @@ public unsafe class QuestListWindow : GameModification {
             OnSearchUpdated = OnSearchUpdated,
             OpenCommand = "/questlist",
         };
+
+        addonQuestList.Initialize(new Keybind {
+            Key = VirtualKey.J,
+            Modifiers = [ VirtualKey.CONTROL, VirtualKey.SHIFT ],
+        });
         
-        addonQuestList.Initialize([VirtualKey.MENU, VirtualKey.CONTROL, VirtualKey.J]);
         OnFilterUpdated("Type", false);
 
         OpenConfigAction = addonQuestList.OpenAddonConfig;

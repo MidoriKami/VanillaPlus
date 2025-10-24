@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.Command;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addon;
@@ -17,10 +15,10 @@ public unsafe class NodeListAddon : NativeAddon {
 
     private AddonConfig? config;
     private KeybindListener? keybindListener;
-    private AddonConfigWindow? addonConfigWindow;
+    private AddonConfigAddon? addonConfigWindow;
 
-    public void Initialize(HashSet<VirtualKey>? defaultOpenCombo = null) {
-        config = AddonConfig.Load($"{InternalName}.addon.json", defaultOpenCombo ?? []);
+    public void Initialize(Keybind? defaultOpenCombo = null) {
+        config = AddonConfig.Load($"{InternalName}.addon.json", defaultOpenCombo ?? new Keybind());
 
         keybindListener = new KeybindListener {
             AddonConfig = config,
@@ -33,7 +31,12 @@ public unsafe class NodeListAddon : NativeAddon {
             },
         };
 
-        addonConfigWindow = new AddonConfigWindow(Title.ToString(), config);
+        addonConfigWindow = new AddonConfigAddon {
+            NativeController = System.NativeController,
+            InternalName = $"{InternalName}Config",
+            Title = $"{InternalName} Configuration Window",
+            AddonConfig = config,
+        };
     }
 
     public override void Dispose() {
