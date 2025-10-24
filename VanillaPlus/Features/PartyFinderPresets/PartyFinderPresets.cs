@@ -1,11 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
+using KamiToolKit.Addons;
 using KamiToolKit.Nodes;
-using KamiToolKit.System;
 using VanillaPlus.Classes;
 using VanillaPlus.NativeElements.Addons;
 
@@ -28,29 +29,41 @@ public unsafe class PartyFinderPresets : GameModification {
     private TextButtonNode? savePresetButton;
     private TextDropDownNode? presetDropDown;
     
-    private PartyFinderSavePresetAddon? savePresetWindow;
-    private RenameAddon? renameWindow;
+    private RenameAddon? savePresetWindow;
 
-    private NodeListAddon? presetEditorAddon;
+    private ListConfigAddon<PresetInfo, PartyFinderPresetConfigNode>? presetEditorAddon;
 
     public override string ImageName => "PartyFinderPresets.png";
 
     public override void OnEnable() {
-        savePresetWindow = new PartyFinderSavePresetAddon {
+        presetEditorAddon = new ListConfigAddon<PresetInfo, PartyFinderPresetConfigNode> {
             NativeController = System.NativeController,
-            Size = new Vector2(300.0f, 215.0f),
-            InternalName = "LookingForGroupPreset",
-            Title = "Party Finder Preset",
-            Subtitle = "Vanilla Plus",
-            DepthLayer = 5,
+            Size = new Vector2(600.0f, 400.0f),
+            InternalName = "PresetEditorConfig",
+            Title = "Preset Editor Config Manager",
+
+            Options = GetPresetInfos(),
+
+            OnConfigChanged = _ => {
+                UpdateDropDownOptions();
+            },
+
+            OnItemRemoved = toRemove => {
+                PresetManager.DeletePreset(toRemove.Name);
+                UpdateDropDownOptions();
+            },
         };
 
-        presetEditorAddon = new NodeListAddon {
+        savePresetWindow = new RenameAddon {
             NativeController = System.NativeController,
-            Size = new Vector2(300.0f, 400.0f),
-            InternalName = "PresetEditorAddon",
-            Title = "Preset Editor",
-            UpdateListFunction = UpdateList,
+            InternalName = "PartyFinderPresetRename",
+            Title = "Party Finder Preset",
+            IsInputValid = PresetManager.IsValidFileName,
+            OnRenameComplete = newOption => {
+                PresetManager.SavePreset(newOption);
+                presetEditorAddon.Options = GetPresetInfos();
+                UpdateDropDownOptions();
+            },
         };
 
         OpenConfigAction = presetEditorAddon.Toggle;
@@ -66,7 +79,7 @@ public unsafe class PartyFinderPresets : GameModification {
                 IsVisible = true,
                 String = "Save Preset",
                 Tooltip = "[VanillaPlus]: Save current settings to a preset",
-                OnClick = SavePreset,
+                OnClick = savePresetWindow.Open,
             };
             System.NativeController.AttachNode(savePresetButton, addon->RootNode);
         };
@@ -118,54 +131,9 @@ public unsafe class PartyFinderPresets : GameModification {
         
         presetEditorAddon?.Dispose();
         presetEditorAddon = null;
-        
-        renameWindow?.Dispose();
-        renameWindow = null;
 
         System.NativeController.DisposeNode(ref presetDropDown);
         presetDropDown = null;
-    }
-
-    private bool UpdateList(VerticalListNode listNode, bool isOpening) {
-        var filteredPresetNames = PresetManager.GetPresetNames()
-            .Where(name => name is not (PresetManager.DefaultString or PresetManager.DontUseString));
-
-        var listChanged = listNode.SyncWithListData(filteredPresetNames, node => node.PresetName, data => new PresetEditNode {
-            Size = new Vector2(listNode.Width, 32.0f),
-            PresetName = data,
-            OnDeletePreset = _ => PresetManager.DeletePreset(data),
-            OnEditPreset = presetName => {
-
-                renameWindow ??= new RenameAddon {
-                    NativeController = System.NativeController,
-                    InternalName = "PresetRenameWindow",
-                    Title = "Preset Rename Window",
-                    Size = new Vector2(300.0f, 200.0f),
-                };
-                
-                renameWindow.DefaultString = presetName;
-                renameWindow.ResultCallback = newName => {
-                    PresetManager.LoadPreset(presetName);
-                    PresetManager.SavePreset(newName);
-                    PresetManager.DeletePreset(presetName);
-                };
-                
-                renameWindow.Toggle();
-            },
-            IsVisible = true,
-        });
-
-        if (listChanged) {
-            listNode.ReorderNodes(Comparison);
-        }
-
-        return false;
-    }
-
-    private static int Comparison(NodeBase x, NodeBase y) {
-        if (x is not PresetEditNode left || y is not PresetEditNode right) return 0;
-        
-        return string.CompareOrdinal(left.PresetName, right.PresetName);
     }
 
     private void OnLookingForGroupConditionFinalize(AddonEvent type, AddonArgs args)
@@ -181,8 +149,6 @@ public unsafe class PartyFinderPresets : GameModification {
         
         PresetManager.LoadPreset(selectedOption);
     }
-
-    private void SavePreset() => savePresetWindow?.Open();
 
     private void UpdateDropDownOptions() {
         if (presetDropDown is not null) {
@@ -200,4 +166,10 @@ public unsafe class PartyFinderPresets : GameModification {
             }
         }
     }
+
+    private static List<PresetInfo> GetPresetInfos() => PresetManager.GetPresetNames()
+        .Where(name => name != PresetManager.DefaultString && name != PresetManager.DontUseString)
+        .Select(name => new PresetInfo {
+            Name = name,
+        }).ToList();
 }
