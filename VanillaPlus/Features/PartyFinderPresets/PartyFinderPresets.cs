@@ -20,6 +20,7 @@ public unsafe class PartyFinderPresets : GameModification {
         Authors = [ "MidoriKami" ],
         ChangeLog = [
             new ChangeLogInfo(1, "InitialChangelog"),
+            new ChangeLogInfo(2, "Reworked configuration systems, allows for easier renaming of existing presets"),
         ],
     };
 
