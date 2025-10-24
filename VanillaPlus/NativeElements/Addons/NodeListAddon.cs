@@ -112,7 +112,4 @@ public unsafe class NodeListAddon : NativeAddon {
             ScrollingAreaNode.ContentHeight = ListNode.Nodes.Sum(node => node.IsVisible ? node.Height : 0.0f);
         }
     }
-    
-    protected override void OnFinalize(AtkUnitBase* addon)
-        => System.NativeController.DisposeNode(ref ScrollingAreaNode);
 }

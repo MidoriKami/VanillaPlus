@@ -101,12 +101,6 @@ public unsafe class SearchableNodeListAddon : NodeListAddon {
         
         DoListUpdate(true);
     }
-    
-    protected override void OnFinalize(AtkUnitBase* addon) {
-        System.NativeController.DisposeNode(ref sortDropdownNode);
-        System.NativeController.DisposeNode(ref ScrollingAreaNode);
-        System.NativeController.DisposeNode(ref textInputNode);
-    }
 
     public delegate void SearchUpdated(string searchString);
     public delegate void FilterUpdated(string filterString, bool reversed);
