@@ -42,13 +42,10 @@ public unsafe class PartyFinderPresets : GameModification {
             Size = new Vector2(600.0f, 400.0f),
             InternalName = "PresetEditorConfig",
             Title = "Preset Editor Config Manager",
-
             Options = GetPresetInfos(),
-
             OnConfigChanged = _ => {
                 UpdateDropDownOptions();
             },
-
             OnItemRemoved = toRemove => {
                 PresetManager.DeletePreset(toRemove.Name);
                 UpdateDropDownOptions();
@@ -104,7 +101,6 @@ public unsafe class PartyFinderPresets : GameModification {
                 Options = PresetManager.GetPresetNames(),
                 IsVisible = true,
             };
-
             UpdateDropDownOptions();
 
             System.NativeController.AttachNode(presetDropDown, addon->RootNode);
