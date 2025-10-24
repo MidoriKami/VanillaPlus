@@ -59,6 +59,19 @@ public static unsafe class PresetManager {
         }, "PartyFinderPresets", $"{fileName}.extras.data");
     }
 
+    public static void RenamePreset(string oldName, string newName) {
+        var presetFile = FileHelpers.GetFileInfo("Data", "PartyFinderPresets", $"{oldName}.preset.data");
+        var extrasFile = FileHelpers.GetFileInfo("Data", "PartyFinderPresets", $"{oldName}.extras.data");
+
+        if (presetFile is { Exists: true }) {
+            presetFile.MoveTo(FileHelpers.GetFileInfo("Data", "PartyFinderPresets", $"{newName}.preset.data").FullName);
+        }
+
+        if (extrasFile is { Exists: true }) {
+            extrasFile.MoveTo(FileHelpers.GetFileInfo("Data", "PartyFinderPresets", $"{newName}.extras.data").FullName);
+        }
+    }
+
     private static DirectoryInfo GetPresetDirectory() {
         var directoryInfo = new DirectoryInfo(Path.Combine(Data.DataPath, "PartyFinderPresets"));
         if (!directoryInfo.Exists) {
