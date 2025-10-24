@@ -44,14 +44,22 @@ public unsafe class LocationDisplay : GameModification {
     private static HousingManager* HousingInfo => HousingManager.Instance();
 
     private LocationDisplayConfig? config;
-    private LocationDisplayConfigWindow? configWindow;
+    private LocationDisplayConfigAddon? configWindow;
 
     public override string ImageName => "LocationDisplay.png";
 
     public override void OnEnable() {
         config = LocationDisplayConfig.Load();
-        configWindow = new LocationDisplayConfigWindow(config, UpdateDtrText);
-        configWindow.AddToWindowSystem();
+
+        configWindow = new LocationDisplayConfigAddon {
+            NativeController = System.NativeController,
+            InternalName = "LocationDisplayConfig",
+            Title = "Location Display Config",
+            Config = config,
+        };
+
+        config.OnSave += UpdateDtrText;
+
         OpenConfigAction = configWindow.Toggle;
         
         dtrBarEntry = Services.DtrBar.Get("VanillaPlus - LocationDisplay");
@@ -64,7 +72,7 @@ public unsafe class LocationDisplay : GameModification {
     }
 
     public override void OnDisable() {
-        configWindow?.RemoveFromWindowSystem();
+        configWindow?.Dispose();
         configWindow = null;
         
         Services.Framework.Update -= OnFrameworkUpdate;
