@@ -70,7 +70,6 @@ public unsafe class PartyFinderPresets : GameModification {
         OpenConfigAction = presetEditorAddon.Toggle;
         
         Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "LookingForGroup", OnLookingForGroupEvent);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, "LookingForGroupCondition", OnLookingForGroupConditionFinalize);
 
         recruitmentCriteriaController = new AddonController<AtkUnitBase>("LookingForGroupCondition");
         recruitmentCriteriaController.OnAttach += addon => {
@@ -119,7 +118,7 @@ public unsafe class PartyFinderPresets : GameModification {
     }
 
     public override void OnDisable() {
-        Services.AddonLifecycle.UnregisterListener(OnLookingForGroupEvent, OnLookingForGroupConditionFinalize);
+        Services.AddonLifecycle.UnregisterListener(OnLookingForGroupEvent);
 
         recruitmentCriteriaController?.Dispose();
         recruitmentCriteriaController = null;
@@ -136,9 +135,6 @@ public unsafe class PartyFinderPresets : GameModification {
         System.NativeController.DisposeNode(ref presetDropDown);
         presetDropDown = null;
     }
-
-    private void OnLookingForGroupConditionFinalize(AddonEvent type, AddonArgs args)
-        => UpdateDropDownOptions();
 
     private void OnLookingForGroupEvent(AddonEvent type, AddonArgs args) {
         if (args is not AddonReceiveEventArgs eventArgs) return;
