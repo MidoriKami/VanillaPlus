@@ -40,8 +40,8 @@ public unsafe class PartyFinderPresets : GameModification {
         presetEditorAddon = new ListConfigAddon<PresetInfo, PartyFinderPresetConfigNode> {
             NativeController = System.NativeController,
             Size = new Vector2(600.0f, 400.0f),
-            InternalName = "PresetEditorConfig",
-            Title = "Preset Editor Config Manager",
+            InternalName = "PresetConfigManager",
+            Title = "Preset Config Manager",
             Options = GetPresetInfos(),
             OnConfigChanged = _ => {
                 UpdateDropDownOptions();
