@@ -8,6 +8,9 @@ namespace VanillaPlus.NativeElements.Config.ConfigEntries;
 public class SelectIconConfig : BaseConfigEntry {
     public required uint InitialIcon { get; init; }
 
+    private IconImageNode? iconImageNode;
+    private NumericInputNode? inputIntNode;
+
     public override NodeBase BuildNode() {
         var layoutNode = new HorizontalListNode {
             Height = 50.0f,
@@ -15,7 +18,7 @@ public class SelectIconConfig : BaseConfigEntry {
             ItemSpacing = 20.0f,
         };
 
-        var iconImageNode = new IconImageNode {
+        iconImageNode = new IconImageNode {
             Size = new Vector2(50.0f, 50.0f),
             IconId = InitialIcon,
             IsVisible = true,
@@ -33,21 +36,38 @@ public class SelectIconConfig : BaseConfigEntry {
         labelNode.AlignmentType = AlignmentType.BottomLeft;
         verticalLayout.AddNode(labelNode);
 
-        var inputIntNode = new NumericInputNode {
+        inputIntNode = new NumericInputNode {
             Size = new Vector2(125.0f, 24.0f),
             Height = 24.0f,
             IsVisible = true,
             Value = (int) InitialIcon,
-            OnValueUpdate = newValue => {
-                iconImageNode.IconId = (uint) newValue;
-                MemberInfo.SetValue(Config, (uint) newValue);
-                Config.Save();
-            },
+            OnValueUpdate = SetIconId,
         };
         
         verticalLayout.AddNode(inputIntNode);
         layoutNode.AddNode(verticalLayout);
         
         return layoutNode;
+    }
+
+    protected void SetIconId(int iconId) {
+        if (iconImageNode is not null) {
+            iconImageNode.IconId = (uint)iconId;
+        }
+
+        if (inputIntNode is not null) {
+            inputIntNode.Value = iconId;
+        }
+
+        MemberInfo.SetValue(Config, (uint)iconId);
+        Config.Save();
+    }
+
+    public override void Dispose() {
+        iconImageNode?.Dispose();
+        iconImageNode = null;
+
+        inputIntNode?.Dispose();
+        inputIntNode = null;
     }
 }
