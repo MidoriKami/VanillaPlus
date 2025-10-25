@@ -11,7 +11,6 @@ namespace VanillaPlus.NativeElements.Addons;
 
 public unsafe class NodeListAddon : NativeAddon {
     protected ScrollingAreaNode<VerticalListNode>? ScrollingAreaNode;
-    private VerticalListNode ListNode => ScrollingAreaNode?.ContentNode ?? throw new Exception("Invalid List Node");
 
     private AddonConfig? config;
     private KeybindListener? keybindListener;
@@ -108,8 +107,8 @@ public unsafe class NodeListAddon : NativeAddon {
     public void DoListUpdate(bool isOpening = false) {
         if (ScrollingAreaNode is null) return;
         
-        if (UpdateListFunction(ListNode, isOpening)) {
-            ScrollingAreaNode.ContentHeight = ListNode.Nodes.Sum(node => node.IsVisible ? node.Height : 0.0f);
+        if (UpdateListFunction(ScrollingAreaNode.ContentNode, isOpening)) {
+            ScrollingAreaNode.ContentHeight = ScrollingAreaNode.ContentNode.Nodes.Sum(node => node.IsVisible ? node.Height : 0.0f);
         }
     }
 }
