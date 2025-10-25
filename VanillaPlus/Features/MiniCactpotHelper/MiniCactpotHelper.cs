@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System.Drawing;
+using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using KamiToolKit;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
+using VanillaPlus.NativeElements.Config;
 using Exception = System.Exception;
 using OperationCanceledException = System.OperationCanceledException;
 
@@ -25,7 +28,7 @@ public unsafe class MiniCactpotHelper : GameModification {
     private AddonController<AddonLotteryDaily>? lotteryDailyController;
 
     private MiniCactpotHelperConfig? config;
-    private MiniCactpotHelperConfigWindow? configWindow;
+    private ConfigAddon? configWindow;
     private PerfectCactpot? perfectCactpot;
 
     private int[]? boardState;
@@ -41,8 +44,26 @@ public unsafe class MiniCactpotHelper : GameModification {
         perfectCactpot = new PerfectCactpot();
         
         config = MiniCactpotHelperConfig.Load();
-        configWindow = new MiniCactpotHelperConfigWindow(config, ApplyConfigStyle);
-        configWindow.AddToWindowSystem();
+
+        configWindow = new ConfigAddon {
+            NativeController = System.NativeController,
+            InternalName = "MiniCactpotConfig",
+            Title = "Mini Cactpot Helper Config",
+            Config = config,
+        };
+
+        configWindow.AddCategory("Animations")
+            .AddCheckbox("Enable Animations", nameof(config.EnableAnimations));
+
+        configWindow.AddCategory("Icon")
+            .AddMultiSelectIcon("Icon", nameof(config.IconId), true, 61332, 90452, 234008);
+
+        configWindow.AddCategory("Colors")
+            .AddColorEdit("Button", nameof(config.ButtonColor), KnownColor.White.Vector() with { W = 0.8f })
+            .AddColorEdit("Lane", nameof(config.LaneColor), KnownColor.White.Vector());
+
+        config.OnSave += ApplyConfigStyle;
+
         OpenConfigAction = configWindow.Toggle;
 
         lotteryDailyController = new AddonController<AddonLotteryDaily>("LotteryDaily");
@@ -55,8 +76,8 @@ public unsafe class MiniCactpotHelper : GameModification {
     public override void OnDisable() {
         gameTask?.Dispose();
         gameTask = null;
-        
-        configWindow?.RemoveFromWindowSystem();
+
+        configWindow?.Dispose();
         configWindow = null;
         
         lotteryDailyController?.Dispose();
