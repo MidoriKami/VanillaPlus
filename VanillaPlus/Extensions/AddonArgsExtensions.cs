@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Numerics;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 
@@ -26,4 +27,17 @@ public static unsafe class AddonArgsExtensions {
 
     public static Span<AtkValue> GetAtkValues(this AddonArgs args)
         => args.GetAddon<AtkUnitBase>()->AtkValuesSpan;
+
+    private static AtkEventData.AtkMouseData* GetMouseData(this AddonArgs args) {
+        if (args is not AddonReceiveEventArgs eventArgs) return null;
+
+        return &((AtkEventData*)eventArgs.Data)->MouseData;
+    }
+
+    public static Vector2 GetMouseClickPosition(this AddonArgs args) {
+        var mouseData = GetMouseData(args);
+        if (mouseData is null) return Vector2.Zero;
+
+        return new Vector2(mouseData->PosX, mouseData->PosY);
+    }
 }
