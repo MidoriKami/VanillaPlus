@@ -173,6 +173,24 @@ public class ConfigCategory : IDisposable {
 
         return this;
     }
+    
+    public ConfigCategory AddMultiSelectIcon(string label, string memberName, bool includeInput, params uint[] icons) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+        
+        var initialValue = memberInfo.GetValue<uint>(ConfigObject);
+        
+        configEntries.Add(new MultiSelectIconConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            InitialIcon = initialValue,
+            AllowManualInput = includeInput,
+            Options = icons.ToList(),
+        });
+
+        return this;
+    }
 
     public void Dispose() {
         foreach (var entry in configEntries) {
