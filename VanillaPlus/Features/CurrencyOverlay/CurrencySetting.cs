@@ -30,6 +30,9 @@ public class CurrencySetting : IInfoNodeData {
     public uint? GetIconId()
         => ItemId is 0 ? (uint) 5 : Services.DataManager.GetItem(ItemId).Icon;
 
+    public string? GetTexturePath()
+        => null;
+
     public int Compare(IInfoNodeData other, string sortingMode) {
         return sortingMode switch {
             "Alphabetical" => string.CompareOrdinal(GetLabel(), other.GetLabel()),
