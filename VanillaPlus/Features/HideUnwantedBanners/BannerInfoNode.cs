@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Dalamud.Game.Addon.Events;
 using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.HideUnwantedBanners;
@@ -23,8 +24,17 @@ public class BannerInfoNode : SimpleComponentNode {
 
         iconImageNode = new IconImageNode {
             IsVisible = true,
+            EventFlagsSet = true,
             FitTexture = true,
         };
+
+        iconImageNode.AddEvent(AddonEventType.MouseClick, data => {
+            if (data.IsLeftClick()) {
+                checkboxNode.IsChecked = !checkboxNode.IsChecked;
+                OnChecked?.Invoke(checkboxNode.IsChecked);
+            }
+        });
+        
         System.NativeController.AttachNode(iconImageNode, imageContainerNode);
     }
 
