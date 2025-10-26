@@ -6,6 +6,7 @@ using KamiToolKit;
 using KamiToolKit.Addons;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
+using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
@@ -36,12 +37,28 @@ public unsafe class CurrencyOverlay : GameModification {
 
     private List<CurrencySetting>? addedCurrencySettings;
     private List<CurrencySetting>? removedCurrencySettings;
+    
+    private LuminaSearchAddon<Item>? itemSearchAddon;
 
     public override void OnEnable() {
         currencyNodes = [];
         addedCurrencySettings = [];
         removedCurrencySettings = [];
         
+        itemSearchAddon = new LuminaSearchAddon<Item> {
+            NativeController = System.NativeController,
+            InternalName = "LuminaItemSearch",
+            Title = "Item Search",
+            Size = new Vector2(350.0f, 500.0f),
+
+            GetLabelFunc = item => item.Name.ToString(),
+            GetSubLabelFunc = item => item.ItemSearchCategory.Value.Name.ToString(),
+            GetIconIdFunc = item => item.Icon,
+
+            SortingOptions = [ "Alphabetical", "Id" ],
+            SearchOptions = Services.DataManager.GetCurrencyItems().ToList(),
+        };
+
         config = CurrencyOverlayConfig.Load();
 
         configAddon = new ListConfigAddon<CurrencySetting, CurrencyOverlayConfigNode> {
@@ -63,9 +80,17 @@ public unsafe class CurrencyOverlay : GameModification {
                 config.Save();
             },
 
-            OnItemAdded = item => {
-                addedCurrencySettings.Add(item);
-                config.Save();
+            OnAddClicked = item => {
+                itemSearchAddon.SelectionResult = searchResult => {
+                    var newCurrencyOption = new CurrencySetting {
+                        ItemId = searchResult.RowId,
+                    };
+
+                    item.AddOption(newCurrencyOption);
+                    addedCurrencySettings.Add(newCurrencyOption);
+                    config.Save();
+                };
+                itemSearchAddon.Toggle();
             },
             
             OnItemRemoved = item => {
@@ -139,6 +164,9 @@ public unsafe class CurrencyOverlay : GameModification {
     public override void OnDisable() {
         overlayAddonController?.Dispose();
         overlayAddonController = null;
+        
+        itemSearchAddon?.Dispose();
+        itemSearchAddon = null;
         
         configAddon?.Dispose();
         configAddon = null;

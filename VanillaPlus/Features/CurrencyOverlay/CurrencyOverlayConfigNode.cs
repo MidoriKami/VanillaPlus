@@ -1,11 +1,8 @@
-﻿using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Addons;
 using KamiToolKit.Addons.Parts;
 using KamiToolKit.Nodes;
 using KamiToolKit.Nodes.Slider;
-using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 
@@ -13,7 +10,6 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
 
     private TextNode itemNameTextNode;
     private IconImageNode iconImageNode;
-    private TextButtonNode changeCurrencyButtonNode;
     
     private CheckboxNode enableLowLimitCheckbox;
     private NumericInputNode lowLimitInputNode;
@@ -28,31 +24,8 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
     private TextNode scaleTextNode;
     private SliderNode scaleSliderNode;
     
-    private LuminaSearchAddon<Item> itemSearchAddon;
     
     public CurrencyOverlayConfigNode() {
-        itemSearchAddon = new LuminaSearchAddon<Item> {
-            NativeController = System.NativeController,
-            InternalName = "LuminaItemSearch",
-            Title = "Item Search",
-            Size = new Vector2(350.0f, 500.0f),
-
-            GetLabelFunc = item => item.Name.ToString(),
-            GetSubLabelFunc = item => item.ItemSearchCategory.Value.Name.ToString(),
-            GetIconIdFunc = item => item.Icon,
-
-            SortingOptions = [ "Alphabetical", "Id" ],
-            SearchOptions = Services.DataManager.GetCurrencyItems().ToList(),
-            SelectionResult = option => {
-                if (ConfigurationOption is not null) {
-                    ConfigurationOption.ItemId = option.RowId;
-                    OptionChanged(ConfigurationOption);
-                    OnConfigChanged?.Invoke(ConfigurationOption);
-                }
-                itemSearchAddon?.Close();
-            },
-        };
-        
         iconImageNode = new IconImageNode {
             FitTexture = true,
             Alpha = 0.1f,
@@ -66,15 +39,6 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
             IsVisible = true,
         };
         System.NativeController.AttachNode(itemNameTextNode, this);
-
-        changeCurrencyButtonNode = new TextButtonNode {
-            String = "Change Currency",
-            IsVisible = true,
-            OnClick = () => {
-                itemSearchAddon.Toggle();
-            },
-        };
-        System.NativeController.AttachNode(changeCurrencyButtonNode, this);
 
         enableLowLimitCheckbox = new CheckboxNode {
             String = "Warn when below limit",
@@ -166,14 +130,6 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         System.NativeController.AttachNode(scaleSliderNode, this);
     }
 
-    protected override void Dispose(bool disposing, bool isNativeDestructor) {
-        if (disposing) {
-            itemSearchAddon.Dispose();
-            
-            base.Dispose(disposing, isNativeDestructor);
-        }
-    }
-
     protected override void OptionChanged(CurrencySetting? option) {
         if (option is null) return;
 
@@ -194,9 +150,6 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
 
         itemNameTextNode.Size = new Vector2(Width, 24.0f);
         itemNameTextNode.Position = new Vector2(0.0f, 50.0f);
-        
-        changeCurrencyButtonNode.Size = new Vector2(200.0f, 24.0f);
-        changeCurrencyButtonNode.Position = new Vector2(Width / 2.0f - changeCurrencyButtonNode.Size.X / 2.0f, 80.0f);
 
         iconImageNode.Size = new Vector2(Width - 40.0f, Height - 40.0f);
         iconImageNode.Position = new Vector2(20.0f, 20.0f);
