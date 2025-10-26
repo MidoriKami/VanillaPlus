@@ -10,7 +10,7 @@ public class AddonStringInfoNode : StringInfoNode {
         => Services.GameGui.GetAddonByName(Label).Id;
 
     public override uint? GetIconId()
-        => null;
+        => Services.GameGui.GetAddonByName(Label).IsVisible ? (uint) 60071 : 60072;
 
     public override string? GetTexturePath()
         => null;
