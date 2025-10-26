@@ -72,10 +72,8 @@ public class BannerInfoNode : SimpleComponentNode {
 
     private bool textureResized;
 
-    public unsafe void Update() {
+    public void Update() {
         if (textureResized) return;
-        
-        Services.PluginLog.Debug($"Updating: {NodeId} : {iconImageNode.PartsList[0]->UldAsset->AtkTexture.GetLoadState()}");
 
         if (iconImageNode.IsTextureReady) {
             RecalculateLayout();
