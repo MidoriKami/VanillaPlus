@@ -11,8 +11,6 @@ namespace VanillaPlus.Features.CurrencyOverlay;
 
 public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
 
-    private TextNode noOptionSelectedTextNode;
-    
     private TextNode itemNameTextNode;
     private IconImageNode iconImageNode;
     private TextButtonNode changeCurrencyButtonNode;
@@ -55,27 +53,23 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
             },
         };
         
-        noOptionSelectedTextNode = new TextNode {
-            AlignmentType = AlignmentType.Center,
-            FontSize = 16,
-            String = "Select an option on the left",
-        };
-        System.NativeController.AttachNode(noOptionSelectedTextNode, this);
-        
         iconImageNode = new IconImageNode {
             FitTexture = true,
             Alpha = 0.1f,
+            IsVisible = true,
         };
         System.NativeController.AttachNode(iconImageNode, this);
 
         itemNameTextNode = new TextNode {
             AlignmentType = AlignmentType.Center,
             FontSize = 18,
+            IsVisible = true,
         };
         System.NativeController.AttachNode(itemNameTextNode, this);
 
         changeCurrencyButtonNode = new TextButtonNode {
             String = "Change Currency",
+            IsVisible = true,
             OnClick = () => {
                 itemSearchAddon.Toggle();
             },
@@ -84,6 +78,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
 
         enableLowLimitCheckbox = new CheckboxNode {
             String = "Warn when below limit",
+            IsVisible = true,
             OnClick = enabled => {
                 if (ConfigurationOption is not null) {
                     ConfigurationOption.EnableLowLimit = enabled;
@@ -94,6 +89,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         System.NativeController.AttachNode(enableLowLimitCheckbox, this);
 
         lowLimitInputNode = new NumericInputNode {
+            IsVisible = true,
             OnValueUpdate = newValue => {
                 if (ConfigurationOption is not null) {
                     ConfigurationOption.LowLimit = newValue;
@@ -104,6 +100,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         System.NativeController.AttachNode(lowLimitInputNode, this);
         
         enableHighLimitCheckbox = new CheckboxNode {
+            IsVisible = true,
             String = "Warn when above limit",
             OnClick = enabled => {
                 if (ConfigurationOption is not null) {
@@ -115,6 +112,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         System.NativeController.AttachNode(enableHighLimitCheckbox, this);
         
         highLimitInputNode = new NumericInputNode {
+            IsVisible = true,
             OnValueUpdate = newValue => {
                 if (ConfigurationOption is not null) {
                     ConfigurationOption.HighLimit = newValue;
@@ -125,6 +123,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         System.NativeController.AttachNode(highLimitInputNode, this);
         
         reverseIconCheckbox = new CheckboxNode {
+            IsVisible = true,
             String = "Reverse icon position",
             OnClick = enabled => {
                 if (ConfigurationOption is not null) {
@@ -136,6 +135,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         System.NativeController.AttachNode(reverseIconCheckbox, this);
         
         allowMovingCheckbox = new CheckboxNode {
+            IsVisible = true,
             String = "Enable moving overlay element",
             OnClick = enabled => {
                 if (ConfigurationOption is not null) {
@@ -148,13 +148,14 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
 
         scaleTextNode = new LabelTextNode {
             String = "Scale",
-            IsVisible = false,
+            IsVisible = true,
         };
         System.NativeController.AttachNode(scaleTextNode, this);
         
         scaleSliderNode = new SliderNode {
             Range = 50..300,
             DecimalPlaces = 2,
+            IsVisible = true,
             OnValueChanged = newValue => {
                 if (ConfigurationOption is not null) {
                     ConfigurationOption.Scale = newValue / 100.0f;
@@ -174,61 +175,22 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
     }
 
     protected override void OptionChanged(CurrencySetting? option) {
-        if (option is null) {
-            noOptionSelectedTextNode.IsVisible = true;
-            itemNameTextNode.IsVisible = false;
-            iconImageNode.IsVisible = false;
-            enableLowLimitCheckbox.IsVisible = false;
-            lowLimitInputNode.IsVisible = false;
-            enableHighLimitCheckbox.IsVisible = false;
-            highLimitInputNode.IsVisible = false;
-            reverseIconCheckbox.IsVisible = false;
-            allowMovingCheckbox.IsVisible = false;
-            scaleTextNode.IsVisible = false;
-            scaleSliderNode.IsVisible = false;
-            changeCurrencyButtonNode.IsVisible = false;
-            return;
-        }
-
-        noOptionSelectedTextNode.IsVisible = false;
+        if (option is null) return;
 
         itemNameTextNode.String = option.GetLabel();
-        itemNameTextNode.IsVisible = true;
-        
-        changeCurrencyButtonNode.IsVisible = true;
-
         iconImageNode.IconId = option.GetIconId() ?? 0;
         iconImageNode.IsVisible = iconImageNode.IconId is not 0;
-        
         enableLowLimitCheckbox.IsChecked = option.EnableLowLimit;
-        enableLowLimitCheckbox.IsVisible = true;
-        
         lowLimitInputNode.Value = option.LowLimit;
-        lowLimitInputNode.IsVisible = true;
-        
         enableHighLimitCheckbox.IsChecked = option.EnableHighLimit;
-        enableHighLimitCheckbox.IsVisible = true;
-
         highLimitInputNode.Value = option.HighLimit;
-        highLimitInputNode.IsVisible = true;
-        
         reverseIconCheckbox.IsChecked = option.IconReversed;
-        reverseIconCheckbox.IsVisible = true;
-        
         allowMovingCheckbox.IsChecked = option.IsNodeMoveable;
-        allowMovingCheckbox.IsVisible = true;
-        
-        scaleTextNode.IsVisible = true;
-
         scaleSliderNode.Value = (int)(option.Scale * 100.0f);
-        scaleSliderNode.IsVisible = true;
     }
 
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
-
-        noOptionSelectedTextNode.Size = Size;
-        noOptionSelectedTextNode.Position = Vector2.Zero;
 
         itemNameTextNode.Size = new Vector2(Width, 24.0f);
         itemNameTextNode.Position = new Vector2(0.0f, 50.0f);
