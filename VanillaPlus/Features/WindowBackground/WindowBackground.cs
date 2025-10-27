@@ -73,8 +73,6 @@ public unsafe class WindowBackground : GameModification {
             OnItemRemoved = oldItem => backgroundController?.RemoveAddon(oldItem.AddonName),
         };
 
-        configWindow.Open();
-
         OpenConfigAction = configWindow.Toggle;
 
         backgroundController = new WindowBackgroundController(config);
