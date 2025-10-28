@@ -114,16 +114,14 @@ public unsafe class EnhancedLootWindow : GameModification {
     
     private void DetachNodes(AddonNeedGreed* addon) {
         foreach (var node in crossNodes) {
-            System.NativeController.DetachNode(node, () => {
-                node.Dispose();
-            });
+            System.NativeController.DetachNode(node);
+            node.Dispose();
         }
         crossNodes.Clear();
         
         foreach (var node in padlockNodes) {
-            System.NativeController.DetachNode(node, () => {
-                node.Dispose();
-            });
+            System.NativeController.DetachNode(node);
+            node.Dispose();
         }
         padlockNodes.Clear();
     }

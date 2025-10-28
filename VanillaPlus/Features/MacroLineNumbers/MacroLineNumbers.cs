@@ -60,9 +60,8 @@ public unsafe class MacroLineNumbers : GameModification {
             RepositionNode(textInputNode, -sizeOffset);
             
             foreach (var node in textNodes) {
-                System.NativeController.DetachNode(node, () => {
-                    node.Dispose();
-                });
+                System.NativeController.DetachNode(node);
+                node.Dispose();
             }
 
             textNodes.Clear();

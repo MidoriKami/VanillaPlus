@@ -200,9 +200,8 @@ public unsafe class TargetCastBarCountdown : GameModification {
             
             case "CastBarEnemy":
                 foreach (var node in castBarEnemyTextNode ?? []) {
-                    System.NativeController.DetachNode(node, () => {
-                        node?.Dispose();
-                    });
+                    System.NativeController.DetachNode(node);
+                    node?.Dispose();
                 }
                 castBarEnemyTextNode = null;
                 break;
