@@ -130,7 +130,7 @@ public class ModificationManager : IDisposable {
 
     public static void TryDisableModification(LoadedModification modification, bool removeFromList = true) {
         if (modification.State is LoadedState.Errored) {
-            Services.PluginLog.Error("Attempted to disable errored modification");
+            Services.PluginLog.Error($"[{modification.Name}] Attempted to disable errored modification");
             return;
         }
 
@@ -141,7 +141,7 @@ public class ModificationManager : IDisposable {
         }
         catch (Exception e) {
             modification.State = LoadedState.Errored;
-            Services.PluginLog.Error(e, $"Failed to disable modification: {modification.Name}");
+            Services.PluginLog.Error(e, $"Failed to Disable {modification.Name}");
         } finally {
             modification.State = LoadedState.Disabled;
             Services.PluginLog.Debug($"Successfully Disabled {modification.Name}");
