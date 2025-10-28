@@ -39,7 +39,7 @@ public class ModificationManager : IDisposable {
                 try {
                     Services.PluginLog.Debug($"Disabling {loadedMod.Name}");
                     loadedMod.Modification.OnDisable();
-                    Services.PluginLog.Debug($"{loadedMod.Name} has been disabled");
+                    Services.PluginLog.Debug($"Successfully Disabled {loadedMod.Name}");
                 }
                 catch (Exception e) {
                     Services.PluginLog.Error(e, $"Error while unloading modification {loadedMod.Name}");
@@ -64,6 +64,7 @@ public class ModificationManager : IDisposable {
 
                     // This module was enabled, but after a refresh it's not allowed, disable it
                     if (!compatibilityModule.ShouldLoadGameModification()) {
+                        Services.PluginLog.Warning($"Loaded plugins have changed, and {gameModification.Name} is now no longer allowed to be enabled");
                         TryDisableModification(gameModification, false);
                         gameModification.State = LoadedState.CompatError;
                         gameModification.ErrorMessage = compatibilityModule.GetErrorMessage();
@@ -75,6 +76,7 @@ public class ModificationManager : IDisposable {
 
                     // This module was disabled due to compat, it is now allowed, load it
                     if (compatibilityModule.ShouldLoadGameModification()) {
+                        Services.PluginLog.Info($"Loaded plugins have changed, and {gameModification.Name} is now allowed to be enabled");
                         TryEnableModification(gameModification);
                     }
                     break;
@@ -142,7 +144,7 @@ public class ModificationManager : IDisposable {
             Services.PluginLog.Error(e, $"Failed to disable modification: {modification.Name}");
         } finally {
             modification.State = LoadedState.Disabled;
-            Services.PluginLog.Info($"{modification.Name} has been disabled");
+            Services.PluginLog.Debug($"Successfully Disabled {modification.Name}");
 
             if (removeFromList) {
                 System.SystemConfig.EnabledModifications.Remove(modification.Name);
