@@ -86,25 +86,27 @@ public class ModificationManager : IDisposable {
 
     public static void TryEnableModification(LoadedModification modification) {
         if (modification.State is LoadedState.Errored) {
-            Services.PluginLog.Error("Attempted to enable errored modification");
+            Services.PluginLog.Error($"[{modification.Name}] Attempted to enable errored modification");
             return;
         }
 
         try {
+            Services.PluginLog.Info($"Enabling {modification.Name}");
+
             if (modification.Modification.ModificationInfo.CompatibilityModule is { } compatibilityModule) {
                 if (!compatibilityModule.ShouldLoadGameModification()) {
                     modification.State = LoadedState.CompatError;
                     modification.ErrorMessage = compatibilityModule.GetErrorMessage();
-                    
-                    Services.PluginLog.Warning(compatibilityModule.GetErrorMessage());
+
+                    Services.PluginLog.Warning($"[{modification.Name}] {compatibilityModule.GetErrorMessage()}");
+                    Services.PluginLog.Warning($"Aborted enabling {modification.Name}");
                     return;
                 }
             }
-            
-            Services.PluginLog.Info($"Enabling {modification.Name}");
+
             modification.Modification.OnEnable();
             modification.State = LoadedState.Enabled;
-            Services.PluginLog.Info($"{modification.Name} has been enabled");
+            Services.PluginLog.Info($"Successfully Enabled {modification.Name}");
             System.SystemConfig.EnabledModifications.Add(modification.Name);
             System.SystemConfig.Save();
         }
