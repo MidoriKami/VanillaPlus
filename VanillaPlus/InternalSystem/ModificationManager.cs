@@ -151,14 +151,13 @@ public class ModificationManager : IDisposable {
         }
     }
 
-    private List<GameModification> GetGameModifications() 
-        => Assembly
-           .GetCallingAssembly()
-           .GetTypes()
-           .Where(type => type.IsSubclassOf(typeof(GameModification)))
-           .Where(type => !type.IsAbstract)
-           .Select(type => (GameModification?) Activator.CreateInstance(type))
-           .Where(modification => modification?.ModificationInfo.Type is not ModificationType.Hidden)
-           .OfType<GameModification>()
-           .ToList();
+    private static List<GameModification> GetGameModifications() => Assembly
+       .GetCallingAssembly()
+       .GetTypes()
+       .Where(type => type.IsSubclassOf(typeof(GameModification)))
+       .Where(type => !type.IsAbstract)
+       .Select(type => (GameModification?) Activator.CreateInstance(type))
+       .Where(modification => modification?.ModificationInfo.Type is not ModificationType.Hidden)
+       .OfType<GameModification>()
+       .ToList();
 }
