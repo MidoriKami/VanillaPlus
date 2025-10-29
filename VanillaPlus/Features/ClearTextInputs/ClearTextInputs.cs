@@ -62,8 +62,8 @@ public unsafe class ClearTextInputs : GameModification {
 
         try {
             if (customEventListener is null) return;
-            
-            var collisionNode = (AtkCollisionNode*) Marshal.ReadIntPtr((nint)textInput, 0xD8);
+
+            var collisionNode = textInput->CollisionNode;
             if (collisionNode is null) return;
 
             var atkEventManager = collisionNode->AtkEventManager;
