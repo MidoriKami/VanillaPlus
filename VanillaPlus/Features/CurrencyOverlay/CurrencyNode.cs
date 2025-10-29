@@ -88,7 +88,6 @@ public unsafe class CurrencyNode : SimpleComponentNode {
     public void UpdateValues() {
         if (!Services.ClientState.IsLoggedIn) return;
 
-
         var inventoryCount = InventoryManager.Instance()->GetInventoryItemCount(Currency.ItemId);
 
         countNode.Number = inventoryCount;
