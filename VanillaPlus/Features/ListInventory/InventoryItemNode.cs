@@ -61,9 +61,8 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
             IsHovered = true;
 
             if (Item is null) return;
-            var node = (AtkResNode*)CollisionNode;
 
-            node->ShowInventoryItemTooltip(Item.Item.Container, Item.Item.Slot);
+            CollisionNode.ShowInventoryItemTooltip(Item.Item.Container, Item.Item.Slot);
         });
         
         CollisionNode.AddEvent(AddonEventType.MouseOut, _ => {

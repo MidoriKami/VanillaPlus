@@ -64,7 +64,7 @@ public class AddonModificationBrowser : NativeAddon {
         BuildSearchContainer();
         BuildDescriptionContainer();
 
-        addon->AdditionalFocusableNodes[0] = (AtkResNode*)descriptionImageNode.Node;
+        addon->AdditionalFocusableNodes[0] = (AtkResNode*)descriptionImageNode;
 
         var typeGroup = System.ModificationManager.LoadedModifications
             .Select(option => option)

@@ -3,6 +3,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.System;
 
 namespace VanillaPlus.Extensions;
 
@@ -69,6 +70,9 @@ public static unsafe class AtkStageExtensions {
             AtkStage.Instance()->ShowInventoryItemTooltip(nodePointer, container, slot);
         }
     }
+
+    public static void ShowInventoryItemTooltip(this NodeBase node, InventoryType container, short slot)
+        => AtkStage.Instance()->ShowInventoryItemTooltip(node, container, slot);
 
     private static void ShowInventoryItemTooltip(ref this AtkStage stage, AtkResNode* node, InventoryType container, short slot) {
         var tooltipArgs = stackalloc AtkTooltipManager.AtkTooltipArgs[1];
