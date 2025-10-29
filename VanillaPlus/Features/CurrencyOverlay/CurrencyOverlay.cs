@@ -75,7 +75,7 @@ public unsafe class CurrencyOverlay : GameModification {
 
                 foreach (var node in nodes) {
                     node.Currency = changedSetting;
-                    node.OnMoveComplete = changedSetting.IsNodeMoveable ? () => config.Save() : null;
+                    node.OnMoveComplete = changedSetting.IsNodeMoveable ? config.Save : null;
                 }
                 config.Save();
             },
