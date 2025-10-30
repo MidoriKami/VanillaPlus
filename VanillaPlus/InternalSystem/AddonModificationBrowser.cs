@@ -306,9 +306,7 @@ public class AddonModificationBrowser : NativeAddon {
 
     private async void LoadModuleImage(string assetName) {
         try {
-            var assetPath = Assets.GetAssetPath(assetName);
-            var texture = await Services.TextureProvider.GetFromFile(assetPath).RentAsync();
-            Assets.LoadedTextures.Add(texture);
+            var texture = await Services.TextureProvider.GetFromFile(Assets.GetAssetPath(assetName)).RentAsync();
             descriptionImageNode.LoadTexture(texture);
             descriptionImageNode.TextureSize = texture.Size;
 
