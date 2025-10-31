@@ -64,9 +64,22 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
                         SetEventFlags = true,
                     };
 
-                    newInteractionNode.AddEvent(AtkEventType.MouseOver, OnWindowMouseOver);
-                    newInteractionNode.AddEvent(AtkEventType.MouseClick, OnWindowMouseClick);
-                    newInteractionNode.AddEvent(AtkEventType.MouseOut, OnWindowMouseOut);
+                    newInteractionNode.AddEvent(AtkEventType.MouseOver, () => {
+                        Services.AddonEventManager.SetCursor(AddonCursorType.Hand);
+                    });
+
+                    newInteractionNode.AddEvent(AtkEventType.MouseOut, () => {
+                        if (!isDragging) {
+                            Services.AddonEventManager.ResetCursor();
+                        }
+                    });
+
+                    newInteractionNode.AddEvent(AtkEventType.MouseClick, () => {
+                        if (!isDragging) {
+                            Services.AddonEventManager.SetCursor(AddonCursorType.Hand);
+                        }
+                    });
+
                     newInteractionNode.AddEvent(AtkEventType.MouseDown, OnWindowMouseDown);
 
                     System.NativeController.AttachNode(newInteractionNode, node, NodePosition.BeforeTarget);
@@ -82,16 +95,6 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
             System.NativeController.DetachNode(node);
             node.Dispose();
             windowInteractionNodes?.Remove(args.AddonName);
-        }
-    }
-    
-    private static void OnWindowMouseOver(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData)
-        => Services.AddonEventManager.SetCursor(AddonCursorType.Hand);
-
-    private void OnWindowMouseClick(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
-        if (!isDragging) {
-            Services.AddonEventManager.SetCursor(AddonCursorType.Hand);
-            atkEvent->SetEventIsHandled();
         }
     }
 
@@ -116,12 +119,6 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
             cursorEventListener?.AddEvent(AtkEventType.MouseMove, (AtkResNode*) atkEvent->Target);
             cursorEventListener?.AddEvent(AtkEventType.MouseUp, (AtkResNode*) atkEvent->Target);
             isDragging = true;
-        }
-    }
-        
-    private void OnWindowMouseOut(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
-        if (!isDragging) {
-            Services.AddonEventManager.ResetCursor();
         }
     }
 
