@@ -35,7 +35,7 @@ public unsafe class ConfigAddon : NativeAddon {
     private void RecalculateWindowSize() {
         if (configurationListNode is null) return;
 
-        configurationListNode.ContentHeight = configurationListNode.ContentNode.Nodes.Sum(node => node.Height);
+        configurationListNode.ContentHeight = configurationListNode.ContentNode.Nodes.Sum(node => node.Height) + 10.0f;
 
         if (configurationListNode.ContentHeight < MaximumHeight) {
             Size = new Vector2(Width, configurationListNode.ContentHeight + ContentStartPosition.Y + 24.0f);
