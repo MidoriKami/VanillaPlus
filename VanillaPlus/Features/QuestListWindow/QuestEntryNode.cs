@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Dalamud.Game.Addon.Events;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -71,12 +70,11 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
             IsVisible = true,
         };
         System.NativeController.AttachNode(distanceTextNode, this);
-        
-        CollisionNode.AddEvent(AddonEventType.MouseOver, _ => {
-            IsHovered = true;
-        });
-        
-        CollisionNode.AddEvent(AddonEventType.MouseClick, _ => {
+
+        CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
+        CollisionNode.AddEvent(AtkEventType.MouseOver, () => IsHovered = true);
+        CollisionNode.AddEvent(AtkEventType.MouseOut, () => IsHovered = false);
+        CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
             if (QuestInfo is null) return;
 
             var agentMap = AgentMap.Instance();
@@ -86,10 +84,6 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
                 agentMap->OpenMap(agentMap->CurrentMapId, agentMap->CurrentTerritoryId, QuestInfo.Name.ToString(), MapType.QuestLog);
                 agentMap->OpenMap(agentMap->CurrentMapId, agentMap->CurrentTerritoryId, QuestInfo.Name.ToString());
             }
-        });
-        
-        CollisionNode.AddEvent(AddonEventType.MouseOut, _ => {
-            IsHovered = false;
         });
     }
 

@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Numerics;
-using Dalamud.Game.Addon.Events;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
+using KamiToolKit.Classes;
 using KamiToolKit.Classes.TimelineBuilding;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;
@@ -69,8 +69,9 @@ public unsafe class MissingJobStoneLockout : GameModification {
             AlignmentType = AlignmentType.Center,
             FontSize = 14,
             String = "Missing Job Stone!",
-            TooltipString =$"[VanillaPlus]: Click to disable lock",
-            EventFlagsSet = true,
+            TooltipString = "[VanillaPlus]: Click to disable lock",
+            SetEventFlags = true,
+            DrawFlags = DrawFlags.ClickableCursor,
         };
         System.NativeController.AttachNode(warningTextNode, animationContainer);
         
@@ -91,7 +92,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
         
         animationContainer.Timeline?.PlayAnimation(1);
         
-        warningTextNode.AddEvent(AddonEventType.MouseClick, _ => {
+        warningTextNode.AddEvent(AtkEventType.MouseClick, () => {
             if (clickCount++ >= 5) {
                 suppressed = true;
                 animationContainer.IsVisible = false;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using Dalamud.Game.Addon.Events;
 using Dalamud.Game.Text.SeStringHandling;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addon;
@@ -194,12 +193,13 @@ public class AddonModificationBrowser : NativeAddon {
         System.NativeController.AttachNode(descriptionImageFrame, descriptionContainerNode);
 
         descriptionImageNode = new ImGuiImageNode {
-            EventFlagsSet = true,
+            SetEventFlags = true,
             IsVisible = true,
             FitTexture = true,
+            DrawFlags = DrawFlags.ClickableCursor,
         };
 
-        descriptionImageNode.AddEvent(AddonEventType.MouseClick, _ => {
+        descriptionImageNode.AddEvent(AtkEventType.MouseClick, () => {
             if (!isImageEnlarged) {
                 descriptionImageNode.Scale = new Vector2(2.5f, 2.5f);
             }
@@ -215,14 +215,14 @@ public class AddonModificationBrowser : NativeAddon {
             isImageEnlarged = !isImageEnlarged;
         });
 
-        descriptionImageNode.AddEvent(AddonEventType.MouseOver, _ => {
+        descriptionImageNode.AddEvent(AtkEventType.MouseOver, () => {
             if (isImageEnlarged) return;
 
             descriptionImageNode.Scale = new Vector2(1.05f, 1.05f);
             isImageHovered = true;
         });
         
-        descriptionImageNode.AddEvent(AddonEventType.MouseOut, _ => {
+        descriptionImageNode.AddEvent(AtkEventType.MouseOut, () => {
             if (isImageEnlarged) return;
             
             descriptionImageNode.Scale = Vector2.One;
@@ -370,7 +370,7 @@ public class AddonModificationBrowser : NativeAddon {
     }
 
     private void RecalculateScrollableAreaSize() {
-        optionContainerNode.ContentHeight = categoryNodes.Sum(node => node.Height) + 15.0f;
+        optionContainerNode.ContentHeight = categoryNodes.Sum(node => node.Height) + 20.0f;
     }
 
     public void UpdateDisabledState() {

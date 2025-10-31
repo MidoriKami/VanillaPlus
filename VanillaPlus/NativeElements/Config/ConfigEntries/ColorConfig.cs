@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
-using Dalamud.Game.Addon.Events;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addons;
+using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 using KamiToolKit.System;
 using KamiToolKit.Widgets.Parts;
@@ -31,9 +32,10 @@ public class ColorConfig : BaseConfigEntry {
         };
         layoutNode.AddNode(colorSquareNode);
 
-        colorSquareNode.CollisionNode.EventFlagsSet = false;
+        colorSquareNode.CollisionNode.SetEventFlags = false;
 
-        layoutNode.CollisionNode.AddEvent(AddonEventType.MouseClick, _ => {
+        layoutNode.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
+        layoutNode.CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
             colorPickerInstance.InitialColor = Color;
             colorPickerInstance.DefaultColor = DefaultColor;
             colorPickerInstance.Toggle();

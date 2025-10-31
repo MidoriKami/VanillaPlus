@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Dalamud.Game.Addon.Events;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
@@ -110,17 +109,17 @@ public class GameModificationOptionNode : SimpleComponentNode {
 
         CollisionNode.DrawFlags = DrawFlags.ClickableCursor;
         
-        CollisionNode.AddEvent(AddonEventType.MouseOver, _ => {
+        CollisionNode.AddEvent(AtkEventType.MouseOver, () => {
             if (!IsSelected) {
                 IsHovered = true;
             }
         });
         
-        CollisionNode.AddEvent(AddonEventType.MouseDown, _ => {
+        CollisionNode.AddEvent(AtkEventType.MouseDown, () => {
             OnClick?.Invoke();
         });
         
-        CollisionNode.AddEvent(AddonEventType.MouseOut, _ => {
+        CollisionNode.AddEvent(AtkEventType.MouseOut, () => {
             IsHovered = false;
         });
     }
@@ -139,7 +138,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
             checkboxNode.IsChecked = value.State is LoadedState.Enabled;
 
             experimentalImageNode.IsVisible = value.Modification.IsExperimental;
-            experimentalImageNode.EnableEventFlags = value.Modification.IsExperimental;
+            experimentalImageNode.SetEventFlags = value.Modification.IsExperimental;
 
             UpdateDisabledState();
         }
@@ -217,7 +216,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
         if (Modification.State is LoadedState.Errored or LoadedState.CompatError) {
             checkboxNode.IsEnabled = false;
             erroringImageNode.IsVisible = true;
-            erroringImageNode.EnableEventFlags = true;
+            erroringImageNode.SetEventFlags = true;
             erroringImageNode.Tooltip = Modification.ErrorMessage;
 
             reloadButtonNode.IsVisible = Modification.State is LoadedState.CompatError;
@@ -225,7 +224,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
         else {
             checkboxNode.IsEnabled = true;
             erroringImageNode.IsVisible = false;
-            erroringImageNode.EnableEventFlags = false;
+            erroringImageNode.SetEventFlags = false;
             reloadButtonNode.IsVisible = false;
         }
 

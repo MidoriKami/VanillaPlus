@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Numerics;
-using Dalamud.Game.Addon.Events;
 using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addons;
@@ -62,13 +61,13 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         
         colorPreviewNode = new ColorPreviewNode {
             Size = new Vector2(32.0f, 32.0f),
+            DrawFlags = DrawFlags.ClickableCursor,
             IsVisible = true,
         };
         colorPreviewLayoutNode.AddNode(colorPreviewNode);
         
         colorLabelNode = new TextNode {
             Size = new Vector2(100.0f, 32.0f),
-            IsVisible = true,
             AlignmentType = AlignmentType.Left,
             FontType = FontType.Axis,
             FontSize = 14,
@@ -77,6 +76,8 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             TextOutlineColor = ColorHelper.GetColor(7),
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
             String = "Color",
+            DrawFlags = DrawFlags.ClickableCursor,
+            IsVisible = true,
         };
         colorPreviewLayoutNode.AddNode(colorLabelNode);
 
@@ -97,8 +98,8 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         };
         verticalListNode.AddNode(1, sizeEditWidget);
 
-        colorPreviewLayoutNode.CollisionNode.AddEvent(AddonEventType.MouseClick, _ => OpenColorPicker());
-        colorPreviewNode.CollisionNode.AddEvent(AddonEventType.MouseClick, _ => OpenColorPicker());
+        colorPreviewLayoutNode.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
+        colorPreviewNode.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
     }
 
     protected override void OnSizeChanged() {

@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Dalamud.Game.Addon.Events;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 using VanillaPlus.NativeElements.Nodes;
@@ -57,7 +56,7 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
         };
         System.NativeController.AttachNode(itemLevelTextNode, this);
         
-        CollisionNode.AddEvent(AddonEventType.MouseOver, _ => {
+        CollisionNode.AddEvent(AtkEventType.MouseOver, () => {
             IsHovered = true;
 
             if (Item is null) return;
@@ -65,7 +64,7 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
             CollisionNode.ShowInventoryItemTooltip(Item.Item.Container, Item.Item.Slot);
         });
         
-        CollisionNode.AddEvent(AddonEventType.MouseOut, _ => {
+        CollisionNode.AddEvent(AtkEventType.MouseOut, () => {
             IsHovered = false;
             CollisionNode.HideTooltip();
         });

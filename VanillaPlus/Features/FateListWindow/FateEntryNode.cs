@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Numerics;
-using Dalamud.Game.Addon.Events;
 using Dalamud.Game.ClientState.Fates;
 using Dalamud.Game.Text;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Classes;
 using KamiToolKit.Classes.TimelineBuilding;
 using KamiToolKit.Nodes;
 
@@ -67,7 +67,7 @@ public unsafe class FateEntryNode : SimpleComponentNode {
             NodeId = 7,
             IsVisible = true,
         };
-        progressNode.CollisionNode.EventFlagsSet = false;
+        progressNode.CollisionNode.SetEventFlags = false;
         System.NativeController.AttachNode(progressNode, this);
 
         progressTextNode = new TextNode {
@@ -76,12 +76,11 @@ public unsafe class FateEntryNode : SimpleComponentNode {
             AlignmentType = AlignmentType.Left,
         };
         System.NativeController.AttachNode(progressTextNode, this);
-        
-        CollisionNode.AddEvent(AddonEventType.MouseOver, _ => {
-            IsHovered = true;
-        });
-        
-        CollisionNode.AddEvent(AddonEventType.MouseClick, _ => {
+
+        CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
+        CollisionNode.AddEvent(AtkEventType.MouseOver, () => IsHovered = true);
+        CollisionNode.AddEvent(AtkEventType.MouseOut, () => IsHovered = false);
+        CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
             if (Fate is null) return;
             
             var agentMap = AgentMap.Instance();
@@ -91,10 +90,6 @@ public unsafe class FateEntryNode : SimpleComponentNode {
                 agentMap->OpenMap(agentMap->CurrentMapId, agentMap->CurrentTerritoryId, Fate.Name.ToString(), MapType.QuestLog);
                 agentMap->OpenMap(agentMap->CurrentMapId, agentMap->CurrentTerritoryId, Fate.Name.ToString());
             }
-        });
-        
-        CollisionNode.AddEvent(AddonEventType.MouseOut, _ => {
-            IsHovered = false;
         });
         
         AddTimeline(new TimelineBuilder()

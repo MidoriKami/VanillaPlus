@@ -52,7 +52,7 @@ public unsafe class ClearFlag : GameModification {
         minimapController = null;
     }
 
-    private static void OnMiniMapMouseClick(AddonEventType atkEventType, AddonEventData data) {
+    private static void OnMiniMapMouseClick(AddonEventType addonEventType, AddonEventData data) {
         if (data.IsRightClick() && AgentMap.Instance()->FlagMarkerCount is not 0) {
             AgentMap.Instance()->FlagMarkerCount = 0;
         }

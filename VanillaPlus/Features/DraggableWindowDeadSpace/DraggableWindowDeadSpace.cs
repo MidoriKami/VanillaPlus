@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
 using Dalamud.Game.Addon.Events;
-using Dalamud.Game.Addon.Events.EventDataTypes;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -62,14 +61,14 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
                     var newInteractionNode = new ResNode {
                         Size = node.Value->Size(),
                         IsVisible = true,
-                        EventFlagsSet = true,
+                        SetEventFlags = true,
                     };
-            
-                    newInteractionNode.AddEvent(AddonEventType.MouseOver, OnWindowMouseOver);
-                    newInteractionNode.AddEvent(AddonEventType.MouseClick, OnWindowMouseClick, addClickHelpers: false);
-                    newInteractionNode.AddEvent(AddonEventType.MouseOut, OnWindowMouseOut);
-                    newInteractionNode.AddEvent(AddonEventType.MouseDown, OnWindowMouseDown);
-            
+
+                    newInteractionNode.AddEvent(AtkEventType.MouseOver, OnWindowMouseOver);
+                    newInteractionNode.AddEvent(AtkEventType.MouseClick, OnWindowMouseClick);
+                    newInteractionNode.AddEvent(AtkEventType.MouseOut, OnWindowMouseOut);
+                    newInteractionNode.AddEvent(AtkEventType.MouseDown, OnWindowMouseDown);
+
                     System.NativeController.AttachNode(newInteractionNode, node, NodePosition.BeforeTarget);
                     windowInteractionNodes?.Add(args.AddonName, newInteractionNode);
                     return;
@@ -86,40 +85,41 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         }
     }
     
-    private static void OnWindowMouseOver(AddonEventData addonEventData)
+    private static void OnWindowMouseOver(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData)
         => Services.AddonEventManager.SetCursor(AddonCursorType.Hand);
 
-    private void OnWindowMouseClick(AddonEventData obj) {
+    private void OnWindowMouseClick(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
         if (!isDragging) {
             Services.AddonEventManager.SetCursor(AddonCursorType.Hand);
-            obj.SetHandled();
+            atkEvent->SetEventIsHandled();
         }
     }
 
-    private void OnWindowMouseDown(AddonEventData obj) {
-        var targetAddon = (AtkUnitBase*)obj.AddonPointer;
-        if (targetAddon is null) return;
+    private void OnWindowMouseDown(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
+        var targetNode = (AtkResNode*)atkEvent->Target;
+        var targetAddon = RaptureAtkUnitManager.Instance()->GetAddonByNode(targetNode);
 
+        if (targetAddon is null) return;
+        
         var addonHeaderNode = targetAddon->WindowHeaderCollisionNode;
         if (addonHeaderNode is null) return;
-
-        ref var mouseData = ref ((AtkEventData*)obj.AtkEventDataPointer)->MouseData;
-        var mousePosition = new Vector2(mouseData.PosX, mouseData.PosY);
-
+        
+        var mousePosition = atkEventData->GetMousePosition();
+        
         if (addonHeaderNode->CheckCollisionAtCoords((short)mousePosition.X, (short)mousePosition.Y, true)) {
             return;
         }
 
         if (!isDragging) {
-            dragStart = obj.GetMousePosition();
+            dragStart = atkEventData->GetMousePosition();
             Services.AddonEventManager.SetCursor(AddonCursorType.Grab);
-            cursorEventListener?.AddEvent(AtkEventType.MouseMove, (AtkResNode*)obj.NodeTargetPointer);
-            cursorEventListener?.AddEvent(AtkEventType.MouseUp, (AtkResNode*)obj.NodeTargetPointer);
+            cursorEventListener?.AddEvent(AtkEventType.MouseMove, (AtkResNode*) atkEvent->Target);
+            cursorEventListener?.AddEvent(AtkEventType.MouseUp, (AtkResNode*) atkEvent->Target);
             isDragging = true;
         }
     }
         
-    private void OnWindowMouseOut(AddonEventData obj) {
+    private void OnWindowMouseOut(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
         if (!isDragging) {
             Services.AddonEventManager.ResetCursor();
         }
