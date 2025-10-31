@@ -98,6 +98,8 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         };
         verticalListNode.AddNode(1, sizeEditWidget);
 
+        colorPreviewLayoutNode.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
+        colorPreviewNode.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
         colorPreviewLayoutNode.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
         colorPreviewNode.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
     }
