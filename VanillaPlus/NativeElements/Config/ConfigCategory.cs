@@ -5,6 +5,7 @@ using System.Numerics;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 using VanillaPlus.NativeElements.Config.ConfigEntries;
+using VanillaPlus.NativeElements.Config.NodeEntries;
 
 namespace VanillaPlus.NativeElements.Config;
 
@@ -25,7 +26,7 @@ public class ConfigCategory : IDisposable {
             IsVisible = true,
         });
         
-        tabbedListNode.AddNode(new LabelTextNode {
+        tabbedListNode.AddNode(new CategoryTextNode {
             String = CategoryLabel,
             IsVisible = true,
         });
@@ -187,6 +188,24 @@ public class ConfigCategory : IDisposable {
             InitialIcon = initialValue,
             AllowManualInput = includeInput,
             Options = icons.ToList(),
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddTextNodeConfig(string styleFilePath, NodeConfigEnum configOptions) {
+        configEntries.Add(new TextNodeConfig {
+            ConfigOptions = configOptions,
+            FilePath = styleFilePath,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddNodeConfig(string styleFilePath, NodeConfigEnum configOptions) {
+        configEntries.Add(new NodeConfig<ResNode> {
+            ConfigOptions = configOptions,
+            FilePath = styleFilePath,
         });
 
         return this;

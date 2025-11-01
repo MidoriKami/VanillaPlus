@@ -46,7 +46,7 @@ public unsafe class HUDPresets : GameModification {
         hudLayoutController.OnAttach += addon => {
             addon->Resize(addon->GetSize() + new Vector2(0.0f, 95.0f));
 
-            labelNode = new LabelTextNode {
+            labelNode = new CategoryTextNode {
                 Position = new Vector2(16.0f, 215.0f),
                 AlignmentType = AlignmentType.Left,
                 FontSize = 12,

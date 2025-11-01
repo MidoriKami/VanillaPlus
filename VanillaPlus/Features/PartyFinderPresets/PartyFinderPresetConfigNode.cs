@@ -6,15 +6,15 @@ namespace VanillaPlus.Features.PartyFinderPresets;
 
 public class PartyFinderPresetConfigNode : ConfigNode<PresetInfo> {
 
-    private readonly LabelTextNode renameLabelNode;
+    private readonly CategoryTextNode renameCategoryNode;
     private readonly TextInputNode renameInputNode;
     private readonly TextButtonNode confirmButtonNode;
 
     public PartyFinderPresetConfigNode() {
-        renameLabelNode = new LabelTextNode {
+        renameCategoryNode = new CategoryTextNode {
             String = "Input new name",
         };
-        System.NativeController.AttachNode(renameLabelNode, this);
+        System.NativeController.AttachNode(renameCategoryNode, this);
 
         renameInputNode = new TextInputNode {
             IsVisible = true,
@@ -44,8 +44,8 @@ public class PartyFinderPresetConfigNode : ConfigNode<PresetInfo> {
         renameInputNode.Size = new Vector2(Width * 2.0f / 3.0f, 30.0f);
         renameInputNode.Position = Size / 2.0f - renameInputNode.Size / 2.0f;
 
-        renameLabelNode.Size = new Vector2(Width / 2.0f, 32.0f);
-        renameLabelNode.Position = new Vector2(renameInputNode.X, renameInputNode.Y - renameInputNode.Height);
+        renameCategoryNode.Size = new Vector2(Width / 2.0f, 32.0f);
+        renameCategoryNode.Position = new Vector2(renameInputNode.X, renameInputNode.Y - renameInputNode.Height);
 
         confirmButtonNode.Size = new Vector2(100.0f, 24.0f);
         confirmButtonNode.Position = new Vector2(renameInputNode.X + renameInputNode.Width - 100.0f, renameInputNode.Y + renameInputNode.Height);

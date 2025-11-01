@@ -110,7 +110,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         };
         System.NativeController.AttachNode(allowMovingCheckbox, this);
 
-        scaleTextNode = new LabelTextNode {
+        scaleTextNode = new CategoryTextNode {
             String = "Scale",
             IsVisible = true,
         };

@@ -8,10 +8,10 @@ using VanillaPlus.Classes;
 namespace VanillaPlus.NativeElements.Addons;
 
 public class AddonConfigAddon : NativeAddon {
-    private LabelTextNode? inputComboLabelNode;
+    private CategoryTextNode? inputComboLabelNode;
     private HorizontalLineNode? topLineNode;
 
-    private LabelTextNode? keybindLabelNode;
+    private CategoryTextNode? keybindLabelNode;
     private HorizontalLineNode? keybindLineNode;
     private TextButtonNode? keybindEnableButtonNode;
     private TextNode? keybindTextNode;
@@ -40,7 +40,7 @@ public class AddonConfigAddon : NativeAddon {
             OnKeybindChanged = OnKeybindChanged,
         };
         
-        keybindLabelNode = new LabelTextNode {
+        keybindLabelNode = new CategoryTextNode {
             AlignmentType = AlignmentType.Left,
             Position = ContentStartPosition + new Vector2(0.0f, 10.0f),
             String = "Keybind",
@@ -87,7 +87,7 @@ public class AddonConfigAddon : NativeAddon {
         };
         AttachNode(editKeybindButtonNode);
         
-        inputComboLabelNode = new LabelTextNode {
+        inputComboLabelNode = new CategoryTextNode {
             AlignmentType = AlignmentType.Left,
             Position = new Vector2(ContentStartPosition.X - 2.0f, editKeybindButtonNode.Y + editKeybindButtonNode.Height + 15.0f),
             String = "Window Size",

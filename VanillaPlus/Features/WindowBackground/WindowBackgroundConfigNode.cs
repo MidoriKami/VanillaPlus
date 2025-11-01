@@ -48,7 +48,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         verticalListNode.CollisionNode.IsVisible = false;
         System.NativeController.AttachNode(verticalListNode, this);
 
-        verticalListNode.AddNode(new LabelTextNode {
+        verticalListNode.AddNode(new CategoryTextNode {
             String = "Background Color",
         });
 
@@ -81,7 +81,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         };
         colorPreviewLayoutNode.AddNode(colorLabelNode);
 
-        verticalListNode.AddNode(0, new LabelTextNode {
+        verticalListNode.AddNode(0, new CategoryTextNode {
             String = "Padding Size",
         });
 
