@@ -15,11 +15,11 @@ using VirtualKeyExtensions = VanillaPlus.Extensions.VirtualKeyExtensions;
 namespace VanillaPlus.NativeElements.Addons;
 
 public unsafe class KeybindConfigAddon : NativeAddon {
-    private LabelTextNode? inputComboLabelNode;
+    private CategoryTextNode? inputComboLabelNode;
     private HorizontalLineNode? topLineNode;
     private TextNode? currentComboTextNode;
 
-    private LabelTextNode? conflictsLabelNode;
+    private CategoryTextNode? conflictsLabelNode;
     private HorizontalLineNode? conflictsLineNode;
     private ScrollingAreaNode<VerticalListNode>? conflictsScrollableAreaNode;
 
@@ -35,7 +35,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
     protected override void OnSetup(AtkUnitBase* addon) {
         SetWindowSize(500.0f, 333.0f);
 
-        inputComboLabelNode = new LabelTextNode {
+        inputComboLabelNode = new CategoryTextNode {
             AlignmentType = AlignmentType.Left,
             Position = ContentStartPosition + new Vector2(0.0f, 10.0f),
             String = "Input Desired Key Combo",
@@ -60,7 +60,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         };
         AttachNode(currentComboTextNode);
 
-        conflictsLabelNode = new LabelTextNode {
+        conflictsLabelNode = new CategoryTextNode {
             AlignmentType = AlignmentType.Left,
             Position = new Vector2(ContentStartPosition.X, currentComboTextNode.Position.Y + currentComboTextNode.Height),
             String = "Keybind Conflict(s)",
@@ -84,7 +84,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         };
         AttachNode(conflictsScrollableAreaNode);
         
-        conflictsScrollableAreaNode.ContentNode.AddNode(new LabelTextNode {
+        conflictsScrollableAreaNode.ContentNode.AddNode(new CategoryTextNode {
             String = "No Conflicts Detected",
             IsVisible = true,
         });
@@ -152,14 +152,14 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         conflictsScrollableAreaNode.ContentNode.Clear();
 
         if (conflicts.Count == 0) {
-            conflictsScrollableAreaNode.ContentNode.AddNode(new LabelTextNode {
+            conflictsScrollableAreaNode.ContentNode.AddNode(new CategoryTextNode {
                 String = "No Conflicts Detected",
                 IsVisible = true,
             });
         }
         else {
             foreach (var conflict in conflicts) {
-                conflictsScrollableAreaNode.ContentNode.AddNode(new LabelTextNode {
+                conflictsScrollableAreaNode.ContentNode.AddNode(new CategoryTextNode {
                     String = conflict.ToString(),
                     IsVisible = true,
                 });
