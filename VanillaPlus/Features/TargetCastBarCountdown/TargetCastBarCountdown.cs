@@ -1,17 +1,15 @@
-﻿using System.Drawing;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using Dalamud.Bindings.ImGui;
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Interface;
-using Dalamud.Interface.Utility.Raii;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
+using VanillaPlus.NativeElements.Config;
+using VanillaPlus.NativeElements.Config.NodeEntries;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.TargetCastBarCountdown;
@@ -43,19 +41,50 @@ public unsafe class TargetCastBarCountdown : GameModification {
     private static string CastBarEnemyStylePath => Path.Combine(Config.ConfigPath, "TargetCastBarCountdown.CastBarEnemy.style.json");
 
     private TargetCastBarCountdownConfig? config;
-    private TargetCastBarCountdownConfigWindow? configWindow;
+    private ConfigAddon? configWindow;
 
     public override string ImageName => "TargetCastBarCountdown.png";
 
     public override void OnEnable() {
         config = TargetCastBarCountdownConfig.Load();
-        configWindow = new TargetCastBarCountdownConfigWindow(config, DrawNodeConfigs, () => {
-            primaryTargetTextNode?.Save(PrimaryTargetStylePath);
-            primaryTargetAltTextNode?.Save(PrimaryTargetAltStylePath);
-            focusTargetTextNode?.Save(FocusTargetStylePath);
-            castBarEnemyTextNode?.First()?.Save(CastBarEnemyStylePath);
-        });
-        configWindow.AddToWindowSystem();
+        configWindow = new ConfigAddon {
+            NativeController = System.NativeController,
+            InternalName = "TargetCastBarConfig",
+            Title = "Target Castbar Countdown Config",
+            Config = config,
+        };
+
+        configWindow.AddCategory("Toggles")
+            .AddCheckbox("Show on Primary Target Castbar", nameof(config.PrimaryTarget))
+            .AddCheckbox("Show on Focus Target Castbar", nameof(config.FocusTarget))
+            .AddCheckbox("Show on Nameplate Target Castbar", nameof(config.NamePlateTargets));
+
+        const NodeConfigEnum nodeConfigOptions = NodeConfigEnum.TextColor | NodeConfigEnum.Position | NodeConfigEnum.TextSize | 
+                                                 NodeConfigEnum.TextFont | NodeConfigEnum.TextAlignment | NodeConfigEnum.TextOutlineColor;
+
+        configWindow.AddCategory("Target Castbar Style (Combined)")
+            .AddTextNodeConfig(PrimaryTargetAltStylePath, nodeConfigOptions);
+
+        configWindow.AddCategory("Target Castbar Style (Separate)")
+            .AddTextNodeConfig(PrimaryTargetStylePath, nodeConfigOptions);
+        
+        configWindow.AddCategory("Focus Target Castbar Style")
+            .AddTextNodeConfig(FocusTargetStylePath, nodeConfigOptions);
+        
+        configWindow.AddCategory("Nameplate Castbar Style")
+            .AddTextNodeConfig(CastBarEnemyStylePath, nodeConfigOptions);
+
+        configWindow.Open();
+        
+        config.OnSave += () => {
+            // Node configurations may have changed, load them into the actual nodes.
+            primaryTargetTextNode?.Load(PrimaryTargetStylePath);
+            primaryTargetAltTextNode?.Load(PrimaryTargetAltStylePath);
+            focusTargetTextNode?.Load(FocusTargetStylePath);
+            foreach (var node in castBarEnemyTextNode ?? []) {
+                node?.Load(CastBarEnemyStylePath);
+            }
+        };
         OpenConfigAction = configWindow.Toggle;
 
         addonController = new MultiAddonController("_TargetInfoCastBar", "_TargetInfo", "_FocusTargetInfo", "CastBarEnemy");
@@ -66,7 +95,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
     }
 
     public override void OnDisable() {
-        configWindow?.RemoveFromWindowSystem();
+        configWindow?.Dispose();
         configWindow = null;
 
         addonController?.Dispose();
@@ -74,55 +103,14 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
         castBarEnemyTextNode = null;
     }
-    
-    private void DrawNodeConfigs() {
-        using var toolbar = ImRaii.TabBar("");
-        if (!toolbar) return;
-
-        using (var primaryTarget = ImRaii.TabItem("Target Cast Bar")) {
-            if (primaryTarget) {
-                ImGui.TextColored(KnownColor.Gray.Vector(), "This is only shown when 'Display Target Info Independently' is enabled in HUD Settings");
-                primaryTargetTextNode?.DrawConfig();
-            }
-        }
-
-        using (var primaryTarget = ImRaii.TabItem("Target Info")) {
-            if (primaryTarget) {
-                ImGui.TextColored(KnownColor.Gray.Vector(), "This is only shown when 'Display Target Info Independently' is disabled in HUD Settings");
-                primaryTargetAltTextNode?.DrawConfig();
-            }
-        }
-        
-        using (var primaryTarget = ImRaii.TabItem("Focus Target")) {
-            if (primaryTarget) {
-                ImGui.TextColored(KnownColor.Gray.Vector(), "This line is just so that all four tabs line up nicely :)");
-                focusTargetTextNode?.DrawConfig();
-            }
-        }
-        
-        using (var primaryTarget = ImRaii.TabItem("CastBarEnemy Target")) {
-            if (primaryTarget) {
-                ImGui.TextColored(KnownColor.Gray.Vector(), "This is for the cast bars under enemy names");
-                var firstNode = castBarEnemyTextNode?.First();
-                if (firstNode is not null) {
-                    firstNode.DrawConfig();
-
-                    foreach (var node in castBarEnemyTextNode ?? []) {
-                        if (node != firstNode) {
-                            node?.Load(firstNode);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     private static TextNode BuildTextNode(Vector2 position) => new() {
         Size = new Vector2(82.0f, 22.0f),
         Position = position,
         FontSize = 20,
         TextFlags = TextFlags.Edge,
-        TextOutlineColor = ColorHelper.GetColor(54),
+        TextColor = ColorHelper.GetColor(1),
+        TextOutlineColor = ColorHelper.GetColor(23),
         FontType = FontType.Miedinger,
         AlignmentType = AlignmentType.Right,
         IsVisible = true,

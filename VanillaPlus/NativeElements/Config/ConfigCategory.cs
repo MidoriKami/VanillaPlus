@@ -197,6 +197,7 @@ public class ConfigCategory : IDisposable {
         configEntries.Add(new TextNodeConfig {
             ConfigOptions = configOptions,
             FilePath = styleFilePath,
+            Config = ConfigObject,
         });
 
         return this;
@@ -206,6 +207,7 @@ public class ConfigCategory : IDisposable {
         configEntries.Add(new NodeConfig<ResNode> {
             ConfigOptions = configOptions,
             FilePath = styleFilePath,
+            Config = ConfigObject,
         });
 
         return this;
