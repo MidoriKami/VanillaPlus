@@ -73,8 +73,6 @@ public unsafe class TargetCastBarCountdown : GameModification {
         
         configWindow.AddCategory("Nameplate Castbar Style")
             .AddTextNodeConfig(CastBarEnemyStylePath, nodeConfigOptions);
-
-        configWindow.Open();
         
         config.OnSave += () => {
             // Node configurations may have changed, load them into the actual nodes.
