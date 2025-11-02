@@ -40,18 +40,10 @@ public class AddonModificationBrowser : NativeAddon {
         Size = new Vector2(450.0f, 400.0f),
     };
 
-    private readonly List<TreeListCategoryNode> categoryNodes = [];
-    private readonly List<TreeListHeaderNode> headerNodes = [];
-    private readonly List<GameModificationOptionNode> modificationOptionNodes = [];
-
     private bool isImageEnlarged;
     private bool isImageHovered;
 
     protected override unsafe void OnSetup(AtkUnitBase* addon) {
-        categoryNodes.Clear();
-        modificationOptionNodes.Clear();
-        headerNodes.Clear();
-        
         mainContainerNode = new SimpleComponentNode {
             Position = ContentStartPosition,
             Size = ContentSize,
@@ -65,26 +57,17 @@ public class AddonModificationBrowser : NativeAddon {
 
         addon->AdditionalFocusableNodes[0] = (AtkResNode*)descriptionImageNode;
 
-        var typeGroup = System.ModificationManager.LoadedModifications
-            .Select(option => option)
-            .GroupBy(option => option.Modification.ModificationInfo.Type);
-
         uint optionIndex = 0;
 
-        var orderedTypeGroup = typeGroup.OrderBy(group => group.Key);
-        foreach (var category in orderedTypeGroup) {
+        foreach (var category in System.ModificationManager.CategoryGroups) {
             var newCategoryNode = new TreeListCategoryNode {
                 IsVisible = true,
                 SeString = category.Key.GetDescription(),
                 OnToggle = isVisible => OnCategoryToggled(isVisible, category.Key),
                 VerticalPadding = 0.0f,
             };
-            
-            var subTypeGroup = category
-                .GroupBy(option => option.Modification.ModificationInfo.SubType);
-            
-            var orderedSubTypeGroup = subTypeGroup.OrderBy(group => group.Key?.GetDescription());
-            foreach (var subCategory in orderedSubTypeGroup) {
+
+            foreach (var subCategory in System.ModificationManager.SubCategoryGroups[category.Key]) {
                 if (subCategory.Key is not null) {
                     var newHeaderNode = new TreeListHeaderNode {
                         Size = new Vector2(0.0f, 24.0f), 
@@ -93,7 +76,6 @@ public class AddonModificationBrowser : NativeAddon {
                     };
                     
                     newCategoryNode.AddNode(newHeaderNode);
-                    headerNodes.Add(newHeaderNode);
                 }
 
                 foreach (var mod in subCategory.OrderBy(modification => modification.Modification.ModificationInfo.DisplayName)) {
@@ -105,13 +87,10 @@ public class AddonModificationBrowser : NativeAddon {
                     };
 
                     newOptionNode.OnClick = () => OnOptionClicked(newOptionNode);
-
                     newCategoryNode.AddNode(newOptionNode);
-                    modificationOptionNodes.Add(newOptionNode);
                 }
             }
             
-            categoryNodes.Add(newCategoryNode);
             optionContainerNode.ContentNode.AddCategoryNode(newCategoryNode);
         }
 
@@ -252,7 +231,7 @@ public class AddonModificationBrowser : NativeAddon {
     private void OnSearchBoxInputReceived(SeString searchTerm) {
         List<GameModificationOptionNode> validOptions = [];
         
-        foreach (var option in modificationOptionNodes) {
+        foreach (var option in optionContainerNode.ContentNode.CategoryNodes.SelectMany(category => category.GetNodes<GameModificationOptionNode>())) {
             var isTarget = option.ModificationInfo.IsMatch(searchTerm.ToString());
             option.IsVisible = isTarget;
 
@@ -261,11 +240,11 @@ public class AddonModificationBrowser : NativeAddon {
             }
         }
 
-        foreach (var headerNode in headerNodes) {
+        foreach (var headerNode in optionContainerNode.ContentNode.CategoryNodes.SelectMany(category => category.HeaderNodes)) {
             headerNode.IsVisible = searchTerm.ToString() == string.Empty;
         }
 
-        foreach (var categoryNode in categoryNodes) {
+        foreach (var categoryNode in optionContainerNode.ContentNode.CategoryNodes) {
             categoryNode.IsVisible = validOptions.Any(option => option.ModificationInfo.Type.GetDescription() == categoryNode.SeString.ToString());
             categoryNode.RecalculateLayout();
         }
@@ -341,7 +320,7 @@ public class AddonModificationBrowser : NativeAddon {
 
     private void ClearSelection() {
         selectedOption = null;
-        foreach (var node in modificationOptionNodes) {
+        foreach (var node in optionContainerNode.ContentNode.CategoryNodes.SelectMany(category => category.GetNodes<GameModificationOptionNode>())) {
             node.IsSelected = false;
             node.IsHovered = false;
         }
@@ -370,12 +349,12 @@ public class AddonModificationBrowser : NativeAddon {
     }
 
     private void RecalculateScrollableAreaSize() {
-        optionContainerNode.ContentHeight = categoryNodes.Sum(node => node.Height) + 20.0f;
+        optionContainerNode.ContentHeight = optionContainerNode.ContentNode.CategoryNodes.Sum(node => node.Height) + 20.0f;
     }
 
     public void UpdateDisabledState() {
         if (IsOpen) {
-            foreach (var modificationOptionNode in modificationOptionNodes) {
+            foreach (var modificationOptionNode in optionContainerNode.ContentNode.CategoryNodes.SelectMany(category => category.GetNodes<GameModificationOptionNode>())) {
                 modificationOptionNode.UpdateDisabledState();
             }
         }
@@ -405,7 +384,7 @@ public class AddonModificationBrowser : NativeAddon {
         descriptionTextNode.Size = descriptionContainerNode.Size - new Vector2(16.0f, 16.0f) - new Vector2(0.0f, descriptionVersionTextNode.Height);
         descriptionTextNode.Position = new Vector2(8.0f, 8.0f);
         
-        foreach (var node in categoryNodes) {
+        foreach (var node in optionContainerNode.ContentNode.CategoryNodes) {
             node.Width = optionContainerNode.ContentNode.Width;
         }
     }

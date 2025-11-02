@@ -9,7 +9,9 @@ namespace VanillaPlus.InternalSystem;
 
 public class ModificationManager : IDisposable {
 
-    public readonly List<LoadedModification> LoadedModifications = [];
+    private readonly List<LoadedModification> loadedModifications = [];
+    public readonly List<IGrouping<ModificationType, LoadedModification>> CategoryGroups;
+    public readonly Dictionary<ModificationType, List<IGrouping<ModificationSubType?, LoadedModification>>> SubCategoryGroups = [];
 
     public ModificationManager() {
         var allGameModifications = GetGameModifications();
@@ -19,7 +21,7 @@ public class ModificationManager : IDisposable {
 
             var newLoadedModification = new LoadedModification(gameMod, LoadedState.Disabled);
 
-            LoadedModifications.Add(newLoadedModification);
+            loadedModifications.Add(newLoadedModification);
 
             if (System.SystemConfig.EnabledModifications.Contains(gameMod.Name)) {
                 TryEnableModification(newLoadedModification);
@@ -27,6 +29,21 @@ public class ModificationManager : IDisposable {
         }
 
         Services.PluginInterface.ActivePluginsChanged += OnPluginsChanged;
+
+        CategoryGroups = loadedModifications
+            .Select(option => option)
+            .GroupBy(option => option.Modification.ModificationInfo.Type)
+            .OrderBy(group => group.Key)
+            .ToList();
+
+        foreach (var categoryGroup in CategoryGroups) {
+            var subCategoryGroup = categoryGroup
+                .GroupBy(option => option.Modification.ModificationInfo.SubType)
+                .OrderBy(group => group.Key?.GetDescription())
+                .ToList();
+
+            SubCategoryGroups.Add(categoryGroup.Key, subCategoryGroup);
+        }
     }
 
     public void Dispose() {
@@ -34,7 +51,7 @@ public class ModificationManager : IDisposable {
 
         Services.PluginLog.Debug("Disposing Modification Manager, now disabling all GameModifications");
         
-        foreach (var loadedMod in LoadedModifications) {
+        foreach (var loadedMod in loadedModifications) {
             if (loadedMod.State is LoadedState.Enabled) {
                 try {
                     Services.PluginLog.Debug($"Disabling {loadedMod.Name}");
@@ -53,7 +70,7 @@ public class ModificationManager : IDisposable {
         => ReloadConflictedModules();
 
     public void ReloadConflictedModules() {
-        foreach (var gameModification in LoadedModifications) {
+        foreach (var gameModification in loadedModifications) {
 
             // Only evaluate modules that have a compatability module
             if (gameModification.Modification.ModificationInfo.CompatibilityModule is not { } compatibilityModule) continue;
