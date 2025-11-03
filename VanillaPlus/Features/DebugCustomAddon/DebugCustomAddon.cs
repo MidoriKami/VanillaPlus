@@ -29,7 +29,7 @@ public class DebugCustomAddon : GameModification {
             Size = new Vector2(500.0f, 500.0f),
         };
 
-        debugAddon.Open();
+        debugAddon.DebugOpen();
 
         OpenConfigAction = debugAddon.Toggle;
     }
