@@ -75,7 +75,6 @@ public unsafe class TargetCastBarCountdown : GameModification {
             .AddTextNodeConfig(CastBarEnemyStylePath, nodeConfigOptions);
 
         config.OnSave += () => {
-            // Node configurations may have changed, load them into the actual nodes.
             primaryTargetTextNode?.Load(PrimaryTargetStylePath);
             primaryTargetAltTextNode?.Load(PrimaryTargetAltStylePath);
             focusTargetTextNode?.Load(FocusTargetStylePath);
@@ -120,7 +119,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
                 primaryTargetTextNode = BuildTextNode(new Vector2(0.0f, 16.0f));
 
                 primaryTargetTextNode.Load(PrimaryTargetStylePath);
-                primaryTargetTextNode.IsVisible = true;
+                ForceConfigValues(primaryTargetTextNode, PrimaryTargetStylePath);
 
                 System.NativeController.AttachNode(primaryTargetTextNode, addon->GetNodeById(7), NodePosition.AsLastChild);
                 break;
@@ -129,7 +128,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
                 primaryTargetAltTextNode = BuildTextNode(new Vector2(0.0f, -16.0f));
 
                 primaryTargetAltTextNode.Load(PrimaryTargetAltStylePath);
-                primaryTargetAltTextNode.IsVisible = true;
+                ForceConfigValues(primaryTargetAltTextNode, PrimaryTargetAltStylePath);
 
                 System.NativeController.AttachNode(primaryTargetAltTextNode, addon->GetNodeById(15), NodePosition.AsLastChild);
                 break;
@@ -138,7 +137,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
                 focusTargetTextNode = BuildTextNode(new Vector2(0.0f, -16.0f));
 
                 focusTargetTextNode.Load(FocusTargetStylePath);
-                focusTargetTextNode.IsVisible = true;
+                ForceConfigValues(focusTargetTextNode, FocusTargetStylePath);
 
                 System.NativeController.AttachNode(focusTargetTextNode, addon->GetNodeById(8), NodePosition.AsLastChild);
                 break;
@@ -158,7 +157,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
                     
                     castBarEnemyTextNode[index] = newNode;
                     newNode.Load(CastBarEnemyStylePath);
-                    castBarEnemyTextNode[index]!.IsVisible = true;
+                    ForceConfigValues(castBarEnemyTextNode[index]!, CastBarEnemyStylePath);
 
                     var castBarNode = (AtkComponentNode*)info.CastBarNode;
                     System.NativeController.AttachNode(newNode, castBarNode->SearchNodeById<AtkResNode>(7));
@@ -253,4 +252,15 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
     private static IBattleChara? GetEntity(uint entityId)
         => Services.ObjectTable.FirstOrDefault(obj => obj.EntityId == entityId) as IBattleChara;
+
+    // Certain config options are no longer provided, but may have still been saved in an invalid state
+    // This will force the correct default values and save them.
+    private static void ForceConfigValues(TextNode node, string filePath) {
+        if (!node.IsVisible || node.MultiplyColor != Vector3.One) {
+            node.IsVisible = true;
+            node.MultiplyColor = Vector3.One;
+        
+            node.Save(filePath);
+        }
+    }
 }
