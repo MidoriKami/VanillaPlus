@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Numerics;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using VanillaPlus.Classes;
@@ -14,18 +15,27 @@ public unsafe class GearsetRedirect : GameModification {
         Authors = [ "MidoriKami" ],
         ChangeLog = [
             new ChangeLogInfo(1, "InitialChangelog"),
+            new ChangeLogInfo(2, "Completely new configuration system, old configurations are no longer valid"),
         ],
     };
 
     private Hook<RaptureGearsetModule.Delegates.EquipGearset>? gearsetChangedHook;
     private GearsetRedirectConfig? config;
-    private GearsetRedirectConfigWindow? configWindow;
-    
+    private GearsetRedirectConfigAddon? configWindow;
+
+    public override bool IsExperimental => true;
+
     public override void OnEnable() {
         config = GearsetRedirectConfig.Load();
 
-        configWindow = new GearsetRedirectConfigWindow(config);
-        configWindow.AddToWindowSystem();
+        configWindow = new GearsetRedirectConfigAddon {
+            NativeController = System.NativeController,
+            Size = new Vector2(600.0f, 525.0f),
+            InternalName = "GearsetRedirectConfig",
+            Title = "Gearset Redirect Config",
+            Config = config,
+        };
+
         OpenConfigAction = () => {
             if (Services.ClientState.IsLoggedIn) {
                 configWindow.Toggle();
@@ -40,7 +50,7 @@ public unsafe class GearsetRedirect : GameModification {
         gearsetChangedHook?.Dispose();
         gearsetChangedHook = null;
         
-        configWindow?.RemoveFromWindowSystem();
+        configWindow?.Dispose();
         configWindow = null;
 
         config = null;
