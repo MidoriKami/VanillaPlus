@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -13,7 +14,7 @@ public unsafe class WindowBackgroundController : IDisposable {
     private OverlayAddonController? overlayAddonController;
     private SimpleOverlayNode? nameplateOverlayNode;
 
-    private Dictionary<string, AddonController>? addonControllers;
+    private ConcurrentDictionary<string, AddonController>? addonControllers;
 
     private Dictionary<string, BackgroundImageNode>? backgroundImageNodes;
     private Dictionary<string, BackgroundImageNode>? overlayImageNodes;
@@ -98,7 +99,7 @@ public unsafe class WindowBackgroundController : IDisposable {
             addonController.Enable();
         }
 
-        addonControllers.Add(addonName, addonController);
+        addonControllers.TryAdd(addonName, addonController);
 
         config.Save();
     }
@@ -108,7 +109,7 @@ public unsafe class WindowBackgroundController : IDisposable {
         if (addonName == WindowBackgroundSetting.InvalidName) return;
         if (addonControllers?.TryGetValue(addonName, out var addonController) ?? false) {
             addonController.Disable();
-            addonControllers?.Remove(addonName);
+            addonControllers?.Remove(addonName, out _);
         }
 
         config.Save();
