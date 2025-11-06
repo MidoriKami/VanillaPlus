@@ -11,7 +11,9 @@ public class RetainerSearchBar : GameModification {
         Authors = [ "MidoriKami" ],
         ChangeLog = [
             new ChangeLogInfo(1, "InitialChangelog"),
+            new ChangeLogInfo(2, "Add compatibility check"),
         ],
+        CompatibilityModule = new PluginCompatibilityModule("InventorySearchBar"),
     };
 
     private InventorySearchAddonController? retainerInventoryController;
