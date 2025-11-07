@@ -52,6 +52,8 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
     }
     
     private void OnAddonSetup(AddonEvent type, AddonArgs args) {
+        if (!Services.ClientState.IsLoggedIn) return;
+        
         var addon = (AtkUnitBase*)args.Addon.Address;
 
         if (addon->WindowNode is not null) {
