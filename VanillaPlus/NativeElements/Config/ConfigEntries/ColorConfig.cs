@@ -32,8 +32,6 @@ public class ColorConfig : BaseConfigEntry {
         };
         layoutNode.AddNode(colorSquareNode);
 
-        colorSquareNode.CollisionNode.SetEventFlags = false;
-
         layoutNode.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
         layoutNode.CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
             colorPickerInstance.InitialColor = Color;

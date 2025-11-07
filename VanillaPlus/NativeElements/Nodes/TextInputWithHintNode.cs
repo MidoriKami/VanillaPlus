@@ -28,7 +28,6 @@ public class TextInputWithHintNode : SimpleComponentNode {
                 .Append("Start input with '$' to search by description")
                 .ToReadOnlySeString()
                 .ToDalamudString(),
-            SetEventFlags = true,
             IsVisible = true,
         };
         System.NativeController.AttachNode(helpNode, this);

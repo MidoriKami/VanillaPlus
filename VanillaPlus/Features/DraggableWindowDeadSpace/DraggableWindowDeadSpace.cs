@@ -61,7 +61,6 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
                     var newInteractionNode = new ResNode {
                         Size = node.Value->Size(),
                         IsVisible = true,
-                        SetEventFlags = true,
                     };
 
                     newInteractionNode.AddEvent(AtkEventType.MouseOver, () => {

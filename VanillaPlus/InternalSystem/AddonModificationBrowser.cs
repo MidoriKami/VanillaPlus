@@ -172,7 +172,6 @@ public class AddonModificationBrowser : NativeAddon {
         System.NativeController.AttachNode(descriptionImageFrame, descriptionContainerNode);
 
         descriptionImageNode = new ImGuiImageNode {
-            SetEventFlags = true,
             IsVisible = true,
             FitTexture = true,
             DrawFlags = DrawFlags.ClickableCursor,

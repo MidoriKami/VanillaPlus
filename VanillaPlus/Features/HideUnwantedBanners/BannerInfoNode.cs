@@ -25,7 +25,6 @@ public class BannerInfoNode : SimpleComponentNode {
 
         iconImageNode = new IconImageNode {
             IsVisible = true,
-            SetEventFlags = true,
             FitTexture = true,
             DrawFlags = DrawFlags.ClickableCursor,
         };

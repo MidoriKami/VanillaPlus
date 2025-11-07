@@ -67,7 +67,6 @@ public unsafe class FateEntryNode : SimpleComponentNode {
             NodeId = 7,
             IsVisible = true,
         };
-        progressNode.CollisionNode.SetEventFlags = false;
         System.NativeController.AttachNode(progressNode, this);
 
         progressTextNode = new TextNode {

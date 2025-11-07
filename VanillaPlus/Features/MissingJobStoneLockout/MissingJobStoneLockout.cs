@@ -70,7 +70,6 @@ public unsafe class MissingJobStoneLockout : GameModification {
             FontSize = 14,
             String = "Missing Job Stone!",
             TooltipString = "[VanillaPlus]: Click to disable lock",
-            SetEventFlags = true,
             DrawFlags = DrawFlags.ClickableCursor,
         };
         System.NativeController.AttachNode(warningTextNode, animationContainer);

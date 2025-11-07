@@ -138,7 +138,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
             checkboxNode.IsChecked = value.State is LoadedState.Enabled;
 
             experimentalImageNode.IsVisible = value.Modification.IsExperimental;
-            experimentalImageNode.SetEventFlags = value.Modification.IsExperimental;
 
             UpdateDisabledState();
         }
@@ -216,7 +215,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
         if (Modification.State is LoadedState.Errored or LoadedState.CompatError) {
             checkboxNode.IsEnabled = false;
             erroringImageNode.IsVisible = true;
-            erroringImageNode.SetEventFlags = true;
             erroringImageNode.Tooltip = Modification.ErrorMessage;
 
             reloadButtonNode.IsVisible = Modification.State is LoadedState.CompatError;
@@ -224,7 +222,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
         else {
             checkboxNode.IsEnabled = true;
             erroringImageNode.IsVisible = false;
-            erroringImageNode.SetEventFlags = false;
             reloadButtonNode.IsVisible = false;
         }
 
