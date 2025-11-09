@@ -36,8 +36,6 @@ public unsafe class MacroTooltips : GameModification {
     }
 
     private void OnShowMacroTooltip(AddonActionBarBase* a1, AtkResNode* macroResNode, NumberArrayData* numberArray, StringArrayData* stringArray, int numberArrayIndex, int stringArrayIndex) {
-        showTooltipHook!.Original(a1, macroResNode, numberArray, stringArray, numberArrayIndex, stringArrayIndex);
-
         try {
             // In ActionBarNumberArray, the first hotbar starts at index 15
             var realSlotId = (numberArrayIndex - 15) % 16;
@@ -60,10 +58,13 @@ public unsafe class MacroTooltips : GameModification {
                 RaptureMacroModule.Instance()->TryResolveMacroIcon(UIModule.Instance(), slotType, rowId, isShared ? 1 : 0, macroIndex, itemId);
 
                 macroResNode->ShowActionTooltip(*rowId, originalTooltip);
+                return;
             }
         }
         catch (Exception e) {
             Services.PluginLog.Error(e, "Exception in OnShowMacroTooltip");
         }
+
+        showTooltipHook!.Original(a1, macroResNode, numberArray, stringArray, numberArrayIndex, stringArrayIndex);
     }
 }
