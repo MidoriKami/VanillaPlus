@@ -75,7 +75,7 @@ public static class InventoryItemExtensions {
         }
 
         if (!ItemUtil.IsNormalItem(item.GetBaseItemId())) return false;
-        var itemData = Services.DataManager.GetExcelSheet<Item>().GetRow(item.GetBaseItemId());
+        if (!Services.DataManager.GetExcelSheet<Item>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
 
         if (Regex.IsMatch(item.ItemId.ToString(), searchString)) return true;
         if (Regex.IsMatch(itemData.Name.ToString(), searchString, regexOptions)) return true;
