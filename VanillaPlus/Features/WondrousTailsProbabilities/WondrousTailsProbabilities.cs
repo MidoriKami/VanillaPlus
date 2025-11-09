@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
@@ -37,13 +38,16 @@ public unsafe class WondrousTailsProbabilities : GameModification {
     public override string ImageName => "WondrousTailsProbabilities.png";
 
     public override void OnEnable() {
-        perfectTails = new PerfectTails();
+        // Initial load of PerfectTails takes approx 100ms
+        Task.Run(() => {
+            perfectTails = new PerfectTails();
 
-        weeklyBingoController = new AddonController<AddonWeeklyBingo>("WeeklyBingo");
-        weeklyBingoController.OnAttach += AttachNodes;
-        weeklyBingoController.OnDetach += DetachNodes;
-        weeklyBingoController.OnRefresh += RefreshNodes;
-        weeklyBingoController.Enable();
+            weeklyBingoController = new AddonController<AddonWeeklyBingo>("WeeklyBingo");
+            weeklyBingoController.OnAttach += AttachNodes;
+            weeklyBingoController.OnDetach += DetachNodes;
+            weeklyBingoController.OnRefresh += RefreshNodes;
+            weeklyBingoController.Enable();
+        });
     }
 
     public override void OnDisable() {
