@@ -74,7 +74,8 @@ public static class InventoryItemExtensions {
             searchString = searchString[1..];
         }
 
-        var itemData = Services.DataManager.GetExcelSheet<Item>().GetRow(item.ItemId);
+        if (!ItemUtil.IsNormalItem(item.GetBaseItemId())) return false;
+        var itemData = Services.DataManager.GetExcelSheet<Item>().GetRow(item.GetBaseItemId());
 
         if (Regex.IsMatch(item.ItemId.ToString(), searchString)) return true;
         if (Regex.IsMatch(itemData.Name.ToString(), searchString, regexOptions)) return true;
