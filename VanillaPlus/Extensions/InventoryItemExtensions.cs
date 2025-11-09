@@ -63,8 +63,6 @@ public static class InventoryItemExtensions {
     }
 
     public static bool IsRegexMatch(this ref InventoryItem item, string searchString) {
-        const RegexOptions regexOptions = RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
-
         // Skip any data access if string is empty
         if (searchString.IsNullOrEmpty()) return true;
 
@@ -74,21 +72,23 @@ public static class InventoryItemExtensions {
             searchString = searchString[1..];
         }
 
+        var regex = new Regex(searchString,RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+
         if (ItemUtil.IsEventItem(item.GetBaseItemId())) {
             if (!Services.DataManager.GetExcelSheet<EventItem>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
 
-            if (Regex.IsMatch(item.ItemId.ToString(), searchString)) return true;
-            if (Regex.IsMatch(itemData.Name.ToString(), searchString, regexOptions)) return true;
+            if (regex.IsMatch(item.ItemId.ToString())) return true;
+            if (regex.IsMatch(itemData.Name.ToString())) return true;
         }
 
         else if (ItemUtil.IsNormalItem(item.GetBaseItemId())) {
             if (!Services.DataManager.GetExcelSheet<Item>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
 
-            if (Regex.IsMatch(item.ItemId.ToString(), searchString)) return true;
-            if (Regex.IsMatch(itemData.Name.ToString(), searchString, regexOptions)) return true;
-            if (Regex.IsMatch(itemData.Description.ToString(), searchString, regexOptions) && isDescriptionSearch) return true;
-            if (Regex.IsMatch(itemData.LevelEquip.ToString(), searchString, regexOptions)) return true;
-            if (Regex.IsMatch(itemData.LevelItem.RowId.ToString(), searchString, regexOptions)) return true;
+            if (regex.IsMatch(item.ItemId.ToString())) return true;
+            if (regex.IsMatch(itemData.Name.ToString())) return true;
+            if (regex.IsMatch(itemData.Description.ToString()) && isDescriptionSearch) return true;
+            if (regex.IsMatch(itemData.LevelEquip.ToString())) return true;
+            if (regex.IsMatch(itemData.LevelItem.RowId.ToString())) return true;
         }
 
         return false;
