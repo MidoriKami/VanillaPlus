@@ -74,14 +74,22 @@ public static class InventoryItemExtensions {
             searchString = searchString[1..];
         }
 
-        if (!ItemUtil.IsNormalItem(item.GetBaseItemId())) return false;
-        if (!Services.DataManager.GetExcelSheet<Item>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
+        if (ItemUtil.IsEventItem(item.GetBaseItemId())) {
+            if (!Services.DataManager.GetExcelSheet<EventItem>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
 
-        if (Regex.IsMatch(item.ItemId.ToString(), searchString)) return true;
-        if (Regex.IsMatch(itemData.Name.ToString(), searchString, regexOptions)) return true;
-        if (Regex.IsMatch(itemData.Description.ToString(), searchString, regexOptions) && isDescriptionSearch) return true;
-        if (Regex.IsMatch(itemData.LevelEquip.ToString(), searchString, regexOptions)) return true;
-        if (Regex.IsMatch(itemData.LevelItem.RowId.ToString(), searchString, regexOptions)) return true;
+            if (Regex.IsMatch(item.ItemId.ToString(), searchString)) return true;
+            if (Regex.IsMatch(itemData.Name.ToString(), searchString, regexOptions)) return true;
+        }
+
+        else if (ItemUtil.IsNormalItem(item.GetBaseItemId())) {
+            if (!Services.DataManager.GetExcelSheet<Item>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
+
+            if (Regex.IsMatch(item.ItemId.ToString(), searchString)) return true;
+            if (Regex.IsMatch(itemData.Name.ToString(), searchString, regexOptions)) return true;
+            if (Regex.IsMatch(itemData.Description.ToString(), searchString, regexOptions) && isDescriptionSearch) return true;
+            if (Regex.IsMatch(itemData.LevelEquip.ToString(), searchString, regexOptions)) return true;
+            if (Regex.IsMatch(itemData.LevelItem.RowId.ToString(), searchString, regexOptions)) return true;
+        }
 
         return false;
     }
