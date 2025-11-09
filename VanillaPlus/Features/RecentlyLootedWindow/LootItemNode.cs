@@ -64,7 +64,7 @@ public unsafe class LootItemNode : SimpleComponentNode {
             field = value;
 
             iconNode.IconId = value.IconId;
-            itemNameTextNode.ReadOnlySeString = value.Name;
+            itemNameTextNode.SeString = value.Name;
             iconNode.Count = value.Quantity;
         }
     }

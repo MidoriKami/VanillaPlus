@@ -121,7 +121,7 @@ public unsafe class FateEntryNode : SimpleComponentNode {
             field = value;
 
             iconNode.IconId = value.MapIconId;
-            nameNode.SeString = value.Name;
+            nameNode.SeString = value.Name.EncodeWithNullTerminator();
             timeRemainingNode.String = TimeSpan.FromSeconds(value.TimeRemaining).ToString(@"mm\:ss");
 
             if (Fate is not { Level: 1, MaxLevel: 255 }) {

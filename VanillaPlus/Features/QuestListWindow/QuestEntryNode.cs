@@ -100,8 +100,8 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
             }
             
             questIconNode.IconId = value.IconId;
-            questNameTextNode.ReadOnlySeString = value.Name;
-            issuerNameTextNode.ReadOnlySeString = value.IssuerName;
+            questNameTextNode.SeString = value.Name;
+            issuerNameTextNode.SeString = value.IssuerName;
         }
     }
 

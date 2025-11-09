@@ -87,7 +87,7 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
             var item = value.Item.GetLinkedItem();
 
             iconNode.IconId = item->GetIconId();
-            itemNameTextNode.ReadOnlySeString = item->GetItemName();
+            itemNameTextNode.SeString = item->GetItemName();
             iconNode.Count = value.ItemCount;
 
             if (value.Level > 1) {

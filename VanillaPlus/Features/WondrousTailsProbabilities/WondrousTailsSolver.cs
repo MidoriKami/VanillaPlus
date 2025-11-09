@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Game.Text.SeStringHandling;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using Lumina.Text.ReadOnly;
 
 namespace VanillaPlus.Features.WondrousTailsProbabilities;
 
@@ -152,7 +153,7 @@ public sealed partial class PerfectTails {
 /// Getting formatted results
 /// </summary>
 public sealed unsafe partial class PerfectTails {
-    public SeString SolveAndGetProbabilitySeString() {
+    public ReadOnlySeString SolveAndGetProbabilitySeString() {
         var stickersPlaced = PlayerState.Instance()->WeeklyBingoNumPlacedStickers;
 
         // > 9 returns Error {-1,-1,-1} by the solver
@@ -168,7 +169,8 @@ public sealed unsafe partial class PerfectTails {
                 .AddUiForeground("error ", 704)
                 .AddUiForeground("error ", 704)
                 .AddUiForeground("error ", 704)
-                .Build();
+                .Build()
+                .EncodeWithNullTerminator();
         }
 
         var valuePayloads = StringFormatDoubles(values);
@@ -204,7 +206,7 @@ public sealed unsafe partial class PerfectTails {
             seString.AddText(string.Join(" ", valuePayloads));
         }
         
-        return seString.Build();
+        return seString.Build().EncodeWithNullTerminator();
     }
 
     private string[] StringFormatDoubles(IEnumerable<double> values)
