@@ -4,6 +4,7 @@ using System.Numerics;
 using Dalamud.Hooking;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.Sheets;
 using Lumina.Extensions;
@@ -24,6 +25,8 @@ public unsafe class ShowAetherCurrents : GameModification {
 
     public override string ImageName => "ShowAetherCurrents.png";
 
+    private Utf8String* tooltipString;
+
     private delegate void CreateMapMarkersDelegate(AgentMap* instance, bool omitAetherytes);
 
     [Signature("E8 ?? ?? ?? ?? 8B 8D ?? ?? ?? ?? 83 E1 FD", DetourName = nameof(CreateMapMarkers))]
@@ -32,17 +35,27 @@ public unsafe class ShowAetherCurrents : GameModification {
     public override void OnEnable() {
         Services.Hooker.InitializeFromAttributes(this);
         populateMapMarkersHook?.Enable();
+
+        Services.Framework.RunOnFrameworkThread(() => {
+            tooltipString = Utf8String.FromString("Aether Current");
+        });
     }
 
     public override void OnDisable() {
         populateMapMarkersHook?.Dispose();
         populateMapMarkersHook = null;
+
+        if (tooltipString is not null) {
+            tooltipString->Dtor(true);
+            tooltipString = null;
+        }
     }
 
     private void CreateMapMarkers(AgentMap* thisPtr, bool omitAetherytes) {
 
         populateMapMarkersHook!.Original(thisPtr, omitAetherytes);
         if (omitAetherytes) return;
+        if (tooltipString is null) return;
 
         try {
             var aetherCurrents = Services.DataManager
@@ -62,7 +75,7 @@ public unsafe class ShowAetherCurrents : GameModification {
                 if (!Services.DataManager.GetExcelSheet<EObj>().TryGetFirst(rowObject => rowObject.Data == aetherCurrent.RowId, out var eventObject)) continue;
                 if (!Services.DataManager.GetExcelSheet<Level>().TryGetFirst(rowObject => rowObject.Object.RowId == eventObject.RowId, out var level)) continue;
 
-                thisPtr->AddMapMarker(new Vector3(level.X, level.Y, level.Z), 60653);
+                thisPtr->AddMapMarker(new Vector3(level.X, level.Y, level.Z), 60653, 0, tooltipString->StringPtr);
             }
         }
         catch (Exception e) {
