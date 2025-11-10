@@ -38,12 +38,16 @@ public unsafe class ShowAetherCurrents : GameModification {
 
         Services.Framework.RunOnFrameworkThread(() => {
             tooltipString = Utf8String.FromString("Aether Current");
+            
+            AgentMap.Instance()->ResetMapMarkers();
         });
     }
 
     public override void OnDisable() {
         populateMapMarkersHook?.Dispose();
         populateMapMarkersHook = null;
+
+        AgentMap.Instance()->ResetMapMarkers();
 
         if (tooltipString is not null) {
             tooltipString->Dtor(true);
