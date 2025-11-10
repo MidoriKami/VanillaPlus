@@ -20,7 +20,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami", "KazWolfe" ],
         ChangeLog = [
-            new ChangeLogInfo(1, "InitialChangelog"),
+            new ChangeLogInfo(1, "Initial Implementation"),
         ],
         Tags = [ "Duty Finder" ],
     };

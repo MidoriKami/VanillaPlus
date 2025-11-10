@@ -12,7 +12,7 @@ public unsafe class BetterQuestMapLink : GameModification {
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
-            new ChangeLogInfo(1, "InitialChangelog"),
+            new ChangeLogInfo(1, "Initial Implementation"),
         ],
         CompatibilityModule = new PluginCompatibilityModule("Mappy"),
     };

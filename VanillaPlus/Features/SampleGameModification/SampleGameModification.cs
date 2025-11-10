@@ -10,7 +10,7 @@ public class SampleGameModification : GameModification {
         Type = ModificationType.Hidden,
         Authors = [ "YourNameHere" ],
         ChangeLog = [
-            new ChangeLogInfo(1, "InitialChangelog"),
+            new ChangeLogInfo(1, "Initial Implementation"),
         ],
     };
 

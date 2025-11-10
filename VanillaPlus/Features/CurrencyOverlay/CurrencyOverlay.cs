@@ -19,7 +19,7 @@ public unsafe class CurrencyOverlay : GameModification {
         Type = ModificationType.NewOverlay,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
-            new ChangeLogInfo(1, "InitialChangelog"),
+            new ChangeLogInfo(1, "Initial Implementation"),
             new ChangeLogInfo(2, "Reimplemented configuration system, now allows for changing scale"),
         ],
     };

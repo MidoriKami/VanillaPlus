@@ -18,7 +18,7 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
-            new ChangeLogInfo(1, "InitialChangelog"),
+            new ChangeLogInfo(1, "Initial Implementation"),
             new ChangeLogInfo(2, "Reworked feature to only apply to ui elements with window frames, removed experimental status"),
         ],
     };

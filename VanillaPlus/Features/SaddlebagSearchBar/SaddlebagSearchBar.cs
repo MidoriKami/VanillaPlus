@@ -10,7 +10,7 @@ public class SaddlebagSearchBar : GameModification {
         SubType = ModificationSubType.Inventory,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
-            new ChangeLogInfo(1, "InitialChangelog"),
+            new ChangeLogInfo(1, "Initial Implementation"),
             new ChangeLogInfo(2, "Add compatibility check"),
         ],
         CompatibilityModule = new PluginCompatibilityModule("InventorySearchBar"),

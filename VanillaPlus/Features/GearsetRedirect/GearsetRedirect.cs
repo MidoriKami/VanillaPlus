@@ -14,7 +14,7 @@ public unsafe class GearsetRedirect : GameModification {
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
-            new ChangeLogInfo(1, "InitialChangelog"),
+            new ChangeLogInfo(1, "Initial Implementation"),
             new ChangeLogInfo(2, "Completely new configuration system, old configurations are no longer valid"),
         ],
     };

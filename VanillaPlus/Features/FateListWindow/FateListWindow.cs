@@ -18,7 +18,7 @@ public class FateListWindow : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
             new ChangeLogInfo(2, "Now sorts by time remaining"),
-            new ChangeLogInfo(3, "Added `/fatelist` command to open window"),
+            new ChangeLogInfo(3, "Added '/fatelist' command to open window"),
         ],
     };
 

@@ -3,7 +3,7 @@ using System.Numerics;
 using Dalamud.Utility;
 using KamiToolKit.Nodes;
 using Lumina.Text;
-using SeString = Dalamud.Game.Text.SeStringHandling.SeString;
+using Lumina.Text.ReadOnly;
 
 namespace VanillaPlus.NativeElements.Nodes;
 
@@ -27,13 +27,14 @@ public class TextInputWithHintNode : SimpleComponentNode {
                 .AppendNewLine()
                 .Append("Start input with '$' to search by description")
                 .ToReadOnlySeString()
-                .ToDalamudString(),
+                .ToDalamudString()
+                .EncodeWithNullTerminator(),
             IsVisible = true,
         };
         System.NativeController.AttachNode(helpNode, this);
     }
 
-    public required Action<SeString>? OnInputReceived {
+    public required Action<ReadOnlySeString>? OnInputReceived {
         get => textInputNode.OnInputReceived;
         set => textInputNode.OnInputReceived = value;
     }
@@ -48,7 +49,7 @@ public class TextInputWithHintNode : SimpleComponentNode {
         textInputNode.Position = new Vector2(0.0f, 0.0f);
     }
 
-    public SeString SearchString {
+    public ReadOnlySeString SearchString {
         get => textInputNode.SeString;
         set => textInputNode.SeString = value;
     }

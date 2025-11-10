@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using Dalamud.Game.Text.SeStringHandling;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addon;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
+using Lumina.Text.ReadOnly;
 using VanillaPlus.Classes;
 using VanillaPlus.Utilities;
 
@@ -227,7 +227,7 @@ public class AddonModificationBrowser : NativeAddon {
         RecalculateScrollableAreaSize();
     }
     
-    private void OnSearchBoxInputReceived(SeString searchTerm) {
+    private void OnSearchBoxInputReceived(ReadOnlySeString searchTerm) {
         List<GameModificationOptionNode> validOptions = [];
         
         foreach (var option in optionContainerNode.ContentNode.CategoryNodes.SelectMany(category => category.GetNodes<GameModificationOptionNode>())) {

@@ -14,7 +14,7 @@ public unsafe class SkipTeleportConfirm : GameModification {
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
-            new ChangeLogInfo(1, "InitialChangelog"),
+            new ChangeLogInfo(1, "Initial Implementation"),
         ],
     };
 

@@ -14,7 +14,7 @@ public unsafe class SuppressDialogueAdvance : GameModification {
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
-            new ChangeLogInfo(1, "InitialChangelog"),
+            new ChangeLogInfo(1, "Initial Implementation"),
             new ChangeLogInfo(2, "Added option to only apply while in a cutscene, enabled by default."),
         ],
     };
