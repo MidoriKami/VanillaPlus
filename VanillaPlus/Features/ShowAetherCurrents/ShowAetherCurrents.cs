@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Numerics;
 using Dalamud.Hooking;
-using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -27,13 +26,10 @@ public unsafe class ShowAetherCurrents : GameModification {
 
     private Utf8String* tooltipString;
 
-    private delegate void CreateMapMarkersDelegate(AgentMap* instance, bool omitAetherytes);
-
-    [Signature("E8 ?? ?? ?? ?? 8B 8D ?? ?? ?? ?? 83 E1 FD", DetourName = nameof(CreateMapMarkers))]
-    private Hook<CreateMapMarkersDelegate>? populateMapMarkersHook;
+    private Hook<AgentMap.Delegates.CreateMapMarkers>? populateMapMarkersHook;
 
     public override void OnEnable() {
-        Services.Hooker.InitializeFromAttributes(this);
+        populateMapMarkersHook = Services.Hooker.HookFromAddress<AgentMap.Delegates.CreateMapMarkers>(AgentMap.MemberFunctionPointers.CreateMapMarkers, CreateMapMarkers);
         populateMapMarkersHook?.Enable();
 
         Services.Framework.RunOnFrameworkThread(() => {
