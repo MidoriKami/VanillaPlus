@@ -99,7 +99,7 @@ public unsafe class ClearTextInputs : GameModification {
         var component = (AtkComponentTextInput*)parent->Component;
         if (component is null) return;
 
-        var addon = component->ContainingAddon;
+        var addon = component->OwnerAddon;
         if (addon is null) return;
 
         // Little hacky, have to unfocus else it will remember its last input string when you press another key
