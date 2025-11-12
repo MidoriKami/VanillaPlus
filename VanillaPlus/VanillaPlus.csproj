@@ -3,6 +3,7 @@
         <Version>1.0.6.0</Version>
         <LangVersion>Preview</LangVersion>
         <DebugType>portable</DebugType>
+        <TargetFramework>net10.0-windows</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
