@@ -13,6 +13,7 @@ public class CurrencySetting : IInfoNodeData {
     public int LowLimit;
     public int HighLimit;
     public bool IconReversed;
+    public bool TextReversed;
     public float Scale = 1.0f;
 
     [NonSerialized]

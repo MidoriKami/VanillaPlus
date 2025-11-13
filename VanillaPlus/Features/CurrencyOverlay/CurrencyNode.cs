@@ -80,6 +80,8 @@ public unsafe class CurrencyNode : SimpleComponentNode {
                 iconImageNode.Size = new Vector2(36.0f, 36.0f);
             }
 
+            countNode.TextAlignment = value.TextReversed ? AlignmentType.Left : AlignmentType.Right;
+
             countNode.Origin = countNode.Size / 2.0f;
             Scale = new Vector2(value.Scale, value.Scale);
         }

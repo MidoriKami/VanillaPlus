@@ -18,6 +18,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
     private NumericInputNode highLimitInputNode;
     
     private CheckboxNode reverseIconCheckbox;
+    private CheckboxNode reverseTextCheckbox;
 
     private CheckboxNode allowMovingCheckbox;
 
@@ -98,6 +99,18 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         };
         System.NativeController.AttachNode(reverseIconCheckbox, this);
         
+        reverseTextCheckbox = new CheckboxNode {
+            IsVisible = true,
+            String = "Reverse text position",
+            OnClick = enabled => {
+                if (ConfigurationOption is not null) {
+                    ConfigurationOption.TextReversed = enabled;
+                    OnConfigChanged?.Invoke(ConfigurationOption);
+                }
+            },
+        };
+        System.NativeController.AttachNode(reverseTextCheckbox, this);
+        
         allowMovingCheckbox = new CheckboxNode {
             IsVisible = true,
             String = "Enable moving overlay element",
@@ -155,27 +168,30 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         iconImageNode.Position = new Vector2(20.0f, 20.0f);
 
         enableLowLimitCheckbox.Size = new Vector2(Width, 24.0f);
-        enableLowLimitCheckbox.Position = new Vector2(20.0f, 125.0f);
+        enableLowLimitCheckbox.Position = new Vector2(20.0f, 100.0f);
 
         lowLimitInputNode.Size = new Vector2(150.0f, 24.0f);
-        lowLimitInputNode.Position = new Vector2(65.0f, 150.0f);
+        lowLimitInputNode.Position = new Vector2(65.0f, enableLowLimitCheckbox.Bounds.Bottom);
         
         enableHighLimitCheckbox.Size = new Vector2(Width, 24.0f);
-        enableHighLimitCheckbox.Position = new Vector2(20.0f, 200.0f);
-        
+        enableHighLimitCheckbox.Position = new Vector2(20.0f, lowLimitInputNode.Bounds.Bottom + 25.0f);
+
         highLimitInputNode.Size = new Vector2(150.0f, 24.0f);
-        highLimitInputNode.Position = new Vector2(65.0f, 225.0f);
+        highLimitInputNode.Position = new Vector2(65.0f, enableHighLimitCheckbox.Bounds.Bottom);
 
         reverseIconCheckbox.Size = new Vector2(Width, 24.0f);
-        reverseIconCheckbox.Position = new Vector2(20.0f, 275.0f);
+        reverseIconCheckbox.Position = new Vector2(20.0f, highLimitInputNode.Bounds.Bottom + 25.0f);
+        
+        reverseTextCheckbox.Size = new Vector2(Width, 24.0f);
+        reverseTextCheckbox.Position = new Vector2(20.0f, reverseIconCheckbox.Bounds.Bottom);
         
         allowMovingCheckbox.Size = new Vector2(Width, 24.0f);
-        allowMovingCheckbox.Position = new Vector2(20.0f, 325.0f);
-
+        allowMovingCheckbox.Position = new Vector2(20.0f, reverseTextCheckbox.Bounds.Bottom);
+        
         scaleTextNode.Size = new Vector2(100.0f, 24.0f);
-        scaleTextNode.Position = new Vector2(20.0f, 375.0f);
+        scaleTextNode.Position = new Vector2(20.0f, allowMovingCheckbox.Bounds.Bottom + 25.0f);
         
         scaleSliderNode.Size = new Vector2(250.0f, 24.0f);
-        scaleSliderNode.Position = new Vector2(20.0f, 405.0f);
+        scaleSliderNode.Position = new Vector2(20.0f, scaleTextNode.Bounds.Bottom);
     }
 }
