@@ -64,7 +64,7 @@ public class AddonModificationBrowser : NativeAddon {
                 OnToggle = isVisible => OnCategoryToggled(isVisible, category.Key),
                 VerticalPadding = 0.0f,
             };
-        
+
             foreach (var subCategory in System.ModificationManager.SubCategoryGroups[category.Key]) {
                 if (subCategory.Key is not null) {
                     var newHeaderNode = new TreeListHeaderNode {
@@ -74,7 +74,7 @@ public class AddonModificationBrowser : NativeAddon {
                     
                     newCategoryNode.AddNode(newHeaderNode);
                 }
-        
+
                 foreach (var mod in subCategory.OrderBy(modification => modification.Modification.ModificationInfo.DisplayName)) {
                     var newOptionNode = new GameModificationOptionNode {
                         NodeId = optionIndex++,
@@ -132,7 +132,6 @@ public class AddonModificationBrowser : NativeAddon {
             FontSize = 14,
             LineSpacing = 22,
             FontType = FontType.Axis,
-
             String = "Please select an option on the left",
             TextColor = ColorHelper.GetColor(1),
         };
@@ -144,7 +143,6 @@ public class AddonModificationBrowser : NativeAddon {
             FontSize = 14,
             LineSpacing = 22,
             FontType = FontType.Axis,
-
             TextColor = ColorHelper.GetColor(1),
         };
         System.NativeController.AttachNode(descriptionImageTextNode, descriptionContainerNode);
@@ -156,7 +154,6 @@ public class AddonModificationBrowser : NativeAddon {
         System.NativeController.AttachNode(changelogButtonNode, descriptionContainerNode);
         
         descriptionVersionTextNode = new TextNode {
-
             AlignmentType = AlignmentType.BottomRight,
             TextColor = ColorHelper.GetColor(3),
         };
@@ -202,7 +199,6 @@ public class AddonModificationBrowser : NativeAddon {
         System.NativeController.AttachNode(descriptionImageNode, descriptionImageFrame);
         
         borderNineGridNode = new BorderNineGridNode {
-
             Alpha = 125,
             Offsets = new Vector4(40.0f),
         };

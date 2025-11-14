@@ -179,7 +179,6 @@ public unsafe class CurrencyOverlay : GameModification {
     private CurrencyNode BuildCurrencyNode(CurrencySetting setting, Vector2 screenSize) {
         var newCurrencyNode = new CurrencyNode {
             Size = new Vector2(164.0f, 36.0f),
-
             Currency = setting,
         };
 
