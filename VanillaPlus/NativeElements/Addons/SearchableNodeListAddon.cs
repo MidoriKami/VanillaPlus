@@ -29,26 +29,22 @@ public unsafe class SearchableNodeListAddon : NodeListAddon {
         mainContainerNode = new VerticalListNode {
             Position = ContentStartPosition,
             Size = ContentSize,
-            IsVisible = true,
         };
 
         searchContainerNode = new HorizontalFlexNode {
             Size = new Vector2(ContentSize.X, 28.0f),
             AlignmentFlags = FlexFlags.FitHeight | FlexFlags.FitWidth,
-            IsVisible = true,
         };
 
         widgetsContainerNode = new HorizontalListNode {
             Size = new Vector2(ContentSize.X, 28.0f),
             Alignment = HorizontalListAnchor.Right,
-            IsVisible = true,
         };
 
         sortDropdownNode = new TextDropDownNode {
             Size = new Vector2(dropDownWidth, 28.0f),
             MaxListOptions = DropDownOptions.Count,
             Options = DropDownOptions,
-            IsVisible = true,
             OnOptionSelected = newOption => {
                 filterOption = newOption;
                 OnFilterUpdated(newOption, reverseSort);
@@ -59,7 +55,6 @@ public unsafe class SearchableNodeListAddon : NodeListAddon {
         reverseButtonNode = new CircleButtonNode {
             Size = new Vector2(28.0f, 28.0f),
             Icon = ButtonIcon.Sort,
-            IsVisible = true,
             OnClick = () => {
                 reverseSort = !reverseSort;
                 OnFilterUpdated(filterOption, reverseSort);
@@ -68,7 +63,6 @@ public unsafe class SearchableNodeListAddon : NodeListAddon {
         };
 
         textInputNode = new TextInputNode {
-            IsVisible = true,
             PlaceholderString = "Search . . .",
         };
         textInputNode.SeString = searchText;
@@ -84,7 +78,6 @@ public unsafe class SearchableNodeListAddon : NodeListAddon {
             Size = ContentSize - new Vector2(0.0f, searchContainerNode.Height + widgetsContainerNode.Height + listPadding),
             Position = new Vector2(0.0f, listPadding),
             ContentHeight = 1000.0f,
-            IsVisible = true,
         };
         
         AttachNode(mainContainerNode);

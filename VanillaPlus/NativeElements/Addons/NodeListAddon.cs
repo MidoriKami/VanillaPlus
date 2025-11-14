@@ -85,7 +85,6 @@ public unsafe class NodeListAddon : NativeAddon {
         ScrollingAreaNode = new ScrollingAreaNode<VerticalListNode> {
             Position = ContentStartPosition,
             Size = ContentSize,
-            IsVisible = true,
             ContentHeight = 100,
         };
         ScrollingAreaNode.ContentNode.FitContents = true;

@@ -62,7 +62,6 @@ public unsafe class HUDPresets : GameModification {
                 Size = new Vector2(addon->GetSize().X - 32.0f, 24.0f),
                 MaxListOptions = 10,
                 Options = HUDPresetManager.GetPresetNames(),
-                IsVisible = true,
                 TooltipString = "Select a HUD Layout Preset",
                 OnOptionSelected = UpdateButtonLocks,
             };
@@ -71,7 +70,6 @@ public unsafe class HUDPresets : GameModification {
             loadButtonNode = new TextButtonNode {
                 Position = new Vector2(32.0f, 269.0f),
                 Size = new Vector2(100.0f, 28.0f),
-                IsVisible = true,
                 String = "Load",
                 TooltipString = "Load selected preset",
                 OnClick = LoadPreset,
@@ -82,7 +80,6 @@ public unsafe class HUDPresets : GameModification {
             overwriteButtonNode = new TextButtonNode {
                 Position = new Vector2(144.0f, 269.0f),
                 Size = new Vector2(100.0f, 28.0f),
-                IsVisible = true,
                 String = "Overwrite",
                 TooltipString = "Overwrite selected preset",
                 IsEnabled = false,
@@ -93,7 +90,6 @@ public unsafe class HUDPresets : GameModification {
             deleteButtonNode = new TextButtonNode {
                 Position = new Vector2(256.0f, 269.0f),
                 Size = new Vector2(100.0f, 28.0f),
-                IsVisible = true,
                 String = "Delete",
                 // TooltipString = "Delete selected preset",
                 IsEnabled = false,
@@ -105,7 +101,6 @@ public unsafe class HUDPresets : GameModification {
             saveButtonNode = new TextButtonNode {
                 Position = new Vector2(368.0f, 269.0f),
                 Size = new Vector2(100.0f, 28.0f),
-                IsVisible = true,
                 String = "Save",
                 OnClick = SaveCurrentLayout,
             };

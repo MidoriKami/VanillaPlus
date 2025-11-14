@@ -17,7 +17,6 @@ public class AddonChangelogBrowser : NativeAddon {
 
     protected override unsafe void OnSetup(AtkUnitBase* addon) {
         scrollingAreaNode = new ScrollingAreaNode<TreeListNode> {
-            IsVisible = true,
             Size = ContentSize,
             Position = ContentStartPosition,
             ContentHeight = 1000.0f,
@@ -33,7 +32,6 @@ public class AddonChangelogBrowser : NativeAddon {
                 var categoryNode = new TreeListCategoryNode {
                     SeString = $"Version {changelog.Version}",
                     Width = ContentSize.X,
-                    IsVisible = true,
                     OnToggle = _ => scrollingAreaNode.ContentHeight = categoryNodes.Sum(node => node.Height),
                 };
 
@@ -43,7 +41,6 @@ public class AddonChangelogBrowser : NativeAddon {
                     TextFlags = TextFlags.MultiLine | TextFlags.WordWrap | TextFlags.AutoAdjustNodeSize,
                     Position = new Vector2(6.0f, 2.0f),
                     Width = ContentSize.X - 32.0f,
-                    IsVisible = true,
                     FontSize = 14,
                     LineSpacing = 22,
                     String = changelog.Description,

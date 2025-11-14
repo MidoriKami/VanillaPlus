@@ -20,7 +20,6 @@ public unsafe class ConfigAddon : NativeAddon {
 
     protected override void OnSetup(AtkUnitBase* addon) {
         configurationListNode = new ScrollingAreaNode<VerticalListNode> {
-            IsVisible = true,
             ContentHeight = ContentSize.Y,
             AutoHideScrollBar = true,
         };

@@ -14,21 +14,18 @@ public class SelectIconConfig : BaseConfigEntry {
     public override NodeBase BuildNode() {
         var layoutNode = new HorizontalListNode {
             Height = 50.0f,
-            IsVisible = true,
             ItemSpacing = 20.0f,
         };
 
         iconImageNode = new IconImageNode {
             Size = new Vector2(50.0f, 50.0f),
             IconId = InitialIcon,
-            IsVisible = true,
             FitTexture = true,
         };
         layoutNode.AddNode(iconImageNode);
 
         var verticalLayout = new VerticalListNode {
             Size = new Vector2(100.0f, 50.0f),
-            IsVisible = true,
             ItemSpacing = 2.0f,
         };
 
@@ -39,7 +36,6 @@ public class SelectIconConfig : BaseConfigEntry {
         inputIntNode = new NumericInputNode {
             Size = new Vector2(125.0f, 24.0f),
             Height = 24.0f,
-            IsVisible = true,
             Value = (int) InitialIcon,
             OnValueUpdate = SetIconId,
         };

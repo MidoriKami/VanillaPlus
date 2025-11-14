@@ -16,14 +16,12 @@ public class FloatSliderConfig : BaseConfigEntry {
     public override NodeBase BuildNode() {
         var layoutNode = new HorizontalListNode {
             Height = 24.0f,
-            IsVisible = true,
             ItemSpacing = 40.0f,
         };
 
         var sliderNode = new SliderNode {
             Size = new Vector2(175.0f, 24.0f),
             Position = new Vector2(0.0f, 4.0f),
-            IsVisible = true,
             DecimalPlaces = DecimalPlaces,
             Range = (int)(MinValue * Math.Pow(10, DecimalPlaces))..(int)(MaxValue * Math.Pow(10, DecimalPlaces)),
             OnValueChanged = newValue => OnOptionChanged(newValue / MathF.Pow(10, DecimalPlaces)),

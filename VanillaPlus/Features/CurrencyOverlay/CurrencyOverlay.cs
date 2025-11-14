@@ -105,7 +105,6 @@ public unsafe class CurrencyOverlay : GameModification {
         overlayAddonController.OnAttach += addon => {
             overlayRootNode = new SimpleOverlayNode {
                 Size = addon->AtkUnitBase.Size(),
-                IsVisible = true,
             };
             System.NativeController.AttachNode(overlayRootNode, addon->RootNode, NodePosition.AsFirstChild);
 
@@ -180,7 +179,7 @@ public unsafe class CurrencyOverlay : GameModification {
     private CurrencyNode BuildCurrencyNode(CurrencySetting setting, Vector2 screenSize) {
         var newCurrencyNode = new CurrencyNode {
             Size = new Vector2(164.0f, 36.0f),
-            IsVisible = true,
+
             Currency = setting,
         };
 

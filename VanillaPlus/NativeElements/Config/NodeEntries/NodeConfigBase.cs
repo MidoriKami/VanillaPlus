@@ -20,7 +20,6 @@ public abstract class NodeConfigBase<T> : IConfigEntry where T : NodeBase, new()
         var layoutNode = new VerticalListNode {
             Height = 24.0f,
             FitContents = true,
-            IsVisible = true,
             FitWidth = true,
         };
 

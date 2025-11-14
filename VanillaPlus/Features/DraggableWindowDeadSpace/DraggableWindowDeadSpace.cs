@@ -62,7 +62,6 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
                 if (node.Value->GetNodeType() is NodeType.NineGrid) {
                     var newInteractionNode = new ResNode {
                         Size = node.Value->Size(),
-                        IsVisible = true,
                     };
 
                     newInteractionNode.AddEvent(AtkEventType.MouseOver, () => {

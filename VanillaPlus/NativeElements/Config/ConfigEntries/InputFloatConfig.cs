@@ -13,14 +13,12 @@ public class FloatInputConfig : BaseConfigEntry {
     public override NodeBase BuildNode() {
         var layoutNode = new HorizontalListNode {
             Height = 24.0f,
-            IsVisible = true,
             ItemSpacing = 10.0f,
         };
 
         var numericInput = new NumericInputNode {
             Size = new Vector2(100.0f, 24.0f),
             Value = (int) InitialValue,
-            IsVisible = true,
             Step = Step,
             Min = Range.Start.Value,
             Max = Range.End.Value,

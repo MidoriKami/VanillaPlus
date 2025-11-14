@@ -21,13 +21,11 @@ public class ColorConfig : BaseConfigEntry {
     public override NodeBase BuildNode() {
         var layoutNode = new HorizontalListNode {
             Size = new Vector2(100.0f, 24.0f),
-            IsVisible = true,
             ItemSpacing = 10.0f,
         };
 
         var colorSquareNode = new ColorPreviewNode {
             Size = new Vector2(24.0f, 24.0f),
-            IsVisible = true,
             Color = Color,
         };
         layoutNode.AddNode(colorSquareNode);

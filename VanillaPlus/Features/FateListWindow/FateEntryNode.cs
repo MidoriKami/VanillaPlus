@@ -36,14 +36,12 @@ public unsafe class FateEntryNode : SimpleComponentNode {
 
         iconNode = new IconImageNode {
             NodeId = 3,
-            IsVisible = true,
             FitTexture = true,
         };
         System.NativeController.AttachNode(iconNode, this);
 
         nameNode = new TextNode {
             NodeId = 4,
-            IsVisible = true,
             AlignmentType = AlignmentType.BottomLeft,
             TextFlags = TextFlags.Ellipsis,
         };
@@ -51,27 +49,23 @@ public unsafe class FateEntryNode : SimpleComponentNode {
 
         timeRemainingNode = new TextNode {
             NodeId = 5,
-            IsVisible = true,
             AlignmentType = AlignmentType.BottomRight,
         };
         System.NativeController.AttachNode(timeRemainingNode, this);
 
         levelNode = new TextNode {
             NodeId = 6,
-            IsVisible = true,
             AlignmentType = AlignmentType.Left,
         };
         System.NativeController.AttachNode(levelNode, this);
 
         progressNode = new ProgressBarNode {
             NodeId = 7,
-            IsVisible = true,
         };
         System.NativeController.AttachNode(progressNode, this);
 
         progressTextNode = new TextNode {
             NodeId = 8,
-            IsVisible = true,
             AlignmentType = AlignmentType.Left,
         };
         System.NativeController.AttachNode(progressTextNode, this);

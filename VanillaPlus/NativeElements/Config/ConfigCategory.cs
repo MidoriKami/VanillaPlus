@@ -18,17 +18,14 @@ public class ConfigCategory : IDisposable {
     public TabbedVerticalListNode BuildNode() {
         var tabbedListNode = new TabbedVerticalListNode {
             FitWidth = true,
-            IsVisible = true,
         };
           
         tabbedListNode.AddNode(new ResNode {
             Size = new Vector2(4.0f, 4.0f),
-            IsVisible = true,
         });
         
         tabbedListNode.AddNode(new CategoryTextNode {
             String = CategoryLabel,
-            IsVisible = true,
         });
             
         tabbedListNode.AddTab(1);

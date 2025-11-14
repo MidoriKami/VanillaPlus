@@ -14,12 +14,10 @@ public class MultiSelectIconConfig : SelectIconConfig {
         
         var verticalLayoutNode = new VerticalListNode {
             Height = AllowManualInput ? iconSelectNode.Height + 48.0f : 48.0f,
-            IsVisible = true,
         };
 
         var horizontalLayoutNode = new HorizontalListNode {
             Height = 48.0f,
-            IsVisible = true,
         };
         verticalLayoutNode.AddNode(horizontalLayoutNode);
 
@@ -27,7 +25,6 @@ public class MultiSelectIconConfig : SelectIconConfig {
             var buttonNode = new IconButtonNode {
                 Size = new Vector2(48.0f, 48.0f),
                 IconId = option,
-                IsVisible = true,
                 OnClick = () => SetIconId((int)option),
             };
             horizontalLayoutNode.AddNode(buttonNode);

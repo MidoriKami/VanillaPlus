@@ -31,7 +31,6 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
         
         questIconNode = new IconImageNode {
             NodeId = 3,
-            IsVisible = true,
             FitTexture = true,
         };
         System.NativeController.AttachNode(questIconNode, this);
@@ -41,7 +40,6 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
             AlignmentType = AlignmentType.BottomLeft,
             TextFlags = TextFlags.Ellipsis,
             FontSize = 13,
-            IsVisible = true,
         };
         System.NativeController.AttachNode(questNameTextNode, this);
 
@@ -51,7 +49,6 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
             TextColor = ColorHelper.GetColor(2),
             TextFlags = TextFlags.Ellipsis,
             FontSize = 12,
-            IsVisible = true,
         };
         System.NativeController.AttachNode(issuerNameTextNode, this);
         
@@ -59,7 +56,6 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
             NodeId = 6,
             AlignmentType = AlignmentType.BottomLeft,
             FontSize = 13,
-            IsVisible = true,
         };
         System.NativeController.AttachNode(questLevelTextNode, this);
 
@@ -67,7 +63,6 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
             NodeId = 7,
             AlignmentType = AlignmentType.TopRight,
             TextColor = ColorHelper.GetColor(2),
-            IsVisible = true,
         };
         System.NativeController.AttachNode(distanceTextNode, this);
 

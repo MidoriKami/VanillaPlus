@@ -51,7 +51,6 @@ public class NewRedirectionAddon : NativeAddon {
         gearsetLabelNode = new TextNode {
             Size = new Vector2(halfWidth, 32.0f),
             Position = ContentStartPosition + new Vector2(0.0f, 6.0f),
-            IsVisible = true,
             AlignmentType = AlignmentType.Center,
             FontSize = 24,
             String = "Gearset",
@@ -64,7 +63,6 @@ public class NewRedirectionAddon : NativeAddon {
             Option = new GearsetInfo {
                 GearsetId = -1,
             },
-            IsVisible = true,
         };
         AttachNode(gearsetInfoNode);
 
@@ -72,7 +70,6 @@ public class NewRedirectionAddon : NativeAddon {
             Size = new Vector2(halfWidth * 2.0f / 3.0f, 32.0f),
             Position = new Vector2(ContentStartPosition.X + halfWidth / 2.0f - new Vector2(halfWidth * 2.0f / 3.0f, 32.0f).X / 2.0f, gearsetInfoNode.Y + gearsetInfoNode.Height + 4.0f),
             String = "Select Gearset",
-            IsVisible = true,
             OnClick = OnSelectGearset,
         };
         AttachNode(selectGearsetButtonNode);
@@ -80,21 +77,18 @@ public class NewRedirectionAddon : NativeAddon {
         verticalLineNode = new VerticalLineNode {
             Size = new Vector2(8.0f, ContentSize.Y - 36.0f),
             Position = new Vector2(gearsetLabelNode.X + gearsetLabelNode.Width + 12.0f, ContentStartPosition.Y),
-            IsVisible = true,
         };
         AttachNode(verticalLineNode);
 
         horizontalLineNode = new HorizontalLineNode {
             Size = new Vector2(ContentSize.X, 8.0f),
             Position = ContentStartPosition + new Vector2(0.0f, ContentSize.Y - 32.0f - 5.0f),
-            IsVisible = true,
         };
         AttachNode(horizontalLineNode);
 
         zoneLabelNode = new TextNode {
             Size = new Vector2(halfWidth, 32.0f),
             Position = ContentStartPosition + new Vector2(ContentSize.X - halfWidth, 6.0f),
-            IsVisible = true,
             FontSize = 24,
             AlignmentType = AlignmentType.Center,
             String = "Zone",
@@ -104,7 +98,6 @@ public class NewRedirectionAddon : NativeAddon {
         zoneInfoNode = new LuminaSearchInfoNode<TerritoryType> {
             Size = new Vector2(halfWidth, 64.0f),
             Position = new Vector2(zoneLabelNode.X, zoneLabelNode.Y + zoneLabelNode.Height + 16.0f),
-            IsVisible = true,
             GetLabelFunc = territory => territory.RowId is 1 ? "Nothing Selected" : territory.PlaceName.Value.Name.ToString(),
             GetSubLabelFunc = territory => territory.ContentFinderCondition.RowId is 0 ? string.Empty : territory.ContentFinderCondition.Value.Name.ToString(),
             GetIconIdFunc = _ => 60072,
@@ -117,7 +110,6 @@ public class NewRedirectionAddon : NativeAddon {
             Size = new Vector2(halfWidth * 2.0f / 3.0f, 32.0f),
             Position = new Vector2(zoneLabelNode.X + halfWidth / 2.0f - new Vector2(halfWidth * 2.0f / 3.0f, 32.0f).X / 2.0f, zoneInfoNode.Y + zoneInfoNode.Height + 4.0f),
             String = "Select Zone",
-            IsVisible = true,
             OnClick = OnSelectZone,
         };
         AttachNode(selectZoneButtonNode);
@@ -125,7 +117,6 @@ public class NewRedirectionAddon : NativeAddon {
         confirmButtonNode = new TextButtonNode {
             Size = new Vector2(100.0f, 24.0f),
             Position = ContentStartPosition + new Vector2(0.0f, ContentSize.Y - 24.0f),
-            IsVisible = true,
             String = "Confirm",
             OnClick = OnConfirm,
         };
@@ -134,7 +125,6 @@ public class NewRedirectionAddon : NativeAddon {
         cancelButtonNode = new TextButtonNode {
             Size = new Vector2(100.0f, 24.0f),
             Position = ContentStartPosition + new Vector2(ContentSize.X - 100.0f, ContentSize.Y - 24.0f),
-            IsVisible = true,
             String = "Cancel",
             OnClick = OnCancel,
         };

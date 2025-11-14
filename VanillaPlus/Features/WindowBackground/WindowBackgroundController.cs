@@ -38,7 +38,6 @@ public unsafe class WindowBackgroundController : IDisposable {
             
             nameplateOverlayNode = new SimpleOverlayNode {
                 Size = viewportSize,
-                IsVisible = true,
             };
             
             System.NativeController.AttachNode(nameplateOverlayNode, addon->RootNode, NodePosition.AsFirstChild);
@@ -132,7 +131,7 @@ public unsafe class WindowBackgroundController : IDisposable {
                             Size = node.Value->Size() + windowConfig.Padding,
                             Position = -windowConfig.Padding / 2.0f,
                             Color = windowConfig.Color,
-                            IsVisible = true,
+                            
                         };
 
                         System.NativeController.AttachNode(newBackgroundNode, node, NodePosition.BeforeTarget);

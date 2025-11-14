@@ -14,7 +14,6 @@ public class TextInputWithHintNode : SimpleComponentNode {
     public TextInputWithHintNode() {
         textInputNode = new TextInputNode {
             PlaceholderString = "Search . . .",
-            IsVisible = true,
         };
         System.NativeController.AttachNode(textInputNode, this);
 
@@ -29,7 +28,6 @@ public class TextInputWithHintNode : SimpleComponentNode {
                 .ToReadOnlySeString()
                 .ToDalamudString()
                 .EncodeWithNullTerminator(),
-            IsVisible = true,
         };
         System.NativeController.AttachNode(helpNode, this);
     }

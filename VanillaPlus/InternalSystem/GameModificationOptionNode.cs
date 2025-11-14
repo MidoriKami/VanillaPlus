@@ -49,7 +49,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
         
         checkboxNode = new CheckboxNode {
             NodeId = 4,
-            IsVisible = true,
             OnClick = ToggleModification,
         };
         System.NativeController.AttachNode(checkboxNode, this);
@@ -64,7 +63,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
 
         modificationNameNode = new TextNode {
             NodeId = 6,
-            IsVisible = true,
             TextFlags = TextFlags.AutoAdjustNodeSize | TextFlags.Ellipsis,
             AlignmentType = AlignmentType.BottomLeft,
             TextColor = ColorHelper.GetColor(1),
@@ -81,7 +79,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
         
         authorNamesNode = new TextNode {
             NodeId = 8,
-            IsVisible = true,
             FontType = FontType.Axis,
             TextFlags = TextFlags.AutoAdjustNodeSize | TextFlags.Ellipsis,
             AlignmentType = AlignmentType.TopLeft,
@@ -229,6 +226,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
 
         checkboxNode.IsChecked = Modification.State is LoadedState.Enabled;
         configButtonNode.IsEnabled = Modification.State is LoadedState.Enabled;
+        configButtonNode.IsVisible = Modification.Modification.OpenConfigAction is not null;
 
         RefreshConfigWindowButton();
     }

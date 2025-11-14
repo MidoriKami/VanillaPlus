@@ -68,7 +68,6 @@ public unsafe class HideUnwantedBanners : GameModification {
             var newBannerInfoNode = new BannerInfoNode {
                 Size = new Vector2(node.Width, 96.0f),
                 ImageIconId = id,
-                IsVisible = true,
                 IsChecked = config.HiddenBanners.Contains(id),
                 OnChecked = shouldHide => {
                     if (shouldHide) {

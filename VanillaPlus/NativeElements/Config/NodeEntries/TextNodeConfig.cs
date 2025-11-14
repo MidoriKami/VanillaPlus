@@ -46,7 +46,6 @@ public class TextNodeConfig : NodeConfig<TextNode> {
 
         var container = new SimpleComponentNode {
             Height = 28.0f,
-            IsVisible = true,
         };
 
         var labelNode = new LabelTextNode {
@@ -61,7 +60,6 @@ public class TextNodeConfig : NodeConfig<TextNode> {
         var colorPreviewNode = new ColorPreviewWithInput {
             Size = new Vector2(150.0f, 28.0f),
             Position = new Vector2(100.0f + 2.0f, 0.0f),
-            IsVisible = true,
             Color = StyleObject.TextColor,
         };
 
@@ -92,7 +90,6 @@ public class TextNodeConfig : NodeConfig<TextNode> {
 
         var container = new SimpleComponentNode {
             Height = 28.0f,
-            IsVisible = true,
         };
 
         var labelNode = new LabelTextNode {
@@ -107,7 +104,6 @@ public class TextNodeConfig : NodeConfig<TextNode> {
         var colorPreviewNode = new ColorPreviewWithInput {
             Size = new Vector2(150.0f, 28.0f),
             Position = new Vector2(100.0f + 2.0f, 0.0f),
-            IsVisible = true,
             Color = StyleObject.TextOutlineColor,
         };
 
@@ -138,7 +134,6 @@ public class TextNodeConfig : NodeConfig<TextNode> {
         
         var container = new LabelLayoutNode {
             Height = 28.0f,
-            IsVisible = true,
             FillWidth = true,
         };
 
@@ -151,7 +146,6 @@ public class TextNodeConfig : NodeConfig<TextNode> {
         var fontSlider = new SliderNode {
             Height = 28.0f,
             Range = 8..32,
-            IsVisible = true,
             Value = (int) StyleObject.FontSize,
             OnValueChanged = newValue => {
                 StyleObject.FontSize = (uint) newValue;
@@ -168,7 +162,6 @@ public class TextNodeConfig : NodeConfig<TextNode> {
         
         var container = new LabelLayoutNode {
             Height = 28.0f,
-            IsVisible = true,
             FillWidth = true,
         };
         
@@ -182,7 +175,6 @@ public class TextNodeConfig : NodeConfig<TextNode> {
             Height = 28.0f,
             MaxListOptions = 10,
             Options = Enum.GetValues<FontType>().Select(value => value.ToString()).ToList(),
-            IsVisible = true,
             SelectedOption = StyleObject.FontType.ToString(),
             OnOptionSelected = newValue => {
                 var enumValue = Enum.Parse<FontType>(newValue);
@@ -200,7 +192,6 @@ public class TextNodeConfig : NodeConfig<TextNode> {
         
         var container = new LabelLayoutNode {
             Height = 28.0f,
-            IsVisible = true,
             FillWidth = true,
         };
         
@@ -214,7 +205,6 @@ public class TextNodeConfig : NodeConfig<TextNode> {
             Height = 28.0f,
             MaxListOptions = 10,
             Options = Enum.GetValues<AlignmentType>().Select(value => value.ToString()).ToList(),
-            IsVisible = true,
             SelectedOption = StyleObject.AlignmentType.ToString(),
             OnOptionSelected = newValue => {
                 var enumValue = Enum.Parse<AlignmentType>(newValue);

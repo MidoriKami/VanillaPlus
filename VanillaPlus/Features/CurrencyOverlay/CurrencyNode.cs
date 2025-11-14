@@ -14,13 +14,11 @@ public unsafe class CurrencyNode : SimpleComponentNode {
 
     public CurrencyNode() {
         iconImageNode = new IconImageNode {
-            IsVisible = true,
             FitTexture = true,
         };
         System.NativeController.AttachNode(iconImageNode, this);
 
         countNode = new CounterNode {
-            IsVisible = true,
             NumberWidth = 10,
             CommaWidth = 8,
             SpaceWidth = 6,

@@ -47,7 +47,6 @@ public class AddonModificationBrowser : NativeAddon {
         mainContainerNode = new SimpleComponentNode {
             Position = ContentStartPosition,
             Size = ContentSize,
-            IsVisible = true,
         };
         AttachNode(mainContainerNode);
 
@@ -61,23 +60,21 @@ public class AddonModificationBrowser : NativeAddon {
 
         foreach (var category in System.ModificationManager.CategoryGroups) {
             var newCategoryNode = new TreeListCategoryNode {
-                IsVisible = true,
                 SeString = category.Key.GetDescription(),
                 OnToggle = isVisible => OnCategoryToggled(isVisible, category.Key),
                 VerticalPadding = 0.0f,
             };
-
+        
             foreach (var subCategory in System.ModificationManager.SubCategoryGroups[category.Key]) {
                 if (subCategory.Key is not null) {
                     var newHeaderNode = new TreeListHeaderNode {
                         Size = new Vector2(0.0f, 24.0f), 
                         SeString = subCategory.Key.GetDescription(), 
-                        IsVisible = true,
                     };
                     
                     newCategoryNode.AddNode(newHeaderNode);
                 }
-
+        
                 foreach (var mod in subCategory.OrderBy(modification => modification.Modification.ModificationInfo.DisplayName)) {
                     var newOptionNode = new GameModificationOptionNode {
                         NodeId = optionIndex++,
@@ -100,7 +97,7 @@ public class AddonModificationBrowser : NativeAddon {
     
     private void BuildOptionsContainer() {
         optionContainerNode = new ScrollingAreaNode<TreeListNode> {
-            IsVisible = true,
+            NodeId = 2,
             ContentHeight = 1000.0f,
             ScrollSpeed = 24,
         };
@@ -109,14 +106,13 @@ public class AddonModificationBrowser : NativeAddon {
 
     private void BuildSearchContainer() {
         searchContainerNode = new HorizontalFlexNode {
+            NodeId = 3,
             Height = 28.0f,
             AlignmentFlags = FlexFlags.FitHeight | FlexFlags.FitWidth,
-            IsVisible = true,
         };
         System.NativeController.AttachNode(searchContainerNode, mainContainerNode);
         
         searchBoxNode = new TextInputNode {
-            IsVisible = true,
             OnInputReceived = OnSearchBoxInputReceived,
             PlaceholderString = "Search . . .",
             AutoSelectAll = true,
@@ -126,7 +122,7 @@ public class AddonModificationBrowser : NativeAddon {
 
     private void BuildDescriptionContainer() {
         descriptionContainerNode = new SimpleComponentNode {
-            IsVisible = true,
+            NodeId = 4,
         };
         System.NativeController.AttachNode(descriptionContainerNode, mainContainerNode);
         
@@ -136,7 +132,7 @@ public class AddonModificationBrowser : NativeAddon {
             FontSize = 14,
             LineSpacing = 22,
             FontType = FontType.Axis,
-            IsVisible = true,
+
             String = "Please select an option on the left",
             TextColor = ColorHelper.GetColor(1),
         };
@@ -148,7 +144,7 @@ public class AddonModificationBrowser : NativeAddon {
             FontSize = 14,
             LineSpacing = 22,
             FontType = FontType.Axis,
-            IsVisible = true,
+
             TextColor = ColorHelper.GetColor(1),
         };
         System.NativeController.AttachNode(descriptionImageTextNode, descriptionContainerNode);
@@ -160,19 +156,16 @@ public class AddonModificationBrowser : NativeAddon {
         System.NativeController.AttachNode(changelogButtonNode, descriptionContainerNode);
         
         descriptionVersionTextNode = new TextNode {
-            IsVisible = true,
+
             AlignmentType = AlignmentType.BottomRight,
             TextColor = ColorHelper.GetColor(3),
         };
         System.NativeController.AttachNode(descriptionVersionTextNode, descriptionContainerNode);
 
-        descriptionImageFrame = new SimpleComponentNode {
-            IsVisible = true,
-        };
+        descriptionImageFrame = new SimpleComponentNode();
         System.NativeController.AttachNode(descriptionImageFrame, descriptionContainerNode);
 
         descriptionImageNode = new ImGuiImageNode {
-            IsVisible = true,
             FitTexture = true,
             DrawFlags = DrawFlags.ClickableCursor,
         };
@@ -209,7 +202,7 @@ public class AddonModificationBrowser : NativeAddon {
         System.NativeController.AttachNode(descriptionImageNode, descriptionImageFrame);
         
         borderNineGridNode = new BorderNineGridNode {
-            IsVisible = true,
+
             Alpha = 125,
             Offsets = new Vector4(40.0f),
         };

@@ -17,14 +17,12 @@ public class PartyFinderPresetConfigNode : ConfigNode<PresetInfo> {
         System.NativeController.AttachNode(renameCategoryNode, this);
 
         renameInputNode = new TextInputNode {
-            IsVisible = true,
             OnInputReceived = input => renameInputNode!.IsError = !PresetManager.IsValidFileName(input.ToString()),
         };
         System.NativeController.AttachNode(renameInputNode, this);
 
         confirmButtonNode = new TextButtonNode {
             String = "Apply",
-            IsVisible = true,
             OnClick = () => {
                 if (ConfigurationOption is not null && !renameInputNode.IsError) {
                     PresetManager.RenamePreset(ConfigurationOption.Name, renameInputNode.String);

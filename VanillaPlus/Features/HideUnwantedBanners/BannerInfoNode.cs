@@ -13,18 +13,13 @@ public class BannerInfoNode : SimpleComponentNode {
     private IconImageNode iconImageNode;
 
     public BannerInfoNode() {
-        checkboxNode = new CheckboxNode {
-            IsVisible = true,
-        };
+        checkboxNode = new CheckboxNode();
         System.NativeController.AttachNode(checkboxNode, this);
 
-        imageContainerNode = new SimpleComponentNode {
-            IsVisible = true,
-        };
+        imageContainerNode = new SimpleComponentNode();
         System.NativeController.AttachNode(imageContainerNode, this);
 
         iconImageNode = new IconImageNode {
-            IsVisible = true,
             FitTexture = true,
             DrawFlags = DrawFlags.ClickableCursor,
         };

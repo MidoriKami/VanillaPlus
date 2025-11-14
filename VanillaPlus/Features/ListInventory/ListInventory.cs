@@ -92,7 +92,6 @@ public class ListInventory : GameModification {
         var listUpdated = list.SyncWithListData(filteredInventoryItems, node => node.Item, data => new InventoryItemNode {
             Size = new Vector2(list.Width, 32.0f),
             Item = data,
-            IsVisible = true,
         });
 
         list.ReorderNodes(Comparison);

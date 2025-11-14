@@ -37,12 +37,10 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         windowNameTextNode = new TextNode {
             AlignmentType = AlignmentType.Center,
             FontSize = 18,
-            IsVisible = true,
         };
         System.NativeController.AttachNode(windowNameTextNode, this);
         
         verticalListNode = new TabbedVerticalListNode {
-            IsVisible = true,
             ItemVerticalSpacing = 20.0f,
         };
         verticalListNode.CollisionNode.IsVisible = false;
@@ -54,7 +52,6 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
 
         colorPreviewLayoutNode = new HorizontalListNode {
             Height = 32.0f,
-            IsVisible = true,
             ItemSpacing = 10.0f,
         };
         verticalListNode.AddNode(1, colorPreviewLayoutNode);
@@ -62,7 +59,6 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         colorPreviewNode = new ColorPreviewNode {
             Size = new Vector2(32.0f, 32.0f),
             DrawFlags = DrawFlags.ClickableCursor,
-            IsVisible = true,
         };
         colorPreviewLayoutNode.AddNode(colorPreviewNode);
         
@@ -77,7 +73,6 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
             String = "Color",
             DrawFlags = DrawFlags.ClickableCursor,
-            IsVisible = true,
         };
         colorPreviewLayoutNode.AddNode(colorLabelNode);
 
@@ -87,7 +82,6 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
 
         sizeEditWidget = new Vector2EditWidget {
             Height = 50.0f,
-            IsVisible = true,
             OnValueChanged = newValue => {
                 if (ConfigurationOption is not null) {
                     ConfigurationOption.Padding = newValue;

@@ -44,7 +44,6 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         gearsetListNode = new ModifyListNode<GearsetInfo> {
             Size = new Vector2(225.0f, ContentSize.Y),
             Position = ContentStartPosition,
-            IsVisible = true,
             SelectionOptions = GetConfigInfos(),
             SortOptions = [ "Alphabetical", "Id" ],
             AddNewEntry = OnAddEntry,
@@ -56,14 +55,12 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         lineNode = new VerticalLineNode {
             Size = new Vector2(4.0f, ContentSize.Y),
             Position = new Vector2(gearsetListNode.X + gearsetListNode.Width + 8.0f, ContentStartPosition.Y),
-            IsVisible = true,
         };
         AttachNode(lineNode);
 
         optionsContainerNode = new SimpleComponentNode {
             Position = new Vector2(lineNode.X + lineNode.Width, ContentStartPosition.Y),
             Size = new Vector2(ContentSize.X - lineNode.X - lineNode.Width, ContentSize.Y),
-            IsVisible = true,
         };
         AttachNode(optionsContainerNode);
 

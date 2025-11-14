@@ -44,14 +44,12 @@ public class AddonConfigAddon : NativeAddon {
             AlignmentType = AlignmentType.Left,
             Position = ContentStartPosition + new Vector2(0.0f, 10.0f),
             String = "Keybind",
-            IsVisible = true,
         };
         AttachNode(keybindLabelNode);
 
         keybindLineNode = new HorizontalLineNode {
             Position = new Vector2(ContentStartPosition.X - 2.0f, keybindLabelNode.Y + keybindLabelNode.Height),
             Size = new Vector2(95.0f, 2.0f),
-            IsVisible = true,
         };
         AttachNode(keybindLineNode);
 
@@ -73,7 +71,6 @@ public class AddonConfigAddon : NativeAddon {
             Position = new Vector2(ContentStartPosition.X, keybindTextNode.Y + keybindTextNode.Height + 10.0f),
             Size = new Vector2(150.0f, 24.0f),
             String = AddonConfig.KeybindEnabled ? "Disable" : "Enable",
-            IsVisible = true,
             OnClick = OnKeybindToggleClicked,
         };
         AttachNode(keybindEnableButtonNode);
@@ -82,7 +79,6 @@ public class AddonConfigAddon : NativeAddon {
             Size = new Vector2(150.0f, 24.0f),
             Position = new Vector2(ContentStartPosition.X + ContentSize.X - 150.0f, keybindTextNode.Y + keybindTextNode.Height + 10.0f),
             String = "Change Keybind",
-            IsVisible = true,
             OnClick = keybindAddon.Toggle,
         };
         AttachNode(editKeybindButtonNode);
@@ -91,14 +87,12 @@ public class AddonConfigAddon : NativeAddon {
             AlignmentType = AlignmentType.Left,
             Position = new Vector2(ContentStartPosition.X - 2.0f, editKeybindButtonNode.Y + editKeybindButtonNode.Height + 15.0f),
             String = "Window Size",
-            IsVisible = true,
         };
         AttachNode(inputComboLabelNode);
 
         topLineNode = new HorizontalLineNode {
             Position = new Vector2(ContentStartPosition.X - 2.0f, inputComboLabelNode.Y + inputComboLabelNode.Height),
             Size = new Vector2(125.0f, 2.0f),
-            IsVisible = true,
         };
         AttachNode(topLineNode);
 
@@ -106,7 +100,6 @@ public class AddonConfigAddon : NativeAddon {
             Position = new Vector2(ContentStartPosition.X, topLineNode.Y + topLineNode.Height + 5.0f),
             Size = new Vector2(ContentSize.X, 50.0f),
             GridSize = new GridSize(2, 2),
-            IsVisible = true,
         };
         AttachNode(windowSizeGridNode);
 
@@ -120,7 +113,6 @@ public class AddonConfigAddon : NativeAddon {
             TextOutlineColor = ColorHelper.GetColor(7),
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
             String = "Width",
-            IsVisible = true,
         };
         AttachNode(windowWidthTextNode, windowSizeGridNode[0, 0]);
 
@@ -134,14 +126,12 @@ public class AddonConfigAddon : NativeAddon {
             TextOutlineColor = ColorHelper.GetColor(7),
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
             String = "Height",
-            IsVisible = true,
         };
         AttachNode(windowHeightTextNode, windowSizeGridNode[1, 0]);
         
         widthInputNode = new NumericInputNode {
             Size = windowSizeGridNode[0, 1].Size - new Vector2(4.0f, 4.0f),
             Position = new Vector2(2.0f, 2.0f),
-            IsVisible = true,
             Value = (int) AddonConfig.WindowSize.X,
             OnValueUpdate = newValue => {
                 AddonConfig.WindowSize = new Vector2(newValue, AddonConfig.WindowSize.Y);
@@ -153,7 +143,6 @@ public class AddonConfigAddon : NativeAddon {
         heightInputNode = new NumericInputNode {
             Size = windowSizeGridNode[1, 1].Size - new Vector2(4.0f, 4.0f),
             Position = new Vector2(2.0f, 2.0f),
-            IsVisible = true,
             Value = (int) AddonConfig.WindowSize.Y,
             OnValueUpdate = newValue => {
                 AddonConfig.WindowSize = new Vector2(AddonConfig.WindowSize.X, newValue);

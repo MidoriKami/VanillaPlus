@@ -110,7 +110,6 @@ public unsafe class TargetCastBarCountdown : GameModification {
         TextOutlineColor = ColorHelper.GetColor(23),
         FontType = FontType.Miedinger,
         AlignmentType = AlignmentType.Right,
-        IsVisible = true,
     };
 
     private void AttachNode(AtkUnitBase* addon) {

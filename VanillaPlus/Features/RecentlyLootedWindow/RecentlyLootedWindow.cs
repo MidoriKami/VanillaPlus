@@ -112,7 +112,6 @@ public unsafe class RecentlyLootedWindow : GameModification {
         
         var listUpdated = listNode.SyncWithListData(items, node => node.Item, data => new LootItemNode {
             Size = new Vector2(listNode.Width, 36.0f),
-            IsVisible = true,
             Item = data,
         });
 

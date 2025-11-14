@@ -11,7 +11,6 @@ public class IconWithCountNode : ResNode {
 
     public IconWithCountNode() {
         iconNode = new IconImageNode {
-            IsVisible = true,
             FitTexture = true,
         };
         System.NativeController.AttachNode(iconNode, this);
@@ -20,7 +19,6 @@ public class IconWithCountNode : ResNode {
             AlignmentType = AlignmentType.Right,
             TextFlags = TextFlags.Edge,
             FontSize = 12,
-            IsVisible = true,
         };
         System.NativeController.AttachNode(countTextNode, this);
     }

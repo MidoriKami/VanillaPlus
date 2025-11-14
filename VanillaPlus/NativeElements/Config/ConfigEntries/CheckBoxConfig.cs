@@ -12,7 +12,6 @@ public class CheckBoxConfig : BaseConfigEntry {
             Height = 24.0f,
             String = Label,
             IsChecked = InitialState,
-            IsVisible = true,
         };
     }
 

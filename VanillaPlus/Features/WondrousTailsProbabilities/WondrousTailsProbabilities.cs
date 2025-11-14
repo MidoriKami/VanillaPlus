@@ -74,13 +74,11 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             LineSpacing = 18,
             TextFlags = TextFlags.MultiLine | TextFlags.Edge | TextFlags.WordWrap,
             SeString = perfectTails.SolveAndGetProbabilitySeString(),
-            IsVisible = true,
         };
         System.NativeController.AttachNode(probabilityTextNode, (AtkResNode*)existingTextNode, NodePosition.AfterTarget);
 
         animationContainer = new ResNode {
             Size = new Vector2(72.0f, 48.0f),
-            IsVisible = true,
         };
         
         animationContainer.AddTimeline(new TimelineBuilder()
@@ -100,7 +98,6 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             TextureSize = new Vector2(52.0f, 52.0f),
             LeftOffset = 10,
             RightOffset = 10,
-            IsVisible = true,
             Color = Vector4.Zero with { W = 0.66f },
             AddColor = KnownColor.OrangeRed.Vector().AsVector3(),
         }; 

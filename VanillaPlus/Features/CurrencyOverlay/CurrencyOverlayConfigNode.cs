@@ -30,20 +30,17 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         iconImageNode = new IconImageNode {
             FitTexture = true,
             Alpha = 0.1f,
-            IsVisible = true,
         };
         System.NativeController.AttachNode(iconImageNode, this);
 
         itemNameTextNode = new TextNode {
             AlignmentType = AlignmentType.Center,
             FontSize = 18,
-            IsVisible = true,
         };
         System.NativeController.AttachNode(itemNameTextNode, this);
 
         enableLowLimitCheckbox = new CheckboxNode {
             String = "Warn when below limit",
-            IsVisible = true,
             OnClick = enabled => {
                 if (ConfigurationOption is not null) {
                     ConfigurationOption.EnableLowLimit = enabled;
@@ -54,7 +51,6 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         System.NativeController.AttachNode(enableLowLimitCheckbox, this);
 
         lowLimitInputNode = new NumericInputNode {
-            IsVisible = true,
             OnValueUpdate = newValue => {
                 if (ConfigurationOption is not null) {
                     ConfigurationOption.LowLimit = newValue;
@@ -65,7 +61,6 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         System.NativeController.AttachNode(lowLimitInputNode, this);
         
         enableHighLimitCheckbox = new CheckboxNode {
-            IsVisible = true,
             String = "Warn when above limit",
             OnClick = enabled => {
                 if (ConfigurationOption is not null) {
@@ -77,7 +72,6 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         System.NativeController.AttachNode(enableHighLimitCheckbox, this);
         
         highLimitInputNode = new NumericInputNode {
-            IsVisible = true,
             OnValueUpdate = newValue => {
                 if (ConfigurationOption is not null) {
                     ConfigurationOption.HighLimit = newValue;
@@ -88,7 +82,6 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         System.NativeController.AttachNode(highLimitInputNode, this);
         
         reverseIconCheckbox = new CheckboxNode {
-            IsVisible = true,
             String = "Reverse icon position",
             OnClick = enabled => {
                 if (ConfigurationOption is not null) {
@@ -100,7 +93,6 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         System.NativeController.AttachNode(reverseIconCheckbox, this);
         
         reverseTextCheckbox = new CheckboxNode {
-            IsVisible = true,
             String = "Reverse text position",
             OnClick = enabled => {
                 if (ConfigurationOption is not null) {
@@ -112,7 +104,6 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         System.NativeController.AttachNode(reverseTextCheckbox, this);
         
         allowMovingCheckbox = new CheckboxNode {
-            IsVisible = true,
             String = "Enable moving overlay element",
             OnClick = enabled => {
                 if (ConfigurationOption is not null) {
@@ -125,14 +116,12 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
 
         scaleTextNode = new CategoryTextNode {
             String = "Scale",
-            IsVisible = true,
         };
         System.NativeController.AttachNode(scaleTextNode, this);
         
         scaleSliderNode = new SliderNode {
             Range = 50..300,
             DecimalPlaces = 2,
-            IsVisible = true,
             OnValueChanged = newValue => {
                 if (ConfigurationOption is not null) {
                     ConfigurationOption.Scale = newValue / 100.0f;

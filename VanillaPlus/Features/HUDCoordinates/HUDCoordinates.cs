@@ -39,7 +39,6 @@ public unsafe class HUDCoordinates : GameModification {
                     NodeId = 100,
                     Size = new Vector2(90.0f, 22.0f),
                     Position = new Vector2(node.Value->Width / 2.0f, node.Value->Height / 2.0f) - new Vector2(90.0f, 22.0f) / 2.0f,
-                    IsVisible = true,
                     String = new Vector2(node.Value->X, node.Value->Y).ToString(),
                 };
                 

@@ -42,7 +42,6 @@ public unsafe class MacroLineNumbers : GameModification {
                 var newTextNode = new TextNode {
                     Position = new Vector2(460.0f, 119.0f + index * 14f),
                     Size = new Vector2(sizeOffset.X - 5.0f, 14.0f),
-                    IsVisible = true,
                     String = $"{index + 1}",
                     FontType = FontType.Axis,
                     FontSize = 12,

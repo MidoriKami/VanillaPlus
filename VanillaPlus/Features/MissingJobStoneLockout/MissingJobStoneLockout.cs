@@ -59,7 +59,6 @@ public unsafe class MissingJobStoneLockout : GameModification {
         animationContainer = new ResNode {
             Position = buttonCoordinate - new Vector2(25.0f, 30.0f),
             Size = newNodeSize,
-            IsVisible = true,
         };
         System.NativeController.AttachNode(animationContainer, addon->RootNode);
         

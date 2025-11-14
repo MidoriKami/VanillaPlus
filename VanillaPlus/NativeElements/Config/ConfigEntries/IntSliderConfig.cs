@@ -14,20 +14,17 @@ public class IntSliderConfig : BaseConfigEntry {
     public override NodeBase BuildNode() {
         var layoutNode = new HorizontalListNode {
             Height = 24.0f,
-            IsVisible = true,
             ItemSpacing = 20.0f,
         };
 
         var sliderNode = new SliderNode {
             Size = new Vector2(175.0f, 24.0f),
-            IsVisible = true,
             Range = Range,
             OnValueChanged = OnOptionChanged,
             Value = InitialValue,
         };
 
         var labelNode = new CategoryTextNode {
-            IsVisible = true,
             Size = new Vector2(0.0f, 24.0f),
             String = Label,
             AlignmentType = AlignmentType.TopLeft,

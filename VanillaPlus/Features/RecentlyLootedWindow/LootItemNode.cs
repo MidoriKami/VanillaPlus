@@ -27,7 +27,6 @@ public unsafe class LootItemNode : SimpleComponentNode {
 
         iconNode = new IconWithCountNode {
             NodeId = 3,
-            IsVisible = true,
         };
         System.NativeController.AttachNode(iconNode, this);
 
@@ -35,7 +34,6 @@ public unsafe class LootItemNode : SimpleComponentNode {
             NodeId = 5,
             TextFlags = TextFlags.Ellipsis,
             AlignmentType = AlignmentType.Left,
-            IsVisible = true,
         };
         System.NativeController.AttachNode(itemNameTextNode, this);
         

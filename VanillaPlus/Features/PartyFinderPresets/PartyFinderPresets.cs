@@ -73,7 +73,6 @@ public unsafe class PartyFinderPresets : GameModification {
             savePresetButton = new TextButtonNode {
                 Position = new Vector2(406.0f, 605.0f),
                 Size = new Vector2(160.0f, 28.0f),
-                IsVisible = true,
                 String = "Save Preset",
                 Tooltip = "[VanillaPlus]: Save current settings to a preset",
                 OnClick = savePresetWindow.Open,
@@ -99,7 +98,6 @@ public unsafe class PartyFinderPresets : GameModification {
                 Size = new Vector2(200.0f, 25.0f),
                 MaxListOptions = 10,
                 Options = PresetManager.GetPresetNames(),
-                IsVisible = true,
             };
             UpdateDropDownOptions();
 

@@ -18,7 +18,6 @@ public class NodeConfig<T> : NodeConfigBase<T> where T : NodeBase, new() {
 
         var container = new LabelLayoutNode {
             Height = 28.0f,
-            IsVisible = true,
             FillWidth = true,
         };
 
@@ -30,7 +29,6 @@ public class NodeConfig<T> : NodeConfigBase<T> where T : NodeBase, new() {
 
         var xPosition = new NumericInputNode {
             Height = 28.0f,
-            IsVisible = true,
             Value = (int) StyleObject.X,
             Min = int.MinValue,
             OnValueUpdate = newValue => {
@@ -42,7 +40,6 @@ public class NodeConfig<T> : NodeConfigBase<T> where T : NodeBase, new() {
 
         var yPosition = new NumericInputNode {
             Height = 28.0f,
-            IsVisible = true,
             Min = int.MinValue,
             Value = (int) StyleObject.Y,
             OnValueUpdate = newValue => {

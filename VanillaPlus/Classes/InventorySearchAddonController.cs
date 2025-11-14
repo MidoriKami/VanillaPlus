@@ -27,7 +27,6 @@ public unsafe class InventorySearchAddonController : IDisposable {
                 Position = headerSize / 2.0f - size / 2.0f + new Vector2(25.0f, 10.0f),
                 Size = size,
                 OnInputReceived = searchString => PerformSearch(addon, searchString.ToString()),
-                IsVisible = true,
             };
 
             System.NativeController.AttachNode(newInputNode, addon->WindowNode);

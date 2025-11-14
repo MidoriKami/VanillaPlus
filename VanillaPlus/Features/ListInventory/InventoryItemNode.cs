@@ -30,13 +30,11 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
 
         iconNode = new IconWithCountNode {
             NodeId = 3,
-            IsVisible = true,
         };
         System.NativeController.AttachNode(iconNode, this);
 
         itemNameTextNode = new TextNode {
             NodeId = 5,
-            IsVisible = true,
             AlignmentType = AlignmentType.Left,
             TextFlags = TextFlags.Ellipsis,
         };
@@ -44,14 +42,12 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
         
         levelTextNode = new TextNode {
             NodeId = 6,
-            IsVisible = true,
             AlignmentType = AlignmentType.Left,
         };
         System.NativeController.AttachNode(levelTextNode, this);
 
         itemLevelTextNode = new TextNode {
             NodeId = 7,
-            IsVisible = true,
             AlignmentType = AlignmentType.Left,
         };
         System.NativeController.AttachNode(itemLevelTextNode, this);

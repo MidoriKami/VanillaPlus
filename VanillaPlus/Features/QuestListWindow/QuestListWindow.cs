@@ -79,7 +79,6 @@ public unsafe class QuestListWindow : GameModification {
         var listUpdated = listNode.SyncWithListData(filteredInventoryItems, node => node.QuestInfo, data => new QuestEntryNode {
             Size = new Vector2(listNode.Width, 48.0f),
             QuestInfo = data,
-            IsVisible = true,
         });
 
         if (listUpdated || updateRequested || filterString is "Distance") {

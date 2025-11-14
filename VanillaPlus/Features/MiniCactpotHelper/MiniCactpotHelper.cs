@@ -101,7 +101,6 @@ public unsafe class MiniCactpotHelper : GameModification {
 
 		gameGrid = new GameGrid(config) {
 			Size = new Vector2(542.0f, 320.0f),
-			IsVisible = true,
 		};
 		
         System.NativeController.AttachNode(gameGrid, buttonContainerNode);
@@ -112,7 +111,6 @@ public unsafe class MiniCactpotHelper : GameModification {
 			Icon = ButtonIcon.GearCog,
 			Tooltip = "Configure EzMiniCactpot Plugin",
 			OnClick = () => configWindow.Toggle(),
-			IsVisible = true,
 		};
 		
 		System.NativeController.AttachNode(configButton, buttonContainerNode);

@@ -19,7 +19,6 @@ public class RenameAddon : NativeAddon {
         inputNode = new TextInputNode {
             Position = ContentStartPosition + new Vector2(0.0f, ContentPadding.Y),
             Size = new Vector2(ContentSize.X, 28.0f),
-            IsVisible = true,
             PlaceholderString = PlaceholderString,
             String = DefaultString,
             AutoSelectAll = AutoSelectAll,
@@ -37,7 +36,6 @@ public class RenameAddon : NativeAddon {
         confirmButton = new TextButtonNode {
             Position = new Vector2(ContentStartPosition.X, targetYPos),
             Size = buttonSize,
-            IsVisible = true,
             String = "Confirm",
             OnClick = () => {
                 OnRenameComplete?.Invoke(inputNode.String);
@@ -49,7 +47,6 @@ public class RenameAddon : NativeAddon {
         cancelButton = new TextButtonNode {
             Position = new Vector2(ContentSize.X - buttonSize.X + ContentPadding.X, targetYPos),
             Size = buttonSize,
-            IsVisible = true,
             String = "Cancel",
             OnClick = Close,
         };
