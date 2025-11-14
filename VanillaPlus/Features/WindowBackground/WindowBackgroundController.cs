@@ -131,6 +131,7 @@ public unsafe class WindowBackgroundController : IDisposable {
                             Size = node.Value->Size() + windowConfig.Padding,
                             Position = -windowConfig.Padding / 2.0f,
                             Color = windowConfig.Color,
+                            IsVisible = false,
                         };
 
                         System.NativeController.AttachNode(newBackgroundNode, node, NodePosition.BeforeTarget);
@@ -151,6 +152,7 @@ public unsafe class WindowBackgroundController : IDisposable {
                     Size = (addon->RootSize() + windowConfig.Padding) * addon->Scale,
                     Position = addon->Position() - windowConfig.Padding / 2.0f,
                     Color = windowConfig.Color,
+                    IsVisible = false,
                 };
 
                 System.NativeController.AttachNode(newBackgroundNode, nameplateOverlayNode);
