@@ -42,7 +42,7 @@ public sealed class VanillaPlus : IDalamudPlugin {
         System.KeyListener = new KeyListener();
         System.ModificationManager = new ModificationManager();
 
-        AutoOpenBrowser(true);
+        AutoOpenBrowser(false);
     }
 
     public void Dispose() {
