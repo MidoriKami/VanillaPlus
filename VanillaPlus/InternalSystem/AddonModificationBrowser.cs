@@ -150,6 +150,7 @@ public class AddonModificationBrowser : NativeAddon {
         changelogButtonNode = new TextButtonNode {
             SeString = "Changelog",
             OnClick = OnChangelogButtonClicked,
+            IsVisible = false,
         };
         System.NativeController.AttachNode(changelogButtonNode, descriptionContainerNode);
         
