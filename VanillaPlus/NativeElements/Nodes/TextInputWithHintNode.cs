@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using Dalamud.Utility;
 using KamiToolKit.Nodes;
 using Lumina.Text;
 using Lumina.Text.ReadOnly;
@@ -25,9 +24,7 @@ public class TextInputWithHintNode : SimpleComponentNode {
                 .Append("[VanillaPlus]: Supports Regex Search")
                 .AppendNewLine()
                 .Append("Start input with '$' to search by description")
-                .ToReadOnlySeString()
-                .ToDalamudString()
-                .EncodeWithNullTerminator(),
+                .ToReadOnlySeString(),
         };
         System.NativeController.AttachNode(helpNode, this);
     }
