@@ -22,7 +22,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
 
     public GameModificationOptionNode() {
         hoveredBackgroundNode = new SimpleNineGridNode {
-            NodeId = 2,
             TexturePath = "ui/uld/ListItemA.tex",
             TextureCoordinates = new Vector2(0.0f, 22.0f),
             TextureSize = new Vector2(64.0f, 22.0f),
@@ -35,7 +34,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
         System.NativeController.AttachNode(hoveredBackgroundNode, this);
         
         selectedBackgroundNode = new SimpleNineGridNode {
-            NodeId = 3,
             TexturePath = "ui/uld/ListItemA.tex",
             TextureCoordinates = new Vector2(0.0f, 0.0f),
             TextureSize = new Vector2(64.0f, 22.0f),
@@ -48,13 +46,11 @@ public class GameModificationOptionNode : SimpleComponentNode {
         System.NativeController.AttachNode(selectedBackgroundNode, this);
         
         checkboxNode = new CheckboxNode {
-            NodeId = 4,
             OnClick = ToggleModification,
         };
         System.NativeController.AttachNode(checkboxNode, this);
 
         erroringImageNode = new IconImageNode {
-            NodeId = 5,
             IconId = 61502,
             FitTexture = true,
             Tooltip = "Failed to load, this module has been disabled",
@@ -62,7 +58,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
         System.NativeController.AttachNode(erroringImageNode, this);
 
         modificationNameNode = new TextNode {
-            NodeId = 6,
             TextFlags = TextFlags.AutoAdjustNodeSize | TextFlags.Ellipsis,
             AlignmentType = AlignmentType.BottomLeft,
             TextColor = ColorHelper.GetColor(1),
@@ -70,7 +65,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
         System.NativeController.AttachNode(modificationNameNode, this);
 
         experimentalImageNode = new IconImageNode {
-            NodeId = 7,
             IconId = 60073,
             FitTexture = true,
             Tooltip = "Caution, this feature is experimental.\nMay contain bugs or crash your game.",
@@ -78,7 +72,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
         System.NativeController.AttachNode(experimentalImageNode, this);
         
         authorNamesNode = new TextNode {
-            NodeId = 8,
             FontType = FontType.Axis,
             TextFlags = TextFlags.AutoAdjustNodeSize | TextFlags.Ellipsis,
             AlignmentType = AlignmentType.TopLeft,
@@ -87,7 +80,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
         System.NativeController.AttachNode(authorNamesNode, this);
 
         reloadButtonNode = new CircleButtonNode {
-            NodeId = 10,
             Icon = ButtonIcon.Refresh,
             Tooltip = "Retry compatability check",
             OnClick = () => {
@@ -98,9 +90,12 @@ public class GameModificationOptionNode : SimpleComponentNode {
         System.NativeController.AttachNode(reloadButtonNode, this);
         
         configButtonNode = new CircleButtonNode {
-            NodeId = 9,
             Icon = ButtonIcon.GearCog,
             Tooltip = "Open configuration window",
+            OnClick = () => {
+                Modification?.Modification.OpenConfigAction?.Invoke();
+                OnClick?.Invoke();
+            },
         };
         System.NativeController.AttachNode(configButtonNode, this);
 
@@ -155,7 +150,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
     }
 
     public Action? OnClick { get; set; }
-    
+
     public bool IsHovered {
         get => hoveredBackgroundNode.IsVisible;
         set => hoveredBackgroundNode.IsVisible = value;
@@ -172,11 +167,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
     private void RefreshConfigWindowButton() {
         if (Modification.Modification.OpenConfigAction is not null) {
             configButtonNode.IsVisible = true;
-            configButtonNode.OnClick = () => {
-                Modification.Modification.OpenConfigAction();
-                OnClick?.Invoke();
-            };
-
             configButtonNode.IsEnabled = Modification.State is LoadedState.Enabled;
         }
     }
