@@ -6,7 +6,7 @@ using KamiToolKit.System;
 namespace VanillaPlus.NativeElements.Config.ConfigEntries;
 
 public class SelectIconConfig : BaseConfigEntry {
-    public required uint InitialIcon { get; init; }
+    public required uint InitialIcon { get; set; }
 
     private IconImageNode? iconImageNode;
     private NumericInputNode? inputIntNode;
@@ -55,6 +55,7 @@ public class SelectIconConfig : BaseConfigEntry {
             inputIntNode.Value = iconId;
         }
 
+        InitialIcon = (uint)iconId;
         MemberInfo.SetValue(Config, (uint)iconId);
         Config.Save();
     }
