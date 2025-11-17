@@ -97,7 +97,6 @@ public class AddonModificationBrowser : NativeAddon {
     
     private void BuildOptionsContainer() {
         optionContainerNode = new ScrollingAreaNode<TreeListNode> {
-            NodeId = 2,
             ContentHeight = 1000.0f,
             ScrollSpeed = 24,
         };
@@ -106,7 +105,6 @@ public class AddonModificationBrowser : NativeAddon {
 
     private void BuildSearchContainer() {
         searchContainerNode = new HorizontalFlexNode {
-            NodeId = 3,
             Height = 28.0f,
             AlignmentFlags = FlexFlags.FitHeight | FlexFlags.FitWidth,
         };
@@ -121,9 +119,7 @@ public class AddonModificationBrowser : NativeAddon {
     }
 
     private void BuildDescriptionContainer() {
-        descriptionContainerNode = new SimpleComponentNode {
-            NodeId = 4,
-        };
+        descriptionContainerNode = new SimpleComponentNode();
         System.NativeController.AttachNode(descriptionContainerNode, mainContainerNode);
         
         descriptionTextNode = new TextNode {
