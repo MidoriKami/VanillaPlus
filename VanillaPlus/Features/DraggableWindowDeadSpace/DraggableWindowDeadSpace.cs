@@ -92,6 +92,15 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
 
     private void OnAddonFinalize(AddonEvent type, AddonArgs args) {
         if (windowInteractionNodes?.TryGetValue(args.AddonName, out var node) ?? false) {
+
+            // As a safety precaution, disable any drag if any tracked window is finalizing.
+            if (isDragging) {
+                cursorEventListener?.RemoveEvent(AtkEventType.MouseMove);
+                cursorEventListener?.RemoveEvent(AtkEventType.MouseUp);
+                Services.AddonEventManager.ResetCursor();
+                isDragging = false;
+            }
+
             System.NativeController.DetachNode(node);
             node.Dispose();
             windowInteractionNodes?.Remove(args.AddonName);
