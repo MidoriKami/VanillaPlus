@@ -9,7 +9,7 @@ namespace VanillaPlus.NativeElements.Config.ConfigEntries;
 public class FloatSliderConfig : BaseConfigEntry {
     public required float MinValue { get; init; }
     public required float MaxValue { get; init; }
-    public required float InitialValue { get; init; }
+    public required float InitialValue { get; set; }
     public required int DecimalPlaces { get; init; }
     public required float StepSpeed { get; init; }
     
@@ -36,6 +36,7 @@ public class FloatSliderConfig : BaseConfigEntry {
     }
 
     private void OnOptionChanged(float newValue) {
+        InitialValue = newValue;
         MemberInfo.SetValue(Config, newValue);
         Config.Save();
     }

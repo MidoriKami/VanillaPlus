@@ -9,7 +9,7 @@ namespace VanillaPlus.NativeElements.Config.ConfigEntries;
 
 public class IntSliderConfig : BaseConfigEntry {
     public required Range Range { get; init; }
-    public required int InitialValue { get; init; }
+    public required int InitialValue { get; set; }
 
     public override NodeBase BuildNode() {
         var layoutNode = new HorizontalListNode {
@@ -37,6 +37,7 @@ public class IntSliderConfig : BaseConfigEntry {
     }
 
     private void OnOptionChanged(int newValue) {
+        InitialValue = newValue;
         MemberInfo.SetValue(Config, newValue);
         Config.Save();
     }

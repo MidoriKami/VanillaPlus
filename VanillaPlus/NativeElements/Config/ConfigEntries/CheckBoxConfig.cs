@@ -4,7 +4,7 @@ using KamiToolKit.System;
 namespace VanillaPlus.NativeElements.Config.ConfigEntries;
 
 public class CheckBoxConfig : BaseConfigEntry {
-    public required bool InitialState { get; init; }
+    public required bool InitialState { get; set; }
 
     public override NodeBase BuildNode() {
         return new CheckboxNode {
@@ -16,6 +16,7 @@ public class CheckBoxConfig : BaseConfigEntry {
     }
 
     private void OnOptionChanged(bool newValue) {
+        InitialState = newValue;
         MemberInfo.SetValue(Config, newValue);
         Config.Save();
     }

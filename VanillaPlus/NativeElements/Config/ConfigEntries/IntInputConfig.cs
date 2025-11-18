@@ -6,7 +6,7 @@ using KamiToolKit.System;
 namespace VanillaPlus.NativeElements.Config.ConfigEntries;
 
 public class IntInputConfig : BaseConfigEntry {
-    public required int InitialValue { get; init; }
+    public required int InitialValue { get; set; }
     public required int Step { get; init; }
     public required Range Range { get; init; }
 
@@ -23,6 +23,7 @@ public class IntInputConfig : BaseConfigEntry {
             Min = Range.Start.Value,
             Max = Range.End.Value,
             OnValueUpdate = newValue => {
+                InitialValue = newValue;
                 MemberInfo.SetValue(Config, newValue);
                 Config.Save();
             },
