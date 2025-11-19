@@ -44,7 +44,10 @@ public unsafe class MacroTooltips : GameModification {
 
             // When using a shared pet/accessory hotbar, the hotbar id will be out of range
             // These slots can't have macros, so we will ignore them entirely
-            if (realHotbarId >= RaptureHotbarModule.Instance()->Hotbars.Length) return;
+            if (realHotbarId >= RaptureHotbarModule.Instance()->Hotbars.Length) {
+                showTooltipHook!.Original(a1, macroResNode, numberArray, stringArray, numberArrayIndex, stringArrayIndex);
+                return;
+            }
             var hotbarSlot = RaptureHotbarModule.Instance()->Hotbars[realHotbarId].Slots[realSlotId];
 
             if (hotbarSlot is { CommandType: RaptureHotbarModule.HotbarSlotType.Macro, ApparentSlotType: RaptureHotbarModule.HotbarSlotType.Action }) {
