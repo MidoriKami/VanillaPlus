@@ -52,6 +52,7 @@ public unsafe class BetterInterruptableCastBars : GameModification {
                 Scale = new Vector2(1.33f, 1.33f),
                 Origin = new Vector2(116.0f, 16.0f),
                 AddColor = new Vector3(255.0f, -80.0f, 0.0f) / 255.0f,
+                IsVisible = false,
             };
 
             LoadAssets(targetInfoCastbarPulseNode);
