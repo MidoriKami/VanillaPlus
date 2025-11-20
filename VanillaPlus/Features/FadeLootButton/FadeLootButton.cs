@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Controllers;
+using KamiToolKit.Classes.Controllers;
 using VanillaPlus.Classes;
 using VanillaPlus.NativeElements.Config;
 

@@ -1,5 +1,5 @@
 ﻿using System.Numerics;
-using KamiToolKit.Addon;
+using KamiToolKit;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.DebugCustomAddon;

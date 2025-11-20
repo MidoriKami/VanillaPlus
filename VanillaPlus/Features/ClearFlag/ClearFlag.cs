@@ -3,7 +3,7 @@ using Dalamud.Game.Addon.Events.EventDataTypes;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
-using KamiToolKit.Controllers;
+using KamiToolKit.Classes.Controllers;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.ClearFlag;

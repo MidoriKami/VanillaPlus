@@ -5,9 +5,8 @@ using Dalamud.Game.Text;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
+using KamiToolKit.Classes.Timelines;
 using KamiToolKit.Nodes;
-using KamiToolKit.Nodes.SimpleComponentParts;
-using KamiToolKit.Timelines;
 
 namespace VanillaPlus.Features.FateListWindow;
 

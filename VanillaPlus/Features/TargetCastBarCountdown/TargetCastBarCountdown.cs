@@ -5,7 +5,7 @@ using System.Numerics;
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
-using KamiToolKit.Controllers;
+using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 using VanillaPlus.NativeElements.Config;

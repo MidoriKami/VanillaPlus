@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using Dalamud.Game.ClientState.Keys;
-using KamiToolKit.NodeBaseClasses;
+using KamiToolKit;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;

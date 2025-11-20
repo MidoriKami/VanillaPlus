@@ -2,7 +2,7 @@
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Game.ClientState.Keys;
-using KamiToolKit.NodeBaseClasses;
+using KamiToolKit;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 using VanillaPlus.NativeElements.Addons;

@@ -2,8 +2,8 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
+using KamiToolKit.Classes.Timelines;
 using KamiToolKit.Nodes;
-using KamiToolKit.Timelines;
 using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.CurrencyOverlay;

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Addon;
+using KamiToolKit;
 using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.LocationDisplay;

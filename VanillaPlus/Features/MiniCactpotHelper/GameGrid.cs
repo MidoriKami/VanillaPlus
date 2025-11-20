@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Classes.Timelines;
 using KamiToolKit.Nodes;
-using KamiToolKit.Timelines;
 
 namespace VanillaPlus.Features.MiniCactpotHelper;
 

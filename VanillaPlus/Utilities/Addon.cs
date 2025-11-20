@@ -1,5 +1,5 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.UI;
-using KamiToolKit.NodeBaseClasses;
+using KamiToolKit;
 
 namespace VanillaPlus.Utilities;
 
