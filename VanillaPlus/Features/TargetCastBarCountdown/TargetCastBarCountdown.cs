@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -238,8 +239,10 @@ public unsafe class TargetCastBarCountdown : GameModification {
     private static string GetCastTime(IBattleChara? target, bool enabled) {
         if (!enabled) return string.Empty;
         if (target is null) return string.Empty;
+        if (!target.IsValid()) return string.Empty;
+        if (target.EntityId == 0xE0000000) return string.Empty;
         if (target.CurrentCastTime >= target.TotalCastTime) return string.Empty;
-        
+
         return (target.TotalCastTime - target.CurrentCastTime).ToString("00.00", CultureInfo.InvariantCulture);
     }
     
@@ -250,7 +253,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
         => Services.TargetManager.FocusTarget as IBattleChara;
 
     private static IBattleChara? GetEntity(uint entityId)
-        => Services.ObjectTable.FirstOrDefault(obj => obj.EntityId == entityId) as IBattleChara;
+        => Services.ObjectTable.CharacterManagerObjects.FirstOrDefault(obj => obj.EntityId == entityId) as IBattleChara;
 
     // Certain config options are no longer provided, but may have still been saved in an invalid state
     // This will force the correct default values and save them.
