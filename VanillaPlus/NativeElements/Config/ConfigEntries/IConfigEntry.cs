@@ -1,5 +1,5 @@
 ﻿using System;
-using KamiToolKit.System;
+using KamiToolKit.NodeBaseClasses;
 
 namespace VanillaPlus.NativeElements.Config.ConfigEntries;
 

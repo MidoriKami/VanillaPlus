@@ -2,7 +2,7 @@
 using System.Numerics;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using KamiToolKit.Addons;
+using KamiToolKit.Premade.Addons;
 using VanillaPlus.Features.GearsetRedirect;
 
 namespace VanillaPlus.NativeElements.Addons.SearchAddons;

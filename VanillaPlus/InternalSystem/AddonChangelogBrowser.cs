@@ -5,6 +5,8 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addon;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
+using KamiToolKit.Nodes.Parts;
+using KamiToolKit.Nodes.SimpleComponentParts;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.InternalSystem;

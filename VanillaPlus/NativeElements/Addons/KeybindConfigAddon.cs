@@ -8,6 +8,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addon;
 using KamiToolKit.Nodes;
+using KamiToolKit.Nodes.SimpleComponentParts;
 using Lumina.Extensions;
 using Keybind = VanillaPlus.Classes.Keybind;
 using VirtualKeyExtensions = VanillaPlus.Extensions.VirtualKeyExtensions;

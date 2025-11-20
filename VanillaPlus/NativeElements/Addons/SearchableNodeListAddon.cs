@@ -4,6 +4,7 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
+using KamiToolKit.Nodes.SimpleComponentParts;
 
 namespace VanillaPlus.NativeElements.Addons;
 

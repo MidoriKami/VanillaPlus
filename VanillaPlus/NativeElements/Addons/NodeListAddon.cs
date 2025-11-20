@@ -5,6 +5,7 @@ using Dalamud.Game.Command;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addon;
 using KamiToolKit.Nodes;
+using KamiToolKit.Nodes.SimpleComponentParts;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.NativeElements.Addons;

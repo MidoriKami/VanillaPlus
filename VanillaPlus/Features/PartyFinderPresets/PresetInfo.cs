@@ -1,4 +1,4 @@
-﻿using KamiToolKit.Addons.Interfaces;
+﻿using KamiToolKit.Premade;
 
 namespace VanillaPlus.Features.PartyFinderPresets;
 

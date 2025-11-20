@@ -1,5 +1,5 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using KamiToolKit.Addons.Interfaces;
+using KamiToolKit.Premade;
 using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.GearsetRedirect;

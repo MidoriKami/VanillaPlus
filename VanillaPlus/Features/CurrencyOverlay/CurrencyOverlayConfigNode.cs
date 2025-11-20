@@ -1,8 +1,7 @@
 ﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Addons.Parts;
 using KamiToolKit.Nodes;
-using KamiToolKit.Nodes.Slider;
+using KamiToolKit.Premade.Nodes;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 

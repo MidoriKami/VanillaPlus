@@ -7,9 +7,9 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
-using KamiToolKit.Classes.TimelineBuilding;
 using KamiToolKit.NodeParts;
 using KamiToolKit.Nodes;
+using KamiToolKit.Timelines;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.BetterInterruptableCastBars;

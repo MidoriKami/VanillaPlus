@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Dalamud.Utility;
-using KamiToolKit.Addons.Interfaces;
+using KamiToolKit.Premade;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addon;
-using KamiToolKit.Addons;
-using KamiToolKit.Addons.Parts;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
+using KamiToolKit.Premade.Addons;
+using KamiToolKit.Premade.Nodes;
 using VanillaPlus.NativeElements.Addons.SearchAddons;
 
 namespace VanillaPlus.Features.GearsetRedirect;

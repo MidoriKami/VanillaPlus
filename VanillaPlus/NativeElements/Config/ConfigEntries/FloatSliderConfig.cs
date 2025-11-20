@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Numerics;
+using KamiToolKit.NodeBaseClasses;
 using KamiToolKit.Nodes;
-using KamiToolKit.Nodes.Slider;
-using KamiToolKit.System;
 
 namespace VanillaPlus.NativeElements.Config.ConfigEntries;
 

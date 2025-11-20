@@ -3,9 +3,9 @@ using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
-using KamiToolKit.Addons;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
+using KamiToolKit.Premade.Addons;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 

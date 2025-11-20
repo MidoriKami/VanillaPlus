@@ -9,8 +9,8 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
-using KamiToolKit.Classes.TimelineBuilding;
 using KamiToolKit.Nodes;
+using KamiToolKit.Timelines;
 using VanillaPlus.Classes;
 using VanillaPlus.Utilities;
 

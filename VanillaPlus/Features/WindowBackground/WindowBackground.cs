@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using KamiToolKit.Addons;
-using KamiToolKit.Addons.Parts;
+using KamiToolKit.Premade.Addons;
+using KamiToolKit.Premade.Nodes;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.WindowBackground;

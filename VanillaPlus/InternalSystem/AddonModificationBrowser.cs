@@ -7,6 +7,8 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addon;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
+using KamiToolKit.Nodes.Parts;
+using KamiToolKit.Nodes.SimpleComponentParts;
 using Lumina.Text.ReadOnly;
 using VanillaPlus.Classes;
 using VanillaPlus.Utilities;

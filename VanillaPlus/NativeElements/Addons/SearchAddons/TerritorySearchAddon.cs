@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Numerics;
 using Dalamud.Utility;
-using KamiToolKit.Addons;
+using KamiToolKit.Premade.Addons;
 using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.NativeElements.Addons.SearchAddons;

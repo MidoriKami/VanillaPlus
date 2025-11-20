@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Numerics;
 using Dalamud.Interface;
-using KamiToolKit.Addons.Interfaces;
+using KamiToolKit.Premade;
 
 namespace VanillaPlus.Features.WindowBackground;
 

@@ -1,6 +1,6 @@
 ﻿using Dalamud.Game.Text;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using KamiToolKit.Addons.Interfaces;
+using KamiToolKit.Premade;
 
 namespace VanillaPlus.Features.GearsetRedirect;
 

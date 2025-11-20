@@ -3,7 +3,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.System;
+using KamiToolKit.NodeBaseClasses;
 
 namespace VanillaPlus.Extensions;
 

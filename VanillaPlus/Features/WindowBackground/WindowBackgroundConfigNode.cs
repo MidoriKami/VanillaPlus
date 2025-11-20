@@ -2,12 +2,11 @@
 using System.Numerics;
 using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Addons;
-using KamiToolKit.Addons.Parts;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
-using KamiToolKit.Widgets;
-using KamiToolKit.Widgets.Parts;
+using KamiToolKit.Premade.Addons;
+using KamiToolKit.Premade.Nodes;
+using KamiToolKit.Premade.Widgets;
 
 namespace VanillaPlus.Features.WindowBackground;
 

@@ -2,8 +2,8 @@
 using System.Numerics;
 using Dalamud.Game.ClientState.Fates;
 using Dalamud.Game.ClientState.Keys;
+using KamiToolKit.NodeBaseClasses;
 using KamiToolKit.Nodes;
-using KamiToolKit.System;
 using VanillaPlus.Classes;
 using VanillaPlus.NativeElements.Addons;
 
