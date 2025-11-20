@@ -32,7 +32,6 @@ public unsafe class QuestListWindow : GameModification {
 
     public override void OnEnable() {
         addonQuestList = new SearchableNodeListAddon {
-            NativeController = System.NativeController,
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "QuestList",
             Title = "Quest List",

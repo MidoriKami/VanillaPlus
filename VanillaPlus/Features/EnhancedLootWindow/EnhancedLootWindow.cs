@@ -39,7 +39,6 @@ public unsafe class EnhancedLootWindow : GameModification {
     public override void OnEnable() {
         config = EnhancedLootWindowConfig.Load();
         configWindow = new ConfigAddon {
-            NativeController = System.NativeController,
             InternalName = "EnhancedLootWindowConfig",
             Title = "Enhanced Loot Window Config",
             Config = config,
@@ -95,7 +94,7 @@ public unsafe class EnhancedLootWindow : GameModification {
             };
             
             crossNodes.Add(newCrossNode);
-            System.NativeController.AttachNode(newCrossNode, targetPart, NodePosition.AfterTarget);
+            newCrossNode.AttachNode(targetPart, NodePosition.AfterTarget);
 
             var newPadlockNode = new SimpleImageNode {
                 TexturePath = "ui/uld/ActionBar.tex",
@@ -108,19 +107,17 @@ public unsafe class EnhancedLootWindow : GameModification {
             };
             
             padlockNodes.Add(newPadlockNode);
-            System.NativeController.AttachNode(newPadlockNode, targetPart, NodePosition.AfterTarget);
+            newPadlockNode.AttachNode(targetPart, NodePosition.AfterTarget);
         }
     }
     
     private void DetachNodes(AddonNeedGreed* addon) {
         foreach (var node in crossNodes) {
-            System.NativeController.DetachNode(node);
             node.Dispose();
         }
         crossNodes.Clear();
         
         foreach (var node in padlockNodes) {
-            System.NativeController.DetachNode(node);
             node.Dispose();
         }
         padlockNodes.Clear();

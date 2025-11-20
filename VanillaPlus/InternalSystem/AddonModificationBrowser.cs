@@ -36,7 +36,6 @@ public class AddonModificationBrowser : NativeAddon {
     private readonly AddonChangelogBrowser? changelogBrowser = new() {
         InternalName = "VPChangelog",
         Title = "Vanilla Plus Changelog Browser",
-        NativeController = System.NativeController,
         Size = new Vector2(450.0f, 400.0f),
     };
 
@@ -48,7 +47,7 @@ public class AddonModificationBrowser : NativeAddon {
             Position = ContentStartPosition,
             Size = ContentSize,
         };
-        AttachNode(mainContainerNode);
+        mainContainerNode.AttachNode(this);
 
         BuildOptionsContainer();
         BuildSearchContainer();
@@ -100,7 +99,7 @@ public class AddonModificationBrowser : NativeAddon {
             ContentHeight = 1000.0f,
             ScrollSpeed = 24,
         };
-        System.NativeController.AttachNode(optionContainerNode, mainContainerNode);
+        optionContainerNode.AttachNode(mainContainerNode);
     }
 
     private void BuildSearchContainer() {
@@ -108,7 +107,7 @@ public class AddonModificationBrowser : NativeAddon {
             Height = 28.0f,
             AlignmentFlags = FlexFlags.FitHeight | FlexFlags.FitWidth,
         };
-        System.NativeController.AttachNode(searchContainerNode, mainContainerNode);
+        searchContainerNode.AttachNode(mainContainerNode);
         
         searchBoxNode = new TextInputNode {
             OnInputReceived = OnSearchBoxInputReceived,
@@ -120,7 +119,7 @@ public class AddonModificationBrowser : NativeAddon {
 
     private void BuildDescriptionContainer() {
         descriptionContainerNode = new SimpleComponentNode();
-        System.NativeController.AttachNode(descriptionContainerNode, mainContainerNode);
+        descriptionContainerNode.AttachNode(mainContainerNode);
         
         descriptionTextNode = new TextNode {
             AlignmentType = AlignmentType.Center,
@@ -131,7 +130,7 @@ public class AddonModificationBrowser : NativeAddon {
             String = "Please select an option on the left",
             TextColor = ColorHelper.GetColor(1),
         };
-        System.NativeController.AttachNode(descriptionTextNode, descriptionContainerNode);
+        descriptionTextNode.AttachNode(descriptionContainerNode);
         
         descriptionImageTextNode = new TextNode {
             AlignmentType = AlignmentType.TopLeft,
@@ -141,23 +140,23 @@ public class AddonModificationBrowser : NativeAddon {
             FontType = FontType.Axis,
             TextColor = ColorHelper.GetColor(1),
         };
-        System.NativeController.AttachNode(descriptionImageTextNode, descriptionContainerNode);
+        descriptionImageTextNode.AttachNode(descriptionContainerNode);
 
         changelogButtonNode = new TextButtonNode {
             SeString = "Changelog",
             OnClick = OnChangelogButtonClicked,
             IsVisible = false,
         };
-        System.NativeController.AttachNode(changelogButtonNode, descriptionContainerNode);
+        changelogButtonNode.AttachNode(descriptionContainerNode);
         
         descriptionVersionTextNode = new TextNode {
             AlignmentType = AlignmentType.BottomRight,
             TextColor = ColorHelper.GetColor(3),
         };
-        System.NativeController.AttachNode(descriptionVersionTextNode, descriptionContainerNode);
+        descriptionVersionTextNode.AttachNode(descriptionContainerNode);
 
         descriptionImageFrame = new SimpleComponentNode();
-        System.NativeController.AttachNode(descriptionImageFrame, descriptionContainerNode);
+        descriptionImageFrame.AttachNode(descriptionContainerNode);
 
         descriptionImageNode = new ImGuiImageNode {
             FitTexture = true,
@@ -193,13 +192,13 @@ public class AddonModificationBrowser : NativeAddon {
             descriptionImageNode.Scale = Vector2.One;
             isImageHovered = false;
         });
-        System.NativeController.AttachNode(descriptionImageNode, descriptionImageFrame);
+        descriptionImageNode.AttachNode(descriptionImageFrame);
         
         borderNineGridNode = new BorderNineGridNode {
             Alpha = 125,
             Offsets = new Vector4(40.0f),
         };
-        System.NativeController.AttachNode(borderNineGridNode, descriptionImageNode);
+        borderNineGridNode.AttachNode(descriptionImageNode);
     }
 
     private void OnCategoryToggled(bool isVisible, ModificationType type) {

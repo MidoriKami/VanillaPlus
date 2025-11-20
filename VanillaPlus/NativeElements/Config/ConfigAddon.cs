@@ -23,7 +23,7 @@ public unsafe class ConfigAddon : NativeAddon {
             ContentHeight = ContentSize.Y,
             AutoHideScrollBar = true,
         };
-        AttachNode(configurationListNode);
+        configurationListNode.AttachNode(this);
 
         foreach (var category in configCategories) {
             configurationListNode.ContentNode.AddNode(category.BuildNode());

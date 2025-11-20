@@ -18,7 +18,6 @@ public class TextNodeConfig : NodeConfig<TextNode> {
         if (colorPickerAddon is not null) return;
 
         colorPickerAddon = new ColorPickerAddon {
-            NativeController = System.NativeController,
             InternalName = "ColorPicker",
             Title = "Color Picker",
         };
@@ -52,7 +51,7 @@ public class TextNodeConfig : NodeConfig<TextNode> {
             String = "Text Color",
             Size = new Vector2(100.0f, 28.0f),
         };
-        System.NativeController.AttachNode(labelNode, container);
+        labelNode.AttachNode(container);
         
         InitializeColorPicker();
         if (colorPickerAddon is null) return null;
@@ -79,8 +78,7 @@ public class TextNodeConfig : NodeConfig<TextNode> {
             };
             colorPickerAddon.Toggle();
         });
-        
-        System.NativeController.AttachNode(colorPreviewNode, container);
+        colorPreviewNode.AttachNode(container);
         
         return container;
     }
@@ -96,7 +94,7 @@ public class TextNodeConfig : NodeConfig<TextNode> {
             String = "Text Outline",
             Size = new Vector2(100.0f, 28.0f),
         };
-        System.NativeController.AttachNode(labelNode, container);
+        labelNode.AttachNode(container);
         
         InitializeColorPicker();
         if (colorPickerAddon is null) return null;
@@ -123,8 +121,7 @@ public class TextNodeConfig : NodeConfig<TextNode> {
             };
             colorPickerAddon.Toggle();
         });
-        
-        System.NativeController.AttachNode(colorPreviewNode, container);
+        colorPreviewNode.AttachNode(container);
         
         return container;
     }

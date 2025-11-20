@@ -75,7 +75,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             TextFlags = TextFlags.MultiLine | TextFlags.Edge | TextFlags.WordWrap,
             SeString = perfectTails.SolveAndGetProbabilitySeString(),
         };
-        System.NativeController.AttachNode(probabilityTextNode, (AtkResNode*)existingTextNode, NodePosition.AfterTarget);
+        probabilityTextNode.AttachNode((AtkResNode*)existingTextNode, NodePosition.AfterTarget);
 
         animationContainer = new ResNode {
             Size = new Vector2(72.0f, 48.0f),
@@ -88,7 +88,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             .EndFrameSet()
             .Build());
         
-        System.NativeController.AttachNode(animationContainer, addon->DutySlotList.DutyContainer);
+        animationContainer.AttachNode(addon->DutySlotList.DutyContainer);
         
         currentDutyNode = new SimpleNineGridNode {
             Size = new Vector2(72.0f, 48.0f),
@@ -110,7 +110,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             .EndFrameSet()
             .Build());
         
-        System.NativeController.AttachNode(currentDutyNode, animationContainer);
+        currentDutyNode.AttachNode(animationContainer);
         
         animationContainer.Timeline?.PlayAnimation(1);
     }
@@ -164,8 +164,11 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             existingTextNode->SetHeight((ushort)(existingTextNode->GetHeight() * 3.0f / 2.0f));
         }
 
-        System.NativeController.DisposeNode(ref probabilityTextNode);
-        System.NativeController.DisposeNode(ref currentDutyNode);
+        probabilityTextNode?.Dispose();
+        probabilityTextNode = null;
+        
+        currentDutyNode?.Dispose();
+        currentDutyNode = null;
     }
     
     private void AdjustCurrentDutyIndicator(AddonWeeklyBingo* addon) {

@@ -29,7 +29,6 @@ public unsafe class GearsetRedirect : GameModification {
         config = GearsetRedirectConfig.Load();
 
         configWindow = new GearsetRedirectConfigAddon {
-            NativeController = System.NativeController,
             Size = new Vector2(600.0f, 525.0f),
             InternalName = "GearsetRedirectConfig",
             Title = "Gearset Redirect Config",

@@ -34,7 +34,6 @@ public unsafe class HUDPresets : GameModification {
 
     public override void OnEnable() {
         renameAddon = new RenameAddon {
-            NativeController = System.NativeController,
             Size = new Vector2(250.0f, 150.0f),
             InternalName = "PresetNameWindow",
             Title = "HUD Preset Name",
@@ -55,7 +54,7 @@ public unsafe class HUDPresets : GameModification {
                 TextColor = ColorHelper.GetColor(8),
                 String = "[VanillaPlus] HUD Presets",
             };
-            System.NativeController.AttachNode(labelNode, addon->RootNode);
+            labelNode.AttachNode(addon);
             
             presetDropdownNode = new TextDropDownNode {
                 Position = new Vector2(16.0f, 235.0f),
@@ -65,7 +64,7 @@ public unsafe class HUDPresets : GameModification {
                 TooltipString = "Select a HUD Layout Preset",
                 OnOptionSelected = UpdateButtonLocks,
             };
-            System.NativeController.AttachNode(presetDropdownNode, addon->RootNode);
+            presetDropdownNode.AttachNode(addon);
 
             loadButtonNode = new TextButtonNode {
                 Position = new Vector2(32.0f, 269.0f),
@@ -75,7 +74,7 @@ public unsafe class HUDPresets : GameModification {
                 OnClick = LoadPreset,
                 IsEnabled = false,
             };
-            System.NativeController.AttachNode(loadButtonNode, addon->RootNode);
+            loadButtonNode.AttachNode(addon);
             
             overwriteButtonNode = new TextButtonNode {
                 Position = new Vector2(144.0f, 269.0f),
@@ -85,7 +84,7 @@ public unsafe class HUDPresets : GameModification {
                 IsEnabled = false,
                 OnClick = OverwriteSelectedPreset,
             };
-            System.NativeController.AttachNode(overwriteButtonNode, addon->RootNode);
+            overwriteButtonNode.AttachNode(addon);
             
             deleteButtonNode = new TextButtonNode {
                 Position = new Vector2(256.0f, 269.0f),
@@ -96,7 +95,7 @@ public unsafe class HUDPresets : GameModification {
                 // OnClick = DeleteSelectedPreset,
             };
             deleteButtonNode.CollisionNode.TooltipString = "Work in Progress\nManually delete preset files for now";
-            System.NativeController.AttachNode(deleteButtonNode, addon->RootNode);
+            deleteButtonNode.AttachNode(addon);
             
             saveButtonNode = new TextButtonNode {
                 Position = new Vector2(368.0f, 269.0f),
@@ -104,18 +103,29 @@ public unsafe class HUDPresets : GameModification {
                 String = "Save",
                 OnClick = SaveCurrentLayout,
             };
-            System.NativeController.AttachNode(saveButtonNode, addon->RootNode);
+            saveButtonNode.AttachNode(addon);
         };
 
         hudLayoutController.OnDetach += addon => {
             addon->Resize(addon->GetSize() - new Vector2(0.0f, 95.0f));
 
-            System.NativeController.DisposeNode(ref presetDropdownNode);
-            System.NativeController.DisposeNode(ref loadButtonNode);
-            System.NativeController.DisposeNode(ref overwriteButtonNode);
-            System.NativeController.DisposeNode(ref deleteButtonNode);
-            System.NativeController.DisposeNode(ref saveButtonNode);
-            System.NativeController.DisposeNode(ref labelNode);
+            presetDropdownNode?.Dispose();
+            presetDropdownNode = null;
+
+            loadButtonNode?.Dispose();
+            loadButtonNode = null;
+            
+            overwriteButtonNode?.Dispose();
+            overwriteButtonNode = null;
+            
+            deleteButtonNode?.Dispose();
+            deleteButtonNode = null;
+            
+            saveButtonNode?.Dispose();
+            saveButtonNode = null;
+            
+            labelNode?.Dispose();
+            labelNode = null;
         };
 
         hudLayoutController.OnUpdate += addon => {

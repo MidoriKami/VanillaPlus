@@ -39,7 +39,6 @@ public unsafe class BetterCursor : GameModification {
         config = BetterCursorConfig.Load();
 
         configWindow = new ConfigAddon {
-            NativeController = System.NativeController,
             InternalName = "BetterCursorConfig",
             Title = "Better Cursor Config",
             Config = config,
@@ -124,13 +123,13 @@ public unsafe class BetterCursor : GameModification {
 
     private void AttachNodes(AtkUnitBase* addon) {
         animationContainer = new ResNode();
-        System.NativeController.AttachNode(animationContainer, addon->RootNode);
+        animationContainer.AttachNode(addon);
 
         imageNode = new IconImageNode {
             IconId = 60498,
             FitTexture = true,
         };
-        System.NativeController.AttachNode(imageNode, animationContainer);
+        imageNode.AttachNode(animationContainer);
 
         animationContainer.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 120)
@@ -156,7 +155,10 @@ public unsafe class BetterCursor : GameModification {
     }
 
     private void DetachNodes(AtkUnitBase* addon) {
-        System.NativeController.DisposeNode(ref animationContainer);
-        System.NativeController.DisposeNode(ref imageNode);
+        animationContainer?.Dispose();
+        animationContainer = null;
+
+        imageNode?.Dispose();
+        imageNode = null;
     }
 }

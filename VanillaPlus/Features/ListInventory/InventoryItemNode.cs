@@ -16,7 +16,6 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
 
     public InventoryItemNode() {
         hoveredBackgroundNode = new SimpleNineGridNode {
-            NodeId = 2,
             TexturePath = "ui/uld/ListItemA.tex",
             TextureCoordinates = new Vector2(0.0f, 22.0f),
             TextureSize = new Vector2(64.0f, 22.0f),
@@ -26,31 +25,26 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
             RightOffset = 1,
             IsVisible = false,
         };
-        System.NativeController.AttachNode(hoveredBackgroundNode, this);
+        hoveredBackgroundNode.AttachNode(this);
 
-        iconNode = new IconWithCountNode {
-            NodeId = 3,
-        };
-        System.NativeController.AttachNode(iconNode, this);
+        iconNode = new IconWithCountNode();
+        iconNode.AttachNode(this);
 
         itemNameTextNode = new TextNode {
-            NodeId = 5,
             AlignmentType = AlignmentType.Left,
             TextFlags = TextFlags.Ellipsis,
         };
-        System.NativeController.AttachNode(itemNameTextNode, this);
+        itemNameTextNode.AttachNode(this);
         
         levelTextNode = new TextNode {
-            NodeId = 6,
             AlignmentType = AlignmentType.Left,
         };
-        System.NativeController.AttachNode(levelTextNode, this);
+        levelTextNode.AttachNode(this);
 
         itemLevelTextNode = new TextNode {
-            NodeId = 7,
             AlignmentType = AlignmentType.Left,
         };
-        System.NativeController.AttachNode(itemLevelTextNode, this);
+        itemLevelTextNode.AttachNode(this);
         
         CollisionNode.AddEvent(AtkEventType.MouseOver, () => {
             IsHovered = true;

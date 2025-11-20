@@ -46,7 +46,6 @@ public unsafe class CurrencyOverlay : GameModification {
         removedCurrencySettings = [];
         
         itemSearchAddon = new LuminaSearchAddon<Item> {
-            NativeController = System.NativeController,
             InternalName = "LuminaItemSearch",
             Title = "Item Search",
             Size = new Vector2(350.0f, 500.0f),
@@ -62,7 +61,6 @@ public unsafe class CurrencyOverlay : GameModification {
         config = CurrencyOverlayConfig.Load();
 
         configAddon = new ListConfigAddon<CurrencySetting, CurrencyOverlayConfigNode> {
-            NativeController = System.NativeController,
             Size = new Vector2(700.0f, 500.0f),
             InternalName = "CurrencyOverlayConfig",
             Title = "Currency Overlay Config",
@@ -106,7 +104,7 @@ public unsafe class CurrencyOverlay : GameModification {
             overlayRootNode = new SimpleOverlayNode {
                 Size = addon->AtkUnitBase.Size(),
             };
-            System.NativeController.AttachNode(overlayRootNode, addon->RootNode, NodePosition.AsFirstChild);
+            overlayRootNode.AttachNode((AtkUnitBase*)addon, NodePosition.AsFirstChild);
 
             var screenSize = new Vector2(AtkStage.Instance()->ScreenSize.Width, AtkStage.Instance()->ScreenSize.Height);
 
@@ -114,7 +112,7 @@ public unsafe class CurrencyOverlay : GameModification {
                 var newCurrencyNode = BuildCurrencyNode(setting, screenSize);
 
                 currencyNodes.Add(newCurrencyNode);
-                System.NativeController.AttachNode(newCurrencyNode, overlayRootNode);
+                newCurrencyNode.AttachNode((AtkUnitBase*)addon);
             }
         };
 
@@ -127,7 +125,7 @@ public unsafe class CurrencyOverlay : GameModification {
                 var newCurrencyNode = BuildCurrencyNode(toAdd, screenSize);
 
                 currencyNodes.Add(newCurrencyNode);
-                System.NativeController.AttachNode(newCurrencyNode, overlayRootNode);
+                newCurrencyNode.AttachNode(overlayRootNode);
             }
             addedCurrencySettings.Clear();
 
@@ -135,7 +133,6 @@ public unsafe class CurrencyOverlay : GameModification {
                 var node = currencyNodes.FirstOrDefault(node => node.Currency == toRemove);
                 if (node is not null) {
                     currencyNodes.Remove(node);
-                    System.NativeController.DetachNode(node);
                     node.Dispose();
                 }
             }
@@ -147,10 +144,10 @@ public unsafe class CurrencyOverlay : GameModification {
         };
 
         overlayAddonController.OnDetach += _ => {
-            System.NativeController.DisposeNode(ref overlayRootNode);
+            overlayRootNode?.Dispose();
+            overlayRootNode = null;
 
             foreach (var currencyNode in currencyNodes) {
-                System.NativeController.DetachNode(currencyNode);
                 currencyNode.Dispose();
             }
             

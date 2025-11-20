@@ -31,7 +31,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
             RightOffset = 1,
             IsVisible = false,
         };
-        System.NativeController.AttachNode(hoveredBackgroundNode, this);
+        hoveredBackgroundNode.AttachNode(this);
         
         selectedBackgroundNode = new SimpleNineGridNode {
             TexturePath = "ui/uld/ListItemA.tex",
@@ -43,33 +43,33 @@ public class GameModificationOptionNode : SimpleComponentNode {
             RightOffset = 1,
             IsVisible = false,
         };
-        System.NativeController.AttachNode(selectedBackgroundNode, this);
+        selectedBackgroundNode.AttachNode(this);
         
         checkboxNode = new CheckboxNode {
             OnClick = ToggleModification,
         };
-        System.NativeController.AttachNode(checkboxNode, this);
+        checkboxNode.AttachNode(this);
 
         erroringImageNode = new IconImageNode {
             IconId = 61502,
             FitTexture = true,
             Tooltip = "Failed to load, this module has been disabled",
         };
-        System.NativeController.AttachNode(erroringImageNode, this);
+        erroringImageNode.AttachNode(this);
 
         modificationNameNode = new TextNode {
             TextFlags = TextFlags.AutoAdjustNodeSize | TextFlags.Ellipsis,
             AlignmentType = AlignmentType.BottomLeft,
             TextColor = ColorHelper.GetColor(1),
         };
-        System.NativeController.AttachNode(modificationNameNode, this);
+        modificationNameNode.AttachNode(this);
 
         experimentalImageNode = new IconImageNode {
             IconId = 60073,
             FitTexture = true,
             Tooltip = "Caution, this feature is experimental.\nMay contain bugs or crash your game.",
         };
-        System.NativeController.AttachNode(experimentalImageNode, this);
+        experimentalImageNode.AttachNode(this);
         
         authorNamesNode = new TextNode {
             FontType = FontType.Axis,
@@ -77,7 +77,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
             AlignmentType = AlignmentType.TopLeft,
             TextColor = ColorHelper.GetColor(3),
         };
-        System.NativeController.AttachNode(authorNamesNode, this);
+        authorNamesNode.AttachNode(this);
 
         reloadButtonNode = new CircleButtonNode {
             Icon = ButtonIcon.Refresh,
@@ -87,7 +87,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
                 reloadButtonNode?.HideTooltip();
             },
         };
-        System.NativeController.AttachNode(reloadButtonNode, this);
+        reloadButtonNode.AttachNode(this);
         
         configButtonNode = new CircleButtonNode {
             Icon = ButtonIcon.GearCog,
@@ -97,7 +97,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
                 OnClick?.Invoke();
             },
         };
-        System.NativeController.AttachNode(configButtonNode, this);
+        configButtonNode.AttachNode(this);
 
         CollisionNode.DrawFlags = DrawFlags.ClickableCursor;
         

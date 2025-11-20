@@ -8,7 +8,6 @@ namespace VanillaPlus.NativeElements.Addons.SearchAddons;
 
 public static class TerritorySearchAddon {
     public static LuminaSearchAddon<TerritoryType> GetAddon() => new () {
-        NativeController = System.NativeController,
         Size = new Vector2(350.0f, 600.0f),
         InternalName = "TerritorySearch",
         Title = "Zone Search",

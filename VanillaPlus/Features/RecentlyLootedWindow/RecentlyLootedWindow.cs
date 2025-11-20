@@ -37,7 +37,6 @@ public unsafe class RecentlyLootedWindow : GameModification {
         items = [];
 
         addonRecentlyLooted = new NodeListAddon {
-            NativeController = System.NativeController,
             Size = new Vector2(250.0f, 350.0f),
             InternalName = "RecentlyLooted",
             Title = "Recently Looted Items",

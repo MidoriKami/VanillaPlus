@@ -26,7 +26,6 @@ public class ClearSelectedDuties : GameModification {
     public override void OnEnable() {
         config = ClearSelectedDutiesConfig.Load();
         configWindow = new ConfigAddon {
-            NativeController = System.NativeController,
             Size = new Vector2(300.0f, 135.0f),
             InternalName = "ClearSelectedConfig",
             Title = "Clear Selected Duties Config",

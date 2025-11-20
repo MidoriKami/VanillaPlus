@@ -13,14 +13,14 @@ public class IconWithCountNode : ResNode {
         iconNode = new IconImageNode {
             FitTexture = true,
         };
-        System.NativeController.AttachNode(iconNode, this);
+        iconNode.AttachNode(this);
 
         countTextNode = new TextNode {
             AlignmentType = AlignmentType.Right,
             TextFlags = TextFlags.Edge,
             FontSize = 12,
         };
-        System.NativeController.AttachNode(countTextNode, this);
+        countTextNode.AttachNode(this);
     }
 
     protected override void OnSizeChanged() {

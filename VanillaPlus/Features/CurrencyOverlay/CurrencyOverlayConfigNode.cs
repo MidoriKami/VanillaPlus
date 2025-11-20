@@ -31,13 +31,13 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
             FitTexture = true,
             Alpha = 0.1f,
         };
-        System.NativeController.AttachNode(iconImageNode, this);
+        iconImageNode.AttachNode(this);
 
         itemNameTextNode = new TextNode {
             AlignmentType = AlignmentType.Center,
             FontSize = 18,
         };
-        System.NativeController.AttachNode(itemNameTextNode, this);
+        itemNameTextNode.AttachNode(this);
 
         enableLowLimitCheckbox = new CheckboxNode {
             String = "Warn when below limit",
@@ -48,7 +48,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 }
             },
         };
-        System.NativeController.AttachNode(enableLowLimitCheckbox, this);
+        enableLowLimitCheckbox.AttachNode(this);
 
         lowLimitInputNode = new NumericInputNode {
             OnValueUpdate = newValue => {
@@ -58,7 +58,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 }
             },
         };
-        System.NativeController.AttachNode(lowLimitInputNode, this);
+        lowLimitInputNode.AttachNode(this);
         
         enableHighLimitCheckbox = new CheckboxNode {
             String = "Warn when above limit",
@@ -69,7 +69,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 }
             },
         };
-        System.NativeController.AttachNode(enableHighLimitCheckbox, this);
+        enableHighLimitCheckbox.AttachNode(this);
         
         highLimitInputNode = new NumericInputNode {
             OnValueUpdate = newValue => {
@@ -79,7 +79,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 }
             },
         };
-        System.NativeController.AttachNode(highLimitInputNode, this);
+        highLimitInputNode.AttachNode(this);
         
         reverseIconCheckbox = new CheckboxNode {
             String = "Reverse icon position",
@@ -90,7 +90,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 }
             },
         };
-        System.NativeController.AttachNode(reverseIconCheckbox, this);
+        reverseIconCheckbox.AttachNode(this);
         
         reverseTextCheckbox = new CheckboxNode {
             String = "Reverse text position",
@@ -101,7 +101,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 }
             },
         };
-        System.NativeController.AttachNode(reverseTextCheckbox, this);
+        reverseTextCheckbox.AttachNode(this);
         
         allowMovingCheckbox = new CheckboxNode {
             String = "Enable moving overlay element",
@@ -112,12 +112,12 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 }
             },
         };
-        System.NativeController.AttachNode(allowMovingCheckbox, this);
+        allowMovingCheckbox.AttachNode(this);
 
         scaleTextNode = new CategoryTextNode {
             String = "Scale",
         };
-        System.NativeController.AttachNode(scaleTextNode, this);
+        scaleTextNode.AttachNode(this);
         
         scaleSliderNode = new SliderNode {
             Range = 50..300,
@@ -129,7 +129,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 }
             },
         };
-        System.NativeController.AttachNode(scaleSliderNode, this);
+        scaleSliderNode.AttachNode(this);
     }
 
     protected override void OptionChanged(CurrencySetting? option) {

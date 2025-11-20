@@ -80,7 +80,7 @@ public unsafe class SearchableNodeListAddon : NodeListAddon {
             ContentHeight = 1000.0f,
         };
         
-        AttachNode(mainContainerNode);
+        mainContainerNode.AttachNode(this);
         mainContainerNode.AddNode(searchContainerNode);
         searchContainerNode.AddNode(textInputNode);
         mainContainerNode.AddNode(widgetsContainerNode);

@@ -16,7 +16,7 @@ public unsafe class CurrencyNode : SimpleComponentNode {
         iconImageNode = new IconImageNode {
             FitTexture = true,
         };
-        System.NativeController.AttachNode(iconImageNode, this);
+        iconImageNode.AttachNode(this);
 
         countNode = new CounterNode {
             NumberWidth = 10,
@@ -26,7 +26,7 @@ public unsafe class CurrencyNode : SimpleComponentNode {
             CounterWidth = 104.0f,
             Font = CounterFont.MoneyFont,
         };
-        System.NativeController.AttachNode(countNode, this);
+        countNode.AttachNode(this);
 
         BuildTimelines();
     }

@@ -34,7 +34,6 @@ public unsafe class WindowBackground : GameModification {
 
     public override void OnEnable() {
         addonSearchAddon = new SearchAddon<StringInfoNode> {
-            NativeController = System.NativeController,
             InternalName = "AddonSearch",
             Title = "Window Search",
             Size = new Vector2(350.0f, 600.0f),
@@ -45,7 +44,6 @@ public unsafe class WindowBackground : GameModification {
         config = WindowBackgroundConfig.Load();
 
         configWindow = new ListConfigAddon<WindowBackgroundSetting, WindowBackgroundConfigNode> {
-            NativeController = System.NativeController,
             InternalName = "WindowBackgroundConfig",
             Title = "Window Backgrounds Config",
             Size = new Vector2(600.0f, 500.0f),

@@ -48,7 +48,6 @@ public unsafe class ForcedCutsceneSounds : GameModification {
         
         config = ForcedCutsceneSoundsConfig.Load();
         configWindow = new ConfigAddon {
-            NativeController = System.NativeController,
             Size = new Vector2(330.0f, 385.0f),
             InternalName = "ForcedCutsceneConfig",
             Title = "Forced Cutscene Sounds Config",

@@ -28,7 +28,6 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         CollisionNode.IsVisible = false;
         
         colorPickerAddon = new ColorPickerAddon {
-            NativeController = System.NativeController,
             InternalName = "WindowBackgroundColor",
             Title = "Window Background Color Picker",
             DefaultColor = KnownColor.Black.Vector() with { W = 0.66f },
@@ -38,13 +37,13 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             AlignmentType = AlignmentType.Center,
             FontSize = 18,
         };
-        System.NativeController.AttachNode(windowNameTextNode, this);
+        windowNameTextNode.AttachNode(this);
         
         verticalListNode = new TabbedVerticalListNode {
             ItemVerticalSpacing = 20.0f,
         };
         verticalListNode.CollisionNode.IsVisible = false;
-        System.NativeController.AttachNode(verticalListNode, this);
+        verticalListNode.AttachNode(this);
 
         verticalListNode.AddNode(new CategoryTextNode {
             String = "Background Color",

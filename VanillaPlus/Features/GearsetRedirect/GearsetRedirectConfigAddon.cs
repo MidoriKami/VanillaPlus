@@ -27,7 +27,6 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
     private readonly SearchAddon<GearsetInfo> gearsetSearchAddon = GearsetSearchAddon.GetAddon();
 
     private readonly NewRedirectionAddon newRedirectionAddon = new() {
-        NativeController = System.NativeController,
         Size = new Vector2(500.0f, 275.0f),
         InternalName = "AddRedirectionWindow",
         Title = "Add New Gearset Redirection",
@@ -50,19 +49,19 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
             RemoveEntry = OnRemoveEntry,
             OnOptionChanged = OnOptionChanged,
         };
-        AttachNode(gearsetListNode);
+        gearsetListNode.AttachNode(this);
 
         lineNode = new VerticalLineNode {
             Size = new Vector2(4.0f, ContentSize.Y),
             Position = new Vector2(gearsetListNode.X + gearsetListNode.Width + 8.0f, ContentStartPosition.Y),
         };
-        AttachNode(lineNode);
+        lineNode.AttachNode(this);
 
         optionsContainerNode = new SimpleComponentNode {
             Position = new Vector2(lineNode.X + lineNode.Width, ContentStartPosition.Y),
             Size = new Vector2(ContentSize.X - lineNode.X - lineNode.Width, ContentSize.Y),
         };
-        AttachNode(optionsContainerNode);
+        gearsetListNode.AttachNode(this);
 
         var backgroundImageSize = optionsContainerNode.Size * 3.0f / 4.0f;
         var minSize = MathF.Min(backgroundImageSize.X, backgroundImageSize.Y);
@@ -76,7 +75,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
             FitTexture = true,
             Alpha = 0.1f,
         };
-        AttachNode(jobImageNode, optionsContainerNode);
+        jobImageNode.AttachNode(optionsContainerNode);
 
         gearsetLabelNode = new TextNode {
             Size = new Vector2(optionsContainerNode.Width, 28.0f),
@@ -88,7 +87,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
             TextOutlineColor = ColorHelper.GetColor(7),
             AlignmentType = AlignmentType.Center,
         };
-        AttachNode(gearsetLabelNode, optionsContainerNode);
+        gearsetLabelNode.AttachNode(optionsContainerNode);
 
         redirectListNode = new ModifyListNode<RedirectInfo> {
             Position = new Vector2(0.0f, gearsetLabelNode.Y + gearsetLabelNode.Height + 10.0f),
@@ -115,7 +114,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
                 Config.Save();
             },
         };
-        AttachNode(redirectListNode, optionsContainerNode);
+        redirectListNode.AttachNode(optionsContainerNode);
     }
 
     private void OnOptionChanged(GearsetInfo? obj) {

@@ -13,7 +13,6 @@ public class ColorConfig : BaseConfigEntry {
     public Vector4? DefaultColor { get; init; }
 
     private readonly ColorPickerAddon colorPickerInstance = new() {
-        NativeController = System.NativeController,
         InternalName = "ColorPicker",
         Title = "Color Picker Window",
     };

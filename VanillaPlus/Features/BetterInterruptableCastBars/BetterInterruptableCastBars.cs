@@ -56,11 +56,12 @@ public unsafe class BetterInterruptableCastBars : GameModification {
             };
 
             LoadAssets(targetInfoCastbarPulseNode);
-            System.NativeController.AttachNode(targetInfoCastbarPulseNode, (AtkResNode*)existingPulseNode, NodePosition.BeforeTarget);
+            targetInfoCastbarPulseNode.AttachNode((AtkResNode*)existingPulseNode, NodePosition.BeforeTarget);
         };
         
         targetInfoCastbarController.OnDetach += addon => {
-            System.NativeController.DisposeNode(ref targetInfoCastbarPulseNode);
+            targetInfoCastbarPulseNode?.Dispose();
+            targetInfoCastbarPulseNode = null;
 
             var existingPulseNode = addon->GetImageNodeById(6);
             if (existingPulseNode is null) return;

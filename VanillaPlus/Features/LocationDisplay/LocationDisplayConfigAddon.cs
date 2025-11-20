@@ -41,13 +41,13 @@ public class LocationDisplayConfigAddon : NativeAddon {
                      "{3} - Sub-Area (Ex. Old Sharlayan Aetheryte Plaza)\n" +
                      "{4} - Housing Ward (Ex. Ward 14)",
         };
-        AttachNode(instructionTextNode);
+        instructionTextNode.AttachNode(this);
 
         infoBarEntryLayoutNode = new HorizontalListNode {
             Position = new Vector2(ContentStartPosition.X, instructionTextNode.Y + instructionTextNode.Height),
             Size = new Vector2(ContentSize.X, 30.0f),
         };
-        AttachNode(infoBarEntryLayoutNode);
+        infoBarEntryLayoutNode.AttachNode(this);
 
         entryLabelNode = new TextNode {
             Size = new Vector2(125.0f, 30.0f),
@@ -88,7 +88,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
             Position = new Vector2(ContentStartPosition.X, infoBarEntryLayoutNode.Y + infoBarEntryLayoutNode.Height),
             Size = new Vector2(ContentSize.X, 30.0f),
         };
-        AttachNode(infoBarTooltipLayoutNode);
+        infoBarTooltipLayoutNode.AttachNode(this);
 
         tooltipLabelNode = new TextNode {
             Size = new Vector2(125.0f, 30.0f),
@@ -135,7 +135,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
                 Config.Save();
             },
         };
-        AttachNode(showInstanceNumberNode);
+        showInstanceNumberNode.AttachNode(this);
 
         showPreciseHousingLocationNode = new CheckboxNode {
             Size = new Vector2(ContentSize.X, 24.0f),
@@ -147,7 +147,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
                 Config.Save();
             },
         };
-        AttachNode(showPreciseHousingLocationNode);
+        showPreciseHousingLocationNode.AttachNode(this);
     }
 
     private static bool BracesMismatched(string formatString)

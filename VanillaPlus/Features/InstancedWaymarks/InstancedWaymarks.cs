@@ -43,7 +43,6 @@ public unsafe class InstancedWaymarks : GameModification {
         config = InstancedWaymarksConfig.Load();
         
         renameWindow ??= new RenameAddon {
-            NativeController = System.NativeController,
             Size = new Vector2(250.0f, 150.0f),
             InternalName = "WaymarkRename",
             Title = "Waymark Rename Window",

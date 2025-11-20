@@ -60,7 +60,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
             Position = buttonCoordinate - new Vector2(25.0f, 30.0f),
             Size = newNodeSize,
         };
-        System.NativeController.AttachNode(animationContainer, addon->RootNode);
+        animationContainer.AttachNode((AtkUnitBase*)addon);
         
         warningTextNode = new TextNode {
             Size = newNodeSize,
@@ -71,7 +71,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
             TooltipString = "[VanillaPlus]: Click to disable lock",
             DrawFlags = DrawFlags.ClickableCursor,
         };
-        System.NativeController.AttachNode(warningTextNode, animationContainer);
+        warningTextNode.AttachNode(animationContainer);
         
         animationContainer.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 30)
@@ -110,8 +110,11 @@ public unsafe class MissingJobStoneLockout : GameModification {
     }
 
     private void DetachNodes(AddonContentsFinder* addon) {
-        System.NativeController.DisposeNode(ref warningTextNode);
-        System.NativeController.DisposeNode(ref animationContainer);
+        warningTextNode?.Dispose();
+        warningTextNode = null;
+        
+        animationContainer?.Dispose();
+        animationContainer = null;
     }
 
     private static bool HasJobStoneEquipped()

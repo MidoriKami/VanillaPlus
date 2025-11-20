@@ -32,7 +32,6 @@ public unsafe class HideUnwantedBanners : GameModification {
         config = HideUnwantedBannersConfig.Load();
 
         configWindow = new NodeListAddon {
-            NativeController = System.NativeController,
             InternalName = "BannersConfig",
             Title = "Hide Unwanted Banners Config",
             Size = new Vector2(500.0f, 600.0f),

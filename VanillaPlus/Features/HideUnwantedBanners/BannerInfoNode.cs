@@ -14,10 +14,10 @@ public class BannerInfoNode : SimpleComponentNode {
 
     public BannerInfoNode() {
         checkboxNode = new CheckboxNode();
-        System.NativeController.AttachNode(checkboxNode, this);
+        checkboxNode.AttachNode(this);
 
         imageContainerNode = new SimpleComponentNode();
-        System.NativeController.AttachNode(imageContainerNode, this);
+        imageContainerNode.AttachNode(this);
 
         iconImageNode = new IconImageNode {
             FitTexture = true,
@@ -28,8 +28,7 @@ public class BannerInfoNode : SimpleComponentNode {
             checkboxNode.IsChecked = !checkboxNode.IsChecked;
             OnChecked?.Invoke(checkboxNode.IsChecked);
         });
-        
-        System.NativeController.AttachNode(iconImageNode, imageContainerNode);
+        iconImageNode.AttachNode(imageContainerNode);
     }
 
     protected override void OnSizeChanged() {

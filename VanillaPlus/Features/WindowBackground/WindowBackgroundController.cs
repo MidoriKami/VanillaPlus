@@ -40,7 +40,7 @@ public unsafe class WindowBackgroundController : IDisposable {
                 Size = viewportSize,
             };
             
-            System.NativeController.AttachNode(nameplateOverlayNode, addon->RootNode, NodePosition.AsFirstChild);
+            nameplateOverlayNode.AttachNode((AtkUnitBase*)addon, NodePosition.AsFirstChild);
             namePlateAddonReady = true;
 
             foreach (var (_, controller) in addonControllers) {
@@ -54,8 +54,10 @@ public unsafe class WindowBackgroundController : IDisposable {
             foreach (var (_, controller) in addonControllers) {
                 controller.Disable();
             }
-            
-            System.NativeController.DisposeNode(ref nameplateOverlayNode);
+
+            nameplateOverlayNode?.Dispose();
+            nameplateOverlayNode = null;
+
             namePlateAddonReady = false;
         };
         
@@ -134,7 +136,7 @@ public unsafe class WindowBackgroundController : IDisposable {
                             IsVisible = false,
                         };
 
-                        System.NativeController.AttachNode(newBackgroundNode, node, NodePosition.BeforeTarget);
+                        newBackgroundNode.AttachNode(node, NodePosition.BeforeTarget);
                         backgroundImageNodes.Add(addon->NameString, newBackgroundNode);
                         return;
                     }
@@ -155,7 +157,7 @@ public unsafe class WindowBackgroundController : IDisposable {
                     IsVisible = false,
                 };
 
-                System.NativeController.AttachNode(newBackgroundNode, nameplateOverlayNode);
+                newBackgroundNode.AttachNode(nameplateOverlayNode);
                 overlayImageNodes.Add(addon->NameString, newBackgroundNode);
             }
         }
@@ -167,14 +169,12 @@ public unsafe class WindowBackgroundController : IDisposable {
         
         if (addon->WindowNode is not null) {
             if (backgroundImageNodes.TryGetValue(addon->NameString, out var node)) {
-                System.NativeController.DetachNode(node);
                 node.Dispose();
                 backgroundImageNodes.Remove(addon->NameString);
             }
         }
         else {
             if (overlayImageNodes.TryGetValue(addon->NameString, out var node)) {
-                System.NativeController.DetachNode(node);
                 node.Dispose();
                 overlayImageNodes.Remove(addon->NameString);
             }

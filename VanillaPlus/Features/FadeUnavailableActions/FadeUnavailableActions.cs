@@ -39,7 +39,6 @@ public unsafe class FadeUnavailableActions : GameModification {
 
         config = FadeUnavailableActionsConfig.Load();
         configWindow = new ConfigAddon {
-            NativeController = System.NativeController,
             Size = new Vector2(400.0f, 250.0f),
             InternalName = "FadeUnavailableConfig",
             Title = "Fade Unavailable Actions Config",

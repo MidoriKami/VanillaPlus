@@ -43,7 +43,7 @@ public unsafe class HUDCoordinates : GameModification {
                 };
                 
                 textNodes.Add(newTextNode);
-                System.NativeController.AttachNode(newTextNode, (AtkComponentNode*)node.Value);
+                newTextNode.AttachNode(node);
             }
         };
 
@@ -66,7 +66,6 @@ public unsafe class HUDCoordinates : GameModification {
 
         hudLayoutScreenController.OnDetach += _ => {
             foreach (var node in textNodes) {
-                System.NativeController.DetachNode(node);
                 node.Dispose();
             }
             

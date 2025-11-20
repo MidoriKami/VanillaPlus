@@ -47,7 +47,7 @@ public unsafe class MacroLineNumbers : GameModification {
                     FontSize = 12,
                     AlignmentType = AlignmentType.TopRight,
                 };
-                System.NativeController.AttachNode(newTextNode, addon->RootNode);
+                newTextNode.AttachNode(addon);
                 textNodes.Add(newTextNode);
             }
         };
@@ -59,7 +59,6 @@ public unsafe class MacroLineNumbers : GameModification {
             RepositionNode(textInputNode, -sizeOffset);
             
             foreach (var node in textNodes) {
-                System.NativeController.DetachNode(node);
                 node.Dispose();
             }
 

@@ -22,7 +22,6 @@ public unsafe class FateEntryNode : SimpleComponentNode {
     
     public FateEntryNode() {
         hoveredBackgroundNode = new SimpleNineGridNode {
-            NodeId = 2,
             TexturePath = "ui/uld/ListItemA.tex",
             TextureCoordinates = new Vector2(0.0f, 22.0f),
             TextureSize = new Vector2(64.0f, 22.0f),
@@ -32,43 +31,36 @@ public unsafe class FateEntryNode : SimpleComponentNode {
             RightOffset = 1,
             IsVisible = false,
         };
-        System.NativeController.AttachNode(hoveredBackgroundNode, this);
+        hoveredBackgroundNode.AttachNode(this);
 
         iconNode = new IconImageNode {
-            NodeId = 3,
             FitTexture = true,
         };
-        System.NativeController.AttachNode(iconNode, this);
+        iconNode.AttachNode(this);
 
         nameNode = new TextNode {
-            NodeId = 4,
             AlignmentType = AlignmentType.BottomLeft,
             TextFlags = TextFlags.Ellipsis,
         };
-        System.NativeController.AttachNode(nameNode, this);
+        nameNode.AttachNode(this);
 
         timeRemainingNode = new TextNode {
-            NodeId = 5,
             AlignmentType = AlignmentType.BottomRight,
         };
-        System.NativeController.AttachNode(timeRemainingNode, this);
+        timeRemainingNode.AttachNode(this);
 
         levelNode = new TextNode {
-            NodeId = 6,
             AlignmentType = AlignmentType.Left,
         };
-        System.NativeController.AttachNode(levelNode, this);
+        levelNode.AttachNode(this);
 
-        progressNode = new ProgressBarNode {
-            NodeId = 7,
-        };
-        System.NativeController.AttachNode(progressNode, this);
+        progressNode = new ProgressBarNode();
+        progressNode.AttachNode(this);
 
         progressTextNode = new TextNode {
-            NodeId = 8,
             AlignmentType = AlignmentType.Left,
         };
-        System.NativeController.AttachNode(progressTextNode, this);
+        progressTextNode.AttachNode(this);
 
         CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
         CollisionNode.AddEvent(AtkEventType.MouseOver, () => IsHovered = true);

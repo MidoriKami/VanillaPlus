@@ -55,7 +55,7 @@ public class NewRedirectionAddon : NativeAddon {
             FontSize = 24,
             String = "Gearset",
         };
-        AttachNode(gearsetLabelNode);
+        gearsetLabelNode.AttachNode(this);
 
         gearsetInfoNode = new SearchInfoNode<GearsetInfo> {
             Size = new Vector2(halfWidth, 64.0f),
@@ -64,7 +64,7 @@ public class NewRedirectionAddon : NativeAddon {
                 GearsetId = -1,
             },
         };
-        AttachNode(gearsetInfoNode);
+        gearsetInfoNode.AttachNode(this);
 
         selectGearsetButtonNode = new TextButtonNode {
             Size = new Vector2(halfWidth * 2.0f / 3.0f, 32.0f),
@@ -72,19 +72,19 @@ public class NewRedirectionAddon : NativeAddon {
             String = "Select Gearset",
             OnClick = OnSelectGearset,
         };
-        AttachNode(selectGearsetButtonNode);
+        selectGearsetButtonNode.AttachNode(this);
 
         verticalLineNode = new VerticalLineNode {
             Size = new Vector2(8.0f, ContentSize.Y - 36.0f),
             Position = new Vector2(gearsetLabelNode.X + gearsetLabelNode.Width + 12.0f, ContentStartPosition.Y),
         };
-        AttachNode(verticalLineNode);
+        verticalLineNode.AttachNode(this);
 
         horizontalLineNode = new HorizontalLineNode {
             Size = new Vector2(ContentSize.X, 8.0f),
             Position = ContentStartPosition + new Vector2(0.0f, ContentSize.Y - 32.0f - 5.0f),
         };
-        AttachNode(horizontalLineNode);
+        horizontalLineNode.AttachNode(this);
 
         zoneLabelNode = new TextNode {
             Size = new Vector2(halfWidth, 32.0f),
@@ -93,7 +93,7 @@ public class NewRedirectionAddon : NativeAddon {
             AlignmentType = AlignmentType.Center,
             String = "Zone",
         };
-        AttachNode(zoneLabelNode);
+        zoneLabelNode.AttachNode(this);
 
         zoneInfoNode = new LuminaSearchInfoNode<TerritoryType> {
             Size = new Vector2(halfWidth, 64.0f),
@@ -104,7 +104,7 @@ public class NewRedirectionAddon : NativeAddon {
             GetTexturePathFunc = territory => territory.LoadingImage.Value.FileName.ToString().IsNullOrEmpty() ? string.Empty : $"ui/loadingimage/{territory.LoadingImage.Value.FileName}_hr1.tex",
             Option = Services.DataManager.GetExcelSheet<TerritoryType>().First(),
         };
-        AttachNode(zoneInfoNode);
+        zoneInfoNode.AttachNode(this);
 
         selectZoneButtonNode = new TextButtonNode {
             Size = new Vector2(halfWidth * 2.0f / 3.0f, 32.0f),
@@ -112,7 +112,7 @@ public class NewRedirectionAddon : NativeAddon {
             String = "Select Zone",
             OnClick = OnSelectZone,
         };
-        AttachNode(selectZoneButtonNode);
+        selectZoneButtonNode.AttachNode(this);
 
         confirmButtonNode = new TextButtonNode {
             Size = new Vector2(100.0f, 24.0f),
@@ -120,7 +120,7 @@ public class NewRedirectionAddon : NativeAddon {
             String = "Confirm",
             OnClick = OnConfirm,
         };
-        AttachNode(confirmButtonNode);
+        confirmButtonNode.AttachNode(this);
 
         cancelButtonNode = new TextButtonNode {
             Size = new Vector2(100.0f, 24.0f),
@@ -128,8 +128,7 @@ public class NewRedirectionAddon : NativeAddon {
             String = "Cancel",
             OnClick = OnCancel,
         };
-        AttachNode(cancelButtonNode);
-
+        cancelButtonNode.AttachNode(this);
     }
 
     private void OnCancel() {

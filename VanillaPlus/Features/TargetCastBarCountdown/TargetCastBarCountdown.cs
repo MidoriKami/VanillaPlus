@@ -48,7 +48,6 @@ public unsafe class TargetCastBarCountdown : GameModification {
     public override void OnEnable() {
         config = TargetCastBarCountdownConfig.Load();
         configWindow = new ConfigAddon {
-            NativeController = System.NativeController,
             InternalName = "TargetCastBarConfig",
             Title = "Target Castbar Countdown Config",
             Config = config,
@@ -119,8 +118,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
                 primaryTargetTextNode.Load(PrimaryTargetStylePath);
                 ForceConfigValues(primaryTargetTextNode, PrimaryTargetStylePath);
-
-                System.NativeController.AttachNode(primaryTargetTextNode, addon->GetNodeById(7), NodePosition.AsLastChild);
+                primaryTargetTextNode.AttachNode(addon->GetNodeById(7));
                 break;
 
             case "_TargetInfo":
@@ -129,7 +127,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
                 primaryTargetAltTextNode.Load(PrimaryTargetAltStylePath);
                 ForceConfigValues(primaryTargetAltTextNode, PrimaryTargetAltStylePath);
 
-                System.NativeController.AttachNode(primaryTargetAltTextNode, addon->GetNodeById(15), NodePosition.AsLastChild);
+                primaryTargetAltTextNode.AttachNode(addon->GetNodeById(15));
                 break;
 
             case "_FocusTargetInfo":
@@ -138,7 +136,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
                 focusTargetTextNode.Load(FocusTargetStylePath);
                 ForceConfigValues(focusTargetTextNode, FocusTargetStylePath);
 
-                System.NativeController.AttachNode(focusTargetTextNode, addon->GetNodeById(8), NodePosition.AsLastChild);
+                focusTargetTextNode.AttachNode(addon->GetNodeById(8));
                 break;
 
             case "CastBarEnemy":
@@ -159,7 +157,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
                     ForceConfigValues(castBarEnemyTextNode[index]!, CastBarEnemyStylePath);
 
                     var castBarNode = (AtkComponentNode*)info.CastBarNode;
-                    System.NativeController.AttachNode(newNode, castBarNode->SearchNodeById<AtkResNode>(7));
+                    newNode.AttachNode(castBarNode->SearchNodeById<AtkResNode>(7));
                 }
                 break;
         }
@@ -168,23 +166,22 @@ public unsafe class TargetCastBarCountdown : GameModification {
     private void DetachNode(AtkUnitBase* addon) {
         switch (addon->NameString) {
             case "_TargetInfoCastBar":
-                System.NativeController.DisposeNode(ref primaryTargetTextNode);
+                primaryTargetTextNode?.Dispose();
                 primaryTargetTextNode = null;
                 break;
             
             case "_TargetInfo":
-                System.NativeController.DisposeNode(ref primaryTargetAltTextNode);
+                primaryTargetAltTextNode?.Dispose();
                 primaryTargetAltTextNode = null;
                 break;
             
             case "_FocusTargetInfo":
-                System.NativeController.DisposeNode(ref focusTargetTextNode);
+                focusTargetTextNode?.Dispose();
                 focusTargetTextNode = null;
                 break;
             
             case "CastBarEnemy":
                 foreach (var node in castBarEnemyTextNode ?? []) {
-                    System.NativeController.DetachNode(node);
                     node?.Dispose();
                 }
                 castBarEnemyTextNode = null;

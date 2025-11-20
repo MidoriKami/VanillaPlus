@@ -38,7 +38,6 @@ public unsafe class PartyFinderPresets : GameModification {
 
     public override void OnEnable() {
         presetEditorAddon = new ListConfigAddon<PresetInfo, PartyFinderPresetConfigNode> {
-            NativeController = System.NativeController,
             Size = new Vector2(600.0f, 400.0f),
             InternalName = "PresetConfigManager",
             Title = "Preset Config Manager",
@@ -53,7 +52,6 @@ public unsafe class PartyFinderPresets : GameModification {
         };
 
         savePresetWindow = new RenameAddon {
-            NativeController = System.NativeController,
             InternalName = "PartyFinderPresetRename",
             Title = "Party Finder Preset",
             IsInputValid = PresetManager.IsValidFileName,
@@ -77,11 +75,12 @@ public unsafe class PartyFinderPresets : GameModification {
                 Tooltip = "[VanillaPlus]: Save current settings to a preset",
                 OnClick = savePresetWindow.Open,
             };
-            System.NativeController.AttachNode(savePresetButton, addon->RootNode);
+            savePresetButton.AttachNode(addon);
         };
 
         recruitmentCriteriaController.OnDetach += _ => {
-            System.NativeController.DisposeNode(ref savePresetButton);
+            savePresetButton?.DetachNode();
+            savePresetButton = null;
         };
 
         recruitmentCriteriaController.Enable();
@@ -90,7 +89,8 @@ public unsafe class PartyFinderPresets : GameModification {
 
         lookingForGroupController.OnAttach += addon => {
             if (presetDropDown is not null) {
-                System.NativeController.DisposeNode(ref presetDropDown);
+                presetDropDown?.Dispose();
+                presetDropDown = null;
             }
 
             presetDropDown = new TextDropDownNode {
@@ -101,11 +101,12 @@ public unsafe class PartyFinderPresets : GameModification {
             };
             UpdateDropDownOptions();
 
-            System.NativeController.AttachNode(presetDropDown, addon->RootNode);
+            presetDropDown.AttachNode(addon);
         };
         
         lookingForGroupController.OnDetach += _ => {
-            System.NativeController.DetachNode(presetDropDown);
+            presetDropDown?.Dispose();
+            presetDropDown = null;
         };
         
         lookingForGroupController.Enable();
@@ -126,7 +127,7 @@ public unsafe class PartyFinderPresets : GameModification {
         presetEditorAddon?.Dispose();
         presetEditorAddon = null;
 
-        System.NativeController.DisposeNode(ref presetDropDown);
+        presetDropDown?.Dispose();
         presetDropDown = null;
     }
 

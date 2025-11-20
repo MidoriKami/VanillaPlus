@@ -52,7 +52,6 @@ public unsafe class LocationDisplay : GameModification {
         config = LocationDisplayConfig.Load();
 
         configWindow = new LocationDisplayConfigAddon {
-            NativeController = System.NativeController,
             InternalName = "LocationDisplayConfig",
             Title = "Location Display Config",
             Config = config,

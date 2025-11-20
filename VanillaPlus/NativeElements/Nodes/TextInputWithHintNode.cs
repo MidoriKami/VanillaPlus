@@ -14,7 +14,7 @@ public class TextInputWithHintNode : SimpleComponentNode {
         textInputNode = new TextInputNode {
             PlaceholderString = "Search . . .",
         };
-        System.NativeController.AttachNode(textInputNode, this);
+        textInputNode.AttachNode(this);
 
         helpNode = new SimpleImageNode {
             TexturePath = "ui/uld/CircleButtons.tex",
@@ -26,7 +26,7 @@ public class TextInputWithHintNode : SimpleComponentNode {
                 .Append("Start input with '$' to search by description")
                 .ToReadOnlySeString(),
         };
-        System.NativeController.AttachNode(helpNode, this);
+        helpNode.AttachNode(this);
     }
 
     public required Action<ReadOnlySeString>? OnInputReceived {

@@ -14,10 +14,9 @@ public sealed class VanillaPlus : IDalamudPlugin {
         pluginInterface.Create<Services>();
         System.SystemConfig = SystemConfiguration.Load();
 
-        System.NativeController = new NativeController(pluginInterface);
+        KamiToolKitLibrary.Initialize(pluginInterface);
 
         System.AddonModificationBrowser = new AddonModificationBrowser {
-            NativeController = System.NativeController,
             InternalName = "VanillaPlusConfig",
             Title = "Vanilla Plus Modification Browser",
             Size = new Vector2(836.0f, 650.0f),
@@ -62,7 +61,7 @@ public sealed class VanillaPlus : IDalamudPlugin {
 
         System.AddonModificationBrowser.Dispose();
 
-        System.NativeController.Dispose();
+        KamiToolKitLibrary.Dispose();
     }
 
     [Conditional("DEBUG")]

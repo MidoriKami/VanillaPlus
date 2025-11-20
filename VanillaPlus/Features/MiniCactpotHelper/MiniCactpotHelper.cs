@@ -46,7 +46,6 @@ public unsafe class MiniCactpotHelper : GameModification {
         config = MiniCactpotHelperConfig.Load();
 
         configWindow = new ConfigAddon {
-            NativeController = System.NativeController,
             InternalName = "MiniCactpotConfig",
             Title = "Mini Cactpot Helper Config",
             Config = config,
@@ -102,8 +101,7 @@ public unsafe class MiniCactpotHelper : GameModification {
 		gameGrid = new GameGrid(config) {
 			Size = new Vector2(542.0f, 320.0f),
 		};
-		
-        System.NativeController.AttachNode(gameGrid, buttonContainerNode);
+		gameGrid.AttachNode(buttonContainerNode);
 
 		configButton = new CircleButtonNode {
 			Position = new Vector2(8.0f, 8.0f),
@@ -112,8 +110,7 @@ public unsafe class MiniCactpotHelper : GameModification {
 			Tooltip = "Configure EzMiniCactpot Plugin",
 			OnClick = () => configWindow.Toggle(),
 		};
-		
-		System.NativeController.AttachNode(configButton, buttonContainerNode);
+		configButton.AttachNode(buttonContainerNode);
 	}
 	
 	private void UpdateNodes(AddonLotteryDaily* addon) {
@@ -159,7 +156,10 @@ public unsafe class MiniCactpotHelper : GameModification {
 	}
 	
 	private void DetachNodes(AddonLotteryDaily* addon) {
-        System.NativeController.DisposeNode(ref gameGrid);
-		System.NativeController.DisposeNode(ref configButton);
+        gameGrid?.Dispose();
+        gameGrid = null;
+
+        configButton?.Dispose();
+        configButton = null;
 	}
 }

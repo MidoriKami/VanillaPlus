@@ -40,13 +40,13 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             Position = ContentStartPosition + new Vector2(0.0f, 10.0f),
             String = "Input Desired Key Combo",
         };
-        AttachNode(inputComboLabelNode);
+        inputComboLabelNode.AttachNode(this);
 
         topLineNode = new HorizontalLineNode {
             Position = new Vector2(ContentStartPosition.X - 2.0f, inputComboLabelNode.Y + inputComboLabelNode.Height),
             Size = new Vector2(225.0f, 2.0f),
         };
-        AttachNode(topLineNode);
+        topLineNode.AttachNode(this);
 
         currentComboTextNode = new TextNode {
             Position = new Vector2(ContentStartPosition.X, topLineNode.Y + topLineNode.Height),
@@ -55,20 +55,20 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             AlignmentType = AlignmentType.Center,
             String = "Press a Key Combo",
         };
-        AttachNode(currentComboTextNode);
+        currentComboTextNode.AttachNode(this);
 
         conflictsLabelNode = new CategoryTextNode {
             AlignmentType = AlignmentType.Left,
             Position = new Vector2(ContentStartPosition.X, currentComboTextNode.Position.Y + currentComboTextNode.Height),
             String = "Keybind Conflict(s)",
         };
-        AttachNode(conflictsLabelNode);
+        conflictsLabelNode.AttachNode(this);
 
         conflictsLineNode = new HorizontalLineNode {
             Position = new Vector2(ContentStartPosition.X - 2.0f, conflictsLabelNode.Y + conflictsLabelNode.Height),
             Size = new Vector2(175.0f, 2.0f),
         };
-        AttachNode(conflictsLineNode);
+        conflictsLineNode.AttachNode(this);
 
         conflictsScrollableAreaNode = new ScrollingAreaNode<VerticalListNode> {
             Position = new Vector2(ContentStartPosition.X, conflictsLabelNode.Y + conflictsLabelNode.Height + 10.0f),
@@ -76,7 +76,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             ContentHeight = 75.0f,
             AutoHideScrollBar = true,
         };
-        AttachNode(conflictsScrollableAreaNode);
+        conflictsScrollableAreaNode.AttachNode(this);
         
         conflictsScrollableAreaNode.ContentNode.AddNode(new CategoryTextNode {
             String = "No Conflicts Detected",
@@ -87,7 +87,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             Position = new Vector2(ContentStartPosition.X - 2.0f, conflictsScrollableAreaNode.Y + conflictsScrollableAreaNode.Height),
             Size = new Vector2(ContentSize.X, 2.0f),
         };
-        AttachNode(buttonsLineNode);
+        buttonsLineNode.AttachNode(this);
 
         confirmButtonNode = new TextButtonNode {
             Position = ContentStartPosition + new Vector2(0.0f, ContentSize.Y - 26.0f),
@@ -102,7 +102,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
                 Close();
             },
         };
-        AttachNode(confirmButtonNode);
+        confirmButtonNode.AttachNode(this);
 
         cancelButtonNode = new TextButtonNode {
             Position = ContentStartPosition + new Vector2(ContentSize.X - 100.0f, ContentSize.Y - 26.0f),
@@ -110,7 +110,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             String = "Cancel",
             OnClick = Close,
         };
-        AttachNode(cancelButtonNode);
+        cancelButtonNode.AttachNode(this);
 
         System.KeyListener.OnKeyPressed += KeyPressed;
     }

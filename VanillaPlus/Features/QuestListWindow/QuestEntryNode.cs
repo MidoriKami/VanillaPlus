@@ -17,7 +17,6 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
 
     public QuestEntryNode() {
         hoveredBackgroundNode = new SimpleNineGridNode {
-            NodeId = 2,
             TexturePath = "ui/uld/ListItemA.tex",
             TextureCoordinates = new Vector2(0.0f, 22.0f),
             TextureSize = new Vector2(64.0f, 22.0f),
@@ -27,44 +26,39 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
             RightOffset = 1,
             IsVisible = false,
         };
-        System.NativeController.AttachNode(hoveredBackgroundNode, this);
+        hoveredBackgroundNode.AttachNode(this);
         
         questIconNode = new IconImageNode {
-            NodeId = 3,
             FitTexture = true,
         };
-        System.NativeController.AttachNode(questIconNode, this);
+        questIconNode.AttachNode(this);
 
         questNameTextNode = new TextNode {
-            NodeId = 4,
             AlignmentType = AlignmentType.BottomLeft,
             TextFlags = TextFlags.Ellipsis,
             FontSize = 13,
         };
-        System.NativeController.AttachNode(questNameTextNode, this);
+        questNameTextNode.AttachNode(this);
 
         issuerNameTextNode = new TextNode {
-            NodeId = 5,
             AlignmentType = AlignmentType.TopLeft,
             TextColor = ColorHelper.GetColor(2),
             TextFlags = TextFlags.Ellipsis,
             FontSize = 12,
         };
-        System.NativeController.AttachNode(issuerNameTextNode, this);
+        issuerNameTextNode.AttachNode(this);
         
         questLevelTextNode = new TextNode {
-            NodeId = 6,
             AlignmentType = AlignmentType.BottomLeft,
             FontSize = 13,
         };
-        System.NativeController.AttachNode(questLevelTextNode, this);
+        questLevelTextNode.AttachNode(this);
 
         distanceTextNode = new TextNode {
-            NodeId = 7,
             AlignmentType = AlignmentType.TopRight,
             TextColor = ColorHelper.GetColor(2),
         };
-        System.NativeController.AttachNode(distanceTextNode, this);
+        distanceTextNode.AttachNode(this);
 
         CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
         CollisionNode.AddEvent(AtkEventType.MouseOver, () => IsHovered = true);

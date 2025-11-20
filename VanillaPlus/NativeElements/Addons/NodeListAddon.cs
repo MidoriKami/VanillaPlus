@@ -31,7 +31,6 @@ public unsafe class NodeListAddon : NativeAddon {
         };
 
         addonConfigWindow = new AddonConfigAddon {
-            NativeController = System.NativeController,
             InternalName = $"{InternalName}Config",
             Title = $"{InternalName} Configuration Window",
             AddonConfig = config,
@@ -88,7 +87,7 @@ public unsafe class NodeListAddon : NativeAddon {
             ContentHeight = 100,
         };
         ScrollingAreaNode.ContentNode.FitContents = true;
-        AttachNode(ScrollingAreaNode);
+        ScrollingAreaNode.AttachNode(this);
         
         DoListUpdate(true);
     }

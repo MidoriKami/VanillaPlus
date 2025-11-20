@@ -28,7 +28,6 @@ public class FateListWindow : GameModification {
 
     public override void OnEnable() {
         addonFateList = new NodeListAddon {
-            NativeController = System.NativeController,
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "FateList",
             Title = "Fate List",

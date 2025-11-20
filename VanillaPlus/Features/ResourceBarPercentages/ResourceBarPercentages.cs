@@ -36,7 +36,6 @@ public unsafe class ResourceBarPercentages : GameModification {
         config.OnSave += OnConfigChanged;
         
         configWindow = new ConfigAddon {
-            NativeController = System.NativeController,
             Size = new Vector2(400.0f, 300.0f),
             InternalName = "ResourcePercentageConfig",
             Title = "Resource Bar Percentages Config",

@@ -9,7 +9,6 @@ namespace VanillaPlus.NativeElements.Addons.SearchAddons;
 
 public static unsafe class GearsetSearchAddon {
     public static SearchAddon<GearsetInfo> GetAddon() => new() {
-        NativeController = System.NativeController,
         Size = new Vector2(275.0f, 600.0f),
         InternalName = "GearsetSearch",
         Title = "Gearset Search",

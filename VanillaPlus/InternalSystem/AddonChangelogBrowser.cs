@@ -23,7 +23,7 @@ public class AddonChangelogBrowser : NativeAddon {
             ScrollSpeed = 100,
             AutoHideScrollBar = true,
         };
-        AttachNode(scrollingAreaNode);
+        scrollingAreaNode.AttachNode(this);
 
         if (Modification is not null) {
             categoryNodes.Clear();

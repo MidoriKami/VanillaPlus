@@ -43,7 +43,6 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         cursorEventListener = null;
 
         foreach (var (_, node) in windowInteractionNodes ?? []) {
-            System.NativeController.DetachNode(node);
             node.Dispose();
         }
         
@@ -82,7 +81,7 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
 
                     newInteractionNode.AddEvent(AtkEventType.MouseDown, OnWindowMouseDown);
 
-                    System.NativeController.AttachNode(newInteractionNode, node, NodePosition.BeforeTarget);
+                    newInteractionNode.AttachNode(node, NodePosition.BeforeTarget);
                     windowInteractionNodes?.Add(args.AddonName, newInteractionNode);
                     return;
                 }
@@ -101,7 +100,6 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
                 isDragging = false;
             }
 
-            System.NativeController.DetachNode(node);
             node.Dispose();
             windowInteractionNodes?.Remove(args.AddonName);
         }

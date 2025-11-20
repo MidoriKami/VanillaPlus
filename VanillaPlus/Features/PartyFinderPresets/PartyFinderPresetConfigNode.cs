@@ -14,12 +14,12 @@ public class PartyFinderPresetConfigNode : ConfigNode<PresetInfo> {
         renameCategoryNode = new CategoryTextNode {
             String = "Input new name",
         };
-        System.NativeController.AttachNode(renameCategoryNode, this);
+        renameCategoryNode.AttachNode(this);
 
         renameInputNode = new TextInputNode {
             OnInputReceived = input => renameInputNode!.IsError = !PresetManager.IsValidFileName(input.ToString()),
         };
-        System.NativeController.AttachNode(renameInputNode, this);
+        renameInputNode.AttachNode(this);
 
         confirmButtonNode = new TextButtonNode {
             String = "Apply",
@@ -33,7 +33,7 @@ public class PartyFinderPresetConfigNode : ConfigNode<PresetInfo> {
                 }
             },
         };
-        System.NativeController.AttachNode(confirmButtonNode, this);
+        confirmButtonNode.AttachNode(this);
     }
 
     protected override void OnSizeChanged() {

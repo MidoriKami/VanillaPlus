@@ -29,7 +29,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
                 OnInputReceived = searchString => PerformSearch(addon, searchString.ToString()),
             };
 
-            System.NativeController.AttachNode(newInputNode, addon->WindowNode);
+            newInputNode.AttachNode(addon);
             inputTextNodes.TryAdd(addon->NameString, newInputNode);
         };
 
@@ -48,7 +48,6 @@ public unsafe class InventorySearchAddonController : IDisposable {
 
         inventoryController.OnDetach += addon => {
             if (inputTextNodes.TryGetValue(addon->NameString, out var node)) {
-                System.NativeController.DetachNode(node);
                 node.Dispose();
                 inputTextNodes.Remove(addon->NameString);
             }

@@ -26,7 +26,6 @@ public unsafe class SuppressDialogueAdvance : GameModification {
         config = SuppressDialogAdvanceConfig.Load();
 
         configWindow = new ConfigAddon {
-            NativeController = System.NativeController,
             InternalName = "SuppressDialogAdvanceConfig",
             Title = "Suppress Dialog Advance Config",
             Config = config,

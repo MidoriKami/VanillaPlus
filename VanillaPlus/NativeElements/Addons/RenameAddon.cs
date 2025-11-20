@@ -28,7 +28,7 @@ public class RenameAddon : NativeAddon {
                 }
             },
         };
-        AttachNode(inputNode);
+        inputNode.AttachNode(this);
 
         var buttonSize = new Vector2(100.0f, 24.0f);
         var targetYPos = ContentSize.Y - buttonSize.Y + ContentStartPosition.Y;
@@ -42,7 +42,7 @@ public class RenameAddon : NativeAddon {
                 Close();
             },
         };
-        AttachNode(confirmButton);
+        confirmButton.AttachNode(this);
 
         cancelButton = new TextButtonNode {
             Position = new Vector2(ContentSize.X - buttonSize.X + ContentPadding.X, targetYPos),
@@ -50,7 +50,7 @@ public class RenameAddon : NativeAddon {
             String = "Cancel",
             OnClick = Close,
         };
-        AttachNode(cancelButton);
+        cancelButton.AttachNode(this);
     }
 
     public string PlaceholderString { get; set; } = string.Empty;

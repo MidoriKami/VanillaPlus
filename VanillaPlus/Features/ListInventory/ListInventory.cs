@@ -36,7 +36,6 @@ public class ListInventory : GameModification {
 
     public override void OnEnable() {
         addonListInventory = new SearchableNodeListAddon {
-            NativeController = System.NativeController,
             InternalName = "ListInventory",
             Title = "Inventory List",
             Size = new Vector2(450.0f, 700.0f),

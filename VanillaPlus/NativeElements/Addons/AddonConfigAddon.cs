@@ -33,7 +33,6 @@ public class AddonConfigAddon : NativeAddon {
         SetWindowSize(390.0f, 300.0f);
 
         keybindAddon = new KeybindConfigAddon {
-            NativeController = System.NativeController,
             InternalName = "KeybindConfig",
             Title = "Keybind Config Window",
             InitialKeybind = AddonConfig.Keybind,
@@ -45,13 +44,13 @@ public class AddonConfigAddon : NativeAddon {
             Position = ContentStartPosition + new Vector2(0.0f, 10.0f),
             String = "Keybind",
         };
-        AttachNode(keybindLabelNode);
+        keybindLabelNode.AttachNode(this);
 
         keybindLineNode = new HorizontalLineNode {
             Position = new Vector2(ContentStartPosition.X - 2.0f, keybindLabelNode.Y + keybindLabelNode.Height),
             Size = new Vector2(95.0f, 2.0f),
         };
-        AttachNode(keybindLineNode);
+        keybindLineNode.AttachNode(this);
 
         keybindTextNode = new TextNode {
             Position = new Vector2(ContentStartPosition.X, keybindLineNode.Y + keybindLineNode.Height + 5.0f),
@@ -65,7 +64,7 @@ public class AddonConfigAddon : NativeAddon {
             String = AddonConfig.Keybind.ToString(),
             MultiplyColor = AddonConfig.KeybindEnabled ? new Vector3(1.0f, 1.0f, 1.0f) : new Vector3(0.5f, 0.5f, 0.5f),
         };
-        AttachNode(keybindTextNode);
+        keybindTextNode.AttachNode(this);
         
         keybindEnableButtonNode = new TextButtonNode {
             Position = new Vector2(ContentStartPosition.X, keybindTextNode.Y + keybindTextNode.Height + 10.0f),
@@ -73,7 +72,7 @@ public class AddonConfigAddon : NativeAddon {
             String = AddonConfig.KeybindEnabled ? "Disable" : "Enable",
             OnClick = OnKeybindToggleClicked,
         };
-        AttachNode(keybindEnableButtonNode);
+        keybindEnableButtonNode.AttachNode(this);
 
         editKeybindButtonNode = new TextButtonNode {
             Size = new Vector2(150.0f, 24.0f),
@@ -81,27 +80,27 @@ public class AddonConfigAddon : NativeAddon {
             String = "Change Keybind",
             OnClick = keybindAddon.Toggle,
         };
-        AttachNode(editKeybindButtonNode);
+        editKeybindButtonNode.AttachNode(this);
         
         inputComboLabelNode = new CategoryTextNode {
             AlignmentType = AlignmentType.Left,
             Position = new Vector2(ContentStartPosition.X - 2.0f, editKeybindButtonNode.Y + editKeybindButtonNode.Height + 15.0f),
             String = "Window Size",
         };
-        AttachNode(inputComboLabelNode);
+        inputComboLabelNode.AttachNode(this);
 
         topLineNode = new HorizontalLineNode {
             Position = new Vector2(ContentStartPosition.X - 2.0f, inputComboLabelNode.Y + inputComboLabelNode.Height),
             Size = new Vector2(125.0f, 2.0f),
         };
-        AttachNode(topLineNode);
+        topLineNode.AttachNode(this);
 
         windowSizeGridNode = new GridNode {
             Position = new Vector2(ContentStartPosition.X, topLineNode.Y + topLineNode.Height + 5.0f),
             Size = new Vector2(ContentSize.X, 50.0f),
             GridSize = new GridSize(2, 2),
         };
-        AttachNode(windowSizeGridNode);
+        windowSizeGridNode.AttachNode(this);
 
         windowWidthTextNode = new TextNode {
             Size = windowSizeGridNode[0, 0].Size,
@@ -114,7 +113,7 @@ public class AddonConfigAddon : NativeAddon {
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
             String = "Width",
         };
-        AttachNode(windowWidthTextNode, windowSizeGridNode[0, 0]);
+        windowWidthTextNode.AttachNode(windowSizeGridNode[0, 0]);
 
         windowHeightTextNode = new TextNode {
             Size = windowSizeGridNode[1, 0].Size,
@@ -127,7 +126,7 @@ public class AddonConfigAddon : NativeAddon {
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
             String = "Height",
         };
-        AttachNode(windowHeightTextNode, windowSizeGridNode[1, 0]);
+        windowHeightTextNode.AttachNode(windowSizeGridNode[1, 0]);
         
         widthInputNode = new NumericInputNode {
             Size = windowSizeGridNode[0, 1].Size - new Vector2(4.0f, 4.0f),
@@ -138,7 +137,7 @@ public class AddonConfigAddon : NativeAddon {
                 AddonConfig.Save();
             },
         };
-        AttachNode(widthInputNode, windowSizeGridNode[0, 1]);
+        widthInputNode.AttachNode(windowSizeGridNode[0, 1]);
         
         heightInputNode = new NumericInputNode {
             Size = windowSizeGridNode[1, 1].Size - new Vector2(4.0f, 4.0f),
@@ -149,7 +148,7 @@ public class AddonConfigAddon : NativeAddon {
                 AddonConfig.Save();
             },
         };
-        AttachNode(heightInputNode, windowSizeGridNode[1, 1]);
+        heightInputNode.AttachNode(windowSizeGridNode[1, 1]);
 
         editNoteTextNode = new TextNode {
             Position = new Vector2(ContentStartPosition.X, windowSizeGridNode.Y + windowSizeGridNode.Height),
@@ -162,7 +161,7 @@ public class AddonConfigAddon : NativeAddon {
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
             String = "Changes won't take effect until the window is reopened",
         };
-        AttachNode(editNoteTextNode);
+        editNoteTextNode.AttachNode(this);
     }
 
     protected override unsafe void OnFinalize(AtkUnitBase* addon) {

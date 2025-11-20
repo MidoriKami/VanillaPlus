@@ -49,7 +49,7 @@ public class GameGrid : SimpleOverlayNode {
 			
 			buttonImages[xIndex + yIndex * 3] = imageNode;
 			
-			System.NativeController.AttachNode(imageNode, this);
+            imageNode.AttachNode(this);
 		}
 		
 		laneImages = new ImageNode[8];
@@ -64,7 +64,7 @@ public class GameGrid : SimpleOverlayNode {
 			};
 			
 			AddLaneNodeTimeline(laneImages[index], MathF.PI / 2.0f);
-            System.NativeController.AttachNode(laneImages[index], this);
+            laneImages[index].AttachNode(this);
 		}
 
 		foreach (var index in Enumerable.Range(0, 3)) {
@@ -79,7 +79,7 @@ public class GameGrid : SimpleOverlayNode {
 			};
 			
 			AddLaneNodeTimeline(laneImages[arrayIndex], MathF.PI);
-            System.NativeController.AttachNode(laneImages[arrayIndex], this);
+            laneImages[arrayIndex].AttachNode(this);
 		}
 		
 		laneImages[6] = new IconImageNode {
@@ -91,7 +91,7 @@ public class GameGrid : SimpleOverlayNode {
 		};
 		
 		AddLaneNodeTimeline(laneImages[6], MathF.PI * 3.0f / 4.0f);
-        System.NativeController.AttachNode(laneImages[6], this);
+        laneImages[6].AttachNode(this);
 		
 		laneImages[7] = new IconImageNode {
 			Position = new Vector2(190.0f, 0.0f) + gameGridOffset,
@@ -102,7 +102,7 @@ public class GameGrid : SimpleOverlayNode {
 		};
 		
 		AddLaneNodeTimeline(laneImages[7], MathF.PI + MathF.PI / 4.0f);
-        System.NativeController.AttachNode(laneImages[7], this);
+        laneImages[7].AttachNode(this);
 
         UpdateButtonStyle(config);
 	}

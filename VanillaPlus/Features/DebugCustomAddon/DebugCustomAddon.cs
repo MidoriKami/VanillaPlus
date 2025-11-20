@@ -23,7 +23,6 @@ public class DebugCustomAddon : GameModification {
 
     public override void OnEnable() {
         debugAddon = new DebugAddon {
-            NativeController = System.NativeController,
             InternalName = "DebugAddon",
             Title = "Debug Addon Window",
             Size = new Vector2(500.0f, 500.0f),

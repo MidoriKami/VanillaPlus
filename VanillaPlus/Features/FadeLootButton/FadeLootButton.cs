@@ -28,7 +28,6 @@ public unsafe class FadeLootButton : GameModification {
         config = FadeLootButtonConfig.Load();
         
         configWindow = new ConfigAddon {
-            NativeController = System.NativeController,
             Size = new Vector2(400.0f, 125.0f),
             InternalName = "FadeLootConfig",
             Title = "Fade Loot Button Config",
