@@ -4,7 +4,7 @@ using System.Numerics;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Addons;
 using VanillaPlus.Classes;

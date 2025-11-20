@@ -4,7 +4,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using KamiToolKit;
+using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 using VanillaPlus.NativeElements.Config;

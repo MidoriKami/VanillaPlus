@@ -4,7 +4,7 @@ using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Client.System.Input;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using KamiToolKit.Timelines;
 using VanillaPlus.Classes;
