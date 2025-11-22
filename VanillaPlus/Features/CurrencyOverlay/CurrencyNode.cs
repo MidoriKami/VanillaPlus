@@ -2,13 +2,16 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
+using KamiToolKit.Classes.Controllers.Overlay;
 using KamiToolKit.Classes.Timelines;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 
-public unsafe class CurrencyNode : SimpleComponentNode {
+public unsafe class CurrencyNode : OverlayNode {
+    public override OverlayLayer OverlayLayer => OverlayLayer.MiddleLayer;
+
     private IconImageNode iconImageNode;
     private CounterNode countNode;
 
@@ -85,9 +88,7 @@ public unsafe class CurrencyNode : SimpleComponentNode {
         }
     }
 
-    public void UpdateValues() {
-        if (!Services.ClientState.IsLoggedIn) return;
-
+    public override void Update() {
         var inventoryCount = InventoryManager.Instance()->GetInventoryItemCount(Currency.ItemId);
 
         countNode.Number = inventoryCount;

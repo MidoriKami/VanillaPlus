@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
-using KamiToolKit.Classes.Controllers;
-using KamiToolKit.Nodes;
+using KamiToolKit.Classes.Controllers.Overlay;
 using KamiToolKit.Premade.Addons;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
@@ -26,24 +24,17 @@ public unsafe class CurrencyOverlay : GameModification {
 
     public override string ImageName => "CurrencyOverlay.png";
 
-    private OverlayAddonController? overlayAddonController;
-
-    private SimpleOverlayNode? overlayRootNode;
     private CurrencyOverlayConfig? config;
-
     private ListConfigAddon<CurrencySetting, CurrencyOverlayConfigNode>? configAddon;
-
-    private List<CurrencyNode>? currencyNodes;
-
-    private List<CurrencySetting>? addedCurrencySettings;
-    private List<CurrencySetting>? removedCurrencySettings;
-    
     private LuminaSearchAddon<Item>? itemSearchAddon;
+
+    private OverlayController? overlayController;
+    private List<CurrencyNode>? currencyNodes;
 
     public override void OnEnable() {
         currencyNodes = [];
-        addedCurrencySettings = [];
-        removedCurrencySettings = [];
+
+        overlayController = new OverlayController();
         
         itemSearchAddon = new LuminaSearchAddon<Item> {
             InternalName = "LuminaItemSearch",
@@ -78,88 +69,54 @@ public unsafe class CurrencyOverlay : GameModification {
                 config.Save();
             },
 
-            OnAddClicked = item => {
+            OnAddClicked = listNode => {
                 itemSearchAddon.SelectionResult = searchResult => {
                     var newCurrencyOption = new CurrencySetting {
                         ItemId = searchResult.RowId,
                     };
 
-                    item.AddOption(newCurrencyOption);
-                    addedCurrencySettings.Add(newCurrencyOption);
+                    listNode.AddOption(newCurrencyOption);
+
+                    var newCurrencyNode = BuildCurrencyNode(newCurrencyOption);
+                    currencyNodes.Add(newCurrencyNode);
+                    overlayController.AddNode(newCurrencyNode);
+                    
                     config.Save();
                 };
                 itemSearchAddon.Toggle();
             },
-            
-            OnItemRemoved = item => {
-                removedCurrencySettings.Add(item);
+
+            OnItemRemoved = setting => {
+                var targetNode = currencyNodes.FirstOrDefault(node => node.Currency == setting);
+                if (targetNode is not null) {
+                    overlayController.RemoveNode(targetNode);
+                    currencyNodes.Remove(targetNode);
+                }
+
                 config.Save();
             },
         };
 
         OpenConfigAction = configAddon.Toggle;
 
-        overlayAddonController = new OverlayAddonController();
-        overlayAddonController.OnAttach += addon => {
-            overlayRootNode = new SimpleOverlayNode {
-                Size = addon->AtkUnitBase.Size(),
-            };
-            overlayRootNode.AttachNode((AtkUnitBase*)addon, NodePosition.AsFirstChild);
+        Services.Framework.RunOnFrameworkThread(AddOverlayNodes);
+    }
 
-            var screenSize = new Vector2(AtkStage.Instance()->ScreenSize.Width, AtkStage.Instance()->ScreenSize.Height);
+    private void AddOverlayNodes() {
+        if (config is null) return;
+        if (currencyNodes is null) return;
+        if (overlayController is null) return;
 
-            foreach (var setting in config.Currencies) {
-                var newCurrencyNode = BuildCurrencyNode(setting, screenSize);
-
-                currencyNodes.Add(newCurrencyNode);
-                newCurrencyNode.AttachNode((AtkUnitBase*)addon);
-            }
-        };
-
-        overlayAddonController.OnUpdate += _ => {
-            if (overlayRootNode is null) return;
-            
-            var screenSize = new Vector2(AtkStage.Instance()->ScreenSize.Width, AtkStage.Instance()->ScreenSize.Height);
-            
-            foreach (var toAdd in addedCurrencySettings) {
-                var newCurrencyNode = BuildCurrencyNode(toAdd, screenSize);
-
-                currencyNodes.Add(newCurrencyNode);
-                newCurrencyNode.AttachNode(overlayRootNode);
-            }
-            addedCurrencySettings.Clear();
-
-            foreach (var toRemove in removedCurrencySettings) {
-                var node = currencyNodes.FirstOrDefault(node => node.Currency == toRemove);
-                if (node is not null) {
-                    currencyNodes.Remove(node);
-                    node.Dispose();
-                }
-            }
-            removedCurrencySettings.Clear();
-
-            foreach (var currencyNode in currencyNodes) {
-                currencyNode.UpdateValues();
-            }
-        };
-
-        overlayAddonController.OnDetach += _ => {
-            overlayRootNode?.Dispose();
-            overlayRootNode = null;
-
-            foreach (var currencyNode in currencyNodes) {
-                currencyNode.Dispose();
-            }
-            
-            currencyNodes.Clear();
-        };
-        
-        overlayAddonController.Enable();
+        foreach (var currencySetting in config.Currencies) {
+            var newCurrencyNode = BuildCurrencyNode(currencySetting);
+            currencyNodes.Add(newCurrencyNode);
+            overlayController.AddNode(newCurrencyNode);
+        }
     }
 
     public override void OnDisable() {
-        overlayAddonController?.Dispose();
-        overlayAddonController = null;
+        overlayController?.Dispose();
+        overlayController = null;
         
         itemSearchAddon?.Dispose();
         itemSearchAddon = null;
@@ -168,12 +125,12 @@ public unsafe class CurrencyOverlay : GameModification {
         configAddon = null;
 
         config = null;
-        
+
         currencyNodes?.Clear();
         currencyNodes = null;
     }
 
-    private CurrencyNode BuildCurrencyNode(CurrencySetting setting, Vector2 screenSize) {
+    private CurrencyNode BuildCurrencyNode(CurrencySetting setting) {
         var newCurrencyNode = new CurrencyNode {
             Size = new Vector2(164.0f, 36.0f),
             Currency = setting,
@@ -181,11 +138,11 @@ public unsafe class CurrencyOverlay : GameModification {
 
         newCurrencyNode.OnEditComplete = () => {
             setting.Position = newCurrencyNode.Position;
-            config!.Save();
+            config?.Save();
         };
 
         if (setting.Position == Vector2.Zero) {
-            newCurrencyNode.Position = new Vector2(screenSize.X, screenSize.Y) / 2.0f - new Vector2(164.0f, 36.0f) / 2.0f;
+            newCurrencyNode.Position = (Vector2)AtkStage.Instance()->ScreenSize / 2.0f - new Vector2(164.0f, 36.0f) / 2.0f;
         }
         else {
             newCurrencyNode.Position = setting.Position;
