@@ -59,7 +59,11 @@ public unsafe class InventorySearchAddonController : IDisposable {
     public void Dispose() {
         inventoryController?.Dispose();
         inventoryController = null;
-        
+
+        foreach (var (_, node) in inputTextNodes ?? []) {
+            node.Dispose();
+        }
+
         inputTextNodes?.Clear();
         inputTextNodes = null;
                 
