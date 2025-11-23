@@ -29,7 +29,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         colorPickerAddon = new ColorPickerAddon {
             InternalName = "WindowBackgroundColor",
             Title = "Window Background Color Picker",
-            DefaultColor = KnownColor.Black.Vector() with { W = 0.66f },
+            DefaultColor = KnownColor.Black.Vector() with { W = 0.50f },
         };
         
         windowNameTextNode = new TextNode {
