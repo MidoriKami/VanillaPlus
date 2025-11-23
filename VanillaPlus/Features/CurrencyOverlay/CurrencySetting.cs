@@ -1,5 +1,5 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
+using System.Text.Json.Serialization;
 using Dalamud.Utility;
 using KamiToolKit.Premade;
 
@@ -16,7 +16,7 @@ public class CurrencySetting : IInfoNodeData {
     public bool TextReversed;
     public float Scale = 1.0f;
 
-    [NonSerialized]
+    [JsonIgnore]
     public bool IsNodeMoveable;
 
     public string GetLabel()
