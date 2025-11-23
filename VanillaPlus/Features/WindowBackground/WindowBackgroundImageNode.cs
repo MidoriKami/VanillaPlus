@@ -17,15 +17,22 @@ public unsafe class WindowBackgroundImageNode : OverlayNode {
         backgroundImageNode = new BackgroundImageNode();
         backgroundImageNode.AttachNode(this);
     }
-    
+
     public override void Update() {
         var addon = Services.GameGui.GetAddonByName<AtkUnitBase>(Settings.AddonName);
         backgroundImageNode.IsVisible = addon is not null && addon->IsActuallyVisible();
 
         if (addon is not null) {
+            var desiredSize = (addon->RootSize() + Settings.Padding) * addon->Scale;
+
             backgroundImageNode.Color = Settings.Color;
-            backgroundImageNode.Position = addon->Position() - Settings.Padding / 2.0f;
-            backgroundImageNode.Size = (addon->RootSize() + Settings.Padding) * addon->Scale;
+            backgroundImageNode.Size = desiredSize;
+            Size = desiredSize;
+            Position = -Settings.Padding / 2.0f;
+
+            if (addon->WindowNode is null) {
+                backgroundImageNode.Position = addon->Position() - Settings.Padding / 2.0f;
+            }
         }
     }
 }

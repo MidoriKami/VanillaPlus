@@ -1,6 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
+using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Classes;
+using KamiToolKit.Classes.Controllers;
+using KamiToolKit.Classes.Controllers.Overlay;
 using KamiToolKit.Premade.Addons;
 using KamiToolKit.Premade.Nodes;
 using VanillaPlus.Classes;
@@ -30,9 +35,24 @@ public unsafe class WindowBackground : GameModification {
     private ListConfigAddon<WindowBackgroundSetting, WindowBackgroundConfigNode>? configWindow;
     private SearchAddon<StringInfoNode>? addonSearchAddon;
 
-    private WindowBackgroundController? backgroundController;
+    private DynamicAddonController? dynamicAddonController;
+    private OverlayController? overlayController;
+    private List<WindowBackgroundImageNode>? backgroundImageNodes;
 
     public override void OnEnable() {
+        backgroundImageNodes = [];
+
+        config = WindowBackgroundConfig.Load();
+
+        overlayController = new OverlayController();
+        dynamicAddonController = new DynamicAddonController(config.Settings.Select(setting => setting.AddonName).ToArray());
+
+        dynamicAddonController.OnAttach += AttachNode;
+        dynamicAddonController.OnDetach += DetachNode;
+        dynamicAddonController.OnUpdate += UpdateNode;
+
+        dynamicAddonController.Enable();
+
         addonSearchAddon = new SearchAddon<StringInfoNode> {
             InternalName = "AddonSearch",
             Title = "Window Search",
@@ -41,50 +61,113 @@ public unsafe class WindowBackground : GameModification {
             SearchOptions = GetOptions(),
         };
 
-        config = WindowBackgroundConfig.Load();
-
         configWindow = new ListConfigAddon<WindowBackgroundSetting, WindowBackgroundConfigNode> {
             InternalName = "WindowBackgroundConfig",
             Title = "Window Backgrounds Config",
             Size = new Vector2(600.0f, 500.0f),
             Options = config.Settings,
 
-            OnConfigChanged = _ => {
-                backgroundController?.UpdateNodeStyles();
-                config.Save();
-            },
+            OnConfigChanged = _ => config.Save(),
 
             OnAddClicked = listNode => {
+                addonSearchAddon.SearchOptions = GetOptions();
                 addonSearchAddon.SelectionResult = searchResult => {
                     var newOption = new WindowBackgroundSetting {
                         AddonName = searchResult.Label,
                     };
 
                     listNode.AddOption(newOption);
-                    backgroundController?.AddAddon(newOption.AddonName);
+                    dynamicAddonController.AddAddon(searchResult.Label);
                     config.Save();
                 };
 
                 addonSearchAddon.Toggle();
             },
 
-            OnItemRemoved = oldItem => backgroundController?.RemoveAddon(oldItem.AddonName),
+            OnItemRemoved = oldItem => dynamicAddonController.RemoveAddon(oldItem.AddonName),
         };
 
         OpenConfigAction = configWindow.Toggle;
+    }
 
-        backgroundController = new WindowBackgroundController(config);
+    private void AttachNode(AtkUnitBase* addon) {
+        if (config is null) return;
+        if (backgroundImageNodes is null) return;
+        if (overlayController is null) return;
+
+        var newNode = new WindowBackgroundImageNode {
+            Position = -new Vector2(15.0f, 15.0f),
+            Settings = config.GetSettings(addon->NameString),
+        };
+        
+        if (addon->WindowNode is not null) {
+            var targetNode = GetWindowNineGridNode(addon->WindowNode);
+            if (targetNode is null) return;
+
+            newNode.AttachNode(targetNode, NodePosition.BeforeTarget);
+        }
+        else {
+            overlayController.AddNode(newNode);
+        }
+        
+        backgroundImageNodes.Add(newNode);
+    }
+
+    private void UpdateNode(AtkUnitBase* addon) {
+        if (backgroundImageNodes is null) return;
+
+        var nodesForAddon = backgroundImageNodes.Where(node => node.Settings.AddonName == addon->NameString);
+
+        foreach (var node in nodesForAddon) {
+            node.Update();
+        }
+    }
+
+    private void DetachNode(AtkUnitBase* addon) {
+        if (backgroundImageNodes is null) return;
+        if (overlayController is null) return;
+
+        var nodesForAddon = backgroundImageNodes.Where(node => node.Settings.AddonName == addon->NameString).ToList();
+
+        foreach (var node in nodesForAddon) {
+            if (addon->WindowNode is not null) {
+                overlayController.RemoveNode(node);
+            }
+
+            backgroundImageNodes.Remove(node);
+            node.Dispose();
+        }
+    }
+
+    private static AtkResNode* GetWindowNineGridNode(AtkComponentNode* windowNode) {
+        foreach (var node in windowNode->Component->UldManager.Nodes) {
+            if (node.Value is null) continue;
+            if (node.Value->GetNodeType() is NodeType.NineGrid) {
+                return node.Value;
+            }
+        }
+
+        return null;
     }
 
     public override void OnDisable() {
+        dynamicAddonController?.Dispose();
+        dynamicAddonController = null;
+
+        overlayController?.Dispose();
+        overlayController = null;
+
         addonSearchAddon?.Dispose();
         addonSearchAddon = null;
 
         configWindow?.Dispose();
         configWindow = null;
 
-        backgroundController?.Dispose();
-        backgroundController = null;
+        foreach (var node in backgroundImageNodes ?? []) {
+            node.Dispose();
+        }
+        backgroundImageNodes?.Clear();
+        backgroundImageNodes = null;
 
         config = null;
     }
