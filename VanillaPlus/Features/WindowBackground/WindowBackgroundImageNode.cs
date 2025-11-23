@@ -1,6 +1,6 @@
 ﻿using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
-using KamiToolKit.Classes.Controllers.Overlay;
+using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.WindowBackground;

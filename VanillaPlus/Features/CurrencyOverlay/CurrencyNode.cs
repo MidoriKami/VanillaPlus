@@ -2,7 +2,7 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
-using KamiToolKit.Classes.Controllers.Overlay;
+using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Classes.Timelines;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;

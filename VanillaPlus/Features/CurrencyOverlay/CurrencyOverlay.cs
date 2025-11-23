@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes.Controllers.Overlay;
+using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Premade.Addons;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
