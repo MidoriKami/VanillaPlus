@@ -54,9 +54,9 @@ public class ModificationManager : IDisposable {
         foreach (var loadedMod in loadedModifications) {
             if (loadedMod.State is LoadedState.Enabled) {
                 try {
-                    Services.PluginLog.Debug($"Disabling {loadedMod.Name}");
+                    Services.PluginLog.Info($"Disabling {loadedMod.Name}");
                     loadedMod.Modification.OnDisable();
-                    Services.PluginLog.Debug($"Successfully Disabled {loadedMod.Name}");
+                    Services.PluginLog.Info($"Successfully Disabled {loadedMod.Name}");
                 }
                 catch (Exception e) {
                     Services.PluginLog.Error(e, $"Error while unloading modification {loadedMod.Name}");
