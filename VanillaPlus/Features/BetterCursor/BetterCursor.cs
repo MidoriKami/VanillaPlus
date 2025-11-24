@@ -53,11 +53,8 @@ public class BetterCursor : GameModification {
         OpenConfigAction = configWindow.Toggle;
 
         overlayController = new OverlayController();
-
-        Services.Framework.RunOnFrameworkThread(() => {
-            overlayController.AddNode(new CursorImageNode {
-                Config = config,
-            });
+        overlayController.CreateNode(() => new CursorImageNode {
+            Config = config,
         });
     }
 
