@@ -34,6 +34,8 @@ public unsafe class CurrencyOverlay : GameModification {
     public override void OnEnable() {
         currencyNodes = [];
 
+        config = CurrencyOverlayConfig.Load();
+
         overlayController = new OverlayController();
         
         itemSearchAddon = new LuminaSearchAddon<Item> {
@@ -48,8 +50,6 @@ public unsafe class CurrencyOverlay : GameModification {
             SortingOptions = [ "Alphabetical", "Id" ],
             SearchOptions = Services.DataManager.GetCurrencyItems().ToList(),
         };
-
-        config = CurrencyOverlayConfig.Load();
 
         configAddon = new ListConfigAddon<CurrencySetting, CurrencyOverlayConfigNode> {
             Size = new Vector2(700.0f, 500.0f),
