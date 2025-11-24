@@ -10,7 +10,7 @@ using Lumina.Excel.Sheets;
 namespace VanillaPlus.Features.CurrencyOverlay;
 
 public unsafe class CurrencyNode : OverlayNode {
-    public override OverlayLayer OverlayLayer => OverlayLayer.MiddleLayer;
+    public override OverlayLayer OverlayLayer => OverlayLayer.BehindUserInterface;
 
     private IconImageNode iconImageNode;
     private CounterNode countNode;
