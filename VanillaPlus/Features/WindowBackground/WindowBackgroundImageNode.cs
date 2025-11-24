@@ -7,15 +7,25 @@ namespace VanillaPlus.Features.WindowBackground;
 
 public unsafe class WindowBackgroundImageNode : OverlayNode {
 
-    public override OverlayLayer OverlayLayer => OverlayLayer.BackLayer;
+    public override OverlayLayer OverlayLayer => OverlayLayer.Background;
     
     public required WindowBackgroundSetting Settings { get; init; }
+
+    public bool IsOverlayNode;
     
     private readonly BackgroundImageNode backgroundImageNode;
 
     public WindowBackgroundImageNode() {
-        backgroundImageNode = new BackgroundImageNode();
+        backgroundImageNode = new BackgroundImageNode {
+            IsVisible = false,
+        };
         backgroundImageNode.AttachNode(this);
+    }
+
+    protected override void OnSizeChanged() {
+        base.OnSizeChanged();
+
+        backgroundImageNode.Size = Size;
     }
 
     public override void Update() {
@@ -23,15 +33,11 @@ public unsafe class WindowBackgroundImageNode : OverlayNode {
         backgroundImageNode.IsVisible = addon is not null && addon->IsActuallyVisible();
 
         if (addon is not null) {
-            var desiredSize = (addon->RootSize() + Settings.Padding) * addon->Scale;
-
             backgroundImageNode.Color = Settings.Color;
-            backgroundImageNode.Size = desiredSize;
-            Size = desiredSize;
-            Position = -Settings.Padding / 2.0f;
+            Size = (addon->RootSize() + Settings.Padding) * addon->Scale;
 
-            if (addon->WindowNode is null) {
-                backgroundImageNode.Position = addon->Position() - Settings.Padding / 2.0f;
+            if (IsOverlayNode) {
+                Position = addon->Position() - Settings.Padding / 2.0f;
             }
         }
     }

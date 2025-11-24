@@ -83,7 +83,10 @@ public unsafe class WindowBackground : GameModification {
                 addonSearchAddon.Toggle();
             },
 
-            OnItemRemoved = oldItem => dynamicAddonController.RemoveAddon(oldItem.AddonName),
+            OnItemRemoved = oldItem => {
+                config.Save();
+                dynamicAddonController.RemoveAddon(oldItem.AddonName);
+            },
         };
 
         OpenConfigAction = configWindow.Toggle;
@@ -106,6 +109,7 @@ public unsafe class WindowBackground : GameModification {
             newNode.AttachNode(targetNode, NodePosition.BeforeTarget);
         }
         else {
+            newNode.IsOverlayNode = true;
             overlayController.AddNode(newNode);
         }
         
@@ -113,11 +117,14 @@ public unsafe class WindowBackground : GameModification {
     }
 
     private void UpdateNode(AtkUnitBase* addon) {
+        if (config is null) return;
         if (backgroundImageNodes is null) return;
 
-        var nodesForAddon = backgroundImageNodes.Where(node => node.Settings.AddonName == addon->NameString);
+        var addonNodes = backgroundImageNodes
+            .Where(node => !node.IsOverlayNode)
+            .Where(node => node.Settings.AddonName == addon->NameString);
 
-        foreach (var node in nodesForAddon) {
+        foreach (var node in addonNodes) {
             node.Update();
         }
     }
@@ -126,16 +133,15 @@ public unsafe class WindowBackground : GameModification {
         if (backgroundImageNodes is null) return;
         if (overlayController is null) return;
 
-        var nodesForAddon = backgroundImageNodes.Where(node => node.Settings.AddonName == addon->NameString).ToList();
-
-        foreach (var node in nodesForAddon) {
-            if (addon->WindowNode is not null) {
+        foreach (var node in backgroundImageNodes.Where(node => node.Settings.AddonName == addon->NameString)) {
+            if (node.IsOverlayNode) {
                 overlayController.RemoveNode(node);
             }
 
-            backgroundImageNodes.Remove(node);
             node.Dispose();
         }
+
+        backgroundImageNodes.RemoveAll(node => node.Settings.AddonName == addon->NameString);
     }
 
     private static AtkResNode* GetWindowNineGridNode(AtkComponentNode* windowNode) {
