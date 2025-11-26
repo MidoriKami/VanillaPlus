@@ -85,7 +85,7 @@ public unsafe class FadeUnavailableActions : GameModification {
     
     private void ProcessHotBarSlot(ActionBarSlot* hotBarSlotData, NumberArrayData* numberArray, int numberArrayIndex) {
         if (config is null) return;
-        if (Services.ClientState.LocalPlayer is { IsCasting: true } ) return;
+        if (Services.ObjectTable.LocalPlayer is { IsCasting: true } ) return;
 
         var numberArrayData = (ActionBarSlotNumberArray*) (&numberArray->IntArray[numberArrayIndex]);
 
@@ -98,7 +98,7 @@ public unsafe class FadeUnavailableActions : GameModification {
             var action = GetAction(numberArrayData->ActionId);
 
             var actionLevel = action?.ClassJobLevel ?? 0;
-            var playerLevel = Services.ClientState.LocalPlayer?.Level ?? 0;
+            var playerLevel = Services.ObjectTable.LocalPlayer?.Level ?? 0;
 
             switch (action) {
                 case null:

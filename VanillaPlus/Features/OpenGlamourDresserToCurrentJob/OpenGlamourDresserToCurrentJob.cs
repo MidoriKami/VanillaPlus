@@ -24,7 +24,7 @@ public class OpenGlamourDresserToCurrentJob : GameModification {
         => Services.AddonLifecycle.UnregisterListener(OnGlamourDresserSetup);
 
     private void OnGlamourDresserSetup(AddonEvent type, AddonArgs args) {
-        if (Services.ClientState is { LocalPlayer.ClassJob.RowId: var playerJob }) {
+        if (Services.ObjectTable is { LocalPlayer.ClassJob.RowId: var playerJob }) {
             Marshal.WriteByte(args.Addon, 0x1A8, (byte)playerJob);
         }
     }

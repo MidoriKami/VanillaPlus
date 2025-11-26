@@ -13,7 +13,7 @@ public class QuestInfo : IEquatable<QuestInfo> {
     public Vector3 Position { get; init; }
     public ReadOnlySeString IssuerName { get; init; }
     
-    public float Distance => Vector3.Distance(Services.ClientState.LocalPlayer?.Position ?? Vector3.Zero, Position);
+    public float Distance => Vector3.Distance(Services.ObjectTable.LocalPlayer?.Position ?? Vector3.Zero, Position);
     
     public bool IsRegexMatch(string searchString) {
         const RegexOptions regexOptions = RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;

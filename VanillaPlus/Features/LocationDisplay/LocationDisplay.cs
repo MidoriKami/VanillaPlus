@@ -88,7 +88,7 @@ public unsafe class LocationDisplay : GameModification {
 
     private void OnFrameworkUpdate(IFramework framework) {
         if (config is null) return;
-		if (Services.ClientState.LocalPlayer is null) return;
+		if (Services.ObjectTable.LocalPlayer is null) return;
         
         UpdateRegion();
         UpdateSubArea();

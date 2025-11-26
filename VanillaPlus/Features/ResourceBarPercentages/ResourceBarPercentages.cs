@@ -108,7 +108,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         if (!config.ParameterWidgetEnabled) return;
 
         var addon = args.GetAddon<AddonParameterWidget>();
-        if (Services.ClientState.LocalPlayer is not { } localPlayer) return;
+        if (Services.ObjectTable.LocalPlayer is not { } localPlayer) return;
 
         addon->HealthAmount->SetText(GetCorrectText(localPlayer.CurrentHp, localPlayer.MaxHp, config.ParameterHpEnabled));
 
@@ -195,7 +195,7 @@ public unsafe class ResourceBarPercentages : GameModification {
     private void OnParameterDisable() {
         var addon = Services.GameGui.GetAddonByName<AddonParameterWidget>("_ParameterWidget");
         if (addon is null) return;
-        if (Services.ClientState.LocalPlayer is not { } localPlayer) return;
+        if (Services.ObjectTable.LocalPlayer is not { } localPlayer) return;
 
         var activeResource = GetActiveResource(localPlayer);
 

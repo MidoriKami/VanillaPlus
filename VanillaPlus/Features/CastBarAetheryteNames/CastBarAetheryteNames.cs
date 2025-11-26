@@ -51,7 +51,7 @@ public unsafe class CastBarAetheryteNames : GameModification {
 
     private void OnCastBarRefresh(AddonEvent type, AddonArgs args) {
         if (teleportInfo is not { } info) return;
-        if (Services.ClientState.LocalPlayer is not { IsCasting: true, CastActionId: 5 }) return;
+        if (Services.ObjectTable.LocalPlayer is not { IsCasting: true, CastActionId: 5 }) return;
 
         var textNode = args.GetAddon<AddonCastBar>()->GetTextNodeById(4);
         if (textNode == null) return;
