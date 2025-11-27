@@ -2,9 +2,9 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
-using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Classes.Timelines;
 using KamiToolKit.Nodes;
+using KamiToolKit.Overlay;
 using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
@@ -60,38 +60,35 @@ public unsafe class CurrencyNode : OverlayNode {
         get;
         set {
             field = value;
+            iconImageNode.IconId = Services.DataManager.GetExcelSheet<Item>().GetRow(Currency.ItemId).Icon;
 
-            EnableMoving = value.IsNodeMoveable;
-            iconImageNode.IconId = Services.DataManager.GetExcelSheet<Item>().GetRow(value.ItemId).Icon;
-
-            if (value.IconReversed) {
-                iconImageNode.Position = new Vector2(0.0f, 0.0f);
-                iconImageNode.Size = new Vector2(36.0f, 36.0f);
-
-                countNode.TextAlignment = AlignmentType.Left;
-                countNode.Position = new Vector2(iconImageNode.X + iconImageNode.Width, 8.0f);
-                countNode.Size = new Vector2(128.0f, 22.0f);
-            }
-            else {
-                countNode.TextAlignment = AlignmentType.Right;
-                countNode.Position = new Vector2(0.0f, 8.0f);
-                countNode.Size = new Vector2(128.0f, 22.0f);
-                
-                iconImageNode.Position = new Vector2(countNode.X + countNode.Width, 0.0f);
-                iconImageNode.Size = new Vector2(36.0f, 36.0f);
-            }
-
-            countNode.TextAlignment = value.TextReversed ? AlignmentType.Left : AlignmentType.Right;
-
+            countNode.Size = new Vector2(128.0f, 22.0f);
             countNode.Origin = countNode.Size / 2.0f;
-            Scale = new Vector2(value.Scale, value.Scale);
+            iconImageNode.Size = new Vector2(36.0f, 36.0f);
         }
     }
 
     public override void Update() {
+        base.Update();
+
         var inventoryCount = InventoryManager.Instance()->GetInventoryItemCount(Currency.ItemId);
 
         countNode.Number = inventoryCount;
+
+        EnableMoving = Currency.IsNodeMoveable;
+
+        if (Currency.IconReversed) {
+            iconImageNode.Position = new Vector2(0.0f, 0.0f);
+            countNode.Position = new Vector2(iconImageNode.X + iconImageNode.Width, 8.0f);
+        }
+        else {
+            countNode.Position = new Vector2(0.0f, 8.0f);
+            iconImageNode.Position = new Vector2(countNode.X + countNode.Width, 0.0f);
+        }
+
+        countNode.TextAlignment = Currency.TextReversed ? AlignmentType.Left : AlignmentType.Right;
+
+        Scale = new Vector2(Currency.Scale, Currency.Scale);
 
         var isLowWarning = Currency.EnableLowLimit && inventoryCount < Currency.LowLimit;
         var isHighWarning = Currency.EnableHighLimit && inventoryCount > Currency.HighLimit;
