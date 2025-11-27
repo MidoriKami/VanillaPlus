@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using Dalamud.Interface;
-using KamiToolKit.Classes.Controllers;
+using KamiToolKit.Overlay;
 using VanillaPlus.Classes;
 using VanillaPlus.NativeElements.Config;
 

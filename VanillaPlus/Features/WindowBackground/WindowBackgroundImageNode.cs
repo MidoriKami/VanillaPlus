@@ -1,7 +1,7 @@
 ﻿using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
-using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Nodes;
+using KamiToolKit.Overlay;
 
 namespace VanillaPlus.Features.WindowBackground;
 
@@ -29,6 +29,8 @@ public unsafe class WindowBackgroundImageNode : OverlayNode {
     }
 
     public override void Update() {
+        base.Update();
+
         var addon = Services.GameGui.GetAddonByName<AtkUnitBase>(Settings.AddonName);
         backgroundImageNode.IsVisible = addon is not null && addon->IsActuallyVisible();
 

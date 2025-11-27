@@ -5,6 +5,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Classes.Controllers;
+using KamiToolKit.Overlay;
 using KamiToolKit.Premade.Addons;
 using KamiToolKit.Premade.Nodes;
 using VanillaPlus.Classes;

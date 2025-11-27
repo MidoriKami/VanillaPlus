@@ -3,9 +3,9 @@ using FFXIVClientStructs.FFXIV.Client.System.Input;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
-using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Classes.Timelines;
 using KamiToolKit.Nodes;
+using KamiToolKit.Overlay;
 
 namespace VanillaPlus.Features.BetterCursor;
 
@@ -53,6 +53,8 @@ public unsafe class CursorImageNode : OverlayNode {
     }
 
     public override void Update() {
+        base.Update();
+        
         Size = new Vector2(Config.Size);
 
         imageNode.Color = Config.Color;

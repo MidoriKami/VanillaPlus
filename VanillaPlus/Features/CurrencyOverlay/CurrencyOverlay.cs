@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes.Controllers;
+using KamiToolKit.Overlay;
 using KamiToolKit.Premade.Addons;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
@@ -59,15 +59,7 @@ public unsafe class CurrencyOverlay : GameModification {
 
             Options = config.Currencies,
 
-            OnConfigChanged = changedSetting => {
-                var nodes = currencyNodes.Where(node => node.Currency == changedSetting);
-
-                foreach (var node in nodes) {
-                    node.Currency = changedSetting;
-                    node.OnMoveComplete = changedSetting.IsNodeMoveable ? config.Save : null;
-                }
-                config.Save();
-            },
+            OnConfigChanged = _ => config.Save(),
 
             OnAddClicked = listNode => {
                 itemSearchAddon.SelectionResult = searchResult => {
@@ -136,7 +128,7 @@ public unsafe class CurrencyOverlay : GameModification {
             Currency = setting,
         };
 
-        newCurrencyNode.OnEditComplete = () => {
+        newCurrencyNode.OnMoveComplete = () => {
             setting.Position = newCurrencyNode.Position;
             config?.Save();
         };
