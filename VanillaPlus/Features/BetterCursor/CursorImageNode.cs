@@ -12,6 +12,7 @@ namespace VanillaPlus.Features.BetterCursor;
 public unsafe class CursorImageNode : OverlayNode {
 
     public override OverlayLayer OverlayLayer => OverlayLayer.Foreground;
+    public override bool HideWithNativeUi => false;
 
     public required BetterCursorConfig Config { get; set; }
 
