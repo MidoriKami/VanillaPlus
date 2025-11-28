@@ -4,7 +4,7 @@ using VanillaPlus.Classes;
 namespace VanillaPlus.Features.BetterCursor;
 
 public class BetterCursorConfig : GameModificationConfig<BetterCursorConfig> {
-    protected override string FileName => "BetterCursor.config.json";
+    protected override string FileName => "BetterCursor";
 
     public bool Animations = true;
     public Vector4 Color = Vector4.One;

@@ -3,7 +3,7 @@
 namespace VanillaPlus.Features.ResourceBarPercentages;
 
 public class ResourceBarPercentagesConfig : GameModificationConfig<ResourceBarPercentagesConfig> {
-    protected override string FileName => "ResourceBarPercentages.config.json";
+    protected override string FileName => "ResourceBarPercentages";
 
     public bool PartyListEnabled = true;
     public bool PartyListSelf = true;

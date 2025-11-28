@@ -4,7 +4,7 @@ using VanillaPlus.Classes;
 namespace VanillaPlus.Features.HideUnwantedBanners;
 
 public class HideUnwantedBannersConfig : GameModificationConfig<HideUnwantedBannersConfig> {
-    protected override string FileName =>  "HideUnwantedBanners.config.json";
+    protected override string FileName =>  "HideUnwantedBanners";
 
     public HashSet<uint> HiddenBanners = [];
     

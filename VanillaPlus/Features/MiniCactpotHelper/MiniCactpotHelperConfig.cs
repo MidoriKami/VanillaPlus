@@ -4,7 +4,7 @@ using VanillaPlus.Classes;
 namespace VanillaPlus.Features.MiniCactpotHelper;
 
 public class MiniCactpotHelperConfig : GameModificationConfig<MiniCactpotHelperConfig> {
-    protected override string FileName => "MiniCactpotHelper.config.json";
+    protected override string FileName => "MiniCactpotHelper";
 
     public bool EnableAnimations = true;
 
