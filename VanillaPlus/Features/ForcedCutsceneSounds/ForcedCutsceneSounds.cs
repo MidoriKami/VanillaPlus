@@ -7,7 +7,6 @@ using FFXIVClientStructs.FFXIV.Client.System.Scheduler.Base;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using VanillaPlus.Classes;
 using VanillaPlus.NativeElements.Config;
-using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.ForcedCutsceneSounds;
 
@@ -24,6 +23,16 @@ public unsafe class ForcedCutsceneSounds : GameModification {
         CompatibilityModule = new HaselTweaksCompatibilityModule("ForcedCutsceneMusic"),
     };
 
+    private static readonly string[] ConfigOptions = [
+        "IsSndMaster",
+        "IsSndBgm",
+        "IsSndSe",
+        "IsSndVoice",
+        "IsSndEnv",
+        "IsSndSystem",
+        "IsSndPerform",
+    ];
+    
     private Dictionary<string, bool>? wasMuted;
 
     private delegate CutSceneController* CutSceneControllerDtorDelegate(CutSceneController* self, byte freeFlags);
@@ -96,7 +105,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
             if (config.DisableInMsqRoulette && AgentContentsFinder.Instance()->SelectedDuty is { ContentType: ContentsId.ContentsType.Roulette, Id: 3 }) return result;
             if (wasMuted is null || id is 0) return result;
 
-            foreach (var optionName in GameConfig.AudioConfigOptions) {
+            foreach (var optionName in ConfigOptions) {
                 var isMuted = Services.GameConfig.System.TryGet(optionName, out bool value) && value;
 
                 wasMuted[optionName] = isMuted;
@@ -123,7 +132,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
             var cutsceneId = self->CutsceneId;
             
             if (config.Restore && cutsceneId is not 0) { // ignore title screen cutscene
-                foreach (var optionName in GameConfig.AudioConfigOptions) {
+                foreach (var optionName in ConfigOptions) {
                     if (ShouldHandle(optionName) && (wasMuted?.TryGetValue(optionName, out var value) ?? false) && value) {
                         Services.GameConfig.System.Set(optionName, value);
                     }
