@@ -12,8 +12,8 @@ public static unsafe class AddonArgsExtensions {
 
     public static void PrintAtkValues(this AddonArgs args) {
         var atkValues = args switch {
-            AddonRefreshArgs refreshArgs => refreshArgs.AtkValueSpan,
-            AddonSetupArgs setupArgs => setupArgs.AtkValueSpan,
+            AddonRefreshArgs refreshArgs => new Span<AtkValue>((AtkValue*)refreshArgs.AtkValues, (int)refreshArgs.AtkValueCount),
+            AddonSetupArgs setupArgs => new Span<AtkValue>((AtkValue*)setupArgs.AtkValues, (int)setupArgs.AtkValueCount),
             _ => throw new Exception("Invalid Args Type"),
         };
 
