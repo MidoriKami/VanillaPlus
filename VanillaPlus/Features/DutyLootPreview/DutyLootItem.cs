@@ -8,11 +8,11 @@ using LuminaSupplemental.Excel.Services;
 namespace VanillaPlus.Features.DutyLootPreview;
 
 public class DutyLootItem {
-    public required uint ItemId { get; set; }
-    public required uint IconId { get; set; }
-    public ReadOnlySeString Name { get; set; }
-    public required uint ItemSortCategory { get; set; } 
-    public required bool CanTryOn { get; set; }
+    public required uint ItemId { get; init; }
+    public required uint IconId { get; init; }
+    public ReadOnlySeString Name { get; private init; }
+    public required uint ItemSortCategory { get; init; } 
+    public required bool CanTryOn { get; init; }
 
     /// <summary>
     /// Get the loot items available for some content
@@ -30,6 +30,7 @@ public class DutyLootItem {
             .Where(chest => chest.ContentFinderConditionId == contentId)
             .Select(chest => chest.RowId)
             .ToHashSet();
+
         var dungeonChestDropItemIds = LoadItems<DungeonChestItem>(CsvLoader.DungeonChestItemResourceName)
             .Where(drop => dungeonChestIds.Contains(drop.ChestId))
             .Select(drop => drop.ItemId);
@@ -46,7 +47,7 @@ public class DutyLootItem {
                 IconId = item.Icon,
                 Name = item.Name,
                 ItemSortCategory = item.ItemSortCategory.RowId,
-                CanTryOn = CheckCanTryOn(item)
+                CanTryOn = CheckCanTryOn(item),
             };
         }
     }
@@ -55,8 +56,8 @@ public class DutyLootItem {
         return CsvLoader.LoadResource<T>(
             resourceName: resourceName,
             includesHeaders: false,
-            out var failedLines,
-            out var exceptions,
+            out _,
+            out _,
             Services.DataManager.GameData,
             Services.DataManager.GameData.Options.DefaultExcelLanguage
         );

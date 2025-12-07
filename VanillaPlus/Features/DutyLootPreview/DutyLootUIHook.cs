@@ -11,16 +11,16 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// <summary>
 /// Displays the "Open Duty Loot Table" button in Duty Finder
 /// </summary>
-internal unsafe class DutyLootUIHook {
+internal unsafe class DutyLootUiHook {
     private AddonController<AddonJournalDetail>? journalDetail;
     private AddonController<AddonContentsFinder>? contentsFinder;
 
-    private TextureButtonNode? LootButtonNode;
+    private TextureButtonNode? lootButtonNode;
 
-    public event Action? ShowDutyLootPreviewButtonClicked;
-    public event Action<uint?>? DutyChanged;
+    public Action? OnShowDutyLootPreviewButtonClicked { get; init; }
+    public Action<uint?>? DutyChanged { get; init; }
 
-    private uint? lastSeenContentId = null;
+    private uint? lastSeenContentId;
 
     public void OnEnable() {
         journalDetail = new AddonController<AddonJournalDetail>("JournalDetail");
@@ -47,14 +47,14 @@ internal unsafe class DutyLootUIHook {
         var dutyTitleNode = addon->GetNodeById(37);
         if (dutyTitleNode is null) return;
 
-        Services.PluginLog.Info($"Got Root Container");
+        Services.PluginLog.Info("Got Root Container");
 
         var existing = addon->DutyNameTextNode; // ID: 38
         if (existing is null) return;
 
         Services.PluginLog.Info($"Got DutyName Text Node");
 
-        LootButtonNode = new TextureButtonNode {
+        lootButtonNode = new TextureButtonNode {
             TexturePath = "ui/uld/Inventory.tex",
             TextureCoordinates = new Vector2(90.0f, 125.0f),
             TextureSize = new Vector2(32.0f, 32.0f),
@@ -62,13 +62,13 @@ internal unsafe class DutyLootUIHook {
             Position = new Vector2(420.0f, 68.0f),
             Size = new Vector2(32.0f, 32.0f),
             TooltipString = "View Loot that can be earned in this duty.",
-            OnClick = OnLootButtonClicked
+            OnClick = OnLootButtonClicked,
         };
-        LootButtonNode.AttachNode(dutyTitleNode, NodePosition.AfterTarget);
+        lootButtonNode.AttachNode(dutyTitleNode, NodePosition.AfterTarget);
     }
 
     private void RefreshNodes(AddonJournalDetail* addon) {
-        if (LootButtonNode != null) { LootButtonNode.IsVisible = false; }
+        if (lootButtonNode != null) { lootButtonNode.IsVisible = false; }
         // We only want to show the button if we're attached to the duty finder,
         // other addons need not apply.
         var addonContentsFinder = Services.GameGui.GetAddonByName<AddonContentsFinder>("ContentsFinder");
@@ -77,12 +77,12 @@ internal unsafe class DutyLootUIHook {
         Services.PluginLog.Info($"addon->ParentId: {addon->ParentId}, acf->Id: {addonContentsFinder->Id}");
         if (addon->ParentId != addonContentsFinder->Id) { return; }
 
-        if (LootButtonNode != null) { LootButtonNode.IsVisible = true; }
+        if (lootButtonNode != null) { lootButtonNode.IsVisible = true; }
     }
 
     private void DetachNodes(AddonJournalDetail* addon) {
-        LootButtonNode?.Dispose();
-        LootButtonNode = null;
+        lootButtonNode?.Dispose();
+        lootButtonNode = null;
     }
 
     private void OnContentsFinderUpdate(AddonContentsFinder* addon) {
@@ -112,6 +112,6 @@ internal unsafe class DutyLootUIHook {
     }
 
     private void OnLootButtonClicked() {
-        ShowDutyLootPreviewButtonClicked?.Invoke();
+        OnShowDutyLootPreviewButtonClicked?.Invoke();
     }
 }

@@ -15,55 +15,55 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         return new DutyLootPreviewAddon {
             InternalName = "DutyLootPreview",
             Title = "Duty Loot Preview",
-            Size = new Vector2(250.0f, 350.0f)
+            Size = new Vector2(250.0f, 350.0f),
         };
     }
 
-    private ScrollingAreaNode<VerticalListNode>? ScrollingAreaNode;
+    private ScrollingAreaNode<VerticalListNode>? scrollingAreaNode;
 
     private bool updateRequested = true;
-    private List<DutyLootItem> Items = new();
+    private List<DutyLootItem> items = [];
 
-    public void SetItems(IEnumerable<DutyLootItem> items) {
-        Items = items.ToList();
+    public void SetItems(IEnumerable<DutyLootItem> itemsEnumerable) {
+        items = itemsEnumerable.ToList();
         updateRequested = true;
     }
 
     public void Clear() {
-        Items = new();
+        items = [];
         updateRequested = true;
     }
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon) {
-        ScrollingAreaNode = new ScrollingAreaNode<VerticalListNode> {
+    protected override void OnSetup(AtkUnitBase* addon) {
+        scrollingAreaNode = new ScrollingAreaNode<VerticalListNode> {
             Position = ContentStartPosition,
             Size = ContentSize,
             ContentHeight = 100,
         };
-        ScrollingAreaNode.ContentNode.FitContents = true;
-        ScrollingAreaNode.AttachNode(this);
+        scrollingAreaNode.ContentNode.FitContents = true;
+        scrollingAreaNode.AttachNode(this);
         UpdateList(true);
     }
 
     protected override void OnUpdate(AtkUnitBase* addon) => UpdateList();
 
-    public void UpdateList(bool isOpening = false) {
-        if (ScrollingAreaNode is null) return;
+    private void UpdateList(bool isOpening = false) {
+        if (scrollingAreaNode is null) return;
         if (!updateRequested && !isOpening) return;
         updateRequested = false;
 
-        var list = ScrollingAreaNode.ContentNode;
+        var list = scrollingAreaNode.ContentNode;
         var listUpdated = list.SyncWithListData(
-            Items,
-            (DutyLootNode node) => node.Item,
-            (DutyLootItem data) => new DutyLootNode {
+            items,
+            node => node.Item,
+            data => new DutyLootNode {
                 Size = new Vector2(list.Width, 36.0f),
                 Item = data,
             }
         );
 
         if (listUpdated) {
-            ScrollingAreaNode.ContentHeight = ScrollingAreaNode.ContentNode.Nodes.Sum(node => node.IsVisible ? node.Height : 0.0f);
+            scrollingAreaNode.ContentHeight = scrollingAreaNode.ContentNode.Nodes.Sum(node => node.IsVisible ? node.Height : 0.0f);
         }
     }
 }

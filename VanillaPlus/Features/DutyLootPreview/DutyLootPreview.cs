@@ -3,10 +3,7 @@ using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.DutyLootPreview;
 
-public unsafe partial class DutyLootPreview : GameModification {
-    private DutyLootUIHook UIHook = new();
-    private DutyLootPreviewAddon? AddonDutyLoot;
-
+public class DutyLootPreview : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Duty Loot Preview",
         Description = "Adds a duty loot viewer to the duty window",
@@ -16,35 +13,41 @@ public unsafe partial class DutyLootPreview : GameModification {
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
     };
+    
+    private DutyLootUiHook? uiHook;
+    private DutyLootPreviewAddon? addonDutyLoot;
 
     public override void OnEnable() {
-        UIHook.OnEnable();
-        UIHook.ShowDutyLootPreviewButtonClicked += OnShowDutyLootPreviewButtonClicked;
-        UIHook.DutyChanged += OnDutyChanged;
+        uiHook = new DutyLootUiHook {
+            OnShowDutyLootPreviewButtonClicked = OnShowDutyLootPreviewButtonClicked,
+            DutyChanged = OnDutyChanged,
+        };
+        uiHook.OnEnable();
 
-        AddonDutyLoot = DutyLootPreviewAddon.Create();
+        addonDutyLoot = DutyLootPreviewAddon.Create();
     }
 
     public override void OnDisable() {
-        UIHook.OnDisable();
+        uiHook?.OnDisable();
+        uiHook = null;
 
-        AddonDutyLoot?.Dispose();
-        AddonDutyLoot = null;
+        addonDutyLoot?.Dispose();
+        addonDutyLoot = null;
     }
 
     private void OnDutyChanged(uint? contentFinderConditionId) {
         if (!contentFinderConditionId.HasValue) {
-            AddonDutyLoot?.Clear();
+            addonDutyLoot?.Clear();
             return;
         }
 
         var items = DutyLootItem.ForContent(contentFinderConditionId.Value)
-            .OrderBy(item => item.ItemSortCategory == 5 || item.ItemSortCategory == 56 ? uint.MaxValue : item.ItemSortCategory)
+            .OrderBy(item => item.ItemSortCategory is 5 or 56 ? uint.MaxValue : item.ItemSortCategory)
             .ToList();
-        AddonDutyLoot?.SetItems(items);
+        addonDutyLoot?.SetItems(items);
     }
 
     private void OnShowDutyLootPreviewButtonClicked() {
-        AddonDutyLoot?.Toggle();
+        addonDutyLoot?.Toggle();
     }
 }
