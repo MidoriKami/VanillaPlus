@@ -16,8 +16,8 @@ public unsafe class NodeListAddon : NativeAddon {
     private KeybindListener? keybindListener;
     private AddonConfigAddon? addonConfigWindow;
 
-    public void Initialize(Keybind? defaultOpenCombo = null) {
-        config = AddonConfig.Load($"{InternalName}.addon.json", defaultOpenCombo ?? new Keybind());
+    public void Initialize() {
+        config = AddonConfig.Load($"{InternalName}.addon.json");
 
         keybindListener = new KeybindListener {
             AddonConfig = config,

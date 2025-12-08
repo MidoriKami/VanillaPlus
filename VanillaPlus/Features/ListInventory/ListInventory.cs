@@ -1,7 +1,6 @@
 ﻿using System.Numerics;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
-using Dalamud.Game.ClientState.Keys;
 using KamiToolKit;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
@@ -46,10 +45,7 @@ public class ListInventory : GameModification {
             OpenCommand = "/listinventory",
         };
 
-        addonListInventory.Initialize(new Keybind {
-            Key = VirtualKey.I,
-            Modifiers = [ VirtualKey.CONTROL, VirtualKey.MENU ],
-        });
+        addonListInventory.Initialize();
 
         OpenConfigAction = addonListInventory.OpenAddonConfig;
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
-using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.Inventory.InventoryEventArgTypes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using KamiToolKit;
@@ -44,10 +43,7 @@ public unsafe class RecentlyLootedWindow : GameModification {
             UpdateListFunction = UpdateList,
         };
 
-        addonRecentlyLooted.Initialize(new Keybind {
-            Key = VirtualKey.L,
-            Modifiers = [ VirtualKey.CONTROL ],
-        });
+        addonRecentlyLooted.Initialize();
 
         OpenConfigAction = addonRecentlyLooted.OpenAddonConfig;
 

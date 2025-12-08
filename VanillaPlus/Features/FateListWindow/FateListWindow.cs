@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Numerics;
 using Dalamud.Game.ClientState.Fates;
-using Dalamud.Game.ClientState.Keys;
 using KamiToolKit;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
@@ -35,10 +34,7 @@ public class FateListWindow : GameModification {
             UpdateListFunction = UpdateList,
         };
 
-        addonFateList.Initialize(new Keybind {
-            Key = VirtualKey.F,
-            Modifiers = [ VirtualKey.CONTROL ],
-        });
+        addonFateList.Initialize();
 
         OpenConfigAction = addonFateList.OpenAddonConfig;
     }

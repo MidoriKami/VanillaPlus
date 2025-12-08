@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using Dalamud.Game.ClientState.Keys;
 using KamiToolKit;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;
@@ -42,10 +41,7 @@ public unsafe class QuestListWindow : GameModification {
             OpenCommand = "/questlist",
         };
 
-        addonQuestList.Initialize(new Keybind {
-            Key = VirtualKey.J,
-            Modifiers = [ VirtualKey.CONTROL, VirtualKey.SHIFT ],
-        });
+        addonQuestList.Initialize();
         
         OnFilterUpdated("Type", false);
 

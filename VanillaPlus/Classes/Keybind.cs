@@ -5,11 +5,11 @@ using Dalamud.Game.ClientState.Keys;
 namespace VanillaPlus.Classes;
 
 public class Keybind {
-    public VirtualKey Key { get; set; } = VirtualKey.NO_KEY;
-    public HashSet<VirtualKey> Modifiers { get; set; } = [];
+    public VirtualKey Key { get; init; } = VirtualKey.NO_KEY;
+    public HashSet<VirtualKey> Modifiers { get; init; } = [];
 
     public bool IsPressed()
-        => Services.KeyState.IsKeybindPressed(Modifiers.Append(Key));
+        => Key is not VirtualKey.NO_KEY && Services.KeyState.IsKeybindPressed(Modifiers.Append(Key));
 
     public void Reset()
         => Services.KeyState.ResetKeyCombo([ Key ] );
