@@ -10,8 +10,11 @@ public class DutyLootPreview : GameModification {
         Authors = [ "GrittyFrog" ],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
+            new ChangeLogInfo(2, "Added Context Menu, Filter Buttons, Favorites and Item Drop info")
         ],
     };
+
+    public override string ImageName => "DutyLootPreview.png";
 
     private DutyLootUiHook? uiHook;
     private DutyLootPreviewAddon? addonDutyLoot;
