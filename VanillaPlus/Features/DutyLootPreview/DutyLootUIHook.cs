@@ -50,7 +50,7 @@ internal unsafe class DutyLootUiHook {
     }
 
     private void RefreshNodes(AddonJournalDetail* addon) {
-        if (lootButtonNode == null) { return; }
+        if (lootButtonNode == null) return;
 
         // We should only show the button if our parent is the duty finder.
         if (addon->ParentId is not 0) {

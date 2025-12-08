@@ -56,16 +56,14 @@ public class DutyLootItem {
         }
     }
 
-    private static IEnumerable<T> LoadItems<T>(string resourceName) where T : ICsv, new() {
-        return CsvLoader.LoadResource<T>(
-            resourceName: resourceName,
-            includesHeaders: false,
-            out _,
-            out _,
-            Services.DataManager.GameData,
-            Services.DataManager.GameData.Options.DefaultExcelLanguage
-        );
-    }
+    private static List<T> LoadItems<T>(string resourceName) where T : ICsv, new() => CsvLoader.LoadResource<T>(
+        resourceName: resourceName,
+        includesHeaders: false,
+        out _,
+        out _,
+        Services.DataManager.GameData,
+        Services.DataManager.GameData.Options.DefaultExcelLanguage
+    );
 
     // See: https://github.com/Haselnussbomber/HaselCommon/blob/30c023516c0f9771183bbb5c01eb8122765e8bd0/HaselCommon/Services/ItemService.cs#L298-L327
     private static bool CheckCanTryOn(Item item) {

@@ -61,7 +61,7 @@ public unsafe class DutyLootNode : SimpleComponentNode {
 
             iconNode.IconId = value.IconId;
             itemNameTextNode.SeString = value.Name;
-            iconNode.Count = 1; // value.Quantity;
+            iconNode.Count = 1;
         }
     }
     

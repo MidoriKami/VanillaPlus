@@ -5,8 +5,8 @@ namespace VanillaPlus.Features.DutyLootPreview;
 public class DutyLootPreview : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Duty Loot Preview",
-        Description = "Adds a duty loot viewer to the duty window",
-        Type = ModificationType.UserInterface,
+        Description = "Adds a duty loot viewer to the duty window.",
+        Type = ModificationType.NewWindow,
         Authors = [ "GrittyFrog" ],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),

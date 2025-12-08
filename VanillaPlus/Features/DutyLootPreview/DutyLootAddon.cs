@@ -46,7 +46,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         updateRequested = true;
     }
 
-    internal void Clear() {
+    private void Clear() {
         items = [];
         isLoading = false;
         updateRequested = true;
@@ -58,11 +58,8 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         updateRequested = true;
     }
 
-    private uint? GetCurrentContentId() {
-        var agent = AgentContentsFinder.Instance();
-        if (agent == null || !agent->IsAgentActive()) return null;
-
-        var content = agent->SelectedDuty;
+    private static uint? GetCurrentContentId() {
+        var content = AgentContentsFinder.Instance()->SelectedDuty;
         return content.ContentType == ContentsId.ContentsType.Regular ? content.Id : null;
     }
 
@@ -114,12 +111,13 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
             LineSpacing = 18,
             TextFlags = TextFlags.MultiLine | TextFlags.Edge | TextFlags.WordWrap,
             AlignmentType = AlignmentType.Center,
-            SeString = NoItemsMessage
+            SeString = NoItemsMessage,
         };
         noItemsTextNode.AttachNode(this);
 
         contentsFinder = new AddonController<AddonContentsFinder>("ContentsFinder");
         contentsFinder.OnRefresh += OnContentsFinderUpdate;
+        contentsFinder.OnDetach += _ => Close();
         contentsFinder.Enable();
 
         LoadCurrentDuty();
@@ -159,7 +157,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
             scrollingAreaNode.ContentHeight = scrollingAreaNode.ContentNode.Nodes.Sum(node => node.IsVisible ? node.Height : 0.0f);
         }
 
-        if (list.GetNodes<DutyLootNode>().Count() > 0) {
+        if (list.GetNodes<DutyLootNode>().Any()) {
             scrollingAreaNode.IsVisible = true;
             noItemsTextNode.IsVisible = false;
         } else {
