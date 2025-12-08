@@ -38,10 +38,14 @@ public class DutyLootItem {
         var itemIds = bossDropItemIds
             .Concat(bossChestDropItemIds)
             .Concat(dungeonChestDropItemIds)
+            .Where(id => id != 0)
             .Distinct();
 
         var items = itemIds.Select(itemId => Services.DataManager.GetItem(itemId));
         foreach (var item in items) {
+            if (item.Icon == 0 || item.Name.IsEmpty)
+                continue;
+
             yield return new DutyLootItem {
                 ItemId = item.RowId,
                 IconId = item.Icon,

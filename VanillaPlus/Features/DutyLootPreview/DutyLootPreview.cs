@@ -1,4 +1,3 @@
-using System.Linq;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.DutyLootPreview;
@@ -13,18 +12,17 @@ public class DutyLootPreview : GameModification {
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
     };
-    
+
     private DutyLootUiHook? uiHook;
     private DutyLootPreviewAddon? addonDutyLoot;
 
     public override void OnEnable() {
+        addonDutyLoot = DutyLootPreviewAddon.Create();
+
         uiHook = new DutyLootUiHook {
-            OnShowDutyLootPreviewButtonClicked = OnShowDutyLootPreviewButtonClicked,
-            DutyChanged = OnDutyChanged,
+            OnButtonClicked = addonDutyLoot.Toggle,
         };
         uiHook.OnEnable();
-
-        addonDutyLoot = DutyLootPreviewAddon.Create();
     }
 
     public override void OnDisable() {
@@ -33,21 +31,5 @@ public class DutyLootPreview : GameModification {
 
         addonDutyLoot?.Dispose();
         addonDutyLoot = null;
-    }
-
-    private void OnDutyChanged(uint? contentFinderConditionId) {
-        if (!contentFinderConditionId.HasValue) {
-            addonDutyLoot?.Clear();
-            return;
-        }
-
-        var items = DutyLootItem.ForContent(contentFinderConditionId.Value)
-            .OrderBy(item => item.ItemSortCategory is 5 or 56 ? uint.MaxValue : item.ItemSortCategory)
-            .ToList();
-        addonDutyLoot?.SetItems(items);
-    }
-
-    private void OnShowDutyLootPreviewButtonClicked() {
-        addonDutyLoot?.Toggle();
     }
 }
