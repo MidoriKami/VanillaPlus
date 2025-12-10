@@ -45,7 +45,7 @@ public unsafe class ClearTextInputs : GameModification {
                 if (node.Value is null) continue;
                 if (node.Value->VirtualTable == AtkEventTarget.StaticVirtualTablePointer) continue; // Node has been disposed already
 
-                node.Value->AtkEventManager.UnregisterEvent(AtkEventType.MouseClick, 0x80000, customEventListener.EventListener, false);
+                node.Value->AtkEventManager.UnregisterEvent(AtkEventType.MouseClick, 0x80000, customEventListener, false);
             }
         }
         
@@ -72,7 +72,7 @@ public unsafe class ClearTextInputs : GameModification {
                 0x80000, 
                 null, 
                 (AtkEventTarget*)collisionNode, 
-                customEventListener.EventListener, 
+                customEventListener, 
                 false
             );
             
