@@ -11,7 +11,7 @@ public enum LootFilter {
     All,
     Favorites,
     Equipment,
-    Misc
+    Misc,
 }
 
 public class DutyLootFilterBarNode : HorizontalListNode {

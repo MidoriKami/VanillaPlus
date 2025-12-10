@@ -69,9 +69,15 @@ public unsafe class DutyLootNode : SimpleComponentNode {
             CollisionNode.HideTooltip();
         });
 
-        CollisionNode.AddEvent(AtkEventType.MouseClick, (AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) => {
-            if (atkEventData->IsLeftClick()) { OnLeftClick?.Invoke(Item);  }
-            else if (atkEventData->IsRightClick()) { OnRightClick?.Invoke(Item); }
+        CollisionNode.AddEvent(AtkEventType.MouseClick, (_, _, _, _, atkEventData) => {
+            if (Item is null) return;
+
+            if (atkEventData->IsLeftClick()) {
+                OnLeftClick?.Invoke(Item);
+            }
+            else if (atkEventData->IsRightClick()) {
+                OnRightClick?.Invoke(Item);
+            }
         });
     }
     
@@ -106,6 +112,7 @@ public unsafe class DutyLootNode : SimpleComponentNode {
         // Scale star proportionally (original: 20x20 star on 44x44 icon)
         var starSize = iconNode.Height * (20f / 44f);
         favoriteStarNode.Size = new Vector2(starSize, starSize);
+
         // Position in top-right corner, slightly above icon edge
         favoriteStarNode.Position = new Vector2(iconNode.Width - favoriteStarNode.Width, -2);
 

@@ -13,11 +13,7 @@ public class DutyLootItem {
     public required uint IconId { get; init; }
     public ReadOnlySeString Name { get; private init; }
     public required uint ItemSortCategory { get; init; }
-    public uint SortOrder => ItemSortCategory switch {
-        9 or 63 => uint.MaxValue,     // Materia - very bottom
-        5 or 56 => uint.MaxValue - 1,   // Equipment - bottom
-        _ => ItemSortCategory
-    };
+
     public required bool CanTryOn { get; init; }
     public required List<ReadOnlySeString> Sources { get; init; }
 
@@ -36,41 +32,20 @@ public class DutyLootItem {
         // Track sources per item
         var itemSources = new Dictionary<uint, List<ReadOnlySeString>>();
 
-        void AddBossSource(uint itemId, uint fightNo) {
-            if (itemId == 0 || !bosses.TryGetValue(fightNo, out var boss)) return;
-            var bossNameRaw = Services.DataManager.GetExcelSheet<BNpcName>()?.GetRow(boss.BNpcNameId).Singular ?? default;
-            if (bossNameRaw.IsEmpty) return;
-            var bossNameText = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(bossNameRaw.ExtractText());
-            ReadOnlySeString bossSource = $"Boss {fightNo + 1}: {bossNameText}";
-
-            if (!itemSources.TryGetValue(itemId, out var sources)) {
-                sources = [];
-                itemSources[itemId] = sources;
-            }
-            if (!sources.Contains(bossSource)) {
-                sources.Add(bossSource);
-            }
-        }
-
-        void AddDungeonChestSource(uint itemId) {
-            if (itemId == 0) return;
-            if (!itemSources.TryGetValue(itemId, out var sources)) {
-                sources = [];
-                itemSources[itemId] = sources;
-            }
-            if (!sources.Contains(DungeonChestSource)) {
-                sources.Add(DungeonChestSource);
-            }
-        }
-
         // Process boss drops
         var bossDrops = LoadItems<DungeonBossDrop>(CsvLoader.DungeonBossDropResourceName)
             .Where(drop => drop.ContentFinderConditionId == contentId);
-        foreach (var drop in bossDrops) { AddBossSource(drop.ItemId, drop.FightNo); }
+
+        foreach (var drop in bossDrops) {
+            AddBossSource(drop.ItemId, drop.FightNo, bosses, itemSources);
+        }
 
         var bossChestDrops = LoadItems<DungeonBossChest>(CsvLoader.DungeonBossChestResourceName)
             .Where(drop => drop.ContentFinderConditionId == contentId);
-        foreach (var drop in bossChestDrops) { AddBossSource(drop.ItemId, drop.FightNo); }
+
+        foreach (var drop in bossChestDrops) {
+            AddBossSource(drop.ItemId, drop.FightNo, bosses, itemSources);
+        }
 
         var dungeonChestIds = LoadItems<DungeonChest>(CsvLoader.DungeonChestResourceName)
             .Where(chest => chest.ContentFinderConditionId == contentId)
@@ -79,7 +54,10 @@ public class DutyLootItem {
 
         var dungeonChestItems = LoadItems<DungeonChestItem>(CsvLoader.DungeonChestItemResourceName)
             .Where(drop => dungeonChestIds.Contains(drop.ChestId));
-        foreach (var drop in dungeonChestItems) { AddDungeonChestSource(drop.ItemId); }
+
+        foreach (var drop in dungeonChestItems) {
+            AddDungeonChestSource(drop.ItemId, itemSources);
+        }
 
         foreach (var (itemId, sources) in itemSources) {
             var item = Services.DataManager.GetItem(itemId);
@@ -94,6 +72,44 @@ public class DutyLootItem {
                 CanTryOn = CheckCanTryOn(item),
                 Sources = sources,
             };
+        }
+    }
+
+    public uint SortOrder => ItemSortCategory switch {
+        9 or 63 => uint.MaxValue,     // Materia - very bottom
+        5 or 56 => uint.MaxValue - 1, // Equipment - bottom
+        _ => ItemSortCategory,
+    };
+
+    private static void AddDungeonChestSource(uint itemId, Dictionary<uint, List<ReadOnlySeString>>? itemSources) {
+        if (itemSources is null) return;
+        if (itemId == 0) return;
+
+        if (!itemSources.TryGetValue(itemId, out var sources)) {
+            sources = [];
+            itemSources[itemId] = sources;
+        }
+        if (!sources.Contains(DungeonChestSource)) {
+            sources.Add(DungeonChestSource);
+        }
+    }
+
+    private static void AddBossSource(uint itemId, uint fightNo, Dictionary<uint, DungeonBoss>? bosses, Dictionary<uint, List<ReadOnlySeString>>? itemSources) {
+        if (itemSources is null) return;
+        if (bosses is null) return;
+        if (itemId == 0 || !bosses.TryGetValue(fightNo, out var boss)) return;
+
+        var bossNameRaw = Services.DataManager.GetExcelSheet<BNpcName>().GetRow(boss.BNpcNameId).Singular;
+        if (bossNameRaw.IsEmpty) return;
+        var bossNameText = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(bossNameRaw.ExtractText());
+        ReadOnlySeString bossSource = $"Boss {fightNo + 1}: {bossNameText}";
+
+        if (!itemSources.TryGetValue(itemId, out var sources)) {
+            sources = [];
+            itemSources[itemId] = sources;
+        }
+        if (!sources.Contains(bossSource)) {
+            sources.Add(bossSource);
         }
     }
 
