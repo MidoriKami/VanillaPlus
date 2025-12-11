@@ -11,13 +11,15 @@ public class DutyLootPreview : GameModification {
         Authors = [ "GrittyFrog" ],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Added Context Menu, Filter Buttons, Favorites and Item Drop info")
+            new ChangeLogInfo(2, "Added Context Menu, Filter Buttons, Favorites and Item Drop info"),
+            new ChangeLogInfo(3, "Added button to view current duty loot")
         ],
     };
 
     public override string ImageName => "DutyLootPreview.png";
 
-    private DutyLootUiController? contentFinderController;
+    private DutyLootJournalUiController? journalUiController;
+    private DutyLootInDutyUiController? inDutyUiController;
     private DutyLootPreviewAddon? addonDutyLoot;
     private DutyLootPreviewConfig? config;
 
@@ -31,15 +33,23 @@ public class DutyLootPreview : GameModification {
             Config = config,
         };
 
-        contentFinderController = new DutyLootUiController {
+        journalUiController = new DutyLootJournalUiController {
             OnButtonClicked = addonDutyLoot.Toggle,
         };
-        contentFinderController.OnEnable();
+        journalUiController.OnEnable();
+
+        inDutyUiController = new DutyLootInDutyUiController {
+            OnButtonClicked = addonDutyLoot.Toggle,
+        };
+        inDutyUiController.OnEnable();
     }
 
     public override void OnDisable() {
-        contentFinderController?.OnDisable();
-        contentFinderController = null;
+        journalUiController?.OnDisable();
+        journalUiController = null;
+
+        inDutyUiController?.OnDisable();
+        inDutyUiController = null;
 
         addonDutyLoot?.Dispose();
         addonDutyLoot = null;

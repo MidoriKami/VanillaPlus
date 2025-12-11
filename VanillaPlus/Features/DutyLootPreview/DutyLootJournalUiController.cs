@@ -10,7 +10,7 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// <summary>
 /// Displays the "Open Duty Loot Table" button in Duty Finder
 /// </summary>
-internal unsafe class DutyLootUiController {
+internal unsafe class DutyLootJournalUiController {
     private AddonController<AddonJournalDetail>? journalDetail;
     private TextureButtonNode? lootButtonNode;
 

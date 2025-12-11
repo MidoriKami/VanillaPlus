@@ -13,6 +13,7 @@ using KamiToolKit.Classes;
 using KamiToolKit.Classes.ContextMenu;
 using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Nodes;
+using Lumina.Excel.Sheets;
 using ContextMenu = KamiToolKit.Classes.ContextMenu.ContextMenu;
 
 namespace VanillaPlus.Features.DutyLootPreview;
@@ -42,6 +43,10 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     public required DutyLootPreviewConfig Config { get; init; }
     
     private ContextMenu? contextMenu;
+
+    public DutyLootPreviewAddon() {
+        Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+    }
     
     public override void Dispose() {
         base.Dispose();
@@ -52,6 +57,8 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
         contentsFinder?.Dispose();
         contentsFinder = null;
+
+        Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
     }
 
     protected override void OnSetup(AtkUnitBase* addon) {
@@ -100,7 +107,6 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         contentsFinder.OnDetach += _ => Close();
         contentsFinder.Enable();
 
-        LoadCurrentDuty();
         UpdateList(true);
     }
     
@@ -157,17 +163,10 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         updateRequested = true;
     }
 
-    private static uint? GetCurrentContentId() {
-        var content = AgentContentsFinder.Instance()->SelectedDuty;
-        return content.ContentType == ContentsId.ContentsType.Regular ? content.Id : null;
-    }
+    private void LoadDuty(uint? contentId) {
+        if (contentId == lastLoadedContentId) return;
+        lastLoadedContentId = contentId;
 
-    private void LoadCurrentDuty() {
-        loadingCts?.Cancel();
-        loadingCts?.Dispose();
-        loadingCts = null;
-
-        var contentId = GetCurrentContentId();
         if (contentId is null) {
             items = [];
             isLoading = false;
@@ -176,9 +175,9 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
             return;
         }
 
-        // Don't reload if we already have this duty loaded
-        if (contentId == lastLoadedContentId) return;
-        lastLoadedContentId = contentId;
+        loadingCts?.Cancel();
+        loadingCts?.Dispose();
+        loadingCts = null;
 
         loadingCts = new CancellationTokenSource();
         var token = loadingCts.Token;
@@ -190,10 +189,18 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     private void OnContentsFinderUpdate(AddonContentsFinder* addon) {
         if (!IsOpen) return;
 
-        var contentId = GetCurrentContentId();
-        if (contentId != lastLoadedContentId) {
-            LoadCurrentDuty();
+        var content = AgentContentsFinder.Instance()->SelectedDuty;
+        if (content.ContentType == ContentsId.ContentsType.Regular) {
+            LoadDuty(content.Id);
         }
+    }
+
+    private void OnTerritoryChanged(ushort territory) {
+        var territoryType = Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(territory);
+        var contentId = territoryType.ContentFinderCondition.RowId;
+        if (contentId == 0) return;
+
+        LoadDuty(contentId);
     }
 
     private void UpdateList(bool isOpening = false) {
