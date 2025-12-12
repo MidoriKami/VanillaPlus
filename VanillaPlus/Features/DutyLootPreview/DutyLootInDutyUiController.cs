@@ -21,6 +21,7 @@ internal unsafe class DutyLootInDutyUiController {
         dutyInfo = new AddonController<AddonToDoList>("_ToDoList");
         dutyInfo.OnAttach += AttachNodes;
         dutyInfo.OnDetach += DetachNodes;
+        dutyInfo.OnPostEnable += OnPostEnable;
         dutyInfo.Enable();
 
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
@@ -44,16 +45,21 @@ internal unsafe class DutyLootInDutyUiController {
             IsVisible = false,
             Position = new Vector2(260f - 20.0f - 4.0f, 29f),
             Size = new Vector2(20.0f, 20.0f),
-            TooltipString = "[VanillaPlus] View Loot that can be earned in this duty.",
+            TooltipString = "[VanillaPlus] Open Duty Loot Info Window",
             OnClick = () => OnButtonClicked?.Invoke(),
         };
         lootButtonNode.AttachNode(dutyNameContainer);
-
     }
 
     private void DetachNodes(AddonToDoList* addon) {
         lootButtonNode?.Dispose();
         lootButtonNode = null;
+    }
+    
+    private void OnPostEnable(AddonToDoList* _) {
+        if (Services.ClientState.IsLoggedIn) {
+            OnTerritoryChanged(Services.ClientState.TerritoryType);
+        }
     }
 
     private void OnTerritoryChanged(ushort territoryRow) {
