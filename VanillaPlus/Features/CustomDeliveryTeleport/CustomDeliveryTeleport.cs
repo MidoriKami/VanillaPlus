@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.Gui.ContextMenu;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.CustomDeliveryTeleport;
@@ -43,6 +44,9 @@ public unsafe class CustomDeliveryTeleport : GameModification {
 
         var data = true; // Breakpoint Here
         data = false;
+
+        var agent = AgentSatisfactionSupply.Instance();
+        var agent2 = AgentSatisfactionSupplyResult.Instance();
         
         args.AddMenuItem(new MenuItem {
             Name = "Teleport",
