@@ -45,7 +45,7 @@ internal unsafe class DutyLootInDutyUiController {
             IsVisible = false,
             Position = new Vector2(260f - 20.0f - 4.0f, 29f),
             Size = new Vector2(20.0f, 20.0f),
-            TooltipString = "[VanillaPlus] Open Duty Loot Info Window",
+            TooltipString = "[VanillaPlus] Open Duty Loot Preview Window",
             OnClick = () => OnButtonClicked?.Invoke(),
         };
         lootButtonNode.AttachNode(dutyNameContainer);
