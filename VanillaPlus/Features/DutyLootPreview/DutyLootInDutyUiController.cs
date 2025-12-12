@@ -11,7 +11,7 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// <summary>
 /// Displays the "Open Duty Loot" button near the active duty info
 /// </summary>
-internal unsafe class DutyLootInDutyUiController {
+public unsafe class DutyLootInDutyUiController {
     private AddonController<AddonToDoList>? dutyInfo;
     private TextureButtonNode? lootButtonNode;
 
