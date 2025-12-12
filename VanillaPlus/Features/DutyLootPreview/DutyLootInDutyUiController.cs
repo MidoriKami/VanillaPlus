@@ -47,7 +47,7 @@ internal unsafe class DutyLootInDutyUiController {
             TooltipString = "[VanillaPlus] View Loot that can be earned in this duty.",
             OnClick = () => OnButtonClicked?.Invoke(),
         };
-        lootButtonNode.AttachNode(dutyNameContainer, NodePosition.AfterAllSiblings);
+        lootButtonNode.AttachNode(dutyNameContainer);
 
     }
 
