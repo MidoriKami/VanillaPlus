@@ -44,10 +44,6 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     
     private ContextMenu? contextMenu;
 
-    public DutyLootPreviewAddon() {
-        Services.ClientState.TerritoryChanged += OnTerritoryChanged;
-    }
-    
     public override void Dispose() {
         base.Dispose();
 
@@ -57,8 +53,6 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
         contentsFinder?.Dispose();
         contentsFinder = null;
-
-        Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
     }
 
     protected override void OnSetup(AtkUnitBase* addon) {
@@ -66,6 +60,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         const float separatorHeight = 4f;
 
         contextMenu = new ContextMenu();
+        Services.ClientState.TerritoryChanged += OnTerritoryChanged;
 
         filterBarNode = new DutyLootFilterBarNode {
             Position = ContentStartPosition,
@@ -114,6 +109,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     
     protected override void OnFinalize(AtkUnitBase* addon) {
         contextMenu?.Dispose();
+        Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
     }
 
     private static void OnDutyLootItemLeftClick(DutyLootItem item) {
