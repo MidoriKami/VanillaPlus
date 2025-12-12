@@ -22,6 +22,7 @@ public unsafe class CustomDeliveryTeleport : GameModification {
     public override void OnEnable() {
         // SatisfactionList
         Services.ContextMenu.OnMenuOpened += OnContextMenuOpened;
+        Services.AddonLifecycle.LogAddon("SatisfactionList");
 
         // step 1: on context menu appear, determine which "SatisfactionNpc" was selected
 
@@ -37,16 +38,16 @@ public unsafe class CustomDeliveryTeleport : GameModification {
     
     public override void OnDisable() {
         Services.ContextMenu.OnMenuOpened -= OnContextMenuOpened;
+        Services.AddonLifecycle.UnLogAddon("SatisfactionList");
     }
 
     private void OnContextMenuOpened(IMenuOpenedArgs args) {
         if (args.AddonName is not "SatisfactionList") return;
 
+        
+        
         var data = true; // Breakpoint Here
         data = false;
-
-        var agent = AgentSatisfactionSupply.Instance();
-        var agent2 = AgentSatisfactionSupplyResult.Instance();
         
         args.AddMenuItem(new MenuItem {
             Name = "Teleport",
