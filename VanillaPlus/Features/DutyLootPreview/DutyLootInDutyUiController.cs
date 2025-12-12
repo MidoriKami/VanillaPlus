@@ -1,13 +1,10 @@
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
 using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;
-
-using ActionCallback = System.Action; // Conflicts with Lumina Action
-
+using Action = System.Action;
 
 namespace VanillaPlus.Features.DutyLootPreview;
 
@@ -18,7 +15,7 @@ internal unsafe class DutyLootInDutyUiController {
     private AddonController<AddonToDoList>? dutyInfo;
     private TextureButtonNode? lootButtonNode;
 
-    public ActionCallback? OnButtonClicked { get; init; }
+    public Action? OnButtonClicked { get; init; }
 
     public void OnEnable() {
         dutyInfo = new AddonController<AddonToDoList>("_ToDoList");
