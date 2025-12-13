@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
@@ -103,6 +104,8 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         contentsFinder.Enable();
 
         UpdateList(true);
+
+        LoadCurrentDuty(); // We might already be in a duty
     }
     
     protected override void OnUpdate(AtkUnitBase* addon) => UpdateList();
@@ -192,11 +195,14 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     }
 
     private void OnTerritoryChanged(ushort territory) {
-        var territoryType = Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(territory);
-        var contentId = territoryType.ContentFinderCondition.RowId;
-        if (contentId == 0) return;
+        LoadCurrentDuty();
+    }
 
-        LoadDuty(contentId);
+    private void LoadCurrentDuty() {
+        var contentFinderId = GameMain.Instance()->CurrentContentFinderConditionId;
+        if (contentFinderId == 0) { return; }
+
+        LoadDuty(contentFinderId);
     }
 
     private void UpdateList(bool isOpening = false) {
