@@ -14,7 +14,6 @@ using KamiToolKit.Classes;
 using KamiToolKit.Classes.ContextMenu;
 using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Nodes;
-using Lumina.Excel.Sheets;
 using ContextMenu = KamiToolKit.Classes.ContextMenu.ContextMenu;
 
 namespace VanillaPlus.Features.DutyLootPreview;

@@ -19,13 +19,13 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
     }
 
     /// <summary>
-    /// If false, never show this button. Otherwise show it if _ToDoList is visible.
+    /// If false, never show this button. Otherwise, show it if _ToDoList is visible.
     /// </summary>
     public bool TryShow {
         get;
         set {
             field = value;
-            Services.Framework.RunOnFrameworkThread(() => UpdateVisibility());
+            Services.Framework.RunOnFrameworkThread(UpdateVisibility);
         }
     }
 

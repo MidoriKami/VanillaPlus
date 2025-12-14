@@ -7,10 +7,9 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// <summary>
 /// Displays the "Open Duty Loot" button near the active duty info
 /// </summary>
-public unsafe class DutyLootInDutyUiController {
+public class DutyLootInDutyUiController {
     private OverlayController? overlayController;
     private DutyLootInDutyButtonNode? lootButtonNode;
-    private bool isValidTerritory;
 
     public Action? OnButtonClicked { get; init; }
 
