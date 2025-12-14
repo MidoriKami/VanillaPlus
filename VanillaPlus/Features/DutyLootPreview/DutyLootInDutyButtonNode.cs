@@ -1,10 +1,11 @@
-using System;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 using KamiToolKit.Overlay;
+using Lumina.Excel.Sheets;
+using Action = System.Action;
 
 namespace VanillaPlus.Features.DutyLootPreview;
 
@@ -18,16 +19,7 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
         set => buttonNode.OnClick = value;
     }
 
-    /// <summary>
-    /// If false, never show this button. Otherwise, show it if _ToDoList is visible.
-    /// </summary>
-    public bool TryShow {
-        get;
-        set {
-            field = value;
-            Services.Framework.RunOnFrameworkThread(UpdateVisibility);
-        }
-    }
+    private bool shouldShow;
 
     public DutyLootInDutyButtonNode() {
         buttonNode = new TextureButtonNode {
@@ -38,6 +30,16 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
             TooltipString = "[VanillaPlus] Open Duty Loot Preview Window",
         };
         buttonNode.AttachNode(this);
+
+        Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+    }
+
+    protected override void Dispose(bool disposing, bool isNativeDestructor) {
+        if (disposing) {
+            Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
+            
+            base.Dispose(disposing, isNativeDestructor);
+        }
     }
 
     public override void Update() {
@@ -51,12 +53,9 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
         if (dutyNameContainer is null) return;
         var dutyNameContainerPos = new Vector2(dutyNameContainer->X, dutyNameContainer->Y) * dutyInfoScale;
 
-        var dutyLootButtonPos = new Vector2(236f, 29f) * dutyInfoScale;
+        var dutyLootButtonPos = new Vector2(236.0f, 29.0f) * dutyInfoScale;
 
-        Position = dutyInfoPos
-            + dutyNameContainerPos
-            + dutyLootButtonPos;
-
+        Position = dutyInfoPos + dutyNameContainerPos + dutyLootButtonPos;
         Scale = new Vector2(dutyInfoScale, dutyInfoScale);
 
         UpdateVisibility();
@@ -68,8 +67,13 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
         buttonNode.Size = Size;
     }
 
+    private void OnTerritoryChanged(ushort obj) {
+        shouldShow = ShouldShowButton();
+        UpdateVisibility();
+    }
+
     private void UpdateVisibility() {
-        if (!TryShow) {
+        if (!shouldShow) {
             IsVisible = false;
             return;
         }
@@ -87,5 +91,14 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
         }
 
         IsVisible = true;
+    }
+    
+    private static bool ShouldShowButton(ushort? territoryRow = null) {
+        var territory = territoryRow ?? Services.ClientState.TerritoryType;
+        if (territory is 0) return false;
+        
+        var territoryType = Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(territory);
+        var contentTypeId = territoryType.ContentFinderCondition.Value.ContentType.RowId;
+        return contentTypeId is 2 or 4 or 5; // Dungeon, Trial, Raid (including Alliance)
     }
 }
