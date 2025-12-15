@@ -12,16 +12,14 @@ namespace VanillaPlus.Features.WindowBackground;
 
 public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
 
-    private TabbedVerticalListNode verticalListNode;
+    private readonly TabbedVerticalListNode verticalListNode;
     
-    private TextNode windowNameTextNode;
+    private readonly TextNode windowNameTextNode;
 
-    private HorizontalListNode colorPreviewLayoutNode;
-    private ColorPreviewNode colorPreviewNode;
-    private TextNode colorLabelNode;
-    private Vector2EditWidget sizeEditWidget;
+    private readonly ColorPreviewNode colorPreviewNode;
+    private readonly Vector2EditWidget sizeEditWidget;
 
-    private ColorPickerAddon colorPickerAddon;
+    private readonly ColorPickerAddon colorPickerAddon;
     
     public WindowBackgroundConfigNode() {
         CollisionNode.IsVisible = false;
@@ -48,19 +46,19 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             String = "Background Color",
         });
 
-        colorPreviewLayoutNode = new HorizontalListNode {
+        var colorPreviewLayoutNode1 = new HorizontalListNode {
             Height = 32.0f,
             ItemSpacing = 10.0f,
         };
-        verticalListNode.AddNode(1, colorPreviewLayoutNode);
+        verticalListNode.AddNode(1, colorPreviewLayoutNode1);
         
         colorPreviewNode = new ColorPreviewNode {
             Size = new Vector2(32.0f, 32.0f),
             DrawFlags = DrawFlags.ClickableCursor,
         };
-        colorPreviewLayoutNode.AddNode(colorPreviewNode);
+        colorPreviewLayoutNode1.AddNode(colorPreviewNode);
         
-        colorLabelNode = new TextNode {
+        var colorLabelNode1 = new TextNode {
             Size = new Vector2(100.0f, 32.0f),
             AlignmentType = AlignmentType.Left,
             FontType = FontType.Axis,
@@ -72,7 +70,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             String = "Color",
             DrawFlags = DrawFlags.ClickableCursor,
         };
-        colorPreviewLayoutNode.AddNode(colorLabelNode);
+        colorPreviewLayoutNode1.AddNode(colorLabelNode1);
 
         verticalListNode.AddNode(0, new CategoryTextNode {
             String = "Padding Size",
@@ -90,9 +88,9 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         };
         verticalListNode.AddNode(1, sizeEditWidget);
 
-        colorPreviewLayoutNode.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
+        colorPreviewLayoutNode1.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
         colorPreviewNode.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
-        colorPreviewLayoutNode.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
+        colorPreviewLayoutNode1.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
         colorPreviewNode.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
     }
 
@@ -117,14 +115,6 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         colorPreviewNode.Color = option.Color;
         colorPickerAddon.InitialColor = option.Color;
         sizeEditWidget.Value = option.Padding;
-    }
-
-    private void OnAddonSearchResult(StringInfoNode selectedAddon) {
-        if (ConfigurationOption is null) return;
-        
-        ConfigurationOption.AddonName = selectedAddon.Label;
-        OptionChanged(ConfigurationOption);
-        OnConfigChanged?.Invoke(ConfigurationOption);
     }
 
     private void OpenColorPicker() {

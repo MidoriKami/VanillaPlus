@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Game.ClientState.Objects.Types;
@@ -35,10 +34,10 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
     private TextNode?[]? castBarEnemyTextNode;
     
-    private static string PrimaryTargetStylePath => Path.Combine(Config.ConfigPath, "TargetCastBarCountdown.PrimaryTarget.style.json");
-    private static string PrimaryTargetAltStylePath => Path.Combine(Config.ConfigPath, "TargetCastBarCountdown.PrimaryTargetAlt.style.json");
-    private static string FocusTargetStylePath => Path.Combine(Config.ConfigPath, "TargetCastBarCountdown.FocusTarget.style.json");
-    private static string CastBarEnemyStylePath => Path.Combine(Config.ConfigPath, "TargetCastBarCountdown.CastBarEnemy.style.json");
+    private TextNodeStyle? primaryTargetStyle;
+    private TextNodeStyle? primaryTargetAltStyle;
+    private TextNodeStyle? focusTargetStyle;
+    private TextNodeStyle? castBarEnemyStyle;
 
     private TargetCastBarCountdownConfig? config;
     private ConfigAddon? configWindow;
@@ -47,41 +46,9 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
     public override void OnEnable() {
         config = TargetCastBarCountdownConfig.Load();
-        configWindow = new ConfigAddon {
-            InternalName = "TargetCastBarConfig",
-            Title = "Target Castbar Countdown Config",
-            Config = config,
-        };
 
-        configWindow.AddCategory("Toggles")
-            .AddCheckbox("Show on Primary Target Castbar", nameof(config.PrimaryTarget))
-            .AddCheckbox("Show on Focus Target Castbar", nameof(config.FocusTarget))
-            .AddCheckbox("Show on Nameplate Target Castbar", nameof(config.NamePlateTargets));
-
-        const NodeConfigEnum nodeConfigOptions = NodeConfigEnum.TextColor | NodeConfigEnum.Position | NodeConfigEnum.TextSize | 
-                                                 NodeConfigEnum.TextFont | NodeConfigEnum.TextAlignment | NodeConfigEnum.TextOutlineColor;
-
-        configWindow.AddCategory("Target Castbar Style (Combined)")
-            .AddTextNodeConfig(PrimaryTargetAltStylePath, nodeConfigOptions);
-
-        configWindow.AddCategory("Target Castbar Style (Separate)")
-            .AddTextNodeConfig(PrimaryTargetStylePath, nodeConfigOptions);
-        
-        configWindow.AddCategory("Focus Target Castbar Style")
-            .AddTextNodeConfig(FocusTargetStylePath, nodeConfigOptions);
-        
-        configWindow.AddCategory("Nameplate Castbar Style")
-            .AddTextNodeConfig(CastBarEnemyStylePath, nodeConfigOptions);
-
-        config.OnSave += () => {
-            primaryTargetTextNode?.Load(PrimaryTargetStylePath);
-            primaryTargetAltTextNode?.Load(PrimaryTargetAltStylePath);
-            focusTargetTextNode?.Load(FocusTargetStylePath);
-            foreach (var node in castBarEnemyTextNode ?? []) {
-                node?.Load(CastBarEnemyStylePath);
-            }
-        };
-        OpenConfigAction = configWindow.Toggle;
+        LoadStyles();
+        LoadConfigWindow();
 
         addonController = new MultiAddonController("_TargetInfoCastBar", "_TargetInfo", "_FocusTargetInfo", "CastBarEnemy");
         addonController.OnAttach += AttachNode;
@@ -100,6 +67,66 @@ public unsafe class TargetCastBarCountdown : GameModification {
         castBarEnemyTextNode = null;
     }
 
+    private void LoadStyles() {
+        primaryTargetStyle = Config.LoadConfig<TextNodeStyle>("TargetCastBarCountdown.PrimaryTarget.style.json");
+        primaryTargetAltStyle = Config.LoadConfig<TextNodeStyle>("TargetCastBarCountdown.PrimaryTargetAlt.style.json");
+        focusTargetStyle = Config.LoadConfig<TextNodeStyle>("TargetCastBarCountdown.FocusTarget.style.json");
+        castBarEnemyStyle = Config.LoadConfig<TextNodeStyle>("TargetCastBarCountdown.CastBarEnemy.style.json");
+
+        primaryTargetStyle.StyleChanged += () => {
+            primaryTargetStyle.Save("TargetCastBarCountdown.PrimaryTarget.style.json");
+            primaryTargetStyle.ApplyStyle(primaryTargetTextNode);
+        };
+        
+        primaryTargetAltStyle.StyleChanged += () => {
+            primaryTargetAltStyle.Save("TargetCastBarCountdown.PrimaryTargetAlt.style.json");
+            primaryTargetAltStyle.ApplyStyle(primaryTargetAltTextNode);
+        };
+        
+        focusTargetStyle.StyleChanged += () => {
+            focusTargetStyle.Save("TargetCastBarCountdown.FocusTarget.style.json");
+            focusTargetStyle.ApplyStyle(focusTargetTextNode);
+        };
+        
+        castBarEnemyStyle.StyleChanged += () => {
+            castBarEnemyStyle.Save("TargetCastBarCountdown.CastBarEnemy.style.json");
+            castBarEnemyStyle.ApplyStyle(castBarEnemyTextNode);
+        };
+    }
+
+    private void LoadConfigWindow() {
+        if (config is null) return;
+        if (primaryTargetStyle is null) return;
+        if (primaryTargetAltStyle is null) return;
+        if (focusTargetStyle is null) return;
+        if (castBarEnemyStyle is null) return;
+
+        configWindow = new ConfigAddon {
+            InternalName = "TargetCastBarConfig",
+            Title = "Target Castbar Countdown Config",
+            Config = config,
+        };
+
+        configWindow.AddCategory("Toggles")
+            .AddCheckbox("Show on Primary Target Castbar", nameof(config.PrimaryTarget))
+            .AddCheckbox("Show on Focus Target Castbar", nameof(config.FocusTarget))
+            .AddCheckbox("Show on Nameplate Target Castbar", nameof(config.NamePlateTargets));
+
+        configWindow.AddCategory("Target Castbar Style (Combined)")
+            .AddNodeConfig(primaryTargetStyle);
+
+        configWindow.AddCategory("Target Castbar Style (Separate)")
+            .AddNodeConfig(primaryTargetAltStyle);
+        
+        configWindow.AddCategory("Focus Target Castbar Style")
+            .AddNodeConfig(focusTargetStyle);
+        
+        configWindow.AddCategory("Nameplate Castbar Style")
+            .AddNodeConfig(castBarEnemyStyle);
+        
+        OpenConfigAction = configWindow.Toggle;
+    }
+
     private static TextNode BuildTextNode(Vector2 position) => new() {
         Size = new Vector2(82.0f, 22.0f),
         Position = position,
@@ -115,27 +142,19 @@ public unsafe class TargetCastBarCountdown : GameModification {
         switch (addon->NameString) {
             case "_TargetInfoCastBar":
                 primaryTargetTextNode = BuildTextNode(new Vector2(0.0f, 16.0f));
-
-                primaryTargetTextNode.Load(PrimaryTargetStylePath);
-                ForceConfigValues(primaryTargetTextNode, PrimaryTargetStylePath);
+                primaryTargetStyle?.ApplyStyle(primaryTargetTextNode);
                 primaryTargetTextNode.AttachNode(addon->GetNodeById(7));
                 break;
 
             case "_TargetInfo":
                 primaryTargetAltTextNode = BuildTextNode(new Vector2(0.0f, -16.0f));
-
-                primaryTargetAltTextNode.Load(PrimaryTargetAltStylePath);
-                ForceConfigValues(primaryTargetAltTextNode, PrimaryTargetAltStylePath);
-
+                primaryTargetAltStyle?.ApplyStyle(primaryTargetAltTextNode);
                 primaryTargetAltTextNode.AttachNode(addon->GetNodeById(15));
                 break;
 
             case "_FocusTargetInfo":
                 focusTargetTextNode = BuildTextNode(new Vector2(0.0f, -16.0f));
-
-                focusTargetTextNode.Load(FocusTargetStylePath);
-                ForceConfigValues(focusTargetTextNode, FocusTargetStylePath);
-
+                focusTargetStyle?.ApplyStyle(focusTargetTextNode);
                 focusTargetTextNode.AttachNode(addon->GetNodeById(8));
                 break;
 
@@ -153,8 +172,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
                     newNode.FontSize = 12;
                     
                     castBarEnemyTextNode[index] = newNode;
-                    newNode.Load(CastBarEnemyStylePath);
-                    ForceConfigValues(castBarEnemyTextNode[index]!, CastBarEnemyStylePath);
+                    castBarEnemyStyle?.ApplyStyle(newNode);
 
                     var castBarNode = (AtkComponentNode*)info.CastBarNode;
                     newNode.AttachNode(castBarNode->SearchNodeById<AtkResNode>(7));
@@ -250,15 +268,4 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
     private static IBattleChara? GetEntity(uint entityId)
         => Services.ObjectTable.CharacterManagerObjects.FirstOrDefault(obj => obj.EntityId == entityId) as IBattleChara;
-
-    // Certain config options are no longer provided, but may have still been saved in an invalid state
-    // This will force the correct default values and save them.
-    private static void ForceConfigValues(TextNode node, string filePath) {
-        if (!node.IsVisible || node.MultiplyColor != Vector3.One) {
-            node.IsVisible = true;
-            node.MultiplyColor = Vector3.One;
-        
-            node.Save(filePath);
-        }
-    }
 }

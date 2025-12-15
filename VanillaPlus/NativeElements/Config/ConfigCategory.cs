@@ -190,21 +190,17 @@ public class ConfigCategory : IDisposable {
         return this;
     }
 
-    public ConfigCategory AddTextNodeConfig(string styleFilePath, NodeConfigEnum configOptions) {
+    public ConfigCategory AddNodeConfig(TextNodeStyle primaryTargetStyle) {
         configEntries.Add(new TextNodeConfig {
-            ConfigOptions = configOptions,
-            FilePath = styleFilePath,
-            Config = ConfigObject,
+            StyleObject = primaryTargetStyle,
         });
 
         return this;
     }
 
-    public ConfigCategory AddNodeConfig(string styleFilePath, NodeConfigEnum configOptions) {
-        configEntries.Add(new NodeConfig<ResNode> {
-            ConfigOptions = configOptions,
-            FilePath = styleFilePath,
-            Config = ConfigObject,
+    public ConfigCategory AddNodeConfig(NodeStyle nodeStyle) {
+        configEntries.Add(new NodeConfig<NodeStyle> {
+            StyleObject = nodeStyle,
         });
 
         return this;

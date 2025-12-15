@@ -9,7 +9,7 @@ using KamiToolKit.Premade.Nodes;
 
 namespace VanillaPlus.NativeElements.Config.NodeEntries;
 
-public class TextNodeConfig : NodeConfig<TextNode> {
+public class TextNodeConfig : NodeConfig<TextNodeStyle> {
 
     private ColorPickerAddon? colorPickerAddon;
 
@@ -29,19 +29,17 @@ public class TextNodeConfig : NodeConfig<TextNode> {
         colorPickerAddon = null;
     }
 
-    protected override SimpleComponentNode? BuildOption(NodeConfigEnum configOption) => configOption switch {
-        NodeConfigEnum.TextColor => BuildTextColor(),
-        NodeConfigEnum.TextOutlineColor => BuildTextOutlineColor(),
-        NodeConfigEnum.TextSize => BuildTextSize(),
-        NodeConfigEnum.TextFont => BuildTextFont(),
-        NodeConfigEnum.TextAlignment => BuildTextAlignment(),
-
-        _ => base.BuildOption(configOption),
-    };
+    protected override void BuildOptions(VerticalListNode container) {
+        base.BuildOptions(container);
+        
+        container.AddNode(BuildTextColor());
+        container.AddNode(BuildTextOutlineColor());
+        container.AddNode(BuildTextSize());
+        container.AddNode(BuildTextFont());
+        container.AddNode(BuildTextAlignment());
+    }
 
     private SimpleComponentNode? BuildTextColor() {
-        if (StyleObject is null) return null;
-
         var container = new SimpleComponentNode {
             Height = 28.0f,
         };
@@ -83,8 +81,6 @@ public class TextNodeConfig : NodeConfig<TextNode> {
     }
 
     private SimpleComponentNode? BuildTextOutlineColor() {
-        if (StyleObject is null) return null;
-
         var container = new SimpleComponentNode {
             Height = 28.0f,
         };
@@ -125,9 +121,7 @@ public class TextNodeConfig : NodeConfig<TextNode> {
         return container;
     }
 
-    private LabelLayoutNode? BuildTextSize() {
-        if (StyleObject is null) return null;
-        
+    private LabelLayoutNode BuildTextSize() {
         var container = new LabelLayoutNode {
             Height = 28.0f,
             FillWidth = true,
@@ -153,9 +147,7 @@ public class TextNodeConfig : NodeConfig<TextNode> {
         return container;
     }
 
-    private LabelLayoutNode? BuildTextFont() {
-        if (StyleObject is null) return null;
-        
+    private LabelLayoutNode BuildTextFont() {
         var container = new LabelLayoutNode {
             Height = 28.0f,
             FillWidth = true,
@@ -183,9 +175,7 @@ public class TextNodeConfig : NodeConfig<TextNode> {
         return container;
     }
 
-    private LabelLayoutNode? BuildTextAlignment() {
-        if (StyleObject is null) return null;
-        
+    private LabelLayoutNode BuildTextAlignment() {
         var container = new LabelLayoutNode {
             Height = 28.0f,
             FillWidth = true,
