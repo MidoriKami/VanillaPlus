@@ -10,7 +10,7 @@ public unsafe class SampleGameModification : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Disable Title Screen Movie",
         Description = "Prevents the title screen from playing the introduction movie.",
-        Type = ModificationType.Debug,
+        Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
