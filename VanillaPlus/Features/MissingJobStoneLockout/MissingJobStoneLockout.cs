@@ -15,8 +15,8 @@ namespace VanillaPlus.Features.MissingJobStoneLockout;
 
 public unsafe class MissingJobStoneLockout : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Missing Job Stone Lockout",
-        Description = "Prevents queuing for a duty while you are missing a jobstone.",
+        DisplayName = Strings("ModificationDisplay_MissingJobStoneLockout"),
+        Description = Strings("ModificationDescription_MissingJobStoneLockout"),
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami", "KazWolfe" ],
         ChangeLog = [
@@ -67,8 +67,8 @@ public unsafe class MissingJobStoneLockout : GameModification {
             Origin = newNodeSize / 2.0f,
             AlignmentType = AlignmentType.Center,
             FontSize = 14,
-            String = "Missing Job Stone!",
-            TooltipString = "[VanillaPlus]: Click to disable lock",
+            String = Strings("MissingJobStone_WarningText"),
+            TooltipString = Strings("MissingJobStone_Tooltip"),
             DrawFlags = DrawFlags.ClickableCursor,
         };
         warningTextNode.AttachNode(animationContainer);
@@ -96,7 +96,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
                 animationContainer.IsVisible = false;
             }
 
-            warningTextNode.TooltipString = $"[VanillaPlus]: Click to disable lock\n{6 - clickCount} Clicks remaining";
+            warningTextNode.TooltipString = Strings("MissingJobStone_TooltipWithCountdown", 6 - clickCount);
             warningTextNode.ShowTooltip();
         });
     }

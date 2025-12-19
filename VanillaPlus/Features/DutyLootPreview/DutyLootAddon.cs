@@ -22,10 +22,9 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// The window that shows loot for a duty.
 /// </summary>
 public unsafe class DutyLootPreviewAddon : NativeAddon {
-    private const string NoItemsMessage = "No loot data found for this duty.\n\n" +
-                                          "Data is provided by a third party and may be incomplete.";
-    private const string NoResultsMessage = "No results";
-    private const string LoadingMessage = "Loading loot data...";
+    private static string NoItemsMessage => Strings("DutyLoot_NoItemsMessage");
+    private static string NoResultsMessage => Strings("DutyLoot_NoResultsMessage");
+    private static string LoadingMessage => Strings("DutyLoot_LoadingMessage");
 
     private DutyLootFilterBarNode? filterBarNode;
     private HorizontalLineNode? separatorNode;
@@ -125,12 +124,14 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         contextMenu.Clear();
 
         if (item.CanTryOn) {
-            contextMenu.AddItem("Try On", () => AgentTryon.TryOn(0, item.ItemId));
+            contextMenu.AddItem(Strings("DutyLoot_Context_TryOn"), () => AgentTryon.TryOn(0, item.ItemId));
         }
 
         var isFavorite = Config.FavoriteItems.Contains(item.ItemId);
         contextMenu.AddItem(new ContextMenuItem {
-            Name = isFavorite ? "Remove from Favorites" : "Add to Favorites",
+            Name = isFavorite
+                ? Strings("DutyLoot_Context_RemoveFavorite")
+                : Strings("DutyLoot_Context_AddFavorite"),
             OnClick = () => {
                 if (isFavorite) {
                     Config.FavoriteItems.Remove(item.ItemId);
@@ -142,9 +143,9 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
             },
         });
 
-        contextMenu.AddItem("Search for Item", () => ItemFinderModule.Instance()->SearchForItem(item.ItemId));
-        contextMenu.AddItem("Link", () => AgentChatLog.Instance()->LinkItem(item.ItemId));
-        contextMenu.AddItem("Search Recipes Using This Material", () => AgentRecipeProductList.Instance()->SearchForRecipesUsingItem(item.ItemId));
+        contextMenu.AddItem(Strings("DutyLoot_Context_SearchItem"), () => ItemFinderModule.Instance()->SearchForItem(item.ItemId));
+        contextMenu.AddItem(Strings("DutyLoot_Context_Link"), () => AgentChatLog.Instance()->LinkItem(item.ItemId));
+        contextMenu.AddItem(Strings("DutyLoot_Context_SearchRecipes"), () => AgentRecipeProductList.Instance()->SearchForRecipesUsingItem(item.ItemId));
 
         contextMenu.Open();
     }

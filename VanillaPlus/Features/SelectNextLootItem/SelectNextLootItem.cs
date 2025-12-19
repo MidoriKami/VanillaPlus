@@ -9,9 +9,8 @@ namespace VanillaPlus.Features.SelectNextLootItem;
 
 public unsafe class SelectNextLootItem : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Automatically Select Next Loot Item",
-        Description = "Automatically advance to the next loot item after clicking Need, Greed, or Pass.\n\n" +
-                      "Note: this modification does not automatically roll on loot.",
+        DisplayName = Strings("ModificationDisplay_SelectNextLootItem"),
+        Description = Strings("ModificationDescription_SelectNextLootItem"),
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

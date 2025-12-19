@@ -11,8 +11,8 @@ namespace VanillaPlus.Features.ListInventory;
 
 public class ListInventory : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Inventory List Window",
-        Description = "Adds a window that displays your inventory as a list, with toggleable filters.",
+        DisplayName = Strings("ModificationDisplay_ListInventory"),
+        Description = Strings("ModificationDescription_ListInventory"),
         Type = ModificationType.NewWindow,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
@@ -30,18 +30,33 @@ public class ListInventory : GameModification {
     private string searchString = string.Empty;
     private bool filterReversed;
     private bool updateRequested;
+    private static string filterAlphabeticallyLabel => Strings("ListInventory_FilterAlphabetically");
+    private static string filterQuantityLabel => Strings("ListInventory_FilterQuantity");
+    private static string filterLevelLabel => Strings("ListInventory_FilterLevel");
+    private static string filterItemLevelLabel => Strings("ListInventory_FilterItemLevel");
+    private static string filterRarityLabel => Strings("ListInventory_FilterRarity");
+    private static string filterItemIdLabel => Strings("ListInventory_FilterItemId");
+    private static string filterItemCategoryLabel => Strings("ListInventory_FilterItemCategory");
 
     public override string ImageName => "ListInventory.png";
 
     public override void OnEnable() {
         addonListInventory = new SearchableNodeListAddon {
             InternalName = "ListInventory",
-            Title = "Inventory List",
+            Title = Strings("ListInventory_Title"),
             Size = new Vector2(450.0f, 700.0f),
             OnFilterUpdated = OnFilterUpdated,
             OnSearchUpdated = OnSearchUpdated,
             UpdateListFunction = OnListUpdated,
-            DropDownOptions = ["Alphabetically", "Quantity", "Level", "Item Level", "Rarity", "Item Id", "Item Category"],
+            DropDownOptions = [
+                filterAlphabeticallyLabel,
+                filterQuantityLabel,
+                filterLevelLabel,
+                filterItemLevelLabel,
+                filterRarityLabel,
+                filterItemIdLabel,
+                filterItemCategoryLabel,
+            ],
             OpenCommand = "/listinventory",
         };
 
@@ -105,13 +120,13 @@ public class ListInventory : GameModification {
         // Note: Compares in opposite direction to be descending instead of ascending, except for alphabetically
 
         var result = filterString switch {
-            "Alphabetically" => string.CompareOrdinal(leftItem.Name, rightItem.Name),
-            "Level" => rightItem.Level.CompareTo(leftItem.Level),
-            "Item Level" => rightItem.ItemLevel.CompareTo(leftItem.ItemLevel),
-            "Rarity" => rightItem.Rarity.CompareTo(leftItem.Rarity),
-            "Item Id" => rightItem.Item.ItemId.CompareTo(leftItem.Item.ItemId),
-            "Item Category" => rightItem.UiCategory.CompareTo(leftItem.UiCategory),
-            "Quantity" => rightItem.ItemCount.CompareTo(leftItem.ItemCount),
+            var s when s == filterAlphabeticallyLabel  => string.CompareOrdinal(leftItem.Name, rightItem.Name),
+            var s when s == filterLevelLabel => rightItem.Level.CompareTo(leftItem.Level),
+            var s when s == filterItemLevelLabel  => rightItem.ItemLevel.CompareTo(leftItem.ItemLevel),
+            var s when s == filterRarityLabel  => rightItem.Rarity.CompareTo(leftItem.Rarity),
+            var s when s == filterItemIdLabel => rightItem.Item.ItemId.CompareTo(leftItem.Item.ItemId),
+            var s when s == filterItemCategoryLabel => rightItem.UiCategory.CompareTo(leftItem.UiCategory),
+            var s when s == filterQuantityLabel => rightItem.ItemCount.CompareTo(leftItem.ItemCount),
             _ => string.CompareOrdinal(leftItem.Name, rightItem.Name),
         };
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text;
 using Dalamud.Plugin.Services;
@@ -13,8 +14,8 @@ namespace VanillaPlus.Features.LocationDisplay;
 
 public unsafe class LocationDisplay : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Location Display",
-        Description = "Displays your current location in the server information bar.",
+        DisplayName = Strings("ModificationDisplay_LocationDisplay"),
+        Description = Strings("ModificationDescription_LocationDisplay"),
         Authors = [ "MidoriKami" ],
         Type = ModificationType.UserInterface,
         ChangeLog = [
@@ -53,7 +54,7 @@ public unsafe class LocationDisplay : GameModification {
 
         configWindow = new LocationDisplayConfigAddon {
             InternalName = "LocationDisplayConfig",
-            Title = "Location Display Config",
+            Title = Strings("LocationDisplay_ConfigTitle"),
             Config = config,
         };
 
@@ -61,7 +62,7 @@ public unsafe class LocationDisplay : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
         
-        dtrBarEntry = Services.DtrBar.Get("VanillaPlus - LocationDisplay");
+        dtrBarEntry = Services.DtrBar.Get(Strings("LocationDisplay_DtrEntryName"));
         dtrBarEntry.OnClick = _ => configWindow.Toggle();
 
         locationChanged = true;
@@ -218,7 +219,7 @@ public unsafe class LocationDisplay : GameModification {
 
 		if (lastHousingWard != ward) {
 			lastHousingWard = ward;
-			currentWard = $"Ward {ward}";
+			currentWard = Strings("LocationDisplay_WardFormat", ward);
 			locationChanged = true;
 		}
 	}
@@ -256,18 +257,21 @@ public unsafe class LocationDisplay : GameModification {
 		var room = housingManager->GetCurrentRoom();
 		var division = housingManager->GetCurrentDivision();
 
-		strings.Add($"Ward {ward}");
-		if (division == 2 || plot is >= 30 or -127) strings.Add($"Subdivision");
+		strings.Add(Strings("LocationDisplay_WardFormat", ward));
+		if (division == 2 || plot is >= 30 or -127) strings.Add(Strings("LocationDisplay_SubdivisionLabel"));
 
 		switch (plot) {
 			case < -1:
-				strings.Add($"Apartment {(room == 0 ? $"Lobby" : $"{room}")}");
+				var apartmentValue = room == 0
+					? Strings("LocationDisplay_ApartmentFormat", Strings("LocationDisplay_ApartmentLobby"))
+					: Strings("LocationDisplay_ApartmentFormat", room);
+				strings.Add(apartmentValue);
 				break;
 
 			case > -1:
-				strings.Add($"Plot {plot + 1}");
+				strings.Add(Strings("LocationDisplay_PlotFormat", plot + 1));
 				if (room > 0) {
-					strings.Add($"Room {room}");
+					strings.Add(Strings("LocationDisplay_RoomFormat", room));
 				}
 				break;
 		}

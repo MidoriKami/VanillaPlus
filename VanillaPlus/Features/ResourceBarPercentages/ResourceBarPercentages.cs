@@ -12,8 +12,8 @@ namespace VanillaPlus.Features.ResourceBarPercentages;
 
 public unsafe class ResourceBarPercentages : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Show Resource Bars as Percentages",
-        Description = "Displays HP, MP, GP and CP bars as percentages instead of raw values.",
+        DisplayName = Strings("ModificationDisplay_ResourceBarPercentages"),
+        Description = Strings("ModificationDescription_ResourceBarPercentages"),
         Type = ModificationType.UserInterface,
         Authors = [ "Zeffuro" ],
         ChangeLog = [
@@ -38,37 +38,37 @@ public unsafe class ResourceBarPercentages : GameModification {
         configWindow = new ConfigAddon {
             Size = new Vector2(400.0f, 300.0f),
             InternalName = "ResourcePercentageConfig",
-            Title = "Resource Bar Percentages Config",
+            Title = Strings("ResourceBarPercentages_ConfigTitle"),
             Config = config,
         };
 
-        configWindow.AddCategory("Party List")
-            .AddCheckbox("Show on Party List", nameof(config.PartyListEnabled))
+        configWindow.AddCategory(Strings("ResourceBarPercentages_CategoryPartyList"))
+            .AddCheckbox(Strings("ResourceBarPercentages_ShowOnPartyList"), nameof(config.PartyListEnabled))
             .AddIndent()
-            .AddCheckbox("Apply to Player", nameof(config.PartyListSelf))
-            .AddCheckbox("Apply to Party Members", nameof(config.PartyListMembers))
-            .AddCheckbox("Change HP", nameof(config.PartyListHpEnabled))
-            .AddCheckbox("Change MP", nameof(config.PartyListMpEnabled))
-            .AddCheckbox("Change GP", nameof(config.PartyListGpEnabled))
-            .AddCheckbox("Change CP", nameof(config.PartyListCpEnabled));
+            .AddCheckbox(Strings("ResourceBarPercentages_ApplyToPlayer"), nameof(config.PartyListSelf))
+            .AddCheckbox(Strings("ResourceBarPercentages_ApplyToPartyMembers"), nameof(config.PartyListMembers))
+            .AddCheckbox(Strings("ResourceBarPercentages_ChangeHp"), nameof(config.PartyListHpEnabled))
+            .AddCheckbox(Strings("ResourceBarPercentages_ChangeMp"), nameof(config.PartyListMpEnabled))
+            .AddCheckbox(Strings("ResourceBarPercentages_ChangeGp"), nameof(config.PartyListGpEnabled))
+            .AddCheckbox(Strings("ResourceBarPercentages_ChangeCp"), nameof(config.PartyListCpEnabled));
 
-        configWindow.AddCategory("Parameter Widget")
-            .AddCheckbox("Show on Parameter Widget", nameof(config.ParameterWidgetEnabled))
+        configWindow.AddCategory(Strings("ResourceBarPercentages_CategoryParameterWidget"))
+            .AddCheckbox(Strings("ResourceBarPercentages_ShowOnParameterWidget"), nameof(config.ParameterWidgetEnabled))
             .AddIndent()
-            .AddCheckbox("Change HP", nameof(config.ParameterHpEnabled))
-            .AddCheckbox("Change MP", nameof(config.ParameterMpEnabled))
-            .AddCheckbox("Change GP", nameof(config.ParameterGpEnabled))
-            .AddCheckbox("Change CP", nameof(config.ParameterCpEnabled));
+            .AddCheckbox(Strings("ResourceBarPercentages_ChangeHp"), nameof(config.ParameterHpEnabled))
+            .AddCheckbox(Strings("ResourceBarPercentages_ChangeMp"), nameof(config.ParameterMpEnabled))
+            .AddCheckbox(Strings("ResourceBarPercentages_ChangeGp"), nameof(config.ParameterGpEnabled))
+            .AddCheckbox(Strings("ResourceBarPercentages_ChangeCp"), nameof(config.ParameterCpEnabled));
 
-        configWindow.AddCategory("Extra")
-            .AddCheckbox("Dead or Alive Mode", nameof(config.DeadOrAliveModeEnabled));
+        configWindow.AddCategory(Strings("ResourceBarPercentages_CategoryExtra"))
+            .AddCheckbox(Strings("ResourceBarPercentages_DeadOrAliveMode"), nameof(config.DeadOrAliveModeEnabled));
 
-        configWindow.AddCategory("Percentage Sign")
-            .AddCheckbox("Show Percentage Sign %", nameof(config.PercentageSignEnabled));
+        configWindow.AddCategory(Strings("ResourceBarPercentages_CategoryPercentageSign"))
+            .AddCheckbox(Strings("ResourceBarPercentages_ShowPercentageSign"), nameof(config.PercentageSignEnabled));
 
-        configWindow.AddCategory("Percentage Format")
-            .AddIntSlider("Decimal Places", 0, 2, nameof(config.DecimalPlaces))
-            .AddCheckbox("Show Decimals Only While Below 100%", nameof(config.ShowDecimalsBelowHundredOnly));
+        configWindow.AddCategory(Strings("ResourceBarPercentages_CategoryPercentageFormat"))
+            .AddIntSlider(Strings("ResourceBarPercentages_DecimalPlaces"), 0, 2, nameof(config.DecimalPlaces))
+            .AddCheckbox(Strings("ResourceBarPercentages_ShowDecimalsBelowHundred"), nameof(config.ShowDecimalsBelowHundredOnly));
         
         OpenConfigAction = configWindow.Toggle;
 
@@ -156,7 +156,7 @@ public unsafe class ResourceBarPercentages : GameModification {
 
         if (hudData.IsSelf() && config.PartyListSelf || !hudData.IsSelf() && !revertToDefault) {
             if (config.DeadOrAliveModeEnabled) {
-                hpGaugeTextNode->SetText(health.Current > 0 ? "Alive" : "Dead");
+                hpGaugeTextNode->SetText(health.Current > 0 ? Strings("ResourceBarPercentages_StatusAlive") : Strings("ResourceBarPercentages_StatusDead"));
             }
             else {
                 hpGaugeTextNode->SetText(GetCorrectText((uint)health.Current, (uint)health.Max, config.PartyListHpEnabled));

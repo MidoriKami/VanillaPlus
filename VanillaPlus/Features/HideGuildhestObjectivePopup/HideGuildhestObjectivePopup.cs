@@ -8,9 +8,8 @@ namespace VanillaPlus.Features.HideGuildhestObjectivePopup;
 
 public class HideGuildhestObjectivePopup : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Hide Guildhest Objective Popup",
-        Description = "When starting a guildhest this modification will prevent the popup window that contains the instructions on how to do the Guildhest.\n\n" +
-                      "This feature is not recommended if this is your first time doing Guildhests.",
+        DisplayName = Strings("ModificationDisplay_HideGuildhestObjectivePopup"),
+        Description = Strings("ModificationDescription_HideGuildhestObjectivePopup"),
         Authors = ["MidoriKami"],
         Type = ModificationType.GameBehavior,
         ChangeLog = [

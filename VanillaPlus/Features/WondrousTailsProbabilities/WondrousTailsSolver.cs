@@ -158,24 +158,27 @@ public sealed unsafe partial class PerfectTails {
 
         // > 9 returns Error {-1,-1,-1} by the solver
         var values = Solve(GameState);
+        var lineChancesLabel = Strings("WondrousTailsProbabilities_LineChancesLabel");
+        var shuffleAverageLabel = Strings("WondrousTailsProbabilities_ShuffleAverageLabel");
 
         double[]? samples = null;
         if (stickersPlaced is > 0 and <= 7)
             samples = GetSample(stickersPlaced);
 
         if (values == Error) {
+            var errorPlaceholder = Strings("WondrousTailsProbabilities_ErrorPlaceholder");
             return new SeStringBuilder()
-                .AddText("Line Chances: ")
-                .AddUiForeground("error ", 704)
-                .AddUiForeground("error ", 704)
-                .AddUiForeground("error ", 704)
+                .AddText(lineChancesLabel)
+                .AddUiForeground(errorPlaceholder, 704)
+                .AddUiForeground(errorPlaceholder, 704)
+                .AddUiForeground(errorPlaceholder, 704)
                 .Build()
                 .EncodeWithNullTerminator();
         }
 
         var valuePayloads = StringFormatDoubles(values);
         var seString = new SeStringBuilder()
-            .AddText("Line Chances: ");
+            .AddText(lineChancesLabel);
 
         if (samples != null) {
             foreach (var (value, sample, valuePayload) in Enumerable.Range(0, values.Length).Select(i => (values[i], samples[i], valuePayloads[i]))) {
@@ -199,7 +202,8 @@ public sealed unsafe partial class PerfectTails {
                 seString.AddText("  ");
             }
 
-            seString.AddText("\rShuffle Average: ");
+            seString.AddText("\r");
+            seString.AddText(shuffleAverageLabel);
             seString.AddText(string.Join(" ", StringFormatDoubles(samples)));
         }
         else {

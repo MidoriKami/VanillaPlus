@@ -10,8 +10,8 @@ namespace VanillaPlus.Features.ClearTextInputs;
 
 public unsafe class ClearTextInputs : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Clear Text Inputs",
-        Description = "Allows you to clear the text in a text input, by right clicking the text input.",
+        DisplayName = Strings("ModificationDisplay_ClearTextInputs"),
+        Description = Strings("ModificationDescription_ClearTextInputs"),
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

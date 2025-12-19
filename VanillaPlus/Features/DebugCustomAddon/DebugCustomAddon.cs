@@ -10,8 +10,8 @@ namespace VanillaPlus.Features.DebugCustomAddon;
 /// </summary>
 public class DebugCustomAddon : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Debug CustomAddon",
-        Description = "A module for playing around and testing VanillaPlus features",
+        DisplayName = Strings("ModificationDisplay_DebugCustomAddon"),
+        Description = Strings("ModificationDescription_DebugCustomAddon"),
         Type = ModificationType.Debug,
         Authors = [ "YourNameHere" ],
         ChangeLog = [
@@ -24,7 +24,7 @@ public class DebugCustomAddon : GameModification {
     public override void OnEnable() {
         debugAddon = new DebugAddon {
             InternalName = "DebugAddon",
-            Title = "Debug Addon Window",
+            Title = Strings("DebugCustomAddon_Title"),
             Size = new Vector2(500.0f, 500.0f),
         };
 

@@ -13,8 +13,8 @@ namespace VanillaPlus.Features.DraggableWindowDeadSpace;
 
 public unsafe class DraggableWindowDeadSpace : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Draggable Window Dead Space",
-        Description = "Allows clicking and dragging on window dead space to move the window.",
+        DisplayName = Strings("ModificationDisplay_DraggableWindowDeadSpace"),
+        Description = Strings("ModificationDescription_DraggableWindowDeadSpace"),
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

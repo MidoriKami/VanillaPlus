@@ -14,9 +14,8 @@ namespace VanillaPlus.Features.FadeUnavailableActions;
 
 public unsafe class FadeUnavailableActions : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Fade Unavailable Actions",
-        Description = "Fades hotbar slots when the action is not able to be cast due to missing resources, out of range, or just on cooldown.\n\n" +
-                      "Additionally fades actions that are not available because you are sync'd down.",
+        DisplayName = Strings("ModificationDisplay_FadeUnavailableActions"),
+        Description = Strings("ModificationDescription_FadeUnavailableActions"),
         Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
         ChangeLog = [
@@ -38,21 +37,22 @@ public unsafe class FadeUnavailableActions : GameModification {
         actionCache = [];
 
         config = FadeUnavailableActionsConfig.Load();
+
         configWindow = new ConfigAddon {
             Size = new Vector2(400.0f, 250.0f),
             InternalName = "FadeUnavailableConfig",
-            Title = "Fade Unavailable Actions Config",
+            Title = Strings("FadeUnavailableActions_ConfigTitle"),
             Config = config,
         };
 
-        configWindow.AddCategory("Style Settings")
-            .AddIntSlider("Fade Percentage", 0, 90, nameof(config.FadePercentage))
-            .AddIntSlider("Redden Percentage", 5, 100,  nameof(config.ReddenPercentage));
+        configWindow.AddCategory(Strings("FadeUnavailableActions_CategoryStyleSettings"))
+            .AddIntSlider(Strings("FadeUnavailableActions_LabelFadePercentage"), 0, 90, nameof(config.FadePercentage))
+            .AddIntSlider(Strings("FadeUnavailableActions_LabelReddenPercentage"), 5, 100, nameof(config.ReddenPercentage));
 
-        configWindow.AddCategory("Feature Toggles")
-            .AddCheckbox("Apply Transparency to Frame", nameof(config.ApplyToFrame))
-            .AddCheckbox("Apply Only to Sync'd Actions", nameof(config.ApplyToSyncActions))
-            .AddCheckbox("Redden Skills out of Range", nameof(config.ReddenOutOfRange));
+        configWindow.AddCategory(Strings("FadeUnavailableActions_CategoryFeatureToggles"))
+            .AddCheckbox(Strings("FadeUnavailableActions_LabelApplyToFrame"), nameof(config.ApplyToFrame))
+            .AddCheckbox(Strings("FadeUnavailableActions_LabelApplyToSync"), nameof(config.ApplyToSyncActions))
+            .AddCheckbox(Strings("FadeUnavailableActions_LabelReddenOutOfRange"), nameof(config.ReddenOutOfRange));
         
         OpenConfigAction = configWindow.Toggle;
 

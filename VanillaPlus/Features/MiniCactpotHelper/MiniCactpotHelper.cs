@@ -15,8 +15,8 @@ namespace VanillaPlus.Features.MiniCactpotHelper;
 
 public unsafe class MiniCactpotHelper : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Mini Cactpot Helper",
-        Description = "Indicates which Mini Cactpot spots you should reveal next.",
+        DisplayName = Strings("ModificationDisplay_MiniCactpotHelper"),
+        Description = Strings("ModificationDescription_MiniCactpotHelper"),
         Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
         ChangeLog = [
@@ -47,19 +47,19 @@ public unsafe class MiniCactpotHelper : GameModification {
 
         configWindow = new ConfigAddon {
             InternalName = "MiniCactpotConfig",
-            Title = "Mini Cactpot Helper Config",
+            Title = Strings("Title_MiniCactpotConfig"),
             Config = config,
         };
 
-        configWindow.AddCategory("Animations")
-            .AddCheckbox("Enable Animations", nameof(config.EnableAnimations));
+        configWindow.AddCategory(Strings("ConfigCategory_Animations"))
+            .AddCheckbox(Strings("ConfigLabel_EnableAnimations"), nameof(config.EnableAnimations));
 
-        configWindow.AddCategory("Icon")
-            .AddMultiSelectIcon("Icon", nameof(config.IconId), true, 61332, 90452, 234008);
+        configWindow.AddCategory(Strings("ConfigCategory_Icon"))
+            .AddMultiSelectIcon(Strings("ConfigLabel_Icon"), nameof(config.IconId), true, 61332, 90452, 234008);
 
-        configWindow.AddCategory("Colors")
-            .AddColorEdit("Button", nameof(config.ButtonColor), KnownColor.White.Vector() with { W = 0.8f })
-            .AddColorEdit("Lane", nameof(config.LaneColor), KnownColor.White.Vector());
+        configWindow.AddCategory(Strings("ConfigCategory_Colors"))
+            .AddColorEdit(Strings("ConfigLabel_ButtonColor"), nameof(config.ButtonColor), KnownColor.White.Vector() with { W = 0.8f })
+            .AddColorEdit(Strings("ConfigLabel_LaneColor"), nameof(config.LaneColor), KnownColor.White.Vector());
 
         config.OnSave += ApplyConfigStyle;
 
@@ -103,11 +103,11 @@ public unsafe class MiniCactpotHelper : GameModification {
 		};
 		gameGrid.AttachNode(buttonContainerNode);
 
-		configButton = new CircleButtonNode {
+        configButton = new CircleButtonNode {
 			Position = new Vector2(8.0f, 8.0f),
 			Size = new Vector2(32.0f, 32.0f),
 			Icon = ButtonIcon.GearCog,
-			Tooltip = "Configure EzMiniCactpot Plugin",
+            Tooltip = Strings("Tooltip_ConfigEzMiniCactpot"),
 			OnClick = () => configWindow.Toggle(),
 		};
 		configButton.AttachNode(buttonContainerNode);

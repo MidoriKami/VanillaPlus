@@ -6,8 +6,8 @@ namespace VanillaPlus.Features.ArmourySearchBar;
 
 public class ArmourySearchBar : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Armoury Search Bar",
-        Description = "Adds a search bar to the armoury window.",
+        DisplayName = Strings("ModificationDisplay_ArmourySearchBar"),
+        Description = Strings("ModificationDescription_ArmourySearchBar"),
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Inventory,
         Authors = [ "MidoriKami" ],

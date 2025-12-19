@@ -22,8 +22,8 @@ namespace VanillaPlus.Features.InstancedWaymarks;
 
 public unsafe class InstancedWaymarks : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Instanced Waymarks",
-        Description = "Enables the use of all saved Waymark Slots per duty, instead of sharing them across all duties, with the option to name each slot.",
+        DisplayName = Strings("ModificationDisplay_InstancedWaymarks"),
+        Description = Strings("ModificationDescription_InstancedWaymarks"),
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
@@ -45,7 +45,7 @@ public unsafe class InstancedWaymarks : GameModification {
         renameWindow ??= new RenameAddon {
             Size = new Vector2(250.0f, 150.0f),
             InternalName = "WaymarkRename",
-            Title = "Waymark Rename Window",
+            Title = Strings("InstancedWaymarks_RenameWindowTitle"),
             AutoSelectAll = true,
         };
         
@@ -91,7 +91,7 @@ public unsafe class InstancedWaymarks : GameModification {
         ref var slotMarkerData = ref FieldMarkerModule.Instance()->Presets[slotClicked];
 
         args.AddMenuItem(new MenuItem {
-            Name = "Rename",
+            Name = Strings("InstancedWaymarks_RenameMenuLabel"),
             OnClicked = RenameContextMenuAction,
             UseDefaultPrefix = true,
             IsEnabled =

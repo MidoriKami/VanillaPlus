@@ -9,8 +9,8 @@ namespace VanillaPlus.Features.SkipTeleportConfirm;
 
 public unsafe class SkipTeleportConfirm : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Skip Teleport Confirm",
-        Description = "Skips the 'Teleport to [Location] for [amount] gil?' popup when using the map to teleport.",
+        DisplayName = Strings("ModificationDisplay_SkipTeleportConfirm"),
+        Description = Strings("ModificationDescription_SkipTeleportConfirm"),
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

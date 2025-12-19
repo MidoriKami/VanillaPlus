@@ -18,8 +18,8 @@ namespace VanillaPlus.Features.WondrousTailsProbabilities;
 
 public unsafe class WondrousTailsProbabilities : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Wondrous Tails Probabilities",
-        Description = "Displays current line probabilities and average reroll probabilities in the Wondrous Tails Book.",
+        DisplayName = Strings("ModificationDisplay_WondrousTailsProbabilities"),
+        Description = Strings("ModificationDescription_WondrousTailsProbabilities"),
         Authors = [ "MidoriKami" ],
         Type = ModificationType.UserInterface,
         ChangeLog = [

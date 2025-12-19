@@ -12,9 +12,8 @@ namespace VanillaPlus.Features.RecentlyLootedWindow;
 
 public unsafe class RecentlyLootedWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Recently Looted Items Window",
-        Description = "Adds a window that shows a scrollable list of all items that you have looted this session.\n\n" +
-                      "Can only show items looted after this feature is enabled.",
+        DisplayName = Strings("ModificationDisplay_RecentlyLootedWindow"),
+        Description = Strings("ModificationDescription_RecentlyLootedWindow"),
         Type = ModificationType.NewWindow,
         Authors = ["MidoriKami"],
         ChangeLog = [
@@ -38,7 +37,7 @@ public unsafe class RecentlyLootedWindow : GameModification {
         addonRecentlyLooted = new NodeListAddon {
             Size = new Vector2(250.0f, 350.0f),
             InternalName = "RecentlyLooted",
-            Title = "Recently Looted Items",
+            Title = Strings("RecentlyLootedWindow_Title"),
             OpenCommand = "/recentloot",
             UpdateListFunction = UpdateList,
         };

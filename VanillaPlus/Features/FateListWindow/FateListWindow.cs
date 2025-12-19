@@ -10,8 +10,8 @@ namespace VanillaPlus.Features.FateListWindow;
 
 public class FateListWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Fate List Window",
-        Description = "Displays a list of all fates that are currently active in the current zone.",
+        DisplayName = Strings("ModificationDisplay_FateListWindow"),
+        Description = Strings("ModificationDescription_FateListWindow"),
         Type = ModificationType.NewWindow,
         Authors = ["MidoriKami"],
         ChangeLog = [
@@ -29,7 +29,7 @@ public class FateListWindow : GameModification {
         addonFateList = new NodeListAddon {
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "FateList",
-            Title = "Fate List",
+            Title = Strings("FateListWindow_Title"),
             OpenCommand = "/fatelist",
             UpdateListFunction = UpdateList,
         };

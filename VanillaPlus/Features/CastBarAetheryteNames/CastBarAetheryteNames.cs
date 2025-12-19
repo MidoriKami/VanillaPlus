@@ -11,8 +11,8 @@ namespace VanillaPlus.Features.CastBarAetheryteNames;
 
 public unsafe class CastBarAetheryteNames : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Cast Bar Aetheryte Names",
-        Description = "Replaces the name of the action 'Teleport' with the Aetheryte name of your destination.",
+        DisplayName = Strings("ModificationDisplay_CastBarAetheryteNames"),
+        Description = Strings("ModificationDescription_CastBarAetheryteNames"),
         Authors = ["Haselnussbomber"],
         Type = ModificationType.GameBehavior,
         ChangeLog = [

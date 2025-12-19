@@ -35,7 +35,7 @@ public class AddonModificationBrowser : NativeAddon {
     
     private readonly AddonChangelogBrowser? changelogBrowser = new() {
         InternalName = "VPChangelog",
-        Title = "Vanilla Plus Changelog Browser",
+        Title = Strings("ChangelogBrowserTitle"),
         Size = new Vector2(450.0f, 400.0f),
     };
 
@@ -111,7 +111,7 @@ public class AddonModificationBrowser : NativeAddon {
         
         searchBoxNode = new TextInputNode {
             OnInputReceived = OnSearchBoxInputReceived,
-            PlaceholderString = "Search . . .",
+            PlaceholderString = Strings("SearchPlaceholder"),
             AutoSelectAll = true,
         };
         searchContainerNode.AddNode(searchBoxNode);
@@ -127,7 +127,7 @@ public class AddonModificationBrowser : NativeAddon {
             FontSize = 14,
             LineSpacing = 22,
             FontType = FontType.Axis,
-            String = "Please select an option on the left",
+            String = Strings("SelectionPrompt"),
             TextColor = ColorHelper.GetColor(1),
         };
         descriptionTextNode.AttachNode(descriptionContainerNode);
@@ -143,7 +143,7 @@ public class AddonModificationBrowser : NativeAddon {
         descriptionImageTextNode.AttachNode(descriptionContainerNode);
 
         changelogButtonNode = new TextButtonNode {
-            SeString = "Changelog",
+            SeString = Strings("ChangelogButtonLabel"),
             OnClick = OnChangelogButtonClicked,
             IsVisible = false,
         };
@@ -264,7 +264,9 @@ public class AddonModificationBrowser : NativeAddon {
 
         changelogButtonNode.IsVisible = true;
         descriptionVersionTextNode.IsVisible = true;
-        descriptionVersionTextNode.String = $"Version {selectedOption.Modification.Modification.ModificationInfo.Version}";
+        descriptionVersionTextNode.String = Strings(
+            "VersionLabelFormat",
+            selectedOption.Modification.Modification.ModificationInfo.Version);
     }
 
     private async void LoadModuleImage(string assetName) {
@@ -310,7 +312,7 @@ public class AddonModificationBrowser : NativeAddon {
         }
 
         descriptionTextNode.IsVisible = true;
-        descriptionTextNode.String = "Please select an option on the left";
+        descriptionTextNode.String = Strings("SelectionPrompt");
 
         descriptionImageFrame.Scale = Vector2.One;
         
@@ -327,7 +329,9 @@ public class AddonModificationBrowser : NativeAddon {
             }
 
             changelogBrowser.Modification = selectedOption.Modification.Modification;
-            changelogBrowser.Title = $"{selectedOption.ModificationInfo.DisplayName} Changelog";
+            changelogBrowser.Title = Strings(
+                "ChangelogTitleFormat",
+                selectedOption.ModificationInfo.DisplayName);
             changelogBrowser.Open();
         }
     }

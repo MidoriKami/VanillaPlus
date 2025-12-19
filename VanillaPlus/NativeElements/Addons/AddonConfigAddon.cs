@@ -34,7 +34,7 @@ public class AddonConfigAddon : NativeAddon {
 
         keybindAddon = new KeybindConfigAddon {
             InternalName = "KeybindConfig",
-            Title = "Keybind Config Window",
+            Title = Strings("AddonConfig_KeybindWindowTitle"),
             InitialKeybind = AddonConfig.Keybind,
             OnKeybindChanged = OnKeybindChanged,
         };
@@ -42,7 +42,7 @@ public class AddonConfigAddon : NativeAddon {
         keybindLabelNode = new CategoryTextNode {
             AlignmentType = AlignmentType.Left,
             Position = ContentStartPosition + new Vector2(0.0f, 10.0f),
-            String = "Keybind",
+            String = Strings("AddonConfig_KeybindLabel"),
         };
         keybindLabelNode.AttachNode(this);
 
@@ -69,7 +69,7 @@ public class AddonConfigAddon : NativeAddon {
         keybindEnableButtonNode = new TextButtonNode {
             Position = new Vector2(ContentStartPosition.X, keybindTextNode.Y + keybindTextNode.Height + 10.0f),
             Size = new Vector2(150.0f, 24.0f),
-            String = AddonConfig.KeybindEnabled ? "Disable" : "Enable",
+            String = AddonConfig.KeybindEnabled ? Strings("Common_Disable") : Strings("Common_Enable"),
             OnClick = OnKeybindToggleClicked,
         };
         keybindEnableButtonNode.AttachNode(this);
@@ -77,7 +77,7 @@ public class AddonConfigAddon : NativeAddon {
         editKeybindButtonNode = new TextButtonNode {
             Size = new Vector2(150.0f, 24.0f),
             Position = new Vector2(ContentStartPosition.X + ContentSize.X - 150.0f, keybindTextNode.Y + keybindTextNode.Height + 10.0f),
-            String = "Change Keybind",
+            String = Strings("AddonConfig_ChangeKeybind"),
             OnClick = keybindAddon.Toggle,
         };
         editKeybindButtonNode.AttachNode(this);
@@ -85,7 +85,7 @@ public class AddonConfigAddon : NativeAddon {
         inputComboLabelNode = new CategoryTextNode {
             AlignmentType = AlignmentType.Left,
             Position = new Vector2(ContentStartPosition.X - 2.0f, editKeybindButtonNode.Y + editKeybindButtonNode.Height + 15.0f),
-            String = "Window Size",
+            String = Strings("AddonConfig_WindowSizeLabel"),
         };
         inputComboLabelNode.AttachNode(this);
 
@@ -111,7 +111,7 @@ public class AddonConfigAddon : NativeAddon {
             TextColor = ColorHelper.GetColor(8),
             TextOutlineColor = ColorHelper.GetColor(7),
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
-            String = "Width",
+            String = Strings("AddonConfig_WindowWidthLabel"),
         };
         windowWidthTextNode.AttachNode(windowSizeGridNode[0, 0]);
 
@@ -124,7 +124,7 @@ public class AddonConfigAddon : NativeAddon {
             TextColor = ColorHelper.GetColor(8),
             TextOutlineColor = ColorHelper.GetColor(7),
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
-            String = "Height",
+            String = Strings("AddonConfig_WindowHeightLabel"),
         };
         windowHeightTextNode.AttachNode(windowSizeGridNode[1, 0]);
         
@@ -159,7 +159,7 @@ public class AddonConfigAddon : NativeAddon {
             TextColor = ColorHelper.GetColor(8),
             TextOutlineColor = ColorHelper.GetColor(7),
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
-            String = "Changes won't take effect until the window is reopened",
+            String = Strings("AddonConfig_ReloadHint"),
         };
         editNoteTextNode.AttachNode(this);
     }
@@ -174,7 +174,7 @@ public class AddonConfigAddon : NativeAddon {
         if (keybindTextNode is null) return;
 
         AddonConfig.KeybindEnabled = !AddonConfig.KeybindEnabled;
-        keybindEnableButtonNode.String = AddonConfig.KeybindEnabled ? "Disable" : "Enable";
+        keybindEnableButtonNode.String = AddonConfig.KeybindEnabled ? Strings("Common_Disable") : Strings("Common_Enable");
         keybindTextNode.MultiplyColor = AddonConfig.KeybindEnabled ? new Vector3(1.0f, 1.0f, 1.0f) : new Vector3(0.5f, 0.5f, 0.5f);
         
         AddonConfig.Save();

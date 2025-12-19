@@ -4,8 +4,8 @@ namespace VanillaPlus.Features.InventorySearchBar;
 
 public class InventorySearchBar : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Inventory Search Bar",
-        Description = "Adds a search bar to the inventory window.",
+        DisplayName = Strings("ModificationDisplay_InventorySearchBar"),
+        Description = Strings("ModificationDescription_InventorySearchBar"),
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Inventory,
         Authors = [ "MidoriKami" ],

@@ -10,8 +10,8 @@ namespace VanillaPlus.Features.ClearFlag;
 
 public unsafe class ClearFlag : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Clear Flag",
-        Description = "Allows you to right click the minimap to clear the currently set flag marker.",
+        DisplayName = Strings("ModificationDisplay_ClearFlag"),
+        Description = Strings("ModificationDescription_ClearFlag"),
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

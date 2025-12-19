@@ -23,10 +23,10 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
     
     public WindowBackgroundConfigNode() {
         CollisionNode.IsVisible = false;
-        
+
         colorPickerAddon = new ColorPickerAddon {
             InternalName = "WindowBackgroundColor",
-            Title = "Window Background Color Picker",
+            Title = Strings("WindowBackground_ColorPickerTitle"),
             DefaultColor = KnownColor.Black.Vector() with { W = 0.50f },
         };
         
@@ -43,7 +43,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         verticalListNode.AttachNode(this);
 
         verticalListNode.AddNode(new CategoryTextNode {
-            String = "Background Color",
+            String = Strings("WindowBackground_CategoryBackgroundColor"),
         });
 
         var colorPreviewLayoutNode1 = new HorizontalListNode {
@@ -67,13 +67,13 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             TextColor = ColorHelper.GetColor(8),
             TextOutlineColor = ColorHelper.GetColor(7),
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
-            String = "Color",
+            String = Strings("WindowBackground_ColorLabel"),
             DrawFlags = DrawFlags.ClickableCursor,
         };
         colorPreviewLayoutNode1.AddNode(colorLabelNode1);
 
         verticalListNode.AddNode(0, new CategoryTextNode {
-            String = "Padding Size",
+            String = Strings("WindowBackground_CategoryPaddingSize"),
         });
 
         sizeEditWidget = new Vector2EditWidget {
