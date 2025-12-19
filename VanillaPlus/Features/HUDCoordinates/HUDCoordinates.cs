@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Classes;
 using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
@@ -43,11 +44,11 @@ public unsafe class HUDCoordinates : GameModification {
                 };
                 
                 textNodes.Add(newTextNode);
-                newTextNode.AttachNode(node);
+                newTextNode.AttachNode((AtkComponentNode*)node.Value, NodePosition.AsFirstChild);
             }
         };
 
-        hudLayoutScreenController.OnUpdate += addon => {
+        hudLayoutScreenController.OnRefresh += addon => {
             foreach (var node in addon->UldManager.Nodes) {
                 if (node.Value is null) continue;
                 if (node.Value->GetNodeType() is not NodeType.Component) continue;
