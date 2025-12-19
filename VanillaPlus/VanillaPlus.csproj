@@ -1,8 +1,19 @@
-<Project Sdk="Dalamud.NET.Sdk/14.0.0">
+<Project Sdk="Dalamud.NET.Sdk/14.0.1">
     <PropertyGroup>
-        <Version>1.0.7.15</Version>
+        <Version>1.0.8.0</Version>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <Author>MidoriKami</Author>
+        <Name>VanillaPlus</Name>
+        <InternalName>VanillaPlus</InternalName>
+        <Punchline>A collection of various game modifications</Punchline>
+        <Description>This plugin is primarily focused on various UI adjustments, behavior adjustments, and adding new native elements to the game</Description>
+        <RepoUrl>https://github.com/MidoriKami/VanillaPlus</RepoUrl>
+        <Tags>ui</Tags>
+        <AcceptsFeedback>false</AcceptsFeedback>
+    </PropertyGroup>
+    
     <ItemGroup>
         <ProjectReference Include="..\KamiToolKit\KamiToolKit.csproj"/>
         <PackageReference Include="LuminaSupplemental.Excel" Version="3.1.0" />
