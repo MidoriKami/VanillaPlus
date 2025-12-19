@@ -15,7 +15,7 @@ namespace VanillaPlus.Features.PartyFinderPresets;
 public unsafe class PartyFinderPresets : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Party Finder Presets",
-        Description = "Allows you to save an use presets for the Party Finder Recruitment window",
+        Description = "Allows you to save an use presets for the Party Finder Recruitment window.",
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

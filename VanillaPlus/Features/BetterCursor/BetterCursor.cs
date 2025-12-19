@@ -9,7 +9,7 @@ namespace VanillaPlus.Features.BetterCursor;
 public class BetterCursor : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Better Cursor",
-        Description = "Draws a ring around the cursor to make it easier to see",
+        Description = "Draws a ring around the cursor to make it easier to see.",
         Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
         ChangeLog = [

@@ -11,7 +11,7 @@ namespace VanillaPlus.Features.FateListWindow;
 public class FateListWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Fate List Window",
-        Description = "Displays a list of all fates that are currently active in the current zone",
+        Description = "Displays a list of all fates that are currently active in the current zone.",
         Type = ModificationType.NewWindow,
         Authors = ["MidoriKami"],
         ChangeLog = [

@@ -8,7 +8,7 @@ namespace VanillaPlus.Features.PetSizeContextMenu;
 public class PetSizeContextMenu : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Pet Size Context Menu",
-        Description = "When right clicking on a pet, or a player with a pet, show a context menu entry for changing the pet size",
+        Description = "When right clicking on a pet, or a player with a pet, show a context menu entry for changing the pet size.",
         Authors = [ "MidoriKami" ],
         Type = ModificationType.GameBehavior,
         ChangeLog = [
