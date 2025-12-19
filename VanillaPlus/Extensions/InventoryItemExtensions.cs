@@ -89,6 +89,8 @@ public static class InventoryItemExtensions {
                     if (regex.IsMatch(itemData.Description.ToString()) && isDescriptionSearch) return true;
                     if (regex.IsMatch(itemData.LevelEquip.ToString())) return true;
                     if (regex.IsMatch(itemData.LevelItem.RowId.ToString())) return true;
+                    if (regex.IsMatch(itemData.ClassJobCategory.Value.Name.ToString())) return true;
+                    if (regex.IsMatch(itemData.ItemUICategory.Value.Name.ToString())) return true;
                 }
             }
             catch (RegexParseException) { }
