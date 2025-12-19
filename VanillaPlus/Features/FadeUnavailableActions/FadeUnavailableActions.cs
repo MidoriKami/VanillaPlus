@@ -136,8 +136,8 @@ public unsafe class FadeUnavailableActions : GameModification {
         if (config is null) return;
         if (hotBarSlotData is null) return;
 
-        var icon = hotBarSlotData->GetImageNode();
-        var frame = hotBarSlotData->GetFrameNode();
+        var icon = hotBarSlotData->ImageNode;
+        var frame = hotBarSlotData->FrameNode;
         
         if (icon is null || frame is null) return;
 

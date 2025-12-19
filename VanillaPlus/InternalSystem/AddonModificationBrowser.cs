@@ -59,7 +59,7 @@ public class AddonModificationBrowser : NativeAddon {
 
         foreach (var category in System.ModificationManager.CategoryGroups) {
             var newCategoryNode = new TreeListCategoryNode {
-                SeString = category.Key.GetDescription(),
+                SeString = category.Key.Description,
                 OnToggle = isVisible => OnCategoryToggled(isVisible, category.Key),
                 VerticalPadding = 0.0f,
             };
@@ -68,7 +68,7 @@ public class AddonModificationBrowser : NativeAddon {
                 if (subCategory.Key is not null) {
                     var newHeaderNode = new TreeListHeaderNode {
                         Size = new Vector2(0.0f, 24.0f), 
-                        SeString = subCategory.Key.GetDescription(), 
+                        SeString = subCategory.Key.Description, 
                     };
                     
                     newCategoryNode.AddNode(newHeaderNode);
@@ -229,7 +229,7 @@ public class AddonModificationBrowser : NativeAddon {
         }
 
         foreach (var categoryNode in optionContainerNode.ContentNode.CategoryNodes) {
-            categoryNode.IsVisible = validOptions.Any(option => option.ModificationInfo.Type.GetDescription() == categoryNode.SeString.ToString());
+            categoryNode.IsVisible = validOptions.Any(option => option.ModificationInfo.Type.Description == categoryNode.SeString.ToString());
             categoryNode.RecalculateLayout();
         }
 

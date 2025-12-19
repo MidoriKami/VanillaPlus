@@ -66,7 +66,7 @@ public static unsafe class InventorySearchController {
 
             case "InventoryRetainerLarge":
             case "InventoryRetainer":
-                return ItemOrderModule.Instance()->GetCurrentRetainerSorter();
+                return ItemOrderModule.Instance()->GetActiveRetainerSorter();
 
             case "InventoryBuddy" when GetTabForInventory(addon) is var tab:
                 return tab switch {

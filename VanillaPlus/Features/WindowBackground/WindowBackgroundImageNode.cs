@@ -32,14 +32,14 @@ public unsafe class WindowBackgroundImageNode : OverlayNode {
         base.Update();
 
         var addon = Services.GameGui.GetAddonByName<AtkUnitBase>(Settings.AddonName);
-        backgroundImageNode.IsVisible = addon is not null && addon->IsActuallyVisible();
+        backgroundImageNode.IsVisible = addon is not null && addon->IsActuallyVisible;
 
         if (addon is not null) {
             backgroundImageNode.Color = Settings.Color;
-            Size = (addon->RootSize() + Settings.Padding) * addon->Scale;
+            Size = (addon->RootSize + Settings.Padding) * addon->Scale;
 
             if (IsOverlayNode) {
-                Position = addon->Position() - Settings.Padding / 2.0f;
+                Position = addon->Position - Settings.Padding / 2.0f;
             }
         }
     }

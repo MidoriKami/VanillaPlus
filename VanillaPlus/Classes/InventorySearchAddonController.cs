@@ -20,7 +20,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
         inventoryController = new MultiAddonController(addons);
 
         inventoryController.OnAttach += addon => {
-            var size = new Vector2(addon->GetSize().X / 2.0f, 28.0f);
+            var size = new Vector2(addon->Size.X / 2.0f, 28.0f);
 
             var headerSize = new Vector2(addon->WindowHeaderCollisionNode->Width, addon->WindowHeaderCollisionNode->Height);
             var newInputNode = new TextInputWithHintNode {

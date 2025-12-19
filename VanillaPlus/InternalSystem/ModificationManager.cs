@@ -39,7 +39,7 @@ public class ModificationManager : IDisposable {
         foreach (var categoryGroup in CategoryGroups) {
             var subCategoryGroup = categoryGroup
                 .GroupBy(option => option.Modification.ModificationInfo.SubType)
-                .OrderBy(group => group.Key?.GetDescription())
+                .OrderBy(group => group.Key?.Description)
                 .ToList();
 
             SubCategoryGroups.Add(categoryGroup.Key, subCategoryGroup);

@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -8,92 +7,93 @@ using Lumina.Text.ReadOnly;
 namespace VanillaPlus.Extensions;
 
 public static class InventoryItemExtensions {
-    public static uint GetIconId(ref this InventoryItem item) {
-        uint iconId = 0;
+    extension(ref InventoryItem item) {
+        public uint IconId => item.GetIconId();
+        public ReadOnlySeString Name => item.GetItemName();
         
-        if (item.TryGetEventItem(out var eventItem)) {
-            iconId = eventItem.Value.Icon;
-        }
-        else if (item.TryGetItem(out var baseItem)) {
-            iconId = baseItem.Value.Icon;
-
-            if (item.IsHighQuality()) {
-                iconId += 1_000_000;
-            }
-        }
-
-        return iconId;
-    }
-
-    public static ReadOnlySeString GetItemName(ref this InventoryItem item) {
-        var itemId = item.GetItemId();
-        var itemName = ItemUtil.GetItemName(itemId);
+        private uint GetIconId() {
+            uint iconId = 0;
         
-        return new Lumina.Text.SeStringBuilder()
-            .PushColorType(ItemUtil.GetItemRarityColorType(itemId))
-            .Append(itemName)
-            .PopColorType()
-            .ToReadOnlySeString();
-    }
+            if (item.GetEventItem() is { } eventItem) {
+                iconId = eventItem.Icon;
+            }
+            else if (item.GetItem() is { } regularItem) {
+                iconId = regularItem.Icon;
 
-    public static bool TryGetItem(ref this InventoryItem inventoryItem, [NotNullWhen(returnValue: true)] out Item? item) {
-        var baseItemId = inventoryItem.GetBaseItemId();
-
-        if (ItemUtil.IsNormalItem(baseItemId) &&
-            Services.DataManager.GetExcelSheet<Item>().TryGetRow(baseItemId, out var baseItem)) {
-            item = baseItem;
-            return true;
-        }
-
-        item = null;
-        return false;
-    }
-
-    public static bool TryGetEventItem(ref this InventoryItem inventoryItem, [NotNullWhen(returnValue: true)] out EventItem? item) {
-        var baseItemId = inventoryItem.GetBaseItemId();
-
-        if (ItemUtil.IsEventItem(baseItemId) &&
-            Services.DataManager.GetExcelSheet<EventItem>().TryGetRow(baseItemId, out var eventItem)) {
-            item = eventItem;
-            return true;
-        }
-
-        item = null;
-        return false;
-    }
-
-    public static bool IsRegexMatch(this ref InventoryItem item, string searchString) {
-        // Skip any data access if string is empty
-        if (searchString.IsNullOrEmpty()) return true;
-
-        var isDescriptionSearch = searchString.StartsWith('$');
-
-        if (isDescriptionSearch) {
-            searchString = searchString[1..];
-        }
-
-        try {
-            var regex = new Regex(searchString,RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-
-            if (ItemUtil.IsEventItem(item.GetBaseItemId())) {
-                if (!Services.DataManager.GetExcelSheet<EventItem>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
-
-                if (regex.IsMatch(item.ItemId.ToString())) return true;
-                if (regex.IsMatch(itemData.Name.ToString())) return true;
+                if (item.IsHighQuality()) {
+                    iconId += 1_000_000;
+                }
             }
 
-            else if (ItemUtil.IsNormalItem(item.GetBaseItemId())) {
-                if (!Services.DataManager.GetExcelSheet<Item>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
-
-                if (regex.IsMatch(item.ItemId.ToString())) return true;
-                if (regex.IsMatch(itemData.Name.ToString())) return true;
-                if (regex.IsMatch(itemData.Description.ToString()) && isDescriptionSearch) return true;
-                if (regex.IsMatch(itemData.LevelEquip.ToString())) return true;
-                if (regex.IsMatch(itemData.LevelItem.RowId.ToString())) return true;
-            }
+            return iconId;
         }
-        catch (RegexParseException) { }
 
-        return false;
+        private ReadOnlySeString GetItemName() {
+            var itemId = item.GetItemId();
+            var itemName = ItemUtil.GetItemName(itemId);
+        
+            return new Lumina.Text.SeStringBuilder()
+                .PushColorType(ItemUtil.GetItemRarityColorType(itemId))
+                .Append(itemName)
+                .PopColorType()
+                .ToReadOnlySeString();
+        }
+
+        private Item? GetItem() {
+            var baseItemId = item.GetBaseItemId();
+
+            if (ItemUtil.IsNormalItem(baseItemId) &&
+                Services.DataManager.GetExcelSheet<Item>().TryGetRow(baseItemId, out var baseItem)) {
+                return baseItem;
+            }
+
+            return null;
+        }
+
+        private EventItem? GetEventItem() {
+            var baseItemId = item.GetBaseItemId();
+
+            if (ItemUtil.IsEventItem(baseItemId) &&
+                Services.DataManager.GetExcelSheet<EventItem>().TryGetRow(baseItemId, out var eventItem)) {
+                return eventItem;
+            }
+
+            return null;
+        }
+
+        public bool IsRegexMatch(string searchString) {
+            // Skip any data access if string is empty
+            if (searchString.IsNullOrEmpty()) return true;
+
+            var isDescriptionSearch = searchString.StartsWith('$');
+
+            if (isDescriptionSearch) {
+                searchString = searchString[1..];
+            }
+
+            try {
+                var regex = new Regex(searchString,RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+
+                if (ItemUtil.IsEventItem(item.GetBaseItemId())) {
+                    if (!Services.DataManager.GetExcelSheet<EventItem>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
+
+                    if (regex.IsMatch(item.ItemId.ToString())) return true;
+                    if (regex.IsMatch(itemData.Name.ToString())) return true;
+                }
+
+                else if (ItemUtil.IsNormalItem(item.GetBaseItemId())) {
+                    if (!Services.DataManager.GetExcelSheet<Item>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
+
+                    if (regex.IsMatch(item.ItemId.ToString())) return true;
+                    if (regex.IsMatch(itemData.Name.ToString())) return true;
+                    if (regex.IsMatch(itemData.Description.ToString()) && isDescriptionSearch) return true;
+                    if (regex.IsMatch(itemData.LevelEquip.ToString())) return true;
+                    if (regex.IsMatch(itemData.LevelItem.RowId.ToString())) return true;
+                }
+            }
+            catch (RegexParseException) { }
+
+            return false;
+        }
     }
 }

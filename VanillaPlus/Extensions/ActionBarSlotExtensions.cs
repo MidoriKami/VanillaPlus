@@ -4,22 +4,28 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 namespace VanillaPlus.Extensions;
 
 public static unsafe class ActionBarSlotExtensions {
-    public static AtkImageNode* GetImageNode(this ref ActionBarSlot slot) {
-        var component = slot.GetIconComponent();
-        if (component is null) return null;
+    extension(ref ActionBarSlot slot) {
+        public AtkImageNode* ImageNode => slot.GetImageNode();
+        public AtkResNode* FrameNode => slot.GetFrameNode();
+        public AtkComponentIcon* IconComponent => slot.GetIconComponent();
 
-        return component->IconImage;
-    }
+        private AtkImageNode* GetImageNode() {
+            var component = slot.GetIconComponent();
+            if (component is null) return null;
 
-    public static AtkResNode* GetFrameNode(this ref ActionBarSlot slot) {
-        var component = slot.GetIconComponent();
-        if (component is null) return null;
+            return component->IconImage;
+        }
 
-        return component->Frame;
-    }
+        private AtkResNode* GetFrameNode() {
+            var component = slot.GetIconComponent();
+            if (component is null) return null;
 
-    private static AtkComponentIcon* GetIconComponent(this ref ActionBarSlot slot) {
-        if (slot.Icon is null) return null;
-        return (AtkComponentIcon*) slot.Icon->Component;
+            return component->Frame;
+        }
+
+        private AtkComponentIcon* GetIconComponent() {
+            if (slot.Icon is null) return null;
+            return (AtkComponentIcon*) slot.Icon->Component;
+        }
     }
 }

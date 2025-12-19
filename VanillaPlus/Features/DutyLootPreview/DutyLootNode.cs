@@ -72,10 +72,10 @@ public unsafe class DutyLootNode : SimpleComponentNode {
         CollisionNode.AddEvent(AtkEventType.MouseClick, (_, _, _, _, atkEventData) => {
             if (Item is null) return;
 
-            if (atkEventData->IsLeftClick()) {
+            if (atkEventData->IsLeftClick) {
                 OnLeftClick?.Invoke(Item);
             }
-            else if (atkEventData->IsRightClick()) {
+            else if (atkEventData->IsRightClick) {
                 OnRightClick?.Invoke(Item);
             }
         });

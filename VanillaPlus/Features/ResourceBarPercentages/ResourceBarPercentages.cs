@@ -121,7 +121,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         if (!config.PartyListEnabled) return;
 
         var addon = args.GetAddon<AddonPartyList>();
-        foreach (var member in addon->GetHudMembers()) {
+        foreach (var member in addon->HudMembers) {
             var resetSelf = member.IsSelf() && !config.PartyListSelf;
             var resetOthers = !member.IsSelf() && !config.PartyListMembers;
 
@@ -133,7 +133,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         var addon = Services.GameGui.GetAddonByName<AddonPartyList>("_PartyList");
         if (addon is null) return;
         
-        foreach (var member in addon->GetHudMembers()) {
+        foreach (var member in addon->HudMembers) {
             ApplyModification(member, true);
         }
     }
@@ -148,7 +148,7 @@ public unsafe class ResourceBarPercentages : GameModification {
     private void ModifyPartyListHp(PartyListHudData hudData, bool revertToDefault) {
         if (config is null) return;
 
-        var health = hudData.HudMember->GetHealth();
+        var health = hudData.HudMember->HealthValues;
         if (health is null) return;
         
         var hpGaugeTextNode = hudData.PartyListMember->HPGaugeComponent->GetTextNodeById(2);
@@ -170,15 +170,15 @@ public unsafe class ResourceBarPercentages : GameModification {
     private void ModifyPartyListParameter(PartyListHudData hudData, bool revertToDefault) {
         if (config is null) return;
 
-        if (hudData.HudMember->GetClassJob() is not { } classJob) return;
+        if (hudData.HudMember->ClassJob is not { } classJob) return;
 
         var resourceGaugeNode = hudData.PartyListMember->MPGaugeBar;
         if (resourceGaugeNode is null) return;
 
-        if (!hudData.IsSelf() && !classJob.IsNotCrafterGatherer()) return;
+        if (!hudData.IsSelf() && !classJob.IsNotCrafterGatherer) return;
 
         var shouldRevertResource = hudData.IsSelf() && !config.PartyListSelf || revertToDefault;
-        var isMpDisabled = (!config.PartyListMpEnabled || shouldRevertResource) && classJob.IsNotCrafterGatherer();
+        var isMpDisabled = (!config.PartyListMpEnabled || shouldRevertResource) && classJob.IsNotCrafterGatherer;
 
         var resourceGaugeTextNode = resourceGaugeNode->GetTextNodeById(2);
         var resourceGaugeTextSubNode = resourceGaugeNode->GetTextNodeById(3);
@@ -207,13 +207,13 @@ public unsafe class ResourceBarPercentages : GameModification {
         => !enabled ? current.ToString() : FormatPercentage(current, max);
 
     private string GetCorrectPartyResourceText(PartyListHudData hudData, bool enabled = true, bool revertToDefault = false) {
-        if (hudData.HudMember->GetClassJob() is not { } classJob) return string.Empty;
+        if (hudData.HudMember->ClassJob is not { } classJob) return string.Empty;
         
         var currentMana = (uint)hudData.NumberArrayData->CurrentMana;
         var maxMana = (uint)hudData.NumberArrayData->MaxMana;
         
-        if (revertToDefault || classJob.IsNotCrafterGatherer() && !enabled) {
-            if (classJob.IsNotCrafterGatherer()) {
+        if (revertToDefault || classJob.IsNotCrafterGatherer && !enabled) {
+            if (classJob.IsNotCrafterGatherer) {
                 currentMana /= 100;
             }
 
@@ -238,10 +238,10 @@ public unsafe class ResourceBarPercentages : GameModification {
     }
 
     private static bool IsResourcePercentageEnabled(ResourceBarPercentagesConfig resourceConfig, ClassJob classJob) {
-        if (classJob.IsCrafter())
+        if (classJob.IsCrafter)
             return resourceConfig.PartyListCpEnabled;
         
-        if (classJob.IsGatherer())
+        if (classJob.IsGatherer)
             return resourceConfig.PartyListGpEnabled;
         
         return resourceConfig.PartyListMpEnabled;

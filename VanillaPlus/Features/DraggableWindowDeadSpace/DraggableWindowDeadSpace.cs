@@ -60,7 +60,7 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
                 if (node.Value is null) continue;
                 if (node.Value->GetNodeType() is NodeType.NineGrid) {
                     var newInteractionNode = new ResNode {
-                        Size = node.Value->Size(),
+                        Size = node.Value->Size,
                     };
 
                     newInteractionNode.AddEvent(AtkEventType.MouseOver, () => {
@@ -114,14 +114,14 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         var addonHeaderNode = targetAddon->WindowHeaderCollisionNode;
         if (addonHeaderNode is null) return;
         
-        var mousePosition = atkEventData->GetMousePosition();
+        var mousePosition = atkEventData->MousePosition;
         
         if (addonHeaderNode->CheckCollisionAtCoords((short)mousePosition.X, (short)mousePosition.Y, true)) {
             return;
         }
 
         if (!isDragging) {
-            dragStart = atkEventData->GetMousePosition();
+            dragStart = atkEventData->MousePosition;
             Services.AddonEventManager.SetCursor(AddonCursorType.Grab);
             cursorEventListener?.AddEvent(AtkEventType.MouseMove, (AtkResNode*) atkEvent->Target);
             cursorEventListener?.AddEvent(AtkEventType.MouseUp, (AtkResNode*) atkEvent->Target);

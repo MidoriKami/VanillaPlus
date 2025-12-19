@@ -12,7 +12,7 @@ public class ItemInfo : IEquatable<ItemInfo> {
 
     private Item ItemData => Services.DataManager.GetExcelSheet<Item>().GetRow(Item.ItemId);
 
-    public Vector4 RarityColor => ItemData.RarityColor();
+    public Vector4 RarityColor => ItemData.RarityColor;
 
     public uint IconId => ItemData.Icon;
     

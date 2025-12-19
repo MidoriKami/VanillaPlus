@@ -92,8 +92,8 @@ public unsafe class RecentlyLootedWindow : GameModification {
             items?.Add(new LootedItemInfo(
                 items.Count, 
                 inventoryItem->GetItemId(), 
-                inventoryItem->GetIconId(), 
-                inventoryItem->GetItemName(), 
+                inventoryItem->IconId, 
+                inventoryItem->Name, 
                 changeAmount)
             );
 

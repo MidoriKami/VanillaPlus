@@ -5,22 +5,24 @@ using Dalamud.Plugin.Services;
 namespace VanillaPlus.Extensions;
 
 public static class KeyStateExtensions {
-    public static bool IsKeybindPressed(this IKeyState keyState, IEnumerable<VirtualKey> keys) {
-        foreach (var key in keys) {
-            if (keyState.IsVirtualKeyValid(key) && !keyState[(int)key]) {
-                return false;
+    extension(IKeyState keyState) {
+        public bool IsKeybindPressed(IEnumerable<VirtualKey> keys) {
+            foreach (var key in keys) {
+                if (keyState.IsVirtualKeyValid(key) && !keyState[(int)key]) {
+                    return false;
+                }
             }
+
+            return true;
         }
 
-        return true;
-    }
-    
-    public static void ResetKeyCombo(this IKeyState keyState, IEnumerable<VirtualKey> keys) {
-        foreach(var key in keys) {
-            if (!keyState.IsVirtualKeyValid(key)) continue;
-            if (key is VirtualKey.CONTROL or VirtualKey.MENU or VirtualKey.SHIFT) continue;
+        public void ResetKeyCombo(IEnumerable<VirtualKey> keys) {
+            foreach(var key in keys) {
+                if (!keyState.IsVirtualKeyValid(key)) continue;
+                if (key is VirtualKey.CONTROL or VirtualKey.MENU or VirtualKey.SHIFT) continue;
             
-            keyState[(int)key] = false;
+                keyState[(int)key] = false;
+            }
         }
     }
 }

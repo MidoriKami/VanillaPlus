@@ -10,7 +10,6 @@ using KamiToolKit;
 using KamiToolKit.Nodes;
 using Lumina.Extensions;
 using Keybind = VanillaPlus.Classes.Keybind;
-using VirtualKeyExtensions = VanillaPlus.Extensions.VirtualKeyExtensions;
 
 namespace VanillaPlus.NativeElements.Addons;
 
@@ -95,8 +94,8 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             String = "Confirm",
             OnClick = () => {
                 var newKeybind = new Keybind {
-                    Key = combo.FirstOrNull(VirtualKeyExtensions.IsKey) ?? VirtualKey.NO_KEY,
-                    Modifiers = combo.Where(VirtualKeyExtensions.IsModifier).ToHashSet(),
+                    Key = combo.FirstOrNull(key => key.IsKey) ?? VirtualKey.NO_KEY,
+                    Modifiers = combo.Where(key => key.IsModifier).ToHashSet(),
                 };
                 OnKeybindChanged(newKeybind); 
                 Close();

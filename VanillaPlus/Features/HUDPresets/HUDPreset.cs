@@ -43,7 +43,7 @@ public unsafe class HUDPresets : GameModification {
         hudLayoutController = new AddonController("_HudLayoutWindow");
 
         hudLayoutController.OnAttach += addon => {
-            addon->Resize(addon->GetSize() + new Vector2(0.0f, 95.0f));
+            addon->Resize(addon->Size + new Vector2(0.0f, 95.0f));
 
             labelNode = new CategoryTextNode {
                 Position = new Vector2(16.0f, 215.0f),
@@ -58,7 +58,7 @@ public unsafe class HUDPresets : GameModification {
             
             presetDropdownNode = new TextDropDownNode {
                 Position = new Vector2(16.0f, 235.0f),
-                Size = new Vector2(addon->GetSize().X - 32.0f, 24.0f),
+                Size = new Vector2(addon->Size.X - 32.0f, 24.0f),
                 MaxListOptions = 10,
                 Options = HUDPresetManager.GetPresetNames(),
                 TooltipString = "Select a HUD Layout Preset",
@@ -107,7 +107,7 @@ public unsafe class HUDPresets : GameModification {
         };
 
         hudLayoutController.OnDetach += addon => {
-            addon->Resize(addon->GetSize() - new Vector2(0.0f, 95.0f));
+            addon->Resize(addon->Size - new Vector2(0.0f, 95.0f));
 
             presetDropdownNode?.Dispose();
             presetDropdownNode = null;

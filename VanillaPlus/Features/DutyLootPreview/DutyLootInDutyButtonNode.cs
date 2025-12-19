@@ -46,7 +46,7 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
         base.Update();
 
         var dutyInfoAddon = Services.GameGui.GetAddonByName<AddonToDoList>("_ToDoList");
-        var dutyInfoPos = dutyInfoAddon->AtkUnitBase.Position();
+        var dutyInfoPos = dutyInfoAddon->AtkUnitBase.Position;
         var dutyInfoScale = dutyInfoAddon->AtkUnitBase.Scale;
 
         var dutyNameContainer = dutyInfoAddon->AtkUnitBase.GetNodeById<AtkComponentNode>(4);
@@ -79,13 +79,13 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
         }
 
         var dutyInfoAddon = Services.GameGui.GetAddonByName<AddonToDoList>("_ToDoList");
-        if (!dutyInfoAddon->AtkUnitBase.IsActuallyVisible()) {
+        if (!dutyInfoAddon->AtkUnitBase.IsActuallyVisible) {
             IsVisible = false;
             return;
         }
 
         var dutyNameContainer = dutyInfoAddon->AtkUnitBase.GetNodeById<AtkComponentNode>(4);
-        if (dutyNameContainer is null || !dutyNameContainer->AtkResNode.IsActuallyVisible()) {
+        if (dutyNameContainer is null || !dutyNameContainer->AtkResNode.IsActuallyVisible) {
             IsVisible = false;
             return;
         }

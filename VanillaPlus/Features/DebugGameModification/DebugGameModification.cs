@@ -1,4 +1,5 @@
-﻿using VanillaPlus.Classes;
+﻿using FFXIVClientStructs.FFXIV.Component.GUI;
+using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.DebugGameModification;
 
@@ -17,7 +18,16 @@ public class DebugGameModification : GameModification {
         ],
     };
 
-    public override void OnEnable() {
+    public override unsafe void OnEnable() {
+        var addon = Services.GameGui.GetAddonByName<AtkUnitBase>("ConfigSystem");
+        if (addon is not null) {
+            Services.Framework.RunOnFrameworkThread(() => {
+                Services.PluginLog.Debug($"CurrentAddress: {(nint)addon->VirtualTable:X}");
+                
+                var resolvedAddress = Services.AddonLifecycle.GetOriginalVirtualTable((nint)addon->VirtualTable);
+                Services.PluginLog.Debug($"ResolvedAddress: {resolvedAddress:X}");
+            });
+        }
     }
 
     public override void OnDisable() {

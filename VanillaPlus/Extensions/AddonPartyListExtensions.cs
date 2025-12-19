@@ -8,33 +8,37 @@ using FFXIVClientStructs.Interop;
 namespace VanillaPlus.Extensions;
 
 public static unsafe class AddonPartyListExtensions {
-    public static List<PartyListHudData> GetHudMembers(ref this AddonPartyList addon) {
-        List<PartyListHudData> hudMembers = [];
+    extension(ref AddonPartyList addon) {
+        public List<PartyListHudData> HudMembers => addon.GetHudMembers();
 
-        var memberCount = AgentHUD.Instance()->PartyMemberCount;
+        private List<PartyListHudData> GetHudMembers() {
+            List<PartyListHudData> hudMembers = [];
 
-        foreach (var index in Enumerable.Range(0, memberCount)) {
-            var hudMember = AgentHUD.Instance()->PartyMembers.GetPointer(index);
-            if (hudMember->Object is null) continue;
+            var memberCount = AgentHUD.Instance()->PartyMemberCount;
 
-            // Member is Trust
-            if (hudMember->ContentId is 0) {
-                hudMembers.Add(new PartyListHudData {
-                    HudMember = hudMember,
-                    PartyListMember = addon.TrustMembers.GetPointer(index - 1),
-                    NumberArrayData = PartyListNumberArray.Instance()->TrustMembers.GetPointer(index - 1),
-                });
+            foreach (var index in Enumerable.Range(0, memberCount)) {
+                var hudMember = AgentHUD.Instance()->PartyMembers.GetPointer(index);
+                if (hudMember->Object is null) continue;
+
+                // Member is Trust
+                if (hudMember->ContentId is 0) {
+                    hudMembers.Add(new PartyListHudData {
+                        HudMember = hudMember,
+                        PartyListMember = addon.TrustMembers.GetPointer(index - 1),
+                        NumberArrayData = PartyListNumberArray.Instance()->TrustMembers.GetPointer(index - 1),
+                    });
+                }
+                else {
+                    hudMembers.Add(new PartyListHudData {
+                        HudMember = hudMember,
+                        PartyListMember = addon.PartyMembers.GetPointer(hudMember->Index),
+                        NumberArrayData = PartyListNumberArray.Instance()->PartyMembers.GetPointer(hudMember->Index),
+                    });
+                }
             }
-            else {
-                hudMembers.Add(new PartyListHudData {
-                    HudMember = hudMember,
-                    PartyListMember = addon.PartyMembers.GetPointer(hudMember->Index),
-                    NumberArrayData = PartyListNumberArray.Instance()->PartyMembers.GetPointer(hudMember->Index),
-                });
-            }
-        }
         
-        return hudMembers;
+            return hudMembers;
+        }
     }
 }
 

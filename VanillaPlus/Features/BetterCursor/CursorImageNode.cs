@@ -71,8 +71,8 @@ public unsafe class CursorImageNode : OverlayNode {
 
         if (Config is { OnlyShowInCombat: true } or { OnlyShowInDuties: true }) {
             var shouldShow = true;
-            shouldShow &= !Config.OnlyShowInCombat || Services.Condition.IsInCombat();
-            shouldShow &= !Config.OnlyShowInDuties || Services.Condition.IsBoundByDuty();
+            shouldShow &= !Config.OnlyShowInCombat || Services.Condition.IsInCombat;
+            shouldShow &= !Config.OnlyShowInDuties || Services.Condition.IsBoundByDuty;
             shouldShow &= !Config.HideOnCameraMove || (!isLeftHeld && !isRightHeld);
 
             IsVisible = shouldShow;

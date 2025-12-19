@@ -4,6 +4,7 @@ using Dalamud.Plugin.Services;
 namespace VanillaPlus.Extensions;
 
 public static class TextureProviderExtensions {
-    public static ISharedImmediateTexture GetPlaceholderTexture(this ITextureProvider textureProvider)
-        => textureProvider.GetFromGameIcon(60042);
+    extension(ITextureProvider textureProvider) {
+        public ISharedImmediateTexture PlaceholderTexture => textureProvider.GetFromGameIcon(60042);
+    }
 }

@@ -1,31 +1,52 @@
 ﻿using System.Numerics;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace VanillaPlus.Extensions;
 
 public static unsafe class AtkResNodeExtensions {
-    public static Vector2 Size(this ref AtkResNode node)
-        => new(node.Width, node.Height);
+    extension(ref AtkResNode node) {
+        public Vector2 Size => new(node.Width, node.Height);
 
-    public static Vector2 Position(this ref AtkResNode node)
-        => new(node.X, node.Y);
+        public Vector2 Position => new(node.X, node.Y);
 
-    public static Vector2 ScreenPosition(this ref AtkResNode node)
-        => new(node.ScreenX, node.ScreenY);
+        public Vector2 ScreenPosition => new(node.ScreenX, node.ScreenY);
 
-    public static bool CheckCollisionAtCoords(this ref AtkResNode node, Vector2 pos, bool inclusive = true)
-        => node.CheckCollisionAtCoords((short)pos.X, (short)pos.Y, inclusive);
+        public bool CheckCollisionAtCoords(Vector2 pos, bool inclusive = true)
+            => node.CheckCollisionAtCoords((short)pos.X, (short)pos.Y, inclusive);
 
-    public static bool IsActuallyVisible(this ref AtkResNode node) {
-        if (!node.IsVisible()) return false;
-
-        var parentNode = node.ParentNode;
-
-        while (parentNode is not null) {
-            if (!parentNode->IsVisible()) return false;
-            parentNode = parentNode->ParentNode;
+        public bool IsActuallyVisible => node.GetIsActuallyVisible();
+        
+        public void ShowActionTooltip(uint actionId, string? textLabel = null) {
+            fixed (AtkResNode* nodePointer = &node) {
+                AtkStage.Instance()->ShowActionTooltip(nodePointer, actionId, textLabel);
+            }
         }
 
-        return true;
+        public void ShowItemTooltip(uint itemId) {
+            fixed (AtkResNode* nodePointer = &node) {
+                AtkStage.Instance()->ShowItemTooltip(nodePointer, itemId);
+            }
+        }
+        
+        public void ShowInventoryItemTooltip(InventoryType container, short slot) {
+            fixed (AtkResNode* nodePointer = &node) {
+                AtkStage.Instance()->ShowInventoryItemTooltip(nodePointer, container, slot);
+            }
+        }
+        
+        private bool GetIsActuallyVisible() {
+            if (!node.IsVisible()) return false;
+
+            var parentNode = node.ParentNode;
+
+            while (parentNode is not null) {
+                if (!parentNode->IsVisible()) return false;
+                parentNode = parentNode->ParentNode;
+            }
+
+            return true;
+        }
     }
+
 }

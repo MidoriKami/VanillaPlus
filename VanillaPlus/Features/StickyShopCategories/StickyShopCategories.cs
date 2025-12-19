@@ -36,7 +36,7 @@ public unsafe class StickyShopCategories : GameModification {
     private void OnInclusionShopSetup(AddonEvent type, AddonArgs args) {
         if (config is null) return;
 
-        var shopId = args.GetAtkValues()[0].UInt;
+        var shopId = args.AtkValueSpan[0].UInt;
 
         if (config.ShopConfigs.TryGetValue(shopId, out var currentShopConfig)) {
             var categoryDropDown = GetCategoryDropDown(args);
@@ -51,7 +51,7 @@ public unsafe class StickyShopCategories : GameModification {
     private void OnInclusionShopFinalize(AddonEvent type, AddonArgs args) {
         if (config is null) return;
 
-        var shopId = args.GetAtkValues()[0].UInt;
+        var shopId = args.AtkValueSpan[0].UInt;
         var dropDownCategoryIndex = GetCategoryDropDown(args)->GetSelectedItemIndex();
         var dropDownSubCategoryIndex = GetSubCategoryDropDown(args)->GetSelectedItemIndex();
 

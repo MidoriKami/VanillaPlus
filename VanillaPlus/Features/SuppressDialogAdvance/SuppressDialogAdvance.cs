@@ -50,12 +50,12 @@ public unsafe class SuppressDialogueAdvance : GameModification {
 
     private void OnTalkReceiveEvent(AddonEvent type, AddonArgs args) {
         if (args is not AddonReceiveEventArgs eventArgs) return;
-        if ((config?.ApplyOnlyInCutscenes ?? false) && !Services.Condition.IsInCutscene()) return;
+        if ((config?.ApplyOnlyInCutscenes ?? false) && !Services.Condition.IsInCutscene) return;
 
         if ((AtkEventType)eventArgs.AtkEventType is AtkEventType.MouseClick) {
             var addon = args.GetAddon<AddonTalk>();
 
-            if (!addon->RootNode->CheckCollisionAtCoords(args.GetMouseClickPosition())) {
+            if (!addon->RootNode->CheckCollisionAtCoords(args.ClickPosition)) {
                 eventArgs.AtkEventType = 0;
             }
         }

@@ -24,8 +24,8 @@ public class ModificationInfo {
         if (DisplayName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) return true;
         // if (Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) return true; // Probably not a good idea to use this without a fuzzy matcher.
         if (Authors.Any(author => author.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))) return true;
-        if (Type.GetDescription().Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) return true;
-        if (SubType is not null && SubType.GetDescription().Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) return true;
+        if (Type.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) return true;
+        if (SubType is not null && SubType.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) return true;
         if (Tags.Any(tag => tag.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))) return true;
         
         return false;

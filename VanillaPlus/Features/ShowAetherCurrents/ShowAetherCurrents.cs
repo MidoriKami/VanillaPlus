@@ -72,7 +72,7 @@ public unsafe class ShowAetherCurrents : GameModification {
                 // Skip any that are already unlocked
                 if (PlayerState.Instance()->IsAetherCurrentUnlocked(aetherCurrent.RowId)) continue;
 
-                if (!Services.DataManager.GetExcelSheet<EObj>().TryGetFirst(rowObject => rowObject.Data == aetherCurrent.RowId, out var eventObject)) continue;
+                if (!Services.DataManager.GetExcelSheet<EObj>().TryGetFirst(rowObject => rowObject.Data.RowId == aetherCurrent.RowId, out var eventObject)) continue;
                 if (!Services.DataManager.GetExcelSheet<Level>().TryGetFirst(rowObject => rowObject.Object.RowId == eventObject.RowId, out var level)) continue;
 
                 thisPtr->AddMapMarker(new Vector3(level.X, level.Y, level.Z), 60653, 0, tooltipString->StringPtr);
