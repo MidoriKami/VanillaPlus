@@ -23,7 +23,7 @@ public unsafe class HideUnwantedBanners : GameModification {
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@HideUnwantedBanner"),
     };
 
-    private Hook<AddonImage3.Delegates.SetImage>? setImageTextureHook;
+    private Hook<AddonImage.Delegates.SetImage>? setImageTextureHook;
 
     private HideUnwantedBannersConfig? config;
     private NodeListAddon? configWindow;
@@ -40,7 +40,7 @@ public unsafe class HideUnwantedBanners : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        setImageTextureHook = Services.Hooker.HookFromAddress<AddonImage3.Delegates.SetImage>(AddonImage3.Addresses.SetImage.Value, OnSetImageTexture);
+        setImageTextureHook = Services.Hooker.HookFromAddress<AddonImage.Delegates.SetImage>(AddonImage.Addresses.SetImage.Value, OnSetImageTexture);
         setImageTextureHook?.Enable();
     }
 
@@ -86,7 +86,7 @@ public unsafe class HideUnwantedBanners : GameModification {
         return true;
     }
 
-    private void OnSetImageTexture(AddonImage3* addon, int bannerId, IconSubFolder language, int soundEffectId) {
+    private void OnSetImageTexture(AddonImage* addon, int bannerId, IconSubFolder language, int soundEffectId) {
         try {
             if (config is not null) {
                 if (config.SeenBanners.Add((uint)bannerId)) {
