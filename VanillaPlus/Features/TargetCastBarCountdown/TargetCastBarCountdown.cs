@@ -211,13 +211,11 @@ public unsafe class TargetCastBarCountdown : GameModification {
         if (config is null) return;
         
         if (Services.ClientState.IsPvP) {
-            if (primaryTargetTextNode is not null) primaryTargetTextNode.String = string.Empty;
-            if (primaryTargetAltTextNode is not null) primaryTargetAltTextNode.String = string.Empty;
-            if (focusTargetTextNode is not null) focusTargetTextNode.String = string.Empty;
+            primaryTargetTextNode?.String = string.Empty;
+            primaryTargetAltTextNode?.String = string.Empty;
+            focusTargetTextNode?.String = string.Empty;
             foreach (var node in castBarEnemyTextNode ?? []) {
-                if (node is not null) {
-                    node.String = string.Empty;
-                }
+                node?.String = string.Empty;
             }
             return;
         }
@@ -242,9 +240,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
                     var info = castBarAddon->CastBarInfo[index];
                     var node = castBarEnemyTextNode[index];
 
-                    if (node is not null) {
-                        node.String = GetCastTime(GetEntity(info.ObjectId.ObjectId), true);
-                    }
+                    node?.String = GetCastTime(GetEntity(info.ObjectId.ObjectId), true);
                 }
                 break;
         }

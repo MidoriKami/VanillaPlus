@@ -148,9 +148,7 @@ public class NewRedirectionAddon : NativeAddon {
         gearsetSearchAddon.SelectionResult = result => {
             SelectedGearset = result;
 
-            if (gearsetInfoNode is not null) {
-                gearsetInfoNode.Option = result;
-            }
+            gearsetInfoNode?.Option = result;
         };
         
         gearsetSearchAddon.Open();
@@ -160,9 +158,7 @@ public class NewRedirectionAddon : NativeAddon {
         territorySearchAddon.SelectionResult = result => {
             SelectedTerritory = result;
 
-            if (zoneInfoNode is not null) {
-                zoneInfoNode.Option = result;
-            }
+            zoneInfoNode?.Option = result;
         };
 
         territorySearchAddon.Open();

@@ -158,8 +158,7 @@ public unsafe class HUDPresets : GameModification {
     }
 
     private void LoadPreset() {
-        if (presetDropdownNode is null) return;
-        if (presetDropdownNode.SelectedOption is null) return;
+        if (presetDropdownNode?.SelectedOption is null) return;
         if (presetDropdownNode.SelectedOption == HUDPresetManager.DefaultOption) return;
 
         HUDPresetManager.LoadPreset(presetDropdownNode.SelectedOption);
@@ -187,8 +186,7 @@ public unsafe class HUDPresets : GameModification {
     }
     
     private void OverwriteSelectedPreset() {
-        if (presetDropdownNode is null) return;
-        if (presetDropdownNode.SelectedOption is null) return;
+        if (presetDropdownNode?.SelectedOption is null) return;
         if (presetDropdownNode.SelectedOption == HUDPresetManager.DefaultOption) return;
 
         HUDPresetManager.SavePreset(presetDropdownNode.SelectedOption);

@@ -47,13 +47,9 @@ public class SelectIconConfig : BaseConfigEntry {
     }
 
     protected void SetIconId(int iconId) {
-        if (iconImageNode is not null) {
-            iconImageNode.IconId = (uint)iconId;
-        }
+        iconImageNode?.IconId = (uint)iconId;
 
-        if (inputIntNode is not null) {
-            inputIntNode.Value = iconId;
-        }
+        inputIntNode?.Value = iconId;
 
         InitialIcon = (uint)iconId;
         MemberInfo.SetValue(Config, (uint)iconId);

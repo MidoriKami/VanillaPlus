@@ -151,9 +151,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             perfectTails.GameState[index] = PlayerState.Instance()->IsWeeklyBingoStickerPlaced(index);
         }
 
-        if (probabilityTextNode is not null) {
-            probabilityTextNode.SeString = perfectTails.SolveAndGetProbabilitySeString();
-        }
+        probabilityTextNode?.SeString = perfectTails.SolveAndGetProbabilitySeString();
 
         AdjustCurrentDutyIndicator(addon);
     }

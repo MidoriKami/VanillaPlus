@@ -184,8 +184,6 @@ public class AddonConfigAddon : NativeAddon {
         AddonConfig.Keybind = newKeybind;
         AddonConfig.Save();
 
-        if (keybindTextNode is not null) {
-            keybindTextNode.String = AddonConfig.Keybind.ToString();
-        }
+        keybindTextNode?.String = AddonConfig.Keybind.ToString();
     }
 }
