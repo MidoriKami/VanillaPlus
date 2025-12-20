@@ -61,7 +61,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
             Position = new Vector2(lineNode.X + lineNode.Width, ContentStartPosition.Y),
             Size = new Vector2(ContentSize.X - lineNode.X - lineNode.Width, ContentSize.Y),
         };
-        gearsetListNode.AttachNode(this);
+        optionsContainerNode.AttachNode(this);
 
         var backgroundImageSize = optionsContainerNode.Size * 3.0f / 4.0f;
         var minSize = MathF.Min(backgroundImageSize.X, backgroundImageSize.Y);
@@ -148,10 +148,8 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         gearsetSearchAddon.UpdateGearsets(Config.Redirections.Keys.ToList());
         gearsetSearchAddon.SelectionResult = result => {
             if (Config.Redirections.TryAdd(result.GearsetId, [])) {
-                if (gearsetListNode is not null) {
-                    gearsetListNode.SelectionOptions = GetConfigInfos();
-                }
-            
+                gearsetListNode?.SelectionOptions = GetConfigInfos();
+
                 Config.Save();
             }
         };
