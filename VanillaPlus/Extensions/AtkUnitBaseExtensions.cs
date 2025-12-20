@@ -10,6 +10,11 @@ public static unsafe class AtkUnitBaseExtensions {
 
         public bool IsActuallyVisible => addon.GetIsActuallyVisible();
 
+        public void SubscribeStringArrayData(StringArrayType arrayType) => addon.SubscribeAtkArrayData(0, (byte)arrayType);
+        public void UnsubscribeStringArrayData(StringArrayType arrayType) => addon.UnsubscribeAtkArrayData(0, (byte)arrayType);
+        public void SubscribeNumberArrayData(NumberArrayType arrayType) => addon.SubscribeAtkArrayData(1, (byte)arrayType);
+        public void UnsubscribeNumberArrayData(NumberArrayType arrayType) => addon.SubscribeAtkArrayData(1, (byte)arrayType);
+        
         private bool GetIsActuallyVisible() {
             if (!addon.IsVisible) return false;
             if (addon.RootNode is null) return false;
