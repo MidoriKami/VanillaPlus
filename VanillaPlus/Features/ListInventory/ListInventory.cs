@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using KamiToolKit;
@@ -21,6 +21,7 @@ public class ListInventory : GameModification {
             new ChangeLogInfo(3, "Added '/listinventory' command to open window"),
             new ChangeLogInfo(4, "Sort Dropdown is now on another line, added reverse sort direction button"),
             new ChangeLogInfo(5, "Renamed to be consistent with other features"),
+            new ChangeLogInfo(6, "Using consumables or moving items now updates the list"),
         ],
     };
     
@@ -34,7 +35,7 @@ public class ListInventory : GameModification {
     public override string ImageName => "ListInventory.png";
 
     public override void OnEnable() {
-        addonListInventory = new SearchableNodeListAddon {
+        addonListInventory = new AddonListInventory {
             InternalName = "ListInventory",
             Title = "Inventory List",
             Size = new Vector2(450.0f, 700.0f),
@@ -43,6 +44,7 @@ public class ListInventory : GameModification {
             UpdateListFunction = OnListUpdated,
             DropDownOptions = ["Alphabetically", "Quantity", "Level", "Item Level", "Rarity", "Item Id", "Item Category"],
             OpenCommand = "/listinventory",
+            OnInventoryDataChanged = OnInventoryChanged
         };
 
         addonListInventory.Initialize();
@@ -62,6 +64,11 @@ public class ListInventory : GameModification {
     }
     
     private void OnInventoryUpdate(AddonEvent type, AddonArgs args) {
+        updateRequested = true;
+        addonListInventory?.DoListUpdate();
+    }
+
+    private void OnInventoryChanged() {
         updateRequested = true;
         addonListInventory?.DoListUpdate();
     }
