@@ -115,9 +115,6 @@
 	<data name="BetterCursor_LabelColor" xml:space="preserve">
 		<value>カラー</value>
 	</data>
-	<data name="BetterCursor_LabelIcon" xml:space="preserve">
-		<value>アイコン</value>
-	</data>
 	<data name="BetterCursor_LabelSize" xml:space="preserve">
 		<value>サイズ</value>
 	</data>

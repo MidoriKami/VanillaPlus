@@ -48,7 +48,7 @@ public class BetterCursor : GameModification {
             .AddCheckbox(Strings("BetterCursor_OnlyShowInDuties"), nameof(config.OnlyShowInDuties));
 
         configWindow.AddCategory(Strings("BetterCursor_CategoryIconSelection"))
-            .AddSelectIcon(Strings("BetterCursor_LabelIcon"), nameof(config.IconId));
+            .AddSelectIcon(Strings("Icon"), nameof(config.IconId));
 
         OpenConfigAction = configWindow.Toggle;
 
