@@ -4,7 +4,6 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 using Lumina.Text;
-using Lumina.Text.ReadOnly;
 
 namespace VanillaPlus.Features.DutyLootPreview;
 

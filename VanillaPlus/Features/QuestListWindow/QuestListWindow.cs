@@ -27,11 +27,11 @@ public unsafe class QuestListWindow : GameModification {
     private bool filterReversed;
     private bool updateRequested;
 
-    private static string filterTypeLabel => Strings("QuestListWindow_FilterType");
-    private static string filterAlphabeticallyLabel => Strings("QuestListWindow_FilterAlphabetically");
-    private static string filterLevelLabel => Strings("QuestListWindow_FilterLevel");
-    private static string filterDistanceLabel => Strings("QuestListWindow_FilterDistance");
-    private static string filterIssuerNameLabel => Strings("QuestListWindow_FilterIssuerName");
+    private static string FilterTypeLabel => Strings("QuestListWindow_FilterType");
+    private static string FilterAlphabeticallyLabel => Strings("QuestListWindow_FilterAlphabetically");
+    private static string FilterLevelLabel => Strings("QuestListWindow_FilterLevel");
+    private static string FilterDistanceLabel => Strings("QuestListWindow_FilterDistance");
+    private static string FilterIssuerNameLabel => Strings("QuestListWindow_FilterIssuerName");
     public override string ImageName => "QuestList.png";
 
     public override void OnEnable() {
@@ -40,7 +40,7 @@ public unsafe class QuestListWindow : GameModification {
             InternalName = "QuestList",
             Title = Strings("QuestListWindow_Title"),
             UpdateListFunction = UpdateList,
-            DropDownOptions = [ filterTypeLabel, filterAlphabeticallyLabel, filterLevelLabel, filterDistanceLabel, filterIssuerNameLabel ],
+            DropDownOptions = [ FilterTypeLabel, FilterAlphabeticallyLabel, FilterLevelLabel, FilterDistanceLabel, FilterIssuerNameLabel ],
             OnFilterUpdated = OnFilterUpdated,
             OnSearchUpdated = OnSearchUpdated,
             OpenCommand = "/questlist",
@@ -48,7 +48,7 @@ public unsafe class QuestListWindow : GameModification {
 
         addonQuestList.Initialize();
         
-        OnFilterUpdated(filterTypeLabel, false);
+        OnFilterUpdated(FilterTypeLabel, false);
 
         OpenConfigAction = addonQuestList.OpenAddonConfig;
     }
@@ -81,7 +81,7 @@ public unsafe class QuestListWindow : GameModification {
             QuestInfo = data,
         });
 
-        if (listUpdated || updateRequested || filterString == filterDistanceLabel) {
+        if (listUpdated || updateRequested || filterString == FilterDistanceLabel) {
             listNode.ReorderNodes(Comparison);
         }
 
@@ -100,11 +100,11 @@ public unsafe class QuestListWindow : GameModification {
         var rightQuest = right.QuestInfo;
 
         var result = filterString switch {
-            var s when s == filterAlphabeticallyLabel => string.CompareOrdinal(leftQuest.Name.ToString(), rightQuest.Name.ToString()),
-            var s when s == filterTypeLabel => rightQuest.IconId.CompareTo(leftQuest.IconId),
-            var s when s == filterLevelLabel => rightQuest.Level.CompareTo(leftQuest.Level),
-            var s when s == filterDistanceLabel => leftQuest.Distance.CompareTo(rightQuest.Distance),
-            var s when s == filterIssuerNameLabel => string.CompareOrdinal(leftQuest.IssuerName.ToString(), rightQuest.IssuerName.ToString()),
+            var s when s == FilterAlphabeticallyLabel => string.CompareOrdinal(leftQuest.Name.ToString(), rightQuest.Name.ToString()),
+            var s when s == FilterTypeLabel => rightQuest.IconId.CompareTo(leftQuest.IconId),
+            var s when s == FilterLevelLabel => rightQuest.Level.CompareTo(leftQuest.Level),
+            var s when s == FilterDistanceLabel => leftQuest.Distance.CompareTo(rightQuest.Distance),
+            var s when s == FilterIssuerNameLabel => string.CompareOrdinal(leftQuest.IssuerName.ToString(), rightQuest.IssuerName.ToString()),
             _ => string.CompareOrdinal(leftQuest.Name.ToString(), rightQuest.Name.ToString()),
         };
 

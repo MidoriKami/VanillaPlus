@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Numerics;
 using KamiToolKit.Nodes;
-using Lumina.Text;
 using Lumina.Text.ReadOnly;
 
 namespace VanillaPlus.NativeElements.Nodes;

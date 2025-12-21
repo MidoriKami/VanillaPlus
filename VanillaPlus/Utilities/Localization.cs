@@ -7,22 +7,9 @@ public static class Localization {
     private static readonly ResourceManager ResourceManager = new("VanillaPlus.Resources.Strings", typeof(Localization).Assembly);
     private static CultureInfo? overrideCulture;
 
-    public static CultureInfo CurrentCulture {
-        get {
-            if (overrideCulture is not null) {
-                return overrideCulture;
-            }
+    public static CultureInfo CurrentCulture => overrideCulture ?? MapLanguageToCulture(Services.PluginInterface.UiLanguage);
 
-            if (global::VanillaPlus.Services.PluginInterface is null) {
-                return CultureInfo.InvariantCulture;
-            }
-
-            return MapLanguageToCulture(global::VanillaPlus.Services.PluginInterface.UiLanguage);
-        }
-    }
-
-    public static void SetOverrideCulture(CultureInfo? culture)
-        => overrideCulture = culture;
+    public static void SetOverrideCulture(CultureInfo? culture) => overrideCulture = culture;
 
     public static string GetString(string resourceKey, params object[] formatArguments) {
         if (string.IsNullOrEmpty(resourceKey)) {

@@ -31,13 +31,14 @@ public class ListInventory : GameModification {
     private string searchString = string.Empty;
     private bool filterReversed;
     private bool updateRequested;
-    private static string filterAlphabeticallyLabel => Strings("ListInventory_FilterAlphabetically");
-    private static string filterQuantityLabel => Strings("ListInventory_FilterQuantity");
-    private static string filterLevelLabel => Strings("ListInventory_FilterLevel");
-    private static string filterItemLevelLabel => Strings("ListInventory_FilterItemLevel");
-    private static string filterRarityLabel => Strings("ListInventory_FilterRarity");
-    private static string filterItemIdLabel => Strings("ListInventory_FilterItemId");
-    private static string filterItemCategoryLabel => Strings("ListInventory_FilterItemCategory");
+
+    private static string FilterAlphabeticallyLabel => Strings("ListInventory_FilterAlphabetically");
+    private static string FilterQuantityLabel => Strings("ListInventory_FilterQuantity");
+    private static string FilterLevelLabel => Strings("ListInventory_FilterLevel");
+    private static string FilterItemLevelLabel => Strings("ListInventory_FilterItemLevel");
+    private static string FilterRarityLabel => Strings("ListInventory_FilterRarity");
+    private static string FilterItemIdLabel => Strings("ListInventory_FilterItemId");
+    private static string FilterItemCategoryLabel => Strings("ListInventory_FilterItemCategory");
 
     public override string ImageName => "ListInventory.png";
 
@@ -50,13 +51,13 @@ public class ListInventory : GameModification {
             OnSearchUpdated = OnSearchUpdated,
             UpdateListFunction = OnListUpdated,
             DropDownOptions = [
-                filterAlphabeticallyLabel,
-                filterQuantityLabel,
-                filterLevelLabel,
-                filterItemLevelLabel,
-                filterRarityLabel,
-                filterItemIdLabel,
-                filterItemCategoryLabel,
+                FilterAlphabeticallyLabel,
+                FilterQuantityLabel,
+                FilterLevelLabel,
+                FilterItemLevelLabel,
+                FilterRarityLabel,
+                FilterItemIdLabel,
+                FilterItemCategoryLabel,
             ],
             OpenCommand = "/listinventory",
             OnInventoryDataChanged = OnInventoryChanged
@@ -127,13 +128,13 @@ public class ListInventory : GameModification {
         // Note: Compares in opposite direction to be descending instead of ascending, except for alphabetically
 
         var result = filterString switch {
-            var s when s == filterAlphabeticallyLabel  => string.CompareOrdinal(leftItem.Name, rightItem.Name),
-            var s when s == filterLevelLabel => rightItem.Level.CompareTo(leftItem.Level),
-            var s when s == filterItemLevelLabel  => rightItem.ItemLevel.CompareTo(leftItem.ItemLevel),
-            var s when s == filterRarityLabel  => rightItem.Rarity.CompareTo(leftItem.Rarity),
-            var s when s == filterItemIdLabel => rightItem.Item.ItemId.CompareTo(leftItem.Item.ItemId),
-            var s when s == filterItemCategoryLabel => rightItem.UiCategory.CompareTo(leftItem.UiCategory),
-            var s when s == filterQuantityLabel => rightItem.ItemCount.CompareTo(leftItem.ItemCount),
+            var s when s == FilterAlphabeticallyLabel  => string.CompareOrdinal(leftItem.Name, rightItem.Name),
+            var s when s == FilterLevelLabel => rightItem.Level.CompareTo(leftItem.Level),
+            var s when s == FilterItemLevelLabel  => rightItem.ItemLevel.CompareTo(leftItem.ItemLevel),
+            var s when s == FilterRarityLabel  => rightItem.Rarity.CompareTo(leftItem.Rarity),
+            var s when s == FilterItemIdLabel => rightItem.Item.ItemId.CompareTo(leftItem.Item.ItemId),
+            var s when s == FilterItemCategoryLabel => rightItem.UiCategory.CompareTo(leftItem.UiCategory),
+            var s when s == FilterQuantityLabel => rightItem.ItemCount.CompareTo(leftItem.ItemCount),
             _ => string.CompareOrdinal(leftItem.Name, rightItem.Name),
         };
 
