@@ -171,7 +171,7 @@ public unsafe class FadeUnavailableActions : GameModification {
     }
 
     private enum NumberArrayActionType : uint {
-        Action = 0x2E,
-        CraftAction = 0x36,
+        Action = 0x2F,
+        CraftAction = 0x37,
     }
 }
