@@ -43,7 +43,7 @@ public class BetterCursor : GameModification {
             .AddCheckbox(Strings("BetterCursor_EnableAnimation"), nameof(config.Animations))
             .AddCheckbox(Strings("BetterCursor_HideOnCameraMove"), nameof(config.HideOnCameraMove));
         
-        configWindow.AddCategory(Strings("BetterCursor_CategoryVisibility"))
+        configWindow.AddCategory(Strings("Visibility"))
             .AddCheckbox(Strings("BetterCursor_OnlyShowInCombat"), nameof(config.OnlyShowInCombat))
             .AddCheckbox(Strings("BetterCursor_OnlyShowInDuties"), nameof(config.OnlyShowInDuties));
 

@@ -64,6 +64,9 @@
 	<data name="SortOptionAlphabetical" xml:space="preserve">
 		<value>Alphabetical</value>
 	</data>
+	<data name="Visibility" xml:space="preserve">
+		<value>Visibility</value>
+	</data>
 	<data name="Button_SavePreset" xml:space="preserve">
 		<value>Save Preset</value>
 	</data>
@@ -103,9 +106,6 @@
 	<data name="BetterCursor_CategoryStyle" xml:space="preserve">
 		<value>Style</value>
 	</data>
-	<data name="BetterCursor_CategoryVisibility" xml:space="preserve">
-		<value>Visibility</value>
-	</data>
 	<data name="BetterCursor_ConfigTitle" xml:space="preserve">
 		<value>Better Cursor Config</value>
 	</data>
@@ -141,9 +141,6 @@
 	</data>
 	<data name="WindowBackground_SearchTitle" xml:space="preserve">
 		<value>Window Search</value>
-	</data>
-	<data name="WindowBackground_SortOptionVisibility" xml:space="preserve">
-		<value>Visibility</value>
 	</data>
 	<data name="WindowBackground_ColorPickerTitle" xml:space="preserve">
 		<value>Window Background Color Picker</value>

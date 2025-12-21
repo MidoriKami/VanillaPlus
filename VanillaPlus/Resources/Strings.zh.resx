@@ -64,6 +64,9 @@
 	<data name="SortOptionAlphabetical" xml:space="preserve">
 		<value>按字母顺序</value>
 	</data>
+	<data name="Visibility" xml:space="preserve">
+		<value>可见性</value>
+	</data>
 	<data name="Button_SavePreset" xml:space="preserve">
 		<value>保存预设</value>
 	</data>
@@ -103,9 +106,6 @@
 	<data name="BetterCursor_CategoryStyle" xml:space="preserve">
 		<value>样式</value>
 	</data>
-	<data name="BetterCursor_CategoryVisibility" xml:space="preserve">
-		<value>可见性</value>
-	</data>
 	<data name="BetterCursor_ConfigTitle" xml:space="preserve">
 		<value>鼠标优化配置</value>
 	</data>
@@ -141,9 +141,6 @@
 	</data>
 	<data name="WindowBackground_SearchTitle" xml:space="preserve">
 		<value>窗口搜索</value>
-	</data>
-	<data name="WindowBackground_SortOptionVisibility" xml:space="preserve">
-		<value>按可见性</value>
 	</data>
 	<data name="WindowBackground_ColorPickerTitle" xml:space="preserve">
 		<value>窗口背景取色器</value>
