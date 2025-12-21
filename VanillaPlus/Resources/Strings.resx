@@ -70,6 +70,9 @@
 	<data name="Color" xml:space="preserve">
 		<value>Color</value>
 	</data>
+	<data name="Toggles" xml:space="preserve">
+		<value>Toggles</value>
+	</data>
 	<data name="Button_SavePreset" xml:space="preserve">
 		<value>Save Preset</value>
 	</data>
@@ -162,9 +165,6 @@
 	</data>
 	<data name="TargetCastBarCountdown_CategoryPrimaryStyle" xml:space="preserve">
 		<value>Target Castbar Style (Combined)</value>
-	</data>
-	<data name="TargetCastBarCountdown_CategoryToggles" xml:space="preserve">
-		<value>Toggles</value>
 	</data>
 	<data name="TargetCastBarCountdown_CheckboxFocus" xml:space="preserve">
 		<value>Show on Focus Target Castbar</value>
@@ -936,9 +936,6 @@ This game modification fixes it by always triggering the normal mouse click in a
 	</data>
 	<data name="ForcedCutsceneSounds_CategorySpecial" xml:space="preserve">
 		<value>Special</value>
-	</data>
-	<data name="ForcedCutsceneSounds_CategoryToggles" xml:space="preserve">
-		<value>Toggles</value>
 	</data>
 	<data name="ForcedCutsceneSounds_ConfigTitle" xml:space="preserve">
 		<value>Forced Cutscene Sounds Config</value>

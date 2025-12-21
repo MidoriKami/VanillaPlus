@@ -70,6 +70,9 @@
 	<data name="Color" xml:space="preserve">
 		<value>カラー</value>
 	</data>
+	<data name="Toggles" xml:space="preserve">
+		<value>切り替え</value>
+	</data>
 	<data name="Button_SavePreset" xml:space="preserve">
 		<value>プリセットを保存</value>
 	</data>
@@ -162,9 +165,6 @@
 	</data>
 	<data name="TargetCastBarCountdown_CategoryPrimaryStyle" xml:space="preserve">
 		<value>ターゲット詠唱バーのスタイル（統合）</value>
-	</data>
-	<data name="TargetCastBarCountdown_CategoryToggles" xml:space="preserve">
-		<value>切り替え</value>
 	</data>
 	<data name="TargetCastBarCountdown_CheckboxFocus" xml:space="preserve">
 		<value>フォーカスターゲット詠唱バーに表示</value>
@@ -934,9 +934,6 @@
 	</data>
 	<data name="ForcedCutsceneSounds_CategorySpecial" xml:space="preserve">
 		<value>特殊</value>
-	</data>
-	<data name="ForcedCutsceneSounds_CategoryToggles" xml:space="preserve">
-		<value>切り替え</value>
 	</data>
 	<data name="ForcedCutsceneSounds_ConfigTitle" xml:space="preserve">
 		<value>カットシーン音声強制設定</value>

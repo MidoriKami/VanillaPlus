@@ -70,6 +70,9 @@
 	<data name="Color" xml:space="preserve">
 		<value>颜色</value>
 	</data>
+	<data name="Toggles" xml:space="preserve">
+		<value>开关</value>
+	</data>
 	<data name="Button_SavePreset" xml:space="preserve">
 		<value>保存预设</value>
 	</data>
@@ -162,9 +165,6 @@
 	</data>
 	<data name="TargetCastBarCountdown_CategoryPrimaryStyle" xml:space="preserve">
 		<value>目标咏唱条样式（合并）</value>
-	</data>
-	<data name="TargetCastBarCountdown_CategoryToggles" xml:space="preserve">
-		<value>开关</value>
 	</data>
 	<data name="TargetCastBarCountdown_CheckboxFocus" xml:space="preserve">
 		<value>在焦点目标咏唱条上显示</value>
@@ -934,9 +934,6 @@
 	</data>
 	<data name="ForcedCutsceneSounds_CategorySpecial" xml:space="preserve">
 		<value>特殊</value>
-	</data>
-	<data name="ForcedCutsceneSounds_CategoryToggles" xml:space="preserve">
-		<value>开关</value>
 	</data>
 	<data name="ForcedCutsceneSounds_ConfigTitle" xml:space="preserve">
 		<value>强制过场音效配置</value>
