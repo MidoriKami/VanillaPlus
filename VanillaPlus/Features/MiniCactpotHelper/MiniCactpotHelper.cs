@@ -54,8 +54,8 @@ public unsafe class MiniCactpotHelper : GameModification {
         configWindow.AddCategory(Strings("ConfigCategory_Animations"))
             .AddCheckbox(Strings("ConfigLabel_EnableAnimations"), nameof(config.EnableAnimations));
 
-        configWindow.AddCategory(Strings("ConfigCategory_Icon"))
-            .AddMultiSelectIcon(Strings("ConfigLabel_Icon"), nameof(config.IconId), true, 61332, 90452, 234008);
+        configWindow.AddCategory(Strings("Icon"))
+            .AddMultiSelectIcon(Strings("Icon"), nameof(config.IconId), true, 61332, 90452, 234008);
 
         configWindow.AddCategory(Strings("ConfigCategory_Colors"))
             .AddColorEdit(Strings("ConfigLabel_ButtonColor"), nameof(config.ButtonColor), KnownColor.White.Vector() with { W = 0.8f })

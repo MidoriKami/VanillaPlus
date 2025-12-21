@@ -58,6 +58,9 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="Icon" xml:space="preserve">
+		<value>图标</value>
+	</data>
 	<data name="Button_SavePreset" xml:space="preserve">
 		<value>保存预设</value>
 	</data>
@@ -79,17 +82,11 @@
 	<data name="ConfigCategory_Colors" xml:space="preserve">
 		<value>颜色</value>
 	</data>
-	<data name="ConfigCategory_Icon" xml:space="preserve">
-		<value>图标</value>
-	</data>
 	<data name="ConfigLabel_ButtonColor" xml:space="preserve">
 		<value>按钮</value>
 	</data>
 	<data name="ConfigLabel_EnableAnimations" xml:space="preserve">
 		<value>启用动画</value>
-	</data>
-	<data name="ConfigLabel_Icon" xml:space="preserve">
-		<value>图标</value>
 	</data>
 	<data name="ConfigLabel_LaneColor" xml:space="preserve">
 		<value>通道</value>
