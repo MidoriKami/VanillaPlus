@@ -321,7 +321,9 @@ Start input with &apos;$&apos; to search by description</value>
 	<data name="DutyLoot_NoItemsMessage" xml:space="preserve">
 		<value>No loot data found for this duty.
 
-Data is provided by a third party and may be incomplete.</value>
+Data is provided by a external source and may be incomplete.
+        
+Data will be updated as it becomes available, do not request data updates.</value>
 	</data>
 	<data name="DutyLoot_NoResultsMessage" xml:space="preserve">
 		<value>No results</value>
