@@ -48,5 +48,4 @@ public static unsafe class AtkResNodeExtensions {
             return true;
         }
     }
-
 }
