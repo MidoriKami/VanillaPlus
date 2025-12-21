@@ -232,11 +232,17 @@
 	<data name="ModificationType_NewOverlay" xml:space="preserve">
 		<value>Custom Native Overlay</value>
 	</data>
+	<data name="ModificationDescription_DisableTitleScreenMovie" xml:space="preserve">
+		<value>Prevents the title screen from playing the introduction movie.</value>
+	</data>
 	<data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
 		<value>Indicates which Mini Cactpot spots you should reveal next.</value>
 	</data>
 	<data name="ModificationDescription_PartyFinderPresets" xml:space="preserve">
 		<value>Allows you to save and use presets for the Party Finder Recruitment window.</value>
+	</data>
+	<data name="ModificationDisplay_DisableTitleScreenMovie" xml:space="preserve">
+		<value>Disable Title Screen Movie</value>
 	</data>
 	<data name="ModificationDisplay_MiniCactpotHelper" xml:space="preserve">
 		<value>Mini Cactpot Helper</value>
@@ -286,6 +292,14 @@ May contain bugs or crash your game.</value>
 	</data>
 	<data name="Tooltip_RetryCompatibility" xml:space="preserve">
 		<value>Retry compatibility check</value>
+	</data>
+	<data name="CompatibilityModule_ActivePluginMessage" xml:space="preserve">
+		<value>The original version of this feature is from a plugin that is currently active: {0}</value>
+	</data>
+	<data name="CompatibilityModule_SimpleTweaksActive" xml:space="preserve">
+		<value>The original version of this feature is already active in Simple Tweaks Plugin.
+
+ID: {0}</value>
 	</data>
 	<data name="Tooltip_SavePreset" xml:space="preserve">
 		<value>[VanillaPlus]: Save current settings to a preset</value>
