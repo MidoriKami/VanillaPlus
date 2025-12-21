@@ -7,8 +7,8 @@ namespace VanillaPlus.Features.PetSizeContextMenu;
 
 public class PetSizeContextMenu : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Pet Size Context Menu",
-        Description = "When right clicking on a pet, or a player with a pet, show a context menu entry for changing the pet size.",
+        DisplayName = Strings("ModificationDisplay_PetSizeContextMenu"),
+        Description = Strings("ModificationDescription_PetSizeContextMenu"),
         Authors = [ "MidoriKami" ],
         Type = ModificationType.GameBehavior,
         ChangeLog = [
@@ -39,25 +39,25 @@ public class PetSizeContextMenu : GameModification {
         args.AddMenuItem(new MenuItem {
             IsSubmenu = true,
             UseDefaultPrefix = true,
-            Name = "Pet Size",
+            Name = Strings("PetSize_MenuTitle"),
             OnClicked = clickedArgs => {
                 clickedArgs.OpenSubmenu([
                     new MenuItem {
                         IsEnabled = currentPetSize is not 0,
                         UseDefaultPrefix = true, 
-                        Name = "Small", 
+                        Name = Strings("PetSize_OptionSmall"), 
                         OnClicked = _ => SetPetSize(0),
                     },
                     new MenuItem {
                         IsEnabled = currentPetSize is not 1,
                         UseDefaultPrefix = true, 
-                        Name = "Medium", 
+                        Name = Strings("PetSize_OptionMedium"), 
                         OnClicked = _ => SetPetSize(1),
                     },
                     new MenuItem {
                         IsEnabled = currentPetSize is not 2,
                         UseDefaultPrefix = true, 
-                        Name = "Large", 
+                        Name = Strings("PetSize_OptionLarge"), 
                         OnClicked = _ => SetPetSize(2),
                     },
                 ]);

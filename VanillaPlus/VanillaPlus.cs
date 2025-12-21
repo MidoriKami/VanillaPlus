@@ -18,20 +18,20 @@ public sealed class VanillaPlus : IDalamudPlugin {
 
         System.AddonModificationBrowser = new AddonModificationBrowser {
             InternalName = "VanillaPlusConfig",
-            Title = "Vanilla Plus Modification Browser",
+            Title = Strings("ModificationBrowserTitle"),
             Size = new Vector2(836.0f, 650.0f),
         };
 
         Services.CommandManager.AddHandler("/vanillaplus", new CommandInfo(Handler) {
             DisplayOrder = 1,
             ShowInHelp = true,
-            HelpMessage = "Open Game Modification Browser",
+            HelpMessage = Strings("CommandHelpOpenBrowser"),
         });
 
         Services.CommandManager.AddHandler("/plus", new CommandInfo(Handler) {
             DisplayOrder = 2,
             ShowInHelp = true,
-            HelpMessage = "Open Game Modification Browser",
+            HelpMessage = Strings("CommandHelpOpenBrowser"),
         });
 
         System.WindowSystem = new WindowSystem("VanillaPlus");

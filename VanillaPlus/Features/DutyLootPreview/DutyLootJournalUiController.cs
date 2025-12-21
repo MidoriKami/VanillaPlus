@@ -43,7 +43,7 @@ public unsafe class DutyLootJournalUiController {
 
             Position = new Vector2(420.0f, 68.0f),
             Size = new Vector2(32.0f, 32.0f),
-            TooltipString = "View Loot that can be earned in this duty.",
+            TooltipString = Strings("DutyLoot_Tooltip_JournalButton"),
             OnClick = () => OnButtonClicked?.Invoke(),
         };
         lootButtonNode.AttachNode(dutyTitleNode, NodePosition.AfterTarget);

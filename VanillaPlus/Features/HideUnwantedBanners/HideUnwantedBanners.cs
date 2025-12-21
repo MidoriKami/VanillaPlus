@@ -11,8 +11,8 @@ namespace VanillaPlus.Features.HideUnwantedBanners;
 
 public unsafe class HideUnwantedBanners : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Hide Unwanted Banners",
-        Description = "Prevents large text banners from appearing and playing their sound effect.",
+        DisplayName = Strings("ModificationDisplay_HideUnwantedBanners"),
+        Description = Strings("ModificationDescription_HideUnwantedBanners"),
         Authors = ["MidoriKami"],
         Type = ModificationType.GameBehavior,
         ChangeLog = [
@@ -33,7 +33,7 @@ public unsafe class HideUnwantedBanners : GameModification {
 
         configWindow = new NodeListAddon {
             InternalName = "BannersConfig",
-            Title = "Hide Unwanted Banners Config",
+            Title = Strings("HideUnwantedBanners_ConfigTitle"),
             Size = new Vector2(500.0f, 600.0f),
             UpdateListFunction = UpdateList,
         };

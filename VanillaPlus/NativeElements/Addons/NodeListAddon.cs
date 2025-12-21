@@ -32,7 +32,7 @@ public unsafe class NodeListAddon : NativeAddon {
 
         addonConfigWindow = new AddonConfigAddon {
             InternalName = $"{InternalName}Config",
-            Title = $"{InternalName} Configuration Window",
+            Title = Strings("NodeList_ConfigWindowTitle", InternalName),
             AddonConfig = config,
         };
     }
@@ -59,7 +59,7 @@ public unsafe class NodeListAddon : NativeAddon {
             if (field is null && value is not null) {
                 Services.CommandManager.AddHandler(value, new CommandInfo(OnOpenCommand) {
                     DisplayOrder = 3,
-                    HelpMessage = $"Opens the {Title} Window",
+                    HelpMessage = Strings("NodeList_OpenCommandHelp", (Title.ToString() ?? InternalName)),
                 });
                 
                 field = value;

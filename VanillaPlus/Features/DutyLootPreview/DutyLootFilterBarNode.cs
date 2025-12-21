@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
+using Lumina.Text;
 using Lumina.Text.ReadOnly;
 
 namespace VanillaPlus.Features.DutyLootPreview;
@@ -30,19 +31,19 @@ public class DutyLootFilterBarNode : HorizontalListNode {
     public DutyLootFilterBarNode() {
         ItemSpacing = 1;
 
-        AddButton(LootFilter.All, 61808, "All Items");
-        AddButton(LootFilter.Favorites, 61830, "Favorites");
-        AddButton(LootFilter.Equipment, 61828, "Equipment");
-        AddButton(LootFilter.Misc, 61807, "Miscellaneous");
+        AddButton(LootFilter.All, 61808, Strings("DutyLoot_Filter_All"));
+        AddButton(LootFilter.Favorites, 61830, Strings("DutyLoot_Filter_Favorites"));
+        AddButton(LootFilter.Equipment, 61828, Strings("DutyLoot_Filter_Equipment"));
+        AddButton(LootFilter.Misc, 61807, Strings("DutyLoot_Filter_Misc"));
 
         UpdateButtonStates();
     }
 
-    private void AddButton(LootFilter filter, uint iconId, ReadOnlySeString tooltip) {
+    private void AddButton(LootFilter filter, uint iconId, string tooltipText) {
         var button = new IconToggleNode {
             Size = new Vector2(36, 36),
             IconId = iconId,
-            Tooltip = tooltip,
+            Tooltip = new SeStringBuilder().Append(tooltipText).ToReadOnlySeString(),
         };
 
         button.CollisionNode.AddEvent(AtkEventType.MouseClick, () => {

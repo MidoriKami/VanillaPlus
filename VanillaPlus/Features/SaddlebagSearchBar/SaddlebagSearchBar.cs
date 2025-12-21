@@ -4,8 +4,8 @@ namespace VanillaPlus.Features.SaddlebagSearchBar;
 
 public class SaddlebagSearchBar : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Saddlebag Search Bar",
-        Description = "Adds a search bar to the saddlebag window.",
+        DisplayName = Strings("ModificationDisplay_SaddlebagSearchBar"),
+        Description = Strings("ModificationDescription_SaddlebagSearchBar"),
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Inventory,
         Authors = [ "MidoriKami" ],

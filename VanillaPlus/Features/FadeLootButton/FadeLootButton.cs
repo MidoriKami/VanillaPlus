@@ -9,8 +9,8 @@ namespace VanillaPlus.Features.FadeLootButton;
 
 public unsafe class FadeLootButton : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Fade Loot Button",
-        Description = "Fades the Loot button if you've already rolled on everything available.",
+        DisplayName = Strings("ModificationDisplay_FadeLootButton"),
+        Description = Strings("ModificationDescription_FadeLootButton"),
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
@@ -26,16 +26,16 @@ public unsafe class FadeLootButton : GameModification {
     
     public override void OnEnable() {
         config = FadeLootButtonConfig.Load();
-        
+
         configWindow = new ConfigAddon {
             Size = new Vector2(400.0f, 125.0f),
             InternalName = "FadeLootConfig",
-            Title = "Fade Loot Button Config",
+            Title = Strings("FadeLootButton_ConfigTitle"),
             Config = config,
         };
 
-        configWindow.AddCategory("Style Settings")
-            .AddFloatSlider("Fade Percentage", 0.0f, 1.0f, 2, 0.05f, nameof(config.FadePercent));
+        configWindow.AddCategory(Strings("FadeLootButton_CategoryStyleSettings"))
+            .AddFloatSlider(Strings("FadeLootButton_LabelFadePercentage"), 0.0f, 1.0f, 2, 0.05f, nameof(config.FadePercent));
 
         OpenConfigAction = configWindow.Toggle;
         

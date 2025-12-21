@@ -12,8 +12,8 @@ namespace VanillaPlus.Features.QuestListWindow;
 
 public unsafe class QuestListWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Quest List Window",
-        Description = "Displays a list of all available quests for the currently occupied zone.",
+        DisplayName = Strings("ModificationDisplay_QuestListWindow"),
+        Description = Strings("ModificationDescription_QuestListWindow"),
         Type = ModificationType.NewWindow,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
@@ -27,15 +27,20 @@ public unsafe class QuestListWindow : GameModification {
     private bool filterReversed;
     private bool updateRequested;
 
+    private static string filterTypeLabel => Strings("QuestListWindow_FilterType");
+    private static string filterAlphabeticallyLabel => Strings("QuestListWindow_FilterAlphabetically");
+    private static string filterLevelLabel => Strings("QuestListWindow_FilterLevel");
+    private static string filterDistanceLabel => Strings("QuestListWindow_FilterDistance");
+    private static string filterIssuerNameLabel => Strings("QuestListWindow_FilterIssuerName");
     public override string ImageName => "QuestList.png";
 
     public override void OnEnable() {
         addonQuestList = new SearchableNodeListAddon {
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "QuestList",
-            Title = "Quest List",
+            Title = Strings("QuestListWindow_Title"),
             UpdateListFunction = UpdateList,
-            DropDownOptions = [ "Type", "Alphabetically", "Level", "Distance", "Issuer Name", ],
+            DropDownOptions = [ filterTypeLabel, filterAlphabeticallyLabel, filterLevelLabel, filterDistanceLabel, filterIssuerNameLabel ],
             OnFilterUpdated = OnFilterUpdated,
             OnSearchUpdated = OnSearchUpdated,
             OpenCommand = "/questlist",
@@ -43,7 +48,7 @@ public unsafe class QuestListWindow : GameModification {
 
         addonQuestList.Initialize();
         
-        OnFilterUpdated("Type", false);
+        OnFilterUpdated(filterTypeLabel, false);
 
         OpenConfigAction = addonQuestList.OpenAddonConfig;
     }
@@ -76,7 +81,7 @@ public unsafe class QuestListWindow : GameModification {
             QuestInfo = data,
         });
 
-        if (listUpdated || updateRequested || filterString is "Distance") {
+        if (listUpdated || updateRequested || filterString == filterDistanceLabel) {
             listNode.ReorderNodes(Comparison);
         }
 
@@ -95,11 +100,11 @@ public unsafe class QuestListWindow : GameModification {
         var rightQuest = right.QuestInfo;
 
         var result = filterString switch {
-            "Alphabetically" => string.CompareOrdinal(leftQuest.Name.ToString(), rightQuest.Name.ToString()),
-            "Type" => rightQuest.IconId.CompareTo(leftQuest.IconId),
-            "Level" => rightQuest.Level.CompareTo(leftQuest.Level),
-            "Distance" => leftQuest.Distance.CompareTo(rightQuest.Distance),
-            "Issuer Name" => string.CompareOrdinal(leftQuest.IssuerName.ToString(), rightQuest.IssuerName.ToString()),
+            var s when s == filterAlphabeticallyLabel => string.CompareOrdinal(leftQuest.Name.ToString(), rightQuest.Name.ToString()),
+            var s when s == filterTypeLabel => rightQuest.IconId.CompareTo(leftQuest.IconId),
+            var s when s == filterLevelLabel => rightQuest.Level.CompareTo(leftQuest.Level),
+            var s when s == filterDistanceLabel => leftQuest.Distance.CompareTo(rightQuest.Distance),
+            var s when s == filterIssuerNameLabel => string.CompareOrdinal(leftQuest.IssuerName.ToString(), rightQuest.IssuerName.ToString()),
             _ => string.CompareOrdinal(leftQuest.Name.ToString(), rightQuest.Name.ToString()),
         };
 

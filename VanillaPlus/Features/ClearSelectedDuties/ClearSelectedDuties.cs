@@ -11,8 +11,8 @@ namespace VanillaPlus.Features.ClearSelectedDuties;
 
 public class ClearSelectedDuties : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Clear Selected Duties",
-        Description = "When opening the Duty Finder, deselects any selected duties.",
+        DisplayName = Strings("ModificationDisplay_ClearSelectedDuties"),
+        Description = Strings("ModificationDescription_ClearSelectedDuties"),
         Authors = [ "MidoriKami" ],
         Type = ModificationType.GameBehavior,
         ChangeLog = [
@@ -28,12 +28,12 @@ public class ClearSelectedDuties : GameModification {
         configWindow = new ConfigAddon {
             Size = new Vector2(300.0f, 135.0f),
             InternalName = "ClearSelectedConfig",
-            Title = "Clear Selected Duties Config",
+            Title = Strings("ClearSelectedDuties_ConfigTitle"),
             Config = config,
         };
 
-        configWindow.AddCategory("Settings")
-            .AddCheckbox("Disable when Unrestricted", nameof(config.DisableWhenUnrestricted));
+        configWindow.AddCategory(Strings("ClearSelectedDuties_SettingsCategory"))
+            .AddCheckbox(Strings("ClearSelectedDuties_DisableWhenUnrestricted"), nameof(config.DisableWhenUnrestricted));
         
         OpenConfigAction = configWindow.Toggle;
         

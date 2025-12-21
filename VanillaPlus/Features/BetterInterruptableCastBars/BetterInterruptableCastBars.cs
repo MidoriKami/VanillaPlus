@@ -15,8 +15,8 @@ namespace VanillaPlus.Features.BetterInterruptableCastBars;
 
 public unsafe class BetterInterruptableCastBars : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Better Interruptable Castbars",
-        Description = "Makes enemy interruptable castbars much more noticeable.\n\nAdditionally skills that can interrupt the cast are indicated on your hotbar.",
+        DisplayName = Strings("ModificationDisplay_BetterInterruptableCastBars"),
+        Description = Strings("ModificationDescription_BetterInterruptableCastBars"),
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

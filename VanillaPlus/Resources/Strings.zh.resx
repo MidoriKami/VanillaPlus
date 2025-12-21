@@ -1,0 +1,1124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<xsd:schema id="root" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="Button_SavePreset" xml:space="preserve">
+		<value>保存预设</value>
+	</data>
+	<data name="ChangelogBrowserTitle" xml:space="preserve">
+		<value>Vanilla Plus 更新日志浏览器</value>
+	</data>
+	<data name="ChangelogButtonLabel" xml:space="preserve">
+		<value>更新日志</value>
+	</data>
+	<data name="ChangelogTitleFormat" xml:space="preserve">
+		<value>{0}更新日志</value>
+	</data>
+	<data name="CommandHelpOpenBrowser" xml:space="preserve">
+		<value>打开改造功能浏览器</value>
+	</data>
+	<data name="ConfigCategory_Animations" xml:space="preserve">
+		<value>动画</value>
+	</data>
+	<data name="ConfigCategory_Colors" xml:space="preserve">
+		<value>颜色</value>
+	</data>
+	<data name="ConfigCategory_Icon" xml:space="preserve">
+		<value>图标</value>
+	</data>
+	<data name="ConfigLabel_ButtonColor" xml:space="preserve">
+		<value>按钮</value>
+	</data>
+	<data name="ConfigLabel_EnableAnimations" xml:space="preserve">
+		<value>启用动画</value>
+	</data>
+	<data name="ConfigLabel_Icon" xml:space="preserve">
+		<value>图标</value>
+	</data>
+	<data name="ConfigLabel_LaneColor" xml:space="preserve">
+		<value>通道</value>
+	</data>
+	<data name="BetterCursor_CategoryFunctions" xml:space="preserve">
+		<value>功能</value>
+	</data>
+	<data name="BetterCursor_CategoryIconSelection" xml:space="preserve">
+		<value>图标选择</value>
+	</data>
+	<data name="BetterCursor_CategoryStyle" xml:space="preserve">
+		<value>样式</value>
+	</data>
+	<data name="BetterCursor_CategoryVisibility" xml:space="preserve">
+		<value>可见性</value>
+	</data>
+	<data name="BetterCursor_ConfigTitle" xml:space="preserve">
+		<value>鼠标优化配置</value>
+	</data>
+	<data name="BetterCursor_EnableAnimation" xml:space="preserve">
+		<value>启用动画效果</value>
+	</data>
+	<data name="BetterCursor_HideOnCameraMove" xml:space="preserve">
+		<value>按住左键或右键拖动时隐藏</value>
+	</data>
+	<data name="BetterCursor_LabelColor" xml:space="preserve">
+		<value>颜色</value>
+	</data>
+	<data name="BetterCursor_LabelIcon" xml:space="preserve">
+		<value>图标</value>
+	</data>
+	<data name="BetterCursor_LabelSize" xml:space="preserve">
+		<value>大小</value>
+	</data>
+	<data name="BetterCursor_OnlyShowInCombat" xml:space="preserve">
+		<value>仅在战斗中显示</value>
+	</data>
+	<data name="BetterCursor_OnlyShowInDuties" xml:space="preserve">
+		<value>仅在任务中显示</value>
+	</data>
+	<data name="CurrencyOverlay_ConfigTitle" xml:space="preserve">
+		<value>货币叠加层配置</value>
+	</data>
+	<data name="CurrencyOverlay_ItemSearchTitle" xml:space="preserve">
+		<value>物品搜索</value>
+	</data>
+	<data name="CurrencyOverlay_SortOptionAlphabetical" xml:space="preserve">
+		<value>按字母顺序</value>
+	</data>
+	<data name="CurrencyOverlay_SortOptionId" xml:space="preserve">
+		<value>按ID</value>
+	</data>
+	<data name="WindowBackground_ConfigTitle" xml:space="preserve">
+		<value>窗口背景配置</value>
+	</data>
+	<data name="WindowBackground_SearchTitle" xml:space="preserve">
+		<value>窗口搜索</value>
+	</data>
+	<data name="WindowBackground_SortOptionAlphabetical" xml:space="preserve">
+		<value>按字母顺序</value>
+	</data>
+	<data name="WindowBackground_SortOptionVisibility" xml:space="preserve">
+		<value>按可见性</value>
+	</data>
+	<data name="WindowBackground_ColorPickerTitle" xml:space="preserve">
+		<value>窗口背景取色器</value>
+	</data>
+	<data name="WindowBackground_CategoryBackgroundColor" xml:space="preserve">
+		<value>背景颜色</value>
+	</data>
+	<data name="WindowBackground_ColorLabel" xml:space="preserve">
+		<value>颜色</value>
+	</data>
+	<data name="WindowBackground_CategoryPaddingSize" xml:space="preserve">
+		<value>内边距大小</value>
+	</data>
+	<data name="TargetCastBarCountdown_CategoryFocusStyle" xml:space="preserve">
+		<value>焦点目标咏唱条样式</value>
+	</data>
+	<data name="TargetCastBarCountdown_CategoryNameplateStyle" xml:space="preserve">
+		<value>名牌咏唱条样式</value>
+	</data>
+	<data name="TargetCastBarCountdown_CategoryPrimaryAltStyle" xml:space="preserve">
+		<value>目标咏唱条样式（分离）</value>
+	</data>
+	<data name="TargetCastBarCountdown_CategoryPrimaryStyle" xml:space="preserve">
+		<value>目标咏唱条样式（合并）</value>
+	</data>
+	<data name="TargetCastBarCountdown_CategoryToggles" xml:space="preserve">
+		<value>开关</value>
+	</data>
+	<data name="TargetCastBarCountdown_CheckboxFocus" xml:space="preserve">
+		<value>在焦点目标咏唱条上显示</value>
+	</data>
+	<data name="TargetCastBarCountdown_CheckboxNameplate" xml:space="preserve">
+		<value>在名牌目标咏唱条上显示</value>
+	</data>
+	<data name="TargetCastBarCountdown_CheckboxPrimary" xml:space="preserve">
+		<value>在主目标咏唱条上显示</value>
+	</data>
+	<data name="TargetCastBarCountdown_ConfigTitle" xml:space="preserve">
+		<value>目标咏唱条倒计时配置</value>
+	</data>
+	<data name="SuppressDialogAdvance_ApplyOnlyInCutscenes" xml:space="preserve">
+		<value>仅在过场动画中应用</value>
+	</data>
+	<data name="SuppressDialogAdvance_CategoryGeneral" xml:space="preserve">
+		<value>常规</value>
+	</data>
+	<data name="SuppressDialogAdvance_ConfigTitle" xml:space="preserve">
+		<value>对话推进抑制配置</value>
+	</data>
+	<data name="ClearSelectedDuties_ConfigTitle" xml:space="preserve">
+		<value>清除已选任务配置</value>
+	</data>
+	<data name="ClearSelectedDuties_DisableWhenUnrestricted" xml:space="preserve">
+		<value>在无视人数限制时禁用</value>
+	</data>
+	<data name="ClearSelectedDuties_SettingsCategory" xml:space="preserve">
+		<value>设置</value>
+	</data>
+	<data name="Label_ModAuthorBy" xml:space="preserve">
+		<value>作者：{0}</value>
+	</data>
+	<data name="ModificationBrowserTitle" xml:space="preserve">
+		<value>Vanilla Plus 浏览器</value>
+	</data>
+	<data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
+		<value>提示下一格仙人微彩应揭示的位置。</value>
+	</data>
+	<data name="ModificationDescription_PartyFinderPresets" xml:space="preserve">
+		<value>允许在组队招募窗口保存并使用预设。</value>
+	</data>
+	<data name="ModificationDisplay_MiniCactpotHelper" xml:space="preserve">
+		<value>仙人微彩助手</value>
+	</data>
+	<data name="ModificationDisplay_PartyFinderPresets" xml:space="preserve">
+		<value>组队招募预设</value>
+	</data>
+	<data name="Preset_DefaultOption" xml:space="preserve">
+		<value>尚未保存预设</value>
+	</data>
+	<data name="Preset_DontUseOption" xml:space="preserve">
+		<value>不使用预设</value>
+	</data>
+	<data name="SearchPlaceholder" xml:space="preserve">
+		<value>搜索...</value>
+	</data>
+	<data name="SelectionPrompt" xml:space="preserve">
+		<value>请在左侧选择一个选项</value>
+	</data>
+	<data name="Title_MiniCactpotConfig" xml:space="preserve">
+		<value>仙人微彩助手配置</value>
+	</data>
+	<data name="Title_PartyFinderPreset" xml:space="preserve">
+		<value>组队招募预设</value>
+	</data>
+	<data name="Title_PresetConfigManager" xml:space="preserve">
+		<value>预设配置管理器</value>
+	</data>
+	<data name="Tooltip_ConfigEzMiniCactpot" xml:space="preserve">
+		<value>配置 EzMiniCactpot 插件</value>
+	</data>
+	<data name="Tooltip_ExperimentalFeature" xml:space="preserve">
+		<value>注意：此功能仍在实验阶段。
+可能包含错误或导致游戏崩溃。</value>
+	</data>
+	<data name="Tooltip_ModificationFailedToLoad" xml:space="preserve">
+		<value>加载失败，此模块已被禁用</value>
+	</data>
+	<data name="Tooltip_NoPresets" xml:space="preserve">
+		<value>[VanillaPlus]: 尚未保存预设</value>
+	</data>
+	<data name="Tooltip_OpenConfiguration" xml:space="preserve">
+		<value>打开设置窗口</value>
+	</data>
+	<data name="Tooltip_ReverseSortDirection" xml:space="preserve">
+		<value>反向排序</value>
+	</data>
+	<data name="Tooltip_RetryCompatibility" xml:space="preserve">
+		<value>重新尝试兼容性检查</value>
+	</data>
+	<data name="Tooltip_SavePreset" xml:space="preserve">
+		<value>[VanillaPlus]: 将当前设置保存为预设</value>
+	</data>
+	<data name="Tooltip_SearchRegexSupport" xml:space="preserve">
+		<value>[VanillaPlus]: 支持正则搜索
+输入以 &apos;$&apos; 开头即可按描述搜索</value>
+	</data>
+	<data name="Tooltip_SelectPreset" xml:space="preserve">
+		<value>[VanillaPlus]: 选择预设</value>
+	</data>
+	<data name="DutyTimer_CompletedMessage" xml:space="preserve">
+		<value>任务完成耗时：{0}</value>
+	</data>
+	<data name="DutyLoot_Context_AddFavorite" xml:space="preserve">
+		<value>加入收藏</value>
+	</data>
+	<data name="DutyLoot_Context_Link" xml:space="preserve">
+		<value>链接</value>
+	</data>
+	<data name="DutyLoot_Context_RemoveFavorite" xml:space="preserve">
+		<value>从收藏中移除</value>
+	</data>
+	<data name="DutyLoot_Context_SearchItem" xml:space="preserve">
+		<value>搜索该物品</value>
+	</data>
+	<data name="DutyLoot_Context_SearchRecipes" xml:space="preserve">
+		<value>搜索使用该材料的配方</value>
+	</data>
+	<data name="DutyLoot_Context_TryOn" xml:space="preserve">
+		<value>试穿</value>
+	</data>
+	<data name="DutyLoot_Filter_All" xml:space="preserve">
+		<value>全部物品</value>
+	</data>
+	<data name="DutyLoot_Filter_Equipment" xml:space="preserve">
+		<value>装备</value>
+	</data>
+	<data name="DutyLoot_Filter_Favorites" xml:space="preserve">
+		<value>收藏</value>
+	</data>
+	<data name="DutyLoot_Filter_Misc" xml:space="preserve">
+		<value>杂项</value>
+	</data>
+	<data name="DutyLoot_LoadingMessage" xml:space="preserve">
+		<value>正在载入战利品数据...</value>
+	</data>
+	<data name="DutyLoot_NoItemsMessage" xml:space="preserve">
+		<value>未找到此任务的战利品数据。
+
+数据由第三方提供，可能不完整。</value>
+	</data>
+	<data name="DutyLoot_NoResultsMessage" xml:space="preserve">
+		<value>没有结果</value>
+	</data>
+	<data name="DutyLoot_Tooltip_InDutyButton" xml:space="preserve">
+		<value>[VanillaPlus] 打开任务战利品预览窗口</value>
+	</data>
+	<data name="DutyLoot_Tooltip_JournalButton" xml:space="preserve">
+		<value>查看该任务可获得的战利品。</value>
+	</data>
+	<data name="FateEntry_LevelRangeFormat" xml:space="preserve">
+		<value>等级 {0}-{1}</value>
+	</data>
+	<data name="FateEntry_LevelUnknown" xml:space="preserve">
+		<value>等级 ???</value>
+	</data>
+	<data name="FateListWindow_Title" xml:space="preserve">
+		<value>Fate列表</value>
+	</data>
+	<data name="HUDPresets_ButtonDelete" xml:space="preserve">
+		<value>删除</value>
+	</data>
+	<data name="HUDPresets_ButtonLoad" xml:space="preserve">
+		<value>载入</value>
+	</data>
+	<data name="HUDPresets_ButtonLoadTooltip" xml:space="preserve">
+		<value>载入所选预设</value>
+	</data>
+	<data name="HUDPresets_ButtonOverwrite" xml:space="preserve">
+		<value>覆盖</value>
+	</data>
+	<data name="HUDPresets_ButtonOverwriteTooltip" xml:space="preserve">
+		<value>覆盖所选预设</value>
+	</data>
+	<data name="HUDPresets_ButtonSave" xml:space="preserve">
+		<value>保存</value>
+	</data>
+	<data name="HUDPresets_DefaultOption" xml:space="preserve">
+		<value>未选择选项</value>
+	</data>
+	<data name="HUDPresets_DeleteTooltip" xml:space="preserve">
+		<value>功能开发中
+请暂时手动删除预设文件</value>
+	</data>
+	<data name="HUDPresets_DropdownTooltip" xml:space="preserve">
+		<value>选择 HUD 布局预设</value>
+	</data>
+	<data name="HUDPresets_Label" xml:space="preserve">
+		<value>[VanillaPlus] HUD 预设</value>
+	</data>
+	<data name="HUDPresets_PlaceholderNewPreset" xml:space="preserve">
+		<value>新预设名称</value>
+	</data>
+	<data name="HUDPresets_RenameTitle" xml:space="preserve">
+		<value>HUD 预设名称</value>
+	</data>
+	<data name="HUDPresets_SaveTooltipDisabled" xml:space="preserve">
+		<value>请先点击上方的保存，再保存新预设</value>
+	</data>
+	<data name="HUDPresets_SaveTooltipEnabled" xml:space="preserve">
+		<value>将当前界面保存为新预设</value>
+	</data>
+	<data name="Label_LocationDisplayInstructions" xml:space="preserve">
+		<value>请在下方文本框中定义所需的文本格式。
+在希望插入以下数值的位置使用 {0} {1} {2} {3} {4}
+
+{0} - 大区（示例：主世界区域）
+{1} - 区域（示例：城市或野外）
+{2} - 地区（示例：更细分的地点）
+{3} - 子区域（示例：地标或广场）
+{4} - 房区（示例：第14区）</value>
+	</data>
+	<data name="LocationDisplay_DefaultEntryFormat" xml:space="preserve">
+		<value>{0}, {1}, {2}, {3}</value>
+	</data>
+	<data name="LocationDisplay_DefaultTooltipFormat" xml:space="preserve">
+		<value>{0}, {1}, {2}, {3}</value>
+	</data>
+	<data name="LocationDisplay_InfoBarEntryLabel" xml:space="preserve">
+		<value>信息栏条目</value>
+	</data>
+	<data name="LocationDisplay_InfoBarTooltipLabel" xml:space="preserve">
+		<value>信息栏提示</value>
+	</data>
+	<data name="LocationDisplay_ResetButton" xml:space="preserve">
+		<value>重置为默认</value>
+	</data>
+	<data name="LocationDisplay_ShowInstanceNumber" xml:space="preserve">
+		<value>显示分区编号</value>
+	</data>
+	<data name="LocationDisplay_ShowPreciseHousing" xml:space="preserve">
+		<value>显示精确房屋位置</value>
+	</data>
+	<data name="LocationDisplay_ConfigTitle" xml:space="preserve">
+		<value>位置显示配置</value>
+	</data>
+	<data name="LocationDisplay_DtrEntryName" xml:space="preserve">
+		<value>VanillaPlus - LocationDisplay</value>
+	</data>
+	<data name="LocationDisplay_WardFormat" xml:space="preserve">
+		<value>{0}区</value>
+	</data>
+	<data name="LocationDisplay_SubdivisionLabel" xml:space="preserve">
+		<value>扩建区</value>
+	</data>
+	<data name="LocationDisplay_ApartmentFormat" xml:space="preserve">
+		<value>公寓{0}</value>
+	</data>
+	<data name="LocationDisplay_ApartmentLobby" xml:space="preserve">
+		<value>大堂</value>
+	</data>
+	<data name="LocationDisplay_PlotFormat" xml:space="preserve">
+		<value>{0}号</value>
+	</data>
+	<data name="LocationDisplay_RoomFormat" xml:space="preserve">
+		<value>房间{0}</value>
+	</data>
+	<data name="MissingJobStone_Tooltip" xml:space="preserve">
+		<value>[VanillaPlus]: 点击以解除锁定</value>
+	</data>
+	<data name="MissingJobStone_TooltipWithCountdown" xml:space="preserve">
+		<value>[VanillaPlus]: 点击以解除锁定
+剩余 {0} 次点击</value>
+	</data>
+	<data name="MissingJobStone_WarningText" xml:space="preserve">
+		<value>缺少灵魂水晶！</value>
+	</data>
+	<data name="ModificationDescription_ArmourySearchBar" xml:space="preserve">
+		<value>在军需品箱窗口添加搜索栏。</value>
+	</data>
+	<data name="ModificationDescription_ClearFlag" xml:space="preserve">
+		<value>允许右键点击小地图以清除当前的旗标。</value>
+	</data>
+	<data name="ModificationDescription_ClearSelectedDuties" xml:space="preserve">
+		<value>打开任务搜寻器时，自动取消所有已选任务。</value>
+	</data>
+	<data name="ModificationDescription_ClearTextInputs" xml:space="preserve">
+		<value>允许右键点击文本输入框以清除内容。</value>
+	</data>
+	<data name="ModificationDescription_WondrousTailsProbabilities" xml:space="preserve">
+		<value>在奇谈书中显示当前连线概率以及平均重掷概率。</value>
+	</data>
+	<data name="ModificationDescription_WindowBackground" xml:space="preserve">
+		<value>允许为任意系统窗口添加背景。
+
+示例：咏唱条、目标血条、背包组件、待办列表。</value>
+	</data>
+	<data name="ModificationDescription_TargetCastBarCountdown" xml:space="preserve">
+		<value>在目标当前的咏唱条上显示剩余时间。</value>
+	</data>
+	<data name="ModificationDescription_SuppressDialogAdvance" xml:space="preserve">
+		<value>只有点击对话框本体时才允许推进过场对话。</value>
+	</data>
+	<data name="ModificationDescription_StickyShopCategories" xml:space="preserve">
+		<value>记住部分商人的类别与子类别选择。</value>
+	</data>
+	<data name="ModificationDescription_SkipTeleportConfirm" xml:space="preserve">
+		<value>使用地图传送时，跳过 &quot;传送至[地点]需要支付[金额]金币，是否继续？&quot; 的确认弹窗。</value>
+	</data>
+	<data name="ModificationDescription_ShowAetherCurrents" xml:space="preserve">
+		<value>在地图上显示所有可获取的风脉泉。</value>
+	</data>
+	<data name="ModificationDescription_SelectNextLootItem" xml:space="preserve">
+		<value>点击需求/贪婪/放弃后自动切换到下一条战利品。
+
+注意：此功能不会自动掷点。</value>
+	</data>
+	<data name="ModificationDescription_SaddlebagSearchBar" xml:space="preserve">
+		<value>在陆行鸟鞍囊窗口添加搜索栏。</value>
+	</data>
+	<data name="ModificationDescription_RetainerSearchBar" xml:space="preserve">
+		<value>在雇员窗口添加搜索栏。</value>
+	</data>
+	<data name="ModificationDescription_ResourceBarPercentages" xml:space="preserve">
+		<value>将 HP、MP、GP 与 CP 条显示为百分比。</value>
+	</data>
+	<data name="ModificationDescription_ResetInventoryTab" xml:space="preserve">
+		<value>打开物品栏时自动切换到第一页签。</value>
+	</data>
+	<data name="ModificationDescription_RecentlyLootedWindow" xml:space="preserve">
+		<value>添加窗口显示本次登录期间获得的所有物品。
+
+只有启用后获得的战利品才会记录。</value>
+	</data>
+	<data name="ModificationDescription_QuestListWindow" xml:space="preserve">
+		<value>显示当前区域所有可接任务的列表。</value>
+	</data>
+	<data name="ModificationDescription_OpenGlamourDresserToCurrentJob" xml:space="preserve">
+		<value>打开幻化柜时自动选择当前职业的分页。</value>
+	</data>
+	<data name="ModificationDescription_HideGuildhestObjectivePopup" xml:space="preserve">
+		<value>开始行会令时阻止显示流程说明弹窗。
+
+若是第一次进行行会令，建议关闭此功能。</value>
+	</data>
+	<data name="ModificationDescription_HideMpBars" xml:space="preserve">
+		<value>为不使用 MP 的职业隐藏队伍列表中的 MP 条。</value>
+	</data>
+	<data name="ModificationDescription_HideUnwantedBanners" xml:space="preserve">
+		<value>阻止大型文字横幅及其音效。</value>
+	</data>
+	<data name="ModificationDescription_HUDCoordinates" xml:space="preserve">
+		<value>在 HUD 布局节点上显示坐标，便于精确调整。
+
+坐标以 HUD 元素中心为准。</value>
+	</data>
+	<data name="ModificationDescription_InstancedWaymarks" xml:space="preserve">
+		<value>为每个任务启用独立的标点存档，并可为各槽位命名。</value>
+	</data>
+	<data name="ModificationDescription_InventorySearchBar" xml:space="preserve">
+		<value>在物品栏窗口添加搜索栏。</value>
+	</data>
+	<data name="ModificationDescription_ListInventory" xml:space="preserve">
+		<value>添加一个以列表方式显示物品栏并可切换筛选的窗口。</value>
+	</data>
+	<data name="ModificationDescription_LocationDisplay" xml:space="preserve">
+		<value>在服务器信息栏中显示当前位置。</value>
+	</data>
+	<data name="ModificationDescription_MacroLineNumbers" xml:space="preserve">
+		<value>在用户宏窗口中显示行号。</value>
+	</data>
+	<data name="ModificationDescription_MacroTooltips" xml:space="preserve">
+		<value>宏中使用 &quot;/macroicon&quot; 并引用动作时，鼠标悬停显示该动作的提示。</value>
+	</data>
+	<data name="ModificationDescription_DebugCustomAddon" xml:space="preserve">
+		<value>用于试验与测试 VanillaPlus 功能的模块</value>
+	</data>
+	<data name="ModificationDescription_DebugGameModification" xml:space="preserve">
+		<value>用于试验与测试 VanillaPlus 功能的模块</value>
+	</data>
+	<data name="ModificationDescription_SampleGameModification" xml:space="preserve">
+		<value>示例说明</value>
+	</data>
+	<data name="ModificationDescription_BetterCursor" xml:space="preserve">
+		<value>在光标周围绘制一个环形指示，方便辨识位置。</value>
+	</data>
+	<data name="ModificationDescription_BetterInterruptableCastBars" xml:space="preserve">
+		<value>让敌方可打断的咏唱条更加显眼。
+
+同时在热键栏上标出可打断该技能的动作。</value>
+	</data>
+	<data name="ModificationDescription_BetterQuestMapLink" xml:space="preserve">
+		<value>点击任务链接时，直接打开该任务所在的地图。</value>
+	</data>
+	<data name="ModificationDescription_CastBarAetheryteNames" xml:space="preserve">
+		<value>将 &quot;传送&quot; 动作的名称替换为目的地以太水晶名称。</value>
+	</data>
+	<data name="ModificationDescription_CurrencyOverlay" xml:space="preserve">
+		<value>允许在 UI 叠加层中显示更多货币。
+
+还能设定提醒所需的最小与最大值。</value>
+	</data>
+	<data name="ModificationDescription_DraggableWindowDeadSpace" xml:space="preserve">
+		<value>允许拖动窗口空白区域以移动窗口。</value>
+	</data>
+	<data name="ModificationDescription_DutyTimer" xml:space="preserve">
+		<value>完成任务时，将耗时发送到聊天框。</value>
+	</data>
+	<data name="ModificationDescription_DutyLootPreview" xml:space="preserve">
+		<value>在任务窗口中加入战利品查看器。</value>
+	</data>
+	<data name="ModificationDescription_EnhancedLootWindow" xml:space="preserve">
+		<value>在战利品窗口显示该物品是否已解锁或可获得。</value>
+	</data>
+	<data name="ModificationDescription_FadeLootButton" xml:space="preserve">
+		<value>当全部战利品都已掷点时，让战利品按钮变淡。</value>
+	</data>
+	<data name="ModificationDescription_FadeUnavailableActions" xml:space="preserve">
+		<value>当动作因资源不足、距离过远或冷却中无法使用时，让热键槽渐隐。
+
+同步降级导致不可用的动作也会变淡。</value>
+	</data>
+	<data name="ModificationDescription_FasterScroll" xml:space="preserve">
+		<value>提升所有滚动条的速度。</value>
+	</data>
+	<data name="ModificationDescription_FastMouseClick" xml:space="preserve">
+		<value>游戏检测到双击时不会触发单击事件。
+
+此功能会在触发双击时同时补发一次单击事件。</value>
+	</data>
+	<data name="ModificationDescription_FocusTargetLock" xml:space="preserve">
+		<value>职责重新开始时，恢复之前的焦点目标。</value>
+	</data>
+	<data name="ModificationDescription_ForcedCutsceneSounds" xml:space="preserve">
+		<value>在过场动画中自动取消所选声音频道的静音。</value>
+	</data>
+	<data name="ModificationDescription_HUDPresets" xml:space="preserve">
+		<value>允许保存并加载无限数量的 HUD 布局。</value>
+	</data>
+	<data name="ModificationDescription_FateListWindow" xml:space="preserve">
+		<value>显示当前区域内所有正在进行的命运之战。</value>
+	</data>
+	<data name="ModificationDescription_PetSizeContextMenu" xml:space="preserve">
+		<value>右键点击召唤兽或拥有召唤兽的玩家时，可在菜单中调整召唤兽大小。</value>
+	</data>
+	<data name="ModificationDescription_MissingJobStoneLockout" xml:space="preserve">
+		<value>缺少灵魂水晶时阻止排队进入任务。</value>
+	</data>
+	<data name="ModificationDescription_GearsetRedirect" xml:space="preserve">
+		<value>根据所在区域，为装备套装指定替代套装。</value>
+	</data>
+	<data name="ModificationDisplay_ArmourySearchBar" xml:space="preserve">
+		<value>军需品箱搜索栏</value>
+	</data>
+	<data name="ModificationDisplay_ClearFlag" xml:space="preserve">
+		<value>清除旗标</value>
+	</data>
+	<data name="ModificationDisplay_ClearSelectedDuties" xml:space="preserve">
+		<value>清除已选任务</value>
+	</data>
+	<data name="ModificationDisplay_ClearTextInputs" xml:space="preserve">
+		<value>清空文本输入</value>
+	</data>
+	<data name="ModificationDisplay_WondrousTailsProbabilities" xml:space="preserve">
+		<value>奇谈书概率</value>
+	</data>
+	<data name="WondrousTailsProbabilities_ErrorPlaceholder" xml:space="preserve">
+		<value>错误 </value>
+	</data>
+	<data name="WondrousTailsProbabilities_LineChancesLabel" xml:space="preserve">
+		<value>连线概率： </value>
+	</data>
+	<data name="WondrousTailsProbabilities_ShuffleAverageLabel" xml:space="preserve">
+		<value>重抽平均： </value>
+	</data>
+	<data name="AddonConfig_KeybindWindowTitle" xml:space="preserve">
+		<value>按键设置窗口</value>
+	</data>
+	<data name="AddonConfig_KeybindLabel" xml:space="preserve">
+		<value>按键绑定</value>
+	</data>
+	<data name="Common_Disable" xml:space="preserve">
+		<value>禁用</value>
+	</data>
+	<data name="Common_Enable" xml:space="preserve">
+		<value>启用</value>
+	</data>
+	<data name="AddonConfig_ChangeKeybind" xml:space="preserve">
+		<value>更改按键绑定</value>
+	</data>
+	<data name="AddonConfig_WindowSizeLabel" xml:space="preserve">
+		<value>窗口大小</value>
+	</data>
+	<data name="AddonConfig_WindowWidthLabel" xml:space="preserve">
+		<value>宽度</value>
+	</data>
+	<data name="AddonConfig_WindowHeightLabel" xml:space="preserve">
+		<value>高度</value>
+	</data>
+	<data name="AddonConfig_ReloadHint" xml:space="preserve">
+		<value>重新打开窗口后更改才会生效</value>
+	</data>
+	<data name="KeybindConfig_InputPrompt" xml:space="preserve">
+		<value>输入想要的按键组合</value>
+	</data>
+	<data name="KeybindConfig_CurrentPrompt" xml:space="preserve">
+		<value>请按下按键组合</value>
+	</data>
+	<data name="KeybindConfig_ConflictsLabel" xml:space="preserve">
+		<value>按键冲突</value>
+	</data>
+	<data name="KeybindConfig_NoConflicts" xml:space="preserve">
+		<value>未检测到冲突</value>
+	</data>
+	<data name="Common_Confirm" xml:space="preserve">
+		<value>确定</value>
+	</data>
+	<data name="Common_Cancel" xml:space="preserve">
+		<value>取消</value>
+	</data>
+	<data name="NodeList_ConfigWindowTitle" xml:space="preserve">
+		<value>{0}配置窗口</value>
+	</data>
+	<data name="NodeList_OpenCommandHelp" xml:space="preserve">
+		<value>打开[{0}]窗口</value>
+	</data>
+	<data name="SearchAddon_GearsetTitle" xml:space="preserve">
+		<value>套装搜索</value>
+	</data>
+	<data name="SortOption_Alphabetical" xml:space="preserve">
+		<value>按字母顺序</value>
+	</data>
+	<data name="SortOption_Id" xml:space="preserve">
+		<value>按ID</value>
+	</data>
+	<data name="SearchAddon_TerritoryTitle" xml:space="preserve">
+		<value>区域搜索</value>
+	</data>
+	<data name="ColorPicker_WindowTitle" xml:space="preserve">
+		<value>颜色选择器</value>
+	</data>
+	<data name="NodeStyle_PositionLabel" xml:space="preserve">
+		<value>位置</value>
+	</data>
+	<data name="TextNodeConfig_TextColor" xml:space="preserve">
+		<value>文字颜色</value>
+	</data>
+	<data name="TextNodeConfig_TextOutline" xml:space="preserve">
+		<value>文字描边</value>
+	</data>
+	<data name="TextNodeConfig_FontSize" xml:space="preserve">
+		<value>字体大小</value>
+	</data>
+	<data name="TextNodeConfig_Font" xml:space="preserve">
+		<value>字体</value>
+	</data>
+	<data name="TextNodeConfig_Alignment" xml:space="preserve">
+		<value>对齐方式</value>
+	</data>
+	<data name="IconWithCount_MillionsFormat" xml:space="preserve">
+		<value>{0}m</value>
+	</data>
+	<data name="IconWithCount_ThousandsFormat" xml:space="preserve">
+		<value>{0}k</value>
+	</data>
+	<data name="ModificationDisplay_WindowBackground" xml:space="preserve">
+		<value>窗口背景</value>
+	</data>
+	<data name="ModificationDisplay_TargetCastBarCountdown" xml:space="preserve">
+		<value>目标咏唱条倒计时</value>
+	</data>
+	<data name="ModificationDisplay_SuppressDialogAdvance" xml:space="preserve">
+		<value>对话推进抑制</value>
+	</data>
+	<data name="ModificationDisplay_StickyShopCategories" xml:space="preserve">
+		<value>商店类别记忆</value>
+	</data>
+	<data name="ModificationDisplay_SkipTeleportConfirm" xml:space="preserve">
+		<value>跳过传送确认</value>
+	</data>
+	<data name="ModificationDisplay_ShowAetherCurrents" xml:space="preserve">
+		<value>显示风脉泉</value>
+	</data>
+	<data name="ModificationDisplay_SelectNextLootItem" xml:space="preserve">
+		<value>自动切换下一条战利品</value>
+	</data>
+	<data name="ModificationDisplay_SaddlebagSearchBar" xml:space="preserve">
+		<value>鞍囊搜索栏</value>
+	</data>
+	<data name="ModificationDisplay_RetainerSearchBar" xml:space="preserve">
+		<value>雇员搜索栏</value>
+	</data>
+	<data name="ModificationDisplay_ResourceBarPercentages" xml:space="preserve">
+		<value>资源条百分比</value>
+	</data>
+	<data name="ModificationDisplay_ResetInventoryTab" xml:space="preserve">
+		<value>重置物品栏分页</value>
+	</data>
+	<data name="ModificationDisplay_RecentlyLootedWindow" xml:space="preserve">
+		<value>最近战利品窗口</value>
+	</data>
+	<data name="ModificationDisplay_QuestListWindow" xml:space="preserve">
+		<value>任务列表窗口</value>
+	</data>
+	<data name="ModificationDisplay_OpenGlamourDresserToCurrentJob" xml:space="preserve">
+		<value>幻化柜自动切换当前职业</value>
+	</data>
+	<data name="ModificationDisplay_HideGuildhestObjectivePopup" xml:space="preserve">
+		<value>隐藏行会令提示弹窗</value>
+	</data>
+	<data name="ModificationDisplay_HideMpBars" xml:space="preserve">
+		<value>隐藏 MP 条</value>
+	</data>
+	<data name="ModificationDisplay_HideUnwantedBanners" xml:space="preserve">
+		<value>隐藏干扰横幅</value>
+	</data>
+	<data name="ModificationDisplay_HUDCoordinates" xml:space="preserve">
+		<value>HUD 坐标</value>
+	</data>
+	<data name="ModificationDisplay_InstancedWaymarks" xml:space="preserve">
+		<value>独立标点</value>
+	</data>
+	<data name="ModificationDisplay_InventorySearchBar" xml:space="preserve">
+		<value>物品栏搜索栏</value>
+	</data>
+	<data name="ModificationDisplay_ListInventory" xml:space="preserve">
+		<value>物品列表窗口</value>
+	</data>
+	<data name="ModificationDisplay_LocationDisplay" xml:space="preserve">
+		<value>位置显示</value>
+	</data>
+	<data name="ModificationDisplay_MacroLineNumbers" xml:space="preserve">
+		<value>宏行号</value>
+	</data>
+	<data name="ModificationDisplay_MacroTooltips" xml:space="preserve">
+		<value>宏提示</value>
+	</data>
+	<data name="ModificationDisplay_DebugCustomAddon" xml:space="preserve">
+		<value>调试 CustomAddon</value>
+	</data>
+	<data name="ModificationDisplay_DebugGameModification" xml:space="preserve">
+		<value>调试 GameModification</value>
+	</data>
+	<data name="ModificationDisplay_SampleGameModification" xml:space="preserve">
+		<value>示例名称</value>
+	</data>
+	<data name="ModificationDisplay_BetterCursor" xml:space="preserve">
+		<value>鼠标优化</value>
+	</data>
+	<data name="ModificationDisplay_BetterInterruptableCastBars" xml:space="preserve">
+		<value>醒目可打断咏唱条</value>
+	</data>
+	<data name="ModificationDisplay_BetterQuestMapLink" xml:space="preserve">
+		<value>优化任务地图链接</value>
+	</data>
+	<data name="ModificationDisplay_CastBarAetheryteNames" xml:space="preserve">
+		<value>咏唱条显示以太水晶名称</value>
+	</data>
+	<data name="ModificationDisplay_CurrencyOverlay" xml:space="preserve">
+		<value>货币叠加层</value>
+	</data>
+	<data name="ModificationDisplay_DraggableWindowDeadSpace" xml:space="preserve">
+		<value>拖动窗口空白处</value>
+	</data>
+	<data name="ModificationDisplay_DutyTimer" xml:space="preserve">
+		<value>任务计时器</value>
+	</data>
+	<data name="ModificationDisplay_DutyLootPreview" xml:space="preserve">
+		<value>任务战利品预览</value>
+	</data>
+	<data name="ModificationDisplay_EnhancedLootWindow" xml:space="preserve">
+		<value>强化战利品窗口</value>
+	</data>
+	<data name="ModificationDisplay_FadeLootButton" xml:space="preserve">
+		<value>战利品按钮渐隐</value>
+	</data>
+	<data name="ModificationDisplay_FadeUnavailableActions" xml:space="preserve">
+		<value>无法施放动作渐隐</value>
+	</data>
+	<data name="ModificationDisplay_FasterScroll" xml:space="preserve">
+		<value>快速滚动条</value>
+	</data>
+	<data name="ModificationDisplay_FastMouseClick" xml:space="preserve">
+		<value>快速鼠标点击</value>
+	</data>
+	<data name="ModificationDisplay_FocusTargetLock" xml:space="preserve">
+		<value>焦点目标锁定</value>
+	</data>
+	<data name="ModificationDisplay_ForcedCutsceneSounds" xml:space="preserve">
+		<value>强制过场音效</value>
+	</data>
+	<data name="ModificationDisplay_HUDPresets" xml:space="preserve">
+		<value>HUD 预设</value>
+	</data>
+	<data name="ModificationDisplay_FateListWindow" xml:space="preserve">
+		<value>Fate列表窗口</value>
+	</data>
+	<data name="ModificationDisplay_PetSizeContextMenu" xml:space="preserve">
+		<value>召唤兽尺寸菜单</value>
+	</data>
+	<data name="PetSize_MenuTitle" xml:space="preserve">
+		<value>召唤兽尺寸</value>
+	</data>
+	<data name="PetSize_OptionLarge" xml:space="preserve">
+		<value>大</value>
+	</data>
+	<data name="PetSize_OptionMedium" xml:space="preserve">
+		<value>中</value>
+	</data>
+	<data name="PetSize_OptionSmall" xml:space="preserve">
+		<value>小</value>
+	</data>
+	<data name="ModificationDisplay_MissingJobStoneLockout" xml:space="preserve">
+		<value>灵魂水晶锁定</value>
+	</data>
+	<data name="ModificationDisplay_GearsetRedirect" xml:space="preserve">
+		<value>套装重定向</value>
+	</data>
+	<data name="EnhancedLootWindow_CategorySettings" xml:space="preserve">
+		<value>设置</value>
+	</data>
+	<data name="EnhancedLootWindow_ConfigTitle" xml:space="preserve">
+		<value>强化战利品窗口配置</value>
+	</data>
+	<data name="EnhancedLootWindow_LabelMarkAlreadyObtained" xml:space="preserve">
+		<value>标记已解锁物品</value>
+	</data>
+	<data name="EnhancedLootWindow_LabelMarkUnobtainable" xml:space="preserve">
+		<value>标记无法获取的物品</value>
+	</data>
+	<data name="FadeLootButton_CategoryStyleSettings" xml:space="preserve">
+		<value>样式设置</value>
+	</data>
+	<data name="FadeLootButton_ConfigTitle" xml:space="preserve">
+		<value>战利品按钮渐隐配置</value>
+	</data>
+	<data name="FadeLootButton_LabelFadePercentage" xml:space="preserve">
+		<value>渐隐百分比</value>
+	</data>
+	<data name="FadeUnavailableActions_CategoryFeatureToggles" xml:space="preserve">
+		<value>功能开关</value>
+	</data>
+	<data name="FadeUnavailableActions_CategoryStyleSettings" xml:space="preserve">
+		<value>样式设置</value>
+	</data>
+	<data name="FadeUnavailableActions_ConfigTitle" xml:space="preserve">
+		<value>无法施放动作渐隐配置</value>
+	</data>
+	<data name="FadeUnavailableActions_LabelApplyToFrame" xml:space="preserve">
+		<value>同时应用于外框</value>
+	</data>
+	<data name="FadeUnavailableActions_LabelApplyToSync" xml:space="preserve">
+		<value>仅作用于因同步限制的动作</value>
+	</data>
+	<data name="FadeUnavailableActions_LabelFadePercentage" xml:space="preserve">
+		<value>渐隐百分比</value>
+	</data>
+	<data name="FadeUnavailableActions_LabelReddenOutOfRange" xml:space="preserve">
+		<value>超出距离时转红</value>
+	</data>
+	<data name="FadeUnavailableActions_LabelReddenPercentage" xml:space="preserve">
+		<value>染红强度</value>
+	</data>
+	<data name="FasterScroll_CategorySettings" xml:space="preserve">
+		<value>设置</value>
+	</data>
+	<data name="FasterScroll_ConfigTitle" xml:space="preserve">
+		<value>快速滚动条配置</value>
+	</data>
+	<data name="FasterScroll_LabelSpeedMultiplier" xml:space="preserve">
+		<value>速度倍率</value>
+	</data>
+	<data name="ForcedCutsceneSounds_CategoryGeneral" xml:space="preserve">
+		<value>常规</value>
+	</data>
+	<data name="ForcedCutsceneSounds_CategorySpecial" xml:space="preserve">
+		<value>特殊</value>
+	</data>
+	<data name="ForcedCutsceneSounds_CategoryToggles" xml:space="preserve">
+		<value>开关</value>
+	</data>
+	<data name="ForcedCutsceneSounds_ConfigTitle" xml:space="preserve">
+		<value>强制过场音效配置</value>
+	</data>
+	<data name="ForcedCutsceneSounds_DisableMsq" xml:space="preserve">
+		<value>在主线随机本中禁用</value>
+	</data>
+	<data name="ForcedCutsceneSounds_RestoreMuteState" xml:space="preserve">
+		<value>过场结束后恢复静音状态</value>
+	</data>
+	<data name="ForcedCutsceneSounds_UnmuteBgm" xml:space="preserve">
+		<value>取消背景音乐静音</value>
+	</data>
+	<data name="ForcedCutsceneSounds_UnmuteEnv" xml:space="preserve">
+		<value>取消环境音静音</value>
+	</data>
+	<data name="ForcedCutsceneSounds_UnmuteMaster" xml:space="preserve">
+		<value>取消主音量静音</value>
+	</data>
+	<data name="ForcedCutsceneSounds_UnmutePerform" xml:space="preserve">
+		<value>取消演奏静音</value>
+	</data>
+	<data name="ForcedCutsceneSounds_UnmuteSe" xml:space="preserve">
+		<value>取消音效静音</value>
+	</data>
+	<data name="ForcedCutsceneSounds_UnmuteSystem" xml:space="preserve">
+		<value>取消系统音静音</value>
+	</data>
+	<data name="ForcedCutsceneSounds_UnmuteVoice" xml:space="preserve">
+		<value>取消语音静音</value>
+	</data>
+	<data name="GearsetRedirect_ConfigTitle" xml:space="preserve">
+		<value>套装重定向配置</value>
+	</data>
+	<data name="GearsetRedirect_AddRedirectionTitle" xml:space="preserve">
+		<value>新增套装重定向</value>
+	</data>
+	<data name="GearsetRedirect_SortAlphabetical" xml:space="preserve">
+		<value>按字母顺序</value>
+	</data>
+	<data name="GearsetRedirect_SortId" xml:space="preserve">
+		<value>按ID</value>
+	</data>
+	<data name="HideUnwantedBanners_ConfigTitle" xml:space="preserve">
+		<value>隐藏干扰横幅配置</value>
+	</data>
+	<data name="InstancedWaymarks_RenameMenuLabel" xml:space="preserve">
+		<value>重命名</value>
+	</data>
+	<data name="InstancedWaymarks_RenameWindowTitle" xml:space="preserve">
+		<value>标点重命名窗口</value>
+	</data>
+	<data name="DebugCustomAddon_Title" xml:space="preserve">
+		<value>调试插件窗口</value>
+	</data>
+	<data name="ResourceBarPercentages_ApplyToPartyMembers" xml:space="preserve">
+		<value>应用到队员</value>
+	</data>
+	<data name="ResourceBarPercentages_ApplyToPlayer" xml:space="preserve">
+		<value>应用到玩家</value>
+	</data>
+	<data name="ResourceBarPercentages_CategoryExtra" xml:space="preserve">
+		<value>扩展</value>
+	</data>
+	<data name="ResourceBarPercentages_CategoryParameterWidget" xml:space="preserve">
+		<value>参数窗口</value>
+	</data>
+	<data name="ResourceBarPercentages_CategoryPartyList" xml:space="preserve">
+		<value>队伍列表</value>
+	</data>
+	<data name="ResourceBarPercentages_CategoryPercentageFormat" xml:space="preserve">
+		<value>百分比格式</value>
+	</data>
+	<data name="ResourceBarPercentages_CategoryPercentageSign" xml:space="preserve">
+		<value>百分比符号</value>
+	</data>
+	<data name="ResourceBarPercentages_ChangeCp" xml:space="preserve">
+		<value>切换 CP</value>
+	</data>
+	<data name="ResourceBarPercentages_ChangeGp" xml:space="preserve">
+		<value>切换 GP</value>
+	</data>
+	<data name="ResourceBarPercentages_ChangeHp" xml:space="preserve">
+		<value>切换 HP</value>
+	</data>
+	<data name="ResourceBarPercentages_ChangeMp" xml:space="preserve">
+		<value>切换 MP</value>
+	</data>
+	<data name="ResourceBarPercentages_ConfigTitle" xml:space="preserve">
+		<value>资源条百分比配置</value>
+	</data>
+	<data name="ResourceBarPercentages_DecimalPlaces" xml:space="preserve">
+		<value>小数位数</value>
+	</data>
+	<data name="ResourceBarPercentages_DeadOrAliveMode" xml:space="preserve">
+		<value>生死模式</value>
+	</data>
+	<data name="ResourceBarPercentages_ShowDecimalsBelowHundred" xml:space="preserve">
+		<value>仅在低于 100% 时显示小数</value>
+	</data>
+	<data name="ResourceBarPercentages_ShowOnParameterWidget" xml:space="preserve">
+		<value>在参数窗口显示</value>
+	</data>
+	<data name="ResourceBarPercentages_ShowOnPartyList" xml:space="preserve">
+		<value>在队伍列表显示</value>
+	</data>
+	<data name="ResourceBarPercentages_ShowPercentageSign" xml:space="preserve">
+		<value>显示 % 符号</value>
+	</data>
+	<data name="ResourceBarPercentages_StatusAlive" xml:space="preserve">
+		<value>存活</value>
+	</data>
+	<data name="ResourceBarPercentages_StatusDead" xml:space="preserve">
+		<value>战倒</value>
+	</data>
+	<data name="ListInventory_Title" xml:space="preserve">
+		<value>物品列表</value>
+	</data>
+	<data name="ListInventory_FilterAlphabetically" xml:space="preserve">
+		<value>按字母排序</value>
+	</data>
+	<data name="ListInventory_FilterQuantity" xml:space="preserve">
+		<value>数量</value>
+	</data>
+	<data name="ListInventory_FilterLevel" xml:space="preserve">
+		<value>等级</value>
+	</data>
+	<data name="ListInventory_FilterItemLevel" xml:space="preserve">
+		<value>物品品级</value>
+	</data>
+	<data name="ListInventory_FilterRarity" xml:space="preserve">
+		<value>稀有度</value>
+	</data>
+	<data name="ListInventory_FilterItemId" xml:space="preserve">
+		<value>物品 ID</value>
+	</data>
+	<data name="ListInventory_FilterItemCategory" xml:space="preserve">
+		<value>物品类别</value>
+	</data>
+	<data name="RecentlyLootedWindow_Title" xml:space="preserve">
+		<value>最近战利品</value>
+	</data>
+	<data name="QuestListWindow_Title" xml:space="preserve">
+		<value>任务列表</value>
+	</data>
+	<data name="QuestListWindow_FilterAlphabetically" xml:space="preserve">
+		<value>按字母排序</value>
+	</data>
+	<data name="QuestListWindow_FilterDistance" xml:space="preserve">
+		<value>距离</value>
+	</data>
+	<data name="QuestListWindow_FilterIssuerName" xml:space="preserve">
+		<value>委托人姓名</value>
+	</data>
+	<data name="QuestListWindow_FilterLevel" xml:space="preserve">
+		<value>等级</value>
+	</data>
+	<data name="QuestListWindow_FilterType" xml:space="preserve">
+		<value>类型</value>
+	</data>
+	<data name="ShowAetherCurrents_Tooltip" xml:space="preserve">
+		<value>风脉泉</value>
+	</data>
+	<data name="Title_DutyLootPreview" xml:space="preserve">
+		<value>任务战利品预览</value>
+	</data>
+	<data name="VersionLabelFormat" xml:space="preserve">
+		<value>版本 {0}</value>
+	</data>
+</root>

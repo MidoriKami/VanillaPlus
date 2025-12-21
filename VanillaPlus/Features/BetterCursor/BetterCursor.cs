@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.BetterCursor;
 
 public class BetterCursor : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Better Cursor",
-        Description = "Draws a ring around the cursor to make it easier to see.",
+        DisplayName = Strings("ModificationDisplay_BetterCursor"),
+        Description = Strings("ModificationDescription_BetterCursor"),
         Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
         ChangeLog = [
@@ -31,24 +31,24 @@ public class BetterCursor : GameModification {
 
         configWindow = new ConfigAddon {
             InternalName = "BetterCursorConfig",
-            Title = "Better Cursor Config",
+            Title = Strings("BetterCursor_ConfigTitle"),
             Config = config,
         };
 
-        configWindow.AddCategory("Style")
-            .AddColorEdit("Color", nameof(config.Color), KnownColor.White.Vector())
-            .AddInputFloat("Size", 16, 16..512, nameof(config.Size));
+        configWindow.AddCategory(Strings("BetterCursor_CategoryStyle"))
+            .AddColorEdit(Strings("BetterCursor_LabelColor"), nameof(config.Color), KnownColor.White.Vector())
+            .AddInputFloat(Strings("BetterCursor_LabelSize"), 16, 16..512, nameof(config.Size));
 
-        configWindow.AddCategory("Functions")
-            .AddCheckbox("Enable Animation", nameof(config.Animations))
-            .AddCheckbox("Hide on Left-Hold or Right-Hold", nameof(config.HideOnCameraMove));
+        configWindow.AddCategory(Strings("BetterCursor_CategoryFunctions"))
+            .AddCheckbox(Strings("BetterCursor_EnableAnimation"), nameof(config.Animations))
+            .AddCheckbox(Strings("BetterCursor_HideOnCameraMove"), nameof(config.HideOnCameraMove));
         
-        configWindow.AddCategory("Visibility")
-            .AddCheckbox("Only show in Combat", nameof(config.OnlyShowInCombat))
-            .AddCheckbox("Only Show in Duties", nameof(config.OnlyShowInDuties));
+        configWindow.AddCategory(Strings("BetterCursor_CategoryVisibility"))
+            .AddCheckbox(Strings("BetterCursor_OnlyShowInCombat"), nameof(config.OnlyShowInCombat))
+            .AddCheckbox(Strings("BetterCursor_OnlyShowInDuties"), nameof(config.OnlyShowInDuties));
 
-        configWindow.AddCategory("Icon Selection")
-            .AddSelectIcon("Icon", nameof(config.IconId));
+        configWindow.AddCategory(Strings("BetterCursor_CategoryIconSelection"))
+            .AddSelectIcon(Strings("BetterCursor_LabelIcon"), nameof(config.IconId));
 
         OpenConfigAction = configWindow.Toggle;
 

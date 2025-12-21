@@ -12,7 +12,7 @@ public class TextInputWithHintNode : SimpleComponentNode {
 
     public TextInputWithHintNode() {
         textInputNode = new TextInputNode {
-            PlaceholderString = "Search . . .",
+            PlaceholderString = Strings("SearchPlaceholder"),
         };
         textInputNode.AttachNode(this);
 
@@ -20,11 +20,7 @@ public class TextInputWithHintNode : SimpleComponentNode {
             TexturePath = "ui/uld/CircleButtons.tex",
             TextureCoordinates = new Vector2(112.0f, 84.0f),
             TextureSize = new Vector2(28.0f, 28.0f),
-            Tooltip = new SeStringBuilder()
-                .Append("[VanillaPlus]: Supports Regex Search")
-                .AppendNewLine()
-                .Append("Start input with '$' to search by description")
-                .ToReadOnlySeString(),
+            Tooltip = Strings("Tooltip_SearchRegexSupport"),
         };
         helpNode.AttachNode(this);
     }

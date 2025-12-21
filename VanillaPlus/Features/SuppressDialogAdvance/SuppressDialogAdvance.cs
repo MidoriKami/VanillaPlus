@@ -9,8 +9,8 @@ namespace VanillaPlus.Features.SuppressDialogAdvance;
 
 public unsafe class SuppressDialogueAdvance : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Suppress Dialogue Advance",
-        Description = "Prevents advancing a cutscene dialogue, unless you click on the dialogue box itself.",
+        DisplayName = Strings("ModificationDisplay_SuppressDialogAdvance"),
+        Description = Strings("ModificationDescription_SuppressDialogAdvance"),
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
@@ -27,12 +27,12 @@ public unsafe class SuppressDialogueAdvance : GameModification {
 
         configWindow = new ConfigAddon {
             InternalName = "SuppressDialogAdvanceConfig",
-            Title = "Suppress Dialog Advance Config",
+            Title = Strings("SuppressDialogAdvance_ConfigTitle"),
             Config = config,
         };
         
-        configWindow.AddCategory("General")
-            .AddCheckbox("Apply only in Cutscenes", nameof(config.ApplyOnlyInCutscenes));
+        configWindow.AddCategory(Strings("SuppressDialogAdvance_CategoryGeneral"))
+            .AddCheckbox(Strings("SuppressDialogAdvance_ApplyOnlyInCutscenes"), nameof(config.ApplyOnlyInCutscenes));
 
         OpenConfigAction = configWindow.Toggle;
         

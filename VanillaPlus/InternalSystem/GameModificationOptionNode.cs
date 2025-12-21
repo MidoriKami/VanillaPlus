@@ -53,7 +53,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
         erroringImageNode = new IconImageNode {
             IconId = 61502,
             FitTexture = true,
-            Tooltip = "Failed to load, this module has been disabled",
+            Tooltip = Strings("Tooltip_ModificationFailedToLoad"),
         };
         erroringImageNode.AttachNode(this);
 
@@ -67,7 +67,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
         experimentalImageNode = new IconImageNode {
             IconId = 60073,
             FitTexture = true,
-            Tooltip = "Caution, this feature is experimental.\nMay contain bugs or crash your game.",
+            Tooltip = Strings("Tooltip_ExperimentalFeature"),
         };
         experimentalImageNode.AttachNode(this);
         
@@ -81,7 +81,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
 
         reloadButtonNode = new CircleButtonNode {
             Icon = ButtonIcon.Refresh,
-            Tooltip = "Retry compatability check",
+            Tooltip = Strings("Tooltip_RetryCompatibility"),
             OnClick = () => {
                 System.ModificationManager.ReloadConflictedModules();
                 reloadButtonNode?.HideTooltip();
@@ -91,7 +91,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
         
         configButtonNode = new CircleButtonNode {
             Icon = ButtonIcon.GearCog,
-            Tooltip = "Open configuration window",
+            Tooltip = Strings("Tooltip_OpenConfiguration"),
             OnClick = () => {
                 Modification?.Modification.OpenConfigAction?.Invoke();
                 OnClick?.Invoke();
@@ -123,7 +123,8 @@ public class GameModificationOptionNode : SimpleComponentNode {
         set {
             field = value;
             modificationNameNode.String = value.Modification.ModificationInfo.DisplayName;
-            authorNamesNode.String = $"By {string.Join(", ", value.Modification.ModificationInfo.Authors)}";
+            var authorList = string.Join(", ", value.Modification.ModificationInfo.Authors);
+            authorNamesNode.String = Strings("Label_ModAuthorBy", authorList);
 
             RefreshConfigWindowButton();
 

@@ -10,8 +10,8 @@ namespace VanillaPlus.Features.MacroLineNumbers;
 
 public unsafe class MacroLineNumbers : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Macro Line Numbers",
-        Description = "Adds line numbers to the User Macros window.",
+        DisplayName = Strings("ModificationDisplay_MacroLineNumbers"),
+        Description = Strings("ModificationDescription_MacroLineNumbers"),
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

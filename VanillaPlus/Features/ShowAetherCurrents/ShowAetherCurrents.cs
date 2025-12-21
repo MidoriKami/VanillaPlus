@@ -13,8 +13,8 @@ namespace VanillaPlus.Features.ShowAetherCurrents;
 
 public unsafe class ShowAetherCurrents : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Show Aether Currents",
-        Description = "Shows all available aether currents on the map.",
+        DisplayName = Strings("ModificationDisplay_ShowAetherCurrents"),
+        Description = Strings("ModificationDescription_ShowAetherCurrents"),
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
@@ -33,7 +33,7 @@ public unsafe class ShowAetherCurrents : GameModification {
         populateMapMarkersHook?.Enable();
 
         Services.Framework.RunOnFrameworkThread(() => {
-            tooltipString = Utf8String.FromString("Aether Current");
+            tooltipString = Utf8String.FromString(Strings("ShowAetherCurrents_Tooltip"));
             
             AgentMap.Instance()->ResetMapMarkers();
         });

@@ -11,9 +11,9 @@ public static unsafe class GearsetSearchAddon {
     public static SearchAddon<GearsetInfo> GetAddon() => new() {
         Size = new Vector2(275.0f, 600.0f),
         InternalName = "GearsetSearch",
-        Title = "Gearset Search",
+        Title = Strings("SearchAddon_GearsetTitle"),
         SearchOptions = [],
-        SortingOptions = [ "Alphabetical", "Id" ],
+        SortingOptions = [ Strings("SortOption_Alphabetical"), Strings("SortOption_Id") ],
     };
 
     public static void UpdateGearsets(this SearchAddon<GearsetInfo> addon, List<int>? omissionIds = null)
