@@ -36,7 +36,7 @@ public class BetterCursor : GameModification {
         };
 
         configWindow.AddCategory(Strings("BetterCursor_CategoryStyle"))
-            .AddColorEdit(Strings("BetterCursor_LabelColor"), nameof(config.Color), KnownColor.White.Vector())
+            .AddColorEdit(Strings("Color"), nameof(config.Color), KnownColor.White.Vector())
             .AddInputFloat(Strings("BetterCursor_LabelSize"), 16, 16..512, nameof(config.Size));
 
         configWindow.AddCategory(Strings("BetterCursor_CategoryFunctions"))

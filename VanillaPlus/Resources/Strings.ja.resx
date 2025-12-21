@@ -67,6 +67,9 @@
 	<data name="Visibility" xml:space="preserve">
 		<value>可視性</value>
 	</data>
+	<data name="Color" xml:space="preserve">
+		<value>カラー</value>
+	</data>
 	<data name="Button_SavePreset" xml:space="preserve">
 		<value>プリセットを保存</value>
 	</data>
@@ -115,9 +118,6 @@
 	<data name="BetterCursor_HideOnCameraMove" xml:space="preserve">
 		<value>左/右ボタン長押し中は非表示</value>
 	</data>
-	<data name="BetterCursor_LabelColor" xml:space="preserve">
-		<value>カラー</value>
-	</data>
 	<data name="BetterCursor_LabelSize" xml:space="preserve">
 		<value>サイズ</value>
 	</data>
@@ -147,9 +147,6 @@
 	</data>
 	<data name="WindowBackground_CategoryBackgroundColor" xml:space="preserve">
 		<value>背景色</value>
-	</data>
-	<data name="WindowBackground_ColorLabel" xml:space="preserve">
-		<value>カラー</value>
 	</data>
 	<data name="WindowBackground_CategoryPaddingSize" xml:space="preserve">
 		<value>パディングサイズ</value>
