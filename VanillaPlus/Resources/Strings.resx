@@ -217,6 +217,21 @@
 	<data name="ModificationBrowserTitle" xml:space="preserve">
 		<value>Vanilla Plus Modification Browser</value>
 	</data>
+	<data name="ModificationType_Debug" xml:space="preserve">
+		<value>Debug</value>
+	</data>
+	<data name="ModificationType_NewWindow" xml:space="preserve">
+		<value>Custom Native Windows</value>
+	</data>
+	<data name="ModificationType_UserInterface" xml:space="preserve">
+		<value>UI Modification</value>
+	</data>
+	<data name="ModificationType_GameBehavior" xml:space="preserve">
+		<value>Game Behavior Modification</value>
+	</data>
+	<data name="ModificationType_NewOverlay" xml:space="preserve">
+		<value>Custom Native Overlay</value>
+	</data>
 	<data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
 		<value>Indicates which Mini Cactpot spots you should reveal next.</value>
 	</data>

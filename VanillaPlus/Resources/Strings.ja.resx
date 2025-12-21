@@ -217,6 +217,21 @@
 	<data name="ModificationBrowserTitle" xml:space="preserve">
 		<value>Vanilla Plus 改造ブラウザー</value>
 	</data>
+	<data name="ModificationType_Debug" xml:space="preserve">
+		<value>デバッグ</value>
+	</data>
+	<data name="ModificationType_NewWindow" xml:space="preserve">
+		<value>カスタムネイティブウィンドウ</value>
+	</data>
+	<data name="ModificationType_UserInterface" xml:space="preserve">
+		<value>UI改造</value>
+	</data>
+	<data name="ModificationType_GameBehavior" xml:space="preserve">
+		<value>ゲーム挙動の改造</value>
+	</data>
+	<data name="ModificationType_NewOverlay" xml:space="preserve">
+		<value>カスタムネイティブオーバーレイ</value>
+	</data>
 	<data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
 		<value>ミニ・くじテンダーで次に開くべきマスを表示します。</value>
 	</data>

@@ -217,6 +217,21 @@
 	<data name="ModificationBrowserTitle" xml:space="preserve">
 		<value>Vanilla Plus 浏览器</value>
 	</data>
+	<data name="ModificationType_Debug" xml:space="preserve">
+		<value>调试</value>
+	</data>
+	<data name="ModificationType_NewWindow" xml:space="preserve">
+		<value>自定义原生窗口</value>
+	</data>
+	<data name="ModificationType_UserInterface" xml:space="preserve">
+		<value>界面改造</value>
+	</data>
+	<data name="ModificationType_GameBehavior" xml:space="preserve">
+		<value>游戏行为改造</value>
+	</data>
+	<data name="ModificationType_NewOverlay" xml:space="preserve">
+		<value>自定义原生叠加层</value>
+	</data>
 	<data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
 		<value>提示下一格仙人微彩应揭示的位置。</value>
 	</data>
