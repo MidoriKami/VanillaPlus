@@ -46,7 +46,7 @@ public unsafe class CurrencyOverlay : GameModification {
             GetSubLabelFunc = item => item.ItemSearchCategory.Value.Name.ToString(),
             GetIconIdFunc = item => item.Icon,
 
-            SortingOptions = [ Strings("CurrencyOverlay_SortOptionAlphabetical"), Strings("CurrencyOverlay_SortOptionId") ],
+            SortingOptions = [ Strings("SortOptionAlphabetical"), Strings("CurrencyOverlay_SortOptionId") ],
             SearchOptions = Services.DataManager.GetCurrencyItems().ToList(),
         };
 
@@ -54,7 +54,7 @@ public unsafe class CurrencyOverlay : GameModification {
             Size = new Vector2(700.0f, 500.0f),
             InternalName = "CurrencyOverlayConfig",
             Title = Strings("CurrencyOverlay_ConfigTitle"),
-            SortOptions = [ Strings("CurrencyOverlay_SortOptionAlphabetical") ],
+            SortOptions = [ Strings("SortOptionAlphabetical") ],
 
             Options = config.Currencies,
 

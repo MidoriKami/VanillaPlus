@@ -32,7 +32,7 @@ public class ClearSelectedDuties : GameModification {
             Config = config,
         };
 
-        configWindow.AddCategory(Strings("ClearSelectedDuties_SettingsCategory"))
+        configWindow.AddCategory(Strings("Settings"))
             .AddCheckbox(Strings("ClearSelectedDuties_DisableWhenUnrestricted"), nameof(config.DisableWhenUnrestricted));
         
         OpenConfigAction = configWindow.Toggle;

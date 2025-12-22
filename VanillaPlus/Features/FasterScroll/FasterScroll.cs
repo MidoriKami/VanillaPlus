@@ -33,7 +33,7 @@ public unsafe class FasterScroll : GameModification {
             Config = config,
         };
 
-        configWindow.AddCategory(Strings("FasterScroll_CategorySettings"))
+        configWindow.AddCategory(Strings("Settings"))
             .AddFloatSlider(Strings("FasterScroll_LabelSpeedMultiplier"), 0.5f, 4.0f, 2, 0.05f, nameof(config.SpeedMultiplier));
         
         OpenConfigAction = configWindow.Toggle;

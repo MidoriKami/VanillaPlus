@@ -58,6 +58,24 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="Icon" xml:space="preserve">
+		<value>Icon</value>
+	</data>
+	<data name="SortOptionAlphabetical" xml:space="preserve">
+		<value>Alphabetical</value>
+	</data>
+	<data name="Visibility" xml:space="preserve">
+		<value>Visibility</value>
+	</data>
+	<data name="Color" xml:space="preserve">
+		<value>Color</value>
+	</data>
+	<data name="Toggles" xml:space="preserve">
+		<value>Toggles</value>
+	</data>
+	<data name="Settings" xml:space="preserve">
+		<value>Settings</value>
+	</data>
 	<data name="Button_SavePreset" xml:space="preserve">
 		<value>Save Preset</value>
 	</data>
@@ -79,17 +97,11 @@
 	<data name="ConfigCategory_Colors" xml:space="preserve">
 		<value>Colors</value>
 	</data>
-	<data name="ConfigCategory_Icon" xml:space="preserve">
-		<value>Icon</value>
-	</data>
 	<data name="ConfigLabel_ButtonColor" xml:space="preserve">
 		<value>Button</value>
 	</data>
 	<data name="ConfigLabel_EnableAnimations" xml:space="preserve">
 		<value>Enable Animations</value>
-	</data>
-	<data name="ConfigLabel_Icon" xml:space="preserve">
-		<value>Icon</value>
 	</data>
 	<data name="ConfigLabel_LaneColor" xml:space="preserve">
 		<value>Lane</value>
@@ -103,9 +115,6 @@
 	<data name="BetterCursor_CategoryStyle" xml:space="preserve">
 		<value>Style</value>
 	</data>
-	<data name="BetterCursor_CategoryVisibility" xml:space="preserve">
-		<value>Visibility</value>
-	</data>
 	<data name="BetterCursor_ConfigTitle" xml:space="preserve">
 		<value>Better Cursor Config</value>
 	</data>
@@ -114,12 +123,6 @@
 	</data>
 	<data name="BetterCursor_HideOnCameraMove" xml:space="preserve">
 		<value>Hide on Left-Hold or Right-Hold</value>
-	</data>
-	<data name="BetterCursor_LabelColor" xml:space="preserve">
-		<value>Color</value>
-	</data>
-	<data name="BetterCursor_LabelIcon" xml:space="preserve">
-		<value>Icon</value>
 	</data>
 	<data name="BetterCursor_LabelSize" xml:space="preserve">
 		<value>Size</value>
@@ -136,9 +139,6 @@
 	<data name="CurrencyOverlay_ItemSearchTitle" xml:space="preserve">
 		<value>Item Search</value>
 	</data>
-	<data name="CurrencyOverlay_SortOptionAlphabetical" xml:space="preserve">
-		<value>Alphabetical</value>
-	</data>
 	<data name="CurrencyOverlay_SortOptionId" xml:space="preserve">
 		<value>Id</value>
 	</data>
@@ -148,20 +148,11 @@
 	<data name="WindowBackground_SearchTitle" xml:space="preserve">
 		<value>Window Search</value>
 	</data>
-	<data name="WindowBackground_SortOptionAlphabetical" xml:space="preserve">
-		<value>Alphabetical</value>
-	</data>
-	<data name="WindowBackground_SortOptionVisibility" xml:space="preserve">
-		<value>Visibility</value>
-	</data>
 	<data name="WindowBackground_ColorPickerTitle" xml:space="preserve">
 		<value>Window Background Color Picker</value>
 	</data>
 	<data name="WindowBackground_CategoryBackgroundColor" xml:space="preserve">
 		<value>Background Color</value>
-	</data>
-	<data name="WindowBackground_ColorLabel" xml:space="preserve">
-		<value>Color</value>
 	</data>
 	<data name="WindowBackground_CategoryPaddingSize" xml:space="preserve">
 		<value>Padding Size</value>
@@ -177,9 +168,6 @@
 	</data>
 	<data name="TargetCastBarCountdown_CategoryPrimaryStyle" xml:space="preserve">
 		<value>Target Castbar Style (Combined)</value>
-	</data>
-	<data name="TargetCastBarCountdown_CategoryToggles" xml:space="preserve">
-		<value>Toggles</value>
 	</data>
 	<data name="TargetCastBarCountdown_CheckboxFocus" xml:space="preserve">
 		<value>Show on Focus Target Castbar</value>
@@ -207,9 +195,6 @@
 	</data>
 	<data name="ClearSelectedDuties_DisableWhenUnrestricted" xml:space="preserve">
 		<value>Disable when Unrestricted</value>
-	</data>
-	<data name="ClearSelectedDuties_SettingsCategory" xml:space="preserve">
-		<value>Settings</value>
 	</data>
 	<data name="Label_ModAuthorBy" xml:space="preserve">
 		<value>By {0}</value>
@@ -921,9 +906,6 @@ This game modification fixes it by always triggering the normal mouse click in a
 	<data name="ModificationDisplay_GearsetRedirect" xml:space="preserve">
 		<value>Gearset Redirect</value>
 	</data>
-	<data name="EnhancedLootWindow_CategorySettings" xml:space="preserve">
-		<value>Settings</value>
-	</data>
 	<data name="EnhancedLootWindow_ConfigTitle" xml:space="preserve">
 		<value>Enhanced Loot Window Config</value>
 	</data>
@@ -966,9 +948,6 @@ This game modification fixes it by always triggering the normal mouse click in a
 	<data name="FadeUnavailableActions_LabelReddenPercentage" xml:space="preserve">
 		<value>Redden Percentage</value>
 	</data>
-	<data name="FasterScroll_CategorySettings" xml:space="preserve">
-		<value>Settings</value>
-	</data>
 	<data name="FasterScroll_ConfigTitle" xml:space="preserve">
 		<value>Faster Scrollbars Config</value>
 	</data>
@@ -980,9 +959,6 @@ This game modification fixes it by always triggering the normal mouse click in a
 	</data>
 	<data name="ForcedCutsceneSounds_CategorySpecial" xml:space="preserve">
 		<value>Special</value>
-	</data>
-	<data name="ForcedCutsceneSounds_CategoryToggles" xml:space="preserve">
-		<value>Toggles</value>
 	</data>
 	<data name="ForcedCutsceneSounds_ConfigTitle" xml:space="preserve">
 		<value>Forced Cutscene Sounds Config</value>

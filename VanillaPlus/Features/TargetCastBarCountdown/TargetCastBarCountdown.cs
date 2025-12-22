@@ -107,7 +107,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
             Config = config,
         };
 
-        configWindow.AddCategory(Strings("TargetCastBarCountdown_CategoryToggles"))
+        configWindow.AddCategory(Strings("Toggles"))
             .AddCheckbox(Strings("TargetCastBarCountdown_CheckboxPrimary"), nameof(config.PrimaryTarget))
             .AddCheckbox(Strings("TargetCastBarCountdown_CheckboxFocus"), nameof(config.FocusTarget))
             .AddCheckbox(Strings("TargetCastBarCountdown_CheckboxNameplate"), nameof(config.NamePlateTargets));

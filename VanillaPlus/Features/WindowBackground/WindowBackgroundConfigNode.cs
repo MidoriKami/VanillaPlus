@@ -67,7 +67,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             TextColor = ColorHelper.GetColor(8),
             TextOutlineColor = ColorHelper.GetColor(7),
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
-            String = Strings("WindowBackground_ColorLabel"),
+            String = Strings("Color"),
             DrawFlags = DrawFlags.ClickableCursor,
         };
         colorPreviewLayoutNode1.AddNode(colorLabelNode1);

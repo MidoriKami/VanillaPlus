@@ -36,19 +36,19 @@ public class BetterCursor : GameModification {
         };
 
         configWindow.AddCategory(Strings("BetterCursor_CategoryStyle"))
-            .AddColorEdit(Strings("BetterCursor_LabelColor"), nameof(config.Color), KnownColor.White.Vector())
+            .AddColorEdit(Strings("Color"), nameof(config.Color), KnownColor.White.Vector())
             .AddInputFloat(Strings("BetterCursor_LabelSize"), 16, 16..512, nameof(config.Size));
 
         configWindow.AddCategory(Strings("BetterCursor_CategoryFunctions"))
             .AddCheckbox(Strings("BetterCursor_EnableAnimation"), nameof(config.Animations))
             .AddCheckbox(Strings("BetterCursor_HideOnCameraMove"), nameof(config.HideOnCameraMove));
         
-        configWindow.AddCategory(Strings("BetterCursor_CategoryVisibility"))
+        configWindow.AddCategory(Strings("Visibility"))
             .AddCheckbox(Strings("BetterCursor_OnlyShowInCombat"), nameof(config.OnlyShowInCombat))
             .AddCheckbox(Strings("BetterCursor_OnlyShowInDuties"), nameof(config.OnlyShowInDuties));
 
         configWindow.AddCategory(Strings("BetterCursor_CategoryIconSelection"))
-            .AddSelectIcon(Strings("BetterCursor_LabelIcon"), nameof(config.IconId));
+            .AddSelectIcon(Strings("Icon"), nameof(config.IconId));
 
         OpenConfigAction = configWindow.Toggle;
 

@@ -58,7 +58,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
         configWindow.AddCategory(Strings("ForcedCutsceneSounds_CategoryGeneral"))
             .AddCheckbox(Strings("ForcedCutsceneSounds_RestoreMuteState"), nameof(config.Restore));
 
-        configWindow.AddCategory(Strings("ForcedCutsceneSounds_CategoryToggles"))
+        configWindow.AddCategory(Strings("Toggles"))
             .AddCheckbox(Strings("ForcedCutsceneSounds_UnmuteMaster"), nameof(config.HandleMaster))
             .AddCheckbox(Strings("ForcedCutsceneSounds_UnmuteBgm"), nameof(config.HandleBgm))
             .AddCheckbox(Strings("ForcedCutsceneSounds_UnmuteSe"), nameof(config.HandleSe))
