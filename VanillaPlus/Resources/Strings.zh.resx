@@ -73,6 +73,9 @@
 	<data name="Toggles" xml:space="preserve">
 		<value>开关</value>
 	</data>
+	<data name="Settings" xml:space="preserve">
+		<value>设置</value>
+	</data>
 	<data name="Button_SavePreset" xml:space="preserve">
 		<value>保存预设</value>
 	</data>
@@ -192,9 +195,6 @@
 	</data>
 	<data name="ClearSelectedDuties_DisableWhenUnrestricted" xml:space="preserve">
 		<value>在无视人数限制时禁用</value>
-	</data>
-	<data name="ClearSelectedDuties_SettingsCategory" xml:space="preserve">
-		<value>设置</value>
 	</data>
 	<data name="Label_ModAuthorBy" xml:space="preserve">
 		<value>作者：{0}</value>
@@ -875,9 +875,6 @@
 	<data name="ModificationDisplay_GearsetRedirect" xml:space="preserve">
 		<value>套装重定向</value>
 	</data>
-	<data name="EnhancedLootWindow_CategorySettings" xml:space="preserve">
-		<value>设置</value>
-	</data>
 	<data name="EnhancedLootWindow_ConfigTitle" xml:space="preserve">
 		<value>强化战利品窗口配置</value>
 	</data>
@@ -919,9 +916,6 @@
 	</data>
 	<data name="FadeUnavailableActions_LabelReddenPercentage" xml:space="preserve">
 		<value>染红强度</value>
-	</data>
-	<data name="FasterScroll_CategorySettings" xml:space="preserve">
-		<value>设置</value>
 	</data>
 	<data name="FasterScroll_ConfigTitle" xml:space="preserve">
 		<value>快速滚动条配置</value>

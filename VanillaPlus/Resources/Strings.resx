@@ -73,6 +73,9 @@
 	<data name="Toggles" xml:space="preserve">
 		<value>Toggles</value>
 	</data>
+	<data name="Settings" xml:space="preserve">
+		<value>Settings</value>
+	</data>
 	<data name="Button_SavePreset" xml:space="preserve">
 		<value>Save Preset</value>
 	</data>
@@ -192,9 +195,6 @@
 	</data>
 	<data name="ClearSelectedDuties_DisableWhenUnrestricted" xml:space="preserve">
 		<value>Disable when Unrestricted</value>
-	</data>
-	<data name="ClearSelectedDuties_SettingsCategory" xml:space="preserve">
-		<value>Settings</value>
 	</data>
 	<data name="Label_ModAuthorBy" xml:space="preserve">
 		<value>By {0}</value>
@@ -877,9 +877,6 @@ This game modification fixes it by always triggering the normal mouse click in a
 	<data name="ModificationDisplay_GearsetRedirect" xml:space="preserve">
 		<value>Gearset Redirect</value>
 	</data>
-	<data name="EnhancedLootWindow_CategorySettings" xml:space="preserve">
-		<value>Settings</value>
-	</data>
 	<data name="EnhancedLootWindow_ConfigTitle" xml:space="preserve">
 		<value>Enhanced Loot Window Config</value>
 	</data>
@@ -921,9 +918,6 @@ This game modification fixes it by always triggering the normal mouse click in a
 	</data>
 	<data name="FadeUnavailableActions_LabelReddenPercentage" xml:space="preserve">
 		<value>Redden Percentage</value>
-	</data>
-	<data name="FasterScroll_CategorySettings" xml:space="preserve">
-		<value>Settings</value>
 	</data>
 	<data name="FasterScroll_ConfigTitle" xml:space="preserve">
 		<value>Faster Scrollbars Config</value>

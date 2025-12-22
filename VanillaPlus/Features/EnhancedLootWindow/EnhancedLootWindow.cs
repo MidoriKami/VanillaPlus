@@ -45,7 +45,7 @@ public unsafe class EnhancedLootWindow : GameModification {
             Config = config,
         };
 
-        configWindow.AddCategory(Strings("EnhancedLootWindow_CategorySettings"))
+        configWindow.AddCategory(Strings("Settings"))
             .AddCheckbox(Strings("EnhancedLootWindow_LabelMarkUnobtainable"), nameof(config.MarkUnobtainableItems))
             .AddCheckbox(Strings("EnhancedLootWindow_LabelMarkAlreadyObtained"), nameof(config.MarkAlreadyObtainedItems));
 
