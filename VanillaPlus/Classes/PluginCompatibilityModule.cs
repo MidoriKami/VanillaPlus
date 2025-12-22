@@ -16,5 +16,5 @@ public class PluginCompatibilityModule(params string[] pluginNames) : Compatibil
     }
 
     public override string GetErrorMessage()
-        => $"The original version of this feature is from a plugin that is currently active: {erroringPluginName}";
+        => Strings("CompatibilityModule_ActivePluginMessage", erroringPluginName);
 }

@@ -10,7 +10,7 @@ public static class EnumExtensions {
 
         private string GetDescription() {
             var attribute = enumValue.GetAttribute<DescriptionAttribute>();
-            return attribute == null ? enumValue.ToString() : attribute.Description;
+            return attribute?.Description == null ? enumValue.ToString() : Strings(attribute.Description);
         }
     }
 }

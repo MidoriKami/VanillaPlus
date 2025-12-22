@@ -16,7 +16,7 @@ public class SimpleTweaksCompatibilityModule(string targetModuleName) : Compatib
     }
 
     public override string GetErrorMessage()
-        => $"The original version of this feature is already active in Simple Tweaks Plugin.\n\nID: {targetModuleName}";
+        => Strings("CompatibilityModule_SimpleTweaksActive", targetModuleName);
 
     private static bool IsSimpleTweaksLoaded()
         => IsPluginLoaded("SimpleTweaksPlugin");

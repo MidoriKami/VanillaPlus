@@ -217,11 +217,32 @@
 	<data name="ModificationBrowserTitle" xml:space="preserve">
 		<value>Vanilla Plus 浏览器</value>
 	</data>
+	<data name="ModificationType_Debug" xml:space="preserve">
+		<value>调试</value>
+	</data>
+	<data name="ModificationType_NewWindow" xml:space="preserve">
+		<value>自定义原生窗口</value>
+	</data>
+	<data name="ModificationType_UserInterface" xml:space="preserve">
+		<value>界面改造</value>
+	</data>
+	<data name="ModificationType_GameBehavior" xml:space="preserve">
+		<value>游戏行为改造</value>
+	</data>
+	<data name="ModificationType_NewOverlay" xml:space="preserve">
+		<value>自定义原生叠加层</value>
+	</data>
+	<data name="ModificationDescription_DisableTitleScreenMovie" xml:space="preserve">
+		<value>阻止标题界面闲置一段时间后播放PV动画。</value>
+	</data>
 	<data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
 		<value>提示下一格仙人微彩应揭示的位置。</value>
 	</data>
 	<data name="ModificationDescription_PartyFinderPresets" xml:space="preserve">
 		<value>允许在组队招募窗口保存并使用预设。</value>
+	</data>
+	<data name="ModificationDisplay_DisableTitleScreenMovie" xml:space="preserve">
+		<value>禁用标题界面播片</value>
 	</data>
 	<data name="ModificationDisplay_MiniCactpotHelper" xml:space="preserve">
 		<value>仙人微彩助手</value>
@@ -271,6 +292,14 @@
 	</data>
 	<data name="Tooltip_RetryCompatibility" xml:space="preserve">
 		<value>重新尝试兼容性检查</value>
+	</data>
+	<data name="CompatibilityModule_ActivePluginMessage" xml:space="preserve">
+		<value>该功能的原始版本来自当前启用的插件：{0}</value>
+	</data>
+	<data name="CompatibilityModule_SimpleTweaksActive" xml:space="preserve">
+		<value>该功能的原始版本已经在 Simple Tweaks 插件中启用。
+
+ID：{0}</value>
 	</data>
 	<data name="Tooltip_SavePreset" xml:space="preserve">
 		<value>[VanillaPlus]: 将当前设置保存为预设</value>

@@ -12,30 +12,30 @@ public enum ModificationType {
     /// <summary>
     /// Not intended for actual use
     /// </summary>
-    [Description("Debug")]
+    [Description("ModificationType_Debug")]
     Debug,
     
     /// <summary>
     /// Adds a new native window to the game
     /// </summary>
-    [Description("Custom Native Windows")]
+    [Description("ModificationType_NewWindow")]
     NewWindow,
     
     /// <summary>
     /// Modifies some aspect of the base games user interface
     /// </summary>
-    [Description("UI Modification")]
+    [Description("ModificationType_UserInterface")]
     UserInterface,
     
     /// <summary>
     /// Modifies some type of base game functionality to make it behave differently
     /// </summary>
-    [Description("Game Behavior Modification")]
+    [Description("ModificationType_GameBehavior")]
     GameBehavior,
 
     /// <summary>
     /// Adds a new native overlay to the game
     /// </summary>
-    [Description("Custom Native Overlay")]
+    [Description("ModificationType_NewOverlay")]
     NewOverlay,
 }
