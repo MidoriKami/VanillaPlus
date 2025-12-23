@@ -43,7 +43,7 @@ public unsafe class ActionHighlight : GameModification {
         configWindow = new ActionHighlightAddon() {
             Size = new Vector2(700.0f, 500.0f),
             InternalName = "ActionHighlightConfig",
-            Title = Strings("ActionHighlightConfig_ConfigTitle"),
+            Title = "Action Highlight Configuration",
             Config = config,
         };
 
