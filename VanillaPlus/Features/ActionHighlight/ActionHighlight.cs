@@ -73,40 +73,35 @@ public unsafe class ActionHighlight : GameModification {
 
         if (config.ShowOnlyInCombat && !Services.Condition.IsInCombat) return original;
 
-        if (!config.ActiveActions.TryGetValue(actionId, out var thresholdMs) ||
+        if (! config.ActiveActions.TryGetValue(actionId, out var thresholdMs) ||
             !cachedActions.TryGetValue(actionId, out var action)) {
             return original;
         }
 
-        thresholdMs = config.UseGlocalPreAntMs ? config.PreAntTimeMs : thresholdMs;
+        if (config.UseGlocalPreAntMs)
+            thresholdMs = config.PreAntTimeMs;
 
         if (config.ShowOnlyUsableActions && action.ClassJobLevel > Services.ObjectTable.LocalPlayer.Level)
-            return false;
+            return original;
 
         var maxCharges = ActionManager.GetMaxCharges(actionId, Services.ObjectTable.LocalPlayer.Level);
         var recastActive = actionManager->IsRecastTimerActive(actionType, actionId);
+        var recastTime = actionManager->GetRecastTime(actionType, actionId);
+        var recastElapsed = actionManager->GetRecastTimeElapsed(actionType, actionId);
 
-        if (maxCharges <= 1) {
-            if (!recastActive) return true;
-            var timeLeft = actionManager->GetRecastTimeLeft(actionType, actionId);
-            return timeLeft <= thresholdMs / 1000f;
+        if (maxCharges == 0) {
+            if (! recastActive) return true;
+            return recastTime - recastElapsed <= thresholdMs / 1000f;
         }
 
-        var currentCharges = actionManager->GetCurrentCharges(actionId);
-
-        if (currentCharges > 0 && !config.AntOnlyOnFinalStack)
-        {
-            return true;
+        if (!config.AntOnlyOnFinalStack) {
+            var currentCharges = actionManager->GetCurrentCharges(actionId);
+            if (currentCharges > 0 && !recastActive) return true;
+            recastTime /= maxCharges;
         }
 
-        var timer = actionManager->GetRecastDetail(action);
-        if (timer == null) return original;
-
-        var chargeTime = timer->Total / maxCharges;
-        var timeIntoCurrentCharge = timer->Elapsed % chargeTime;
-        var timeUntilNextCharge = chargeTime - timeIntoCurrentCharge;
-
-        return timeUntilNextCharge <= thresholdMs / 1000f;
+        var timeLeft = recastTime - recastElapsed;
+        return timeLeft <= thresholdMs / 1000f;
     }
 
     private void CacheActions()
