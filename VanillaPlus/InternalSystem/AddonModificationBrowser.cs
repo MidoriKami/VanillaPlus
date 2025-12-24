@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -360,7 +360,7 @@ public class AddonModificationBrowser : NativeAddon {
         descriptionImageFrame.Size = new Vector2(descriptionContainerNode.Width * 0.8f, descriptionContainerNode.Width * 0.8f);
         descriptionImageFrame.Position = new Vector2(descriptionContainerNode.Width * 0.2f / 2.0f, descriptionContainerNode.Width * 0.2f / 4.0f);
 
-        changelogButtonNode.Size = new Vector2(125.0f, 28.0f);
+        changelogButtonNode.Size = new Vector2(150.0f, 28.0f);
         changelogButtonNode.Position = new Vector2(0.0f, descriptionContainerNode.Height - changelogButtonNode.Height - ItemPadding);
         
         descriptionVersionTextNode.Size = new Vector2(200.0f, 28.0f);
