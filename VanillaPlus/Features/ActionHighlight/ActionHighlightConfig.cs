@@ -13,5 +13,5 @@ public class ActionHighlightConfig : GameModificationConfig<ActionHighlightConfi
     public bool AntOnlyOnFinalStack = true;
     public bool ShowOnlyUsableActions = true;
 
-    public Dictionary<uint, int> ActiveActions = new();
+    public Dictionary<uint, int> ActiveActions = [];
 }

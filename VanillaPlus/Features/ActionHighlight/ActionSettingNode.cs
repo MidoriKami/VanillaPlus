@@ -78,4 +78,3 @@ public class ActionSettingNode : SimpleComponentNode {
         nameNode.Size = new Vector2(Width - 75.0f - 170.0f, 20.0f);
     }
 }
-
