@@ -1,6 +1,5 @@
 using System.Numerics;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Nodes;
 
 namespace VanillaPlus.Features.ActionHighlight;
 
@@ -9,7 +8,6 @@ public sealed class GeneralSettingsNode : SimpleComponentNode {
 
     public GeneralSettingsNode(ActionHighlightConfig config) {
         this.config = config;
-
         var y = 0.0f;
 
         AddCheckbox("Show Only In Combat", config.ShowOnlyInCombat, value => { config.ShowOnlyInCombat = value; config.Save(); }, ref y);
@@ -19,7 +17,7 @@ public sealed class GeneralSettingsNode : SimpleComponentNode {
 
         var preAntInput = new NumericInputNode {
             Value = config.PreAntTimeMs,
-            OnValueUpdate = value => { config.PreAntTimeMs = value; config.Save(); },
+            OnValueUpdate = OnValueUpdate,
             Size = new Vector2(100.0f, 24.0f),
             Position = new Vector2(10.0f, y),
         };
@@ -55,5 +53,9 @@ public sealed class GeneralSettingsNode : SimpleComponentNode {
 
         y += 30.0f;
     }
-}
 
+    private void OnValueUpdate(int newValue) {
+        config.PreAntTimeMs = newValue; 
+        config.Save();
+    }
+}
