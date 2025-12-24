@@ -13,7 +13,7 @@ public class DutyLootItem {
     public required uint IconId { get; init; }
     public ReadOnlySeString Name { get; private init; }
     public required uint ItemSortCategory { get; init; }
-
+    public required bool IsUnlocked { get; init; }
     public required bool CanTryOn { get; init; }
     public required List<ReadOnlySeString> Sources { get; init; }
 
@@ -69,17 +69,10 @@ public class DutyLootItem {
                 IconId = item.Icon,
                 Name = item.Name,
                 ItemSortCategory = item.ItemSortCategory.RowId,
+                IsUnlocked = Services.UnlockState.IsItemUnlockable(item) && Services.UnlockState.IsItemUnlocked(item),
                 CanTryOn = CheckCanTryOn(item),
                 Sources = sources,
             };
-        }
-    }
-
-    public bool IsUnlocked {
-        get {
-            var item = Services.DataManager.GetItem(ItemId);
-            return Services.UnlockState.IsItemUnlockable(item)
-                && Services.UnlockState.IsItemUnlocked(item);
         }
     }
 

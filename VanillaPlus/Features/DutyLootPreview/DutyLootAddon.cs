@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using Dalamud.Game.Gui;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -60,6 +61,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
         contextMenu = new ContextMenu();
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+        Services.GameGui.AgentUpdate += OnAgentUpdate;
 
         filterBarNode = new DutyLootFilterBarNode {
             Position = ContentStartPosition,
@@ -112,6 +114,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     protected override void OnFinalize(AtkUnitBase* addon) {
         contextMenu?.Dispose();
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
+        Services.GameGui.AgentUpdate -= OnAgentUpdate;
     }
 
     private static void OnDutyLootItemLeftClick(DutyLootItem item) {
@@ -173,8 +176,9 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         updateRequested = true;
     }
 
-    private void LoadDuty(uint? contentId) {
-        if (contentId == lastLoadedContentId) return;
+    private void LoadDuty(uint? contentId, bool forceReload = false) {
+        if (!forceReload && contentId == lastLoadedContentId) return;
+        if (forceReload) contentId ??= lastLoadedContentId;
         lastLoadedContentId = contentId;
 
         if (contentId is null) {
@@ -207,6 +211,11 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
     private void OnTerritoryChanged(ushort territory) {
         LoadCurrentDuty();
+    }
+
+    private void OnAgentUpdate(AgentUpdateFlag flag) {
+        if (flag.HasFlag(AgentUpdateFlag.UnlocksUpdate))
+            LoadDuty(null, true);
     }
 
     private void LoadCurrentDuty() {
