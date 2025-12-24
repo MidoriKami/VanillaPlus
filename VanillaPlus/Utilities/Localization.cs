@@ -34,8 +34,8 @@ public static class Localization {
         return languageName switch {
             "ja" => CultureInfo.GetCultureInfo("ja-JP"),
             "zh" => CultureInfo.GetCultureInfo("zh-CN"),
-            // "de" => CultureInfo.GetCultureInfo("de-DE"),
-            // "fr" => CultureInfo.GetCultureInfo("fr-FR"),
+            "de" => CultureInfo.GetCultureInfo("de-DE"),
+            "fr" => CultureInfo.GetCultureInfo("fr-FR"),
             _ => CultureInfo.GetCultureInfo("en-US"),
         };
     }
