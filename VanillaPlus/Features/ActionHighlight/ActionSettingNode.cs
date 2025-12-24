@@ -1,19 +1,18 @@
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Nodes;
 using Action = Lumina.Excel.Sheets.Action;
 
 namespace VanillaPlus.Features.ActionHighlight;
 
-public unsafe class ActionSettingNode : SimpleComponentNode {
+public class ActionSettingNode : SimpleComponentNode {
     private readonly ActionHighlightConfig config;
     public Action Action { get; }
 
-    private CheckboxNode enabledCheckbox;
-    private IconImageNode iconNode;
-    private TextNode nameNode;
-    private NumericInputNode thresholdInput;
+    private readonly CheckboxNode enabledCheckbox;
+    private readonly IconImageNode iconNode;
+    private readonly TextNode nameNode;
+    private readonly NumericInputNode thresholdInput;
 
     public ActionSettingNode(ActionHighlightConfig config, Action action) {
         this.config = config;
