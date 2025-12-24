@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
-using Lumina.Text;
 
 namespace VanillaPlus.Features.DutyLootPreview;
 
@@ -52,7 +52,7 @@ public class DutyLootFilterBarNode : HorizontalListNode {
             UIGlobals.PlaySoundEffect(1);
         });
 
-        button.CollisionNode.DrawFlags |= KamiToolKit.Classes.DrawFlags.ClickableCursor;
+        button.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
 
         AddNode(button);
         filterButtons[filter] = button;
