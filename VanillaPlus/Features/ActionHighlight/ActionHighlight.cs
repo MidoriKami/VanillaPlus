@@ -13,7 +13,7 @@ public unsafe class ActionHighlight : GameModification {
         DisplayName = Strings("Action Highlight"),
         Description = "Highlights abilities with the ants effect when they are off cooldown or shortly before they become available.",
         Type = ModificationType.UserInterface,
-        Authors = [ "Zeffuro" ],
+        Authors = [ "attickdoor", "Zeffuro" ],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
