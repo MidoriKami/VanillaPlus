@@ -1,58 +1,56 @@
 using System.Numerics;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.ActionHighlight;
 
 public sealed class GeneralSettingsNode : SimpleComponentNode {
     private readonly ActionHighlightConfig config;
+    private readonly VerticalListNode settingsListNode;
 
     public GeneralSettingsNode(ActionHighlightConfig config) {
         this.config = config;
-        var y = 0.0f;
 
-        AddCheckbox("Show Only In Combat", config.ShowOnlyInCombat, value => { config.ShowOnlyInCombat = value; config.Save(); }, ref y);
-        AddCheckbox("Ant Only On Final Stack", config.AntOnlyOnFinalStack, value => { config.AntOnlyOnFinalStack = value; config.Save(); }, ref y);
-        AddCheckbox("Show Only Usable Actions", config.ShowOnlyUsableActions, value => { config.ShowOnlyUsableActions = value; config.Save(); }, ref y);
-        AddCheckbox("Use Global Pre-Ant Ms", config.UseGlocalPreAntMs, value => { config.UseGlocalPreAntMs = value; config.Save(); }, ref y);
-
-        var preAntInput = new NumericInputNode {
-            Value = config.PreAntTimeMs,
-            OnValueUpdate = OnValueUpdate,
-            Size = new Vector2(100.0f, 24.0f),
-            Position = new Vector2(10.0f, y),
+        settingsListNode = new VerticalListNode {
+            FirstItemSpacing = 35.0f,
+            ItemSpacing = 5.0f,
         };
-        preAntInput.AttachNode(this);
+        settingsListNode.AttachNode(this);
+        
+        AddCheckbox("Show Only In Combat", config.ShowOnlyInCombat, value => { config.ShowOnlyInCombat = value; config.Save(); });
+        AddCheckbox("Ant Only On Final Stack", config.AntOnlyOnFinalStack, value => { config.AntOnlyOnFinalStack = value; config.Save(); });
+        AddCheckbox("Show Only Usable Actions", config.ShowOnlyUsableActions, value => { config.ShowOnlyUsableActions = value; config.Save(); });
+        AddCheckbox("Use Global Pre-Ant Ms", config.UseGlocalPreAntMs, value => { config.UseGlocalPreAntMs = value; config.Save(); });
 
         var preAntLabel = new TextNode {
             String = "Global Pre-Ant Time (ms)",
             FontSize = 14,
-            Position = new Vector2(120.0f, y + 4.0f),
+            Height = 32.0f,
+            AlignmentType = AlignmentType.BottomLeft,
         };
-        preAntLabel.AttachNode(this);
-
-        y += 30.0f;
-
-        Height = y;
+        settingsListNode.AddNode(preAntLabel);
+        
+        var preAntInput = new NumericInputNode {
+            Value = config.PreAntTimeMs,
+            OnValueUpdate = OnValueUpdate,
+            Size = new Vector2(100.0f, 24.0f),
+        };
+        settingsListNode.AddNode(preAntInput);
     }
 
-    private void AddCheckbox(string label, bool initialValue, global::System.Action<bool> onChanged, ref float y) {
-        var checkbox = new CheckboxNode {
+    protected override void OnSizeChanged() {
+        base.OnSizeChanged();
+
+        settingsListNode.Size = Size;
+    }
+
+    private void AddCheckbox(string label, bool initialValue, global::System.Action<bool> onChanged)
+        => settingsListNode.AddNode(new CheckboxNode {
             IsChecked = initialValue,
             OnClick = onChanged,
-            Position = new Vector2(10.0f, y),
-            Size = new Vector2(24.0f, 24.0f),
-        };
-        checkbox.AttachNode(this);
-
-        var text = new TextNode {
+            Size = new Vector2(300.0f, 24.0f),
             String = label,
-            FontSize = 14,
-            Position = new Vector2(40.0f, y + 4.0f),
-        };
-        text.AttachNode(this);
-
-        y += 30.0f;
-    }
+        });
 
     private void OnValueUpdate(int newValue) {
         config.PreAntTimeMs = newValue; 

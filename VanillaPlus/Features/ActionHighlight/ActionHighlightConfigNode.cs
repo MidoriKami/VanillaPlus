@@ -47,7 +47,8 @@ public class ActionHighlightConfigNode : ConfigNode<ClassJobWrapper> {
 
                 if (generalSettingsArea.ContentNode.Nodes.Count == 0) {
                     var settingsNode = new GeneralSettingsNode(config) {
-                        Size = new Vector2(generalSettingsArea.ContentNode.Width, 200.0f)
+                        Size = new Vector2(generalSettingsArea.ContentNode.Width - 32.0f, 200.0f),
+                        Position = new Vector2(16.0f, 0.0f),
                     };
                     generalSettingsArea.ContentNode.AddNode(settingsNode);
                     generalSettingsArea.ContentNode.RecalculateLayout();
@@ -97,4 +98,3 @@ public class ActionHighlightConfigNode : ConfigNode<ClassJobWrapper> {
         }
     }
 }
-
