@@ -11,7 +11,7 @@ namespace VanillaPlus.Features.ActionHighlight;
 public unsafe class ActionHighlight : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings("Action Highlight"),
-        Description = "Highlights abilities with the ants effect when they are off cooldown or shortly before they become available",
+        Description = "Highlights abilities with the ants effect when they are off cooldown or shortly before they become available.",
         Type = ModificationType.UserInterface,
         Authors = [ "Zeffuro" ],
         ChangeLog = [
