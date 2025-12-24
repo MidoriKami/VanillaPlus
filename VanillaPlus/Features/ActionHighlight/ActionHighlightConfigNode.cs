@@ -66,7 +66,7 @@ public class ActionHighlightConfigNode : ConfigNode<ClassJobWrapper> {
         } else {
             actions = ActionHighlight.GetClassActions()
                 .Where(a => a.ClassJob.RowId == option.ClassJob!.Value.RowId ||
-                            (ActionHighlight.JobActionWhiteList.TryGetValue(option.ClassJob!.Value.RowId, out var whiteList) && whiteList.Contains((int)a.RowId)))
+                            ActionHighlight.JobActionWhiteList.TryGetValue(option.ClassJob!.Value.RowId, out var whiteList) && whiteList.Contains((int)a.RowId))
                 .OrderBy(a => a.ClassJobLevel)
                 .ToList();
         }
