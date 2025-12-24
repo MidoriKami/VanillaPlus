@@ -28,19 +28,17 @@ public unsafe class ActionHighlight : GameModification {
 
     private Dictionary<uint, Action>? cachedActions;
 
-    private ActionManager* actionManager;
-
     // Needed for AST cards
-    public static readonly Dictionary<uint, HashSet<int>> JobActionWhiteList = new()
-    {
-        { 33, [7444, 7445, 37018, 37023, 37024, 37025, 37026, 37027, 37028] },
+    public static readonly Dictionary<uint, HashSet<int>> JobActionWhiteList = new() {
+        [33] = [7444, 7445, 37018, 37023, 37024, 37025, 37026, 37027, 37028],
     };
 
     public override void OnEnable() {
         cachedActions = [];
 
         config = ActionHighlightConfig.Load();
-        configWindow = new ActionHighlightAddon() {
+
+        configWindow = new ActionHighlightAddon {
             Size = new Vector2(700.0f, 500.0f),
             InternalName = "ActionHighlightConfig",
             Title = "Action Highlight Configuration",
@@ -49,47 +47,47 @@ public unsafe class ActionHighlight : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        actionManager = ActionManager.Instance();
         onAntsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
         onAntsHook?.Enable();
+        
         CacheActions();
     }
 
     public override void OnDisable() {
-        onAntsHook?.Disable();
+        onAntsHook?.Dispose();
         onAntsHook = null;
+        
+        configWindow?.Dispose();
+        configWindow = null;
 
         cachedActions = null;
     }
 
-    private bool OnActionHighlighted(ActionManager* _, ActionType actionType, uint actionId) {
-        if (Services.ObjectTable.LocalPlayer == null || config == null || cachedActions == null)
-            return false;
-
+    private bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {
+        if (Services.ObjectTable.LocalPlayer is not { Level: var playerLevel } ) return false;
+        if (config is null) return false;
+        if (cachedActions is null) return false;
+        
         var original = onAntsHook!.Original(actionManager, actionType, actionId);
 
-        if (original || actionType != ActionType.Action)
-            return original;
-
+        if (original) return original;
+        if (actionType is not ActionType.Action) return original;
         if (config.ShowOnlyInCombat && !Services.Condition.IsInCombat) return original;
-
-        if (! config.ActiveActions.TryGetValue(actionId, out var thresholdMs) ||
-            !cachedActions.TryGetValue(actionId, out var action)) {
-            return original;
-        }
+        if (!config.ActiveActions.TryGetValue(actionId, out var thresholdMs)) return original;
+        if (!cachedActions.TryGetValue(actionId, out var action)) return original;
 
         if (config.UseGlocalPreAntMs)
             thresholdMs = config.PreAntTimeMs;
 
-        if (config.ShowOnlyUsableActions && action.ClassJobLevel > Services.ObjectTable.LocalPlayer.Level)
+        if (config.ShowOnlyUsableActions && action.ClassJobLevel > playerLevel)
             return original;
 
-        var maxCharges = ActionManager.GetMaxCharges(actionId, Services.ObjectTable.LocalPlayer.Level);
+        var maxCharges = ActionManager.GetMaxCharges(actionId, playerLevel);
         var recastActive = actionManager->IsRecastTimerActive(actionType, actionId);
         var recastTime = actionManager->GetRecastTime(actionType, actionId);
         var recastElapsed = actionManager->GetRecastTimeElapsed(actionType, actionId);
 
-        if (maxCharges == 0) {
+        if (maxCharges is 0) {
             if (! recastActive) return true;
             return recastTime - recastElapsed <= thresholdMs / 1000f;
         }
@@ -104,34 +102,30 @@ public unsafe class ActionHighlight : GameModification {
         return timeLeft <= thresholdMs / 1000f;
     }
 
-    private void CacheActions()
-    {
+    private void CacheActions() {
         var actions = GetClassActions();
 
-        foreach (var action in actions)
-        {
+        foreach (var action in actions) {
             cachedActions?.TryAdd(action.RowId, action);
         }
 
-        var roleActions = Services.DataManager.GetRoleActions().ToList();
+        var roleActions = Services.DataManager.RoleActions.ToList();
 
-        foreach (var roleAction in roleActions)
-        {
+        foreach (var roleAction in roleActions) {
             cachedActions?.TryAdd(roleAction.RowId, roleAction);
         }
     }
 
-    public static List<Action> GetClassActions()
-    {
+    public static List<Action> GetClassActions() {
         var whitelistedActions = JobActionWhiteList.Values.SelectMany(hashSet => hashSet).ToList();
 
         // I have no idea what Unknown6 is, but it's been in there since the very first AbilityAnts release.
         // My best guess at the moment is that it removes abilities that have been replaced or upgraded.
-        return Services.DataManager.GetExcelSheet<Action>()!
-            .Where(a =>
-                (a is { IsPvP: false, ClassJob.ValueNullable.Unknown6: > 0, IsPlayerAction: true } &&
-                 (a.ActionCategory.RowId == 4 || a.Recast100ms > 100))
-                || whitelistedActions.Contains((int)a.RowId)) // Include whitelisted actions
+        return Services.DataManager.GetExcelSheet<Action>()
+            .Where(action => IsValidAction(action) || whitelistedActions.Contains((int)action.RowId))
             .ToList();
     }
+
+    private static bool IsValidAction(Action action)
+        => action is { IsPvP: false, ClassJob.ValueNullable.Unknown6: > 0, IsPlayerAction: true } and ( { ActionCategory.RowId: 4 } or { Recast100ms: > 100 } );
 }
