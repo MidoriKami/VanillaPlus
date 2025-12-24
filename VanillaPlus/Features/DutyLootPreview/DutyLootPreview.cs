@@ -11,8 +11,9 @@ public class DutyLootPreview : GameModification {
         Authors = [ "GrittyFrog" ],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Added Context Menu, Filter Buttons, Favorites and Item Drop info"),
-            new ChangeLogInfo(3, "Added button to view current duty loot")
+            new ChangeLogInfo(2, "Added Context Menu, Filter Buttons, Favorites and\nItem Drop info"),
+            new ChangeLogInfo(3, "Added button to view current duty loot"),
+            new ChangeLogInfo(4, "- Loot is now properly loaded when opening the\n  Duty Loot Preview from the Duty Journal\n- Unlocked items now show a checkmark")
         ],
     };
 
