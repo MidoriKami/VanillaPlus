@@ -274,7 +274,7 @@ Beginnen Sie die Eingabe mit &apos;$&apos;, um nach der Beschreibung zu suchen.<
 		<value>Inhalt abgeschlossen in: {0}</value>
 	</data>
 	<data name="DutyLoot_Filter_All" xml:space="preserve">
-		<value>Alle Items</value>
+		<value>Alle Gegenstände</value>
 	</data>
 	<data name="DutyLoot_Filter_Equipment" xml:space="preserve">
 		<value>Ausrüstung</value>
@@ -305,10 +305,10 @@ Die Daten werden aktualisiert, sobald sie verfügbar sind. Bitte keine Datenaktu
 		<value>Beute anzeigen, die in diesem Inhalt verdient werden kann.</value>
 	</data>
 	<data name="FateEntry_LevelRangeFormat" xml:space="preserve">
-		<value>Lv. {0}-{1}</value>
+		<value>St. {0}-{1}</value>
 	</data>
 	<data name="FateEntry_LevelUnknown" xml:space="preserve">
-		<value>Lv. ???</value>
+		<value>St. ???</value>
 	</data>
 	<data name="FateListWindow_Title" xml:space="preserve">
 		<value>FATE List</value>
@@ -364,7 +364,7 @@ Verwende dafür die Symbole {0} {1} {2} {3} {4}, wo die folgenden Werte in der Z
 {1} – Territorium (z. B. Altes Sharlayan)
 {2} – Gebiet (z. B. Archons Design)
 {3} – Untergebiet (z. B. Altes Sharlayan Aetheryte Plaza)
-{4} – Wohnbezirk (z. B. Bezirk 14)</value>
+{4} – Wohnbezirk (z. B. 14. Bezirk)</value>
 	</data>
 	<data name="LocationDisplay_DefaultEntryFormat" xml:space="preserve">
 		<value>{0}, {1}, {2}, {3}</value>
@@ -394,22 +394,22 @@ Verwende dafür die Symbole {0} {1} {2} {3} {4}, wo die folgenden Werte in der Z
 		<value>VanillaPlus – Standortanzeige</value>
 	</data>
 	<data name="LocationDisplay_WardFormat" xml:space="preserve">
-		<value>Bezirk {0}</value>
+		<value>{0}. Bezirk</value>
 	</data>
 	<data name="LocationDisplay_SubdivisionLabel" xml:space="preserve">
-		<value>Unterteilung</value>
+		<value>Erweiterung</value>
 	</data>
 	<data name="LocationDisplay_ApartmentFormat" xml:space="preserve">
 		<value>Wohnung {0}</value>
 	</data>
 	<data name="LocationDisplay_ApartmentLobby" xml:space="preserve">
-		<value>Lobby</value>
+		<value>Eingangshalle</value>
 	</data>
 	<data name="LocationDisplay_PlotFormat" xml:space="preserve">
-		<value>Grundstück {0}</value>
+		<value>Hausnummer {0}</value>
 	</data>
 	<data name="LocationDisplay_RoomFormat" xml:space="preserve">
-		<value>Raum {0}</value>
+		<value>Zimmer {0}</value>
 	</data>
 	<data name="MissingJobStone_Tooltip" xml:space="preserve">
 		<value>[VanillaPlus]: Klicken, um Sperre zu deaktivieren</value>
