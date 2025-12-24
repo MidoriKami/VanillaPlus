@@ -125,14 +125,16 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         contextMenu.Clear();
 
         if (item.CanTryOn) {
-            contextMenu.AddItem(Strings("DutyLoot_Context_TryOn"), () => AgentTryon.TryOn(0, item.ItemId));
+            contextMenu.AddItem(
+            Services.DataManager.GetAddonText(2426), // Try On
+            () => AgentTryon.TryOn(0, item.ItemId));
         }
 
         var isFavorite = Config.FavoriteItems.Contains(item.ItemId);
         contextMenu.AddItem(new ContextMenuItem {
             Name = isFavorite
-                ? Strings("DutyLoot_Context_RemoveFavorite")
-                : Strings("DutyLoot_Context_AddFavorite"),
+                ? Services.DataManager.GetAddonText(8324) // Remove from Favorites
+                : Services.DataManager.GetAddonText(8323), // Add to Favorites
             OnClick = () => {
                 if (isFavorite) {
                     Config.FavoriteItems.Remove(item.ItemId);
@@ -144,9 +146,17 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
             },
         });
 
-        contextMenu.AddItem(Strings("DutyLoot_Context_SearchItem"), () => ItemFinderModule.Instance()->SearchForItem(item.ItemId));
-        contextMenu.AddItem(Strings("DutyLoot_Context_Link"), () => AgentChatLog.Instance()->LinkItem(item.ItemId));
-        contextMenu.AddItem(Strings("DutyLoot_Context_SearchRecipes"), () => AgentRecipeProductList.Instance()->SearchForRecipesUsingItem(item.ItemId));
+        contextMenu.AddItem(
+            Services.DataManager.GetAddonText(4379), // Search for Item
+            () => ItemFinderModule.Instance()->SearchForItem(item.ItemId));
+
+        contextMenu.AddItem(
+            Services.DataManager.GetAddonText(4697), // Link
+            () => AgentChatLog.Instance()->LinkItem(item.ItemId));
+
+        contextMenu.AddItem(
+            Services.DataManager.GetAddonText(13439), // Search Recipes Using This Material
+            () => AgentRecipeProductList.Instance()->SearchForRecipesUsingItem(item.ItemId));
 
         contextMenu.Open();
     }

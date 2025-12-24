@@ -299,24 +299,6 @@ Commencez la saisie par '$' pour rechercher par description</value>
 	<data name="DutyTimer_CompletedMessage" xml:space="preserve">
 		<value>Mission accomplie en : {0}</value>
 	</data>
-	<data name="DutyLoot_Context_AddFavorite" xml:space="preserve">
-		<value>Ajouter aux Favoris</value>
-	</data>
-	<data name="DutyLoot_Context_Link" xml:space="preserve">
-		<value>Lier</value>
-	</data>
-	<data name="DutyLoot_Context_RemoveFavorite" xml:space="preserve">
-		<value>Retirer des Favoris</value>
-	</data>
-	<data name="DutyLoot_Context_SearchItem" xml:space="preserve">
-		<value>Rechercher un Objet</value>
-	</data>
-	<data name="DutyLoot_Context_SearchRecipes" xml:space="preserve">
-		<value>Rechercher les Recettes utilisant cet Objet</value>
-	</data>
-	<data name="DutyLoot_Context_TryOn" xml:space="preserve">
-		<value>Essayer</value>
-	</data>
 	<data name="DutyLoot_Filter_All" xml:space="preserve">
 		<value>Tous les Objets</value>
 	</data>

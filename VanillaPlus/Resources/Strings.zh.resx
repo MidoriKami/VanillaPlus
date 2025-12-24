@@ -299,24 +299,6 @@ ID：{0}</value>
 	<data name="DutyTimer_CompletedMessage" xml:space="preserve">
 		<value>任务完成耗时：{0}</value>
 	</data>
-	<data name="DutyLoot_Context_AddFavorite" xml:space="preserve">
-		<value>加入收藏</value>
-	</data>
-	<data name="DutyLoot_Context_Link" xml:space="preserve">
-		<value>链接</value>
-	</data>
-	<data name="DutyLoot_Context_RemoveFavorite" xml:space="preserve">
-		<value>从收藏中移除</value>
-	</data>
-	<data name="DutyLoot_Context_SearchItem" xml:space="preserve">
-		<value>搜索该物品</value>
-	</data>
-	<data name="DutyLoot_Context_SearchRecipes" xml:space="preserve">
-		<value>搜索使用该材料的配方</value>
-	</data>
-	<data name="DutyLoot_Context_TryOn" xml:space="preserve">
-		<value>试穿</value>
-	</data>
 	<data name="DutyLoot_Filter_All" xml:space="preserve">
 		<value>全部物品</value>
 	</data>
