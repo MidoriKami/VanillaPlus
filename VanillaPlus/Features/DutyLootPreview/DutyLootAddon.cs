@@ -86,7 +86,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         scrollingAreaNode.AttachNode(this);
 
         noItemsTextNode = new TextNode {
-            Position = new Vector2(ContentStartPosition.X + ContentSize.X * 0.2f / 2.0f, ContentStartPosition.Y),
+            Position = new Vector2(ContentStartPosition.X + ContentSize.X * 0.2f / 2.0f, listAreaPosition.Y + 15),
             Size = new Vector2(ContentSize.X * 0.8f, ContentSize.Y * 3.0f / 4.0f),
             TextColor = ColorHelper.GetColor(1),
             LineSpacing = 18,
@@ -250,7 +250,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         noItemsTextNode.IsVisible = !hasResults;
 
         if (!hasResults) {
-            noItemsTextNode.SeString = isLoading ? LoadingMessage : hasData ? NoResultsMessage : NoItemsMessage;
+            noItemsTextNode.String = isLoading ? LoadingMessage : hasData ? NoResultsMessage : NoItemsMessage;
         }
     }
 
