@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade;
 using KamiToolKit.Premade.Nodes;
 
 namespace VanillaPlus.Features.ActionHighlight;
@@ -20,7 +18,7 @@ public class ActionHighlightAddon : NativeAddon {
     public ActionHighlightConfig? Config { get; init; }
 
     protected override unsafe void OnSetup(AtkUnitBase* addon) {
-        var classJobs = Services.DataManager.GetExcelSheet<Lumina.Excel.Sheets.ClassJob>()!
+        var classJobs = Services.DataManager.GetExcelSheet<Lumina.Excel.Sheets.ClassJob>()
             .Where(classJob => classJob.JobIndex > 0)
             .Select(classJob => new ClassJobWrapper(classJob))
             .ToList();
@@ -28,7 +26,7 @@ public class ActionHighlightAddon : NativeAddon {
         classJobs.Add(ClassJobWrapper.RoleActions);
         classJobs.Add(ClassJobWrapper.GeneralSettings);
 
-        classJobs.Sort((a, b) => a.Compare(b, ""));
+        classJobs.Sort((left, right) => left.Compare(right, ""));
 
         selectionListNode = new ModifyListNode<ClassJobWrapper> {
             Position = ContentStartPosition,
@@ -72,9 +70,7 @@ public class ActionHighlightAddon : NativeAddon {
         if (configNode is null) return;
 
         configNode.IsVisible = newOption is not null;
-        if (nothingSelectedTextNode is not null) {
-            nothingSelectedTextNode.IsVisible = newOption is null;
-        }
+        nothingSelectedTextNode?.IsVisible = newOption is null;
 
         configNode.ConfigurationOption = newOption;
     }
