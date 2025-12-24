@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using Dalamud.Game.ClientState.Objects.Enums;
 using Lumina.Excel.Sheets;
 using Lumina.Text.ReadOnly;
 using LuminaSupplemental.Excel.Model;
@@ -99,10 +99,9 @@ public class DutyLootItem {
         if (bosses is null) return;
         if (itemId == 0 || !bosses.TryGetValue(fightNo, out var boss)) return;
 
-        var bossNameRaw = Services.DataManager.GetExcelSheet<BNpcName>().GetRow(boss.BNpcNameId).Singular;
-        if (bossNameRaw.IsEmpty) return;
-        var bossNameText = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(bossNameRaw.ExtractText());
-        ReadOnlySeString bossSource = $"Boss {fightNo + 1}: {bossNameText}";
+        var bossName = Services.SeStringEvaluator.EvaluateObjStr(ObjectKind.BattleNpc, boss.BNpcNameId);
+        if (string.IsNullOrEmpty(bossName)) return;
+        ReadOnlySeString bossSource = $"Boss {fightNo + 1}: {bossName}";
 
         if (!itemSources.TryGetValue(itemId, out var sources)) {
             sources = [];
