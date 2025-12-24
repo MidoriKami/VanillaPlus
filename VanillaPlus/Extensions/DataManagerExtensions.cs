@@ -20,7 +20,7 @@ public static class DataManagerExtensions {
                 .Select(group => group.Key);
         }
 
-        public IEnumerable<Action> GetRoleActions()
+        public IEnumerable<Action> RoleActions
             => dataManager.GetExcelSheet<Action>()
                 .Where(action => action.IsRoleAction && action.ClassJobLevel != 0);
 
