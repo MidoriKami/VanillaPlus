@@ -20,10 +20,9 @@ public static class DataManagerExtensions {
                 .Select(group => group.Key);
         }
 
-        public IEnumerable<Action> GetRoleActions() {
-            return dataManager.GetExcelSheet<Action>()!
-                .Where(a => a.IsRoleAction && a.ClassJobLevel != 0);
-        }
+        public IEnumerable<Action> GetRoleActions()
+            => dataManager.GetExcelSheet<Action>()
+                .Where(action => action.IsRoleAction && action.ClassJobLevel != 0);
 
         public ClassJob GetClassJobById(uint id)
             => dataManager.GetExcelSheet<ClassJob>().GetRow(id);
