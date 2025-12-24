@@ -97,6 +97,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         noItemsTextNode.AttachNode(this);
 
         contentsFinder = new AddonController<AddonContentsFinder>("ContentsFinder");
+        contentsFinder.OnAttach += OnContentsFinderUpdate;
         contentsFinder.OnRefresh += OnContentsFinderUpdate;
         contentsFinder.OnDetach += _ => Close();
         contentsFinder.Enable();
