@@ -12,6 +12,7 @@
         <RepoUrl>https://github.com/MidoriKami/VanillaPlus</RepoUrl>
         <Tags>ui</Tags>
         <AcceptsFeedback>false</AcceptsFeedback>
+        <NoWarn>$(NoWarn);Dalamud001</NoWarn>
     </PropertyGroup>
     
     <ItemGroup>

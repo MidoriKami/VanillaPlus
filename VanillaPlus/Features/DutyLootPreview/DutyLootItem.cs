@@ -75,6 +75,14 @@ public class DutyLootItem {
         }
     }
 
+    public bool IsUnlocked {
+        get {
+            var item = Services.DataManager.GetItem(ItemId);
+            return Services.UnlockState.IsItemUnlockable(item)
+                && Services.UnlockState.IsItemUnlocked(item);
+        }
+    }
+
     public uint SortOrder => ItemSortCategory switch {
         9 or 63 => uint.MaxValue,     // Materia - very bottom
         5 or 56 => uint.MaxValue - 1, // Equipment - bottom
