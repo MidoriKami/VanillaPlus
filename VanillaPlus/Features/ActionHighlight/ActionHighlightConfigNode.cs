@@ -9,7 +9,7 @@ namespace VanillaPlus.Features.ActionHighlight;
 
 public class ActionHighlightConfigNode : ConfigNode<ClassJobWrapper> {
     private readonly ScrollingAreaNode<VerticalListNode> actionsList;
-    private ScrollingAreaNode<VerticalListNode>? generalSettingsArea;
+    private readonly ScrollingAreaNode<VerticalListNode>? generalSettingsArea;
     private ActionHighlightConfig? config;
 
     public ActionHighlightConfigNode() {
@@ -29,14 +29,14 @@ public class ActionHighlightConfigNode : ConfigNode<ClassJobWrapper> {
         generalSettingsArea.AttachNode(this);
     }
 
-    public void SetConfig(ActionHighlightConfig hightlightConfig) {
-        config = hightlightConfig;
+    public void SetConfig(ActionHighlightConfig highlightConfig) {
+        config = highlightConfig;
     }
 
     protected override void OptionChanged(ClassJobWrapper? option) {
         if (option is null || config is null) {
             actionsList.IsVisible = false;
-            if (generalSettingsArea != null) generalSettingsArea.IsVisible = false;
+            generalSettingsArea?.IsVisible = false;
             return;
         }
 
@@ -57,12 +57,12 @@ public class ActionHighlightConfigNode : ConfigNode<ClassJobWrapper> {
             return;
         }
 
-        if (generalSettingsArea != null) generalSettingsArea.IsVisible = false;
+        generalSettingsArea?.IsVisible = false;
         actionsList.IsVisible = true;
 
         List<Action> actions;
         if (option.IsRoleActions) {
-            actions = Services.DataManager.GetRoleActions().ToList();
+            actions = Services.DataManager.RoleActions.ToList();
         } else {
             actions = ActionHighlight.GetClassActions()
                 .Where(a => a.ClassJob.RowId == option.ClassJob!.Value.RowId ||
