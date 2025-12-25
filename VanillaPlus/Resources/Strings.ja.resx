@@ -299,24 +299,6 @@ ID: {0}</value>
 	<data name="DutyTimer_CompletedMessage" xml:space="preserve">
 		<value>コンテンツ完了時間: {0}</value>
 	</data>
-	<data name="DutyLoot_Context_AddFavorite" xml:space="preserve">
-		<value>お気に入りに追加</value>
-	</data>
-	<data name="DutyLoot_Context_Link" xml:space="preserve">
-		<value>リンク</value>
-	</data>
-	<data name="DutyLoot_Context_RemoveFavorite" xml:space="preserve">
-		<value>お気に入りから削除</value>
-	</data>
-	<data name="DutyLoot_Context_SearchItem" xml:space="preserve">
-		<value>アイテムを検索</value>
-	</data>
-	<data name="DutyLoot_Context_SearchRecipes" xml:space="preserve">
-		<value>この素材を使うレシピを検索</value>
-	</data>
-	<data name="DutyLoot_Context_TryOn" xml:space="preserve">
-		<value>試着する</value>
-	</data>
 	<data name="DutyLoot_Filter_All" xml:space="preserve">
 		<value>全アイテム</value>
 	</data>

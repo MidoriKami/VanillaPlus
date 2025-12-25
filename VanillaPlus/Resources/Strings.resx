@@ -299,24 +299,6 @@ Start input with &apos;$&apos; to search by description</value>
 	<data name="DutyTimer_CompletedMessage" xml:space="preserve">
 		<value>Duty Completed in: {0}</value>
 	</data>
-	<data name="DutyLoot_Context_AddFavorite" xml:space="preserve">
-		<value>Add to Favorites</value>
-	</data>
-	<data name="DutyLoot_Context_Link" xml:space="preserve">
-		<value>Link</value>
-	</data>
-	<data name="DutyLoot_Context_RemoveFavorite" xml:space="preserve">
-		<value>Remove from Favorites</value>
-	</data>
-	<data name="DutyLoot_Context_SearchItem" xml:space="preserve">
-		<value>Search for Item</value>
-	</data>
-	<data name="DutyLoot_Context_SearchRecipes" xml:space="preserve">
-		<value>Search Recipes Using This Material</value>
-	</data>
-	<data name="DutyLoot_Context_TryOn" xml:space="preserve">
-		<value>Try On</value>
-	</data>
 	<data name="DutyLoot_Filter_All" xml:space="preserve">
 		<value>All Items</value>
 	</data>

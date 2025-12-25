@@ -1,4 +1,4 @@
-﻿using Dalamud.IoC;
+using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 
@@ -32,6 +32,7 @@ public class Services {
     [PluginService] public static IObjectTable ObjectTable { get; set; } = null!;
     [PluginService] public static IAddonEventManager AddonEventManager { get; set; } = null!;
     [PluginService] public static IPlayerState PlayerState { get; set; } = null!;
+    [PluginService] public static IUnlockState UnlockState { get; set; } = null!;
     [PluginService] public static INamePlateGui NamePlateGui { get; set; } = null!;
 
     // I dislike the name GameInteropProvider, so this is my mini rebellion on a bad name.

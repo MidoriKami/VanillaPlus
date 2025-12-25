@@ -13,6 +13,7 @@ public unsafe class DutyLootNode : SimpleComponentNode {
     private readonly TextNode itemNameTextNode;
     private readonly SimpleImageNode favoriteStarNode;
     private readonly SimpleImageNode infoIconNode;
+    private readonly SimpleImageNode checkmarkIconNode;
 
     public Action<DutyLootItem>? OnLeftClick;
     public Action<DutyLootItem>? OnRightClick;
@@ -55,6 +56,14 @@ public unsafe class DutyLootNode : SimpleComponentNode {
             WrapMode = WrapMode.Stretch,
         };
         infoIconNode.AttachNode(this);
+
+        checkmarkIconNode = new SimpleImageNode {
+            TextureCoordinates = new Vector2(60, 28),
+            TextureSize = new Vector2(28, 24),
+            TexturePath = "ui/uld/RecipeNoteBook.tex",
+            IsVisible = false,
+        };
+        checkmarkIconNode.AttachNode(this);
 
         CollisionNode.AddEvent(AtkEventType.MouseOver, () => {
             IsHovered = true;
@@ -100,6 +109,7 @@ public unsafe class DutyLootNode : SimpleComponentNode {
             itemNameTextNode.SeString = value.Name;
             iconNode.Count = 1; // value.Quantity;
             infoIconNode.Tooltip = string.Join("\n", value.Sources);
+            checkmarkIconNode.IsVisible = value.IsUnlocked;
         }
     }
     
@@ -119,6 +129,9 @@ public unsafe class DutyLootNode : SimpleComponentNode {
         var infoSize = Size.Y * 0.6f;
         infoIconNode.Size = new Vector2(infoSize, infoSize);
         infoIconNode.Position = new Vector2(Width - infoSize, Height / 2 - infoSize / 2);
+
+        checkmarkIconNode.Size = new Vector2(28, 24);
+        checkmarkIconNode.Position = iconNode.Size - checkmarkIconNode.Size * 0.8f;
 
         itemNameTextNode.Size = new Vector2(Width - iconNode.Width - infoSize - 12.0f, Height);
         itemNameTextNode.Position = new Vector2(iconNode.Width + 4.0f, 0.0f);
