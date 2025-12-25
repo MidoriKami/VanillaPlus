@@ -1,6 +1,7 @@
 using System;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using KamiToolKit.Classes;
 using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Nodes;
@@ -45,6 +46,7 @@ public unsafe class DutyLootJournalUiController {
             Size = new Vector2(32.0f, 32.0f),
             TooltipString = Strings("DutyLoot_Tooltip_JournalButton"),
             OnClick = () => OnButtonClicked?.Invoke(),
+            IsVisible = ShouldShow,
         };
         lootButtonNode.AttachNode(dutyTitleNode, NodePosition.AfterTarget);
     }
@@ -61,8 +63,10 @@ public unsafe class DutyLootJournalUiController {
             }
         }
 
-        lootButtonNode.IsVisible = true;
+        lootButtonNode.IsVisible = ShouldShow;
     }
+
+    private bool ShouldShow => AgentContentsFinder.Instance()->SelectedDuty.ContentType == ContentsId.ContentsType.Regular;
 
     private void DetachNodes(AddonJournalDetail* addon) {
         lootButtonNode?.Dispose();

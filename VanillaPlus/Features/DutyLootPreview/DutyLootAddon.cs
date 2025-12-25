@@ -204,6 +204,12 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         if (!IsOpen) return;
 
         var content = AgentContentsFinder.Instance()->SelectedDuty;
+
+        if (content.ContentType == ContentsId.ContentsType.Roulette) {
+            Close();
+            return;
+        }
+
         if (content.ContentType == ContentsId.ContentsType.Regular) {
             LoadDuty(content.Id);
         }
