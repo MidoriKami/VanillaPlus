@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using Dalamud.Game.Gui;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -60,6 +61,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
         contextMenu = new ContextMenu();
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+        Services.GameGui.AgentUpdate += OnAgentUpdate;
 
         filterBarNode = new DutyLootFilterBarNode {
             Position = ContentStartPosition,
@@ -86,7 +88,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         scrollingAreaNode.AttachNode(this);
 
         noItemsTextNode = new TextNode {
-            Position = new Vector2(ContentStartPosition.X + ContentSize.X * 0.2f / 2.0f, ContentStartPosition.Y),
+            Position = new Vector2(ContentStartPosition.X + ContentSize.X * 0.2f / 2.0f, listAreaPosition.Y + 15),
             Size = new Vector2(ContentSize.X * 0.8f, ContentSize.Y * 3.0f / 4.0f),
             TextColor = ColorHelper.GetColor(1),
             LineSpacing = 18,
@@ -97,6 +99,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         noItemsTextNode.AttachNode(this);
 
         contentsFinder = new AddonController<AddonContentsFinder>("ContentsFinder");
+        contentsFinder.OnAttach += OnContentsFinderUpdate;
         contentsFinder.OnRefresh += OnContentsFinderUpdate;
         contentsFinder.OnDetach += _ => Close();
         contentsFinder.Enable();
@@ -111,6 +114,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     protected override void OnFinalize(AtkUnitBase* addon) {
         contextMenu?.Dispose();
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
+        Services.GameGui.AgentUpdate -= OnAgentUpdate;
     }
 
     private static void OnDutyLootItemLeftClick(DutyLootItem item) {
@@ -124,14 +128,16 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         contextMenu.Clear();
 
         if (item.CanTryOn) {
-            contextMenu.AddItem(Strings("DutyLoot_Context_TryOn"), () => AgentTryon.TryOn(0, item.ItemId));
+            contextMenu.AddItem(
+            Services.DataManager.GetAddonText(2426), // Try On
+            () => AgentTryon.TryOn(0, item.ItemId));
         }
 
         var isFavorite = Config.FavoriteItems.Contains(item.ItemId);
         contextMenu.AddItem(new ContextMenuItem {
             Name = isFavorite
-                ? Strings("DutyLoot_Context_RemoveFavorite")
-                : Strings("DutyLoot_Context_AddFavorite"),
+                ? Services.DataManager.GetAddonText(8324) // Remove from Favorites
+                : Services.DataManager.GetAddonText(8323), // Add to Favorites
             OnClick = () => {
                 if (isFavorite) {
                     Config.FavoriteItems.Remove(item.ItemId);
@@ -143,9 +149,17 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
             },
         });
 
-        contextMenu.AddItem(Strings("DutyLoot_Context_SearchItem"), () => ItemFinderModule.Instance()->SearchForItem(item.ItemId));
-        contextMenu.AddItem(Strings("DutyLoot_Context_Link"), () => AgentChatLog.Instance()->LinkItem(item.ItemId));
-        contextMenu.AddItem(Strings("DutyLoot_Context_SearchRecipes"), () => AgentRecipeProductList.Instance()->SearchForRecipesUsingItem(item.ItemId));
+        contextMenu.AddItem(
+            Services.DataManager.GetAddonText(4379), // Search for Item
+            () => ItemFinderModule.Instance()->SearchForItem(item.ItemId));
+
+        contextMenu.AddItem(
+            Services.DataManager.GetAddonText(4697), // Link
+            () => AgentChatLog.Instance()->LinkItem(item.ItemId));
+
+        contextMenu.AddItem(
+            Services.DataManager.GetAddonText(13439), // Search Recipes Using This Material
+            () => AgentRecipeProductList.Instance()->SearchForRecipesUsingItem(item.ItemId));
 
         contextMenu.Open();
     }
@@ -162,8 +176,9 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         updateRequested = true;
     }
 
-    private void LoadDuty(uint? contentId) {
-        if (contentId == lastLoadedContentId) return;
+    private void LoadDuty(uint? contentId, bool forceReload = false) {
+        if (!forceReload && contentId == lastLoadedContentId) return;
+        if (forceReload) contentId ??= lastLoadedContentId;
         lastLoadedContentId = contentId;
 
         if (contentId is null) {
@@ -189,6 +204,12 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         if (!IsOpen) return;
 
         var content = AgentContentsFinder.Instance()->SelectedDuty;
+
+        if (content.ContentType == ContentsId.ContentsType.Roulette) {
+            Close();
+            return;
+        }
+
         if (content.ContentType == ContentsId.ContentsType.Regular) {
             LoadDuty(content.Id);
         }
@@ -196,6 +217,12 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
     private void OnTerritoryChanged(ushort territory) {
         LoadCurrentDuty();
+    }
+
+    private void OnAgentUpdate(AgentUpdateFlag flag) {
+        if (flag.HasFlag(AgentUpdateFlag.UnlocksUpdate)) {
+            LoadDuty(null, true);
+        }
     }
 
     private void LoadCurrentDuty() {
@@ -212,8 +239,8 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
         var filteredItems = filterBarNode.CurrentFilter switch {
             LootFilter.Favorites => items.Where(item => Config.FavoriteItems.Contains(item.ItemId)),
-            LootFilter.Equipment => items.Where(item => item.ItemSortCategory is 5 or 56),
-            LootFilter.Misc => items.Where(item => item.ItemSortCategory is not (5 or 56)),
+            LootFilter.Equipment => items.Where(item => item.IsEquipment),
+            LootFilter.Misc => items.Where(item => !item.IsEquipment),
             _ => items,
         };
 
@@ -236,7 +263,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
             list.ReorderNodes((a, b) => {
                 if (a is not DutyLootNode left || b is not DutyLootNode right) return 0;
-                return left.Item.SortOrder.CompareTo(right.Item.SortOrder);
+                return left.Item.CompareTo(right.Item);
             });
         }
 
@@ -249,7 +276,11 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         noItemsTextNode.IsVisible = !hasResults;
 
         if (!hasResults) {
-            noItemsTextNode.SeString = isLoading ? LoadingMessage : hasData ? NoResultsMessage : NoItemsMessage;
+            noItemsTextNode.String = true switch {
+                _ when isLoading => LoadingMessage,
+                _ when hasData => NoResultsMessage,
+                _ => NoItemsMessage,
+            };
         }
     }
 

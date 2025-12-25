@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
-using Lumina.Text;
 
 namespace VanillaPlus.Features.DutyLootPreview;
 
@@ -42,12 +43,14 @@ public class DutyLootFilterBarNode : HorizontalListNode {
         var button = new IconToggleNode {
             Size = new Vector2(36, 36),
             IconId = iconId,
-            Tooltip = new SeStringBuilder().Append(tooltipText).ToReadOnlySeString(),
+            Tooltip = tooltipText,
         };
 
+        button.CollisionNode.ShowClickableCursor = true;
         button.CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
             CurrentFilter = filter;
             OnFilterChanged?.Invoke(filter);
+            UIGlobals.PlaySoundEffect(1);
         });
 
         AddNode(button);

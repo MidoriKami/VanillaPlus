@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
@@ -7,6 +7,8 @@ using KamiToolKit.Nodes;
 namespace VanillaPlus.Features.LocationDisplay;
 
 public class LocationDisplayConfigAddon : NativeAddon {
+
+    private const float ResetButtonWidth = 190.0f;
 
     private TextNode? instructionTextNode;
 
@@ -32,7 +34,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
             Position = ContentStartPosition,
             Size = new Vector2(ContentSize.X, 150.0f),
             LineSpacing = 16,
-            TextFlags = TextFlags.MultiLine,
+            TextFlags = TextFlags.MultiLine | TextFlags.WordWrap,
             String = Strings("Label_LocationDisplayInstructions"),
         };
         instructionTextNode.AttachNode(this);
@@ -51,7 +53,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
         infoBarEntryLayoutNode.AddNode(entryLabelNode);
 
         entryInputNode = new TextInputNode {
-            Size = new Vector2(ContentSize.X - 125.0f - 125.0f, 30.0f),
+            Size = new Vector2(ContentSize.X - 125.0f - ResetButtonWidth, 30.0f),
             String = Config.FormatString,
             OnInputReceived = newString => {
                 if (!BracesMismatched(newString.ToString())) {
@@ -67,7 +69,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
         infoBarEntryLayoutNode.AddNode(entryInputNode);
 
         resetEntryButtonNode = new TextButtonNode {
-            Size = new Vector2(125.0f, 30.0f),
+            Size = new Vector2(ResetButtonWidth, 30.0f),
             String = Strings("LocationDisplay_ResetButton"),
             OnClick = () => {
                 entryInputNode.IsError = false;
@@ -92,7 +94,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
         infoBarTooltipLayoutNode.AddNode(tooltipLabelNode);
 
         tooltipInputNode = new TextInputNode {
-            Size = new Vector2(ContentSize.X - 125.0f - 125.0f, 30.0f),
+            Size = new Vector2(ContentSize.X - 125.0f - ResetButtonWidth, 30.0f),
             String = Config.TooltipFormatString,
             OnInputReceived = newString => {
                 if (!BracesMismatched(newString.ToString())) {
@@ -108,7 +110,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
         infoBarTooltipLayoutNode.AddNode(tooltipInputNode);
 
         tooltipResetButtonNode = new TextButtonNode {
-            Size = new Vector2(125.0f, 30.0f),
+            Size = new Vector2(ResetButtonWidth, 30.0f),
             String = Strings("LocationDisplay_ResetButton"),
             OnClick = () => {
                 tooltipInputNode.IsError = false;

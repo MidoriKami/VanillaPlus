@@ -32,6 +32,7 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
         buttonNode.AttachNode(this);
 
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+        OnTerritoryChanged(0);
     }
 
     protected override void Dispose(bool disposing, bool isNativeDestructor) {
@@ -67,7 +68,7 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
         buttonNode.Size = Size;
     }
 
-    private void OnTerritoryChanged(ushort obj) {
+    private void OnTerritoryChanged(ushort territoryTypeId) {
         shouldShow = ShouldShowButton();
         UpdateVisibility();
     }
