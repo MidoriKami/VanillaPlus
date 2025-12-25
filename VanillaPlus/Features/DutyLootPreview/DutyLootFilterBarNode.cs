@@ -46,13 +46,12 @@ public class DutyLootFilterBarNode : HorizontalListNode {
             Tooltip = tooltipText,
         };
 
+        button.CollisionNode.ShowClickableCursor = true;
         button.CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
             CurrentFilter = filter;
             OnFilterChanged?.Invoke(filter);
             UIGlobals.PlaySoundEffect(1);
         });
-
-        button.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
 
         AddNode(button);
         filterButtons[filter] = button;

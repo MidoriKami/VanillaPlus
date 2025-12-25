@@ -142,16 +142,13 @@ public class DutyLootItem : IComparable {
     }
 
     public int CompareTo(object? other) {
-        if (other is not DutyLootItem { } otherItem)
-            return 1;
+        if (other is not DutyLootItem otherItem) return 1;
 
         var result = -OrderMajor.CompareTo(otherItem.OrderMajor);
-        if (result != 0)
-            return result;
+        if (result != 0) return result;
 
         result = -OrderMinor.CompareTo(otherItem.OrderMinor);
-        if (result != 0)
-            return result;
+        if (result != 0) return result;
 
         return string.Compare(Name.ToString(), otherItem.Name.ToString(), StringComparison.Ordinal);
     }

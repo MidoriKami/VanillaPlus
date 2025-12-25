@@ -220,8 +220,9 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     }
 
     private void OnAgentUpdate(AgentUpdateFlag flag) {
-        if (flag.HasFlag(AgentUpdateFlag.UnlocksUpdate))
+        if (flag.HasFlag(AgentUpdateFlag.UnlocksUpdate)) {
             LoadDuty(null, true);
+        }
     }
 
     private void LoadCurrentDuty() {
@@ -278,7 +279,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
             noItemsTextNode.String = true switch {
                 _ when isLoading => LoadingMessage,
                 _ when hasData => NoResultsMessage,
-                _ => NoItemsMessage
+                _ => NoItemsMessage,
             };
         }
     }

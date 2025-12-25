@@ -66,7 +66,7 @@ public unsafe class DutyLootJournalUiController {
         lootButtonNode.IsVisible = ShouldShow;
     }
 
-    private bool ShouldShow => AgentContentsFinder.Instance()->SelectedDuty.ContentType == ContentsId.ContentsType.Regular;
+    private static bool ShouldShow => AgentContentsFinder.Instance()->SelectedDuty.ContentType == ContentsId.ContentsType.Regular;
 
     private void DetachNodes(AddonJournalDetail* addon) {
         lootButtonNode?.Dispose();
