@@ -69,7 +69,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
             FontSize = 14,
             String = Strings("MissingJobStone_WarningText"),
             TooltipString = Strings("MissingJobStone_Tooltip"),
-            DrawFlags = DrawFlags.ClickableCursor,
+            ShowClickableCursor = true,
         };
         warningTextNode.AttachNode(animationContainer);
         

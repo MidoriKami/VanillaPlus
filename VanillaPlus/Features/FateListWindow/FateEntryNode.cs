@@ -62,7 +62,7 @@ public unsafe class FateEntryNode : SimpleComponentNode {
         };
         progressTextNode.AttachNode(this);
 
-        CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
+        CollisionNode.ShowClickableCursor = true;
         CollisionNode.AddEvent(AtkEventType.MouseOver, () => IsHovered = true);
         CollisionNode.AddEvent(AtkEventType.MouseOut, () => IsHovered = false);
         CollisionNode.AddEvent(AtkEventType.MouseClick, () => {

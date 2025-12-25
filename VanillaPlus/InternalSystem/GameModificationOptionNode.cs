@@ -99,18 +99,15 @@ public class GameModificationOptionNode : SimpleComponentNode {
         };
         configButtonNode.AttachNode(this);
 
-        CollisionNode.DrawFlags = DrawFlags.ClickableCursor;
-        
+        CollisionNode.ShowClickableCursor = true;
         CollisionNode.AddEvent(AtkEventType.MouseOver, () => {
             if (!IsSelected) {
                 IsHovered = true;
             }
         });
-        
         CollisionNode.AddEvent(AtkEventType.MouseDown, () => {
             OnClick?.Invoke();
         });
-        
         CollisionNode.AddEvent(AtkEventType.MouseOut, () => {
             IsHovered = false;
         });

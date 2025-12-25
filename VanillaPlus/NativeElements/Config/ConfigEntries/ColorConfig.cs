@@ -29,7 +29,7 @@ public class ColorConfig : BaseConfigEntry {
         };
         layoutNode.AddNode(colorSquareNode);
 
-        layoutNode.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
+        layoutNode.CollisionNode.ShowClickableCursor = true;
         layoutNode.CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
             colorPickerInstance.InitialColor = Color;
             colorPickerInstance.DefaultColor = DefaultColor;

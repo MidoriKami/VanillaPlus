@@ -65,7 +65,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
             SaveStyleObject();
         };
 
-        colorPreviewNode.ColorPreviewNode.CollisionNode.DrawFlags = DrawFlags.ClickableCursor;
+        colorPreviewNode.ColorPreviewNode.CollisionNode.ShowClickableCursor = true;
         colorPreviewNode.ColorPreviewNode.CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
             colorPickerAddon.InitialColor = StyleObject.TextColor;
             colorPickerAddon.OnColorConfirmed = vector4 => {
@@ -106,7 +106,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
             SaveStyleObject();
         };
 
-        colorPreviewNode.ColorPreviewNode.CollisionNode.DrawFlags = DrawFlags.ClickableCursor;
+        colorPreviewNode.ColorPreviewNode.CollisionNode.ShowClickableCursor = true;
         colorPreviewNode.ColorPreviewNode.CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
             colorPickerAddon.InitialColor = StyleObject.TextOutlineColor;
             colorPickerAddon.OnColorConfirmed = vector4 => {

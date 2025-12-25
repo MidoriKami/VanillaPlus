@@ -160,7 +160,7 @@ public class AddonModificationBrowser : NativeAddon {
 
         descriptionImageNode = new ImGuiImageNode {
             FitTexture = true,
-            DrawFlags = DrawFlags.ClickableCursor,
+            ShowClickableCursor = true,
         };
 
         descriptionImageNode.AddEvent(AtkEventType.MouseClick, () => {

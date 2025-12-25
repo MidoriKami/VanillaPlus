@@ -60,7 +60,7 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
         };
         distanceTextNode.AttachNode(this);
 
-        CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
+        CollisionNode.ShowClickableCursor = true;
         CollisionNode.AddEvent(AtkEventType.MouseOver, () => IsHovered = true);
         CollisionNode.AddEvent(AtkEventType.MouseOut, () => IsHovered = false);
         CollisionNode.AddEvent(AtkEventType.MouseClick, () => {

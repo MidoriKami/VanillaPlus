@@ -55,7 +55,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         
         colorPreviewNode = new ColorPreviewNode {
             Size = new Vector2(32.0f, 32.0f),
-            DrawFlags = DrawFlags.ClickableCursor,
+            ShowClickableCursor = true,
         };
         horizontalLayoutNode.AddNode(colorPreviewNode);
         
@@ -69,7 +69,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             TextOutlineColor = ColorHelper.GetColor(7),
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
             String = Strings("Color"),
-            DrawFlags = DrawFlags.ClickableCursor,
+            ShowClickableCursor = true,
         };
         horizontalLayoutNode.AddNode(colorLabelNode1);
 
@@ -89,8 +89,8 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         };
         verticalListNode.AddNode(1, sizeEditWidget);
 
-        horizontalLayoutNode.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
-        colorPreviewNode.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
+        horizontalLayoutNode.ShowClickableCursor = true;
+        ShowClickableCursor = true;
         horizontalLayoutNode.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
         colorPreviewNode.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
     }

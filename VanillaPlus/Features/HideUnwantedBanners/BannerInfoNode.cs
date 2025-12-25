@@ -21,7 +21,7 @@ public class BannerInfoNode : SimpleComponentNode {
 
         iconImageNode = new IconImageNode {
             FitTexture = true,
-            DrawFlags = DrawFlags.ClickableCursor,
+            ShowClickableCursor = true,
         };
 
         iconImageNode.AddEvent(AtkEventType.MouseClick, () => {
