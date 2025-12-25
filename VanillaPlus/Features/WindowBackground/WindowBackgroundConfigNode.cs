@@ -28,6 +28,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             InternalName = "WindowBackgroundColor",
             Title = Strings("WindowBackground_ColorPickerTitle"),
             DefaultColor = KnownColor.Black.Vector() with { W = 0.50f },
+            OnHsvaColorPreviewed = color => colorPreviewNode?.HsvaColor = color,
         };
         
         windowNameTextNode = new TextNode {
@@ -46,17 +47,17 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             String = Strings("WindowBackground_CategoryBackgroundColor"),
         });
 
-        var colorPreviewLayoutNode1 = new HorizontalListNode {
+        var horizontalLayoutNode = new HorizontalListNode {
             Height = 32.0f,
             ItemSpacing = 10.0f,
         };
-        verticalListNode.AddNode(1, colorPreviewLayoutNode1);
+        verticalListNode.AddNode(1, horizontalLayoutNode);
         
         colorPreviewNode = new ColorPreviewNode {
             Size = new Vector2(32.0f, 32.0f),
             DrawFlags = DrawFlags.ClickableCursor,
         };
-        colorPreviewLayoutNode1.AddNode(colorPreviewNode);
+        horizontalLayoutNode.AddNode(colorPreviewNode);
         
         var colorLabelNode1 = new TextNode {
             Size = new Vector2(100.0f, 32.0f),
@@ -70,7 +71,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             String = Strings("Color"),
             DrawFlags = DrawFlags.ClickableCursor,
         };
-        colorPreviewLayoutNode1.AddNode(colorLabelNode1);
+        horizontalLayoutNode.AddNode(colorLabelNode1);
 
         verticalListNode.AddNode(0, new CategoryTextNode {
             String = Strings("WindowBackground_CategoryPaddingSize"),
@@ -88,9 +89,9 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         };
         verticalListNode.AddNode(1, sizeEditWidget);
 
-        colorPreviewLayoutNode1.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
+        horizontalLayoutNode.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
         colorPreviewNode.CollisionNode.DrawFlags |= DrawFlags.ClickableCursor;
-        colorPreviewLayoutNode1.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
+        horizontalLayoutNode.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
         colorPreviewNode.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
     }
 
