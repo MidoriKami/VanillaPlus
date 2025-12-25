@@ -238,8 +238,8 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
         var filteredItems = filterBarNode.CurrentFilter switch {
             LootFilter.Favorites => items.Where(item => Config.FavoriteItems.Contains(item.ItemId)),
-            LootFilter.Equipment => items.Where(item => item.ItemSortCategory is 5 or 56),
-            LootFilter.Misc => items.Where(item => item.ItemSortCategory is not (5 or 56)),
+            LootFilter.Equipment => items.Where(item => item.IsEquipment),
+            LootFilter.Misc => items.Where(item => !item.IsEquipment),
             _ => items,
         };
 
@@ -262,7 +262,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
             list.ReorderNodes((a, b) => {
                 if (a is not DutyLootNode left || b is not DutyLootNode right) return 0;
-                return left.Item.SortOrder.CompareTo(right.Item.SortOrder);
+                return left.Item.CompareTo(right.Item);
             });
         }
 
@@ -275,7 +275,11 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         noItemsTextNode.IsVisible = !hasResults;
 
         if (!hasResults) {
-            noItemsTextNode.String = isLoading ? LoadingMessage : hasData ? NoResultsMessage : NoItemsMessage;
+            noItemsTextNode.String = true switch {
+                _ when isLoading => LoadingMessage,
+                _ when hasData => NoResultsMessage,
+                _ => NoItemsMessage
+            };
         }
     }
 

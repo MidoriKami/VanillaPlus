@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Game.ClientState.Objects.Enums;
@@ -8,11 +9,14 @@ using LuminaSupplemental.Excel.Services;
 
 namespace VanillaPlus.Features.DutyLootPreview;
 
-public class DutyLootItem {
+public class DutyLootItem : IComparable {
     public required uint ItemId { get; init; }
     public required uint IconId { get; init; }
     public ReadOnlySeString Name { get; private init; }
-    public required uint ItemSortCategory { get; init; }
+    /// <inheritdoc cref="Item.FilterGroup"/>
+    public required byte FilterGroup { get; init; }
+    public required byte OrderMajor { get; init; }
+    public required byte OrderMinor { get; init; }
     public required bool IsUnlocked { get; init; }
     public required bool CanTryOn { get; init; }
     public required List<ReadOnlySeString> Sources { get; init; }
@@ -68,7 +72,9 @@ public class DutyLootItem {
                 ItemId = item.RowId,
                 IconId = item.Icon,
                 Name = item.Name,
-                ItemSortCategory = item.ItemSortCategory.RowId,
+                FilterGroup = item.FilterGroup,
+                OrderMajor = item.ItemUICategory.ValueNullable?.OrderMajor ?? 0,
+                OrderMinor = item.ItemUICategory.ValueNullable?.OrderMinor ?? 0,
                 IsUnlocked = Services.UnlockState.IsItemUnlockable(item) && Services.UnlockState.IsItemUnlocked(item),
                 CanTryOn = CheckCanTryOn(item),
                 Sources = sources,
@@ -76,11 +82,7 @@ public class DutyLootItem {
         }
     }
 
-    public uint SortOrder => ItemSortCategory switch {
-        9 or 63 => uint.MaxValue,     // Materia - very bottom
-        5 or 56 => uint.MaxValue - 1, // Equipment - bottom
-        _ => ItemSortCategory,
-    };
+    public bool IsEquipment => FilterGroup is 1 or 2 or 3 or 4;
 
     private static void AddDungeonChestSource(uint itemId, Dictionary<uint, List<ReadOnlySeString>>? itemSources) {
         if (itemSources is null) return;
@@ -137,5 +139,20 @@ public class DutyLootItem {
             return false;
 
         return true;
+    }
+
+    public int CompareTo(object? other) {
+        if (other is not DutyLootItem { } otherItem)
+            return 1;
+
+        var result = -OrderMajor.CompareTo(otherItem.OrderMajor);
+        if (result != 0)
+            return result;
+
+        result = -OrderMinor.CompareTo(otherItem.OrderMinor);
+        if (result != 0)
+            return result;
+
+        return string.Compare(Name.ToString(), otherItem.Name.ToString(), StringComparison.Ordinal);
     }
 }
