@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.HideUnwantedBanners;
 
 public class BannerInfoNode : SimpleComponentNode {
 
-    private CheckboxNode checkboxNode;
-    private SimpleComponentNode imageContainerNode;
-    private IconImageNode iconImageNode;
+    private readonly CheckboxNode checkboxNode;
+    private readonly SimpleComponentNode imageContainerNode;
+    private readonly IconImageNode iconImageNode;
 
     public BannerInfoNode() {
         checkboxNode = new CheckboxNode();
