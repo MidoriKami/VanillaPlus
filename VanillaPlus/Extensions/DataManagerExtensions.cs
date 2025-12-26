@@ -30,8 +30,20 @@ public static class DataManagerExtensions {
         public Item GetItem(uint id)
             => dataManager.GetExcelSheet<Item>().GetRow(id);
 
-        public IEnumerable<Item> GetCurrencyItems()
-            => dataManager.GetExcelSheet<Item>()
-                .Where(item => item is { Name.IsEmpty: false, ItemUICategory.RowId: 100 } or { RowId: >= 1 and < 100, Name.IsEmpty: false });
+        public IEnumerable<Item> GetCurrencyItems() {
+            var obsoleteTomes = dataManager.GetObsoleteTomestones().ToHashSet(EqualityComparer<Item>.Create(
+                (x, y) => x.RowId == y.RowId,
+                obj => obj.RowId.GetHashCode()
+            ));
+
+            return dataManager.GetExcelSheet<Item>()
+                .Where(item => item is { Name.IsEmpty: false, ItemUICategory.RowId: 100 } or { RowId: >= 1 and < 100, Name.IsEmpty: false })
+                .Where(item => !obsoleteTomes.Contains(item));
+        }
+
+        private IEnumerable<Item> GetObsoleteTomestones()
+            => dataManager.GetExcelSheet<TomestonesItem>()
+                .Where(item => item.Tomestones.RowId is 0)
+                .Select(item => item.Item.Value);
     }
 }
