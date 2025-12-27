@@ -107,7 +107,7 @@ public unsafe class MiniCactpotHelper : GameModification {
 			Position = new Vector2(8.0f, 8.0f),
 			Size = new Vector2(32.0f, 32.0f),
 			Icon = ButtonIcon.GearCog,
-            Tooltip = Strings("Tooltip_ConfigEzMiniCactpot"),
+            TextTooltip = Strings("Tooltip_ConfigEzMiniCactpot"),
 			OnClick = () => configWindow.Toggle(),
 		};
 		configButton.AttachNode(buttonContainerNode);

@@ -60,7 +60,7 @@ public class ListInventory : GameModification {
                 FilterItemCategoryLabel,
             ],
             OpenCommand = "/listinventory",
-            OnInventoryDataChanged = OnInventoryChanged
+            OnInventoryDataChanged = OnInventoryChanged,
         };
 
         addonListInventory.Initialize();

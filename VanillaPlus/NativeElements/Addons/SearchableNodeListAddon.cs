@@ -59,7 +59,7 @@ public unsafe class SearchableNodeListAddon : NodeListAddon {
                 reverseSort = !reverseSort;
                 OnFilterUpdated(filterOption, reverseSort);
             },
-            Tooltip = Strings("Tooltip_ReverseSortDirection"),
+            TextTooltip = Strings("Tooltip_ReverseSortDirection"),
         };
 
         textInputNode = new TextInputNode {

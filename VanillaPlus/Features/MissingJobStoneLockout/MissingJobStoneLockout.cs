@@ -67,7 +67,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
             AlignmentType = AlignmentType.Center,
             FontSize = 14,
             String = Strings("MissingJobStone_WarningText"),
-            TooltipString = Strings("MissingJobStone_Tooltip"),
+            TextTooltip = Strings("MissingJobStone_Tooltip"),
             ShowClickableCursor = true,
         };
         warningTextNode.AttachNode(animationContainer);
@@ -95,7 +95,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
                 animationContainer.IsVisible = false;
             }
 
-            warningTextNode.TooltipString = Strings("MissingJobStone_TooltipWithCountdown", 6 - clickCount);
+            warningTextNode.TextTooltip = Strings("MissingJobStone_TooltipWithCountdown", 6 - clickCount);
             warningTextNode.ShowTooltip();
         });
     }

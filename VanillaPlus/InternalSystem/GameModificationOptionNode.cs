@@ -53,7 +53,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
         erroringImageNode = new IconImageNode {
             IconId = 61502,
             FitTexture = true,
-            Tooltip = Strings("Tooltip_ModificationFailedToLoad"),
+            TextTooltip = Strings("Tooltip_ModificationFailedToLoad"),
         };
         erroringImageNode.AttachNode(this);
 
@@ -67,7 +67,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
         experimentalImageNode = new IconImageNode {
             IconId = 60073,
             FitTexture = true,
-            Tooltip = Strings("Tooltip_ExperimentalFeature"),
+            TextTooltip = Strings("Tooltip_ExperimentalFeature"),
         };
         experimentalImageNode.AttachNode(this);
         
@@ -81,7 +81,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
 
         reloadButtonNode = new CircleButtonNode {
             Icon = ButtonIcon.Refresh,
-            Tooltip = Strings("Tooltip_RetryCompatibility"),
+            TextTooltip = Strings("Tooltip_RetryCompatibility"),
             OnClick = () => {
                 System.ModificationManager.ReloadConflictedModules();
                 reloadButtonNode?.HideTooltip();
@@ -91,7 +91,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
         
         configButtonNode = new CircleButtonNode {
             Icon = ButtonIcon.GearCog,
-            Tooltip = Strings("Tooltip_OpenConfiguration"),
+            TextTooltip = Strings("Tooltip_OpenConfiguration"),
             OnClick = () => {
                 Modification?.Modification.OpenConfigAction?.Invoke();
                 OnClick?.Invoke();
@@ -200,7 +200,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
         if (Modification.State is LoadedState.Errored or LoadedState.CompatError) {
             checkboxNode.IsEnabled = false;
             erroringImageNode.IsVisible = true;
-            erroringImageNode.Tooltip = Modification.ErrorMessage;
+            erroringImageNode.TextTooltip = Modification.ErrorMessage;
 
             reloadButtonNode.IsVisible = Modification.State is LoadedState.CompatError;
         }

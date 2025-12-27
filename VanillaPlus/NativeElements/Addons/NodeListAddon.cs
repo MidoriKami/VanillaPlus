@@ -37,6 +37,18 @@ public unsafe class NodeListAddon : NativeAddon {
         };
     }
 
+    protected override void OnSetup(AtkUnitBase* addon) {
+        ScrollingAreaNode = new ScrollingAreaNode<VerticalListNode> {
+            Position = ContentStartPosition,
+            Size = ContentSize,
+            ContentHeight = 100,
+        };
+        ScrollingAreaNode.ContentNode.FitContents = true;
+        ScrollingAreaNode.AttachNode(this);
+        
+        DoListUpdate(true);
+    }
+
     public override void Dispose() {
         config = null;
         
@@ -79,18 +91,6 @@ public unsafe class NodeListAddon : NativeAddon {
 
     private void OnOpenCommand(string command, string arguments)
         => Toggle();
-
-    protected override void OnSetup(AtkUnitBase* addon) {
-        ScrollingAreaNode = new ScrollingAreaNode<VerticalListNode> {
-            Position = ContentStartPosition,
-            Size = ContentSize,
-            ContentHeight = 100,
-        };
-        ScrollingAreaNode.ContentNode.FitContents = true;
-        ScrollingAreaNode.AttachNode(this);
-        
-        DoListUpdate(true);
-    }
     
     /// <summary>
     ///     Return true to indicate contents were changed.

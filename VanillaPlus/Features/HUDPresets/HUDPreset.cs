@@ -61,7 +61,7 @@ public unsafe class HUDPresets : GameModification {
                 Size = new Vector2(addon->Size.X - 32.0f, 24.0f),
                 MaxListOptions = 10,
                 Options = HUDPresetManager.GetPresetNames(),
-                TooltipString = Strings("HUDPresets_DropdownTooltip"),
+                TextTooltip = Strings("HUDPresets_DropdownTooltip"),
                 OnOptionSelected = UpdateButtonLocks,
             };
             presetDropdownNode.AttachNode(addon);
@@ -70,7 +70,7 @@ public unsafe class HUDPresets : GameModification {
                 Position = new Vector2(32.0f, 269.0f),
                 Size = new Vector2(100.0f, 28.0f),
                 String = Strings("HUDPresets_ButtonLoad"),
-                TooltipString = Strings("HUDPresets_ButtonLoadTooltip"),
+                TextTooltip = Strings("HUDPresets_ButtonLoadTooltip"),
                 OnClick = LoadPreset,
                 IsEnabled = false,
             };
@@ -80,7 +80,7 @@ public unsafe class HUDPresets : GameModification {
                 Position = new Vector2(144.0f, 269.0f),
                 Size = new Vector2(100.0f, 28.0f),
                 String = Strings("HUDPresets_ButtonOverwrite"),
-                TooltipString = Strings("HUDPresets_ButtonOverwriteTooltip"),
+                TextTooltip = Strings("HUDPresets_ButtonOverwriteTooltip"),
                 IsEnabled = false,
                 OnClick = OverwriteSelectedPreset,
             };
@@ -94,7 +94,7 @@ public unsafe class HUDPresets : GameModification {
                 IsEnabled = false,
                 // OnClick = DeleteSelectedPreset,
             };
-            deleteButtonNode.CollisionNode.TooltipString = Strings("HUDPresets_DeleteTooltip");
+            deleteButtonNode.CollisionNode.TextTooltip = Strings("HUDPresets_DeleteTooltip");
             deleteButtonNode.AttachNode(addon);
             
             saveButtonNode = new TextButtonNode {
@@ -103,7 +103,7 @@ public unsafe class HUDPresets : GameModification {
                 String = Strings("HUDPresets_ButtonSave"),
                 OnClick = SaveCurrentLayout,
             };
-            saveButtonNode.CollisionNode.TooltipString = Strings("HUDPresets_SaveTooltipEnabled");
+            saveButtonNode.CollisionNode.TextTooltip = Strings("HUDPresets_SaveTooltipEnabled");
             saveButtonNode.AttachNode(addon);
         };
 
@@ -137,10 +137,10 @@ public unsafe class HUDPresets : GameModification {
                         saveButtonNode.IsEnabled = !mainSaveButton->IsEnabled;
 
                         if (mainSaveButton->IsEnabled) {
-                            saveButtonNode.CollisionNode.TooltipString = Strings("HUDPresets_SaveTooltipDisabled");
+                            saveButtonNode.CollisionNode.TextTooltip = Strings("HUDPresets_SaveTooltipDisabled");
                         }
                         else {
-                            saveButtonNode.CollisionNode.TooltipString = Strings("HUDPresets_SaveTooltipEnabled");
+                            saveButtonNode.CollisionNode.TextTooltip = Strings("HUDPresets_SaveTooltipEnabled");
                         }
                     }
                 }

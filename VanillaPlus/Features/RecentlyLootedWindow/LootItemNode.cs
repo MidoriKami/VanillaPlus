@@ -5,7 +5,7 @@ using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.RecentlyLootedWindow;
 
-public unsafe class LootItemNode : SimpleComponentNode {
+public class LootItemNode : SimpleComponentNode {
 
     private readonly NineGridNode hoveredBackgroundNode;
     private readonly IconWithCountNode iconNode;
@@ -35,15 +35,10 @@ public unsafe class LootItemNode : SimpleComponentNode {
         
         CollisionNode.AddEvent(AtkEventType.MouseOver, () => {
             IsHovered = true;
-
-            if (Item is null) return;
-            AtkResNode* node = CollisionNode;
-            node->ShowItemTooltip(Item.ItemId);
         });
         
         CollisionNode.AddEvent(AtkEventType.MouseOut, () => {
             IsHovered = false;
-            CollisionNode.HideTooltip();
         });
     }
     
@@ -60,6 +55,7 @@ public unsafe class LootItemNode : SimpleComponentNode {
             iconNode.IconId = value.IconId;
             itemNameTextNode.SeString = value.Name;
             iconNode.Count = value.Quantity;
+            CollisionNode.ItemTooltip = Item.ItemId;
         }
     }
     
