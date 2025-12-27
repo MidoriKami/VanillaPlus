@@ -8,6 +8,8 @@ public class AddonListInventory : SearchableNodeListAddon {
     public required Action? OnInventoryDataChanged { get; init; }
 
     protected override unsafe void OnSetup(AtkUnitBase* addon) {
+        base.OnSetup(addon);
+
         addon->SubscribeNumberArrayData(NumberArrayType.Inventory);
     }
 
