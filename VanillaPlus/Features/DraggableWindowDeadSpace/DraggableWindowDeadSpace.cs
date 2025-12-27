@@ -52,6 +52,7 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
     
     private void OnAddonSetup(AddonEvent type, AddonArgs args) {
         if (!Services.ClientState.IsLoggedIn) return;
+        if (windowInteractionNodes is null) return;
         
         var addon = (AtkUnitBase*)args.Addon.Address;
 
@@ -82,7 +83,12 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
                     newInteractionNode.AddEvent(AtkEventType.MouseDown, OnWindowMouseDown);
 
                     newInteractionNode.AttachNode(node, NodePosition.BeforeTarget);
-                    windowInteractionNodes?.Add(args.AddonName, newInteractionNode);
+
+                    if (!windowInteractionNodes.TryAdd(args.AddonName, newInteractionNode)) {
+                        windowInteractionNodes[args.AddonName].Dispose();
+                        windowInteractionNodes[args.AddonName] = newInteractionNode;
+                    }
+
                     return;
                 }
             }
