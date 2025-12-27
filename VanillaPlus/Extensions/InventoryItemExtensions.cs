@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.Sheets;
 using Lumina.Text.ReadOnly;

@@ -72,7 +72,7 @@ public unsafe class PartyFinderPresets : GameModification {
                 Position = new Vector2(406.0f, 605.0f),
                 Size = new Vector2(160.0f, 28.0f),
                 String = Strings.Button_SavePreset,
-                Tooltip = Strings.Tooltip_SavePreset,
+                TextTooltip = Strings.Tooltip_SavePreset,
                 OnClick = savePresetWindow.Open,
             };
             savePresetButton.AttachNode(addon);
@@ -150,9 +150,9 @@ public unsafe class PartyFinderPresets : GameModification {
             presetDropDown.Options = presets;
             presetDropDown.IsEnabled = anyPresets;
 
-            presetDropDown.Tooltip = anyPresets
-                ? Strings.Tooltip_SelectPreset
-                : Strings.Tooltip_NoPresets;
+            presetDropDown.TextTooltip = anyPresets
+                                             ? Strings.Tooltip_SelectPreset
+                                             : Strings.Tooltip_NoPresets;
         }
     }
 

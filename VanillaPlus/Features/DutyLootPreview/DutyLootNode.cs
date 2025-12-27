@@ -108,7 +108,7 @@ public unsafe class DutyLootNode : SimpleComponentNode {
             iconNode.IconId = value.IconId;
             itemNameTextNode.SeString = value.Name;
             iconNode.Count = 1; // value.Quantity;
-            infoIconNode.Tooltip = string.Join("\n", value.Sources);
+            infoIconNode.TextTooltip = string.Join("\n", value.Sources);
             checkmarkIconNode.IsVisible = value.IsUnlocked;
         }
     }

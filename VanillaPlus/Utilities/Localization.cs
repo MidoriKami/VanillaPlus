@@ -6,7 +6,7 @@ public static class Localization {
     public static void SetCultureInfo(object? language) {
         var languageName = language?.ToString();
 
-        Strings.CultureInfo = languageName switch {
+        Strings.Culture = languageName switch {
             "ja" => CultureInfo.GetCultureInfo("ja-JP"),
             "zh" => CultureInfo.GetCultureInfo("zh-CN"),
             "de" => CultureInfo.GetCultureInfo("de-DE"),

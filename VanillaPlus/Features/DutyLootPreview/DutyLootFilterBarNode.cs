@@ -42,7 +42,7 @@ public class DutyLootFilterBarNode : HorizontalListNode {
         var button = new IconToggleNode {
             Size = new Vector2(36, 36),
             IconId = iconId,
-            Tooltip = tooltipText,
+            TextTooltip = tooltipText,
         };
 
         button.CollisionNode.ShowClickableCursor = true;

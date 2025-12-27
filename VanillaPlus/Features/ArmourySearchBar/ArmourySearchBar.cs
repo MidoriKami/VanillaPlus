@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.Config;
-using Dalamud.Utility;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.ArmourySearchBar;

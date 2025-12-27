@@ -19,7 +19,7 @@ public class TextInputWithHintNode : SimpleComponentNode {
             TexturePath = "ui/uld/CircleButtons.tex",
             TextureCoordinates = new Vector2(112.0f, 84.0f),
             TextureSize = new Vector2(28.0f, 28.0f),
-            Tooltip = Strings.Tooltip_SearchRegexSupport,
+            TextTooltip = Strings.Tooltip_SearchRegexSupport,
         };
         helpNode.AttachNode(this);
     }

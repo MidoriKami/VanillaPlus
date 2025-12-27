@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
-using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using KamiToolKit.Premade.Addons;
 using VanillaPlus.Features.GearsetRedirect;

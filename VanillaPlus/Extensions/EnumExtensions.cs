@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using Dalamud.Utility;
 
 namespace VanillaPlus.Extensions;
 
@@ -10,7 +9,7 @@ public static class EnumExtensions {
 
         private string GetDescription() {
             var attribute = enumValue.GetAttribute<DescriptionAttribute>();
-            return Strings.ResourceManager.GetString(attribute?.Description ?? string.Empty, Strings.CultureInfo) ?? enumValue.ToString();
+            return Strings.ResourceManager.GetString(attribute?.Description ?? string.Empty, Strings.Culture) ?? enumValue.ToString();
         }
     }
 }

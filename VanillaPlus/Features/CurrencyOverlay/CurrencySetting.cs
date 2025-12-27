@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using System.Text.Json.Serialization;
-using Dalamud.Utility;
 using KamiToolKit.Premade;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
