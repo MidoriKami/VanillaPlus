@@ -1,3 +1,4 @@
+using System.Numerics;
 using KamiToolKit.Overlay;
 using Action = System.Action;
 
@@ -17,6 +18,7 @@ public class DutyLootInDutyUiController {
         overlayController?.CreateNode(() => {
             return new DutyLootInDutyButtonNode {
                 OnClick = () => OnButtonClicked?.Invoke(),
+                Size = new Vector2(20.0f, 20.0f),
             };
         });
     }
