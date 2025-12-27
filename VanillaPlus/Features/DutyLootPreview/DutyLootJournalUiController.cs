@@ -1,10 +1,11 @@
-using System;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using KamiToolKit.Classes;
 using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Nodes;
+using Lumina.Excel.Sheets;
+using Action = System.Action;
 
 namespace VanillaPlus.Features.DutyLootPreview;
 
@@ -66,7 +67,21 @@ public unsafe class DutyLootJournalUiController {
         lootButtonNode.IsVisible = ShouldShow;
     }
 
-    private static bool ShouldShow => AgentContentsFinder.Instance()->SelectedDuty.ContentType == ContentsId.ContentsType.Regular;
+    private static bool ShouldShow {
+        get {
+            ref var selectedDuty = ref AgentContentsFinder.Instance()->SelectedDuty;
+
+            // not for Content Roulette
+            if (selectedDuty.ContentType != ContentsId.ContentsType.Regular)
+                return false;
+
+            if (!Services.DataManager.GetExcelSheet<ContentFinderCondition>().TryGetRow(selectedDuty.Id, out var cfcRow))
+                return false;
+
+            // not for Guildhests (3), PvP (6), Gold Saucer (19)
+            return cfcRow.ContentType.RowId is not (3 or 6 or 19);
+        }
+    }
 
     private void DetachNodes(AddonJournalDetail* addon) {
         lootButtonNode?.Dispose();
