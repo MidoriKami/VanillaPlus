@@ -29,7 +29,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
     private readonly NewRedirectionAddon newRedirectionAddon = new() {
         Size = new Vector2(500.0f, 275.0f),
         InternalName = "AddRedirectionWindow",
-        Title = Strings("GearsetRedirect_AddRedirectionTitle"),
+        Title = Strings.GearsetRedirect_AddRedirectionTitle,
     };
 
     public override void Dispose() {
@@ -45,8 +45,8 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
             Position = ContentStartPosition,
             SelectionOptions = GetConfigInfos(),
             SortOptions = [
-                Strings("GearsetRedirect_SortAlphabetical"),
-                Strings("GearsetRedirect_SortId"),
+                Strings.GearsetRedirect_SortAlphabetical,
+                Strings.GearsetRedirect_SortId,
             ],
             AddNewEntry = OnAddEntry,
             RemoveEntry = OnRemoveEntry,

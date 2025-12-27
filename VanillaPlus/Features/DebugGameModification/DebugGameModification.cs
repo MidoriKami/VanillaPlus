@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.DebugGameModification;
 /// </summary>
 public class DebugGameModification : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_DebugGameModification"),
-        Description = Strings("ModificationDescription_DebugGameModification"),
+        DisplayName = Strings.ModificationDisplay_DebugGameModification,
+        Description = Strings.ModificationDescription_DebugGameModification,
         Type = ModificationType.Debug,
         Authors = [ "YourNameHere" ],
         ChangeLog = [

@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.StickyShopCategories;
 
 public unsafe class StickyShopCategories : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_StickyShopCategories"),
-        Description = Strings("ModificationDescription_StickyShopCategories"),
+        DisplayName = Strings.ModificationDisplay_StickyShopCategories,
+        Description = Strings.ModificationDescription_StickyShopCategories,
         Type = ModificationType.GameBehavior,
         Authors = ["Era"],
         ChangeLog = [

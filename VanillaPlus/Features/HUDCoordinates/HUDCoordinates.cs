@@ -10,8 +10,8 @@ namespace VanillaPlus.Features.HUDCoordinates;
 
 public unsafe class HUDCoordinates : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_HUDCoordinates"),
-        Description = Strings("ModificationDescription_HUDCoordinates"),
+        DisplayName = Strings.ModificationDisplay_HUDCoordinates,
+        Description = Strings.ModificationDescription_HUDCoordinates,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

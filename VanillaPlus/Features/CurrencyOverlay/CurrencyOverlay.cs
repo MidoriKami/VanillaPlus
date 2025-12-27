@@ -11,8 +11,8 @@ namespace VanillaPlus.Features.CurrencyOverlay;
 
 public unsafe class CurrencyOverlay : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_CurrencyOverlay"),
-        Description = Strings("ModificationDescription_CurrencyOverlay"),
+        DisplayName = Strings.ModificationDisplay_CurrencyOverlay,
+        Description = Strings.ModificationDescription_CurrencyOverlay,
         Type = ModificationType.NewOverlay,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
@@ -39,22 +39,22 @@ public unsafe class CurrencyOverlay : GameModification {
         
         itemSearchAddon = new LuminaSearchAddon<Item> {
             InternalName = "LuminaItemSearch",
-            Title = Strings("CurrencyOverlay_ItemSearchTitle"),
+            Title = Strings.CurrencyOverlay_ItemSearchTitle,
             Size = new Vector2(350.0f, 500.0f),
 
             GetLabelFunc = item => item.Name.ToString(),
             GetSubLabelFunc = item => item.ItemSearchCategory.Value.Name.ToString(),
             GetIconIdFunc = item => item.Icon,
 
-            SortingOptions = [ Strings("SortOptionAlphabetical"), Strings("CurrencyOverlay_SortOptionId") ],
+            SortingOptions = [Strings.SortOptionAlphabetical, Strings.CurrencyOverlay_SortOptionId ],
             SearchOptions = Services.DataManager.GetCurrencyItems().ToList(),
         };
 
         configAddon = new ListConfigAddon<CurrencySetting, CurrencyOverlayConfigNode> {
             Size = new Vector2(700.0f, 500.0f),
             InternalName = "CurrencyOverlayConfig",
-            Title = Strings("CurrencyOverlay_ConfigTitle"),
-            SortOptions = [ Strings("SortOptionAlphabetical") ],
+            Title = Strings.CurrencyOverlay_ConfigTitle,
+            SortOptions = [Strings.SortOptionAlphabetical ],
 
             Options = config.Currencies,
 

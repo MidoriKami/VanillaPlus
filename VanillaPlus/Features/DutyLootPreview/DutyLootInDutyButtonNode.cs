@@ -27,7 +27,7 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
             TextureCoordinates = new Vector2(90.0f, 125.0f),
             TextureSize = new Vector2(32.0f, 32.0f),
             Size = new Vector2(20.0f, 20.0f),
-            TooltipString = Strings("DutyLoot_Tooltip_InDutyButton"),
+            TooltipString = Strings.DutyLoot_Tooltip_InDutyButton,
         };
         buttonNode.AttachNode(this);
 

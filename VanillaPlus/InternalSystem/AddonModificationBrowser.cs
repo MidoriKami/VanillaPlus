@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
@@ -35,7 +36,7 @@ public class AddonModificationBrowser : NativeAddon {
     
     private readonly AddonChangelogBrowser? changelogBrowser = new() {
         InternalName = "VPChangelog",
-        Title = Strings("ChangelogBrowserTitle"),
+        Title = Strings.ChangelogBrowserTitle,
         Size = new Vector2(450.0f, 400.0f),
     };
 
@@ -57,14 +58,14 @@ public class AddonModificationBrowser : NativeAddon {
 
         uint optionIndex = 0;
 
-        foreach (var category in System.ModificationManager.CategoryGroups) {
+        foreach (var category in PluginSystem.ModificationManager.CategoryGroups) {
             var newCategoryNode = new TreeListCategoryNode {
                 SeString = category.Key.Description,
                 OnToggle = isVisible => OnCategoryToggled(isVisible, category.Key),
                 VerticalPadding = 0.0f,
             };
 
-            foreach (var subCategory in System.ModificationManager.SubCategoryGroups[category.Key]) {
+            foreach (var subCategory in PluginSystem.ModificationManager.SubCategoryGroups[category.Key]) {
                 if (subCategory.Key is not null) {
                     var newHeaderNode = new TreeListHeaderNode {
                         Size = new Vector2(0.0f, 24.0f), 
@@ -111,7 +112,7 @@ public class AddonModificationBrowser : NativeAddon {
         
         searchBoxNode = new TextInputNode {
             OnInputReceived = OnSearchBoxInputReceived,
-            PlaceholderString = Strings("SearchPlaceholder"),
+            PlaceholderString = Strings.SearchPlaceholder,
             AutoSelectAll = true,
         };
         searchContainerNode.AddNode(searchBoxNode);
@@ -127,7 +128,7 @@ public class AddonModificationBrowser : NativeAddon {
             FontSize = 14,
             LineSpacing = 22,
             FontType = FontType.Axis,
-            String = Strings("SelectionPrompt"),
+            String = Strings.SelectionPrompt,
             TextColor = ColorHelper.GetColor(1),
         };
         descriptionTextNode.AttachNode(descriptionContainerNode);
@@ -143,7 +144,7 @@ public class AddonModificationBrowser : NativeAddon {
         descriptionImageTextNode.AttachNode(descriptionContainerNode);
 
         changelogButtonNode = new TextButtonNode {
-            SeString = Strings("ChangelogButtonLabel"),
+            SeString = Strings.ChangelogButtonLabel,
             OnClick = OnChangelogButtonClicked,
             IsVisible = false,
         };
@@ -264,8 +265,7 @@ public class AddonModificationBrowser : NativeAddon {
 
         changelogButtonNode.IsVisible = true;
         descriptionVersionTextNode.IsVisible = true;
-        descriptionVersionTextNode.String = Strings(
-            "VersionLabelFormat",
+        descriptionVersionTextNode.String = Strings.VersionLabelFormat.Format(
             selectedOption.Modification.Modification.ModificationInfo.Version);
     }
 
@@ -312,7 +312,7 @@ public class AddonModificationBrowser : NativeAddon {
         }
 
         descriptionTextNode.IsVisible = true;
-        descriptionTextNode.String = Strings("SelectionPrompt");
+        descriptionTextNode.String = Strings.SelectionPrompt;
 
         descriptionImageFrame.Scale = Vector2.One;
         
@@ -329,9 +329,7 @@ public class AddonModificationBrowser : NativeAddon {
             }
 
             changelogBrowser.Modification = selectedOption.Modification.Modification;
-            changelogBrowser.Title = Strings(
-                "ChangelogTitleFormat",
-                selectedOption.ModificationInfo.DisplayName);
+            changelogBrowser.Title = Strings.ChangelogTitleFormat.Format(selectedOption.ModificationInfo.DisplayName);
             changelogBrowser.Open();
         }
     }

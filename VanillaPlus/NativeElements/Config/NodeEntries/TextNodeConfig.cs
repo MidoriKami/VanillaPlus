@@ -17,7 +17,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
 
         colorPickerAddon = new ColorPickerAddon {
             InternalName = "ColorPicker",
-            Title = Strings("ColorPicker_WindowTitle"),
+            Title = Strings.ColorPicker_WindowTitle,
         };
     }
 
@@ -44,7 +44,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
         };
 
         var labelNode = new LabelTextNode {
-            String = Strings("TextNodeConfig_TextColor"),
+            String = Strings.TextNodeConfig_TextColor,
             Size = new Vector2(100.0f, 28.0f),
         };
         labelNode.AttachNode(container);
@@ -85,7 +85,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
         };
 
         var labelNode = new LabelTextNode {
-            String = Strings("TextNodeConfig_TextOutline"),
+            String = Strings.TextNodeConfig_TextOutline,
             Size = new Vector2(100.0f, 28.0f),
         };
         labelNode.AttachNode(container);
@@ -127,7 +127,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
         };
 
         var labelNode = new LabelTextNode {
-            String = Strings("TextNodeConfig_FontSize"),
+            String = Strings.TextNodeConfig_FontSize,
             Size = new Vector2(100.0f, 28.0f),
         };
         container.AddNode(labelNode);
@@ -153,7 +153,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
         };
         
         var labelNode = new LabelTextNode {
-            String = Strings("TextNodeConfig_Font"),
+            String = Strings.TextNodeConfig_Font,
             Size = new Vector2(100.0f, 28.0f),
         };
         container.AddNode(labelNode);
@@ -181,7 +181,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
         };
         
         var labelNode = new LabelTextNode {
-            String = Strings("TextNodeConfig_Alignment"),
+            String = Strings.TextNodeConfig_Alignment,
             Size = new Vector2(100.0f, 28.0f),
         };
         container.AddNode(labelNode);

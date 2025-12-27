@@ -17,8 +17,16 @@
     
     <ItemGroup>
         <ProjectReference Include="..\KamiToolKit\KamiToolKit.csproj"/>
+        <PackageReference Include="Aigamo.ResXGenerator" Version="4.3.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="LuminaSupplemental.Excel" Version="4.0.1" />
     </ItemGroup>
+
+    <PropertyGroup>
+        <ResXGenerator_NullForgivingOperators>true</ResXGenerator_NullForgivingOperators>
+    </PropertyGroup>
 
     <ItemGroup>
         <Content Include="Assets\**\*.png" CopyToOutputDirectory="Always"/>

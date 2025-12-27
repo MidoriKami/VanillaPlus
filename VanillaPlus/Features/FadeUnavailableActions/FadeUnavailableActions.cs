@@ -14,8 +14,8 @@ namespace VanillaPlus.Features.FadeUnavailableActions;
 
 public unsafe class FadeUnavailableActions : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_FadeUnavailableActions"),
-        Description = Strings("ModificationDescription_FadeUnavailableActions"),
+        DisplayName = Strings.ModificationDisplay_FadeUnavailableActions,
+        Description = Strings.ModificationDescription_FadeUnavailableActions,
         Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
         ChangeLog = [
@@ -41,18 +41,18 @@ public unsafe class FadeUnavailableActions : GameModification {
         configWindow = new ConfigAddon {
             Size = new Vector2(400.0f, 250.0f),
             InternalName = "FadeUnavailableConfig",
-            Title = Strings("FadeUnavailableActions_ConfigTitle"),
+            Title = Strings.FadeUnavailableActions_ConfigTitle,
             Config = config,
         };
 
-        configWindow.AddCategory(Strings("FadeUnavailableActions_CategoryStyleSettings"))
-            .AddIntSlider(Strings("FadeUnavailableActions_LabelFadePercentage"), 0, 90, nameof(config.FadePercentage))
-            .AddIntSlider(Strings("FadeUnavailableActions_LabelReddenPercentage"), 5, 100, nameof(config.ReddenPercentage));
+        configWindow.AddCategory(Strings.FadeUnavailableActions_CategoryStyleSettings)
+            .AddIntSlider(Strings.FadeUnavailableActions_LabelFadePercentage, 0, 90, nameof(config.FadePercentage))
+            .AddIntSlider(Strings.FadeUnavailableActions_LabelReddenPercentage, 5, 100, nameof(config.ReddenPercentage));
 
-        configWindow.AddCategory(Strings("FadeUnavailableActions_CategoryFeatureToggles"))
-            .AddCheckbox(Strings("FadeUnavailableActions_LabelApplyToFrame"), nameof(config.ApplyToFrame))
-            .AddCheckbox(Strings("FadeUnavailableActions_LabelApplyToSync"), nameof(config.ApplyToSyncActions))
-            .AddCheckbox(Strings("FadeUnavailableActions_LabelReddenOutOfRange"), nameof(config.ReddenOutOfRange));
+        configWindow.AddCategory(Strings.FadeUnavailableActions_CategoryFeatureToggles)
+            .AddCheckbox(Strings.FadeUnavailableActions_LabelApplyToFrame, nameof(config.ApplyToFrame))
+            .AddCheckbox(Strings.FadeUnavailableActions_LabelApplyToSync, nameof(config.ApplyToSyncActions))
+            .AddCheckbox(Strings.FadeUnavailableActions_LabelReddenOutOfRange, nameof(config.ReddenOutOfRange));
         
         OpenConfigAction = configWindow.Toggle;
 

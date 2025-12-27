@@ -24,8 +24,8 @@ public unsafe class GearsetInfo : IInfoNodeData {
         => null;
 
     public int Compare(IInfoNodeData other, string sortingMode) => sortingMode switch {
-        var s when s == Strings("SortOption_Alphabetical") => string.CompareOrdinal(GetLabel(), other.GetLabel()),
-        var s when s == Strings("SortOption_Id") => GetId()?.CompareTo(other.GetId()) ?? 0,
+        var s when s == Strings.SortOption_Alphabetical => string.CompareOrdinal(GetLabel(), other.GetLabel()),
+        var s when s == Strings.SortOption_Id => GetId()?.CompareTo(other.GetId()) ?? 0,
         _ => 0,
     };
 

@@ -36,7 +36,7 @@ public class CurrencySetting : IInfoNodeData {
 
     public int Compare(IInfoNodeData other, string sortingMode) {
         return sortingMode switch {
-            var s when s == Strings("SortOption_Alphabetical") => string.CompareOrdinal(GetLabel(), other.GetLabel()),
+            var s when s == Strings.SortOption_Alphabetical => string.CompareOrdinal(GetLabel(), other.GetLabel()),
             _ => 0,
         };
     }

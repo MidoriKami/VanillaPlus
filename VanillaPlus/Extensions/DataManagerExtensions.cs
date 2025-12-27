@@ -3,6 +3,7 @@ using System.Linq;
 using Dalamud.Plugin.Services;
 using Lumina.Excel.Sheets;
 using Lumina.Text.ReadOnly;
+using Action = Lumina.Excel.Sheets.Action;
 
 namespace VanillaPlus.Extensions;
 

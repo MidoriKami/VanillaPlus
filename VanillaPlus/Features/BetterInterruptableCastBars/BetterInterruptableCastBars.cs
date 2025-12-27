@@ -15,8 +15,8 @@ namespace VanillaPlus.Features.BetterInterruptableCastBars;
 
 public unsafe class BetterInterruptableCastBars : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_BetterInterruptableCastBars"),
-        Description = Strings("ModificationDescription_BetterInterruptableCastBars"),
+        DisplayName = Strings.ModificationDisplay_BetterInterruptableCastBars,
+        Description = Strings.ModificationDescription_BetterInterruptableCastBars,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

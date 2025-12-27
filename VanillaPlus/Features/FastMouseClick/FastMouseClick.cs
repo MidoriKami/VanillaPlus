@@ -5,8 +5,8 @@ namespace VanillaPlus.Features.FastMouseClick;
 
 public class FastMouseClick : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_FastMouseClick"),
-        Description = Strings("ModificationDescription_FastMouseClick"),
+        DisplayName = Strings.ModificationDisplay_FastMouseClick,
+        Description = Strings.ModificationDescription_FastMouseClick,
         Type = ModificationType.GameBehavior,
         Authors = ["Haselnussbomber"],
         ChangeLog = [

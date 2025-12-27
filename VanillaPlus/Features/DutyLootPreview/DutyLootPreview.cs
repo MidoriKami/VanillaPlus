@@ -5,8 +5,8 @@ namespace VanillaPlus.Features.DutyLootPreview;
 
 public class DutyLootPreview : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_DutyLootPreview"),
-        Description = Strings("ModificationDescription_DutyLootPreview"),
+        DisplayName = Strings.ModificationDisplay_DutyLootPreview,
+        Description = Strings.ModificationDescription_DutyLootPreview,
         Type = ModificationType.NewWindow,
         Authors = [ "GrittyFrog" ],
         ChangeLog = [
@@ -29,7 +29,7 @@ public class DutyLootPreview : GameModification {
         
         addonDutyLoot = new DutyLootPreviewAddon {
             InternalName = "DutyLootPreview",
-            Title = Strings("Title_DutyLootPreview"),
+            Title = Strings.Title_DutyLootPreview,
             Size = new Vector2(300.0f, 350.0f),
             Config = config,
         };

@@ -23,7 +23,7 @@ public class ModificationManager : IDisposable {
 
             loadedModifications.Add(newLoadedModification);
 
-            if (System.SystemConfig.EnabledModifications.Contains(gameMod.Name)) {
+            if (PluginSystem.SystemConfig.EnabledModifications.Contains(gameMod.Name)) {
                 TryEnableModification(newLoadedModification);
             }
         }
@@ -100,7 +100,7 @@ public class ModificationManager : IDisposable {
             }
         }
 
-        System.AddonModificationBrowser.UpdateDisabledState();
+        PluginSystem.AddonModificationBrowser.UpdateDisabledState();
     }
 
     public static void TryEnableModification(LoadedModification modification) {
@@ -126,8 +126,8 @@ public class ModificationManager : IDisposable {
             modification.Modification.OnEnable();
             modification.State = LoadedState.Enabled;
             Services.PluginLog.Info($"Successfully Enabled {modification.Name}");
-            System.SystemConfig.EnabledModifications.Add(modification.Name);
-            System.SystemConfig.Save();
+            PluginSystem.SystemConfig.EnabledModifications.Add(modification.Name);
+            PluginSystem.SystemConfig.Save();
         }
         catch (Exception e) {
             modification.State = LoadedState.Errored;
@@ -164,8 +164,8 @@ public class ModificationManager : IDisposable {
             Services.PluginLog.Debug($"Successfully Disabled {modification.Name}");
 
             if (removeFromList) {
-                System.SystemConfig.EnabledModifications.Remove(modification.Name);
-                System.SystemConfig.Save();
+                PluginSystem.SystemConfig.EnabledModifications.Remove(modification.Name);
+                PluginSystem.SystemConfig.Save();
             }
         }
     }

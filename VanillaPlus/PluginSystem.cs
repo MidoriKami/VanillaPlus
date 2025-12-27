@@ -1,10 +1,10 @@
-﻿using Dalamud.Interface.Windowing;
+using Dalamud.Interface.Windowing;
 using VanillaPlus.Classes;
 using VanillaPlus.InternalSystem;
 
 namespace VanillaPlus;
 
-public static class System {
+public static class PluginSystem {
     public static SystemConfiguration SystemConfig { get; set; } = null!;
     public static WindowSystem WindowSystem { get; set; } = null!;
     public static AddonModificationBrowser AddonModificationBrowser { get; set; } = null!;

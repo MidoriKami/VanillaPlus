@@ -158,15 +158,15 @@ public sealed unsafe partial class PerfectTails {
 
         // > 9 returns Error {-1,-1,-1} by the solver
         var values = Solve(GameState);
-        var lineChancesLabel = Strings("WondrousTailsProbabilities_LineChancesLabel");
-        var shuffleAverageLabel = Strings("WondrousTailsProbabilities_ShuffleAverageLabel");
+        var lineChancesLabel = Strings.WondrousTailsProbabilities_LineChancesLabel;
+        var shuffleAverageLabel = Strings.WondrousTailsProbabilities_ShuffleAverageLabel;
 
         double[]? samples = null;
         if (stickersPlaced is > 0 and <= 7)
             samples = GetSample(stickersPlaced);
 
         if (values == Error) {
-            var errorPlaceholder = Strings("WondrousTailsProbabilities_ErrorPlaceholder");
+            var errorPlaceholder = Strings.WondrousTailsProbabilities_ErrorPlaceholder;
             return new SeStringBuilder()
                 .AddText(lineChancesLabel)
                 .AddUiForeground(errorPlaceholder, 704)
