@@ -23,7 +23,7 @@ public unsafe class KeybindListener : IDisposable {
         if (!AddonConfig.KeybindEnabled) return;
         
         // Don't process keybinds if we are settings up a new keybind
-        if (System.WindowSystem.Windows.Any(window => window.WindowName.Contains("Keybind Modal") && window.IsOpen)) return;
+        if (PluginSystem.WindowSystem.Windows.Any(window => window.WindowName.Contains("Keybind Modal") && window.IsOpen)) return;
 
         // Don't process keybinds if any input text is active
         if (RaptureAtkModule.Instance()->IsTextInputActive()) return;

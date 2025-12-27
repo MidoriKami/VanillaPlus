@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Numerics;
-using Dalamud.Utility;
 using KamiToolKit.Premade.Addons;
 using Lumina.Excel.Sheets;
 
@@ -10,7 +9,7 @@ public static class TerritorySearchAddon {
     public static LuminaSearchAddon<TerritoryType> GetAddon() => new () {
         Size = new Vector2(350.0f, 600.0f),
         InternalName = "TerritorySearch",
-        Title = Strings("SearchAddon_TerritoryTitle"),
+        Title = Strings.SearchAddon_TerritoryTitle,
         SearchOptions = Services.DataManager.GetExcelSheet<TerritoryType>()
             .Where(territory => territory.LoadingImage.RowId is not 0)
             .Where(territory => !territory.PlaceName.Value.Name.ToString().IsNullOrEmpty())

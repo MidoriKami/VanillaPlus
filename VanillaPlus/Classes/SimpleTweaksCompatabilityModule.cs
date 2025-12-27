@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Dalamud.Utility;
 using Newtonsoft.Json.Linq;
 
 namespace VanillaPlus.Classes;
@@ -16,7 +15,7 @@ public class SimpleTweaksCompatibilityModule(string targetModuleName) : Compatib
     }
 
     public override string GetErrorMessage()
-        => Strings("CompatibilityModule_SimpleTweaksActive", targetModuleName);
+        => Strings.CompatibilityModule_SimpleTweaksActive.Format(targetModuleName);
 
     private static bool IsSimpleTweaksLoaded()
         => IsPluginLoaded("SimpleTweaksPlugin");

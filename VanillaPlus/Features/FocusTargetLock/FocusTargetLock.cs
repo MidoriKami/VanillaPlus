@@ -5,8 +5,8 @@ namespace VanillaPlus.Features.FocusTargetLock;
 
 public class FocusTargetLock : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_FocusTargetLock"),
-        Description = Strings("ModificationDescription_FocusTargetLock"),
+        DisplayName = Strings.ModificationDisplay_FocusTargetLock,
+        Description = Strings.ModificationDescription_FocusTargetLock,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

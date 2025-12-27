@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Numerics;
-using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Nodes;

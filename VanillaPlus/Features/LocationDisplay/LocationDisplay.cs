@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text;
 using Dalamud.Plugin.Services;
-using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Lumina.Excel.Sheets;
@@ -13,8 +12,8 @@ namespace VanillaPlus.Features.LocationDisplay;
 
 public unsafe class LocationDisplay : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_LocationDisplay"),
-        Description = Strings("ModificationDescription_LocationDisplay"),
+        DisplayName = Strings.ModificationDisplay_LocationDisplay,
+        Description = Strings.ModificationDescription_LocationDisplay,
         Authors = [ "MidoriKami" ],
         Type = ModificationType.UserInterface,
         ChangeLog = [
@@ -53,7 +52,7 @@ public unsafe class LocationDisplay : GameModification {
 
         configWindow = new LocationDisplayConfigAddon {
             InternalName = "LocationDisplayConfig",
-            Title = Strings("LocationDisplay_ConfigTitle"),
+            Title = Strings.LocationDisplay_ConfigTitle,
             Config = config,
         };
 
@@ -61,7 +60,7 @@ public unsafe class LocationDisplay : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
         
-        dtrBarEntry = Services.DtrBar.Get(Strings("LocationDisplay_DtrEntryName"));
+        dtrBarEntry = Services.DtrBar.Get(Strings.LocationDisplay_DtrEntryName);
         dtrBarEntry.OnClick = _ => configWindow.Toggle();
 
         locationChanged = true;
@@ -218,7 +217,7 @@ public unsafe class LocationDisplay : GameModification {
 
 		if (lastHousingWard != ward) {
 			lastHousingWard = ward;
-			currentWard = Strings("LocationDisplay_WardFormat", ward);
+			currentWard = Strings.LocationDisplay_WardFormat.Format(ward);
 			locationChanged = true;
 		}
 	}
@@ -256,21 +255,21 @@ public unsafe class LocationDisplay : GameModification {
 		var room = housingManager->GetCurrentRoom();
 		var division = housingManager->GetCurrentDivision();
 
-		strings.Add(Strings("LocationDisplay_WardFormat", ward));
-		if (division == 2 || plot is >= 30 or -127) strings.Add(Strings("LocationDisplay_SubdivisionLabel"));
+		strings.Add(Strings.LocationDisplay_WardFormat.Format(ward));
+		if (division == 2 || plot is >= 30 or -127) strings.Add(Strings.LocationDisplay_SubdivisionLabel);
 
 		switch (plot) {
 			case < -1:
 				var apartmentValue = room == 0
-					? Strings("LocationDisplay_ApartmentFormat", Strings("LocationDisplay_ApartmentLobby"))
-					: Strings("LocationDisplay_ApartmentFormat", room);
+					? Strings.LocationDisplay_ApartmentFormat.Format(Strings.LocationDisplay_ApartmentLobby)
+					: Strings.LocationDisplay_ApartmentFormat.Format(room);
 				strings.Add(apartmentValue);
 				break;
 
 			case > -1:
-				strings.Add(Strings("LocationDisplay_PlotFormat", plot + 1));
+				strings.Add(Strings.LocationDisplay_PlotFormat.Format(plot + 1));
 				if (room > 0) {
-					strings.Add(Strings("LocationDisplay_RoomFormat", room));
+					strings.Add(Strings.LocationDisplay_RoomFormat.Format(room));
 				}
 				break;
 		}

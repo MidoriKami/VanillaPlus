@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Dalamud.Utility;
 using Newtonsoft.Json.Linq;
 
 namespace VanillaPlus.Classes;

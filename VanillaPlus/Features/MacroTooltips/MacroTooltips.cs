@@ -12,8 +12,8 @@ namespace VanillaPlus.Features.MacroTooltips;
 /// </summary>
 public unsafe class MacroTooltips : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_MacroTooltips"),
-        Description = Strings("ModificationDescription_MacroTooltips"),
+        DisplayName = Strings.ModificationDisplay_MacroTooltips,
+        Description = Strings.ModificationDescription_MacroTooltips,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

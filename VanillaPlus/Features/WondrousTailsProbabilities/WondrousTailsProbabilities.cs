@@ -18,8 +18,8 @@ namespace VanillaPlus.Features.WondrousTailsProbabilities;
 
 public unsafe class WondrousTailsProbabilities : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_WondrousTailsProbabilities"),
-        Description = Strings("ModificationDescription_WondrousTailsProbabilities"),
+        DisplayName = Strings.ModificationDisplay_WondrousTailsProbabilities,
+        Description = Strings.ModificationDescription_WondrousTailsProbabilities,
         Authors = [ "MidoriKami" ],
         Type = ModificationType.UserInterface,
         ChangeLog = [

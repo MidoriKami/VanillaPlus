@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
-using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using KamiToolKit.Premade.Addons;
 using VanillaPlus.Features.GearsetRedirect;
@@ -11,9 +10,9 @@ public static unsafe class GearsetSearchAddon {
     public static SearchAddon<GearsetInfo> GetAddon() => new() {
         Size = new Vector2(275.0f, 600.0f),
         InternalName = "GearsetSearch",
-        Title = Strings("SearchAddon_GearsetTitle"),
+        Title = Strings.SearchAddon_GearsetTitle,
         SearchOptions = [],
-        SortingOptions = [ Strings("SortOption_Alphabetical"), Strings("SortOption_Id") ],
+        SortingOptions = [Strings.SortOption_Alphabetical, Strings.SortOption_Id ],
     };
 
     public static void UpdateGearsets(this SearchAddon<GearsetInfo> addon, List<int>? omissionIds = null)

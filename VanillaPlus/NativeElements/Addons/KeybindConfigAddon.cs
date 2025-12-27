@@ -37,7 +37,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         inputComboLabelNode = new CategoryTextNode {
             AlignmentType = AlignmentType.Left,
             Position = ContentStartPosition + new Vector2(0.0f, 10.0f),
-            String = Strings("KeybindConfig_InputPrompt"),
+            String = Strings.KeybindConfig_InputPrompt,
         };
         inputComboLabelNode.AttachNode(this);
 
@@ -52,14 +52,14 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             Size = new Vector2(ContentSize.X, 75.0f),
             FontSize = 24,
             AlignmentType = AlignmentType.Center,
-            String = Strings("KeybindConfig_CurrentPrompt"),
+            String = Strings.KeybindConfig_CurrentPrompt,
         };
         currentComboTextNode.AttachNode(this);
 
         conflictsLabelNode = new CategoryTextNode {
             AlignmentType = AlignmentType.Left,
             Position = new Vector2(ContentStartPosition.X, currentComboTextNode.Position.Y + currentComboTextNode.Height),
-            String = Strings("KeybindConfig_ConflictsLabel"),
+            String = Strings.KeybindConfig_ConflictsLabel,
         };
         conflictsLabelNode.AttachNode(this);
 
@@ -78,7 +78,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         conflictsScrollableAreaNode.AttachNode(this);
         
         conflictsScrollableAreaNode.ContentNode.AddNode(new CategoryTextNode {
-            String = Strings("KeybindConfig_NoConflicts"),
+            String = Strings.KeybindConfig_NoConflicts,
         });
         conflictsScrollableAreaNode.ContentHeight = conflictsScrollableAreaNode.ContentNode.Nodes.Sum(node => node.IsVisible ? node.Height : 0.0f);
 
@@ -91,7 +91,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         confirmButtonNode = new TextButtonNode {
             Position = ContentStartPosition + new Vector2(0.0f, ContentSize.Y - 26.0f),
             Size = new Vector2(100.0f, 24.0f),
-            String = Strings("Common_Confirm"),
+            String = Strings.Common_Confirm,
             OnClick = () => {
                 var newKeybind = new Keybind {
                     Key = combo.FirstOrNull(key => key.IsKey) ?? VirtualKey.NO_KEY,
@@ -106,12 +106,12 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         cancelButtonNode = new TextButtonNode {
             Position = ContentStartPosition + new Vector2(ContentSize.X - 100.0f, ContentSize.Y - 26.0f),
             Size = new Vector2(100.0f, 24.0f),
-            String = Strings("Common_Cancel"),
+            String = Strings.Common_Cancel,
             OnClick = Close,
         };
         cancelButtonNode.AttachNode(this);
 
-        System.KeyListener.OnKeyPressed += KeyPressed;
+        PluginSystem.KeyListener.OnKeyPressed += KeyPressed;
     }
 
     private void KeyPressed(VirtualKey pressedKey, bool isPressed) {
@@ -142,7 +142,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
 
         if (conflicts.Count == 0) {
             conflictsScrollableAreaNode.ContentNode.AddNode(new CategoryTextNode {
-                String = Strings("KeybindConfig_NoConflicts"),
+                String = Strings.KeybindConfig_NoConflicts,
             });
         }
         else {
@@ -159,7 +159,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
     }
 
     protected override void OnFinalize(AtkUnitBase* addon)
-        => System.KeyListener.OnKeyPressed -= KeyPressed;
+        => PluginSystem.KeyListener.OnKeyPressed -= KeyPressed;
 
     public required Action<Keybind> OnKeybindChanged { get; init; }
 }

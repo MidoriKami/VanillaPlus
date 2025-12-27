@@ -23,9 +23,9 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// The window that shows loot for a duty.
 /// </summary>
 public unsafe class DutyLootPreviewAddon : NativeAddon {
-    private static string NoItemsMessage => Strings("DutyLoot_NoItemsMessage");
-    private static string NoResultsMessage => Strings("DutyLoot_NoResultsMessage");
-    private static string LoadingMessage => Strings("DutyLoot_LoadingMessage");
+    private static string NoItemsMessage => Strings.DutyLoot_NoItemsMessage;
+    private static string NoResultsMessage => Strings.DutyLoot_NoResultsMessage;
+    private static string LoadingMessage => Strings.DutyLoot_LoadingMessage;
 
     private DutyLootFilterBarNode? filterBarNode;
     private HorizontalLineNode? separatorNode;

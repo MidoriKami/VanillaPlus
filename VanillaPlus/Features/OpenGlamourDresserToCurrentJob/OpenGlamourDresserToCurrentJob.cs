@@ -7,8 +7,8 @@ namespace VanillaPlus.Features.OpenGlamourDresserToCurrentJob;
 
 public class OpenGlamourDresserToCurrentJob : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_OpenGlamourDresserToCurrentJob"),
-        Description = Strings("ModificationDescription_OpenGlamourDresserToCurrentJob"),
+        DisplayName = Strings.ModificationDisplay_OpenGlamourDresserToCurrentJob,
+        Description = Strings.ModificationDescription_OpenGlamourDresserToCurrentJob,
         Type = ModificationType.GameBehavior,
         Authors = ["MidoriKami"],
         ChangeLog = [

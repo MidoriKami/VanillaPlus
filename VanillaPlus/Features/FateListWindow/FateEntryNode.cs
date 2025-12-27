@@ -110,10 +110,10 @@ public unsafe class FateEntryNode : SimpleComponentNode {
             timeRemainingNode.String = TimeSpan.FromSeconds(value.TimeRemaining).ToString(@"mm\:ss");
 
             if (Fate is not { Level: 1, MaxLevel: 255 }) {
-                levelNode.String = Strings("FateEntry_LevelRangeFormat", value.Level, value.MaxLevel);
+                levelNode.String = Strings.FateEntry_LevelRangeFormat.Format(value.Level, value.MaxLevel);
             }
             else {
-                levelNode.String = Strings("FateEntry_LevelUnknown");
+                levelNode.String = Strings.FateEntry_LevelUnknown;
             }
            
             progressTextNode.String = $"{value.Progress}%";

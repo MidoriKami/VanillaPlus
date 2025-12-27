@@ -45,7 +45,7 @@ public unsafe class DutyLootJournalUiController {
 
             Position = new Vector2(420.0f, 68.0f),
             Size = new Vector2(32.0f, 32.0f),
-            TextTooltip = Strings("DutyLoot_Tooltip_JournalButton"),
+            TextTooltip = Strings.DutyLoot_Tooltip_JournalButton,
             OnClick = () => OnButtonClicked?.Invoke(),
             IsVisible = ShouldShow,
         };

@@ -6,8 +6,8 @@ namespace VanillaPlus.Features.HideDeadEnemyNamePlates;
 
 public class HideDeadEnemyNamePlates : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_HideDeadEnemyNamePlates"),
-        Description = Strings("ModificationDescription_HideDeadEnemyNamePlates"),
+        DisplayName = Strings.ModificationDisplay_HideDeadEnemyNamePlates,
+        Description = Strings.ModificationDescription_HideDeadEnemyNamePlates,
         Type = ModificationType.GameBehavior,
         Authors = [ "nebel" ],
         ChangeLog = [

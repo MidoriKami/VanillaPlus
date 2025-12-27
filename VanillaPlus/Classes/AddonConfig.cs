@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Dalamud.Utility;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Classes;

@@ -9,8 +9,8 @@ namespace VanillaPlus.Features.FasterScroll;
 
 public unsafe class FasterScroll : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_FasterScroll"),
-        Description = Strings("ModificationDescription_FasterScroll"),
+        DisplayName = Strings.ModificationDisplay_FasterScroll,
+        Description = Strings.ModificationDescription_FasterScroll,
         Authors = ["MidoriKami"],
         Type = ModificationType.GameBehavior,
         ChangeLog = [
@@ -29,12 +29,12 @@ public unsafe class FasterScroll : GameModification {
         configWindow = new ConfigAddon {
             Size = new Vector2(400.0f, 125.0f),
             InternalName = "FasterScrollConfig",
-            Title = Strings("FasterScroll_ConfigTitle"),
+            Title = Strings.FasterScroll_ConfigTitle,
             Config = config,
         };
 
-        configWindow.AddCategory(Strings("Settings"))
-            .AddFloatSlider(Strings("FasterScroll_LabelSpeedMultiplier"), 0.5f, 4.0f, 2, 0.05f, nameof(config.SpeedMultiplier));
+        configWindow.AddCategory(Strings.Settings)
+            .AddFloatSlider(Strings.FasterScroll_LabelSpeedMultiplier, 0.5f, 4.0f, 2, 0.05f, nameof(config.SpeedMultiplier));
         
         OpenConfigAction = configWindow.Toggle;
 

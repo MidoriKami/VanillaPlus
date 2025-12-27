@@ -20,7 +20,26 @@
         <PackageReference Include="LuminaSupplemental.Excel" Version="4.0.1" />
     </ItemGroup>
 
+    <PropertyGroup>
+        <ResXGenerator_NullForgivingOperators>true</ResXGenerator_NullForgivingOperators>
+    </PropertyGroup>
+
     <ItemGroup>
         <Content Include="Assets\**\*.png" CopyToOutputDirectory="Always"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Strings.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Strings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Strings.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>

@@ -44,7 +44,7 @@ public sealed class GeneralSettingsNode : SimpleComponentNode {
         settingsListNode.Size = Size;
     }
 
-    private void AddCheckbox(string label, bool initialValue, global::System.Action<bool> onChanged)
+    private void AddCheckbox(string label, bool initialValue, System.Action<bool> onChanged)
         => settingsListNode.AddNode(new CheckboxNode {
             IsChecked = initialValue,
             OnClick = onChanged,
