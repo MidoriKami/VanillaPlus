@@ -142,6 +142,15 @@
 	<data name="CurrencyOverlay_SortOptionId" xml:space="preserve">
 		<value>Id</value>
 	</data>
+	<data name="FadeStrategyBoard_ConfigTitle" xml:space="preserve">
+		<value>Fade Strategy Board Config</value>
+	</data>
+	<data name="FadeStrategyBoard_CategoryStyleSettings" xml:space="preserve">
+		<value>Style Settings</value>
+	</data>
+	<data name="FadeStrategyBoard_LabelFadePercentage" xml:space="preserve">
+		<value>Fade Percentage</value>
+	</data>
 	<data name="WindowBackground_ConfigTitle" xml:space="preserve">
 		<value>Window Backgrounds Config</value>
 	</data>
@@ -220,6 +229,12 @@
 	<data name="ModificationDescription_DisableTitleScreenMovie" xml:space="preserve">
 		<value>Prevents the title screen from playing the introduction movie.</value>
 	</data>
+	<data name="ModificationDescription_FadeStrategyBoard" xml:space="preserve">
+		<value>Fades the strategy board button.</value>
+	</data>
+	<data name="ModificationDescription_HideDeadEnemyNamePlates" xml:space="preserve">
+		<value>Hides the nameplates of enemies that are already dead.</value>
+	</data>
 	<data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
 		<value>Indicates which Mini Cactpot spots you should reveal next.</value>
 	</data>
@@ -228,6 +243,12 @@
 	</data>
 	<data name="ModificationDisplay_DisableTitleScreenMovie" xml:space="preserve">
 		<value>Disable Title Screen Movie</value>
+	</data>
+	<data name="ModificationDisplay_FadeStrategyBoard" xml:space="preserve">
+		<value>Fade Strategy Board</value>
+	</data>
+	<data name="ModificationDisplay_HideDeadEnemyNamePlates" xml:space="preserve">
+		<value>Hide Dead Enemy Nameplates</value>
 	</data>
 	<data name="ModificationDisplay_MiniCactpotHelper" xml:space="preserve">
 		<value>Mini Cactpot Helper</value>

@@ -142,6 +142,15 @@
 	<data name="CurrencyOverlay_SortOptionId" xml:space="preserve">
 		<value>ID</value>
 	</data>
+	<data name="FadeStrategyBoard_ConfigTitle" xml:space="preserve">
+		<value>Configuration du tableau de stratégie estompé</value>
+	</data>
+	<data name="FadeStrategyBoard_CategoryStyleSettings" xml:space="preserve">
+		<value>Paramètres de style</value>
+	</data>
+	<data name="FadeStrategyBoard_LabelFadePercentage" xml:space="preserve">
+		<value>Taux d'estompage</value>
+	</data>
 	<data name="WindowBackground_ConfigTitle" xml:space="preserve">
 		<value>Configuration de Fond de Fenêtre</value>
 	</data>
@@ -220,6 +229,12 @@
 	<data name="ModificationDescription_DisableTitleScreenMovie" xml:space="preserve">
 		<value>Empêche la lecture de la cinématique d'introduction sur l'écran titre.</value>
 	</data>
+	<data name="ModificationDescription_FadeStrategyBoard" xml:space="preserve">
+		<value>Estompe le bouton du tableau de stratégie.</value>
+	</data>
+	<data name="ModificationDescription_HideDeadEnemyNamePlates" xml:space="preserve">
+		<value>Masque les plaques signalétiques des ennemis déjà vaincus.</value>
+	</data>
 	<data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
 		<value>Indique les cases du Mini Cactpot que vous devriez révéler ensuite.</value>
 	</data>
@@ -228,6 +243,12 @@
 	</data>
 	<data name="ModificationDisplay_DisableTitleScreenMovie" xml:space="preserve">
 		<value>Désactiver la Vidéo de l'Écran Titre</value>
+	</data>
+	<data name="ModificationDisplay_FadeStrategyBoard" xml:space="preserve">
+		<value>Estomper le tableau de stratégie</value>
+	</data>
+	<data name="ModificationDisplay_HideDeadEnemyNamePlates" xml:space="preserve">
+		<value>Masquer les plaques des ennemis vaincus</value>
 	</data>
 	<data name="ModificationDisplay_MiniCactpotHelper" xml:space="preserve">
 		<value>Aide au Mini Cactpot</value>

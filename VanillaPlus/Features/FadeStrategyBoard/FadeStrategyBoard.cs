@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.FadeStrategyBoard;
 
 public unsafe class FadeStrategyBoard : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Fade Strategy Board",
-        Description = "Fades the strategy board button.",
+        DisplayName = Strings("ModificationDisplay_FadeStrategyBoard"),
+        Description = Strings("ModificationDescription_FadeStrategyBoard"),
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
@@ -29,12 +29,12 @@ public unsafe class FadeStrategyBoard : GameModification {
         configWindow = new ConfigAddon {
             Size = new Vector2(400.0f, 125.0f),
             InternalName = "FadeStrategyBoardConfig",
-            Title = "Fade Strategy Board Config",
+            Title = Strings("FadeStrategyBoard_ConfigTitle"),
             Config = config,
         };
 
-        configWindow.AddCategory("Style Settings")
-            .AddFloatSlider("Fade Percentage", 0.0f, 1.0f, 2, 0.05f, nameof(config.FadePercentage));
+        configWindow.AddCategory(Strings("FadeStrategyBoard_CategoryStyleSettings"))
+            .AddFloatSlider(Strings("FadeStrategyBoard_LabelFadePercentage"), 0.0f, 1.0f, 2, 0.05f, nameof(config.FadePercentage));
 
         OpenConfigAction = configWindow.Toggle;
         

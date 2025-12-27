@@ -142,6 +142,15 @@
 	<data name="CurrencyOverlay_SortOptionId" xml:space="preserve">
 		<value>按ID</value>
 	</data>
+	<data name="FadeStrategyBoard_ConfigTitle" xml:space="preserve">
+		<value>战术板淡化配置</value>
+	</data>
+	<data name="FadeStrategyBoard_CategoryStyleSettings" xml:space="preserve">
+		<value>样式设置</value>
+	</data>
+	<data name="FadeStrategyBoard_LabelFadePercentage" xml:space="preserve">
+		<value>淡化比例</value>
+	</data>
 	<data name="WindowBackground_ConfigTitle" xml:space="preserve">
 		<value>窗口背景配置</value>
 	</data>
@@ -220,6 +229,12 @@
 	<data name="ModificationDescription_DisableTitleScreenMovie" xml:space="preserve">
 		<value>阻止标题界面闲置一段时间后播放PV动画。</value>
 	</data>
+	<data name="ModificationDescription_FadeStrategyBoard" xml:space="preserve">
+		<value>淡化战术板按钮。</value>
+	</data>
+	<data name="ModificationDescription_HideDeadEnemyNamePlates" xml:space="preserve">
+		<value>隐藏所有已死亡敌人的名牌。</value>
+	</data>
 	<data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
 		<value>提示下一格仙人微彩应揭示的位置。</value>
 	</data>
@@ -228,6 +243,12 @@
 	</data>
 	<data name="ModificationDisplay_DisableTitleScreenMovie" xml:space="preserve">
 		<value>禁用标题界面播片</value>
+	</data>
+	<data name="ModificationDisplay_FadeStrategyBoard" xml:space="preserve">
+		<value>淡化战术板</value>
+	</data>
+	<data name="ModificationDisplay_HideDeadEnemyNamePlates" xml:space="preserve">
+		<value>隐藏死亡敌人名牌</value>
 	</data>
 	<data name="ModificationDisplay_MiniCactpotHelper" xml:space="preserve">
 		<value>仙人微彩助手</value>
