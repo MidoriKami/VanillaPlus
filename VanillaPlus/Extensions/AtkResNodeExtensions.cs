@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace VanillaPlus.Extensions;
@@ -23,18 +22,6 @@ public static unsafe class AtkResNodeExtensions {
             }
         }
 
-        public void ShowItemTooltip(uint itemId) {
-            fixed (AtkResNode* nodePointer = &node) {
-                AtkStage.Instance()->ShowItemTooltip(nodePointer, itemId);
-            }
-        }
-        
-        public void ShowInventoryItemTooltip(InventoryType container, short slot) {
-            fixed (AtkResNode* nodePointer = &node) {
-                AtkStage.Instance()->ShowInventoryItemTooltip(nodePointer, container, slot);
-            }
-        }
-        
         private bool GetIsActuallyVisible() {
             if (!node.IsVisible()) return false;
 

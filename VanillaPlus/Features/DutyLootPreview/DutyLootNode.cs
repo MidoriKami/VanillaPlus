@@ -69,8 +69,7 @@ public unsafe class DutyLootNode : SimpleComponentNode {
             IsHovered = true;
 
             if (Item is null) return;
-            AtkResNode* node = CollisionNode;
-            node->ShowItemTooltip(Item.ItemId);
+            CollisionNode.ItemTooltip = Item.ItemId;
         });
         
         CollisionNode.AddEvent(AtkEventType.MouseOut, () => {

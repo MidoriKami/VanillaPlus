@@ -1,12 +1,13 @@
 ﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit;
 using KamiToolKit.Nodes;
 using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.ListInventory;
 
 public unsafe class InventoryItemNode : SimpleComponentNode {
-    
+
     private readonly NineGridNode hoveredBackgroundNode;
 
     private readonly IconWithCountNode iconNode;
@@ -35,7 +36,7 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
             TextFlags = TextFlags.Ellipsis,
         };
         itemNameTextNode.AttachNode(this);
-        
+
         levelTextNode = new TextNode {
             AlignmentType = AlignmentType.Left,
         };
@@ -45,21 +46,16 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
             AlignmentType = AlignmentType.Left,
         };
         itemLevelTextNode.AttachNode(this);
-        
+
         CollisionNode.AddEvent(AtkEventType.MouseOver, () => {
             IsHovered = true;
-
-            if (Item is null) return;
-
-            CollisionNode.ShowInventoryItemTooltip(Item.Item.Container, Item.Item.Slot);
         });
-        
+
         CollisionNode.AddEvent(AtkEventType.MouseOut, () => {
             IsHovered = false;
-            CollisionNode.HideTooltip();
         });
     }
-    
+
     public bool IsHovered {
         get => hoveredBackgroundNode.IsVisible;
         private set => hoveredBackgroundNode.IsVisible = value;
@@ -79,23 +75,24 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
             iconNode.IconId = item->IconId;
             itemNameTextNode.SeString = item->Name;
             iconNode.Count = value.ItemCount;
+            CollisionNode.InventoryItemTooltip = new InventoryItemTooltip(item->Container, item->Slot);
 
             if (value.Level > 1) {
-                levelTextNode.String = $"Lv. {value.Level, 3}";
+                levelTextNode.String = $"Lv. {value.Level,3}";
             }
             else {
                 levelTextNode.String = string.Empty;
             }
-            
+
             if (value.ItemLevel > 1) {
-                itemLevelTextNode.String = $"iLvl. {value.ItemLevel, 3}";
+                itemLevelTextNode.String = $"iLvl. {value.ItemLevel,3}";
             }
             else {
                 itemLevelTextNode.String = string.Empty;
             }
         }
     }
-    
+
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
 
@@ -104,7 +101,7 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
 
         itemLevelTextNode.Size = new Vector2(64.0f, Height);
         itemLevelTextNode.Position = new Vector2(Width - itemLevelTextNode.Width, 0.0f);
-        
+
         levelTextNode.Size = new Vector2(64.0f, Height);
         levelTextNode.Position = new Vector2(Width - levelTextNode.Width - itemLevelTextNode.Width, 0.0f);
 

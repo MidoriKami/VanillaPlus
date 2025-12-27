@@ -27,6 +27,7 @@ public class HideDeadEnemyNamePlates : GameModification {
         foreach (var handler in handlers) {
             if (handler is { NamePlateKind: NamePlateKind.BattleNpcEnemy, GameObject.IsDead: true }) {
                 handler.VisibilityFlags = 0;
+                handler.MarkerIconId = 0;
             }
         }
     }
