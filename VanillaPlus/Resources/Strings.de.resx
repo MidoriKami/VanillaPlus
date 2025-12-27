@@ -145,6 +145,15 @@
 	<data name="CurrencyOverlay_SortOptionId" xml:space="preserve">
 		<value>Id</value>
 	</data>
+	<data name="FadeStrategyBoard_ConfigTitle" xml:space="preserve">
+		<value>Strategietafel-Verblassung Konfiguration</value>
+	</data>
+	<data name="FadeStrategyBoard_CategoryStyleSettings" xml:space="preserve">
+		<value>Stileinstellungen</value>
+	</data>
+	<data name="FadeStrategyBoard_LabelFadePercentage" xml:space="preserve">
+		<value>Verblassungsprozentsatz</value>
+	</data>
 	<data name="WindowBackground_ConfigTitle" xml:space="preserve">
 		<value>Fensterhintergründe konfigurieren</value>
 	</data>
@@ -205,11 +214,29 @@
 	<data name="ModificationBrowserTitle" xml:space="preserve">
 		<value>Vanilla Plus Änderungsbrowser</value>
 	</data>
+	<data name="ModificationDescription_DisableTitleScreenMovie" xml:space="preserve">
+		<value>Verhindert, dass auf dem Titelbildschirm der Einführungsvideo abgespielt wird.</value>
+	</data>
+	<data name="ModificationDescription_FadeStrategyBoard" xml:space="preserve">
+		<value>Blendet die Strategietafel-Schaltfläche aus.</value>
+	</data>
+	<data name="ModificationDescription_HideDeadEnemyNamePlates" xml:space="preserve">
+		<value>Blendet Namensschilder von bereits besiegten Gegnern aus.</value>
+	</data>
 	<data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
 		<value>Zeigt an, welche Mini-Cactpot-Spots du als nächstes aufdecken solltest.</value>
 	</data>
 	<data name="ModificationDescription_PartyFinderPresets" xml:space="preserve">
 		<value>Ermöglicht es dir, Vorlagen für das Gruppensuche Rekrutierungsfenster zu speichern und zu verwenden.</value>
+	</data>
+	<data name="ModificationDisplay_DisableTitleScreenMovie" xml:space="preserve">
+		<value>Titelbildschirm-Video deaktivieren</value>
+	</data>
+	<data name="ModificationDisplay_FadeStrategyBoard" xml:space="preserve">
+		<value>Strategietafel ausblenden</value>
+	</data>
+	<data name="ModificationDisplay_HideDeadEnemyNamePlates" xml:space="preserve">
+		<value>Tote Gegner-Namensschilder verbergen</value>
 	</data>
 	<data name="ModificationDisplay_MiniCactpotHelper" xml:space="preserve">
 		<value>Mini-Cactpot Helfer</value>

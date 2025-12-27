@@ -142,6 +142,15 @@
 	<data name="CurrencyOverlay_SortOptionId" xml:space="preserve">
 		<value>ID順</value>
 	</data>
+	<data name="FadeStrategyBoard_ConfigTitle" xml:space="preserve">
+		<value>ストラテジーボードフェード設定</value>
+	</data>
+	<data name="FadeStrategyBoard_CategoryStyleSettings" xml:space="preserve">
+		<value>スタイル設定</value>
+	</data>
+	<data name="FadeStrategyBoard_LabelFadePercentage" xml:space="preserve">
+		<value>フェード割合</value>
+	</data>
 	<data name="WindowBackground_ConfigTitle" xml:space="preserve">
 		<value>ウィンドウ背景設定</value>
 	</data>
@@ -220,6 +229,12 @@
 	<data name="ModificationDescription_DisableTitleScreenMovie" xml:space="preserve">
 		<value>タイトル画面で導入ムービーが再生されないようにします。</value>
 	</data>
+	<data name="ModificationDescription_FadeStrategyBoard" xml:space="preserve">
+		<value>ストラテジーボードボタンをフェードさせます。</value>
+	</data>
+	<data name="ModificationDescription_HideDeadEnemyNamePlates" xml:space="preserve">
+		<value>戦闘不能になった敵のネームプレートを非表示にします。</value>
+	</data>
 	<data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
 		<value>ミニ・くじテンダーで次に開くべきマスを表示します。</value>
 	</data>
@@ -228,6 +243,12 @@
 	</data>
 	<data name="ModificationDisplay_DisableTitleScreenMovie" xml:space="preserve">
 		<value>タイトル画面ムービー無効化</value>
+	</data>
+	<data name="ModificationDisplay_FadeStrategyBoard" xml:space="preserve">
+		<value>ストラテジーボードフェード</value>
+	</data>
+	<data name="ModificationDisplay_HideDeadEnemyNamePlates" xml:space="preserve">
+		<value>戦闘不能敵のネームプレート非表示</value>
 	</data>
 	<data name="ModificationDisplay_MiniCactpotHelper" xml:space="preserve">
 		<value>ミニ・くじテンダー支援</value>
