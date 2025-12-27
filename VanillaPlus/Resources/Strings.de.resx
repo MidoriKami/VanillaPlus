@@ -1126,4 +1126,7 @@ This game modification fixes it by always triggering the normal mouse click in a
     <data name="ModificationType_NewWindow" xml:space="preserve">
 		<value>Custom Native Windows</value>
 	</data>
+    <data name="ModificationType_UserInterface" xml:space="preserve">
+		<value>UI Modification</value>
+	</data>
 </root>
