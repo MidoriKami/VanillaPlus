@@ -10,8 +10,8 @@ namespace VanillaPlus.Features.ResetInventoryTab;
 
 public unsafe class ResetInventoryTab : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_ResetInventoryTab"),
-        Description = Strings("ModificationDescription_ResetInventoryTab"),
+        DisplayName = Strings.ModificationDisplay_ResetInventoryTab,
+        Description = Strings.ModificationDescription_ResetInventoryTab,
         Type = ModificationType.GameBehavior,
         Authors = ["Haselnussbomber"],
         ChangeLog = [

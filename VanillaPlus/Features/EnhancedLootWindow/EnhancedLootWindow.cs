@@ -17,8 +17,8 @@ namespace VanillaPlus.Features.EnhancedLootWindow;
 
 public unsafe class EnhancedLootWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_EnhancedLootWindow"),
-        Description = Strings("ModificationDescription_EnhancedLootWindow"),
+        DisplayName = Strings.ModificationDisplay_EnhancedLootWindow,
+        Description = Strings.ModificationDescription_EnhancedLootWindow,
         Type = ModificationType.UserInterface,
         Authors = ["MidoriKami"],
         ChangeLog = [
@@ -41,13 +41,13 @@ public unsafe class EnhancedLootWindow : GameModification {
 
         configWindow = new ConfigAddon {
             InternalName = "EnhancedLootWindowConfig",
-            Title = Strings("EnhancedLootWindow_ConfigTitle"),
+            Title = Strings.EnhancedLootWindow_ConfigTitle,
             Config = config,
         };
 
-        configWindow.AddCategory(Strings("Settings"))
-            .AddCheckbox(Strings("EnhancedLootWindow_LabelMarkUnobtainable"), nameof(config.MarkUnobtainableItems))
-            .AddCheckbox(Strings("EnhancedLootWindow_LabelMarkAlreadyObtained"), nameof(config.MarkAlreadyObtainedItems));
+        configWindow.AddCategory(Strings.Settings)
+            .AddCheckbox(Strings.EnhancedLootWindow_LabelMarkUnobtainable, nameof(config.MarkUnobtainableItems))
+            .AddCheckbox(Strings.EnhancedLootWindow_LabelMarkAlreadyObtained, nameof(config.MarkAlreadyObtainedItems));
 
         OpenConfigAction = configWindow.Toggle;
 

@@ -5,8 +5,8 @@ namespace VanillaPlus.Features.DutyTimer;
 
 public class DutyTimer : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_DutyTimer"),
-        Description = Strings("ModificationDescription_DutyTimer"),
+        DisplayName = Strings.ModificationDescription_DutyTimer, 
+        Description = Strings.ModificationDescription_DutyTimer,
         Authors = [ "MidoriKami" ],
         Type = ModificationType.GameBehavior,
         ChangeLog = [
@@ -35,7 +35,7 @@ public class DutyTimer : GameModification {
     private void OnDutyCompleted(object? sender, ushort e) {
         var duration = DateTime.UtcNow - startTimestamp;
         var formattedDuration = duration.ToString(@"hh\:mm\:ss\.ffff");
-        Services.ChatGui.Print(Strings("DutyTimer_CompletedMessage", formattedDuration));
+        Services.ChatGui.Print(Strings.DutyTimer_CompletedMessage.Format(formattedDuration));
     }
 
     private void OnTerritoryChanged(ushort obj)

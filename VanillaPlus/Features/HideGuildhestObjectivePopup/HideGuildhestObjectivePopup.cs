@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.HideGuildhestObjectivePopup;
 
 public class HideGuildhestObjectivePopup : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_HideGuildhestObjectivePopup"),
-        Description = Strings("ModificationDescription_HideGuildhestObjectivePopup"),
+        DisplayName = Strings.ModificationDisplay_HideGuildhestObjectivePopup,
+        Description = Strings.ModificationDescription_HideGuildhestObjectivePopup,
         Authors = ["MidoriKami"],
         Type = ModificationType.GameBehavior,
         ChangeLog = [

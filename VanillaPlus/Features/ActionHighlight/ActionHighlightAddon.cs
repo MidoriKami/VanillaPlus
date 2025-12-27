@@ -50,7 +50,7 @@ public class ActionHighlightAddon : NativeAddon {
             FontSize = 14,
             LineSpacing = 22,
             FontType = FontType.Axis,
-            String = Strings("SelectionPrompt"),
+            String = Strings.SelectionPrompt,
             TextColor = ColorHelper.GetColor(1),
         };
         nothingSelectedTextNode.AttachNode(this);

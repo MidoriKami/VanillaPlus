@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.BetterCursor;
 
 public class BetterCursor : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_BetterCursor"),
-        Description = Strings("ModificationDescription_BetterCursor"),
+        DisplayName = Strings.ModificationDisplay_BetterCursor,
+        Description = Strings.ModificationDescription_BetterCursor,
         Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
         ChangeLog = [
@@ -31,24 +31,24 @@ public class BetterCursor : GameModification {
 
         configWindow = new ConfigAddon {
             InternalName = "BetterCursorConfig",
-            Title = Strings("BetterCursor_ConfigTitle"),
+            Title = Strings.BetterCursor_ConfigTitle,
             Config = config,
         };
 
-        configWindow.AddCategory(Strings("BetterCursor_CategoryStyle"))
-            .AddColorEdit(Strings("Color"), nameof(config.Color), KnownColor.White.Vector())
-            .AddInputFloat(Strings("BetterCursor_LabelSize"), 16, 16..512, nameof(config.Size));
+        configWindow.AddCategory(Strings.BetterCursor_CategoryStyle)
+            .AddColorEdit(Strings.Color, nameof(config.Color), KnownColor.White.Vector())
+            .AddInputFloat(Strings.BetterCursor_LabelSize, 16, 16..512, nameof(config.Size));
 
-        configWindow.AddCategory(Strings("BetterCursor_CategoryFunctions"))
-            .AddCheckbox(Strings("BetterCursor_EnableAnimation"), nameof(config.Animations))
-            .AddCheckbox(Strings("BetterCursor_HideOnCameraMove"), nameof(config.HideOnCameraMove));
+        configWindow.AddCategory(Strings.BetterCursor_CategoryFunctions)
+            .AddCheckbox(Strings.BetterCursor_EnableAnimation, nameof(config.Animations))
+            .AddCheckbox(Strings.BetterCursor_HideOnCameraMove, nameof(config.HideOnCameraMove));
         
-        configWindow.AddCategory(Strings("Visibility"))
-            .AddCheckbox(Strings("BetterCursor_OnlyShowInCombat"), nameof(config.OnlyShowInCombat))
-            .AddCheckbox(Strings("BetterCursor_OnlyShowInDuties"), nameof(config.OnlyShowInDuties));
+        configWindow.AddCategory(Strings.Visibility)
+            .AddCheckbox(Strings.BetterCursor_OnlyShowInCombat, nameof(config.OnlyShowInCombat))
+            .AddCheckbox(Strings.BetterCursor_OnlyShowInDuties, nameof(config.OnlyShowInDuties));
 
-        configWindow.AddCategory(Strings("BetterCursor_CategoryIconSelection"))
-            .AddSelectIcon(Strings("Icon"), nameof(config.IconId));
+        configWindow.AddCategory(Strings.BetterCursor_CategoryIconSelection)
+            .AddSelectIcon(Strings.Icon, nameof(config.IconId));
 
         OpenConfigAction = configWindow.Toggle;
 

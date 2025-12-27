@@ -10,8 +10,8 @@ namespace VanillaPlus.Features.ClearFlag;
 
 public unsafe class ClearFlag : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_ClearFlag"),
-        Description = Strings("ModificationDescription_ClearFlag"),
+        DisplayName = Strings.ModificationDisplay_ClearFlag,
+        Description = Strings.ModificationDescription_ClearFlag,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

@@ -4,8 +4,8 @@ namespace VanillaPlus.Features.RetainerSearchBar;
 
 public class RetainerSearchBar : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_RetainerSearchBar"),
-        Description = Strings("ModificationDescription_RetainerSearchBar"),
+        DisplayName = Strings.ModificationDisplay_RetainerSearchBar,
+        Description = Strings.ModificationDescription_RetainerSearchBar,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Inventory,
         Authors = [ "MidoriKami" ],

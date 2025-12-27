@@ -11,8 +11,8 @@ namespace VanillaPlus.Features.HideMpBars;
 
 public unsafe class HideMpBars : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_HideMpBars"),
-        Description = Strings("ModificationDescription_HideMpBars"),
+        DisplayName = Strings.ModificationDisplay_HideMpBars,
+        Description = Strings.ModificationDescription_HideMpBars,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

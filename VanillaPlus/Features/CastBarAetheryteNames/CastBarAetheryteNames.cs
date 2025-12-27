@@ -11,8 +11,8 @@ namespace VanillaPlus.Features.CastBarAetheryteNames;
 
 public unsafe class CastBarAetheryteNames : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_CastBarAetheryteNames"),
-        Description = Strings("ModificationDescription_CastBarAetheryteNames"),
+        DisplayName = Strings.ModificationDisplay_CastBarAetheryteNames,
+        Description = Strings.ModificationDescription_CastBarAetheryteNames,
         Authors = ["Haselnussbomber"],
         Type = ModificationType.GameBehavior,
         ChangeLog = [

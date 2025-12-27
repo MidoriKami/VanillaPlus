@@ -13,7 +13,7 @@ public class ColorConfig : BaseConfigEntry {
 
     private readonly ColorPickerAddon colorPickerInstance = new() {
         InternalName = "ColorPicker",
-        Title = Strings("ColorPicker_WindowTitle"),
+        Title = Strings.ColorPicker_WindowTitle,
     };
 
     public override NodeBase BuildNode() {

@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.DisableTitleScreenMovie;
 
 public unsafe class SampleGameModification : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_DisableTitleScreenMovie"),
-        Description = Strings("ModificationDescription_DisableTitleScreenMovie"),
+        DisplayName = Strings.ModificationDisplay_DisableTitleScreenMovie,
+        Description = Strings.ModificationDescription_DisableTitleScreenMovie,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

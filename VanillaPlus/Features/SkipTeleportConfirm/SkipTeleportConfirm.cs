@@ -9,8 +9,8 @@ namespace VanillaPlus.Features.SkipTeleportConfirm;
 
 public unsafe class SkipTeleportConfirm : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_SkipTeleportConfirm"),
-        Description = Strings("ModificationDescription_SkipTeleportConfirm"),
+        DisplayName = Strings.ModificationDisplay_SkipTeleportConfirm,
+        Description = Strings.ModificationDescription_SkipTeleportConfirm,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

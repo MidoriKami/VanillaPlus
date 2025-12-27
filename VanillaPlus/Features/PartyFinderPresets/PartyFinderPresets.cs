@@ -14,8 +14,8 @@ namespace VanillaPlus.Features.PartyFinderPresets;
 
 public unsafe class PartyFinderPresets : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_PartyFinderPresets"),
-        Description = Strings("ModificationDescription_PartyFinderPresets"),
+        DisplayName = Strings.ModificationDisplay_PartyFinderPresets,
+        Description = Strings.ModificationDescription_PartyFinderPresets,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
@@ -40,7 +40,7 @@ public unsafe class PartyFinderPresets : GameModification {
         presetEditorAddon = new ListConfigAddon<PresetInfo, PartyFinderPresetConfigNode> {
             Size = new Vector2(600.0f, 400.0f),
             InternalName = "PresetConfigManager",
-            Title = Strings("Title_PresetConfigManager"),
+            Title = Strings.Title_PresetConfigManager,
             Options = GetPresetInfos(),
             OnConfigChanged = _ => {
                 UpdateDropDownOptions();
@@ -53,7 +53,7 @@ public unsafe class PartyFinderPresets : GameModification {
 
         savePresetWindow = new RenameAddon {
             InternalName = "PartyFinderPresetRename",
-            Title = Strings("Title_PartyFinderPreset"),
+            Title = Strings.Title_PartyFinderPreset,
             IsInputValid = PresetManager.IsValidFileName,
             OnRenameComplete = newOption => {
                 PresetManager.SavePreset(newOption);
@@ -71,8 +71,8 @@ public unsafe class PartyFinderPresets : GameModification {
             savePresetButton = new TextButtonNode {
                 Position = new Vector2(406.0f, 605.0f),
                 Size = new Vector2(160.0f, 28.0f),
-                String = Strings("Button_SavePreset"),
-                Tooltip = Strings("Tooltip_SavePreset"),
+                String = Strings.Button_SavePreset,
+                Tooltip = Strings.Tooltip_SavePreset,
                 OnClick = savePresetWindow.Open,
             };
             savePresetButton.AttachNode(addon);
@@ -151,8 +151,8 @@ public unsafe class PartyFinderPresets : GameModification {
             presetDropDown.IsEnabled = anyPresets;
 
             presetDropDown.Tooltip = anyPresets
-                ? Strings("Tooltip_SelectPreset")
-                : Strings("Tooltip_NoPresets");
+                ? Strings.Tooltip_SelectPreset
+                : Strings.Tooltip_NoPresets;
         }
     }
 

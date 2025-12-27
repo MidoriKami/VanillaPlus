@@ -35,7 +35,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
             Size = new Vector2(ContentSize.X, 150.0f),
             LineSpacing = 16,
             TextFlags = TextFlags.MultiLine | TextFlags.WordWrap,
-            String = Strings("Label_LocationDisplayInstructions"),
+            String = Strings.Label_LocationDisplayInstructions,
         };
         instructionTextNode.AttachNode(this);
 
@@ -47,7 +47,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
 
         entryLabelNode = new TextNode {
             Size = new Vector2(125.0f, 30.0f),
-            String = Strings("LocationDisplay_InfoBarEntryLabel"),
+            String = Strings.LocationDisplay_InfoBarEntryLabel,
             AlignmentType = AlignmentType.Left,
         };
         infoBarEntryLayoutNode.AddNode(entryLabelNode);
@@ -70,11 +70,11 @@ public class LocationDisplayConfigAddon : NativeAddon {
 
         resetEntryButtonNode = new TextButtonNode {
             Size = new Vector2(ResetButtonWidth, 30.0f),
-            String = Strings("LocationDisplay_ResetButton"),
+            String = Strings.LocationDisplay_ResetButton,
             OnClick = () => {
                 entryInputNode.IsError = false;
-                entryInputNode.String = Strings("LocationDisplay_DefaultEntryFormat");
-                Config.FormatString = Strings("LocationDisplay_DefaultEntryFormat");
+                entryInputNode.String = Strings.LocationDisplay_DefaultEntryFormat;
+                Config.FormatString = Strings.LocationDisplay_DefaultEntryFormat;
                 Config.Save();
             },
         };
@@ -88,7 +88,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
 
         tooltipLabelNode = new TextNode {
             Size = new Vector2(125.0f, 30.0f),
-            String = Strings("LocationDisplay_InfoBarTooltipLabel"),
+            String = Strings.LocationDisplay_InfoBarTooltipLabel,
             AlignmentType = AlignmentType.Left,
         };
         infoBarTooltipLayoutNode.AddNode(tooltipLabelNode);
@@ -111,11 +111,11 @@ public class LocationDisplayConfigAddon : NativeAddon {
 
         tooltipResetButtonNode = new TextButtonNode {
             Size = new Vector2(ResetButtonWidth, 30.0f),
-            String = Strings("LocationDisplay_ResetButton"),
+            String = Strings.LocationDisplay_ResetButton,
             OnClick = () => {
                 tooltipInputNode.IsError = false;
-                tooltipInputNode.String = Strings("LocationDisplay_DefaultTooltipFormat");
-                Config.TooltipFormatString = Strings("LocationDisplay_DefaultTooltipFormat");
+                tooltipInputNode.String = Strings.LocationDisplay_DefaultTooltipFormat;
+                Config.TooltipFormatString = Strings.LocationDisplay_DefaultTooltipFormat;
                 Config.Save();
             },
         };
@@ -124,7 +124,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
         showInstanceNumberNode = new CheckboxNode {
             Size = new Vector2(ContentSize.X, 24.0f),
             Position = new Vector2(ContentStartPosition.X, infoBarTooltipLayoutNode.Y + infoBarTooltipLayoutNode.Height + 15.0f),
-            String = Strings("LocationDisplay_ShowInstanceNumber"),
+            String = Strings.LocationDisplay_ShowInstanceNumber,
             IsChecked = Config.ShowInstanceNumber,
             OnClick = newValue => {
                 Config.ShowInstanceNumber = newValue;
@@ -136,7 +136,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
         showPreciseHousingLocationNode = new CheckboxNode {
             Size = new Vector2(ContentSize.X, 24.0f),
             Position = new Vector2(ContentStartPosition.X, showInstanceNumberNode.Y + showInstanceNumberNode.Height),
-            String = Strings("LocationDisplay_ShowPreciseHousing"),
+            String = Strings.LocationDisplay_ShowPreciseHousing,
             IsChecked = Config.UsePreciseHousingLocation,
             OnClick = newValue => {
                 Config.UsePreciseHousingLocation = newValue;

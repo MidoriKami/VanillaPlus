@@ -14,8 +14,8 @@ namespace VanillaPlus.Features.WindowBackground;
 
 public unsafe class WindowBackground : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_WindowBackground"),
-        Description = Strings("ModificationDescription_WindowBackground"),
+        DisplayName = Strings.ModificationDisplay_WindowBackground,
+        Description = Strings.ModificationDescription_WindowBackground,
         Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
         ChangeLog = [
@@ -54,7 +54,7 @@ public unsafe class WindowBackground : GameModification {
 
         addonSearchAddon = new SearchAddon<StringInfoNode> {
             InternalName = "AddonSearch",
-            Title = Strings("WindowBackground_SearchTitle"),
+            Title = Strings.WindowBackground_SearchTitle,
             Size = new Vector2(350.0f, 600.0f),
             SortingOptions = [ "Visibility", "Alphabetical" ],
             SearchOptions = GetOptions(),
@@ -62,7 +62,7 @@ public unsafe class WindowBackground : GameModification {
 
         configWindow = new ListConfigAddon<WindowBackgroundSetting, WindowBackgroundConfigNode> {
             InternalName = "WindowBackgroundConfig",
-            Title = Strings("WindowBackground_ConfigTitle"),
+            Title = Strings.WindowBackground_ConfigTitle,
             Size = new Vector2(600.0f, 500.0f),
             Options = config.Settings,
 

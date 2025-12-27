@@ -16,5 +16,5 @@ public class PluginCompatibilityModule(params string[] pluginNames) : Compatibil
     }
 
     public override string GetErrorMessage()
-        => Strings("CompatibilityModule_ActivePluginMessage", erroringPluginName);
+        => Strings.CompatibilityModule_ActivePluginMessage.Format(erroringPluginName);
 }

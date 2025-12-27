@@ -53,7 +53,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
         erroringImageNode = new IconImageNode {
             IconId = 61502,
             FitTexture = true,
-            Tooltip = Strings("Tooltip_ModificationFailedToLoad"),
+            Tooltip = Strings.Tooltip_ModificationFailedToLoad,
         };
         erroringImageNode.AttachNode(this);
 
@@ -67,7 +67,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
         experimentalImageNode = new IconImageNode {
             IconId = 60073,
             FitTexture = true,
-            Tooltip = Strings("Tooltip_ExperimentalFeature"),
+            Tooltip = Strings.Tooltip_ExperimentalFeature,
         };
         experimentalImageNode.AttachNode(this);
         
@@ -81,9 +81,9 @@ public class GameModificationOptionNode : SimpleComponentNode {
 
         reloadButtonNode = new CircleButtonNode {
             Icon = ButtonIcon.Refresh,
-            Tooltip = Strings("Tooltip_RetryCompatibility"),
+            Tooltip = Strings.Tooltip_RetryCompatibility,
             OnClick = () => {
-                System.ModificationManager.ReloadConflictedModules();
+                PluginSystem.ModificationManager.ReloadConflictedModules();
                 reloadButtonNode?.HideTooltip();
             },
         };
@@ -91,7 +91,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
         
         configButtonNode = new CircleButtonNode {
             Icon = ButtonIcon.GearCog,
-            Tooltip = Strings("Tooltip_OpenConfiguration"),
+            Tooltip = Strings.Tooltip_OpenConfiguration,
             OnClick = () => {
                 Modification?.Modification.OpenConfigAction?.Invoke();
                 OnClick?.Invoke();
@@ -121,7 +121,7 @@ public class GameModificationOptionNode : SimpleComponentNode {
             field = value;
             modificationNameNode.String = value.Modification.ModificationInfo.DisplayName;
             var authorList = string.Join(", ", value.Modification.ModificationInfo.Authors);
-            authorNamesNode.String = Strings("Label_ModAuthorBy", authorList);
+            authorNamesNode.String = Strings.Label_ModAuthorBy.Format(authorList);
 
             RefreshConfigWindowButton();
 

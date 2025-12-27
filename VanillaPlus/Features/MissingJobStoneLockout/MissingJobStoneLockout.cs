@@ -14,8 +14,8 @@ namespace VanillaPlus.Features.MissingJobStoneLockout;
 
 public unsafe class MissingJobStoneLockout : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_MissingJobStoneLockout"),
-        Description = Strings("ModificationDescription_MissingJobStoneLockout"),
+        DisplayName = Strings.ModificationDisplay_MissingJobStoneLockout,
+        Description = Strings.ModificationDescription_MissingJobStoneLockout,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami", "KazWolfe" ],
         ChangeLog = [
@@ -66,8 +66,8 @@ public unsafe class MissingJobStoneLockout : GameModification {
             Origin = newNodeSize / 2.0f,
             AlignmentType = AlignmentType.Center,
             FontSize = 14,
-            String = Strings("MissingJobStone_WarningText"),
-            TooltipString = Strings("MissingJobStone_Tooltip"),
+            String = Strings.MissingJobStone_WarningText,
+            TooltipString = Strings.MissingJobStone_Tooltip,
             ShowClickableCursor = true,
         };
         warningTextNode.AttachNode(animationContainer);
@@ -95,7 +95,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
                 animationContainer.IsVisible = false;
             }
 
-            warningTextNode.TooltipString = Strings("MissingJobStone_TooltipWithCountdown", 6 - clickCount);
+            warningTextNode.TooltipString = Strings.MissingJobStone_TooltipWithCountdown.Format(6 - clickCount);
             warningTextNode.ShowTooltip();
         });
     }

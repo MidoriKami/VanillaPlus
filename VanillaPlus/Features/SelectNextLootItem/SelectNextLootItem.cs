@@ -9,8 +9,8 @@ namespace VanillaPlus.Features.SelectNextLootItem;
 
 public unsafe class SelectNextLootItem : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_SelectNextLootItem"),
-        Description = Strings("ModificationDescription_SelectNextLootItem"),
+        DisplayName = Strings.ModificationDisplay_SelectNextLootItem,
+        Description = Strings.ModificationDescription_SelectNextLootItem,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

@@ -7,8 +7,8 @@ namespace VanillaPlus.Features.BetterQuestMapLink;
 
 public unsafe class BetterQuestMapLink : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_BetterQuestMapLink"),
-        Description = Strings("ModificationDescription_BetterQuestMapLink"),
+        DisplayName = Strings.ModificationDisplay_BetterQuestMapLink,
+        Description = Strings.ModificationDescription_BetterQuestMapLink,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

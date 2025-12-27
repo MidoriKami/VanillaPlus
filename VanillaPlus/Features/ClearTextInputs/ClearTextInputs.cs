@@ -10,8 +10,8 @@ namespace VanillaPlus.Features.ClearTextInputs;
 
 public unsafe class ClearTextInputs : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_ClearTextInputs"),
-        Description = Strings("ModificationDescription_ClearTextInputs"),
+        DisplayName = Strings.ModificationDisplay_ClearTextInputs,
+        Description = Strings.ModificationDescription_ClearTextInputs,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

@@ -11,8 +11,8 @@ namespace VanillaPlus.Features.HideUnwantedBanners;
 
 public unsafe class HideUnwantedBanners : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_HideUnwantedBanners"),
-        Description = Strings("ModificationDescription_HideUnwantedBanners"),
+        DisplayName = Strings.ModificationDisplay_HideUnwantedBanners,
+        Description = Strings.ModificationDescription_HideUnwantedBanners,
         Authors = ["MidoriKami"],
         Type = ModificationType.GameBehavior,
         ChangeLog = [
@@ -33,7 +33,7 @@ public unsafe class HideUnwantedBanners : GameModification {
 
         configWindow = new NodeListAddon {
             InternalName = "BannersConfig",
-            Title = Strings("HideUnwantedBanners_ConfigTitle"),
+            Title = Strings.HideUnwantedBanners_ConfigTitle,
             Size = new Vector2(500.0f, 600.0f),
             UpdateListFunction = UpdateList,
         };

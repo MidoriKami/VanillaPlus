@@ -15,8 +15,8 @@ namespace VanillaPlus.Features.TargetCastBarCountdown;
 
 public unsafe class TargetCastBarCountdown : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_TargetCastBarCountdown"),
-        Description = Strings("ModificationDescription_TargetCastBarCountdown"),
+        DisplayName = Strings.ModificationDisplay_TargetCastBarCountdown,
+        Description = Strings.ModificationDescription_TargetCastBarCountdown,
         Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
         ChangeLog = [
@@ -103,25 +103,25 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
         configWindow = new ConfigAddon {
             InternalName = "TargetCastBarConfig",
-            Title = Strings("TargetCastBarCountdown_ConfigTitle"),
+            Title = Strings.TargetCastBarCountdown_ConfigTitle,
             Config = config,
         };
 
-        configWindow.AddCategory(Strings("Toggles"))
-            .AddCheckbox(Strings("TargetCastBarCountdown_CheckboxPrimary"), nameof(config.PrimaryTarget))
-            .AddCheckbox(Strings("TargetCastBarCountdown_CheckboxFocus"), nameof(config.FocusTarget))
-            .AddCheckbox(Strings("TargetCastBarCountdown_CheckboxNameplate"), nameof(config.NamePlateTargets));
+        configWindow.AddCategory(Strings.Toggles)
+            .AddCheckbox(Strings.TargetCastBarCountdown_CheckboxPrimary, nameof(config.PrimaryTarget))
+            .AddCheckbox(Strings.TargetCastBarCountdown_CheckboxFocus, nameof(config.FocusTarget))
+            .AddCheckbox(Strings.TargetCastBarCountdown_CheckboxNameplate, nameof(config.NamePlateTargets));
 
-        configWindow.AddCategory(Strings("TargetCastBarCountdown_CategoryPrimaryStyle"))
+        configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryPrimaryStyle)
             .AddNodeConfig(primaryTargetStyle);
 
-        configWindow.AddCategory(Strings("TargetCastBarCountdown_CategoryPrimaryAltStyle"))
+        configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryPrimaryAltStyle)
             .AddNodeConfig(primaryTargetAltStyle);
         
-        configWindow.AddCategory(Strings("TargetCastBarCountdown_CategoryFocusStyle"))
+        configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryFocusStyle)
             .AddNodeConfig(focusTargetStyle);
         
-        configWindow.AddCategory(Strings("TargetCastBarCountdown_CategoryNameplateStyle"))
+        configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryNameplateStyle)
             .AddNodeConfig(castBarEnemyStyle);
         
         OpenConfigAction = configWindow.Toggle;

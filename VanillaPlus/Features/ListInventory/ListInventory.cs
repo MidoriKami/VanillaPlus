@@ -11,8 +11,8 @@ namespace VanillaPlus.Features.ListInventory;
 
 public class ListInventory : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_ListInventory"),
-        Description = Strings("ModificationDescription_ListInventory"),
+        DisplayName = Strings.ModificationDisplay_ListInventory,
+        Description = Strings.ModificationDescription_ListInventory,
         Type = ModificationType.NewWindow,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
@@ -32,20 +32,20 @@ public class ListInventory : GameModification {
     private bool filterReversed;
     private bool updateRequested;
 
-    private static string FilterAlphabeticallyLabel => Strings("ListInventory_FilterAlphabetically");
-    private static string FilterQuantityLabel => Strings("ListInventory_FilterQuantity");
-    private static string FilterLevelLabel => Strings("ListInventory_FilterLevel");
-    private static string FilterItemLevelLabel => Strings("ListInventory_FilterItemLevel");
-    private static string FilterRarityLabel => Strings("ListInventory_FilterRarity");
-    private static string FilterItemIdLabel => Strings("ListInventory_FilterItemId");
-    private static string FilterItemCategoryLabel => Strings("ListInventory_FilterItemCategory");
+    private static string FilterAlphabeticallyLabel => Strings.ListInventory_FilterAlphabetically;
+    private static string FilterQuantityLabel => Strings.ListInventory_FilterQuantity;
+    private static string FilterLevelLabel => Strings.ListInventory_FilterLevel;
+    private static string FilterItemLevelLabel => Strings.ListInventory_FilterItemLevel;
+    private static string FilterRarityLabel => Strings.ListInventory_FilterRarity;
+    private static string FilterItemIdLabel => Strings.ListInventory_FilterItemId;
+    private static string FilterItemCategoryLabel => Strings.ListInventory_FilterItemCategory;
 
     public override string ImageName => "ListInventory.png";
 
     public override void OnEnable() {
         addonListInventory = new AddonListInventory {
             InternalName = "ListInventory",
-            Title = Strings("ListInventory_Title"),
+            Title = Strings.ListInventory_Title,
             Size = new Vector2(450.0f, 700.0f),
             OnFilterUpdated = OnFilterUpdated,
             OnSearchUpdated = OnSearchUpdated,

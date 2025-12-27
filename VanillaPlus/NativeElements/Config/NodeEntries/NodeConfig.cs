@@ -34,7 +34,7 @@ public class NodeConfig<T> : IConfigEntry where T : NodeStyle, new() {
         };
 
         var labelNode = new LabelTextNode {
-            String = Strings("NodeStyle_PositionLabel"),
+            String = Strings.NodeStyle_PositionLabel,
             Size = new Vector2(ElementStartOffset, 28.0f),
         };
         container.AddNode(labelNode);

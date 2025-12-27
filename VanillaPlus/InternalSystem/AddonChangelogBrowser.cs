@@ -30,7 +30,7 @@ public class AddonChangelogBrowser : NativeAddon {
 
             foreach (var changelog in Modification.ModificationInfo.ChangeLog.OrderByDescending(log => log.Version)) {
                 var categoryNode = new TreeListCategoryNode {
-                    SeString = Strings("VersionLabelFormat", changelog.Version),
+                    SeString = Strings.VersionLabelFormat.Format(changelog.Version),
                     Width = ContentSize.X,
                     OnToggle = _ => scrollingAreaNode.ContentHeight = categoryNodes.Sum(node => node.Height),
                 };

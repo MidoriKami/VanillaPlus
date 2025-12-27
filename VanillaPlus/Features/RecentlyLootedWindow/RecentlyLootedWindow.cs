@@ -12,8 +12,8 @@ namespace VanillaPlus.Features.RecentlyLootedWindow;
 
 public unsafe class RecentlyLootedWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_RecentlyLootedWindow"),
-        Description = Strings("ModificationDescription_RecentlyLootedWindow"),
+        DisplayName = Strings.ModificationDisplay_RecentlyLootedWindow,
+        Description = Strings.ModificationDescription_RecentlyLootedWindow,
         Type = ModificationType.NewWindow,
         Authors = ["MidoriKami"],
         ChangeLog = [
@@ -37,7 +37,7 @@ public unsafe class RecentlyLootedWindow : GameModification {
         addonRecentlyLooted = new NodeListAddon {
             Size = new Vector2(250.0f, 350.0f),
             InternalName = "RecentlyLooted",
-            Title = Strings("RecentlyLootedWindow_Title"),
+            Title = Strings.RecentlyLootedWindow_Title,
             OpenCommand = "/recentloot",
             UpdateListFunction = UpdateList,
         };

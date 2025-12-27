@@ -12,8 +12,8 @@ namespace VanillaPlus.Features.QuestListWindow;
 
 public unsafe class QuestListWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings("ModificationDisplay_QuestListWindow"),
-        Description = Strings("ModificationDescription_QuestListWindow"),
+        DisplayName = Strings.ModificationDisplay_QuestListWindow,
+        Description = Strings.ModificationDescription_QuestListWindow,
         Type = ModificationType.NewWindow,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
@@ -27,18 +27,18 @@ public unsafe class QuestListWindow : GameModification {
     private bool filterReversed;
     private bool updateRequested;
 
-    private static string FilterTypeLabel => Strings("QuestListWindow_FilterType");
-    private static string FilterAlphabeticallyLabel => Strings("QuestListWindow_FilterAlphabetically");
-    private static string FilterLevelLabel => Strings("QuestListWindow_FilterLevel");
-    private static string FilterDistanceLabel => Strings("QuestListWindow_FilterDistance");
-    private static string FilterIssuerNameLabel => Strings("QuestListWindow_FilterIssuerName");
+    private static string FilterTypeLabel => Strings.QuestListWindow_FilterType;
+    private static string FilterAlphabeticallyLabel => Strings.QuestListWindow_FilterAlphabetically;
+    private static string FilterLevelLabel => Strings.QuestListWindow_FilterLevel;
+    private static string FilterDistanceLabel => Strings.QuestListWindow_FilterDistance;
+    private static string FilterIssuerNameLabel => Strings.QuestListWindow_FilterIssuerName;
     public override string ImageName => "QuestList.png";
 
     public override void OnEnable() {
         addonQuestList = new SearchableNodeListAddon {
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "QuestList",
-            Title = Strings("QuestListWindow_Title"),
+            Title = Strings.QuestListWindow_Title,
             UpdateListFunction = UpdateList,
             DropDownOptions = [ FilterTypeLabel, FilterAlphabeticallyLabel, FilterLevelLabel, FilterDistanceLabel, FilterIssuerNameLabel ],
             OnFilterUpdated = OnFilterUpdated,
