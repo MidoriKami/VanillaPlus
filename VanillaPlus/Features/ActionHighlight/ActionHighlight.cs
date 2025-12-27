@@ -5,7 +5,6 @@ using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
-using Action = Lumina.Excel.Sheets.Action;
 
 namespace VanillaPlus.Features.ActionHighlight;
 
