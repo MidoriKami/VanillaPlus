@@ -30,7 +30,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     private DutyLootFilterBarNode? filterBarNode;
     private HorizontalLineNode? separatorNode;
     private ScrollingAreaNode<VerticalListNode>? scrollingAreaNode;
-    private TextNode? noItemsTextNode;
+    private TextNode? hintTextNode;
 
     private bool updateRequested = true;
     private bool isLoading;
@@ -87,16 +87,17 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         scrollingAreaNode.ContentNode.FitContents = true;
         scrollingAreaNode.AttachNode(this);
 
-        noItemsTextNode = new TextNode {
-            Position = new Vector2(ContentStartPosition.X + ContentSize.X * 0.2f / 2.0f, listAreaPosition.Y + 15),
-            Size = new Vector2(ContentSize.X * 0.8f, ContentSize.Y * 3.0f / 4.0f),
+        hintTextNode = new TextNode {
+            Position = ContentStartPosition,
+            Size = ContentSize,
             TextColor = ColorHelper.GetColor(1),
             LineSpacing = 18,
             TextFlags = TextFlags.MultiLine | TextFlags.Edge | TextFlags.WordWrap,
             AlignmentType = AlignmentType.Center,
             String = NoItemsMessage,
         };
-        noItemsTextNode.AttachNode(this);
+        UpdateHintTextNodePosition();
+        hintTextNode.AttachNode(this);
 
         contentsFinder = new AddonController<AddonContentsFinder>("ContentsFinder");
         contentsFinder.OnAttach += OnContentsFinderUpdate;
@@ -233,7 +234,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     }
 
     private void UpdateList(bool isOpening = false) {
-        if (scrollingAreaNode is null || noItemsTextNode is null || filterBarNode is null) return;
+        if (scrollingAreaNode is null || hintTextNode is null || filterBarNode is null) return;
         if (!updateRequested && !isOpening) return;
         updateRequested = false;
 
@@ -273,14 +274,15 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         filterBarNode.IsVisible = hasData;
         separatorNode!.IsVisible = hasData;
         scrollingAreaNode.IsVisible = hasResults;
-        noItemsTextNode.IsVisible = !hasResults;
+        hintTextNode.IsVisible = !hasResults;
 
         if (!hasResults) {
-            noItemsTextNode.String = true switch {
+            hintTextNode.String = true switch {
                 _ when isLoading => LoadingMessage,
                 _ when hasData => NoResultsMessage,
                 _ => NoItemsMessage,
             };
+            UpdateHintTextNodePosition();
         }
     }
 
@@ -290,6 +292,15 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         foreach (var node in scrollingAreaNode.ContentNode.GetNodes<DutyLootNode>()) {
             node.IsFavorite = Config.FavoriteItems.Contains(node.Item.ItemId);
         }
+    }
+
+    private void UpdateHintTextNodePosition() {
+        if (filterBarNode is null || separatorNode is null || hintTextNode is null) return;
+        var offsetTop = 0f;
+        if (filterBarNode.IsVisible) offsetTop += filterBarNode.Height;
+        if (separatorNode.IsVisible) offsetTop += separatorNode.Height;
+        hintTextNode.Size = hintTextNode.Size with { Y = ContentSize.Y - offsetTop };
+        hintTextNode.Position = hintTextNode.Position with { Y = ContentStartPosition.Y + offsetTop };
     }
 }
 
