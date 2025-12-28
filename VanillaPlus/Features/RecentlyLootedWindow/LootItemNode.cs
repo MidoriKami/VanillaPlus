@@ -5,25 +5,12 @@ using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.RecentlyLootedWindow;
 
-public class LootItemNode : SimpleComponentNode {
+public class LootItemNode : SelectableNode {
 
-    private readonly NineGridNode hoveredBackgroundNode;
     private readonly IconWithCountNode iconNode;
     private readonly TextNode itemNameTextNode;
     
     public LootItemNode() {
-        hoveredBackgroundNode = new SimpleNineGridNode {
-            TexturePath = "ui/uld/ListItemA.tex",
-            TextureCoordinates = new Vector2(0.0f, 22.0f),
-            TextureSize = new Vector2(64.0f, 22.0f),
-            TopOffset = 6,
-            BottomOffset = 6,
-            LeftOffset = 16,
-            RightOffset = 1,
-            IsVisible = false,
-        };
-        hoveredBackgroundNode.AttachNode(this);
-
         iconNode = new IconWithCountNode();
         iconNode.AttachNode(this);
 
@@ -32,19 +19,6 @@ public class LootItemNode : SimpleComponentNode {
             AlignmentType = AlignmentType.Left,
         };
         itemNameTextNode.AttachNode(this);
-        
-        CollisionNode.AddEvent(AtkEventType.MouseOver, () => {
-            IsHovered = true;
-        });
-        
-        CollisionNode.AddEvent(AtkEventType.MouseOut, () => {
-            IsHovered = false;
-        });
-    }
-    
-    public bool IsHovered {
-        get => hoveredBackgroundNode.IsVisible;
-        set => hoveredBackgroundNode.IsVisible = value;
     }
 
     public required LootedItemInfo Item {
@@ -67,7 +41,5 @@ public class LootItemNode : SimpleComponentNode {
 
         itemNameTextNode.Size = new Vector2(Width - iconNode.Width - 4.0f, Height);
         itemNameTextNode.Position = new Vector2(iconNode.Width + 4.0f, 0.0f);
-        
-        hoveredBackgroundNode.Size = Size;
     }
 }

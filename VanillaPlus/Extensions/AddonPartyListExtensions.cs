@@ -14,7 +14,13 @@ public static unsafe class AddonPartyListExtensions {
         private List<PartyListHudData> GetHudMembers() {
             List<PartyListHudData> hudMembers = [];
 
-            var memberCount = AgentHUD.Instance()->PartyMemberCount;
+            var memberCount = 0;
+
+            foreach (ref var member in AgentHUD.Instance()->PartyMembers) {
+                if (member.EntityId is not 0xE0000000) {
+                    memberCount++;
+                }
+            }
 
             foreach (var index in Enumerable.Range(0, memberCount)) {
                 var hudMember = AgentHUD.Instance()->PartyMembers.GetPointer(index);

@@ -7,8 +7,7 @@ using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.DutyLootPreview;
 
-public unsafe class DutyLootNode : SimpleComponentNode {
-    private readonly NineGridNode hoveredBackgroundNode;
+public unsafe class DutyLootNode : SelectableNode {
     private readonly IconWithCountNode iconNode;
     private readonly TextNode itemNameTextNode;
     private readonly SimpleImageNode favoriteStarNode;
@@ -19,18 +18,6 @@ public unsafe class DutyLootNode : SimpleComponentNode {
     public Action<DutyLootItem>? OnRightClick;
     
     public DutyLootNode() {
-        hoveredBackgroundNode = new SimpleNineGridNode {
-            TexturePath = "ui/uld/ListItemA.tex",
-            TextureCoordinates = new Vector2(0.0f, 22.0f),
-            TextureSize = new Vector2(64.0f, 22.0f),
-            TopOffset = 6,
-            BottomOffset = 6,
-            LeftOffset = 16,
-            RightOffset = 1,
-            IsVisible = false,
-        };
-        hoveredBackgroundNode.AttachNode(this);
-
         iconNode = new IconWithCountNode();
         iconNode.AttachNode(this);
 
@@ -65,18 +52,6 @@ public unsafe class DutyLootNode : SimpleComponentNode {
         };
         checkmarkIconNode.AttachNode(this);
 
-        CollisionNode.AddEvent(AtkEventType.MouseOver, () => {
-            IsHovered = true;
-
-            if (Item is null) return;
-            CollisionNode.ItemTooltip = Item.ItemId;
-        });
-        
-        CollisionNode.AddEvent(AtkEventType.MouseOut, () => {
-            IsHovered = false;
-            CollisionNode.HideTooltip();
-        });
-
         CollisionNode.AddEvent(AtkEventType.MouseClick, (_, _, _, _, atkEventData) => {
             if (Item is null) return;
 
@@ -87,11 +62,6 @@ public unsafe class DutyLootNode : SimpleComponentNode {
                 OnRightClick?.Invoke(Item);
             }
         });
-    }
-    
-    public bool IsHovered {
-        get => hoveredBackgroundNode.IsVisible;
-        set => hoveredBackgroundNode.IsVisible = value;
     }
 
     public bool IsFavorite {
@@ -106,9 +76,10 @@ public unsafe class DutyLootNode : SimpleComponentNode {
 
             iconNode.IconId = value.IconId;
             itemNameTextNode.SeString = value.Name;
-            iconNode.Count = 1; // value.Quantity;
+            iconNode.Count = 1;
             infoIconNode.TextTooltip = string.Join("\n", value.Sources);
             checkmarkIconNode.IsVisible = value.IsUnlocked;
+            CollisionNode.ItemTooltip = Item.ItemId;
         }
     }
     
@@ -134,7 +105,5 @@ public unsafe class DutyLootNode : SimpleComponentNode {
 
         itemNameTextNode.Size = new Vector2(Width - iconNode.Width - infoSize - 12.0f, Height);
         itemNameTextNode.Position = new Vector2(iconNode.Width + 4.0f, 0.0f);
-
-        hoveredBackgroundNode.Size = Size;
     }
 }

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using FFXIVClientStructs.Interop;
 
 namespace VanillaPlus.Extensions;
 
@@ -9,12 +9,18 @@ public static unsafe class AgentHudExtensions {
         /// <summary>
         /// Gets the correctly sized span for the current number of party members.
         /// </summary>
-        public Span<HudPartyMember> PartyMemberSpan => instance.GetSizedHudMemberSpan();
+        public IEnumerable<Pointer<HudPartyMember>> PartyMemberSpan => instance.GetSizedHudMemberSpan();
 
-        private Span<HudPartyMember> GetSizedHudMemberSpan() {
-            var hudMembers = Unsafe.AsPointer(ref instance.PartyMembers[0]);
-            var hudMemberCount = instance.PartyMemberCount;
-            return new Span<HudPartyMember>(hudMembers, hudMemberCount);
+        private List<Pointer<HudPartyMember>> GetSizedHudMemberSpan() {
+            List<Pointer<HudPartyMember>> members = [];
+            
+            foreach (var member in instance.PartyMembers.PointerEnumerator()) {
+                if (member->EntityId is not 0xE0000000) {
+                    members.Add(member);
+                }
+            }
+            
+            return members;
         }
     }
 }

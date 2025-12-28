@@ -6,9 +6,8 @@ using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.QuestListWindow;
 
-public unsafe class QuestEntryNode : SimpleComponentNode {
+public unsafe class QuestEntryNode : SelectableNode {
 
-    private readonly NineGridNode hoveredBackgroundNode;
     private readonly IconImageNode questIconNode;
     private readonly TextNode questNameTextNode;
     private readonly TextNode questLevelTextNode;
@@ -16,18 +15,6 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
     private readonly TextNode distanceTextNode;
 
     public QuestEntryNode() {
-        hoveredBackgroundNode = new SimpleNineGridNode {
-            TexturePath = "ui/uld/ListItemA.tex",
-            TextureCoordinates = new Vector2(0.0f, 22.0f),
-            TextureSize = new Vector2(64.0f, 22.0f),
-            TopOffset = 6,
-            BottomOffset = 6,
-            LeftOffset = 16,
-            RightOffset = 1,
-            IsVisible = false,
-        };
-        hoveredBackgroundNode.AttachNode(this);
-        
         questIconNode = new IconImageNode {
             FitTexture = true,
         };
@@ -59,10 +46,7 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
             TextColor = ColorHelper.GetColor(2),
         };
         distanceTextNode.AttachNode(this);
-
-        CollisionNode.ShowClickableCursor = true;
-        CollisionNode.AddEvent(AtkEventType.MouseOver, () => IsHovered = true);
-        CollisionNode.AddEvent(AtkEventType.MouseOut, () => IsHovered = false);
+        
         CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
             if (QuestInfo is null) return;
 
@@ -94,15 +78,8 @@ public unsafe class QuestEntryNode : SimpleComponentNode {
         }
     }
 
-    public bool IsHovered {
-        get => hoveredBackgroundNode.IsVisible;
-        set => hoveredBackgroundNode.IsVisible = value;
-    }
-
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
-
-        hoveredBackgroundNode.Size = Size;
         
         questIconNode.Size = new Vector2(Height, Height);
         questIconNode.Position = Vector2.Zero;
