@@ -1134,4 +1134,28 @@ This game modification fixes it by always triggering the normal mouse click in a
     <data name="ForcedCutsceneSounds_CategoryToggles" xml:space="preserve">
 		<value>Toggles</value>
 	</data>
+    <data name="ActionHighlight_Configuration" xml:space="preserve">
+        <value>Action Highlight Configuration</value>
+    </data>
+    <data name="ActionHighlight_ShowInCombat" xml:space="preserve">
+        <value>Show Only In Combat</value>
+    </data>
+    <data name="ActionHighlight_AntOnlyOnFinalStack" xml:space="preserve">
+        <value>Ant Only On Final Stack</value>
+    </data>
+    <data name="ActionHighlight_ShowOnlyUsableActions" xml:space="preserve">
+        <value>Show Only Usable Actions</value>
+    </data>
+    <data name="ActionHighlight_UseGlobalPreAntMs" xml:space="preserve">
+        <value>Use Global Pre-Ant Ms</value>
+    </data>
+    <data name="ActionHighlight_GlobalPreAntTimeMs" xml:space="preserve">
+        <value>Global Pre-Ant Time (ms)</value>
+    </data>
+    <data name="ActionHighlight_DisplayName" xml:space="preserve">
+        <value>Action Highlight</value>
+    </data>
+    <data name="ActionHighlight_Description" xml:space="preserve">
+        <value>Highlights abilities with the ants effect when they are off cooldown or shortly before they become available.</value>
+    </data>
 </root>
