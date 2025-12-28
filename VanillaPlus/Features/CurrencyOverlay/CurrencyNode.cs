@@ -94,7 +94,7 @@ public unsafe class CurrencyNode : OverlayNode {
         var isHighWarning = Currency.EnableHighLimit && inventoryCount > Currency.HighLimit;
         var hasWarning = isLowWarning || isHighWarning;
 
-        var shouldFade = !Currency.FadeIfNoWarnings || !hasWarning;
+        var shouldFade = Currency.FadeIfNoWarnings && !hasWarning;
         var alpha = shouldFade ? 1.0f - Currency.FadePercent : 1.0f;
         iconImageNode.Alpha = alpha;
         countNode.Alpha = alpha;
