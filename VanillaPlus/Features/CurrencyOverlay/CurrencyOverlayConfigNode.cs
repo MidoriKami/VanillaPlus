@@ -151,7 +151,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         fadeTextNode.AttachNode(this);
 
         fadeSliderNode = new SliderNode {
-            Range = 0..100,
+            Range = ..90,
             DecimalPlaces = 2,
             OnValueChanged = newValue => {
                 if (ConfigurationOption is not null) {
@@ -208,8 +208,8 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         fadeTextNode.Size = new Vector2(140.0f, 24.0f);
         fadeTextNode.Position = new Vector2(20.0f, fadeIfNoWarningsCheckbox.Bounds.Bottom + 10.0f);
 
-        fadeSliderNode.Size = new Vector2(250.0f, 24.0f);
-        fadeSliderNode.Position = new Vector2(20.0f, fadeTextNode.Bounds.Bottom);
+        fadeSliderNode.Size = new Vector2(225.0f, 24.0f);
+        fadeSliderNode.Position = new Vector2(35.0f, fadeTextNode.Bounds.Bottom);
 
         reverseIconCheckbox.Size = new Vector2(Width, 24.0f);
         reverseIconCheckbox.Position = new Vector2(20.0f, fadeSliderNode.Bounds.Bottom + 10.0f);
@@ -223,7 +223,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         scaleTextNode.Size = new Vector2(100.0f, 24.0f);
         scaleTextNode.Position = new Vector2(20.0f, allowMovingCheckbox.Bounds.Bottom + 10.0f);
 
-        scaleSliderNode.Size = new Vector2(250.0f, 24.0f);
-        scaleSliderNode.Position = new Vector2(20.0f, scaleTextNode.Bounds.Bottom);
+        scaleSliderNode.Size = new Vector2(225.0f, 24.0f);
+        scaleSliderNode.Position = new Vector2(35.0f, scaleTextNode.Bounds.Bottom);
     }
 }
