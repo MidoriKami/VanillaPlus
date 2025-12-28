@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using KamiToolKit.Premade;
 
@@ -14,6 +14,8 @@ public class CurrencySetting : IInfoNodeData {
     public bool IconReversed;
     public bool TextReversed;
     public float Scale = 1.0f;
+    public float FadePercent;
+    public bool FadeIfNoWarnings;
 
     [JsonIgnore]
     public bool IsNodeMoveable;

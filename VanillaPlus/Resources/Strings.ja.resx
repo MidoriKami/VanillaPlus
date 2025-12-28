@@ -1,408 +1,470 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<xsd:schema id="root" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="Icon" xml:space="preserve">
-		<value>アイコン</value>
-	</data>
-	<data name="SortOptionAlphabetical" xml:space="preserve">
-		<value>五十音順</value>
-	</data>
-	<data name="Visibility" xml:space="preserve">
-		<value>可視性</value>
-	</data>
-	<data name="Color" xml:space="preserve">
-		<value>カラー</value>
-	</data>
-	<data name="Toggles" xml:space="preserve">
-		<value>切り替え</value>
-	</data>
-	<data name="Settings" xml:space="preserve">
-		<value>設定</value>
-	</data>
-	<data name="Button_SavePreset" xml:space="preserve">
-		<value>プリセットを保存</value>
-	</data>
-	<data name="ChangelogBrowserTitle" xml:space="preserve">
-		<value>Vanilla Plus 更新履歴ビューアー</value>
-	</data>
-	<data name="ChangelogButtonLabel" xml:space="preserve">
-		<value>更新履歴</value>
-	</data>
-	<data name="ChangelogTitleFormat" xml:space="preserve">
-		<value>{0} の更新履歴</value>
-	</data>
-	<data name="CommandHelpOpenBrowser" xml:space="preserve">
-		<value>改造ブラウザーを開く</value>
-	</data>
-	<data name="ConfigCategory_Animations" xml:space="preserve">
-		<value>アニメーション</value>
-	</data>
-	<data name="ConfigCategory_Colors" xml:space="preserve">
-		<value>カラー</value>
-	</data>
-	<data name="ConfigLabel_ButtonColor" xml:space="preserve">
-		<value>ボタン</value>
-	</data>
-	<data name="ConfigLabel_EnableAnimations" xml:space="preserve">
-		<value>アニメーションを有効にする</value>
-	</data>
-	<data name="ConfigLabel_LaneColor" xml:space="preserve">
-		<value>レーン</value>
-	</data>
-	<data name="BetterCursor_CategoryFunctions" xml:space="preserve">
-		<value>機能</value>
-	</data>
-	<data name="BetterCursor_CategoryIconSelection" xml:space="preserve">
-		<value>アイコン選択</value>
-	</data>
-	<data name="BetterCursor_CategoryStyle" xml:space="preserve">
-		<value>スタイル</value>
-	</data>
-	<data name="BetterCursor_ConfigTitle" xml:space="preserve">
-		<value>Better Cursor 設定</value>
-	</data>
-	<data name="BetterCursor_EnableAnimation" xml:space="preserve">
-		<value>アニメーションを有効化</value>
-	</data>
-	<data name="BetterCursor_HideOnCameraMove" xml:space="preserve">
-		<value>左/右ボタン長押し中は非表示</value>
-	</data>
-	<data name="BetterCursor_LabelSize" xml:space="preserve">
-		<value>サイズ</value>
-	</data>
-	<data name="BetterCursor_OnlyShowInCombat" xml:space="preserve">
-		<value>戦闘中のみ表示</value>
-	</data>
-	<data name="BetterCursor_OnlyShowInDuties" xml:space="preserve">
-		<value>コンテンツ中のみ表示</value>
-	</data>
-	<data name="CurrencyOverlay_ConfigTitle" xml:space="preserve">
-		<value>通貨オーバーレイ設定</value>
-	</data>
-	<data name="CurrencyOverlay_ItemSearchTitle" xml:space="preserve">
-		<value>アイテム検索</value>
-	</data>
-	<data name="CurrencyOverlay_SortOptionId" xml:space="preserve">
-		<value>ID順</value>
-	</data>
-	<data name="FadeStrategyBoard_ConfigTitle" xml:space="preserve">
-		<value>ストラテジーボードフェード設定</value>
-	</data>
-	<data name="FadeStrategyBoard_CategoryStyleSettings" xml:space="preserve">
-		<value>スタイル設定</value>
-	</data>
-	<data name="FadeStrategyBoard_LabelFadePercentage" xml:space="preserve">
-		<value>フェード割合</value>
-	</data>
-	<data name="WindowBackground_ConfigTitle" xml:space="preserve">
-		<value>ウィンドウ背景設定</value>
-	</data>
-	<data name="WindowBackground_SearchTitle" xml:space="preserve">
-		<value>ウィンドウ検索</value>
-	</data>
-	<data name="WindowBackground_ColorPickerTitle" xml:space="preserve">
-		<value>ウィンドウ背景カラーピッカー</value>
-	</data>
-	<data name="WindowBackground_CategoryBackgroundColor" xml:space="preserve">
-		<value>背景色</value>
-	</data>
-	<data name="WindowBackground_CategoryPaddingSize" xml:space="preserve">
-		<value>パディングサイズ</value>
-	</data>
-	<data name="TargetCastBarCountdown_CategoryFocusStyle" xml:space="preserve">
-		<value>フォーカスターゲット詠唱バーのスタイル</value>
-	</data>
-	<data name="TargetCastBarCountdown_CategoryNameplateStyle" xml:space="preserve">
-		<value>ネームプレート詠唱バーのスタイル</value>
-	</data>
-	<data name="TargetCastBarCountdown_CategoryPrimaryAltStyle" xml:space="preserve">
-		<value>ターゲット詠唱バーのスタイル（分離）</value>
-	</data>
-	<data name="TargetCastBarCountdown_CategoryPrimaryStyle" xml:space="preserve">
-		<value>ターゲット詠唱バーのスタイル（統合）</value>
-	</data>
-	<data name="TargetCastBarCountdown_CheckboxFocus" xml:space="preserve">
-		<value>フォーカスターゲット詠唱バーに表示</value>
-	</data>
-	<data name="TargetCastBarCountdown_CheckboxNameplate" xml:space="preserve">
-		<value>ネームプレート詠唱バーに表示</value>
-	</data>
-	<data name="TargetCastBarCountdown_CheckboxPrimary" xml:space="preserve">
-		<value>メインターゲット詠唱バーに表示</value>
-	</data>
-	<data name="TargetCastBarCountdown_ConfigTitle" xml:space="preserve">
-		<value>ターゲット詠唱バー残り時間設定</value>
-	</data>
-	<data name="SuppressDialogAdvance_ApplyOnlyInCutscenes" xml:space="preserve">
-		<value>カットシーン中のみ適用</value>
-	</data>
-	<data name="SuppressDialogAdvance_CategoryGeneral" xml:space="preserve">
-		<value>一般</value>
-	</data>
-	<data name="SuppressDialogAdvance_ConfigTitle" xml:space="preserve">
-		<value>ダイアログ自動送り抑制設定</value>
-	</data>
-	<data name="ClearSelectedDuties_ConfigTitle" xml:space="preserve">
-		<value>選択済みコンテンツ解除設定</value>
-	</data>
-	<data name="ClearSelectedDuties_DisableWhenUnrestricted" xml:space="preserve">
-		<value>制限解除時は無効</value>
-	</data>
-	<data name="Label_ModAuthorBy" xml:space="preserve">
-		<value>作者: {0}</value>
-	</data>
-	<data name="ModificationBrowserTitle" xml:space="preserve">
-		<value>Vanilla Plus 改造ブラウザー</value>
-	</data>
-	<data name="ModificationType_Debug" xml:space="preserve">
-		<value>デバッグ</value>
-	</data>
-	<data name="ModificationType_NewWindow" xml:space="preserve">
-		<value>カスタムネイティブウィンドウ</value>
-	</data>
-	<data name="ModificationType_UserInterface" xml:space="preserve">
-		<value>UI改造</value>
-	</data>
-	<data name="ModificationType_GameBehavior" xml:space="preserve">
-		<value>ゲーム挙動の改造</value>
-	</data>
-	<data name="ModificationType_NewOverlay" xml:space="preserve">
-		<value>カスタムネイティブオーバーレイ</value>
-	</data>
-	<data name="ModificationDescription_DisableTitleScreenMovie" xml:space="preserve">
-		<value>タイトル画面で導入ムービーが再生されないようにします。</value>
-	</data>
-	<data name="ModificationDescription_FadeStrategyBoard" xml:space="preserve">
-		<value>ストラテジーボードボタンをフェードさせます。</value>
-	</data>
-	<data name="ModificationDescription_HideDeadEnemyNamePlates" xml:space="preserve">
-		<value>戦闘不能になった敵のネームプレートを非表示にします。</value>
-	</data>
-	<data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
-		<value>ミニ・くじテンダーで次に開くべきマスを表示します。</value>
-	</data>
-	<data name="ModificationDescription_PartyFinderPresets" xml:space="preserve">
-		<value>コンテンツファインダー募集ウィンドウの設定をプリセットとして保存・呼び出せます。</value>
-	</data>
-	<data name="ModificationDisplay_DisableTitleScreenMovie" xml:space="preserve">
-		<value>タイトル画面ムービー無効化</value>
-	</data>
-	<data name="ModificationDisplay_FadeStrategyBoard" xml:space="preserve">
-		<value>ストラテジーボードフェード</value>
-	</data>
-	<data name="ModificationDisplay_HideDeadEnemyNamePlates" xml:space="preserve">
-		<value>戦闘不能敵のネームプレート非表示</value>
-	</data>
-	<data name="ModificationDisplay_MiniCactpotHelper" xml:space="preserve">
-		<value>ミニ・くじテンダー支援</value>
-	</data>
-	<data name="ModificationDisplay_PartyFinderPresets" xml:space="preserve">
-		<value>募集プリセット</value>
-	</data>
-	<data name="Preset_DefaultOption" xml:space="preserve">
-		<value>保存済みプリセットなし</value>
-	</data>
-	<data name="Preset_DontUseOption" xml:space="preserve">
-		<value>プリセットを使用しない</value>
-	</data>
-	<data name="SearchPlaceholder" xml:space="preserve">
-		<value>検索...</value>
-	</data>
-	<data name="SelectionPrompt" xml:space="preserve">
-		<value>左側からオプションを選択してください</value>
-	</data>
-	<data name="Title_MiniCactpotConfig" xml:space="preserve">
-		<value>ミニ・くじテンダー支援設定</value>
-	</data>
-	<data name="Title_PartyFinderPreset" xml:space="preserve">
-		<value>募集プリセット</value>
-	</data>
-	<data name="Title_PresetConfigManager" xml:space="preserve">
-		<value>プリセット管理</value>
-	</data>
-	<data name="Tooltip_ConfigEzMiniCactpot" xml:space="preserve">
-		<value>EzMiniCactpot プラグインを設定</value>
-	</data>
-	<data name="Tooltip_ExperimentalFeature" xml:space="preserve">
-		<value>注意: この機能は実験中です。
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Icon" xml:space="preserve">
+    <value>アイコン</value>
+  </data>
+  <data name="SortOptionAlphabetical" xml:space="preserve">
+    <value>五十音順</value>
+  </data>
+  <data name="Visibility" xml:space="preserve">
+    <value>可視性</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>カラー</value>
+  </data>
+  <data name="Toggles" xml:space="preserve">
+    <value>切り替え</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="Button_SavePreset" xml:space="preserve">
+    <value>プリセットを保存</value>
+  </data>
+  <data name="ChangelogBrowserTitle" xml:space="preserve">
+    <value>Vanilla Plus 更新履歴ビューアー</value>
+  </data>
+  <data name="ChangelogButtonLabel" xml:space="preserve">
+    <value>更新履歴</value>
+  </data>
+  <data name="ChangelogTitleFormat" xml:space="preserve">
+    <value>{0} の更新履歴</value>
+  </data>
+  <data name="CommandHelpOpenBrowser" xml:space="preserve">
+    <value>改造ブラウザーを開く</value>
+  </data>
+  <data name="ConfigCategory_Animations" xml:space="preserve">
+    <value>アニメーション</value>
+  </data>
+  <data name="ConfigCategory_Colors" xml:space="preserve">
+    <value>カラー</value>
+  </data>
+  <data name="ConfigLabel_ButtonColor" xml:space="preserve">
+    <value>ボタン</value>
+  </data>
+  <data name="ConfigLabel_EnableAnimations" xml:space="preserve">
+    <value>アニメーションを有効にする</value>
+  </data>
+  <data name="ConfigLabel_LaneColor" xml:space="preserve">
+    <value>レーン</value>
+  </data>
+  <data name="BetterCursor_CategoryFunctions" xml:space="preserve">
+    <value>機能</value>
+  </data>
+  <data name="BetterCursor_CategoryIconSelection" xml:space="preserve">
+    <value>アイコン選択</value>
+  </data>
+  <data name="BetterCursor_CategoryStyle" xml:space="preserve">
+    <value>スタイル</value>
+  </data>
+  <data name="BetterCursor_ConfigTitle" xml:space="preserve">
+    <value>Better Cursor 設定</value>
+  </data>
+  <data name="BetterCursor_EnableAnimation" xml:space="preserve">
+    <value>アニメーションを有効化</value>
+  </data>
+  <data name="BetterCursor_HideOnCameraMove" xml:space="preserve">
+    <value>左/右ボタン長押し中は非表示</value>
+  </data>
+  <data name="BetterCursor_LabelSize" xml:space="preserve">
+    <value>サイズ</value>
+  </data>
+  <data name="BetterCursor_OnlyShowInCombat" xml:space="preserve">
+    <value>戦闘中のみ表示</value>
+  </data>
+  <data name="BetterCursor_OnlyShowInDuties" xml:space="preserve">
+    <value>コンテンツ中のみ表示</value>
+  </data>
+  <data name="CurrencyOverlay_ConfigTitle" xml:space="preserve">
+    <value>通貨オーバーレイ設定</value>
+  </data>
+  <data name="CurrencyOverlay_ItemSearchTitle" xml:space="preserve">
+    <value>アイテム検索</value>
+  </data>
+  <data name="CurrencyOverlay_SortOptionId" xml:space="preserve">
+    <value>ID順</value>
+  </data>
+  <data name="CurrencyOverlay_LabelFadePercentage" xml:space="preserve">
+    <value>フェード率</value>
+  </data>
+  <data name="FadeStrategyBoard_ConfigTitle" xml:space="preserve">
+    <value>ストラテジーボードフェード設定</value>
+  </data>
+  <data name="FadeStrategyBoard_CategoryStyleSettings" xml:space="preserve">
+    <value>スタイル設定</value>
+  </data>
+  <data name="FadeStrategyBoard_LabelFadePercentage" xml:space="preserve">
+    <value>フェード割合</value>
+  </data>
+  <data name="WindowBackground_ConfigTitle" xml:space="preserve">
+    <value>ウィンドウ背景設定</value>
+  </data>
+  <data name="WindowBackground_SearchTitle" xml:space="preserve">
+    <value>ウィンドウ検索</value>
+  </data>
+  <data name="WindowBackground_ColorPickerTitle" xml:space="preserve">
+    <value>ウィンドウ背景カラーピッカー</value>
+  </data>
+  <data name="WindowBackground_CategoryBackgroundColor" xml:space="preserve">
+    <value>背景色</value>
+  </data>
+  <data name="WindowBackground_CategoryPaddingSize" xml:space="preserve">
+    <value>パディングサイズ</value>
+  </data>
+  <data name="TargetCastBarCountdown_CategoryFocusStyle" xml:space="preserve">
+    <value>フォーカスターゲット詠唱バーのスタイル</value>
+  </data>
+  <data name="TargetCastBarCountdown_CategoryNameplateStyle" xml:space="preserve">
+    <value>ネームプレート詠唱バーのスタイル</value>
+  </data>
+  <data name="TargetCastBarCountdown_CategoryPrimaryAltStyle" xml:space="preserve">
+    <value>ターゲット詠唱バーのスタイル（分離）</value>
+  </data>
+  <data name="TargetCastBarCountdown_CategoryPrimaryStyle" xml:space="preserve">
+    <value>ターゲット詠唱バーのスタイル（統合）</value>
+  </data>
+  <data name="TargetCastBarCountdown_CheckboxFocus" xml:space="preserve">
+    <value>フォーカスターゲット詠唱バーに表示</value>
+  </data>
+  <data name="TargetCastBarCountdown_CheckboxNameplate" xml:space="preserve">
+    <value>ネームプレート詠唱バーに表示</value>
+  </data>
+  <data name="TargetCastBarCountdown_CheckboxPrimary" xml:space="preserve">
+    <value>メインターゲット詠唱バーに表示</value>
+  </data>
+  <data name="TargetCastBarCountdown_ConfigTitle" xml:space="preserve">
+    <value>ターゲット詠唱バー残り時間設定</value>
+  </data>
+  <data name="SuppressDialogAdvance_ApplyOnlyInCutscenes" xml:space="preserve">
+    <value>カットシーン中のみ適用</value>
+  </data>
+  <data name="SuppressDialogAdvance_CategoryGeneral" xml:space="preserve">
+    <value>一般</value>
+  </data>
+  <data name="SuppressDialogAdvance_ConfigTitle" xml:space="preserve">
+    <value>ダイアログ自動送り抑制設定</value>
+  </data>
+  <data name="ClearSelectedDuties_ConfigTitle" xml:space="preserve">
+    <value>選択済みコンテンツ解除設定</value>
+  </data>
+  <data name="ClearSelectedDuties_DisableWhenUnrestricted" xml:space="preserve">
+    <value>制限解除時は無効</value>
+  </data>
+  <data name="Label_ModAuthorBy" xml:space="preserve">
+    <value>作者: {0}</value>
+  </data>
+  <data name="ModificationBrowserTitle" xml:space="preserve">
+    <value>Vanilla Plus 改造ブラウザー</value>
+  </data>
+  <data name="ModificationType_Debug" xml:space="preserve">
+    <value>デバッグ</value>
+  </data>
+  <data name="ModificationType_NewWindow" xml:space="preserve">
+    <value>カスタムネイティブウィンドウ</value>
+  </data>
+  <data name="ModificationType_UserInterface" xml:space="preserve">
+    <value>UI改造</value>
+  </data>
+  <data name="ModificationType_GameBehavior" xml:space="preserve">
+    <value>ゲーム挙動の改造</value>
+  </data>
+  <data name="ModificationType_NewOverlay" xml:space="preserve">
+    <value>カスタムネイティブオーバーレイ</value>
+  </data>
+  <data name="ModificationDescription_DisableTitleScreenMovie" xml:space="preserve">
+    <value>タイトル画面で導入ムービーが再生されないようにします。</value>
+  </data>
+  <data name="ModificationDescription_FadeStrategyBoard" xml:space="preserve">
+    <value>ストラテジーボードボタンをフェードさせます。</value>
+  </data>
+  <data name="ModificationDescription_HideDeadEnemyNamePlates" xml:space="preserve">
+    <value>戦闘不能になった敵のネームプレートを非表示にします。</value>
+  </data>
+  <data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
+    <value>ミニ・くじテンダーで次に開くべきマスを表示します。</value>
+  </data>
+  <data name="ModificationDescription_PartyFinderPresets" xml:space="preserve">
+    <value>コンテンツファインダー募集ウィンドウの設定をプリセットとして保存・呼び出せます。</value>
+  </data>
+  <data name="ModificationDisplay_DisableTitleScreenMovie" xml:space="preserve">
+    <value>タイトル画面ムービー無効化</value>
+  </data>
+  <data name="ModificationDisplay_FadeStrategyBoard" xml:space="preserve">
+    <value>ストラテジーボードフェード</value>
+  </data>
+  <data name="ModificationDisplay_HideDeadEnemyNamePlates" xml:space="preserve">
+    <value>戦闘不能敵のネームプレート非表示</value>
+  </data>
+  <data name="ModificationDisplay_MiniCactpotHelper" xml:space="preserve">
+    <value>ミニ・くじテンダー支援</value>
+  </data>
+  <data name="ModificationDisplay_PartyFinderPresets" xml:space="preserve">
+    <value>募集プリセット</value>
+  </data>
+  <data name="Preset_DefaultOption" xml:space="preserve">
+    <value>保存済みプリセットなし</value>
+  </data>
+  <data name="Preset_DontUseOption" xml:space="preserve">
+    <value>プリセットを使用しない</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>検索...</value>
+  </data>
+  <data name="SelectionPrompt" xml:space="preserve">
+    <value>左側からオプションを選択してください</value>
+  </data>
+  <data name="Title_MiniCactpotConfig" xml:space="preserve">
+    <value>ミニ・くじテンダー支援設定</value>
+  </data>
+  <data name="Title_PartyFinderPreset" xml:space="preserve">
+    <value>募集プリセット</value>
+  </data>
+  <data name="Title_PresetConfigManager" xml:space="preserve">
+    <value>プリセット管理</value>
+  </data>
+  <data name="Tooltip_ConfigEzMiniCactpot" xml:space="preserve">
+    <value>EzMiniCactpot プラグインを設定</value>
+  </data>
+  <data name="Tooltip_ExperimentalFeature" xml:space="preserve">
+    <value>注意: この機能は実験中です。
 不具合やクラッシュの恐れがあります。</value>
-	</data>
-	<data name="Tooltip_ModificationFailedToLoad" xml:space="preserve">
-		<value>読み込みに失敗しました。このモジュールは無効化されています。</value>
-	</data>
-	<data name="Tooltip_NoPresets" xml:space="preserve">
-		<value>[VanillaPlus]: プリセットがありません</value>
-	</data>
-	<data name="Tooltip_OpenConfiguration" xml:space="preserve">
-		<value>設定ウィンドウを開く</value>
-	</data>
-	<data name="Tooltip_ReverseSortDirection" xml:space="preserve">
-		<value>並び順を逆にする</value>
-	</data>
-	<data name="Tooltip_RetryCompatibility" xml:space="preserve">
-		<value>互換性チェックを再試行</value>
-	</data>
-	<data name="CompatibilityModule_ActivePluginMessage" xml:space="preserve">
-		<value>この機能の元となるプラグインが現在アクティブです：{0}</value>
-	</data>
-	<data name="CompatibilityModule_SimpleTweaksActive" xml:space="preserve">
-		<value>この機能の元となる Simple Tweaks プラグインの機能が既に有効です。
+  </data>
+  <data name="Tooltip_ModificationFailedToLoad" xml:space="preserve">
+    <value>読み込みに失敗しました。このモジュールは無効化されています。</value>
+  </data>
+  <data name="Tooltip_NoPresets" xml:space="preserve">
+    <value>[VanillaPlus]: プリセットがありません</value>
+  </data>
+  <data name="Tooltip_OpenConfiguration" xml:space="preserve">
+    <value>設定ウィンドウを開く</value>
+  </data>
+  <data name="Tooltip_ReverseSortDirection" xml:space="preserve">
+    <value>並び順を逆にする</value>
+  </data>
+  <data name="Tooltip_RetryCompatibility" xml:space="preserve">
+    <value>互換性チェックを再試行</value>
+  </data>
+  <data name="CompatibilityModule_ActivePluginMessage" xml:space="preserve">
+    <value>この機能の元となるプラグインが現在アクティブです：{0}</value>
+  </data>
+  <data name="CompatibilityModule_SimpleTweaksActive" xml:space="preserve">
+    <value>この機能の元となる Simple Tweaks プラグインの機能が既に有効です。
 
 ID: {0}</value>
-	</data>
-	<data name="Tooltip_SavePreset" xml:space="preserve">
-		<value>[VanillaPlus]: 現在の設定をプリセットに保存</value>
-	</data>
-	<data name="Tooltip_SearchRegexSupport" xml:space="preserve">
-		<value>[VanillaPlus]: 正規表現検索に対応
-説明で検索する場合は入力を &apos;$&apos; で始めてください</value>
-	</data>
-	<data name="Tooltip_SelectPreset" xml:space="preserve">
-		<value>[VanillaPlus]: プリセットを選択</value>
-	</data>
-	<data name="DutyTimer_CompletedMessage" xml:space="preserve">
-		<value>コンテンツ完了時間: {0}</value>
-	</data>
-	<data name="DutyLoot_Filter_All" xml:space="preserve">
-		<value>全アイテム</value>
-	</data>
-	<data name="DutyLoot_Filter_Equipment" xml:space="preserve">
-		<value>装備品</value>
-	</data>
-	<data name="DutyLoot_Filter_Favorites" xml:space="preserve">
-		<value>お気に入り</value>
-	</data>
-	<data name="DutyLoot_Filter_Misc" xml:space="preserve">
-		<value>その他</value>
-	</data>
-	<data name="DutyLoot_LoadingMessage" xml:space="preserve">
-		<value>戦利品データを読み込み中...</value>
-	</data>
-	<data name="DutyLoot_NoItemsMessage" xml:space="preserve">
-		<value>このコンテンツの戦利品データは見つかりませんでした。
+  </data>
+  <data name="Tooltip_SavePreset" xml:space="preserve">
+    <value>[VanillaPlus]: 現在の設定をプリセットに保存</value>
+  </data>
+  <data name="Tooltip_SearchRegexSupport" xml:space="preserve">
+    <value>[VanillaPlus]: 正規表現検索に対応
+説明で検索する場合は入力を '$' で始めてください</value>
+  </data>
+  <data name="Tooltip_SelectPreset" xml:space="preserve">
+    <value>[VanillaPlus]: プリセットを選択</value>
+  </data>
+  <data name="DutyTimer_CompletedMessage" xml:space="preserve">
+    <value>コンテンツ完了時間: {0}</value>
+  </data>
+  <data name="DutyLoot_Filter_All" xml:space="preserve">
+    <value>全アイテム</value>
+  </data>
+  <data name="DutyLoot_Filter_Equipment" xml:space="preserve">
+    <value>装備品</value>
+  </data>
+  <data name="DutyLoot_Filter_Favorites" xml:space="preserve">
+    <value>お気に入り</value>
+  </data>
+  <data name="DutyLoot_Filter_Misc" xml:space="preserve">
+    <value>その他</value>
+  </data>
+  <data name="DutyLoot_LoadingMessage" xml:space="preserve">
+    <value>戦利品データを読み込み中...</value>
+  </data>
+  <data name="DutyLoot_NoItemsMessage" xml:space="preserve">
+    <value>このコンテンツの戦利品データは見つかりませんでした。
 
 データは外部提供のため不完全な場合があります。</value>
-	</data>
-	<data name="DutyLoot_NoResultsMessage" xml:space="preserve">
-		<value>該当なし</value>
-	</data>
-	<data name="DutyLoot_Tooltip_InDutyButton" xml:space="preserve">
-		<value>[VanillaPlus] コンテンツ戦利品プレビューを開く</value>
-	</data>
-	<data name="DutyLoot_Tooltip_JournalButton" xml:space="preserve">
-		<value>このコンテンツで入手できる戦利品を表示します。</value>
-	</data>
-	<data name="FateEntry_LevelRangeFormat" xml:space="preserve">
-		<value>Lv.{0}-{1}</value>
-	</data>
-	<data name="FateEntry_LevelUnknown" xml:space="preserve">
-		<value>Lv.???</value>
-	</data>
-	<data name="FateListWindow_Title" xml:space="preserve">
-		<value>FATEリスト</value>
-	</data>
-	<data name="HUDPresets_ButtonDelete" xml:space="preserve">
-		<value>削除</value>
-	</data>
-	<data name="HUDPresets_ButtonLoad" xml:space="preserve">
-		<value>読み込む</value>
-	</data>
-	<data name="HUDPresets_ButtonLoadTooltip" xml:space="preserve">
-		<value>選択したプリセットを読み込む</value>
-	</data>
-	<data name="HUDPresets_ButtonOverwrite" xml:space="preserve">
-		<value>上書き</value>
-	</data>
-	<data name="HUDPresets_ButtonOverwriteTooltip" xml:space="preserve">
-		<value>選択したプリセットを上書きする</value>
-	</data>
-	<data name="HUDPresets_ButtonSave" xml:space="preserve">
-		<value>保存</value>
-	</data>
-	<data name="HUDPresets_DefaultOption" xml:space="preserve">
-		<value>未選択</value>
-	</data>
-	<data name="HUDPresets_DeleteTooltip" xml:space="preserve">
-		<value>開発中
+  </data>
+  <data name="DutyLoot_NoResultsMessage" xml:space="preserve">
+    <value>該当なし</value>
+  </data>
+  <data name="DutyLoot_Tooltip_InDutyButton" xml:space="preserve">
+    <value>[VanillaPlus] コンテンツ戦利品プレビューを開く</value>
+  </data>
+  <data name="DutyLoot_Tooltip_JournalButton" xml:space="preserve">
+    <value>このコンテンツで入手できる戦利品を表示します。</value>
+  </data>
+  <data name="FateEntry_LevelRangeFormat" xml:space="preserve">
+    <value>Lv.{0}-{1}</value>
+  </data>
+  <data name="FateEntry_LevelUnknown" xml:space="preserve">
+    <value>Lv.???</value>
+  </data>
+  <data name="FateListWindow_Title" xml:space="preserve">
+    <value>FATEリスト</value>
+  </data>
+  <data name="HUDPresets_ButtonDelete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="HUDPresets_ButtonLoad" xml:space="preserve">
+    <value>読み込む</value>
+  </data>
+  <data name="HUDPresets_ButtonLoadTooltip" xml:space="preserve">
+    <value>選択したプリセットを読み込む</value>
+  </data>
+  <data name="HUDPresets_ButtonOverwrite" xml:space="preserve">
+    <value>上書き</value>
+  </data>
+  <data name="HUDPresets_ButtonOverwriteTooltip" xml:space="preserve">
+    <value>選択したプリセットを上書きする</value>
+  </data>
+  <data name="HUDPresets_ButtonSave" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="HUDPresets_DefaultOption" xml:space="preserve">
+    <value>未選択</value>
+  </data>
+  <data name="HUDPresets_DeleteTooltip" xml:space="preserve">
+    <value>開発中
 プリセットファイルは手動で削除してください</value>
-	</data>
-	<data name="HUDPresets_DropdownTooltip" xml:space="preserve">
-		<value>HUDレイアウトプリセットを選択</value>
-	</data>
-	<data name="HUDPresets_Label" xml:space="preserve">
-		<value>[VanillaPlus] HUDプリセット</value>
-	</data>
-	<data name="HUDPresets_PlaceholderNewPreset" xml:space="preserve">
-		<value>新しいプリセット名</value>
-	</data>
-	<data name="HUDPresets_RenameTitle" xml:space="preserve">
-		<value>HUDプリセット名</value>
-	</data>
-	<data name="HUDPresets_SaveTooltipDisabled" xml:space="preserve">
-		<value>新規保存の前に上部の保存を押してください</value>
-	</data>
-	<data name="HUDPresets_SaveTooltipEnabled" xml:space="preserve">
-		<value>現在のUIを新しいプリセットとして保存</value>
-	</data>
-	<data name="Label_LocationDisplayInstructions" xml:space="preserve">
-		<value>以下のテキストボックスで表示形式を指定してください。
+  </data>
+  <data name="HUDPresets_DropdownTooltip" xml:space="preserve">
+    <value>HUDレイアウトプリセットを選択</value>
+  </data>
+  <data name="HUDPresets_Label" xml:space="preserve">
+    <value>[VanillaPlus] HUDプリセット</value>
+  </data>
+  <data name="HUDPresets_PlaceholderNewPreset" xml:space="preserve">
+    <value>新しいプリセット名</value>
+  </data>
+  <data name="HUDPresets_RenameTitle" xml:space="preserve">
+    <value>HUDプリセット名</value>
+  </data>
+  <data name="HUDPresets_SaveTooltipDisabled" xml:space="preserve">
+    <value>新規保存の前に上部の保存を押してください</value>
+  </data>
+  <data name="HUDPresets_SaveTooltipEnabled" xml:space="preserve">
+    <value>現在のUIを新しいプリセットとして保存</value>
+  </data>
+  <data name="Label_LocationDisplayInstructions" xml:space="preserve">
+    <value>以下のテキストボックスで表示形式を指定してください。
 文字列内に {0} {1} {2} {3} {4} を配置するとそれぞれの値が挿入されます。
 
 {0} - リージョン（例: ノーザン・エンプティ）
@@ -410,747 +472,747 @@ ID: {0}</value>
 {2} - ロケーション（例: アルカソン・デザイン）
 {3} - サブロケーション（例: オールド・シャーレアン・エーテライトプラザ）
 {4} - ハウジングエリア（例: 第14区）</value>
-	</data>
-	<data name="LocationDisplay_DefaultEntryFormat" xml:space="preserve">
-		<value>{0}, {1}, {2}, {3}</value>
-	</data>
-	<data name="LocationDisplay_DefaultTooltipFormat" xml:space="preserve">
-		<value>{0}, {1}, {2}, {3}</value>
-	</data>
-	<data name="LocationDisplay_InfoBarEntryLabel" xml:space="preserve">
-		<value>情報バー項目</value>
-	</data>
-	<data name="LocationDisplay_InfoBarTooltipLabel" xml:space="preserve">
-		<value>情報バーのツールチップ</value>
-	</data>
-	<data name="LocationDisplay_ResetButton" xml:space="preserve">
-		<value>初期設定に戻す</value>
-	</data>
-	<data name="LocationDisplay_ShowInstanceNumber" xml:space="preserve">
-		<value>インスタンス番号を表示</value>
-	</data>
-	<data name="LocationDisplay_ShowPreciseHousing" xml:space="preserve">
-		<value>ハウジングの詳細位置を表示</value>
-	</data>
-	<data name="LocationDisplay_ConfigTitle" xml:space="preserve">
-		<value>ロケーション表示設定</value>
-	</data>
-	<data name="LocationDisplay_DtrEntryName" xml:space="preserve">
-		<value>VanillaPlus - LocationDisplay</value>
-	</data>
-	<data name="LocationDisplay_WardFormat" xml:space="preserve">
-		<value>{0}区</value>
-	</data>
-	<data name="LocationDisplay_SubdivisionLabel" xml:space="preserve">
-		<value>サブディビジョン</value>
-	</data>
-	<data name="LocationDisplay_ApartmentFormat" xml:space="preserve">
-		<value>アパート {0}</value>
-	</data>
-	<data name="LocationDisplay_ApartmentLobby" xml:space="preserve">
-		<value>ロビー</value>
-	</data>
-	<data name="LocationDisplay_PlotFormat" xml:space="preserve">
-		<value>{0}番地</value>
-	</data>
-	<data name="LocationDisplay_RoomFormat" xml:space="preserve">
-		<value>{0}号室</value>
-	</data>
-	<data name="MissingJobStone_Tooltip" xml:space="preserve">
-		<value>[VanillaPlus]: クリックでロックを解除</value>
-	</data>
-	<data name="MissingJobStone_TooltipWithCountdown" xml:space="preserve">
-		<value>[VanillaPlus]: クリックでロックを解除
+  </data>
+  <data name="LocationDisplay_DefaultEntryFormat" xml:space="preserve">
+    <value>{0}, {1}, {2}, {3}</value>
+  </data>
+  <data name="LocationDisplay_DefaultTooltipFormat" xml:space="preserve">
+    <value>{0}, {1}, {2}, {3}</value>
+  </data>
+  <data name="LocationDisplay_InfoBarEntryLabel" xml:space="preserve">
+    <value>情報バー項目</value>
+  </data>
+  <data name="LocationDisplay_InfoBarTooltipLabel" xml:space="preserve">
+    <value>情報バーのツールチップ</value>
+  </data>
+  <data name="LocationDisplay_ResetButton" xml:space="preserve">
+    <value>初期設定に戻す</value>
+  </data>
+  <data name="LocationDisplay_ShowInstanceNumber" xml:space="preserve">
+    <value>インスタンス番号を表示</value>
+  </data>
+  <data name="LocationDisplay_ShowPreciseHousing" xml:space="preserve">
+    <value>ハウジングの詳細位置を表示</value>
+  </data>
+  <data name="LocationDisplay_ConfigTitle" xml:space="preserve">
+    <value>ロケーション表示設定</value>
+  </data>
+  <data name="LocationDisplay_DtrEntryName" xml:space="preserve">
+    <value>VanillaPlus - LocationDisplay</value>
+  </data>
+  <data name="LocationDisplay_WardFormat" xml:space="preserve">
+    <value>{0}区</value>
+  </data>
+  <data name="LocationDisplay_SubdivisionLabel" xml:space="preserve">
+    <value>サブディビジョン</value>
+  </data>
+  <data name="LocationDisplay_ApartmentFormat" xml:space="preserve">
+    <value>アパート {0}</value>
+  </data>
+  <data name="LocationDisplay_ApartmentLobby" xml:space="preserve">
+    <value>ロビー</value>
+  </data>
+  <data name="LocationDisplay_PlotFormat" xml:space="preserve">
+    <value>{0}番地</value>
+  </data>
+  <data name="LocationDisplay_RoomFormat" xml:space="preserve">
+    <value>{0}号室</value>
+  </data>
+  <data name="MissingJobStone_Tooltip" xml:space="preserve">
+    <value>[VanillaPlus]: クリックでロックを解除</value>
+  </data>
+  <data name="MissingJobStone_TooltipWithCountdown" xml:space="preserve">
+    <value>[VanillaPlus]: クリックでロックを解除
 残り {0} 回</value>
-	</data>
-	<data name="MissingJobStone_WarningText" xml:space="preserve">
-		<value>アーティファクト装備がありません！</value>
-	</data>
-	<data name="ModificationDescription_ArmourySearchBar" xml:space="preserve">
-		<value>アーマリーチェストに検索欄を追加します。</value>
-	</data>
-	<data name="ModificationDescription_ClearFlag" xml:space="preserve">
-		<value>ミニマップを右クリックして現在の旗を削除できます。</value>
-	</data>
-	<data name="ModificationDescription_ClearSelectedDuties" xml:space="preserve">
-		<value>コンテンツファインダーを開いた際に選択済みのコンテンツを解除します。</value>
-	</data>
-	<data name="ModificationDescription_ClearTextInputs" xml:space="preserve">
-		<value>テキスト入力欄を右クリックでクリアできます。</value>
-	</data>
-	<data name="ModificationDescription_WondrousTailsProbabilities" xml:space="preserve">
-		<value>ワンダラーテイルズ手帳に現在のライン確率と平均リロール確率を表示します。</value>
-	</data>
-	<data name="ModificationDescription_WindowBackground" xml:space="preserve">
-		<value>任意のネイティブウィンドウに背景を追加できます。
+  </data>
+  <data name="MissingJobStone_WarningText" xml:space="preserve">
+    <value>アーティファクト装備がありません！</value>
+  </data>
+  <data name="ModificationDescription_ArmourySearchBar" xml:space="preserve">
+    <value>アーマリーチェストに検索欄を追加します。</value>
+  </data>
+  <data name="ModificationDescription_ClearFlag" xml:space="preserve">
+    <value>ミニマップを右クリックして現在の旗を削除できます。</value>
+  </data>
+  <data name="ModificationDescription_ClearSelectedDuties" xml:space="preserve">
+    <value>コンテンツファインダーを開いた際に選択済みのコンテンツを解除します。</value>
+  </data>
+  <data name="ModificationDescription_ClearTextInputs" xml:space="preserve">
+    <value>テキスト入力欄を右クリックでクリアできます。</value>
+  </data>
+  <data name="ModificationDescription_WondrousTailsProbabilities" xml:space="preserve">
+    <value>ワンダラーテイルズ手帳に現在のライン確率と平均リロール確率を表示します。</value>
+  </data>
+  <data name="ModificationDescription_WindowBackground" xml:space="preserve">
+    <value>任意のネイティブウィンドウに背景を追加できます。
 
 例: 詠唱バー、ターゲットHPバー、インベントリウィジェット、ToDoリスト</value>
-	</data>
-	<data name="ModificationDescription_TargetCastBarCountdown" xml:space="preserve">
-		<value>ターゲットの詠唱バーに残り時間を追加表示します。</value>
-	</data>
-	<data name="ModificationDescription_SuppressDialogAdvance" xml:space="preserve">
-		<value>カットシーンのダイアログはウィンドウをクリックしたときのみ進行します。</value>
-	</data>
-	<data name="ModificationDescription_StickyShopCategories" xml:space="preserve">
-		<value>一部のショップで選択したカテゴリとサブカテゴリを記憶します。</value>
-	</data>
-	<data name="ModificationDescription_SkipTeleportConfirm" xml:space="preserve">
-		<value>マップからテレポートする際の「[地点]へ[ギル]で移動しますか？」確認をスキップします。</value>
-	</data>
-	<data name="ModificationDescription_ShowAetherCurrents" xml:space="preserve">
-		<value>マップ上にすべての風脈の泉を表示します。</value>
-	</data>
-	<data name="ModificationDescription_SelectNextLootItem" xml:space="preserve">
-		<value>Need/Greed/Passを押したあと自動で次の戦利品にフォーカスします。
+  </data>
+  <data name="ModificationDescription_TargetCastBarCountdown" xml:space="preserve">
+    <value>ターゲットの詠唱バーに残り時間を追加表示します。</value>
+  </data>
+  <data name="ModificationDescription_SuppressDialogAdvance" xml:space="preserve">
+    <value>カットシーンのダイアログはウィンドウをクリックしたときのみ進行します。</value>
+  </data>
+  <data name="ModificationDescription_StickyShopCategories" xml:space="preserve">
+    <value>一部のショップで選択したカテゴリとサブカテゴリを記憶します。</value>
+  </data>
+  <data name="ModificationDescription_SkipTeleportConfirm" xml:space="preserve">
+    <value>マップからテレポートする際の「[地点]へ[ギル]で移動しますか？」確認をスキップします。</value>
+  </data>
+  <data name="ModificationDescription_ShowAetherCurrents" xml:space="preserve">
+    <value>マップ上にすべての風脈の泉を表示します。</value>
+  </data>
+  <data name="ModificationDescription_SelectNextLootItem" xml:space="preserve">
+    <value>Need/Greed/Passを押したあと自動で次の戦利品にフォーカスします。
 
 ※自動でロットは行いません。</value>
-	</data>
-	<data name="ModificationDescription_SaddlebagSearchBar" xml:space="preserve">
-		<value>チョコボかばんに検索欄を追加します。</value>
-	</data>
-	<data name="ModificationDescription_RetainerSearchBar" xml:space="preserve">
-		<value>リテイナーウィンドウに検索欄を追加します。</value>
-	</data>
-	<data name="ModificationDescription_ResourceBarPercentages" xml:space="preserve">
-		<value>HP/MP/GP/CPバーを数値ではなくパーセンテージ表示に変更します。</value>
-	</data>
-	<data name="ModificationDescription_ResetInventoryTab" xml:space="preserve">
-		<value>インベントリを開くたびに最初のタブへ戻します。</value>
-	</data>
-	<data name="ModificationDescription_RecentlyLootedWindow" xml:space="preserve">
-		<value>ログイン中に入手したアイテムをスクロールリストで表示するウィンドウを追加します。
+  </data>
+  <data name="ModificationDescription_SaddlebagSearchBar" xml:space="preserve">
+    <value>チョコボかばんに検索欄を追加します。</value>
+  </data>
+  <data name="ModificationDescription_RetainerSearchBar" xml:space="preserve">
+    <value>リテイナーウィンドウに検索欄を追加します。</value>
+  </data>
+  <data name="ModificationDescription_ResourceBarPercentages" xml:space="preserve">
+    <value>HP/MP/GP/CPバーを数値ではなくパーセンテージ表示に変更します。</value>
+  </data>
+  <data name="ModificationDescription_ResetInventoryTab" xml:space="preserve">
+    <value>インベントリを開くたびに最初のタブへ戻します。</value>
+  </data>
+  <data name="ModificationDescription_RecentlyLootedWindow" xml:space="preserve">
+    <value>ログイン中に入手したアイテムをスクロールリストで表示するウィンドウを追加します。
 
 機能有効後に入手したアイテムのみ表示されます。</value>
-	</data>
-	<data name="ModificationDescription_QuestListWindow" xml:space="preserve">
-		<value>現在のゾーンで受注可能なクエストを一覧表示します。</value>
-	</data>
-	<data name="ModificationDescription_OpenGlamourDresserToCurrentJob" xml:space="preserve">
-		<value>幻影タンスを開いた際、現在のジョブのタブを自動選択します。</value>
-	</data>
-	<data name="ModificationDescription_HideGuildhestObjectivePopup" xml:space="preserve">
-		<value>ギルドオーダー開始時に表示される手順ポップアップを抑制します。
+  </data>
+  <data name="ModificationDescription_QuestListWindow" xml:space="preserve">
+    <value>現在のゾーンで受注可能なクエストを一覧表示します。</value>
+  </data>
+  <data name="ModificationDescription_OpenGlamourDresserToCurrentJob" xml:space="preserve">
+    <value>幻影タンスを開いた際、現在のジョブのタブを自動選択します。</value>
+  </data>
+  <data name="ModificationDescription_HideGuildhestObjectivePopup" xml:space="preserve">
+    <value>ギルドオーダー開始時に表示される手順ポップアップを抑制します。
 
 初めてのギルドオーダーの場合は無効化を推奨します。</value>
-	</data>
-	<data name="ModificationDescription_HideMpBars" xml:space="preserve">
-		<value>MPを使用しないジョブのパーティリストからMPバーを隠します。</value>
-	</data>
-	<data name="ModificationDescription_HideUnwantedBanners" xml:space="preserve">
-		<value>大型テキストバナーとそのSEを非表示にします。</value>
-	</data>
-	<data name="ModificationDescription_HUDCoordinates" xml:space="preserve">
-		<value>HUDレイアウトノードに座標を表示し、正確な配置を支援します。
+  </data>
+  <data name="ModificationDescription_HideMpBars" xml:space="preserve">
+    <value>MPを使用しないジョブのパーティリストからMPバーを隠します。</value>
+  </data>
+  <data name="ModificationDescription_HideUnwantedBanners" xml:space="preserve">
+    <value>大型テキストバナーとそのSEを非表示にします。</value>
+  </data>
+  <data name="ModificationDescription_HUDCoordinates" xml:space="preserve">
+    <value>HUDレイアウトノードに座標を表示し、正確な配置を支援します。
 
 座標はHUD要素の中心を基準とします。</value>
-	</data>
-	<data name="ModificationDescription_InstancedWaymarks" xml:space="preserve">
-		<value>コンテンツごとにウェイマーカー保存枠を個別化し、各枠に名前を付けられます。</value>
-	</data>
-	<data name="ModificationDescription_InventorySearchBar" xml:space="preserve">
-		<value>インベントリウィンドウに検索欄を追加します。</value>
-	</data>
-	<data name="ModificationDescription_ListInventory" xml:space="preserve">
-		<value>インベントリを一覧表示し、フィルターを切り替えられるウィンドウを追加します。</value>
-	</data>
-	<data name="ModificationDescription_LocationDisplay" xml:space="preserve">
-		<value>サーバー情報バーに現在地を表示します。</value>
-	</data>
-	<data name="ModificationDescription_MacroLineNumbers" xml:space="preserve">
-		<value>ユーザーマクロウィンドウに行番号を表示します。</value>
-	</data>
-	<data name="ModificationDescription_MacroTooltips" xml:space="preserve">
-		<value>マクロに /macroicon アクションを設定している場合、ホバーでアクションのツールチップを表示します。</value>
-	</data>
-	<data name="ModificationDescription_DebugCustomAddon" xml:space="preserve">
-		<value>VanillaPlus 機能をテストするためのデバッグモジュール</value>
-	</data>
-	<data name="ModificationDescription_DebugGameModification" xml:space="preserve">
-		<value>VanillaPlus 機能をテストするためのデバッグモジュール</value>
-	</data>
-	<data name="ModificationDescription_SampleGameModification" xml:space="preserve">
-		<value>サンプル説明</value>
-	</data>
-	<data name="ModificationDescription_BetterCursor" xml:space="preserve">
-		<value>カーソルを取り巻くリングを描画し、視認性を向上させます。</value>
-	</data>
-	<data name="ModificationDescription_BetterInterruptableCastBars" xml:space="preserve">
-		<value>敵の割り込み可能な詠唱バーを目立たせます。
+  </data>
+  <data name="ModificationDescription_InstancedWaymarks" xml:space="preserve">
+    <value>コンテンツごとにウェイマーカー保存枠を個別化し、各枠に名前を付けられます。</value>
+  </data>
+  <data name="ModificationDescription_InventorySearchBar" xml:space="preserve">
+    <value>インベントリウィンドウに検索欄を追加します。</value>
+  </data>
+  <data name="ModificationDescription_ListInventory" xml:space="preserve">
+    <value>インベントリを一覧表示し、フィルターを切り替えられるウィンドウを追加します。</value>
+  </data>
+  <data name="ModificationDescription_LocationDisplay" xml:space="preserve">
+    <value>サーバー情報バーに現在地を表示します。</value>
+  </data>
+  <data name="ModificationDescription_MacroLineNumbers" xml:space="preserve">
+    <value>ユーザーマクロウィンドウに行番号を表示します。</value>
+  </data>
+  <data name="ModificationDescription_MacroTooltips" xml:space="preserve">
+    <value>マクロに /macroicon アクションを設定している場合、ホバーでアクションのツールチップを表示します。</value>
+  </data>
+  <data name="ModificationDescription_DebugCustomAddon" xml:space="preserve">
+    <value>VanillaPlus 機能をテストするためのデバッグモジュール</value>
+  </data>
+  <data name="ModificationDescription_DebugGameModification" xml:space="preserve">
+    <value>VanillaPlus 機能をテストするためのデバッグモジュール</value>
+  </data>
+  <data name="ModificationDescription_SampleGameModification" xml:space="preserve">
+    <value>サンプル説明</value>
+  </data>
+  <data name="ModificationDescription_BetterCursor" xml:space="preserve">
+    <value>カーソルを取り巻くリングを描画し、視認性を向上させます。</value>
+  </data>
+  <data name="ModificationDescription_BetterInterruptableCastBars" xml:space="preserve">
+    <value>敵の割り込み可能な詠唱バーを目立たせます。
 
 割り込みできるアクションはホットバー上でも強調表示されます。</value>
-	</data>
-	<data name="ModificationDescription_BetterQuestMapLink" xml:space="preserve">
-		<value>クエストリンクをクリックした際、そのクエスト専用マップを開きます。</value>
-	</data>
-	<data name="ModificationDescription_CastBarAetheryteNames" xml:space="preserve">
-		<value>「テレポ」の詠唱名を目的地のエーテライト名に置き換えます。</value>
-	</data>
-	<data name="ModificationDescription_CurrencyOverlay" xml:space="preserve">
-		<value>UIオーバーレイに追加の通貨を表示できます。
+  </data>
+  <data name="ModificationDescription_BetterQuestMapLink" xml:space="preserve">
+    <value>クエストリンクをクリックした際、そのクエスト専用マップを開きます。</value>
+  </data>
+  <data name="ModificationDescription_CastBarAetheryteNames" xml:space="preserve">
+    <value>「テレポ」の詠唱名を目的地のエーテライト名に置き換えます。</value>
+  </data>
+  <data name="ModificationDescription_CurrencyOverlay" xml:space="preserve">
+    <value>UIオーバーレイに追加の通貨を表示できます。
 
 警告を出す最小値と最大値も設定可能です。</value>
-	</data>
-	<data name="ModificationDescription_DraggableWindowDeadSpace" xml:space="preserve">
-		<value>ウィンドウの余白をドラッグして移動できるようにします。</value>
-	</data>
-	<data name="ModificationDescription_DutyTimer" xml:space="preserve">
-		<value>コンテンツ完了時に所要時間をチャットへ出力します。</value>
-	</data>
-	<data name="ModificationDescription_DutyLootPreview" xml:space="preserve">
-		<value>コンテンツウィンドウに戦利品ビューアーを追加します。</value>
-	</data>
-	<data name="ModificationDescription_EnhancedLootWindow" xml:space="preserve">
-		<value>戦利品ウィンドウにそのアイテムを解放済みか入手可能かの指標を表示します。</value>
-	</data>
-	<data name="ModificationDescription_FadeLootButton" xml:space="preserve">
-		<value>すべてのアイテムでロット済みの場合、Lootボタンを淡くします。</value>
-	</data>
-	<data name="ModificationDescription_FadeUnavailableActions" xml:space="preserve">
-		<value>リソース不足、射程外、リキャスト中などで使用できないアクションのホットバーをフェードさせます。
+  </data>
+  <data name="ModificationDescription_DraggableWindowDeadSpace" xml:space="preserve">
+    <value>ウィンドウの余白をドラッグして移動できるようにします。</value>
+  </data>
+  <data name="ModificationDescription_DutyTimer" xml:space="preserve">
+    <value>コンテンツ完了時に所要時間をチャットへ出力します。</value>
+  </data>
+  <data name="ModificationDescription_DutyLootPreview" xml:space="preserve">
+    <value>コンテンツウィンドウに戦利品ビューアーを追加します。</value>
+  </data>
+  <data name="ModificationDescription_EnhancedLootWindow" xml:space="preserve">
+    <value>戦利品ウィンドウにそのアイテムを解放済みか入手可能かの指標を表示します。</value>
+  </data>
+  <data name="ModificationDescription_FadeLootButton" xml:space="preserve">
+    <value>すべてのアイテムでロット済みの場合、Lootボタンを淡くします。</value>
+  </data>
+  <data name="ModificationDescription_FadeUnavailableActions" xml:space="preserve">
+    <value>リソース不足、射程外、リキャスト中などで使用できないアクションのホットバーをフェードさせます。
 
 レベルシンクで使用不可になったアクションもフェードします。</value>
-	</data>
-	<data name="ModificationDescription_FasterScroll" xml:space="preserve">
-		<value>すべてのスクロールバー速度を上げます。</value>
-	</data>
-	<data name="ModificationDescription_FastMouseClick" xml:space="preserve">
-		<value>ゲームはダブルクリック時にシングルクリックイベントを送信しません。
+  </data>
+  <data name="ModificationDescription_FasterScroll" xml:space="preserve">
+    <value>すべてのスクロールバー速度を上げます。</value>
+  </data>
+  <data name="ModificationDescription_FastMouseClick" xml:space="preserve">
+    <value>ゲームはダブルクリック時にシングルクリックイベントを送信しません。
 
 この機能はダブルクリック時にもシングルクリックを発生させます。</value>
-	</data>
-	<data name="ModificationDescription_FocusTargetLock" xml:space="preserve">
-		<value>コンテンツ再開時に以前のフォーカスターゲットを復元します。</value>
-	</data>
-	<data name="ModificationDescription_ForcedCutsceneSounds" xml:space="preserve">
-		<value>カットシーン中に選択したサウンドチャネルのミュートを自動解除します。</value>
-	</data>
-	<data name="ModificationDescription_HUDPresets" xml:space="preserve">
-		<value>無制限にHUDレイアウトを保存/読み込みできます。</value>
-	</data>
-	<data name="ModificationDescription_FateListWindow" xml:space="preserve">
-		<value>現在のゾーンで進行中のFATEをすべて表示します。</value>
-	</data>
-	<data name="ModificationDescription_PetSizeContextMenu" xml:space="preserve">
-		<value>ペットまたはペットを連れるプレイヤーを右クリックするとサイズ変更メニューを表示します。</value>
-	</data>
-	<data name="ModificationDescription_MissingJobStoneLockout" xml:space="preserve">
-		<value>ソウルクリスタル未装備時はコンテンツ申請をブロックします。</value>
-	</data>
-	<data name="ModificationDescription_GearsetRedirect" xml:space="preserve">
-		<value>ゾーンに応じて別のギアセットを読み込むように設定できます。</value>
-	</data>
-	<data name="ModificationDisplay_ArmourySearchBar" xml:space="preserve">
-		<value>アーマリー検索バー</value>
-	</data>
-	<data name="ModificationDisplay_ClearFlag" xml:space="preserve">
-		<value>旗を消去</value>
-	</data>
-	<data name="ModificationDisplay_ClearSelectedDuties" xml:space="preserve">
-		<value>コンテンツ選択解除</value>
-	</data>
-	<data name="ModificationDisplay_ClearTextInputs" xml:space="preserve">
-		<value>テキスト入力クリア</value>
-	</data>
-	<data name="ModificationDisplay_WondrousTailsProbabilities" xml:space="preserve">
-		<value>ワンダラーテイルズ確率</value>
-	</data>
-	<data name="WondrousTailsProbabilities_ErrorPlaceholder" xml:space="preserve">
-		<value>エラー </value>
-	</data>
-	<data name="WondrousTailsProbabilities_LineChancesLabel" xml:space="preserve">
-		<value>ライン確率： </value>
-	</data>
-	<data name="WondrousTailsProbabilities_ShuffleAverageLabel" xml:space="preserve">
-		<value>シャッフル平均： </value>
-	</data>
-	<data name="AddonConfig_KeybindWindowTitle" xml:space="preserve">
-		<value>キーバインド設定ウィンドウ</value>
-	</data>
-	<data name="AddonConfig_KeybindLabel" xml:space="preserve">
-		<value>キーバインド</value>
-	</data>
-	<data name="Common_Disable" xml:space="preserve">
-		<value>無効化</value>
-	</data>
-	<data name="Common_Enable" xml:space="preserve">
-		<value>有効化</value>
-	</data>
-	<data name="AddonConfig_ChangeKeybind" xml:space="preserve">
-		<value>キーバインドを変更</value>
-	</data>
-	<data name="AddonConfig_WindowSizeLabel" xml:space="preserve">
-		<value>ウィンドウサイズ</value>
-	</data>
-	<data name="AddonConfig_WindowWidthLabel" xml:space="preserve">
-		<value>幅</value>
-	</data>
-	<data name="AddonConfig_WindowHeightLabel" xml:space="preserve">
-		<value>高さ</value>
-	</data>
-	<data name="AddonConfig_ReloadHint" xml:space="preserve">
-		<value>変更はウィンドウを開き直すまで適用されません</value>
-	</data>
-	<data name="KeybindConfig_InputPrompt" xml:space="preserve">
-		<value>希望するキーコンボを入力</value>
-	</data>
-	<data name="KeybindConfig_CurrentPrompt" xml:space="preserve">
-		<value>キーコンボを押してください</value>
-	</data>
-	<data name="KeybindConfig_ConflictsLabel" xml:space="preserve">
-		<value>競合するキーバインド</value>
-	</data>
-	<data name="KeybindConfig_NoConflicts" xml:space="preserve">
-		<value>競合は検出されませんでした</value>
-	</data>
-	<data name="Common_Confirm" xml:space="preserve">
-		<value>決定</value>
-	</data>
-	<data name="Common_Cancel" xml:space="preserve">
-		<value>キャンセル</value>
-	</data>
-	<data name="NodeList_ConfigWindowTitle" xml:space="preserve">
-		<value>{0} 設定ウィンドウ</value>
-	</data>
-	<data name="NodeList_OpenCommandHelp" xml:space="preserve">
-		<value>{0} ウィンドウを開きます</value>
-	</data>
-	<data name="SearchAddon_GearsetTitle" xml:space="preserve">
-		<value>ギアセット検索</value>
-	</data>
-	<data name="SortOption_Alphabetical" xml:space="preserve">
-		<value>五十音順</value>
-	</data>
-	<data name="SortOption_Id" xml:space="preserve">
-		<value>ID順</value>
-	</data>
-	<data name="SearchAddon_TerritoryTitle" xml:space="preserve">
-		<value>エリア検索</value>
-	</data>
-	<data name="ColorPicker_WindowTitle" xml:space="preserve">
-		<value>カラーピッカー</value>
-	</data>
-	<data name="NodeStyle_PositionLabel" xml:space="preserve">
-		<value>位置</value>
-	</data>
-	<data name="TextNodeConfig_TextColor" xml:space="preserve">
-		<value>文字色</value>
-	</data>
-	<data name="TextNodeConfig_TextOutline" xml:space="preserve">
-		<value>文字縁</value>
-	</data>
-	<data name="TextNodeConfig_FontSize" xml:space="preserve">
-		<value>フォントサイズ</value>
-	</data>
-	<data name="TextNodeConfig_Font" xml:space="preserve">
-		<value>フォント</value>
-	</data>
-	<data name="TextNodeConfig_Alignment" xml:space="preserve">
-		<value>配置</value>
-	</data>
-	<data name="IconWithCount_MillionsFormat" xml:space="preserve">
-		<value>{0}m</value>
-	</data>
-	<data name="IconWithCount_ThousandsFormat" xml:space="preserve">
-		<value>{0}k</value>
-	</data>
-	<data name="ModificationDisplay_WindowBackground" xml:space="preserve">
-		<value>ウィンドウ背景</value>
-	</data>
-	<data name="ModificationDisplay_TargetCastBarCountdown" xml:space="preserve">
-		<value>ターゲット詠唱バー残り時間</value>
-	</data>
-	<data name="ModificationDisplay_SuppressDialogAdvance" xml:space="preserve">
-		<value>ダイアログ抑制</value>
-	</data>
-	<data name="ModificationDisplay_StickyShopCategories" xml:space="preserve">
-		<value>ショップカテゴリ記憶</value>
-	</data>
-	<data name="ModificationDisplay_SkipTeleportConfirm" xml:space="preserve">
-		<value>テレポ確認スキップ</value>
-	</data>
-	<data name="ModificationDisplay_ShowAetherCurrents" xml:space="preserve">
-		<value>風脈の泉表示</value>
-	</data>
-	<data name="ModificationDisplay_SelectNextLootItem" xml:space="preserve">
-		<value>次の戦利品へ移動</value>
-	</data>
-	<data name="ModificationDisplay_SaddlebagSearchBar" xml:space="preserve">
-		<value>チョコボかばん検索</value>
-	</data>
-	<data name="ModificationDisplay_RetainerSearchBar" xml:space="preserve">
-		<value>リテイナー検索</value>
-	</data>
-	<data name="ModificationDisplay_ResourceBarPercentages" xml:space="preserve">
-		<value>リソース%表示</value>
-	</data>
-	<data name="ModificationDisplay_ResetInventoryTab" xml:space="preserve">
-		<value>インベントリタブ初期化</value>
-	</data>
-	<data name="ModificationDisplay_RecentlyLootedWindow" xml:space="preserve">
-		<value>最近の戦利品ウィンドウ</value>
-	</data>
-	<data name="ModificationDisplay_QuestListWindow" xml:space="preserve">
-		<value>クエストリストウィンドウ</value>
-	</data>
-	<data name="ModificationDisplay_OpenGlamourDresserToCurrentJob" xml:space="preserve">
-		<value>幻影タンス自動タブ</value>
-	</data>
-	<data name="ModificationDisplay_HideGuildhestObjectivePopup" xml:space="preserve">
-		<value>ギルドオーダーポップ非表示</value>
-	</data>
-	<data name="ModificationDisplay_HideMpBars" xml:space="preserve">
-		<value>MPバー非表示</value>
-	</data>
-	<data name="ModificationDisplay_HideUnwantedBanners" xml:space="preserve">
-		<value>バナー非表示</value>
-	</data>
-	<data name="ModificationDisplay_HUDCoordinates" xml:space="preserve">
-		<value>HUD座標</value>
-	</data>
-	<data name="ModificationDisplay_InstancedWaymarks" xml:space="preserve">
-		<value>個別ウェイマーカー</value>
-	</data>
-	<data name="ModificationDisplay_InventorySearchBar" xml:space="preserve">
-		<value>インベントリ検索バー</value>
-	</data>
-	<data name="ModificationDisplay_ListInventory" xml:space="preserve">
-		<value>インベントリ一覧</value>
-	</data>
-	<data name="ModificationDisplay_LocationDisplay" xml:space="preserve">
-		<value>ロケーション表示</value>
-	</data>
-	<data name="ModificationDisplay_MacroLineNumbers" xml:space="preserve">
-		<value>マクロ行番号</value>
-	</data>
-	<data name="ModificationDisplay_MacroTooltips" xml:space="preserve">
-		<value>マクロツールチップ</value>
-	</data>
-	<data name="ModificationDisplay_DebugCustomAddon" xml:space="preserve">
-		<value>デバッグ CustomAddon</value>
-	</data>
-	<data name="ModificationDisplay_DebugGameModification" xml:space="preserve">
-		<value>デバッグ GameModification</value>
-	</data>
-	<data name="ModificationDisplay_SampleGameModification" xml:space="preserve">
-		<value>サンプル表示名</value>
-	</data>
-	<data name="ModificationDisplay_BetterCursor" xml:space="preserve">
-		<value>Better Cursor</value>
-	</data>
-	<data name="ModificationDisplay_BetterInterruptableCastBars" xml:space="preserve">
-		<value>割り込み詠唱バー強調</value>
-	</data>
-	<data name="ModificationDisplay_BetterQuestMapLink" xml:space="preserve">
-		<value>クエストマップリンク改善</value>
-	</data>
-	<data name="ModificationDisplay_CastBarAetheryteNames" xml:space="preserve">
-		<value>詠唱バーに目的地名</value>
-	</data>
-	<data name="ModificationDisplay_CurrencyOverlay" xml:space="preserve">
-		<value>通貨オーバーレイ</value>
-	</data>
-	<data name="ModificationDisplay_DraggableWindowDeadSpace" xml:space="preserve">
-		<value>デッドスペースドラッグ</value>
-	</data>
-	<data name="ModificationDisplay_DutyTimer" xml:space="preserve">
-		<value>コンテンツタイマー</value>
-	</data>
-	<data name="ModificationDisplay_DutyLootPreview" xml:space="preserve">
-		<value>戦利品プレビュー</value>
-	</data>
-	<data name="ModificationDisplay_EnhancedLootWindow" xml:space="preserve">
-		<value>戦利品ウィンドウ強化</value>
-	</data>
-	<data name="ModificationDisplay_FadeLootButton" xml:space="preserve">
-		<value>Lootボタンフェード</value>
-	</data>
-	<data name="ModificationDisplay_FadeUnavailableActions" xml:space="preserve">
-		<value>使用不可アクションフェード</value>
-	</data>
-	<data name="ModificationDisplay_FasterScroll" xml:space="preserve">
-		<value>高速スクロール</value>
-	</data>
-	<data name="ModificationDisplay_FastMouseClick" xml:space="preserve">
-		<value>高速マウスクリック</value>
-	</data>
-	<data name="ModificationDisplay_FocusTargetLock" xml:space="preserve">
-		<value>フォーカスターゲット維持</value>
-	</data>
-	<data name="ModificationDisplay_ForcedCutsceneSounds" xml:space="preserve">
-		<value>カットシーン音声強制</value>
-	</data>
-	<data name="ModificationDisplay_HUDPresets" xml:space="preserve">
-		<value>HUDプリセット</value>
-	</data>
-	<data name="ModificationDisplay_FateListWindow" xml:space="preserve">
-		<value>FATEリストウィンドウ</value>
-	</data>
-	<data name="ModificationDisplay_PetSizeContextMenu" xml:space="preserve">
-		<value>ペットサイズメニュー</value>
-	</data>
-	<data name="PetSize_MenuTitle" xml:space="preserve">
-		<value>ペットサイズ</value>
-	</data>
-	<data name="PetSize_OptionLarge" xml:space="preserve">
-		<value>大</value>
-	</data>
-	<data name="PetSize_OptionMedium" xml:space="preserve">
-		<value>中</value>
-	</data>
-	<data name="PetSize_OptionSmall" xml:space="preserve">
-		<value>小</value>
-	</data>
-	<data name="ModificationDisplay_MissingJobStoneLockout" xml:space="preserve">
-		<value>ソウルクリスタルロック</value>
-	</data>
-	<data name="ModificationDisplay_GearsetRedirect" xml:space="preserve">
-		<value>ギアセットリダイレクト</value>
-	</data>
-	<data name="EnhancedLootWindow_ConfigTitle" xml:space="preserve">
-		<value>戦利品ウィンドウ拡張設定</value>
-	</data>
-	<data name="EnhancedLootWindow_LabelMarkAlreadyObtained" xml:space="preserve">
-		<value>入手済みアイテムをマークする</value>
-	</data>
-	<data name="EnhancedLootWindow_LabelMarkUnobtainable" xml:space="preserve">
-		<value>入手できないアイテムをマークする</value>
-	</data>
-	<data name="FadeLootButton_CategoryStyleSettings" xml:space="preserve">
-		<value>スタイル設定</value>
-	</data>
-	<data name="FadeLootButton_ConfigTitle" xml:space="preserve">
-		<value>Lootボタンフェード設定</value>
-	</data>
-	<data name="FadeLootButton_LabelFadePercentage" xml:space="preserve">
-		<value>フェード率</value>
-	</data>
-	<data name="FadeUnavailableActions_CategoryFeatureToggles" xml:space="preserve">
-		<value>機能切り替え</value>
-	</data>
-	<data name="FadeUnavailableActions_CategoryStyleSettings" xml:space="preserve">
-		<value>スタイル設定</value>
-	</data>
-	<data name="FadeUnavailableActions_ConfigTitle" xml:space="preserve">
-		<value>使用不可アクションフェード設定</value>
-	</data>
-	<data name="FadeUnavailableActions_LabelApplyToFrame" xml:space="preserve">
-		<value>枠にも透過を適用</value>
-	</data>
-	<data name="FadeUnavailableActions_LabelApplyToSync" xml:space="preserve">
-		<value>シンク対象アクションのみに適用</value>
-	</data>
-	<data name="FadeUnavailableActions_LabelFadePercentage" xml:space="preserve">
-		<value>フェード率</value>
-	</data>
-	<data name="FadeUnavailableActions_LabelReddenOutOfRange" xml:space="preserve">
-		<value>射程外で赤くする</value>
-	</data>
-	<data name="FadeUnavailableActions_LabelReddenPercentage" xml:space="preserve">
-		<value>赤みの強さ</value>
-	</data>
-	<data name="FasterScroll_ConfigTitle" xml:space="preserve">
-		<value>高速スクロール設定</value>
-	</data>
-	<data name="FasterScroll_LabelSpeedMultiplier" xml:space="preserve">
-		<value>速度倍率</value>
-	</data>
-	<data name="ForcedCutsceneSounds_CategoryGeneral" xml:space="preserve">
-		<value>一般</value>
-	</data>
-	<data name="ForcedCutsceneSounds_CategorySpecial" xml:space="preserve">
-		<value>特殊</value>
-	</data>
-	<data name="ForcedCutsceneSounds_ConfigTitle" xml:space="preserve">
-		<value>カットシーン音声強制設定</value>
-	</data>
-	<data name="ForcedCutsceneSounds_DisableMsq" xml:space="preserve">
-		<value>討滅/メインルレでは無効</value>
-	</data>
-	<data name="ForcedCutsceneSounds_RestoreMuteState" xml:space="preserve">
-		<value>終了後にミュート状態を戻す</value>
-	</data>
-	<data name="ForcedCutsceneSounds_UnmuteBgm" xml:space="preserve">
-		<value>BGMのミュートを解除</value>
-	</data>
-	<data name="ForcedCutsceneSounds_UnmuteEnv" xml:space="preserve">
-		<value>環境音のミュートを解除</value>
-	</data>
-	<data name="ForcedCutsceneSounds_UnmuteMaster" xml:space="preserve">
-		<value>マスター音量のミュートを解除</value>
-	</data>
-	<data name="ForcedCutsceneSounds_UnmutePerform" xml:space="preserve">
-		<value>演奏のミュートを解除</value>
-	</data>
-	<data name="ForcedCutsceneSounds_UnmuteSe" xml:space="preserve">
-		<value>効果音のミュートを解除</value>
-	</data>
-	<data name="ForcedCutsceneSounds_UnmuteSystem" xml:space="preserve">
-		<value>システム音のミュートを解除</value>
-	</data>
-	<data name="ForcedCutsceneSounds_UnmuteVoice" xml:space="preserve">
-		<value>ボイスのミュートを解除</value>
-	</data>
-	<data name="GearsetRedirect_ConfigTitle" xml:space="preserve">
-		<value>ギアセットリダイレクト設定</value>
-	</data>
-	<data name="GearsetRedirect_AddRedirectionTitle" xml:space="preserve">
-		<value>新しいリダイレクトを追加</value>
-	</data>
-	<data name="GearsetRedirect_SortAlphabetical" xml:space="preserve">
-		<value>五十音順</value>
-	</data>
-	<data name="GearsetRedirect_SortId" xml:space="preserve">
-		<value>ID順</value>
-	</data>
-	<data name="HideUnwantedBanners_ConfigTitle" xml:space="preserve">
-		<value>バナー非表示設定</value>
-	</data>
-	<data name="InstancedWaymarks_RenameMenuLabel" xml:space="preserve">
-		<value>名前を変更</value>
-	</data>
-	<data name="InstancedWaymarks_RenameWindowTitle" xml:space="preserve">
-		<value>ウェイマーカー名称変更</value>
-	</data>
-	<data name="DebugCustomAddon_Title" xml:space="preserve">
-		<value>デバッグアドオンウィンドウ</value>
-	</data>
-	<data name="ResourceBarPercentages_ApplyToPartyMembers" xml:space="preserve">
-		<value>パーティメンバーに適用</value>
-	</data>
-	<data name="ResourceBarPercentages_ApplyToPlayer" xml:space="preserve">
-		<value>自キャラに適用</value>
-	</data>
-	<data name="ResourceBarPercentages_CategoryExtra" xml:space="preserve">
-		<value>その他</value>
-	</data>
-	<data name="ResourceBarPercentages_CategoryParameterWidget" xml:space="preserve">
-		<value>パラメータウィジェット</value>
-	</data>
-	<data name="ResourceBarPercentages_CategoryPartyList" xml:space="preserve">
-		<value>パーティリスト</value>
-	</data>
-	<data name="ResourceBarPercentages_CategoryPercentageFormat" xml:space="preserve">
-		<value>パーセント表示形式</value>
-	</data>
-	<data name="ResourceBarPercentages_CategoryPercentageSign" xml:space="preserve">
-		<value>パーセント記号</value>
-	</data>
-	<data name="ResourceBarPercentages_ChangeCp" xml:space="preserve">
-		<value>CPの表示を変更</value>
-	</data>
-	<data name="ResourceBarPercentages_ChangeGp" xml:space="preserve">
-		<value>GPの表示を変更</value>
-	</data>
-	<data name="ResourceBarPercentages_ChangeHp" xml:space="preserve">
-		<value>HPの表示を変更</value>
-	</data>
-	<data name="ResourceBarPercentages_ChangeMp" xml:space="preserve">
-		<value>MPの表示を変更</value>
-	</data>
-	<data name="ResourceBarPercentages_ConfigTitle" xml:space="preserve">
-		<value>リソース%表示設定</value>
-	</data>
-	<data name="ResourceBarPercentages_DecimalPlaces" xml:space="preserve">
-		<value>小数点以下桁数</value>
-	</data>
-	<data name="ResourceBarPercentages_DeadOrAliveMode" xml:space="preserve">
-		<value>生存/戦闘不能モード</value>
-	</data>
-	<data name="ResourceBarPercentages_ShowDecimalsBelowHundred" xml:space="preserve">
-		<value>100%未満のみ小数を表示</value>
-	</data>
-	<data name="ResourceBarPercentages_ShowOnParameterWidget" xml:space="preserve">
-		<value>パラメータウィジェットに表示</value>
-	</data>
-	<data name="ResourceBarPercentages_ShowOnPartyList" xml:space="preserve">
-		<value>パーティリストに表示</value>
-	</data>
-	<data name="ResourceBarPercentages_ShowPercentageSign" xml:space="preserve">
-		<value>%記号を表示</value>
-	</data>
-	<data name="ResourceBarPercentages_StatusAlive" xml:space="preserve">
-		<value>生存</value>
-	</data>
-	<data name="ResourceBarPercentages_StatusDead" xml:space="preserve">
-		<value>戦闘不能</value>
-	</data>
-	<data name="ListInventory_Title" xml:space="preserve">
-		<value>インベントリ一覧</value>
-	</data>
-	<data name="ListInventory_FilterAlphabetically" xml:space="preserve">
-		<value>五十音順</value>
-	</data>
-	<data name="ListInventory_FilterQuantity" xml:space="preserve">
-		<value>数量</value>
-	</data>
-	<data name="ListInventory_FilterLevel" xml:space="preserve">
-		<value>レベル</value>
-	</data>
-	<data name="ListInventory_FilterItemLevel" xml:space="preserve">
-		<value>アイテムレベル</value>
-	</data>
-	<data name="ListInventory_FilterRarity" xml:space="preserve">
-		<value>レアリティ</value>
-	</data>
-	<data name="ListInventory_FilterItemId" xml:space="preserve">
-		<value>アイテムID</value>
-	</data>
-	<data name="ListInventory_FilterItemCategory" xml:space="preserve">
-		<value>アイテムカテゴリ</value>
-	</data>
-	<data name="RecentlyLootedWindow_Title" xml:space="preserve">
-		<value>最近の戦利品</value>
-	</data>
-	<data name="QuestListWindow_Title" xml:space="preserve">
-		<value>クエストリスト</value>
-	</data>
-	<data name="QuestListWindow_FilterAlphabetically" xml:space="preserve">
-		<value>五十音順</value>
-	</data>
-	<data name="QuestListWindow_FilterDistance" xml:space="preserve">
-		<value>距離</value>
-	</data>
-	<data name="QuestListWindow_FilterIssuerName" xml:space="preserve">
-		<value>依頼主名</value>
-	</data>
-	<data name="QuestListWindow_FilterLevel" xml:space="preserve">
-		<value>レベル</value>
-	</data>
-	<data name="QuestListWindow_FilterType" xml:space="preserve">
-		<value>種類</value>
-	</data>
-	<data name="ShowAetherCurrents_Tooltip" xml:space="preserve">
-		<value>風脈の泉</value>
-	</data>
-	<data name="Title_DutyLootPreview" xml:space="preserve">
-		<value>戦利品プレビュー</value>
-	</data>
-	<data name="VersionLabelFormat" xml:space="preserve">
-		<value>バージョン {0}</value>
-	</data>
-    <data name="ActionHighlight_Configuration" xml:space="preserve">
-       <value>アクションハイライト設定</value>
-   </data>
-    <data name="ActionHighlight_ShowInCombat" xml:space="preserve">
-       <value>戦闘中のみ表示</value>
-   </data>
-    <data name="ActionHighlight_AntOnlyOnFinalStack" xml:space="preserve">
-       <value>最後のスタックのみアリ（点滅）効果を表示</value>
-   </data>
-    <data name="ActionHighlight_ShowOnlyUsableActions" xml:space="preserve">
-       <value>使用可能なアクションのみ表示</value>
-   </data>
-    <data name="ActionHighlight_UseGlobalPreAntMs" xml:space="preserve">
-       <value>グローバル・プレアリ時間(ms)を使用</value>
-   </data>
-    <data name="ActionHighlight_GlobalPreAntTimeMs" xml:space="preserve">
-       <value>グローバル・プレアリ時間 (ms)</value>
-   </data>
-    <data name="ActionHighlight_DisplayName" xml:space="preserve">
-       <value>アクションハイライト</value>
-   </data>
-    <data name="ActionHighlight_Description" xml:space="preserve">
-       <value>アビリティが使用可能になった時、または使用可能になる直前にアリ（点滅）エフェクトで強調表示します。</value>
-   </data>
+  </data>
+  <data name="ModificationDescription_FocusTargetLock" xml:space="preserve">
+    <value>コンテンツ再開時に以前のフォーカスターゲットを復元します。</value>
+  </data>
+  <data name="ModificationDescription_ForcedCutsceneSounds" xml:space="preserve">
+    <value>カットシーン中に選択したサウンドチャネルのミュートを自動解除します。</value>
+  </data>
+  <data name="ModificationDescription_HUDPresets" xml:space="preserve">
+    <value>無制限にHUDレイアウトを保存/読み込みできます。</value>
+  </data>
+  <data name="ModificationDescription_FateListWindow" xml:space="preserve">
+    <value>現在のゾーンで進行中のFATEをすべて表示します。</value>
+  </data>
+  <data name="ModificationDescription_PetSizeContextMenu" xml:space="preserve">
+    <value>ペットまたはペットを連れるプレイヤーを右クリックするとサイズ変更メニューを表示します。</value>
+  </data>
+  <data name="ModificationDescription_MissingJobStoneLockout" xml:space="preserve">
+    <value>ソウルクリスタル未装備時はコンテンツ申請をブロックします。</value>
+  </data>
+  <data name="ModificationDescription_GearsetRedirect" xml:space="preserve">
+    <value>ゾーンに応じて別のギアセットを読み込むように設定できます。</value>
+  </data>
+  <data name="ModificationDisplay_ArmourySearchBar" xml:space="preserve">
+    <value>アーマリー検索バー</value>
+  </data>
+  <data name="ModificationDisplay_ClearFlag" xml:space="preserve">
+    <value>旗を消去</value>
+  </data>
+  <data name="ModificationDisplay_ClearSelectedDuties" xml:space="preserve">
+    <value>コンテンツ選択解除</value>
+  </data>
+  <data name="ModificationDisplay_ClearTextInputs" xml:space="preserve">
+    <value>テキスト入力クリア</value>
+  </data>
+  <data name="ModificationDisplay_WondrousTailsProbabilities" xml:space="preserve">
+    <value>ワンダラーテイルズ確率</value>
+  </data>
+  <data name="WondrousTailsProbabilities_ErrorPlaceholder" xml:space="preserve">
+    <value>エラー </value>
+  </data>
+  <data name="WondrousTailsProbabilities_LineChancesLabel" xml:space="preserve">
+    <value>ライン確率： </value>
+  </data>
+  <data name="WondrousTailsProbabilities_ShuffleAverageLabel" xml:space="preserve">
+    <value>シャッフル平均： </value>
+  </data>
+  <data name="AddonConfig_KeybindWindowTitle" xml:space="preserve">
+    <value>キーバインド設定ウィンドウ</value>
+  </data>
+  <data name="AddonConfig_KeybindLabel" xml:space="preserve">
+    <value>キーバインド</value>
+  </data>
+  <data name="Common_Disable" xml:space="preserve">
+    <value>無効化</value>
+  </data>
+  <data name="Common_Enable" xml:space="preserve">
+    <value>有効化</value>
+  </data>
+  <data name="AddonConfig_ChangeKeybind" xml:space="preserve">
+    <value>キーバインドを変更</value>
+  </data>
+  <data name="AddonConfig_WindowSizeLabel" xml:space="preserve">
+    <value>ウィンドウサイズ</value>
+  </data>
+  <data name="AddonConfig_WindowWidthLabel" xml:space="preserve">
+    <value>幅</value>
+  </data>
+  <data name="AddonConfig_WindowHeightLabel" xml:space="preserve">
+    <value>高さ</value>
+  </data>
+  <data name="AddonConfig_ReloadHint" xml:space="preserve">
+    <value>変更はウィンドウを開き直すまで適用されません</value>
+  </data>
+  <data name="KeybindConfig_InputPrompt" xml:space="preserve">
+    <value>希望するキーコンボを入力</value>
+  </data>
+  <data name="KeybindConfig_CurrentPrompt" xml:space="preserve">
+    <value>キーコンボを押してください</value>
+  </data>
+  <data name="KeybindConfig_ConflictsLabel" xml:space="preserve">
+    <value>競合するキーバインド</value>
+  </data>
+  <data name="KeybindConfig_NoConflicts" xml:space="preserve">
+    <value>競合は検出されませんでした</value>
+  </data>
+  <data name="Common_Confirm" xml:space="preserve">
+    <value>決定</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="NodeList_ConfigWindowTitle" xml:space="preserve">
+    <value>{0} 設定ウィンドウ</value>
+  </data>
+  <data name="NodeList_OpenCommandHelp" xml:space="preserve">
+    <value>{0} ウィンドウを開きます</value>
+  </data>
+  <data name="SearchAddon_GearsetTitle" xml:space="preserve">
+    <value>ギアセット検索</value>
+  </data>
+  <data name="SortOption_Alphabetical" xml:space="preserve">
+    <value>五十音順</value>
+  </data>
+  <data name="SortOption_Id" xml:space="preserve">
+    <value>ID順</value>
+  </data>
+  <data name="SearchAddon_TerritoryTitle" xml:space="preserve">
+    <value>エリア検索</value>
+  </data>
+  <data name="ColorPicker_WindowTitle" xml:space="preserve">
+    <value>カラーピッカー</value>
+  </data>
+  <data name="NodeStyle_PositionLabel" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="TextNodeConfig_TextColor" xml:space="preserve">
+    <value>文字色</value>
+  </data>
+  <data name="TextNodeConfig_TextOutline" xml:space="preserve">
+    <value>文字縁</value>
+  </data>
+  <data name="TextNodeConfig_FontSize" xml:space="preserve">
+    <value>フォントサイズ</value>
+  </data>
+  <data name="TextNodeConfig_Font" xml:space="preserve">
+    <value>フォント</value>
+  </data>
+  <data name="TextNodeConfig_Alignment" xml:space="preserve">
+    <value>配置</value>
+  </data>
+  <data name="IconWithCount_MillionsFormat" xml:space="preserve">
+    <value>{0}m</value>
+  </data>
+  <data name="IconWithCount_ThousandsFormat" xml:space="preserve">
+    <value>{0}k</value>
+  </data>
+  <data name="ModificationDisplay_WindowBackground" xml:space="preserve">
+    <value>ウィンドウ背景</value>
+  </data>
+  <data name="ModificationDisplay_TargetCastBarCountdown" xml:space="preserve">
+    <value>ターゲット詠唱バー残り時間</value>
+  </data>
+  <data name="ModificationDisplay_SuppressDialogAdvance" xml:space="preserve">
+    <value>ダイアログ抑制</value>
+  </data>
+  <data name="ModificationDisplay_StickyShopCategories" xml:space="preserve">
+    <value>ショップカテゴリ記憶</value>
+  </data>
+  <data name="ModificationDisplay_SkipTeleportConfirm" xml:space="preserve">
+    <value>テレポ確認スキップ</value>
+  </data>
+  <data name="ModificationDisplay_ShowAetherCurrents" xml:space="preserve">
+    <value>風脈の泉表示</value>
+  </data>
+  <data name="ModificationDisplay_SelectNextLootItem" xml:space="preserve">
+    <value>次の戦利品へ移動</value>
+  </data>
+  <data name="ModificationDisplay_SaddlebagSearchBar" xml:space="preserve">
+    <value>チョコボかばん検索</value>
+  </data>
+  <data name="ModificationDisplay_RetainerSearchBar" xml:space="preserve">
+    <value>リテイナー検索</value>
+  </data>
+  <data name="ModificationDisplay_ResourceBarPercentages" xml:space="preserve">
+    <value>リソース%表示</value>
+  </data>
+  <data name="ModificationDisplay_ResetInventoryTab" xml:space="preserve">
+    <value>インベントリタブ初期化</value>
+  </data>
+  <data name="ModificationDisplay_RecentlyLootedWindow" xml:space="preserve">
+    <value>最近の戦利品ウィンドウ</value>
+  </data>
+  <data name="ModificationDisplay_QuestListWindow" xml:space="preserve">
+    <value>クエストリストウィンドウ</value>
+  </data>
+  <data name="ModificationDisplay_OpenGlamourDresserToCurrentJob" xml:space="preserve">
+    <value>幻影タンス自動タブ</value>
+  </data>
+  <data name="ModificationDisplay_HideGuildhestObjectivePopup" xml:space="preserve">
+    <value>ギルドオーダーポップ非表示</value>
+  </data>
+  <data name="ModificationDisplay_HideMpBars" xml:space="preserve">
+    <value>MPバー非表示</value>
+  </data>
+  <data name="ModificationDisplay_HideUnwantedBanners" xml:space="preserve">
+    <value>バナー非表示</value>
+  </data>
+  <data name="ModificationDisplay_HUDCoordinates" xml:space="preserve">
+    <value>HUD座標</value>
+  </data>
+  <data name="ModificationDisplay_InstancedWaymarks" xml:space="preserve">
+    <value>個別ウェイマーカー</value>
+  </data>
+  <data name="ModificationDisplay_InventorySearchBar" xml:space="preserve">
+    <value>インベントリ検索バー</value>
+  </data>
+  <data name="ModificationDisplay_ListInventory" xml:space="preserve">
+    <value>インベントリ一覧</value>
+  </data>
+  <data name="ModificationDisplay_LocationDisplay" xml:space="preserve">
+    <value>ロケーション表示</value>
+  </data>
+  <data name="ModificationDisplay_MacroLineNumbers" xml:space="preserve">
+    <value>マクロ行番号</value>
+  </data>
+  <data name="ModificationDisplay_MacroTooltips" xml:space="preserve">
+    <value>マクロツールチップ</value>
+  </data>
+  <data name="ModificationDisplay_DebugCustomAddon" xml:space="preserve">
+    <value>デバッグ CustomAddon</value>
+  </data>
+  <data name="ModificationDisplay_DebugGameModification" xml:space="preserve">
+    <value>デバッグ GameModification</value>
+  </data>
+  <data name="ModificationDisplay_SampleGameModification" xml:space="preserve">
+    <value>サンプル表示名</value>
+  </data>
+  <data name="ModificationDisplay_BetterCursor" xml:space="preserve">
+    <value>Better Cursor</value>
+  </data>
+  <data name="ModificationDisplay_BetterInterruptableCastBars" xml:space="preserve">
+    <value>割り込み詠唱バー強調</value>
+  </data>
+  <data name="ModificationDisplay_BetterQuestMapLink" xml:space="preserve">
+    <value>クエストマップリンク改善</value>
+  </data>
+  <data name="ModificationDisplay_CastBarAetheryteNames" xml:space="preserve">
+    <value>詠唱バーに目的地名</value>
+  </data>
+  <data name="ModificationDisplay_CurrencyOverlay" xml:space="preserve">
+    <value>通貨オーバーレイ</value>
+  </data>
+  <data name="ModificationDisplay_DraggableWindowDeadSpace" xml:space="preserve">
+    <value>デッドスペースドラッグ</value>
+  </data>
+  <data name="ModificationDisplay_DutyTimer" xml:space="preserve">
+    <value>コンテンツタイマー</value>
+  </data>
+  <data name="ModificationDisplay_DutyLootPreview" xml:space="preserve">
+    <value>戦利品プレビュー</value>
+  </data>
+  <data name="ModificationDisplay_EnhancedLootWindow" xml:space="preserve">
+    <value>戦利品ウィンドウ強化</value>
+  </data>
+  <data name="ModificationDisplay_FadeLootButton" xml:space="preserve">
+    <value>Lootボタンフェード</value>
+  </data>
+  <data name="ModificationDisplay_FadeUnavailableActions" xml:space="preserve">
+    <value>使用不可アクションフェード</value>
+  </data>
+  <data name="ModificationDisplay_FasterScroll" xml:space="preserve">
+    <value>高速スクロール</value>
+  </data>
+  <data name="ModificationDisplay_FastMouseClick" xml:space="preserve">
+    <value>高速マウスクリック</value>
+  </data>
+  <data name="ModificationDisplay_FocusTargetLock" xml:space="preserve">
+    <value>フォーカスターゲット維持</value>
+  </data>
+  <data name="ModificationDisplay_ForcedCutsceneSounds" xml:space="preserve">
+    <value>カットシーン音声強制</value>
+  </data>
+  <data name="ModificationDisplay_HUDPresets" xml:space="preserve">
+    <value>HUDプリセット</value>
+  </data>
+  <data name="ModificationDisplay_FateListWindow" xml:space="preserve">
+    <value>FATEリストウィンドウ</value>
+  </data>
+  <data name="ModificationDisplay_PetSizeContextMenu" xml:space="preserve">
+    <value>ペットサイズメニュー</value>
+  </data>
+  <data name="PetSize_MenuTitle" xml:space="preserve">
+    <value>ペットサイズ</value>
+  </data>
+  <data name="PetSize_OptionLarge" xml:space="preserve">
+    <value>大</value>
+  </data>
+  <data name="PetSize_OptionMedium" xml:space="preserve">
+    <value>中</value>
+  </data>
+  <data name="PetSize_OptionSmall" xml:space="preserve">
+    <value>小</value>
+  </data>
+  <data name="ModificationDisplay_MissingJobStoneLockout" xml:space="preserve">
+    <value>ソウルクリスタルロック</value>
+  </data>
+  <data name="ModificationDisplay_GearsetRedirect" xml:space="preserve">
+    <value>ギアセットリダイレクト</value>
+  </data>
+  <data name="EnhancedLootWindow_ConfigTitle" xml:space="preserve">
+    <value>戦利品ウィンドウ拡張設定</value>
+  </data>
+  <data name="EnhancedLootWindow_LabelMarkAlreadyObtained" xml:space="preserve">
+    <value>入手済みアイテムをマークする</value>
+  </data>
+  <data name="EnhancedLootWindow_LabelMarkUnobtainable" xml:space="preserve">
+    <value>入手できないアイテムをマークする</value>
+  </data>
+  <data name="FadeLootButton_CategoryStyleSettings" xml:space="preserve">
+    <value>スタイル設定</value>
+  </data>
+  <data name="FadeLootButton_ConfigTitle" xml:space="preserve">
+    <value>Lootボタンフェード設定</value>
+  </data>
+  <data name="FadeLootButton_LabelFadePercentage" xml:space="preserve">
+    <value>フェード率</value>
+  </data>
+  <data name="FadeUnavailableActions_CategoryFeatureToggles" xml:space="preserve">
+    <value>機能切り替え</value>
+  </data>
+  <data name="FadeUnavailableActions_CategoryStyleSettings" xml:space="preserve">
+    <value>スタイル設定</value>
+  </data>
+  <data name="FadeUnavailableActions_ConfigTitle" xml:space="preserve">
+    <value>使用不可アクションフェード設定</value>
+  </data>
+  <data name="FadeUnavailableActions_LabelApplyToFrame" xml:space="preserve">
+    <value>枠にも透過を適用</value>
+  </data>
+  <data name="FadeUnavailableActions_LabelApplyToSync" xml:space="preserve">
+    <value>シンク対象アクションのみに適用</value>
+  </data>
+  <data name="FadeUnavailableActions_LabelFadePercentage" xml:space="preserve">
+    <value>フェード率</value>
+  </data>
+  <data name="FadeUnavailableActions_LabelReddenOutOfRange" xml:space="preserve">
+    <value>射程外で赤くする</value>
+  </data>
+  <data name="FadeUnavailableActions_LabelReddenPercentage" xml:space="preserve">
+    <value>赤みの強さ</value>
+  </data>
+  <data name="FasterScroll_ConfigTitle" xml:space="preserve">
+    <value>高速スクロール設定</value>
+  </data>
+  <data name="FasterScroll_LabelSpeedMultiplier" xml:space="preserve">
+    <value>速度倍率</value>
+  </data>
+  <data name="ForcedCutsceneSounds_CategoryGeneral" xml:space="preserve">
+    <value>一般</value>
+  </data>
+  <data name="ForcedCutsceneSounds_CategorySpecial" xml:space="preserve">
+    <value>特殊</value>
+  </data>
+  <data name="ForcedCutsceneSounds_ConfigTitle" xml:space="preserve">
+    <value>カットシーン音声強制設定</value>
+  </data>
+  <data name="ForcedCutsceneSounds_DisableMsq" xml:space="preserve">
+    <value>討滅/メインルレでは無効</value>
+  </data>
+  <data name="ForcedCutsceneSounds_RestoreMuteState" xml:space="preserve">
+    <value>終了後にミュート状態を戻す</value>
+  </data>
+  <data name="ForcedCutsceneSounds_UnmuteBgm" xml:space="preserve">
+    <value>BGMのミュートを解除</value>
+  </data>
+  <data name="ForcedCutsceneSounds_UnmuteEnv" xml:space="preserve">
+    <value>環境音のミュートを解除</value>
+  </data>
+  <data name="ForcedCutsceneSounds_UnmuteMaster" xml:space="preserve">
+    <value>マスター音量のミュートを解除</value>
+  </data>
+  <data name="ForcedCutsceneSounds_UnmutePerform" xml:space="preserve">
+    <value>演奏のミュートを解除</value>
+  </data>
+  <data name="ForcedCutsceneSounds_UnmuteSe" xml:space="preserve">
+    <value>効果音のミュートを解除</value>
+  </data>
+  <data name="ForcedCutsceneSounds_UnmuteSystem" xml:space="preserve">
+    <value>システム音のミュートを解除</value>
+  </data>
+  <data name="ForcedCutsceneSounds_UnmuteVoice" xml:space="preserve">
+    <value>ボイスのミュートを解除</value>
+  </data>
+  <data name="GearsetRedirect_ConfigTitle" xml:space="preserve">
+    <value>ギアセットリダイレクト設定</value>
+  </data>
+  <data name="GearsetRedirect_AddRedirectionTitle" xml:space="preserve">
+    <value>新しいリダイレクトを追加</value>
+  </data>
+  <data name="GearsetRedirect_SortAlphabetical" xml:space="preserve">
+    <value>五十音順</value>
+  </data>
+  <data name="GearsetRedirect_SortId" xml:space="preserve">
+    <value>ID順</value>
+  </data>
+  <data name="HideUnwantedBanners_ConfigTitle" xml:space="preserve">
+    <value>バナー非表示設定</value>
+  </data>
+  <data name="InstancedWaymarks_RenameMenuLabel" xml:space="preserve">
+    <value>名前を変更</value>
+  </data>
+  <data name="InstancedWaymarks_RenameWindowTitle" xml:space="preserve">
+    <value>ウェイマーカー名称変更</value>
+  </data>
+  <data name="DebugCustomAddon_Title" xml:space="preserve">
+    <value>デバッグアドオンウィンドウ</value>
+  </data>
+  <data name="ResourceBarPercentages_ApplyToPartyMembers" xml:space="preserve">
+    <value>パーティメンバーに適用</value>
+  </data>
+  <data name="ResourceBarPercentages_ApplyToPlayer" xml:space="preserve">
+    <value>自キャラに適用</value>
+  </data>
+  <data name="ResourceBarPercentages_CategoryExtra" xml:space="preserve">
+    <value>その他</value>
+  </data>
+  <data name="ResourceBarPercentages_CategoryParameterWidget" xml:space="preserve">
+    <value>パラメータウィジェット</value>
+  </data>
+  <data name="ResourceBarPercentages_CategoryPartyList" xml:space="preserve">
+    <value>パーティリスト</value>
+  </data>
+  <data name="ResourceBarPercentages_CategoryPercentageFormat" xml:space="preserve">
+    <value>パーセント表示形式</value>
+  </data>
+  <data name="ResourceBarPercentages_CategoryPercentageSign" xml:space="preserve">
+    <value>パーセント記号</value>
+  </data>
+  <data name="ResourceBarPercentages_ChangeCp" xml:space="preserve">
+    <value>CPの表示を変更</value>
+  </data>
+  <data name="ResourceBarPercentages_ChangeGp" xml:space="preserve">
+    <value>GPの表示を変更</value>
+  </data>
+  <data name="ResourceBarPercentages_ChangeHp" xml:space="preserve">
+    <value>HPの表示を変更</value>
+  </data>
+  <data name="ResourceBarPercentages_ChangeMp" xml:space="preserve">
+    <value>MPの表示を変更</value>
+  </data>
+  <data name="ResourceBarPercentages_ConfigTitle" xml:space="preserve">
+    <value>リソース%表示設定</value>
+  </data>
+  <data name="ResourceBarPercentages_DecimalPlaces" xml:space="preserve">
+    <value>小数点以下桁数</value>
+  </data>
+  <data name="ResourceBarPercentages_DeadOrAliveMode" xml:space="preserve">
+    <value>生存/戦闘不能モード</value>
+  </data>
+  <data name="ResourceBarPercentages_ShowDecimalsBelowHundred" xml:space="preserve">
+    <value>100%未満のみ小数を表示</value>
+  </data>
+  <data name="ResourceBarPercentages_ShowOnParameterWidget" xml:space="preserve">
+    <value>パラメータウィジェットに表示</value>
+  </data>
+  <data name="ResourceBarPercentages_ShowOnPartyList" xml:space="preserve">
+    <value>パーティリストに表示</value>
+  </data>
+  <data name="ResourceBarPercentages_ShowPercentageSign" xml:space="preserve">
+    <value>%記号を表示</value>
+  </data>
+  <data name="ResourceBarPercentages_StatusAlive" xml:space="preserve">
+    <value>生存</value>
+  </data>
+  <data name="ResourceBarPercentages_StatusDead" xml:space="preserve">
+    <value>戦闘不能</value>
+  </data>
+  <data name="ListInventory_Title" xml:space="preserve">
+    <value>インベントリ一覧</value>
+  </data>
+  <data name="ListInventory_FilterAlphabetically" xml:space="preserve">
+    <value>五十音順</value>
+  </data>
+  <data name="ListInventory_FilterQuantity" xml:space="preserve">
+    <value>数量</value>
+  </data>
+  <data name="ListInventory_FilterLevel" xml:space="preserve">
+    <value>レベル</value>
+  </data>
+  <data name="ListInventory_FilterItemLevel" xml:space="preserve">
+    <value>アイテムレベル</value>
+  </data>
+  <data name="ListInventory_FilterRarity" xml:space="preserve">
+    <value>レアリティ</value>
+  </data>
+  <data name="ListInventory_FilterItemId" xml:space="preserve">
+    <value>アイテムID</value>
+  </data>
+  <data name="ListInventory_FilterItemCategory" xml:space="preserve">
+    <value>アイテムカテゴリ</value>
+  </data>
+  <data name="RecentlyLootedWindow_Title" xml:space="preserve">
+    <value>最近の戦利品</value>
+  </data>
+  <data name="QuestListWindow_Title" xml:space="preserve">
+    <value>クエストリスト</value>
+  </data>
+  <data name="QuestListWindow_FilterAlphabetically" xml:space="preserve">
+    <value>五十音順</value>
+  </data>
+  <data name="QuestListWindow_FilterDistance" xml:space="preserve">
+    <value>距離</value>
+  </data>
+  <data name="QuestListWindow_FilterIssuerName" xml:space="preserve">
+    <value>依頼主名</value>
+  </data>
+  <data name="QuestListWindow_FilterLevel" xml:space="preserve">
+    <value>レベル</value>
+  </data>
+  <data name="QuestListWindow_FilterType" xml:space="preserve">
+    <value>種類</value>
+  </data>
+  <data name="ShowAetherCurrents_Tooltip" xml:space="preserve">
+    <value>風脈の泉</value>
+  </data>
+  <data name="Title_DutyLootPreview" xml:space="preserve">
+    <value>戦利品プレビュー</value>
+  </data>
+  <data name="VersionLabelFormat" xml:space="preserve">
+    <value>バージョン {0}</value>
+  </data>
+  <data name="ActionHighlight_Configuration" xml:space="preserve">
+    <value>アクションハイライト設定</value>
+  </data>
+  <data name="ActionHighlight_ShowInCombat" xml:space="preserve">
+    <value>戦闘中のみ表示</value>
+  </data>
+  <data name="ActionHighlight_AntOnlyOnFinalStack" xml:space="preserve">
+    <value>最後のスタックのみアリ（点滅）効果を表示</value>
+  </data>
+  <data name="ActionHighlight_ShowOnlyUsableActions" xml:space="preserve">
+    <value>使用可能なアクションのみ表示</value>
+  </data>
+  <data name="ActionHighlight_UseGlobalPreAntMs" xml:space="preserve">
+    <value>グローバル・プレアリ時間(ms)を使用</value>
+  </data>
+  <data name="ActionHighlight_GlobalPreAntTimeMs" xml:space="preserve">
+    <value>グローバル・プレアリ時間 (ms)</value>
+  </data>
+  <data name="ActionHighlight_DisplayName" xml:space="preserve">
+    <value>アクションハイライト</value>
+  </data>
+  <data name="ActionHighlight_Description" xml:space="preserve">
+    <value>アビリティが使用可能になった時、または使用可能になる直前にアリ（点滅）エフェクトで強調表示します。</value>
+  </data>
 </root>
