@@ -6,28 +6,13 @@ using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.ListInventory;
 
-public unsafe class InventoryItemNode : SimpleComponentNode {
-
-    private readonly NineGridNode hoveredBackgroundNode;
-
+public unsafe class InventoryItemNode : SelectableNode {
     private readonly IconWithCountNode iconNode;
     private readonly TextNode itemNameTextNode;
     private readonly TextNode levelTextNode;
     private readonly TextNode itemLevelTextNode;
 
     public InventoryItemNode() {
-        hoveredBackgroundNode = new SimpleNineGridNode {
-            TexturePath = "ui/uld/ListItemA.tex",
-            TextureCoordinates = new Vector2(0.0f, 22.0f),
-            TextureSize = new Vector2(64.0f, 22.0f),
-            TopOffset = 6,
-            BottomOffset = 6,
-            LeftOffset = 16,
-            RightOffset = 1,
-            IsVisible = false,
-        };
-        hoveredBackgroundNode.AttachNode(this);
-
         iconNode = new IconWithCountNode();
         iconNode.AttachNode(this);
 
@@ -46,19 +31,6 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
             AlignmentType = AlignmentType.Left,
         };
         itemLevelTextNode.AttachNode(this);
-
-        CollisionNode.AddEvent(AtkEventType.MouseOver, () => {
-            IsHovered = true;
-        });
-
-        CollisionNode.AddEvent(AtkEventType.MouseOut, () => {
-            IsHovered = false;
-        });
-    }
-
-    public bool IsHovered {
-        get => hoveredBackgroundNode.IsVisible;
-        private set => hoveredBackgroundNode.IsVisible = value;
     }
 
     public ItemInfo? Item {
@@ -107,8 +79,5 @@ public unsafe class InventoryItemNode : SimpleComponentNode {
 
         itemNameTextNode.Size = new Vector2(Width - iconNode.Width - itemLevelTextNode.Width - levelTextNode.Width - 8.0f, Height);
         itemNameTextNode.Position = new Vector2(iconNode.Width + 4.0f, 0.0f);
-
-        hoveredBackgroundNode.Size = Size + new Vector2(6.0f, 6.0f);
-        hoveredBackgroundNode.Position = new Vector2(-3.0f, -3.0f);
     }
 }

@@ -9,9 +9,8 @@ using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.FateListWindow;
 
-public unsafe class FateEntryNode : SimpleComponentNode {
+public unsafe class FateEntryNode : SelectableNode {
 
-    private readonly NineGridNode hoveredBackgroundNode;
     private readonly IconImageNode iconNode;
     private readonly TextNode nameNode;
     private readonly TextNode timeRemainingNode;
@@ -20,18 +19,6 @@ public unsafe class FateEntryNode : SimpleComponentNode {
     private readonly TextNode progressTextNode;
     
     public FateEntryNode() {
-        hoveredBackgroundNode = new SimpleNineGridNode {
-            TexturePath = "ui/uld/ListItemA.tex",
-            TextureCoordinates = new Vector2(0.0f, 22.0f),
-            TextureSize = new Vector2(64.0f, 22.0f),
-            TopOffset = 6,
-            BottomOffset = 6,
-            LeftOffset = 16,
-            RightOffset = 1,
-            IsVisible = false,
-        };
-        hoveredBackgroundNode.AttachNode(this);
-
         iconNode = new IconImageNode {
             FitTexture = true,
         };
@@ -61,9 +48,6 @@ public unsafe class FateEntryNode : SimpleComponentNode {
         };
         progressTextNode.AttachNode(this);
 
-        CollisionNode.ShowClickableCursor = true;
-        CollisionNode.AddEvent(AtkEventType.MouseOver, () => IsHovered = true);
-        CollisionNode.AddEvent(AtkEventType.MouseOut, () => IsHovered = false);
         CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
             if (Fate is null) return;
             
@@ -120,16 +104,9 @@ public unsafe class FateEntryNode : SimpleComponentNode {
             progressNode.Progress = value.Progress / 100.0f;
         }
     }
-    
-    public bool IsHovered {
-        get => hoveredBackgroundNode.IsVisible;
-        set => hoveredBackgroundNode.IsVisible = value;
-    }
 
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
-        hoveredBackgroundNode.Size = Size;
-        
         iconNode.Position = new Vector2(2.0f, 2.0f);
         iconNode.Size = new Vector2(48.0f, 48.0f);
 

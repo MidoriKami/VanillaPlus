@@ -3,15 +3,12 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
-using Action = System.Action;
 using Addon = VanillaPlus.Utilities.Addon;
 
 namespace VanillaPlus.InternalSystem;
 
-public class GameModificationOptionNode : SimpleComponentNode {
+public class GameModificationOptionNode : SelectableNode {
 
-    private readonly NineGridNode hoveredBackgroundNode;
-    private readonly NineGridNode selectedBackgroundNode;
     private readonly CheckboxNode checkboxNode;
     private readonly IconImageNode erroringImageNode;
     private readonly TextNode modificationNameNode;
@@ -21,30 +18,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
     private readonly CircleButtonNode configButtonNode;
 
     public GameModificationOptionNode() {
-        hoveredBackgroundNode = new SimpleNineGridNode {
-            TexturePath = "ui/uld/ListItemA.tex",
-            TextureCoordinates = new Vector2(0.0f, 22.0f),
-            TextureSize = new Vector2(64.0f, 22.0f),
-            TopOffset = 6,
-            BottomOffset = 6,
-            LeftOffset = 16,
-            RightOffset = 1,
-            IsVisible = false,
-        };
-        hoveredBackgroundNode.AttachNode(this);
-        
-        selectedBackgroundNode = new SimpleNineGridNode {
-            TexturePath = "ui/uld/ListItemA.tex",
-            TextureCoordinates = new Vector2(0.0f, 0.0f),
-            TextureSize = new Vector2(64.0f, 22.0f),
-            TopOffset = 6,
-            BottomOffset = 6,
-            LeftOffset = 16,
-            RightOffset = 1,
-            IsVisible = false,
-        };
-        selectedBackgroundNode.AttachNode(this);
-        
         checkboxNode = new CheckboxNode {
             OnClick = ToggleModification,
         };
@@ -98,19 +71,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
             },
         };
         configButtonNode.AttachNode(this);
-
-        CollisionNode.ShowClickableCursor = true;
-        CollisionNode.AddEvent(AtkEventType.MouseOver, () => {
-            if (!IsSelected) {
-                IsHovered = true;
-            }
-        });
-        CollisionNode.AddEvent(AtkEventType.MouseDown, () => {
-            OnClick?.Invoke();
-        });
-        CollisionNode.AddEvent(AtkEventType.MouseOut, () => {
-            IsHovered = false;
-        });
     }
 
     public ModificationInfo ModificationInfo => Modification.Modification.ModificationInfo;
@@ -147,21 +107,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
         RefreshConfigWindowButton();
     }
 
-    public Action? OnClick { get; set; }
-
-    public bool IsHovered {
-        get => hoveredBackgroundNode.IsVisible;
-        set => hoveredBackgroundNode.IsVisible = value;
-    }
-    
-    public bool IsSelected {
-        get => selectedBackgroundNode.IsVisible;
-        set {
-            selectedBackgroundNode.IsVisible = value;
-            hoveredBackgroundNode.IsVisible = !value;
-        }
-    }
-
     private void RefreshConfigWindowButton() {
         if (Modification.Modification.OpenConfigAction is not null) {
             configButtonNode.IsVisible = true;
@@ -171,8 +116,6 @@ public class GameModificationOptionNode : SimpleComponentNode {
 
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
-        hoveredBackgroundNode.Size = Size;
-        selectedBackgroundNode.Size = Size;
 
         checkboxNode.Size = new Vector2(Height, Height) * 3.0f / 4.0f;
         checkboxNode.Position = new Vector2(Height, Height) / 8.0f;
