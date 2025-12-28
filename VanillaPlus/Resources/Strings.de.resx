@@ -1212,7 +1212,4 @@ This game modification fixes it by always triggering the normal mouse click in a
   <data name="FasterScroll_CategorySettings" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="CurrencyOverlay_LabelFadePercentage" xml:space="preserve">
-    <value>&#x8;Überblendungsprozentsatz</value>
-  </data>
 </root>

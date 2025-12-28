@@ -1212,7 +1212,4 @@ ID：{0}</value>
   <data name="ActionHighlight_Description" xml:space="preserve">
     <value>在技能冷却完毕或即将完毕时，使用蚂蚁线虚框效果进行高亮提示。</value>
   </data>
-  <data name="CurrencyOverlay_LabelFadePercentage" xml:space="preserve">
-    <value>淡化百分比</value>
-  </data>
 </root>

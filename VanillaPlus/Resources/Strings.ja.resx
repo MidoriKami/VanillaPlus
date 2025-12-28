@@ -1212,7 +1212,4 @@ ID: {0}</value>
   <data name="ActionHighlight_Description" xml:space="preserve">
     <value>アビリティが使用可能になった時、または使用可能になる直前にアリ（点滅）エフェクトで強調表示します。</value>
   </data>
-  <data name="CurrencyOverlay_LabelFadePercentage" xml:space="preserve">
-    <value>フェード率</value>
-  </data>
 </root>

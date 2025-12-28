@@ -477,15 +477,6 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fade Percentage.
-        /// </summary>
-        internal static string CurrencyOverlay_LabelFadePercentage {
-            get {
-                return ResourceManager.GetString("CurrencyOverlay_LabelFadePercentage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Id.
         /// </summary>
         internal static string CurrencyOverlay_SortOptionId {

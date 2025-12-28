@@ -1214,7 +1214,4 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
   <data name="ActionHighlight_Description" xml:space="preserve">
     <value>Met en évidence les capacités avec l'effet "fourmis" lorsqu'elles sont prêtes ou peu de temps avant qu'elles ne le deviennent.</value>
   </data>
-  <data name="CurrencyOverlay_LabelFadePercentage" xml:space="preserve">
-    <value>Pourcentage de fondu</value>
-  </data>
 </root>
