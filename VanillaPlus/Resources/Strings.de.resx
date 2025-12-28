@@ -384,7 +384,7 @@ Beginnen Sie die Eingabe mit '$', um nach der Beschreibung zu suchen.</value>
     <value>Für diesen Inhalt wurden keine Beutegegenstände gefunden.
 
 Die Daten stammen aus einer externen Quelle und sind möglicherweise unvollständig.
-        
+
 Die Daten werden aktualisiert, sobald sie verfügbar sind. Bitte keine Datenaktualisierungen anfordern.</value>
   </data>
   <data name="DutyLoot_NoResultsMessage" xml:space="preserve">
@@ -1178,6 +1178,30 @@ This game modification fixes it by always triggering the normal mouse click in a
   </data>
   <data name="ForcedCutsceneSounds_CategoryToggles" xml:space="preserve">
     <value>Toggles</value>
+  </data>
+  <data name="ActionHighlight_Configuration" xml:space="preserve">
+    <value>Aktions-Highlight Konfiguration</value>
+  </data>
+  <data name="ActionHighlight_ShowInCombat" xml:space="preserve">
+    <value>Nur im Kampf anzeigen</value>
+  </data>
+  <data name="ActionHighlight_AntOnlyOnFinalStack" xml:space="preserve">
+    <value>Ameisen-Effekt nur bei letztem Stack</value>
+  </data>
+  <data name="ActionHighlight_ShowOnlyUsableActions" xml:space="preserve">
+    <value>Nur nutzbare Aktionen anzeigen</value>
+  </data>
+  <data name="ActionHighlight_UseGlobalPreAntMs" xml:space="preserve">
+    <value>Globale Vor-Ameisen-Zeit (ms) verwenden</value>
+  </data>
+  <data name="ActionHighlight_GlobalPreAntTimeMs" xml:space="preserve">
+    <value>Globale Vor-Ameisen-Zeit (ms)</value>
+  </data>
+  <data name="ActionHighlight_DisplayName" xml:space="preserve">
+    <value>Aktions-Highlight</value>
+  </data>
+  <data name="ActionHighlight_Description" xml:space="preserve">
+    <value>Hebt Fähigkeiten mit dem Ameisen-Effekt hervor, wenn sie bereit sind oder kurz bevor sie verfügbar werden.</value>
   </data>
   <data name="BetterCursor_CategoryVisibility" xml:space="preserve">
     <value>Sichtbarkeit</value>

@@ -1188,6 +1188,30 @@ ID: {0}</value>
   <data name="VersionLabelFormat" xml:space="preserve">
     <value>バージョン {0}</value>
   </data>
+  <data name="ActionHighlight_Configuration" xml:space="preserve">
+    <value>アクションハイライト設定</value>
+  </data>
+  <data name="ActionHighlight_ShowInCombat" xml:space="preserve">
+    <value>戦闘中のみ表示</value>
+  </data>
+  <data name="ActionHighlight_AntOnlyOnFinalStack" xml:space="preserve">
+    <value>最後のスタックのみアリ（点滅）効果を表示</value>
+  </data>
+  <data name="ActionHighlight_ShowOnlyUsableActions" xml:space="preserve">
+    <value>使用可能なアクションのみ表示</value>
+  </data>
+  <data name="ActionHighlight_UseGlobalPreAntMs" xml:space="preserve">
+    <value>グローバル・プレアリ時間(ms)を使用</value>
+  </data>
+  <data name="ActionHighlight_GlobalPreAntTimeMs" xml:space="preserve">
+    <value>グローバル・プレアリ時間 (ms)</value>
+  </data>
+  <data name="ActionHighlight_DisplayName" xml:space="preserve">
+    <value>アクションハイライト</value>
+  </data>
+  <data name="ActionHighlight_Description" xml:space="preserve">
+    <value>アビリティが使用可能になった時、または使用可能になる直前にアリ（点滅）エフェクトで強調表示します。</value>
+  </data>
   <data name="CurrencyOverlay_LabelFadePercentage" xml:space="preserve">
     <value>フェード率</value>
   </data>

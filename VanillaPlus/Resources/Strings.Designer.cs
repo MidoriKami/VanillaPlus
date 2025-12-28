@@ -61,6 +61,78 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ant Only On Final Stack.
+        /// </summary>
+        internal static string ActionHighlight_AntOnlyOnFinalStack {
+            get {
+                return ResourceManager.GetString("ActionHighlight_AntOnlyOnFinalStack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action Highlight Configuration.
+        /// </summary>
+        internal static string ActionHighlight_Configuration {
+            get {
+                return ResourceManager.GetString("ActionHighlight_Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Highlights abilities with the ants effect when they are off cooldown or shortly before they become available..
+        /// </summary>
+        internal static string ActionHighlight_Description {
+            get {
+                return ResourceManager.GetString("ActionHighlight_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action Highlight.
+        /// </summary>
+        internal static string ActionHighlight_DisplayName {
+            get {
+                return ResourceManager.GetString("ActionHighlight_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Global Pre-Ant Time (ms).
+        /// </summary>
+        internal static string ActionHighlight_GlobalPreAntTimeMs {
+            get {
+                return ResourceManager.GetString("ActionHighlight_GlobalPreAntTimeMs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Only In Combat.
+        /// </summary>
+        internal static string ActionHighlight_ShowInCombat {
+            get {
+                return ResourceManager.GetString("ActionHighlight_ShowInCombat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Only Usable Actions.
+        /// </summary>
+        internal static string ActionHighlight_ShowOnlyUsableActions {
+            get {
+                return ResourceManager.GetString("ActionHighlight_ShowOnlyUsableActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Global Pre-Ant Ms.
+        /// </summary>
+        internal static string ActionHighlight_UseGlobalPreAntMs {
+            get {
+                return ResourceManager.GetString("ActionHighlight_UseGlobalPreAntMs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change Keybind.
         /// </summary>
         internal static string AddonConfig_ChangeKeybind {

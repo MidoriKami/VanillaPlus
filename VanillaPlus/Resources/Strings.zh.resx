@@ -1188,6 +1188,30 @@ ID：{0}</value>
   <data name="VersionLabelFormat" xml:space="preserve">
     <value>版本 {0}</value>
   </data>
+  <data name="ActionHighlight_Configuration" xml:space="preserve">
+    <value>技能高亮设置</value>
+  </data>
+  <data name="ActionHighlight_ShowInCombat" xml:space="preserve">
+    <value>仅在战斗中显示</value>
+  </data>
+  <data name="ActionHighlight_AntOnlyOnFinalStack" xml:space="preserve">
+    <value>仅在最后一层堆叠显示蚂蚁线</value>
+  </data>
+  <data name="ActionHighlight_ShowOnlyUsableActions" xml:space="preserve">
+    <value>仅显示可用技能</value>
+  </data>
+  <data name="ActionHighlight_UseGlobalPreAntMs" xml:space="preserve">
+    <value>使用全局提前显示时间 (毫秒)</value>
+  </data>
+  <data name="ActionHighlight_GlobalPreAntTimeMs" xml:space="preserve">
+    <value>全局提前显示时间 (毫秒)</value>
+  </data>
+  <data name="ActionHighlight_DisplayName" xml:space="preserve">
+    <value>技能高亮</value>
+  </data>
+  <data name="ActionHighlight_Description" xml:space="preserve">
+    <value>在技能冷却完毕或即将完毕时，使用蚂蚁线虚框效果进行高亮提示。</value>
+  </data>
   <data name="CurrencyOverlay_LabelFadePercentage" xml:space="preserve">
     <value>淡化百分比</value>
   </data>
