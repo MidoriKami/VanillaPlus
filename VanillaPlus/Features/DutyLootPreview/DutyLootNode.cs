@@ -67,14 +67,10 @@ public unsafe class DutyLootNode : SimpleComponentNode {
 
         CollisionNode.AddEvent(AtkEventType.MouseOver, () => {
             IsHovered = true;
-
-            if (Item is null) return;
-            CollisionNode.ItemTooltip = Item.ItemId;
         });
         
         CollisionNode.AddEvent(AtkEventType.MouseOut, () => {
             IsHovered = false;
-            CollisionNode.HideTooltip();
         });
 
         CollisionNode.AddEvent(AtkEventType.MouseClick, (_, _, _, _, atkEventData) => {
@@ -109,6 +105,7 @@ public unsafe class DutyLootNode : SimpleComponentNode {
             iconNode.Count = 1; // value.Quantity;
             infoIconNode.TextTooltip = string.Join("\n", value.Sources);
             checkmarkIconNode.IsVisible = value.IsUnlocked;
+            CollisionNode.ItemTooltip = Item.ItemId;
         }
     }
     
