@@ -1,4 +1,4 @@
-using System.Numerics;
+﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -92,15 +92,9 @@ public unsafe class CurrencyNode : OverlayNode {
 
         var isLowWarning = Currency.EnableLowLimit && inventoryCount < Currency.LowLimit;
         var isHighWarning = Currency.EnableHighLimit && inventoryCount > Currency.HighLimit;
-        var hasWarning = isLowWarning || isHighWarning;
 
-        var shouldFade = !Currency.FadeIfNoWarnings || !hasWarning;
-        var alpha = shouldFade ? 1.0f - Currency.FadePercent : 1.0f;
-        iconImageNode.Alpha = alpha;
-        countNode.Alpha = alpha;
-
-        if (hasWarning) {
-                Timeline?.PlayAnimation(1);
+        if (isLowWarning || isHighWarning) {
+            Timeline?.PlayAnimation(1);
         }
         else {
             Timeline?.PlayAnimation(2);
