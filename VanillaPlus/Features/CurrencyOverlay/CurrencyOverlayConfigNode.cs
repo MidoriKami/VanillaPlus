@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Nodes;
@@ -15,7 +15,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
     
     private CheckboxNode enableHighLimitCheckbox;
     private NumericInputNode highLimitInputNode;
-    
+
     private CheckboxNode reverseIconCheckbox;
     private CheckboxNode reverseTextCheckbox;
 
@@ -23,8 +23,12 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
 
     private TextNode scaleTextNode;
     private SliderNode scaleSliderNode;
-    
-    
+
+    private CheckboxNode fadeIfNoWarningsCheckbox;
+
+    private TextNode fadeTextNode;
+    private SliderNode fadeSliderNode;
+
     public CurrencyOverlayConfigNode() {
         iconImageNode = new IconImageNode {
             FitTexture = true,
@@ -79,7 +83,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
             },
         };
         highLimitInputNode.AttachNode(this);
-        
+
         reverseIconCheckbox = new CheckboxNode {
             String = "Reverse icon position",
             OnClick = enabled => {
@@ -129,6 +133,34 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
             },
         };
         scaleSliderNode.AttachNode(this);
+
+        fadeIfNoWarningsCheckbox = new CheckboxNode {
+            String = "Fade if no warnings",
+            OnClick = enabled => {
+                if (ConfigurationOption is not null) {
+                    ConfigurationOption.FadeIfNoWarnings = enabled;
+                    OnConfigChanged?.Invoke(ConfigurationOption);
+                }
+            },
+        };
+        fadeIfNoWarningsCheckbox.AttachNode(this);
+
+        fadeTextNode = new CategoryTextNode {
+            String = Strings.CurrencyOverlay_LabelFadePercentage,
+        };
+        fadeTextNode.AttachNode(this);
+
+        fadeSliderNode = new SliderNode {
+            Range = 0..100,
+            DecimalPlaces = 2,
+            OnValueChanged = newValue => {
+                if (ConfigurationOption is not null) {
+                    ConfigurationOption.FadePercent = newValue / 100.0f;
+                    OnConfigChanged?.Invoke(ConfigurationOption);
+                }
+            },
+        };
+        fadeSliderNode.AttachNode(this);
     }
 
     protected override void OptionChanged(CurrencySetting? option) {
@@ -142,33 +174,45 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         enableHighLimitCheckbox.IsChecked = option.EnableHighLimit;
         highLimitInputNode.Value = option.HighLimit;
         reverseIconCheckbox.IsChecked = option.IconReversed;
+        reverseTextCheckbox.IsChecked = option.TextReversed;
         allowMovingCheckbox.IsChecked = option.IsNodeMoveable;
         scaleSliderNode.Value = (int)(option.Scale * 100.0f);
+        fadeIfNoWarningsCheckbox.IsChecked = option.FadeIfNoWarnings;
+        fadeSliderNode.Value = (int)(option.FadePercent * 100.0f);
     }
 
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
 
         itemNameTextNode.Size = new Vector2(Width, 24.0f);
-        itemNameTextNode.Position = new Vector2(0.0f, 50.0f);
+        itemNameTextNode.Position = new Vector2(0.0f, 20.0f);
 
         iconImageNode.Size = new Vector2(Width - 40.0f, Height - 40.0f);
         iconImageNode.Position = new Vector2(20.0f, 20.0f);
 
         enableLowLimitCheckbox.Size = new Vector2(Width, 24.0f);
-        enableLowLimitCheckbox.Position = new Vector2(20.0f, 100.0f);
+        enableLowLimitCheckbox.Position = new Vector2(20.0f, 70.0f);
 
         lowLimitInputNode.Size = new Vector2(150.0f, 24.0f);
         lowLimitInputNode.Position = new Vector2(65.0f, enableLowLimitCheckbox.Bounds.Bottom);
         
         enableHighLimitCheckbox.Size = new Vector2(Width, 24.0f);
-        enableHighLimitCheckbox.Position = new Vector2(20.0f, lowLimitInputNode.Bounds.Bottom + 25.0f);
+        enableHighLimitCheckbox.Position = new Vector2(20.0f, lowLimitInputNode.Bounds.Bottom + 10.0f);
 
         highLimitInputNode.Size = new Vector2(150.0f, 24.0f);
         highLimitInputNode.Position = new Vector2(65.0f, enableHighLimitCheckbox.Bounds.Bottom);
 
+        fadeIfNoWarningsCheckbox.Size = new Vector2(Width, 24.0f);
+        fadeIfNoWarningsCheckbox.Position = new Vector2(20.0f, highLimitInputNode.Bounds.Bottom + 10.0f);
+
+        fadeTextNode.Size = new Vector2(140.0f, 24.0f);
+        fadeTextNode.Position = new Vector2(20.0f, fadeIfNoWarningsCheckbox.Bounds.Bottom + 10.0f);
+
+        fadeSliderNode.Size = new Vector2(250.0f, 24.0f);
+        fadeSliderNode.Position = new Vector2(20.0f, fadeTextNode.Bounds.Bottom);
+
         reverseIconCheckbox.Size = new Vector2(Width, 24.0f);
-        reverseIconCheckbox.Position = new Vector2(20.0f, highLimitInputNode.Bounds.Bottom + 25.0f);
+        reverseIconCheckbox.Position = new Vector2(20.0f, fadeSliderNode.Bounds.Bottom + 10.0f);
         
         reverseTextCheckbox.Size = new Vector2(Width, 24.0f);
         reverseTextCheckbox.Position = new Vector2(20.0f, reverseIconCheckbox.Bounds.Bottom);
@@ -177,8 +221,8 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         allowMovingCheckbox.Position = new Vector2(20.0f, reverseTextCheckbox.Bounds.Bottom);
         
         scaleTextNode.Size = new Vector2(100.0f, 24.0f);
-        scaleTextNode.Position = new Vector2(20.0f, allowMovingCheckbox.Bounds.Bottom + 25.0f);
-        
+        scaleTextNode.Position = new Vector2(20.0f, allowMovingCheckbox.Bounds.Bottom + 10.0f);
+
         scaleSliderNode.Size = new Vector2(250.0f, 24.0f);
         scaleSliderNode.Position = new Vector2(20.0f, scaleTextNode.Bounds.Bottom);
     }
