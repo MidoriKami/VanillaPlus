@@ -10,8 +10,8 @@ namespace VanillaPlus.Features.ActionHighlight;
 
 public unsafe class ActionHighlight : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Action Highlight",
-        Description = "Highlights abilities with the ants effect when they are off cooldown or shortly before they become available.",
+        DisplayName = Strings.ActionHighlight_DisplayName,
+        Description = Strings.ActionHighlight_Description,
         Type = ModificationType.UserInterface,
         Authors = [ "attickdoor", "Zeffuro" ],
         ChangeLog = [
@@ -41,7 +41,7 @@ public unsafe class ActionHighlight : GameModification {
         configWindow = new ActionHighlightAddon {
             Size = new Vector2(700.0f, 500.0f),
             InternalName = "ActionHighlightConfig",
-            Title = "Action Highlight Configuration",
+            Title = Strings.ActionHighlight_Configuration,
             Config = config,
         };
 
@@ -49,14 +49,14 @@ public unsafe class ActionHighlight : GameModification {
 
         onAntsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
         onAntsHook?.Enable();
-        
+
         CacheActions();
     }
 
     public override void OnDisable() {
         onAntsHook?.Dispose();
         onAntsHook = null;
-        
+
         configWindow?.Dispose();
         configWindow = null;
 
@@ -67,7 +67,7 @@ public unsafe class ActionHighlight : GameModification {
         if (Services.ObjectTable.LocalPlayer is not { Level: var playerLevel } ) return false;
         if (config is null) return false;
         if (cachedActions is null) return false;
-        
+
         var original = onAntsHook!.Original(actionManager, actionType, actionId);
 
         if (original) return original;

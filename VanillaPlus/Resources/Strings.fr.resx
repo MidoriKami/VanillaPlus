@@ -1131,4 +1131,28 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
 	<data name="VersionLabelFormat" xml:space="preserve">
 		<value>Version {0}</value>
 	</data>
+    <data name="ActionHighlight_Configuration" xml:space="preserve">
+       <value>Configuration de mise en évidence d'action</value>
+   </data>
+    <data name="ActionHighlight_ShowInCombat" xml:space="preserve">
+       <value>Afficher uniquement en combat</value>
+   </data>
+    <data name="ActionHighlight_AntOnlyOnFinalStack" xml:space="preserve">
+       <value>Effet "fourmis" uniquement sur le dernier cumul</value>
+   </data>
+    <data name="ActionHighlight_ShowOnlyUsableActions" xml:space="preserve">
+       <value>Afficher uniquement les actions utilisables</value>
+   </data>
+    <data name="ActionHighlight_UseGlobalPreAntMs" xml:space="preserve">
+       <value>Utiliser le délai global avant effet (ms)</value>
+   </data>
+    <data name="ActionHighlight_GlobalPreAntTimeMs" xml:space="preserve">
+       <value>Délai global avant effet (ms)</value>
+   </data>
+    <data name="ActionHighlight_DisplayName" xml:space="preserve">
+       <value>Mise en évidence d'action</value>
+   </data>
+    <data name="ActionHighlight_Description" xml:space="preserve">
+       <value>Met en évidence les capacités avec l'effet "fourmis" lorsqu'elles sont prêtes ou peu de temps avant qu'elles ne le deviennent.</value>
+   </data>
 </root>
