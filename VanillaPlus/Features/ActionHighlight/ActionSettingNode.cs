@@ -30,6 +30,7 @@ public class ActionSettingNode : SimpleComponentNode {
         iconNode = new IconImageNode {
             IconId = action.Icon,
             Size = new Vector2(32.0f, 32.0f),
+            FitTexture = true,
         };
         iconNode.AttachNode(this);
 
