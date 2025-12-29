@@ -31,6 +31,8 @@ public class ActionSettingNode : SimpleComponentNode {
             IconId = action.Icon,
             Size = new Vector2(32.0f, 32.0f),
             FitTexture = true,
+            ShowClickableCursor = true,
+            ActionTooltip = action.RowId,
         };
         iconNode.AttachNode(this);
 
