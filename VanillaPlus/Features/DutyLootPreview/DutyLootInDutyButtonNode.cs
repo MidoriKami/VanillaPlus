@@ -10,7 +10,7 @@ using Action = System.Action;
 namespace VanillaPlus.Features.DutyLootPreview;
 
 public unsafe class DutyLootInDutyButtonNode : OverlayNode {
-    public override OverlayLayer OverlayLayer => OverlayLayer.AboveUserInterface;
+    public override OverlayLayer OverlayLayer => OverlayLayer.BehindUserInterface;
 
     private readonly TextureButtonNode buttonNode;
 
