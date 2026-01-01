@@ -30,7 +30,7 @@ public class ChatWorldNameTooltip : GameModification {
     }
 
     private unsafe void PreReceiveEvent(AddonEvent type, AddonArgs args) {
-        if (!Services.GameConfig.TryGet(UiConfigOption.LogCrossWorldName, out bool value) || !value) return;
+        if (!Services.GameConfig.TryGet(UiConfigOption.LogCrossWorldName, out bool value) || value) return;
         if (args is not AddonReceiveEventArgs eventArgs) return;
 
         switch ((AtkEventType)eventArgs.AtkEventType) {
