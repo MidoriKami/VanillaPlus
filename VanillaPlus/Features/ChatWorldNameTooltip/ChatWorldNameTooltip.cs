@@ -9,7 +9,6 @@ using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.ChatWorldNameTooltip;
 
-// Template GameModification for more easily creating your own, can copy this entire folder and rename it.
 public class ChatWorldNameTooltip : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Chat World Name Tooltip",
@@ -20,63 +19,63 @@ public class ChatWorldNameTooltip : GameModification {
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
     };
+    private bool tooltipActive;
+    private ushort activeTooltipAddonId;
 
-    // public override string ImageName => "SampleGameModification.png";
-
-    // public override bool IsExperimental => true;
-    private bool tooltipActive = false;
-    private ushort id = 0;
-
-    public override void OnEnable() {
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, ["ChatLogPanel_0", "ChatLogPanel_1", "ChatLogPanel_2", "ChatLogPanel_3"], PreReceiveEvent);
-    }
+    public override void OnEnable()
+        => Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, ["ChatLogPanel_0", "ChatLogPanel_1", "ChatLogPanel_2", "ChatLogPanel_3"], PreReceiveEvent);
 
     public override void OnDisable() {
+        Services.AddonLifecycle.UnregisterListener(PreReceiveEvent);
         HideTooltip();
-        Services.AddonLifecycle.UnregisterListener(AddonEvent.PreReceiveEvent, ["ChatLogPanel_0", "ChatLogPanel_1", "ChatLogPanel_2", "ChatLogPanel_3"], PreReceiveEvent);
     }
 
     private unsafe void PreReceiveEvent(AddonEvent type, AddonArgs args) {
-        if (!Services.GameConfig.TryGet(UiConfigOption.LogCrossWorldName, out bool value)) //settings check failed
-            return;
-        if (value) //setting set to show world names
-            return;
+        if (!Services.GameConfig.TryGet(UiConfigOption.LogCrossWorldName, out bool value) || !value) return;
         if (args is not AddonReceiveEventArgs eventArgs) //wrong event type
             return;
 
-        ushort tempid = eventArgs.Addon.Id;
-        if (tempid == 0) //null pointer
-            return;
-        id = tempid;
+        switch ((AtkEventType)eventArgs.AtkEventType) {
+            case AtkEventType.LinkMouseOver:
+                
+                if (eventArgs.AtkEventData == IntPtr.Zero) return; 
+                var linkData = ((LinkData**)eventArgs.AtkEventData)[0];
 
-        if (eventArgs.AtkEventType == (int)AtkEventType.LinkMouseOver) { // started hovering over something
-            if (eventArgs.AtkEventData == IntPtr.Zero) //no info
-                return; 
-            var linkData = ((LinkData**)eventArgs.AtkEventData)[0]; //get link data
-            if (linkData == null || linkData->LinkType != (byte)LinkMacroPayloadType.Character) //hovering a character name
-                return;
-            uint worldId = (uint)linkData->IntValue2; // IntValue2 of character link is world id
-            var world = Services.DataManager.Excel.GetSheet<World>().GetRowOrDefault(worldId);
-            if (world is null) 
-                return;
-            if (Services.PlayerState.HomeWorld.RowId == worldId) //world same as homeworld
-                return;
+                if (linkData is null) return;
+                if (linkData->LinkType is not (byte)LinkMacroPayloadType.Character) return;
+                
+                // IntValue2 of character link is world id
+                var worldId = (uint)linkData->IntValue2;
 
-            AtkUnitBase* ptr = (AtkUnitBase*)eventArgs.Addon.Address; //node event came from
+                if (!Services.DataManager.GetExcelSheet<World>().TryGetRow(worldId, out var world)) return;
+                
+                // If world same as homeworld
+                if (Services.PlayerState.HomeWorld.RowId == worldId) return;
 
-            ShowTooltip(ptr->CursorTarget, world?.Name.ToString());
-        }
+                var addon = args.GetAddon<AtkUnitBase>(); 
 
-        else if (eventArgs.AtkEventType == (int)AtkEventType.LinkMouseOut) { // stopped hovering over something
-            HideTooltip();
+                ShowTooltip(addon->Id, addon->CursorTarget, world.Name.ToString());
+                break;
+            
+            case AtkEventType.LinkMouseOut:
+                HideTooltip();
+                break;
         }
     }
-    private unsafe void ShowTooltip( AtkResNode* node, string world) {
-        AtkStage.Instance()->TooltipManager.ShowTooltip(id, node, world);
+
+    private unsafe void ShowTooltip(ushort addonId, AtkResNode* node, string world) {
+        if (node is null) return;
+        
+        AtkStage.Instance()->TooltipManager.ShowTooltip(addonId, node, world);
+        activeTooltipAddonId = addonId;
         tooltipActive = true;
     }
+
     private unsafe void HideTooltip() {
-        AtkStage.Instance()->TooltipManager.HideTooltip(id);
-        tooltipActive = false;
+        if (tooltipActive) {
+            AtkStage.Instance()->TooltipManager.HideTooltip(activeTooltipAddonId);
+            tooltipActive = false;
+            activeTooltipAddonId = 0;
+        }
     }
 }
