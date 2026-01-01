@@ -1206,4 +1206,7 @@ This game modification fixes it by always triggering the normal mouse click in a
   <data name="ActionHighlight_Description" xml:space="preserve">
     <value>Hebt Fähigkeiten mit dem Ameisen-Effekt hervor, wenn sie bereit sind oder kurz bevor sie verfügbar werden.</value>
   </data>
+  <data name="ModificationType_GameBehavior" xml:space="preserve">
+    <value>Game Behavior Modification</value>
+  </data>
 </root>
