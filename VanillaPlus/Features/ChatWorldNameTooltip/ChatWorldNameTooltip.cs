@@ -32,13 +32,12 @@ public class ChatWorldNameTooltip : GameModification {
 
     private unsafe void PreReceiveEvent(AddonEvent type, AddonArgs args) {
         if (!Services.GameConfig.TryGet(UiConfigOption.LogCrossWorldName, out bool value) || !value) return;
-        if (args is not AddonReceiveEventArgs eventArgs) //wrong event type
-            return;
+        if (args is not AddonReceiveEventArgs eventArgs) return;
 
         switch ((AtkEventType)eventArgs.AtkEventType) {
             case AtkEventType.LinkMouseOver:
                 
-                if (eventArgs.AtkEventData == IntPtr.Zero) return; 
+                if (eventArgs.AtkEventData == nint.Zero) return; 
                 var linkData = ((LinkData**)eventArgs.AtkEventData)[0];
 
                 if (linkData is null) return;
@@ -54,7 +53,7 @@ public class ChatWorldNameTooltip : GameModification {
 
                 var addon = args.GetAddon<AtkUnitBase>(); 
 
-                ShowTooltip(addon->Id, addon->CursorTarget, world.Name.ToString());
+                ShowTooltip(addon->Id, null, world.Name.ToString());
                 break;
             
             case AtkEventType.LinkMouseOut:
@@ -64,8 +63,6 @@ public class ChatWorldNameTooltip : GameModification {
     }
 
     private unsafe void ShowTooltip(ushort addonId, AtkResNode* node, string world) {
-        if (node is null) return;
-        
         AtkStage.Instance()->TooltipManager.ShowTooltip(addonId, node, world);
         activeTooltipAddonId = addonId;
         tooltipActive = true;
