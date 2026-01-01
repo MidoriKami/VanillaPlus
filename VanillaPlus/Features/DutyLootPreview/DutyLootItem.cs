@@ -82,7 +82,8 @@ public class DutyLootItem : IComparable {
         }
     }
 
-    public bool IsEquipment => FilterGroup is 1 or 2 or 3 or 4;
+    public bool IsEquipment =>
+        FilterGroup is 1 or 2 or 3 or 4 or 45;
 
     private static void AddDungeonChestSource(uint itemId, Dictionary<uint, List<ReadOnlySeString>>? itemSources) {
         if (itemSources is null) return;
