@@ -4,7 +4,6 @@ using Dalamud.Game.Config;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using Lumina.Excel.Sheets;
 using Lumina.Text.Payloads;
-using System;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.ChatWorldNameTooltip;
