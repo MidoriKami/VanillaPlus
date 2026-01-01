@@ -1,15 +1,20 @@
+using Dalamud.Game.Addon.Lifecycle;
+using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Game.Config;
+using FFXIVClientStructs.FFXIV.Component.GUI;
+using Lumina.Excel.Sheets;
+using Lumina.Text.Payloads;
 using System;
-using System.Runtime.Remoting.Channels;
 using VanillaPlus.Classes;
 
-namespace VanillaPlus.Features.SampleGameModification;
+namespace VanillaPlus.Features.ChatWorldNameTooltip;
 
 // Template GameModification for more easily creating your own, can copy this entire folder and rename it.
-public class SampleGameModification : GameModification {
+public class ChatWorldNameTooltip : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings.ModificationDisplay_SampleGameModification,
-        Description = Strings.ModificationDescription_SampleGameModification,
-        Type = ModificationType.Hidden,
+        DisplayName = "Chat World Name Tooltip",
+        Description = "When mousing over player names in chat, if the setting to show world names has been turned off, shows the world name of players from other worlds as a tooltip.",
+        Type = ModificationType.UserInterface,
         Authors = [ "anqied" ],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
@@ -27,7 +32,7 @@ public class SampleGameModification : GameModification {
     }
 
     public override void OnDisable() {
-        HideTooltip()
+        HideTooltip();
         Services.AddonLifecycle.UnregisterListener(AddonEvent.PreReceiveEvent, ["ChatLogPanel_0", "ChatLogPanel_1", "ChatLogPanel_2", "ChatLogPanel_3"], PreReceiveEvent);
     }
 
@@ -50,9 +55,9 @@ public class SampleGameModification : GameModification {
             var linkData = ((LinkData**)eventArgs.AtkEventData)[0]; //get link data
             if (linkData == null || linkData->LinkType != (byte)LinkMacroPayloadType.Character) //hovering a character name
                 return;
-            uint worldId = (uint)linkData->IntValue2 // IntValue2 of character link is world id
+            uint worldId = (uint)linkData->IntValue2; // IntValue2 of character link is world id
             var world = Services.DataManager.Excel.GetSheet<World>().GetRowOrDefault(worldId);
-            if (world == null) 
+            if (world is null) 
                 return;
             if (Services.PlayerState.HomeWorld.RowId == worldId) //world same as homeworld
                 return;
