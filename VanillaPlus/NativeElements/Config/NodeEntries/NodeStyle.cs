@@ -24,7 +24,6 @@ public class NodeStyle<T> : NodeStyle where T : NodeBase {
     }
     
     public virtual void ApplyStyle(T? node) {
-
         node?.Position = Position;
     }
 }

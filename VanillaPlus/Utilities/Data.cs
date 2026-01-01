@@ -7,13 +7,13 @@ public static class Data {
     /// <summary>
     /// Loads a data file from PluginConfigs\VanillaPlus\Data\{FileName}
     /// </summary>
-    public static T LoadData<T>(string fileName) where T : new()
+    public static T LoadData<T>(string fileName) where T : class, new()
         => FileHelpers.LoadFile<T>(FileHelpers.GetFileInfo("Data", fileName).FullName);
     
     /// <summary>
     /// Loads a data file from PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName}
     /// </summary>
-    public static T LoadData<T>(string folderName, string fileName) where T : new()
+    public static T LoadData<T>(string folderName, string fileName) where T : class, new()
         => FileHelpers.LoadFile<T>(FileHelpers.GetFileInfo("Data", folderName, fileName).FullName);
     
     /// <summary>
@@ -21,7 +21,7 @@ public static class Data {
     /// Creates a `new T` if the file can't be loaded
     /// </summary>
     /// <remarks>Requires the character to be logged in</remarks>
-    public static T LoadCharacterData<T>(string fileName) where T : new()
+    public static T LoadCharacterData<T>(string fileName) where T : class, new()
         => FileHelpers.LoadFile<T>(FileHelpers.GetFileInfo("Data", FileHelpers.GetCharacterPath(), fileName).FullName);
 
     /// <summary>

@@ -10,7 +10,7 @@ public static class FileHelpers {
         IncludeFields = true,
     };
 
-    public static T LoadFile<T>(string filePath) where T : new() {
+    public static T LoadFile<T>(string filePath, T? defaultObject = null) where T : class, new() {
         var fileInfo = new FileInfo(filePath);
         if (fileInfo is { Exists: true }) {
             try {
@@ -19,7 +19,7 @@ public static class FileHelpers {
 
                 // If deserialize result is null, create a new instance instead and save it.
                 if (dataObject is null) {
-                    dataObject = new T();
+                    dataObject = defaultObject ?? new T();
                     SaveFile(dataObject, filePath);
                 }
             
@@ -29,11 +29,11 @@ public static class FileHelpers {
                 // If there is any kind of error loading the file, generate a new one instead and save it.
                 Services.PluginLog.Error(e, $"Error trying to load file {filePath}, creating a new one instead.");
             
-                SaveFile(new T(), filePath);
+                SaveFile(defaultObject ?? new T(), filePath);
             }
         }
 
-        var newFile = new T();
+        var newFile = defaultObject ?? new T();
         SaveFile(newFile, filePath);
     
         return newFile;

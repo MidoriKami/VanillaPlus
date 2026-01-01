@@ -68,28 +68,88 @@ public unsafe class TargetCastBarCountdown : GameModification {
     }
 
     private void LoadStyles() {
-        primaryTargetStyle = Config.LoadConfig<TextNodeStyle>("TargetCastBarCountdown.PrimaryTarget.style.json");
-        primaryTargetAltStyle = Config.LoadConfig<TextNodeStyle>("TargetCastBarCountdown.PrimaryTargetAlt.style.json");
-        focusTargetStyle = Config.LoadConfig<TextNodeStyle>("TargetCastBarCountdown.FocusTarget.style.json");
-        castBarEnemyStyle = Config.LoadConfig<TextNodeStyle>("TargetCastBarCountdown.CastBarEnemy.style.json");
+        const string primaryTargetPath = "TargetCastBarCountdown.PrimaryTarget.style.json";
+        const string primaryTargetAltPath = "TargetCastBarCountdown.PrimaryTargetAlt.style.json";
+        const string focusTargetPath = "TargetCastBarCountdown.FocusTarget.style.json";
+        const string castBarEnemyPath = "TargetCastBarCountdown.CastBarEnemy.style.json";
 
+        var defaultPrimaryTargetStyle = new TextNodeStyle {
+            Position = new Vector2(0.0f, 16.0f),
+            TextColor = ColorHelper.GetColor(1),
+            TextOutlineColor = ColorHelper.GetColor(54),
+            FontSize = 20,
+            FontType = FontType.Miedinger,
+            AlignmentType = AlignmentType.Right,
+        };
+
+        var defaultPrimaryTargetAltStyle = new TextNodeStyle {
+            Position = new Vector2(0.0f, -16.0f),
+            TextColor = ColorHelper.GetColor(1),
+            TextOutlineColor = ColorHelper.GetColor(54),
+            FontSize = 20,
+            FontType = FontType.Miedinger,
+            AlignmentType = AlignmentType.Right,
+        };
+
+        var defaultFocusTargetStyle = new TextNodeStyle {
+            Position = new Vector2(0.0f, -16.0f),
+            TextColor = ColorHelper.GetColor(1),
+            TextOutlineColor = ColorHelper.GetColor(54),
+            FontSize = 20,
+            FontType = FontType.Miedinger,
+            AlignmentType = AlignmentType.Right,
+        };
+
+        var defaultCastBarEnemyStyle = new TextNodeStyle {
+            Position = new Vector2(0.0f, -12.0f),
+            TextColor = ColorHelper.GetColor(1),
+            TextOutlineColor = ColorHelper.GetColor(54),
+            FontSize = 12,
+            FontType = FontType.Miedinger,
+            AlignmentType = AlignmentType.BottomRight,
+        };
+        
+        primaryTargetStyle = Config.LoadConfig(primaryTargetPath, defaultPrimaryTargetStyle);
+        if (primaryTargetStyle.TextColor == Vector4.Zero) {
+            primaryTargetStyle = defaultPrimaryTargetStyle;
+            primaryTargetStyle.Save(primaryTargetPath);
+        }
+
+        primaryTargetAltStyle = Config.LoadConfig(primaryTargetAltPath, defaultPrimaryTargetAltStyle);
+        if (primaryTargetAltStyle.TextColor == Vector4.Zero) {
+            primaryTargetAltStyle = defaultPrimaryTargetAltStyle;
+            primaryTargetAltStyle.Save(primaryTargetAltPath);
+        }
+        
+        focusTargetStyle = Config.LoadConfig(focusTargetPath, defaultFocusTargetStyle);
+        if (focusTargetStyle.TextColor == Vector4.Zero) {
+            focusTargetStyle = defaultFocusTargetStyle;
+            focusTargetStyle.Save(focusTargetPath);
+        }
+        
+        castBarEnemyStyle = Config.LoadConfig(castBarEnemyPath, defaultCastBarEnemyStyle);
+        if (castBarEnemyStyle.TextColor == Vector4.Zero) {
+            castBarEnemyStyle = defaultCastBarEnemyStyle;
+            castBarEnemyStyle.Save(castBarEnemyPath);
+        }
+        
         primaryTargetStyle.StyleChanged += () => {
-            primaryTargetStyle.Save("TargetCastBarCountdown.PrimaryTarget.style.json");
+            primaryTargetStyle.Save(primaryTargetPath);
             primaryTargetStyle.ApplyStyle(primaryTargetTextNode);
         };
         
         primaryTargetAltStyle.StyleChanged += () => {
-            primaryTargetAltStyle.Save("TargetCastBarCountdown.PrimaryTargetAlt.style.json");
+            primaryTargetAltStyle.Save(primaryTargetAltPath);
             primaryTargetAltStyle.ApplyStyle(primaryTargetAltTextNode);
         };
         
         focusTargetStyle.StyleChanged += () => {
-            focusTargetStyle.Save("TargetCastBarCountdown.FocusTarget.style.json");
+            focusTargetStyle.Save(focusTargetPath);
             focusTargetStyle.ApplyStyle(focusTargetTextNode);
         };
         
         castBarEnemyStyle.StyleChanged += () => {
-            castBarEnemyStyle.Save("TargetCastBarCountdown.CastBarEnemy.style.json");
+            castBarEnemyStyle.Save(castBarEnemyPath);
             castBarEnemyStyle.ApplyStyle(castBarEnemyTextNode);
         };
     }

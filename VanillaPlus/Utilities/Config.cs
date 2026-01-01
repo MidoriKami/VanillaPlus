@@ -9,19 +9,19 @@ public static class Config {
 
     /// <summary>
     /// Loads a configuration file from PluginConfigs\VanillaPlus\Configs\{FileName}
-    /// Creates a `new T()` if the file can't be loaded
+    /// Creates a `new T()` or uses passed in defaultValue object if the file can't be loaded
     /// </summary>
-    public static T LoadConfig<T>(string fileName) where T : new()
-        => FileHelpers.LoadFile<T>(FileHelpers.GetFileInfo("Configs", fileName).FullName);
-    
+    public static T LoadConfig<T>(string fileName, T? defaultValue = null) where T : class, new()
+        => FileHelpers.LoadFile(FileHelpers.GetFileInfo("Configs", fileName).FullName, defaultValue);
+
     /// <summary>
     /// Loads a character specific config file from PluginConfigs\VanillaPlus\Configs\{ContentId}\{FileName}
-    /// Creates a `new T` if the file can't be loaded
+    /// Creates a `new T()` or uses passed in defaultValue object if the file can't be loaded
     /// </summary>
     /// <remarks>Requires the character to be logged in</remarks>
-    public static T LoadCharacterConfig<T>(string fileName) where T : new()
-        => FileHelpers.LoadFile<T>(FileHelpers.GetFileInfo("Configs", FileHelpers.GetCharacterPath(), fileName).FullName);
-    
+    public static T LoadCharacterConfig<T>(string fileName, T? defaultValue = null) where T : class, new()
+        => FileHelpers.LoadFile(FileHelpers.GetFileInfo("Configs", FileHelpers.GetCharacterPath(), fileName).FullName, defaultValue);
+
     /// <summary>
     /// Saves a configuration file to PluginConfigs\VanillaPlus\Configs\{FileName}
     /// </summary>

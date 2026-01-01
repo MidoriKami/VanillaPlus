@@ -14,12 +14,10 @@ public class TextNodeStyle : NodeStyle<TextNode> {
     public override void ApplyStyle(TextNode? node) {
         base.ApplyStyle(node);
 
-        if (node is null) return;
-
-        node.TextColor = TextColor;
-        node.TextOutlineColor = TextOutlineColor;
-        node.FontSize = FontSize;
-        node.FontType = FontType;
-        node.AlignmentType = AlignmentType;
+        node?.TextColor = TextColor;
+        node?.TextOutlineColor = TextOutlineColor;
+        node?.FontSize = FontSize;
+        node?.FontType = FontType;
+        node?.AlignmentType = AlignmentType;
     }
 }
