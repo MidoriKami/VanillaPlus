@@ -1209,4 +1209,7 @@ This game modification fixes it by always triggering the normal mouse click in a
   <data name="ModificationType_GameBehavior" xml:space="preserve">
     <value>Game Behavior Modification</value>
   </data>
+  <data name="ModificationType_NewOverlay" xml:space="preserve">
+    <value>Custom Native Overlay</value>
+  </data>
 </root>
