@@ -21,7 +21,7 @@ public unsafe class FadeUnavailableActions : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
-        CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@FadeUnavailableActions"),
+        CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@FadeUnavailableActions", "1.14.0.2"),
     };
 
     private Hook<AddonActionBarBase.Delegates.UpdateHotbarSlot>? onHotBarSlotUpdateHook;

@@ -39,7 +39,7 @@ public class HaselTweaksCompatibilityModule(string moduleName) : CompatibilityMo
         return [];
     }
     
-    private static bool IsHaselTweaksLoaded()
+    private bool IsHaselTweaksLoaded()
         => IsPluginLoaded("HaselTweaks");
     
     private static string GetConfigFilePath()
