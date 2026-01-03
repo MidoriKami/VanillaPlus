@@ -9,8 +9,8 @@ namespace VanillaPlus.Features.PersistentRetainerGil;
 
 public unsafe class PersistentRetainerGil : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Persistent Retainer Gil",
-        Description = "Remembers the entered gil amount when switching between deposit and withdraw modes.",
+        DisplayName = Strings.PersistentRetainerGil_PersistentRetainerGil,
+        Description = Strings.PersistentRetainerGil_Description,
         Type = ModificationType.UserInterface,
         Authors = [ "Zeffuro" ],
         ChangeLog = [

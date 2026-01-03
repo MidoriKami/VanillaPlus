@@ -1220,4 +1220,10 @@ This game modification fixes it by always triggering the normal mouse click in a
   <data name="ActionHighlight_Description" xml:space="preserve">
     <value>Highlights abilities with the ants effect when they are off cooldown or shortly before they become available.</value>
   </data>
+  <data name="PersistentRetainerGil_PersistentRetainerGil" xml:space="preserve">
+      <value>Persistent Retainer Gil</value>
+  </data>
+  <data name="PersistentRetainerGil_Description" xml:space="preserve">
+      <value>Remembers the entered gil amount when switching between deposit and withdraw modes.</value>
+  </data>
 </root>
