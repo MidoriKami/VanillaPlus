@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace VanillaPlus.Classes;
 
@@ -7,7 +7,7 @@ public abstract class CompatibilityModule(string? allowedVersion = null) {
 
     protected bool IsPluginLoaded(string internalName) {
         foreach (var installedPlugin in Services.PluginInterface.InstalledPlugins) {
-            if (installedPlugin.InternalName != internalName) continue;
+            if (!installedPlugin.IsLoaded || installedPlugin.InternalName != internalName) continue;
 
             // If the installed version is less than the allowed version, return true.
             if (allowedVersion is not null) {
