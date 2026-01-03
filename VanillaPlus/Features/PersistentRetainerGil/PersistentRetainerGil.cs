@@ -37,14 +37,11 @@ public unsafe class PersistentRetainerGil : GameModification {
 
         isProcessing = true;
         try {
-            addon->AtkValues[4].SetInt(previousGil);
+            var node = (AtkComponentNumericInput*)addon->GetComponentByNodeId(32);
+            if (node == null)
+                return;
 
-            AtkEventData eventData = default;
-            eventData.InputData.InputId = previousGil;
-
-            AtkEvent dummyEvent = default;
-
-            addon->ReceiveEvent(AtkEventType.ValueUpdate, 0, &dummyEvent, &eventData);
+            node->SetValue(previousGil);
             needsUpdate = false;
         }
         finally {
@@ -65,7 +62,7 @@ public unsafe class PersistentRetainerGil : GameModification {
         previousGil = 0;
         needsUpdate = false;
         isProcessing = false;
-        
+
         Services.AddonLifecycle.UnregisterListener(AddonEvent.PreReceiveEvent, "Bank", OnBankEvent);
         Services.AddonLifecycle.UnregisterListener(AddonEvent.PostRefresh, "Bank", OnBankRefreshEvent);
     }
