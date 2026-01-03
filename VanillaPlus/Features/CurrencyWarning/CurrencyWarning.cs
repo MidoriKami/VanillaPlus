@@ -3,8 +3,9 @@ using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Overlay;
+using KamiToolKit.Premade.Addons;
+using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
-using VanillaPlus.Features.CurrencyOverlay;
 using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.CurrencyWarning;
@@ -21,79 +22,149 @@ public unsafe class CurrencyWarning : GameModification {
     };
 
     private CurrencyWarningConfig? config;
-    private CurrencyOverlayConfig? currencyConfig;
     private OverlayController? overlayController;
     private CurrencyWarningNode? warningNode;
-    private ConfigAddon? configWindow;
-    private CurrencyItemMultiSelectWindow? multiSelectWindow;
+    private CurrencyTooltipNode? tooltipNode;
 
-    private List<uint> trackedIds = [];
+    private ConfigAddon? configWindow;
+    private ListConfigAddon<CurrencyWarningSetting, CurrencyWarningConfigNode>? listConfigWindow;
+    private LuminaSearchAddon<Item>? itemSearchAddon;
 
     public override void OnEnable() {
         config = CurrencyWarningConfig.Load();
-        currencyConfig = CurrencyOverlayConfig.Load();
         overlayController = new OverlayController();
 
-        trackedIds = currencyConfig.Currencies.Select(c => c.ItemId).ToList();
+        InitializeConfiguration();
+        CreateTooltipNode();
+        CreateWarningNode();
+    }
 
-        multiSelectWindow = new CurrencyItemMultiSelectWindow(trackedIds, SyncCurrencies) {
-            InternalName = "CurrencyMultiSelect",
-            Title = "Select Tracked Currencies"
+    private void InitializeConfiguration() {
+        if (config == null) return;
+
+        itemSearchAddon = new LuminaSearchAddon<Item> {
+            InternalName = "CurrencyWarningSearch",
+            Title = "Search Currencies",
+            Size = new Vector2(350.0f, 500.0f),
+            SearchOptions = Services.DataManager.GetCurrencyItems().ToList(),
+            SortingOptions = [ "Name", "ID" ],
+            GetLabelFunc = item => item.Name.ToString(),
+            GetIconIdFunc = item => item.Icon,
+        };
+
+        listConfigWindow = new ListConfigAddon<CurrencyWarningSetting, CurrencyWarningConfigNode> {
+            InternalName = "CurrencyWarningList",
+            Title = "Tracked Currencies",
+            Size = new Vector2(700.0f, 500.0f),
+            SortOptions = [ "Alphabetical" ],
+            Options = config.WarningSettings,
+            OnConfigChanged = _ => config.Save(),
+            OnAddClicked = listNode => {
+                itemSearchAddon.SelectionResult = item => {
+                    var newSetting = new CurrencyWarningSetting {
+                        ItemId = item.RowId,
+                        EnableHighLimit = true,
+                        HighLimit = (int)item.StackSize
+                    };
+                    listNode.AddOption(newSetting);
+                    config.Save();
+                };
+                itemSearchAddon.Toggle();
+            },
+            OnItemRemoved = _ => config.Save(),
         };
 
         configWindow = new ConfigAddon {
             InternalName = "CurrencyWarningConfig",
-            Title = "Currency Warning Config",
+            Title = "Currency Warning Settings",
             Config = config,
         };
 
         configWindow.AddCategory("General")
             .AddCheckbox("Enable Moving", nameof(config.IsMoveable))
-            .AddFloatSlider("Icon Scale", 0.5f, 3.0f, 2, 0.1f, nameof(config.Scale));
+            .AddFloatSlider("Icon Scale", 0.5f, 3.0f, 2, 0.1f, nameof(config.Scale))
+            .AddColorEdit("Low Color", nameof(config.LowColor))
+            .AddColorEdit("High Color", nameof(config.HighColor));
 
-        configWindow.AddCategory("Tracking")
-            .AddButton("Select Currencies to Track", () => multiSelectWindow.Toggle());
+        configWindow.AddCategory("Low Limit")
+            .AddMultiSelectIcon(Strings.Icon, nameof(config.LowIcon), true, 60073u, 60357u, 230402u);
+
+        configWindow.AddCategory("High Limit")
+            .AddMultiSelectIcon(Strings.Icon, nameof(config.HighIcon), true, 60074u, 63908u, 230403u);
+
+        configWindow.AddCategory("")
+            .AddButton("Configure Tracked Currencies", () => listConfigWindow.Toggle());
 
         OpenConfigAction = configWindow.Toggle;
+    }
 
-        Services.Framework.RunOnFrameworkThread(() => {
-            if (config == null || currencyConfig == null || overlayController == null) return;
+    private void CreateTooltipNode() {
+        if (config is null) return;
 
-            warningNode = new CurrencyWarningNode(config, currencyConfig) {
+        overlayController?.CreateNode(() => tooltipNode = new CurrencyTooltipNode {
+            Config = config
+        });
+    }
+
+    private void CreateWarningNode() {
+        if (config is null) return;
+
+        overlayController?.CreateNode(() => {
+            warningNode = new CurrencyWarningNode {
+                Config = config,
                 Size = new Vector2(48.0f, 48.0f),
             };
+
+            warningNode.OnUpdate = HandleWarningUpdate;
+
+            var screenCenter = (Vector2)AtkStage.Instance()->ScreenSize / 2.0f;
+            warningNode.Position = config.Position != Vector2.Zero ? config.Position : screenCenter;
 
             warningNode.OnMoveComplete = () => {
                 config.Position = warningNode.Position;
                 config.Save();
             };
 
-            if (config.Position == Vector2.Zero) {
-                warningNode.Position = (Vector2)AtkStage.Instance()->ScreenSize / 2.0f;
-            } else {
-                warningNode.Position = config.Position;
-            }
-
-            overlayController.AddNode(warningNode);
+            return warningNode;
         });
     }
 
-    private void SyncCurrencies() {
-        if (currencyConfig == null) return;
+    private void HandleWarningUpdate() {
+        if (tooltipNode is null) return;
+        if (warningNode is null) return;
 
-        currencyConfig.Currencies.RemoveAll(c => !trackedIds.Contains(c.ItemId));
+        if (warningNode.IsHovered && warningNode.ActiveWarnings.Count > 0) {
+            tooltipNode.UpdateContents(warningNode.ActiveWarnings);
+            tooltipNode.IsVisible = true;
+            UpdateTooltipPosition();
+        } else {
+            tooltipNode.IsVisible = false;
+        }
+    }
 
-        foreach (var id in trackedIds) {
-            if (currencyConfig.Currencies.Any(c => c.ItemId == id)) continue;
+    private void UpdateTooltipPosition() {
+        if (tooltipNode is null) return;
+        if (warningNode is null) return;
 
-            currencyConfig.Currencies.Add(new CurrencySetting {
-                ItemId = id,
-                EnableHighLimit = true,
-                HighLimit = 99999,
-            });
+        var screenSize = (Vector2)AtkStage.Instance()->ScreenSize;
+        var iconScale = warningNode.Scale.X;
+        var iconSize = warningNode.Size * iconScale;
+        var tooltipSize = tooltipNode.Size;
+
+        var targetX = warningNode.Position.X + iconSize.X + 10.0f;
+        var targetY = warningNode.Position.Y;
+
+        if (targetX + tooltipSize.X > screenSize.X) {
+            targetX = warningNode.Position.X - tooltipSize.X - 10.0f;
         }
 
-        currencyConfig.Save();
+        if (targetY + tooltipSize.Y > screenSize.Y) {
+            targetY = screenSize.Y - tooltipSize.Y - 10.0f;
+        }
+
+        if (targetY < 0) targetY = 10.0f;
+
+        tooltipNode.Position = new Vector2(targetX, targetY);
     }
 
     public override void OnDisable() {
@@ -101,11 +172,13 @@ public unsafe class CurrencyWarning : GameModification {
         overlayController = null;
         configWindow?.Dispose();
         configWindow = null;
-        multiSelectWindow?.Dispose();
-        multiSelectWindow = null;
+        listConfigWindow?.Dispose();
+        listConfigWindow = null;
+        itemSearchAddon?.Dispose();
+        itemSearchAddon = null;
+        tooltipNode?.Dispose();
+        tooltipNode = null;
         warningNode = null;
         config = null;
-        currencyConfig = null;
-        trackedIds.Clear();
     }
 }
