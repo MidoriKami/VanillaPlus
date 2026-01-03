@@ -5,7 +5,7 @@ namespace VanillaPlus.Features.DutyTimer;
 
 public class DutyTimer : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings.ModificationDescription_DutyTimer, 
+        DisplayName = Strings.ModificationDisplay_DutyTimer, 
         Description = Strings.ModificationDescription_DutyTimer,
         Authors = [ "MidoriKami" ],
         Type = ModificationType.GameBehavior,
