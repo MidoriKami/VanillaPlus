@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -114,6 +114,23 @@ public class ConfigCategory : IDisposable {
             Config = ConfigObject,
             Color = initialValue,
             DefaultColor = defaultColor,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddDropdown(string label, string memberName, Dictionary<string, object> options) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<object>(ConfigObject);
+
+        configEntries.Add(new DropdownConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            Options = options,
+            InitialValue = initialValue!,
         });
 
         return this;
