@@ -6,7 +6,7 @@ using KamiToolKit.Nodes;
 
 namespace VanillaPlus.NativeElements.Config.ConfigEntries;
 
-public class DropdownConfig : BaseConfigEntry {
+public class DropDownConfig : BaseConfigEntry {
     public required Dictionary<string, object> Options { get; init; }
     public required object InitialValue { get; set; }
 

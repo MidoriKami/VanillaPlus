@@ -19,15 +19,15 @@ public class ConfigCategory : IDisposable {
         var tabbedListNode = new TabbedVerticalListNode {
             FitWidth = true,
         };
-          
+
         tabbedListNode.AddNode(new ResNode {
             Size = new Vector2(4.0f, 4.0f),
         });
-        
+
         tabbedListNode.AddNode(new CategoryTextNode {
             String = CategoryLabel,
         });
-            
+
         tabbedListNode.AddTab(1);
 
         foreach (var entry in configEntries) {
@@ -35,7 +35,7 @@ public class ConfigCategory : IDisposable {
                 tabbedListNode.AddTab(1);
                 continue;
             }
-            
+
             tabbedListNode.AddNode(entry.BuildNode());
         }
 
@@ -43,7 +43,7 @@ public class ConfigCategory : IDisposable {
 
         return tabbedListNode;
     }
-    
+
     public ConfigCategory AddCheckbox(string label, string memberName) {
         var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
         if (memberInfo is null) return this;
@@ -73,7 +73,7 @@ public class ConfigCategory : IDisposable {
             Range = min..max,
             InitialValue = initialValue,
         });
-        
+
         return this;
     }
 
@@ -125,7 +125,7 @@ public class ConfigCategory : IDisposable {
 
         var initialValue = memberInfo.GetValue<object>(ConfigObject);
 
-        configEntries.Add(new DropdownConfig {
+        configEntries.Add(new DropDownConfig {
             Label = label,
             MemberInfo = memberInfo,
             Config = ConfigObject,
@@ -139,9 +139,9 @@ public class ConfigCategory : IDisposable {
     public ConfigCategory AddInputInt(string label, int step, Range range, string memberName) {
         var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
         if (memberInfo is null) return this;
-        
+
         var initialValue = memberInfo.GetValue<int>(ConfigObject);
-        
+
         configEntries.Add(new IntInputConfig {
             Label = label,
             MemberInfo = memberInfo,
@@ -158,7 +158,7 @@ public class ConfigCategory : IDisposable {
     public ConfigCategory AddInputFloat(string label, int step, Range range, string memberName) {
         var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
         if (memberInfo is null) return this;
-        
+
         var initialValue = memberInfo.GetValue<float>(ConfigObject);
 
         configEntries.Add(new FloatInputConfig {
@@ -176,9 +176,9 @@ public class ConfigCategory : IDisposable {
     public ConfigCategory AddSelectIcon(string label, string memberName) {
         var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
         if (memberInfo is null) return this;
-        
+
         var initialValue = memberInfo.GetValue<uint>(ConfigObject);
-        
+
         configEntries.Add(new SelectIconConfig {
             Label = label,
             MemberInfo = memberInfo,
@@ -188,13 +188,13 @@ public class ConfigCategory : IDisposable {
 
         return this;
     }
-    
+
     public ConfigCategory AddMultiSelectIcon(string label, string memberName, bool includeInput, params uint[] icons) {
         var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
         if (memberInfo is null) return this;
-        
+
         var initialValue = memberInfo.GetValue<uint>(ConfigObject);
-        
+
         configEntries.Add(new MultiSelectIconConfig {
             Label = label,
             MemberInfo = memberInfo,

@@ -13,11 +13,11 @@ public class ClockNode : OverlayNode {
     public override OverlayLayer OverlayLayer => OverlayLayer.BehindUserInterface;
 
     private readonly TextNode timeNode;
-    private readonly ClockSetting setting;
+    private readonly ClockOverlayConfig config;
     private readonly TextNodeStyle style;
 
-    public ClockNode(ClockSetting setting, TextNodeStyle style) {
-        this.setting = setting;
+    public ClockNode(ClockOverlayConfig config, TextNodeStyle style) {
+        this.config = config;
         this.style = style;
 
         style.ApplyStyle(timeNode);
@@ -33,21 +33,21 @@ public class ClockNode : OverlayNode {
 
         style.ApplyStyle(timeNode);
 
-        timeNode.TextFlags = setting.Flags;
+        timeNode.TextFlags = config.Flags;
 
         timeNode.Position = Vector2.Zero;
 
-        var format = setting.ShowSeconds ? "HH:mm:ss" : "HH:mm";
-        var prefix = setting.ShowPrefix ? GetPrefix(setting.Type) : string.Empty;
+        var format = config.ShowSeconds ? "HH:mm:ss" : "HH:mm";
+        var prefix = config.ShowPrefix ? GetPrefix(config.Type) : string.Empty;
 
-        timeNode.String = setting.Type switch {
+        timeNode.String = config.Type switch {
             ClockType.Local => $"{prefix}{DateTime.Now.ToString(format)}",
             ClockType.Server => $"{prefix}{GetServerTime().ToString(format)}",
             ClockType.Eorzea => $"{prefix}{GetEorzeaTime():HH:mm}",
             _ => "00:00"
         };
 
-        EnableMoving = setting.IsMoveable;
+        EnableMoving = config.IsMoveable;
     }
 
     private DateTime GetServerTime() => DateTimeOffset.FromUnixTimeSeconds(Framework.GetServerTime()).LocalDateTime;

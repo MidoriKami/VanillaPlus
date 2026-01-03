@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Component.GUI;
+﻿using System.Numerics;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.ClockOverlay;
@@ -6,11 +7,12 @@ namespace VanillaPlus.Features.ClockOverlay;
 public class ClockOverlayConfig : GameModificationConfig<ClockOverlayConfig> {
     protected override string FileName => "ClockOverlay";
 
-    public ClockSetting Clock = new();
-
-    public bool ShowSeconds { get => Clock.ShowSeconds; set => Clock.ShowSeconds = value; }
-    public bool IsMoveable { get => Clock.IsMoveable; set => Clock.IsMoveable = value; }
-    public bool ShowPrefix { get => Clock.ShowPrefix; set => Clock.ShowPrefix = value; }
-    public ClockType Type { get => Clock.Type; set => Clock.Type = value; }
-    public TextFlags Flags { get => Clock.Flags; set => Clock.Flags = value; }
+    public Vector2 Position = Vector2.Zero;
+    public ClockType Type = ClockType.Local;
+    public bool IsMoveable = true;
+    public bool ShowSeconds = true;
+    public bool ShowPrefix = true;
+    public TextFlags Flags = TextFlags.Edge;
 }
+
+public enum ClockType { Local, Server, Eorzea }
