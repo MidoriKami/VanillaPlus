@@ -62,6 +62,10 @@ public unsafe class PersistentRetainerGil : GameModification {
     }
 
     public override void OnDisable() {
+        previousGil = 0;
+        needsUpdate = false;
+        isProcessing = false;
+        
         Services.AddonLifecycle.UnregisterListener(AddonEvent.PreReceiveEvent, "Bank", OnBankEvent);
         Services.AddonLifecycle.UnregisterListener(AddonEvent.PostRefresh, "Bank", OnBankRefreshEvent);
     }
