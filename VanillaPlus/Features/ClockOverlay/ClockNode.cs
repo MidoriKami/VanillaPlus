@@ -44,24 +44,30 @@ public class ClockNode : OverlayNode {
             ClockType.Local => $"{prefix}{DateTime.Now.ToString(format)}",
             ClockType.Server => $"{prefix}{GetServerTime().ToString(format)}",
             ClockType.Eorzea => $"{prefix}{GetEorzeaTime():HH:mm}",
-            _ => "00:00"
+            _ => "00:00",
         };
 
         EnableMoving = config.IsMoveable;
     }
 
-    private DateTime GetServerTime() => DateTimeOffset.FromUnixTimeSeconds(Framework.GetServerTime()).LocalDateTime;
+    private static DateTime GetServerTime() 
+        => DateTimeOffset.FromUnixTimeSeconds(Framework.GetServerTime()).LocalDateTime;
 
-    private DateTime GetEorzeaTime() {
+    private static DateTime GetEorzeaTime() {
         const double eorzeaMultiplier = 3600.0D / 175.0D;
-        long eorzeaTotalSeconds = (long)(Framework.GetServerTime() * eorzeaMultiplier);
-        return new DateTime(1, 1, 1, (int)(eorzeaTotalSeconds / 3600 % 24), (int)(eorzeaTotalSeconds / 60 % 60), (int)(eorzeaTotalSeconds % 60));
+        var eorzeaTotalSeconds = (long)(Framework.GetServerTime() * eorzeaMultiplier);
+
+        var hour = (int)(eorzeaTotalSeconds / 3600 % 24);
+        var minute = (int)(eorzeaTotalSeconds / 60 % 60);
+        var seconds = (int)(eorzeaTotalSeconds % 60);
+        
+        return new DateTime(1, 1, 1, hour, minute, seconds);
     }
 
     private string GetPrefix(ClockType type) => type switch {
         ClockType.Local => style.FontType == FontType.Axis ? " " : "LT ",
         ClockType.Server => style.FontType == FontType.Axis ? " " : "ST ",
         ClockType.Eorzea => style.FontType == FontType.Axis ? " " : "ET ",
-        _ => ""
+        _ => string.Empty,
     };
 }

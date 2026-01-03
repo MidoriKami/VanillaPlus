@@ -10,7 +10,7 @@ using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.ClockOverlay;
 
-public unsafe class ClockOverlay : GameModification {
+public class ClockOverlay : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ClockOverlay_Title,
         Description = Strings.ClockOverlay_Description,
@@ -25,7 +25,6 @@ public unsafe class ClockOverlay : GameModification {
     private OverlayController? overlayController;
     private ClockNode? clockNode;
 
-    // Native Config Addon
     private ConfigAddon? configWindow;
     private TextNodeStyle? clockStyle;
 
@@ -47,9 +46,9 @@ public unsafe class ClockOverlay : GameModification {
             clockStyle.Position = config.Position;
         }
 
-        clockStyle.StyleChanged += () => {
+        clockStyle.StyleChanged = () => {
             clockStyle.Save(stylePath);
-            if (clockNode != null) clockNode.Position = clockStyle.Position;
+            clockNode?.Position = clockStyle.Position;
         };
 
         configWindow = new ConfigAddon {
@@ -63,25 +62,22 @@ public unsafe class ClockOverlay : GameModification {
             .AddCheckbox(Strings.ClockOverlay_ShowSourcePrefix, nameof(config.ShowPrefix))
             .AddCheckbox(Strings.ClockOverlay_EnableMoving, nameof(config.IsMoveable))
             .AddDropdown(Strings.ClockOverlay_TimeSource, nameof(config.Type), new Dictionary<string, object> {
-                { Strings.ClockOverlay_LocalTime, ClockType.Local },
-                { Strings.ClockOverlay_ServerTime, ClockType.Server },
-                { Strings.ClockOverlay_EorzeaTime, ClockType.Eorzea }
+                [Strings.ClockOverlay_LocalTime] = ClockType.Local,
+                [Strings.ClockOverlay_ServerTime] = ClockType.Server,
+                [Strings.ClockOverlay_EorzeaTime] = ClockType.Eorzea,
             })
             .AddDropdown(Strings.ClockOverlay_TextRendering, nameof(config.Flags), new Dictionary<string, object> {
-                { Strings.ClockOverlay_Edge, TextFlags.Edge },
-                { Strings.ClockOverlay_Glare, TextFlags.Glare },
-                { Strings.ClockOverlay_Emboss, TextFlags.Emboss }
-            });;
+                [Strings.ClockOverlay_Edge] = TextFlags.Edge,
+                [Strings.ClockOverlay_Glare] = TextFlags.Glare,
+                [Strings.ClockOverlay_Emboss] = TextFlags.Emboss,
+            });
 
         configWindow.AddCategory(Strings.ClockOverlay_Visual_Style)
             .AddNodeConfig(clockStyle);
 
         OpenConfigAction = configWindow.Toggle;
 
-        Services.Framework.RunOnFrameworkThread(() => {
-            if (config == null) return;
-            if (overlayController == null) return;
-
+        overlayController.CreateNode(() => {
             clockNode = new ClockNode(config, clockStyle) {
                 Size = new Vector2(150.0f, 30.0f),
                 Position = clockStyle.Position,
@@ -94,17 +90,21 @@ public unsafe class ClockOverlay : GameModification {
                 config.Save();
                 clockStyle.Save(stylePath);
             };
-
-            overlayController.AddNode(clockNode);
+            
+            return clockNode;
         });
     }
 
     public override void OnDisable() {
         configWindow?.Dispose();
         configWindow = null;
+        
         overlayController?.Dispose();
         overlayController = null;
+
+        clockNode?.Dispose();
         clockNode = null;
+
         config = null;
     }
 }
