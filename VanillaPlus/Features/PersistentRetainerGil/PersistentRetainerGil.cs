@@ -11,7 +11,7 @@ public unsafe class PersistentRetainerGil : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.PersistentRetainerGil_PersistentRetainerGil,
         Description = Strings.PersistentRetainerGil_Description,
-        Type = ModificationType.UserInterface,
+        Type = ModificationType.GameBehavior,
         Authors = [ "Zeffuro" ],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
@@ -33,7 +33,6 @@ public unsafe class PersistentRetainerGil : GameModification {
         if (args is not AddonRefreshArgs eventArgs) return;
 
         var addon = eventArgs.GetAddon<AddonBank>();
-        if (addon == null) return;
 
         isProcessing = true;
         try {
@@ -52,7 +51,8 @@ public unsafe class PersistentRetainerGil : GameModification {
     private void OnBankEvent(AddonEvent type, AddonArgs args) {
         if (isProcessing) return;
         if (args is not AddonReceiveEventArgs eventArgs) return;
-        if ((AtkEventType)eventArgs.AtkEventType != AtkEventType.ButtonClick || eventArgs.EventParam != 3) return;
+        if ((AtkEventType)eventArgs.AtkEventType != AtkEventType.ButtonClick) return;
+        if (eventArgs.EventParam != 3) return;
 
         previousGil = eventArgs.AtkValueSpan[4].Int;
         needsUpdate = true;
@@ -63,7 +63,6 @@ public unsafe class PersistentRetainerGil : GameModification {
         needsUpdate = false;
         isProcessing = false;
 
-        Services.AddonLifecycle.UnregisterListener(AddonEvent.PreReceiveEvent, "Bank", OnBankEvent);
-        Services.AddonLifecycle.UnregisterListener(AddonEvent.PostRefresh, "Bank", OnBankRefreshEvent);
+        Services.AddonLifecycle.UnregisterListener(OnBankEvent, OnBankRefreshEvent);
     }
 }
