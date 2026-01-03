@@ -102,13 +102,13 @@ public class ListInventory : GameModification {
         addonListInventory?.DoListUpdate();
     }
 
-    private bool OnListUpdated(VerticalListNode list, bool isOpening) {
+    private bool OnListUpdated(ScrollingListNode list, bool isOpening) {
         if (!updateRequested && !isOpening) return false;
 
         var filteredInventoryItems = Inventory.GetInventoryItems(searchString);
 
         var listUpdated = list.SyncWithListData(filteredInventoryItems, node => node.Item, data => new InventoryItemNode {
-            Size = new Vector2(list.Width, 32.0f),
+            Size = new Vector2(list.VerticalListNode.Width, 32.0f),
             Item = data,
         });
 

@@ -44,18 +44,18 @@ public class FateListWindow : GameModification {
         addonFateList = null;
     }
 
-    private static bool UpdateList(VerticalListNode listNode, bool isOpening) {
+    private static bool UpdateList(ScrollingListNode scrollingListNode, bool isOpening) {
         var validFates = Services.FateTable.Where(fate => fate is { State: FateState.Running or FateState.Preparation }).ToList();
-        var listChanged = listNode.SyncWithListData(validFates, node => node.Fate, data => new FateEntryNode {
-            Size = new Vector2(listNode.Width, 53.0f),
+        var listChanged = scrollingListNode.SyncWithListData(validFates, node => node.Fate, data => new FateEntryNode {
+            Size = new Vector2(scrollingListNode.Width, 53.0f),
             Fate = data,
         });
 
         if (listChanged) {
-            listNode.ReorderNodes(Comparison);
+            scrollingListNode.ReorderNodes(Comparison);
         }
 
-        foreach (var fateNode in listNode.GetNodes<FateEntryNode>()) {
+        foreach (var fateNode in scrollingListNode.GetNodes<FateEntryNode>()) {
             fateNode.Update();
         }
 

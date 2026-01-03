@@ -100,7 +100,7 @@ public unsafe class RecentlyLootedWindow : GameModification {
         }
     }
     
-    private bool UpdateList(VerticalListNode listNode, bool isOpening) {
+    private bool UpdateList(ScrollingListNode listNode, bool isOpening) {
         if (!updateRequested && !isOpening) return false;
         if (items is null) return false;
         

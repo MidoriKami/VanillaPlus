@@ -74,10 +74,9 @@ public unsafe class SearchableNodeListAddon : NodeListAddon {
         
         const float listPadding = 4.0f;
         
-        ScrollingAreaNode = new ScrollingAreaNode<VerticalListNode> {
+        ScrollingAreaNode = new ScrollingListNode {
             Size = ContentSize - new Vector2(0.0f, searchContainerNode.Height + widgetsContainerNode.Height + listPadding),
             Position = new Vector2(0.0f, listPadding),
-            ContentHeight = 1000.0f,
         };
         
         mainContainerNode.AttachNode(this);

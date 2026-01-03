@@ -71,13 +71,14 @@ public unsafe class QuestListWindow : GameModification {
         addonQuestList?.DoListUpdate();
     }
 
-    private bool UpdateList(VerticalListNode listNode, bool isOpening) {
+    private bool UpdateList(ScrollingListNode listNode, bool isOpening) {
         var filteredInventoryItems = GetQuests()
             .Where(item => item.IsRegexMatch(searchString))
             .ToList();
 
         var listUpdated = listNode.SyncWithListData(filteredInventoryItems, node => node.QuestInfo, data => new QuestEntryNode {
-            Size = new Vector2(listNode.Width, 48.0f),
+            Size = new Vector2(listNode.VerticalListNode.Width, 48.0f),
+            Height = 48.0f,
             QuestInfo = data,
         });
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Numerics;
 using Dalamud.Game.Command;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -10,7 +9,7 @@ using VanillaPlus.Classes;
 namespace VanillaPlus.NativeElements.Addons;
 
 public unsafe class NodeListAddon : NativeAddon {
-    protected ScrollingAreaNode<VerticalListNode>? ScrollingAreaNode;
+    protected ScrollingListNode? ScrollingAreaNode;
 
     private AddonConfig? config;
     private KeybindListener? keybindListener;
@@ -38,12 +37,12 @@ public unsafe class NodeListAddon : NativeAddon {
     }
 
     protected override void OnSetup(AtkUnitBase* addon) {
-        ScrollingAreaNode = new ScrollingAreaNode<VerticalListNode> {
+        ScrollingAreaNode = new ScrollingListNode {
             Position = ContentStartPosition,
             Size = ContentSize,
-            ContentHeight = 100,
+            FitContents = true,
+            FitWidth = true,
         };
-        ScrollingAreaNode.ContentNode.FitContents = true;
         ScrollingAreaNode.AttachNode(this);
         
         DoListUpdate(true);
@@ -95,7 +94,7 @@ public unsafe class NodeListAddon : NativeAddon {
     /// <summary>
     ///     Return true to indicate contents were changed.
     /// </summary>
-    public delegate bool UpdateList(VerticalListNode listNode, bool isOpening);
+    public delegate bool UpdateList(ScrollingListNode listNode, bool isOpening);
     
     public required UpdateList UpdateListFunction { get; init; }
 
@@ -105,8 +104,8 @@ public unsafe class NodeListAddon : NativeAddon {
     public void DoListUpdate(bool isOpening = false) {
         if (ScrollingAreaNode is null) return;
         
-        if (UpdateListFunction(ScrollingAreaNode.ContentNode, isOpening)) {
-            ScrollingAreaNode.ContentHeight = ScrollingAreaNode.ContentNode.Nodes.Sum(node => node.IsVisible ? node.Height : 0.0f);
+        if (UpdateListFunction(ScrollingAreaNode, isOpening)) {
+            ScrollingAreaNode.RecalculateLayout();
         }
     }
 }
