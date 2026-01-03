@@ -330,6 +330,150 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clock Settings.
+        /// </summary>
+        internal static string ClockOverlay_ClockSettings {
+            get {
+                return ResourceManager.GetString("ClockOverlay_ClockSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clock Overlay Configuration.
+        /// </summary>
+        internal static string ClockOverlay_ConfigurationTitle {
+            get {
+                return ResourceManager.GetString("ClockOverlay_ConfigurationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adds a customizable clock overlay (LT/ST/ET) to the game.
+        /// </summary>
+        internal static string ClockOverlay_Description {
+            get {
+                return ResourceManager.GetString("ClockOverlay_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edge.
+        /// </summary>
+        internal static string ClockOverlay_Edge {
+            get {
+                return ResourceManager.GetString("ClockOverlay_Edge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Emboss.
+        /// </summary>
+        internal static string ClockOverlay_Emboss {
+            get {
+                return ResourceManager.GetString("ClockOverlay_Emboss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Moving.
+        /// </summary>
+        internal static string ClockOverlay_EnableMoving {
+            get {
+                return ResourceManager.GetString("ClockOverlay_EnableMoving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eorzea Time.
+        /// </summary>
+        internal static string ClockOverlay_EorzeaTime {
+            get {
+                return ResourceManager.GetString("ClockOverlay_EorzeaTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Glare.
+        /// </summary>
+        internal static string ClockOverlay_Glare {
+            get {
+                return ResourceManager.GetString("ClockOverlay_Glare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local Time.
+        /// </summary>
+        internal static string ClockOverlay_LocalTime {
+            get {
+                return ResourceManager.GetString("ClockOverlay_LocalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Time.
+        /// </summary>
+        internal static string ClockOverlay_ServerTime {
+            get {
+                return ResourceManager.GetString("ClockOverlay_ServerTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Seconds.
+        /// </summary>
+        internal static string ClockOverlay_ShowSeconds {
+            get {
+                return ResourceManager.GetString("ClockOverlay_ShowSeconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Source Prefix.
+        /// </summary>
+        internal static string ClockOverlay_ShowSourcePrefix {
+            get {
+                return ResourceManager.GetString("ClockOverlay_ShowSourcePrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text Rendering.
+        /// </summary>
+        internal static string ClockOverlay_TextRendering {
+            get {
+                return ResourceManager.GetString("ClockOverlay_TextRendering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time Source.
+        /// </summary>
+        internal static string ClockOverlay_TimeSource {
+            get {
+                return ResourceManager.GetString("ClockOverlay_TimeSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clock Overlay.
+        /// </summary>
+        internal static string ClockOverlay_Title {
+            get {
+                return ResourceManager.GetString("ClockOverlay_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visual Style.
+        /// </summary>
+        internal static string ClockOverlay_Visual_Style {
+            get {
+                return ResourceManager.GetString("ClockOverlay_Visual_Style", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Color.
         /// </summary>
         internal static string Color {

@@ -1221,4 +1221,52 @@ ID: {0}</value>
   <data name="PersistentRetainerGil_Description" xml:space="preserve">
     <value>入金と出金のモードを切り替えても、入力したギル額を保持します。</value>
   </data>
+    <data name="ClockOverlay_Title" xml:space="preserve">
+    <value>時計オーバーレイ</value>
+</data>
+    <data name="ClockOverlay_Description" xml:space="preserve">
+    <value>カスタマイズ可能な時計（LT/ST/ET）を画面上に表示します。</value>
+</data>
+    <data name="ClockOverlay_ConfigurationTitle" xml:space="preserve">
+    <value>時計オーバーレイ設定</value>
+</data>
+    <data name="ClockOverlay_ClockSettings" xml:space="preserve">
+    <value>時計の設定</value>
+</data>
+    <data name="ClockOverlay_ShowSeconds" xml:space="preserve">
+    <value>秒を表示する</value>
+</data>
+    <data name="ClockOverlay_ShowSourcePrefix" xml:space="preserve">
+    <value>時間設定の略称を表示する</value>
+</data>
+    <data name="ClockOverlay_EnableMoving" xml:space="preserve">
+    <value>移動を有効にする</value>
+</data>
+    <data name="ClockOverlay_TimeSource" xml:space="preserve">
+    <value>時間ソース</value>
+</data>
+    <data name="ClockOverlay_LocalTime" xml:space="preserve">
+    <value>ローカル時間</value>
+</data>
+    <data name="ClockOverlay_ServerTime" xml:space="preserve">
+    <value>サーバー時間</value>
+</data>
+    <data name="ClockOverlay_EorzeaTime" xml:space="preserve">
+    <value>エオルゼア時間</value>
+</data>
+    <data name="ClockOverlay_TextRendering" xml:space="preserve">
+    <value>テキストレンダリング</value>
+</data>
+    <data name="ClockOverlay_Edge" xml:space="preserve">
+    <value>縁取り</value>
+</data>
+    <data name="ClockOverlay_Glare" xml:space="preserve">
+    <value>光沢</value>
+</data>
+    <data name="ClockOverlay_Emboss" xml:space="preserve">
+    <value>エンボス</value>
+</data>
+    <data name="ClockOverlay_Visual_Style" xml:space="preserve">
+    <value>ビジュアルスタイル</value>
+</data>
 </root>

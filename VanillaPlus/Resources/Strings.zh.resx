@@ -1221,4 +1221,52 @@ ID：{0}</value>
   <data name="PersistentRetainerGil_Description" xml:space="preserve">
     <value>在存款和取款模式之间切换时，记录已输入的金币金额。</value>
   </data>
+    <data name="ClockOverlay_Title" xml:space="preserve">
+    <value>时钟串流</value>
+</data>
+    <data name="ClockOverlay_Description" xml:space="preserve">
+    <value>在游戏中添加一个可自定义的时钟（本地/服务器/艾欧泽亚时间）。</value>
+</data>
+    <data name="ClockOverlay_ConfigurationTitle" xml:space="preserve">
+    <value>时钟设置</value>
+</data>
+    <data name="ClockOverlay_ClockSettings" xml:space="preserve">
+    <value>时钟设置</value>
+</data>
+    <data name="ClockOverlay_ShowSeconds" xml:space="preserve">
+    <value>显示秒</value>
+</data>
+    <data name="ClockOverlay_ShowSourcePrefix" xml:space="preserve">
+    <value>显示时间来源前缀</value>
+</data>
+    <data name="ClockOverlay_EnableMoving" xml:space="preserve">
+    <value>启用移动</value>
+</data>
+    <data name="ClockOverlay_TimeSource" xml:space="preserve">
+    <value>时间来源</value>
+</data>
+    <data name="ClockOverlay_LocalTime" xml:space="preserve">
+    <value>本地时间</value>
+</data>
+    <data name="ClockOverlay_ServerTime" xml:space="preserve">
+    <value>服务器时间</value>
+</data>
+    <data name="ClockOverlay_EorzeaTime" xml:space="preserve">
+    <value>艾欧泽亚时间</value>
+</data>
+    <data name="ClockOverlay_TextRendering" xml:space="preserve">
+    <value>文本渲染</value>
+</data>
+    <data name="ClockOverlay_Edge" xml:space="preserve">
+    <value>描边</value>
+</data>
+    <data name="ClockOverlay_Glare" xml:space="preserve">
+    <value>光泽</value>
+</data>
+    <data name="ClockOverlay_Emboss" xml:space="preserve">
+    <value>浮雕</value>
+</data>
+    <data name="ClockOverlay_Visual_Style" xml:space="preserve">
+    <value>视觉样式</value>
+</data>
 </root>
