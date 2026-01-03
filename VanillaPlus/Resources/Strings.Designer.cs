@@ -2550,6 +2550,24 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remembers the entered gil amount when switching between deposit and withdraw modes..
+        /// </summary>
+        internal static string PersistentRetainerGil_Description {
+            get {
+                return ResourceManager.GetString("PersistentRetainerGil_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Persistent Retainer Gil.
+        /// </summary>
+        internal static string PersistentRetainerGil_PersistentRetainerGil {
+            get {
+                return ResourceManager.GetString("PersistentRetainerGil_PersistentRetainerGil", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pet Size.
         /// </summary>
         internal static string PetSize_MenuTitle {
