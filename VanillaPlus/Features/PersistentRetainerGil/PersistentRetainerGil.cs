@@ -1,7 +1,6 @@
 ﻿using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 
@@ -27,20 +26,30 @@ public unsafe class PersistentRetainerGil : GameModification {
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "Bank", OnBankRefreshEvent);
     }
 
+    public override void OnDisable() {
+        Services.AddonLifecycle.UnregisterListener(OnBankEvent, OnBankRefreshEvent);
+        
+        previousGil = 0;
+        needsUpdate = false;
+        isProcessing = false;
+    }
+
     private void OnBankRefreshEvent(AddonEvent type, AddonArgs args) {
         if (isProcessing) return;
-        if(!needsUpdate) return;
+        if (!needsUpdate) return;
         if (args is not AddonRefreshArgs eventArgs) return;
 
         var addon = eventArgs.GetAddon<AddonBank>();
 
         isProcessing = true;
         try {
-            var node = (AtkComponentNumericInput*)addon->GetComponentByNodeId(32);
-            if (node == null)
-                return;
+            var componentNode = addon->GetComponentNodeById(32);
+            if (componentNode is null) return;
 
-            node->SetValue(previousGil);
+            var component = componentNode->GetAsAtkComponentNumericInput();
+            if (component is null) return;
+            
+            component->SetValue(previousGil);
             needsUpdate = false;
         }
         finally {
@@ -51,18 +60,10 @@ public unsafe class PersistentRetainerGil : GameModification {
     private void OnBankEvent(AddonEvent type, AddonArgs args) {
         if (isProcessing) return;
         if (args is not AddonReceiveEventArgs eventArgs) return;
-        if ((AtkEventType)eventArgs.AtkEventType != AtkEventType.ButtonClick) return;
-        if (eventArgs.EventParam != 3) return;
+        if ((AtkEventType)eventArgs.AtkEventType is not AtkEventType.ButtonClick) return;
+        if (eventArgs.EventParam is not 3) return;
 
         previousGil = eventArgs.AtkValueSpan[4].Int;
         needsUpdate = true;
-    }
-
-    public override void OnDisable() {
-        previousGil = 0;
-        needsUpdate = false;
-        isProcessing = false;
-
-        Services.AddonLifecycle.UnregisterListener(OnBankEvent, OnBankRefreshEvent);
     }
 }
