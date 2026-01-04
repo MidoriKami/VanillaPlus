@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -44,12 +44,12 @@ public unsafe class CurrencyWarningNode : OverlayNode {
 
         foreach (var setting in Config.WarningSettings) {
             var count = InventoryManager.Instance()->GetInventoryItemCount(setting.ItemId);
-            var isLow = setting.EnableLowLimit && count < setting.LowLimit;
-            var isHigh = setting.EnableHighLimit && count >= setting.HighLimit;
+            var isLow = setting.Mode == WarningMode.Below && count < setting.Limit;
+            var isHigh = setting.Mode == WarningMode.Above && count >= setting.Limit;
 
             if (isLow || isHigh) {
                 var item = Services.DataManager.GetItem(setting.ItemId);
-                ActiveWarnings.Add(new WarningInfo(item.Icon, item.Name.ToString(), count, isHigh, isLow ? setting.LowLimit : setting.HighLimit));
+                ActiveWarnings.Add(new WarningInfo(item.Icon, item.Name.ToString(), count, isHigh, setting.Limit));
                 if (isHigh) hasHigh = true;
             }
         }

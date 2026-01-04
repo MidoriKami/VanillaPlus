@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Linq;
+using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Nodes;
@@ -9,13 +11,12 @@ public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
     private readonly TextNode itemNameTextNode;
     private readonly IconImageNode iconImageNode;
 
-    private readonly CheckboxNode lowLimitCheckbox;
-    private readonly NumericInputNode lowLimitInput;
-
-    private readonly CheckboxNode highLimitCheckbox;
-    private readonly NumericInputNode highLimitInput;
+    private readonly MultiStateButtonNode<WarningMode> modeStateButton;
+    private readonly NumericInputNode limitInput;
 
     private readonly TabbedVerticalListNode optionsContainer;
+
+    private bool isUpdating;
 
     public CurrencyWarningConfigNode() {
         iconImageNode = new IconImageNode {
@@ -36,73 +37,50 @@ public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
         };
         optionsContainer.AttachNode(this);
 
-        lowLimitCheckbox = new CheckboxNode {
-            String = "Warn when blow this amount:",
-            Size = new Vector2(250.0f, 24.0f),
-            OnClick = enabled => {
+        modeStateButton = new MultiStateButtonNode<WarningMode> {
+            Size = new Vector2(200.0f, 24.0f),
+            States = Enum.GetValues<WarningMode>().ToList(),
+            OnStateChanged = newIndex => {
+                if (isUpdating) return;
+
                 if (ConfigurationOption is not null) {
-                    ConfigurationOption.EnableLowLimit = enabled;
+                    ConfigurationOption.Mode = newIndex;
                     OnConfigChanged?.Invoke(ConfigurationOption);
                 }
             },
         };
-        optionsContainer.AddNode(lowLimitCheckbox);
+        optionsContainer.AddNode(modeStateButton);
 
-        lowLimitInput = new NumericInputNode {
+        limitInput = new NumericInputNode {
             Size = new Vector2(160.0f, 24.0f),
             OnValueUpdate = newValue => {
+                if (isUpdating) return;
+
                 if (ConfigurationOption is not null) {
-                    ConfigurationOption.LowLimit = newValue;
+                    ConfigurationOption.Limit = newValue;
                     OnConfigChanged?.Invoke(ConfigurationOption);
                 }
             },
         };
-        optionsContainer.AddNode(1, lowLimitInput);
-
-        optionsContainer.AddNode(new ResNode {
-            Height = 10.0f,
-        });
-
-        highLimitCheckbox = new CheckboxNode {
-            String = "Warn when above this amount:",
-            Size = new Vector2(250.0f, 24.0f),
-            OnClick = enabled => {
-                if (ConfigurationOption is not null) {
-                    ConfigurationOption.EnableHighLimit = enabled;
-                    OnConfigChanged?.Invoke(ConfigurationOption);
-                }
-            },
-        };
-        optionsContainer.AddNode(highLimitCheckbox);
-
-        highLimitInput = new NumericInputNode {
-            Size = new Vector2(160.0f, 24.0f),
-            OnValueUpdate = newValue => {
-                if (ConfigurationOption is not null) {
-                    ConfigurationOption.HighLimit = newValue;
-                    OnConfigChanged?.Invoke(ConfigurationOption);
-                }
-            },
-        };
-        optionsContainer.AddNode(1, highLimitInput);
+        optionsContainer.AddNode(1, limitInput);
     }
 
     protected override void OptionChanged(CurrencyWarningSetting? option) {
         if (option is null) return;
 
+        isUpdating = true;
+
         var item = Services.DataManager.GetItem(option.ItemId);
         itemNameTextNode.String = option.GetLabel();
         iconImageNode.IconId = item.Icon;
 
-        lowLimitCheckbox.IsChecked = option.EnableLowLimit;
-        lowLimitInput.Value = option.LowLimit;
-        lowLimitInput.Max = (int)item.StackSize;
-
-        highLimitCheckbox.IsChecked = option.EnableHighLimit;
-        highLimitInput.Value = option.HighLimit;
-        highLimitInput.Max = (int)item.StackSize;
+        modeStateButton.SelectedState = option.Mode;
+        limitInput.Max = (int)item.StackSize;
+        limitInput.Value = option.Limit;
 
         optionsContainer.RecalculateLayout();
+
+        isUpdating = false;
     }
 
     protected override void OnSizeChanged() {
