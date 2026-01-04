@@ -29,18 +29,6 @@ public static unsafe class AddonArgsExtensions {
             }
         }
 
-        public Span<AtkValue> GetAtkValueSpan() {
-            var (ptr, count) = args switch {
-                AddonRefreshArgs refresh => (refresh.AtkValues, refresh.AtkValueCount),
-                AddonSetupArgs setup => (setup.AtkValues, setup.AtkValueCount),
-                _ => (IntPtr.Zero, 0u)
-            };
-
-            if (ptr == IntPtr.Zero || count == 0) return Span<AtkValue>.Empty;
-
-            return new Span<AtkValue>((AtkValue*)ptr, (int)count);
-        }
-
         private AtkEventData.AtkMouseData* GetMouseData() {
             if (args is not AddonReceiveEventArgs eventArgs) return null;
 

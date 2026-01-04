@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Numerics;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
@@ -10,7 +9,7 @@ using KamiToolKit.Classes.Controllers;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 
-namespace VanillaPlus.Features.HousingWardButtons;
+namespace VanillaPlus.Features.EnhancedWardNavigation;
 
 public unsafe class EnhancedWardNavigation : GameModification {
     public override ModificationInfo ModificationInfo => new() {
