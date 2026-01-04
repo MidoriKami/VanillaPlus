@@ -7,6 +7,7 @@ public abstract class CompatibilityModule(string? allowedVersion = null) {
 
     protected bool IsPluginLoaded(string internalName) {
         foreach (var installedPlugin in Services.PluginInterface.InstalledPlugins) {
+            if (!installedPlugin.IsLoaded) continue;
             if (installedPlugin.InternalName != internalName) continue;
 
             // If the installed version is less than the allowed version, return true.
@@ -14,7 +15,7 @@ public abstract class CompatibilityModule(string? allowedVersion = null) {
                 return installedPlugin.Version < Version.Parse(allowedVersion);
             }
 
-            return installedPlugin.IsLoaded;
+            return true;
         }
 
         return false;

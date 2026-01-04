@@ -97,7 +97,7 @@ public class AddonModificationBrowser : NativeAddon {
     private void BuildOptionsContainer() {
         optionContainerNode = new ScrollingAreaNode<TreeListNode> {
             ContentHeight = 1000.0f,
-            ScrollSpeed = 24,
+            ScrollSpeed = 38,
         };
         optionContainerNode.AttachNode(mainContainerNode);
     }
@@ -349,10 +349,10 @@ public class AddonModificationBrowser : NativeAddon {
         searchContainerNode.Size = new Vector2(mainContainerNode.Width, 28.0f);
 
         optionContainerNode.Position = new Vector2(0.0f, searchContainerNode.Height + ItemPadding);
-        optionContainerNode.Size = new Vector2(mainContainerNode.Width * 3.0f / 5.0f - ItemPadding, mainContainerNode.Height - searchContainerNode.Height - ItemPadding);
+        optionContainerNode.Size = new Vector2(mainContainerNode.Width / 2.0f - ItemPadding, mainContainerNode.Height - searchContainerNode.Height - ItemPadding);
 
-        descriptionContainerNode.Position = new Vector2(mainContainerNode.Width * 3.0f / 5.0f, searchContainerNode.Height + ItemPadding);
-        descriptionContainerNode.Size = new Vector2(mainContainerNode.Width * 2.0f / 5.0f, mainContainerNode.Height - searchContainerNode.Height - ItemPadding);
+        descriptionContainerNode.Position = new Vector2(mainContainerNode.Width / 2.0f, searchContainerNode.Height + ItemPadding);
+        descriptionContainerNode.Size = new Vector2(mainContainerNode.Width / 2.0f, mainContainerNode.Height - searchContainerNode.Height - ItemPadding);
 
         descriptionImageFrame.Size = new Vector2(descriptionContainerNode.Width * 0.8f, descriptionContainerNode.Width * 0.8f);
         descriptionImageFrame.Position = new Vector2(descriptionContainerNode.Width * 0.2f / 2.0f, descriptionContainerNode.Width * 0.2f / 4.0f);

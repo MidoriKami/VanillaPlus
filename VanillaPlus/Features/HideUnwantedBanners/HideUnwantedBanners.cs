@@ -54,7 +54,7 @@ public unsafe class HideUnwantedBanners : GameModification {
         config = null;
     }
 
-    private bool UpdateList(VerticalListNode node, bool opening) {
+    private bool UpdateList(ScrollingListNode node, bool opening) {
         if (config is null) return false;
 
         foreach (var child in node.GetNodes<BannerInfoNode>()) {

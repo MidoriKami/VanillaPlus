@@ -20,7 +20,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
 
     private CategoryTextNode? conflictsLabelNode;
     private HorizontalLineNode? conflictsLineNode;
-    private ScrollingAreaNode<VerticalListNode>? conflictsScrollableAreaNode;
+    private ScrollingListNode? conflictsScrollableAreaNode;
 
     private HorizontalLineNode? buttonsLineNode;
     private TextButtonNode? confirmButtonNode;
@@ -69,18 +69,17 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         };
         conflictsLineNode.AttachNode(this);
 
-        conflictsScrollableAreaNode = new ScrollingAreaNode<VerticalListNode> {
+        conflictsScrollableAreaNode = new ScrollingListNode {
             Position = new Vector2(ContentStartPosition.X, conflictsLabelNode.Y + conflictsLabelNode.Height + 10.0f),
             Size = new Vector2(ContentSize.X, 90.0f),
-            ContentHeight = 75.0f,
             AutoHideScrollBar = true,
         };
         conflictsScrollableAreaNode.AttachNode(this);
         
-        conflictsScrollableAreaNode.ContentNode.AddNode(new CategoryTextNode {
+        conflictsScrollableAreaNode.AddNode(new CategoryTextNode {
             String = Strings.KeybindConfig_NoConflicts,
         });
-        conflictsScrollableAreaNode.ContentHeight = conflictsScrollableAreaNode.ContentNode.Nodes.Sum(node => node.IsVisible ? node.Height : 0.0f);
+        conflictsScrollableAreaNode.RecalculateLayout();
 
         buttonsLineNode = new HorizontalLineNode {
             Position = new Vector2(ContentStartPosition.X - 2.0f, conflictsScrollableAreaNode.Y + conflictsScrollableAreaNode.Height),
@@ -138,22 +137,21 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             }
         }
         
-        conflictsScrollableAreaNode.ContentNode.Clear();
+        conflictsScrollableAreaNode.Clear();
 
         if (conflicts.Count == 0) {
-            conflictsScrollableAreaNode.ContentNode.AddNode(new CategoryTextNode {
+            conflictsScrollableAreaNode.AddNode(new CategoryTextNode {
                 String = Strings.KeybindConfig_NoConflicts,
             });
         }
         else {
             foreach (var conflict in conflicts) {
-                conflictsScrollableAreaNode.ContentNode.AddNode(new CategoryTextNode {
+                conflictsScrollableAreaNode.AddNode(new CategoryTextNode {
                     String = conflict.ToString(),
                 });
             }
         }
-        
-        conflictsScrollableAreaNode.ContentHeight = conflictsScrollableAreaNode.ContentNode.Nodes.Sum(node => node.IsVisible ? node.Height : 0.0f);
+        conflictsScrollableAreaNode.RecalculateLayout();
 
         Services.KeyState.ResetKeyCombo(combo);
     }

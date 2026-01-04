@@ -1220,4 +1220,58 @@ This game modification fixes it by always triggering the normal mouse click in a
   <data name="ActionHighlight_Description" xml:space="preserve">
     <value>Highlights abilities with the ants effect when they are off cooldown or shortly before they become available.</value>
   </data>
+  <data name="PersistentRetainerGil_PersistentRetainerGil" xml:space="preserve">
+      <value>Persistent Retainer Gil</value>
+  </data>
+  <data name="PersistentRetainerGil_Description" xml:space="preserve">
+      <value>Remembers the entered gil amount when switching between deposit and withdraw modes.</value>
+  </data>
+  <data name="ClockOverlay_Title" xml:space="preserve">
+      <value>Clock Overlay</value>
+  </data>
+  <data name="ClockOverlay_Description" xml:space="preserve">
+      <value>Adds a customizable clock overlay (LT/ST/ET) to the game</value>
+  </data>
+  <data name="ClockOverlay_ConfigurationTitle" xml:space="preserve">
+      <value>Clock Overlay Configuration</value>
+  </data>
+  <data name="ClockOverlay_ClockSettings" xml:space="preserve">
+      <value>Clock Settings</value>
+  </data>
+  <data name="ClockOverlay_ShowSeconds" xml:space="preserve">
+      <value>Show Seconds</value>
+  </data>
+  <data name="ClockOverlay_ShowSourcePrefix" xml:space="preserve">
+      <value>Show Source Prefix</value>
+  </data>
+  <data name="ClockOverlay_EnableMoving" xml:space="preserve">
+      <value>Enable Moving</value>
+  </data>
+  <data name="ClockOverlay_TimeSource" xml:space="preserve">
+      <value>Time Source</value>
+  </data>
+  <data name="ClockOverlay_LocalTime" xml:space="preserve">
+      <value>Local Time</value>
+  </data>
+  <data name="ClockOverlay_ServerTime" xml:space="preserve">
+      <value>Server Time</value>
+  </data>
+  <data name="ClockOverlay_EorzeaTime" xml:space="preserve">
+      <value>Eorzea Time</value>
+  </data>
+  <data name="ClockOverlay_TextRendering" xml:space="preserve">
+      <value>Text Rendering</value>
+  </data>
+  <data name="ClockOverlay_Edge" xml:space="preserve">
+      <value>Edge</value>
+  </data>
+  <data name="ClockOverlay_Glare" xml:space="preserve">
+      <value>Glare</value>
+  </data>
+  <data name="ClockOverlay_Emboss" xml:space="preserve">
+      <value>Emboss</value>
+  </data>
+  <data name="ClockOverlay_Visual_Style" xml:space="preserve">
+      <value>Visual Style</value>
+  </data>
 </root>

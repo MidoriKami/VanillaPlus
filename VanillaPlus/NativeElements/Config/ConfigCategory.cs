@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -18,6 +18,7 @@ public class ConfigCategory : IDisposable {
     public TabbedVerticalListNode BuildNode() {
         var tabbedListNode = new TabbedVerticalListNode {
             FitWidth = true,
+            ItemVerticalSpacing = 4.0f,
         };
 
         tabbedListNode.AddNode(new ResNode {
@@ -123,6 +124,40 @@ public class ConfigCategory : IDisposable {
             Config = ConfigObject,
             Color = initialValue,
             DefaultColor = defaultColor,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddDropdown<T>(string label, string memberName) where T : struct, Enum {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<object>(ConfigObject);
+
+        configEntries.Add(new DropDownConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            Options = Enum.GetValues<T>().ToDictionary(enumValue => enumValue.Description, enumValue => (object)enumValue),
+            InitialValue = initialValue!,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddDropdown(string label, string memberName, Dictionary<string, object> options) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<object>(ConfigObject);
+
+        configEntries.Add(new DropDownConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            Options = options,
+            InitialValue = initialValue!,
         });
 
         return this;

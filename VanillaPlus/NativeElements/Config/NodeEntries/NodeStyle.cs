@@ -8,7 +8,7 @@ namespace VanillaPlus.NativeElements.Config.NodeEntries;
 public class NodeStyle {
     public Vector2 Position { get; set; }
 
-    [JsonIgnore] public Action? StyleChanged { get; set; }
+    [JsonIgnore] public Action<NodeStyle>? StyleChanged { get; set; }
 
     public void Save(string filePath)
         => Utilities.Config.SaveConfig(this, filePath);
