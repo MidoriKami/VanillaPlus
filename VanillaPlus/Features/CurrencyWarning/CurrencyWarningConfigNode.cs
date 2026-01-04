@@ -37,7 +37,7 @@ public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
         optionsContainer.AttachNode(this);
 
         lowLimitCheckbox = new CheckboxNode {
-            String = "Enable Low Warning",
+            String = "Warn when blow this amount:",
             Size = new Vector2(250.0f, 24.0f),
             OnClick = enabled => {
                 if (ConfigurationOption is not null) {
@@ -47,7 +47,6 @@ public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
             },
         };
         optionsContainer.AddNode(lowLimitCheckbox);
-        optionsContainer.AddTab(1);
 
         lowLimitInput = new NumericInputNode {
             Size = new Vector2(160.0f, 24.0f),
@@ -58,15 +57,14 @@ public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
                 }
             },
         };
-        optionsContainer.AddNode(lowLimitInput);
-        optionsContainer.SubtractTab(1);
+        optionsContainer.AddNode(1, lowLimitInput);
 
         optionsContainer.AddNode(new ResNode {
             Height = 10.0f,
         });
 
         highLimitCheckbox = new CheckboxNode {
-            String = "Enable High Warning",
+            String = "Warn when above this amount:",
             Size = new Vector2(250.0f, 24.0f),
             OnClick = enabled => {
                 if (ConfigurationOption is not null) {
@@ -76,7 +74,6 @@ public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
             },
         };
         optionsContainer.AddNode(highLimitCheckbox);
-        optionsContainer.AddTab(1);
 
         highLimitInput = new NumericInputNode {
             Size = new Vector2(160.0f, 24.0f),
@@ -87,7 +84,7 @@ public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
                 }
             },
         };
-        optionsContainer.AddNode(highLimitInput);
+        optionsContainer.AddNode(1, highLimitInput);
     }
 
     protected override void OptionChanged(CurrencyWarningSetting? option) {

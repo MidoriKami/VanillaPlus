@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Overlay;
@@ -13,7 +12,7 @@ namespace VanillaPlus.Features.CurrencyWarning;
 public unsafe class CurrencyWarning : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Currency Warning",
-        Description = "Shows a pulsing notification icon when tracked currencies hit limits.",
+        Description = "Shows a animated notification icon when tracked currencies approach or exceed set limits.",
         Type = ModificationType.NewOverlay,
         Authors = [ "Zeffuro" ],
         ChangeLog = [
@@ -32,6 +31,12 @@ public unsafe class CurrencyWarning : GameModification {
 
     public override void OnEnable() {
         config = CurrencyWarningConfig.Load();
+        if (!config.IsConfigured) {
+            config.IsMoveable = true;
+            config.IsConfigured = true;
+            config.Save();
+        }
+        
         overlayController = new OverlayController();
 
         InitializeConfiguration();
@@ -40,7 +45,7 @@ public unsafe class CurrencyWarning : GameModification {
     }
 
     private void InitializeConfiguration() {
-        if (config == null) return;
+        if (config is null) return;
 
         itemSearchAddon = new LuminaSearchAddon<Item> {
             InternalName = "CurrencyWarningSearch",
@@ -64,7 +69,7 @@ public unsafe class CurrencyWarning : GameModification {
                     var newSetting = new CurrencyWarningSetting {
                         ItemId = item.RowId,
                         EnableHighLimit = true,
-                        HighLimit = (int)item.StackSize
+                        HighLimit = (int)item.StackSize,
                     };
                     listNode.AddOption(newSetting);
                     config.Save();
@@ -82,14 +87,15 @@ public unsafe class CurrencyWarning : GameModification {
 
         configWindow.AddCategory("General")
             .AddCheckbox("Enable Moving", nameof(config.IsMoveable))
-            .AddFloatSlider("Icon Scale", 0.5f, 3.0f, 2, 0.1f, nameof(config.Scale))
-            .AddColorEdit("Low Color", nameof(config.LowColor))
-            .AddColorEdit("High Color", nameof(config.HighColor));
+            .AddCheckbox("Play Animations", nameof(config.PlayAnimations))
+            .AddFloatSlider("Icon Scale", 0.5f, 5.0f, 2, 0.1f, nameof(config.Scale))
+            .AddColorEdit("Below Target Color", nameof(config.LowColor))
+            .AddColorEdit("Above Target Color", nameof(config.HighColor));
 
-        configWindow.AddCategory("Low Limit")
+        configWindow.AddCategory("Below Target Icon")
             .AddMultiSelectIcon(Strings.Icon, nameof(config.LowIcon), true, 60073u, 60357u, 230402u);
 
-        configWindow.AddCategory("High Limit")
+        configWindow.AddCategory("Above Target Icon")
             .AddMultiSelectIcon(Strings.Icon, nameof(config.HighIcon), true, 60074u, 63908u, 230403u);
 
         configWindow.AddCategory("")
@@ -102,7 +108,7 @@ public unsafe class CurrencyWarning : GameModification {
         if (config is null) return;
 
         overlayController?.CreateNode(() => tooltipNode = new CurrencyTooltipNode {
-            Config = config
+            Config = config,
         });
     }
 
@@ -170,15 +176,22 @@ public unsafe class CurrencyWarning : GameModification {
     public override void OnDisable() {
         overlayController?.Dispose();
         overlayController = null;
+        
         configWindow?.Dispose();
         configWindow = null;
+        
         listConfigWindow?.Dispose();
         listConfigWindow = null;
+        
         itemSearchAddon?.Dispose();
         itemSearchAddon = null;
+        
         tooltipNode?.Dispose();
         tooltipNode = null;
+        
+        warningNode?.Dispose();
         warningNode = null;
+
         config = null;
     }
 }

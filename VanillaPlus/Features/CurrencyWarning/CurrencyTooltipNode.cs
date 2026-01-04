@@ -30,7 +30,7 @@ public class CurrencyTooltipNode : OverlayNode {
         background.AttachNode(this);
 
         listContainer = new VerticalListNode {
-            Position = new Vector2(15, 10),
+            Position = new Vector2(15.0f, 10.0f),
             ItemSpacing = 4.0f,
             FitContents = true,
         };
@@ -39,27 +39,32 @@ public class CurrencyTooltipNode : OverlayNode {
         IsVisible = false;
     }
 
-    public void UpdateContents(List<(uint IconId, string Name, long Count, bool IsHigh)> warnings) {
+    public void UpdateContents(List<WarningInfo> warnings) {
         listContainer.Clear();
 
         var maxRowWidth = 0.0f;
 
-        foreach (var (iconId, name, count, isHigh) in warnings) {
-            var row = new HorizontalListNode { ItemSpacing = 8.0f, Height = 24.0f };
+        foreach (var (iconId, name, count, isHigh, limit) in warnings) {
+            var row = new HorizontalListNode {
+                ItemSpacing = 8.0f, 
+                Height = 24.0f,
+            };
 
             row.AddNode(new IconImageNode {
                 Size = new Vector2(24.0f, 24.0f),
                 IconId = iconId,
-                FitTexture = true
+                FitTexture = true,
             });
 
             var color = isHigh ? Config.HighColor : Config.LowColor;
 
             var text = new TextNode {
-                String = $"{name}: {count:N0} {(isHigh ? "[MAX]" : "[LOW]")}",
+                String = $"{name} {(isHigh ? "Above Limit" : "Below Limit")}: {count:N0} / {limit:N0}",
                 TextColor = color,
                 FontSize = 14,
-                TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize
+                TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
+                AlignmentType = AlignmentType.Left,
+                Height = 24.0f,
             };
             row.AddNode(text);
 
