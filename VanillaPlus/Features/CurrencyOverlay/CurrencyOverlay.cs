@@ -54,7 +54,7 @@ public unsafe class CurrencyOverlay : GameModification {
             Size = new Vector2(700.0f, 500.0f),
             InternalName = "CurrencyOverlayConfig",
             Title = Strings.CurrencyOverlay_ConfigTitle,
-            SortOptions = [Strings.SortOptionAlphabetical ],
+            SortOptions = [ Strings.SortOptionAlphabetical ],
 
             Options = config.Currencies,
 
