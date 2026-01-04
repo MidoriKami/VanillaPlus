@@ -17,6 +17,8 @@ public unsafe class PersistentRetainerGil : GameModification {
         ],
     };
 
+    public override string ImageName => "PersistentRetainerGil.png";
+
     private int previousGil;
     private bool needsUpdate;
     private bool isProcessing;

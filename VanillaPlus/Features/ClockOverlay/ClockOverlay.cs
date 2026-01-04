@@ -17,6 +17,8 @@ public class ClockOverlay : GameModification {
         ],
     };
 
+    public override string ImageName => "ClockOverlay.png";
+
     private ClockOverlayConfig? config;
     private OverlayController? overlayController;
     private ClockOverlayNode? clockNode;
