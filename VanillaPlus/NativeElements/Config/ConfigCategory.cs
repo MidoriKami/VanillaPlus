@@ -120,6 +120,23 @@ public class ConfigCategory : IDisposable {
         return this;
     }
 
+    public ConfigCategory AddDropdown<T>(string label, string memberName) where T : struct, Enum {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<object>(ConfigObject);
+
+        configEntries.Add(new DropDownConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            Options = Enum.GetValues<T>().ToDictionary(enumValue => enumValue.Description, enumValue => (object)enumValue),
+            InitialValue = initialValue!,
+        });
+
+        return this;
+    }
+
     public ConfigCategory AddDropdown(string label, string memberName, Dictionary<string, object> options) {
         var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
         if (memberInfo is null) return this;
