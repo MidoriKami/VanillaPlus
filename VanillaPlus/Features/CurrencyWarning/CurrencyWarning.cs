@@ -99,7 +99,7 @@ public unsafe class CurrencyWarning : GameModification {
         configWindow.AddCategory("Above Target Icon")
             .AddMultiSelectIcon(Strings.Icon, nameof(config.HighIcon), true, 60074u, 63908u, 230403u);
 
-        configWindow.AddCategory("")
+        configWindow.AddCategory("Currency Selection")
             .AddButton("Configure Tracked Currencies", () => listConfigWindow.Toggle());
 
         OpenConfigAction = configWindow.Toggle;
