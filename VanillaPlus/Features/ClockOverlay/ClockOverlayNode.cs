@@ -1,41 +1,42 @@
 ﻿using System;
-using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 using KamiToolKit.Overlay;
-using VanillaPlus.NativeElements.Config.NodeEntries;
 
 namespace VanillaPlus.Features.ClockOverlay;
 
-public class ClockNode : OverlayNode {
+public class ClockOverlayNode : OverlayNode {
     public override OverlayLayer OverlayLayer => OverlayLayer.BehindUserInterface;
 
     private readonly TextNode timeNode;
     private readonly ClockOverlayConfig config;
-    private readonly TextNodeStyle style;
 
-    public ClockNode(ClockOverlayConfig config, TextNodeStyle style) {
+    public ClockOverlayNode(ClockOverlayConfig config) {
         this.config = config;
-        this.style = style;
 
-        style.ApplyStyle(timeNode);
-
-        timeNode = new TextNode {
-            TextFlags = TextFlags.Edge,
-        };
+        timeNode = new TextNode();
         timeNode.AttachNode(this);
+    }
+
+    protected override void OnSizeChanged() {
+        base.OnSizeChanged();
+
+        timeNode.Size = Size;
     }
 
     public override void Update() {
         base.Update();
 
-        style.ApplyStyle(timeNode);
-
-        timeNode.TextFlags = config.Flags;
-
-        timeNode.Position = Vector2.Zero;
+        timeNode.TextFlags = config.TextFlags;
+        timeNode.TextColor = config.TextColor;
+        timeNode.TextOutlineColor = config.TextOutlineColor;
+        timeNode.FontSize = (uint)config.FontSize;
+        timeNode.FontType = config.FontType;
+        timeNode.AlignmentType = config.AlignmentType;
+        
+        EnableMoving = config.IsMoveable;
 
         var format = config.ShowSeconds ? "HH:mm:ss" : "HH:mm";
         var prefix = config.ShowPrefix ? GetPrefix(config.Type) : string.Empty;
@@ -46,8 +47,6 @@ public class ClockNode : OverlayNode {
             ClockType.Eorzea => $"{prefix}{GetEorzeaTime():HH:mm}",
             _ => "00:00",
         };
-
-        EnableMoving = config.IsMoveable;
     }
 
     private static DateTime GetServerTime() 
@@ -65,9 +64,9 @@ public class ClockNode : OverlayNode {
     }
 
     private string GetPrefix(ClockType type) => type switch {
-        ClockType.Local => style.FontType == FontType.Axis ? " " : "LT ",
-        ClockType.Server => style.FontType == FontType.Axis ? " " : "ST ",
-        ClockType.Eorzea => style.FontType == FontType.Axis ? " " : "ET ",
+        ClockType.Local => timeNode.FontType is FontType.Axis ? " " : "LT ",
+        ClockType.Server => timeNode.FontType is FontType.Axis ? " " : "ST ",
+        ClockType.Eorzea => timeNode.FontType is FontType.Axis ? " " : "ET ",
         _ => string.Empty,
     };
 }
