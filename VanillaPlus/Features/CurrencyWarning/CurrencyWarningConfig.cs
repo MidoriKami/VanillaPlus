@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Numerics;
 using System.Text.Json.Serialization;
 using Dalamud.Interface;
+using Newtonsoft.Json.Linq;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.CurrencyWarning;
@@ -23,41 +25,27 @@ public class CurrencyWarningConfig : GameModificationConfig<CurrencyWarningConfi
     
     [JsonIgnore] public bool IsMoveable = false;
 
-    public void Migrate() {
-        bool needsSave = false;
-
-        foreach (var setting in WarningSettings) {
-            if (setting.OldSettings == null) continue;
-
-            bool TryGetBool(string key) => setting.OldSettings!.TryGetValue(key, out var val) && val.GetBoolean();
-            int TryGetInt(string key) => setting.OldSettings!.TryGetValue(key, out var val) ? val.GetInt32() : 0;
-
-            if (setting.OldSettings.ContainsKey("EnableHighLimit") ||
-                setting.OldSettings.ContainsKey("EnableLowLimit")) {
-
-                bool oldEnableHigh = TryGetBool("EnableHighLimit");
-                bool oldEnableLow = TryGetBool("EnableLowLimit");
-                int oldHighLimit = TryGetInt("HighLimit");
-                int oldLowLimit = TryGetInt("LowLimit");
-
-                if (oldEnableHigh) {
-                    setting.Mode = WarningMode.Above;
-                    setting.Limit = oldHighLimit;
-                } else if (oldEnableLow) {
-                    setting.Mode = WarningMode.Below;
-                    setting.Limit = oldLowLimit;
-                } else {
-                    setting.Mode = WarningMode.Above;
-                    setting.Limit = oldHighLimit != 0 ? oldHighLimit : oldLowLimit;
-                }
-
-                setting.OldSettings = null;
-                needsSave = true;
-            }
+    protected override bool TryMigrateConfig(int? fileVersion, JObject jObject) {
+        switch (fileVersion) {
+            case null:
+                WarningSettings = jObject["WarningSettings"]?.Select(ParseOldWarningSetting).ToList() ?? []; 
+                return true;
         }
 
-        if (needsSave) {
-            Save();
-        }
+        return false;
+    }
+
+    private static CurrencyWarningSetting ParseOldWarningSetting(JToken token) {
+        var enableLowLimit = token["EnableLowLimit"]?.ToObject<bool>() ?? false;
+        var enableHighLimit = token["EnableHighLimit"]?.ToObject<bool>() ?? false;
+        var lowLimit = token["LowLimit"]?.ToObject<int>() ?? 0;
+        var highLimit = token["HighLimit"]?.ToObject<int>() ?? 0;
+        var itemId = token["ItemId"]?.ToObject<uint>() ?? 0;
+
+        return new CurrencyWarningSetting {
+            ItemId = itemId,
+            Mode = enableHighLimit ? WarningMode.Above : enableLowLimit ? WarningMode.Below : WarningMode.Above,
+            Limit = enableHighLimit ? highLimit : enableLowLimit ? lowLimit : highLimit,
+        };
     }
 }

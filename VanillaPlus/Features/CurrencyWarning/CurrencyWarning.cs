@@ -31,7 +31,6 @@ public unsafe class CurrencyWarning : GameModification {
 
     public override void OnEnable() {
         config = CurrencyWarningConfig.Load();
-        config.Migrate();
 
         if (!config.IsConfigured) {
             config.IsMoveable = true;

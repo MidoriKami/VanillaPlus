@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using KamiToolKit.Premade;
+﻿using KamiToolKit.Premade;
 
 namespace VanillaPlus.Features.CurrencyWarning;
 
@@ -9,9 +6,6 @@ public class CurrencyWarningSetting : IInfoNodeData {
     public uint ItemId;
     public WarningMode Mode = WarningMode.Above;
     public int Limit;
-
-    [JsonExtensionData]
-    public Dictionary<string, JsonElement>? OldSettings { get; set; }
 
     public string GetLabel()
         => ItemId == 0 ? "Unknown" : Services.DataManager.GetItem(ItemId).Name.ToString();

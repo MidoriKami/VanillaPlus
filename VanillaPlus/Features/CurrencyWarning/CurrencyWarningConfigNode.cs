@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -12,7 +11,7 @@ public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
     private readonly TextNode itemNameTextNode;
     private readonly IconImageNode iconImageNode;
 
-    private readonly StateButtonNode modeStateButton;
+    private readonly MultiStateButtonNode<WarningMode> modeStateButton;
     private readonly NumericInputNode limitInput;
 
     private readonly TabbedVerticalListNode optionsContainer;
@@ -38,16 +37,17 @@ public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
         };
         optionsContainer.AttachNode(this);
 
-        modeStateButton = new StateButtonNode {
+        modeStateButton = new MultiStateButtonNode<WarningMode> {
             Size = new Vector2(200.0f, 24.0f),
-            States = ["Warn when Above", "Warn when Below"],
+            States = Enum.GetValues<WarningMode>().ToList(),
             OnStateChanged = newIndex => {
                 if (isUpdating) return;
+
                 if (ConfigurationOption is not null) {
-                    ConfigurationOption.Mode = (WarningMode)newIndex;
+                    ConfigurationOption.Mode = newIndex;
                     OnConfigChanged?.Invoke(ConfigurationOption);
                 }
-            }
+            },
         };
         optionsContainer.AddNode(modeStateButton);
 
@@ -55,6 +55,7 @@ public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
             Size = new Vector2(160.0f, 24.0f),
             OnValueUpdate = newValue => {
                 if (isUpdating) return;
+
                 if (ConfigurationOption is not null) {
                     ConfigurationOption.Limit = newValue;
                     OnConfigChanged?.Invoke(ConfigurationOption);
@@ -73,7 +74,7 @@ public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
         itemNameTextNode.String = option.GetLabel();
         iconImageNode.IconId = item.Icon;
 
-        modeStateButton.SelectedIndex = (int)option.Mode;
+        modeStateButton.SelectedState = option.Mode;
         limitInput.Max = (int)item.StackSize;
         limitInput.Value = option.Limit;
 
