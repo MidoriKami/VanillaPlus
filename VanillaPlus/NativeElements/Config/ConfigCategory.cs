@@ -103,6 +103,15 @@ public class ConfigCategory : IDisposable {
         return this;
     }
 
+    public ConfigCategory AddButton(string label, Action onClick) {
+        configEntries.Add(new ButtonConfig {
+            Label = label,
+            OnClick = onClick,
+        });
+
+        return this;
+    }
+
     public ConfigCategory AddColorEdit(string label, string memberName, Vector4? defaultColor = null) {
         var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
         if (memberInfo is null) return this;

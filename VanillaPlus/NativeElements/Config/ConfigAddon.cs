@@ -14,7 +14,7 @@ public unsafe class ConfigAddon : NativeAddon {
     
     public required ISavable Config { get; init; }
 
-    private const float MaximumHeight = 425.0f;
+    private const float MaximumHeight = 400.0f;
     private const float Width = 400.0f;
 
     protected override void OnSetup(AtkUnitBase* addon) {

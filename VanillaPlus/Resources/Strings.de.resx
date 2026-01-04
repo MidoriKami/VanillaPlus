@@ -1266,4 +1266,7 @@ This game modification fixes it by always triggering the normal mouse click in a
     <data name="ClockOverlay_Visual_Style" xml:space="preserve">
     <value>Visueller Stil</value>
 </data>
+  <data name="CompatibilityModule_ActivePluginMessage" xml:space="preserve">
+    <value>The original version of this feature is from a plugin that is currently active: {0}</value>
+  </data>
 </root>
