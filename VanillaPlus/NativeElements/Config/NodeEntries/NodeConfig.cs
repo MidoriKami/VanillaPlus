@@ -66,7 +66,7 @@ public class NodeConfig<T> : IConfigEntry where T : NodeStyle, new() {
     }
     
     protected void SaveStyleObject() {
-        StyleObject.StyleChanged?.Invoke();
+        StyleObject.StyleChanged?.Invoke(StyleObject);
     }
 
     public virtual void Dispose() { }

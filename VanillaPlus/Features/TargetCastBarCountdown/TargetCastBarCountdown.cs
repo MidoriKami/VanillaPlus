@@ -133,23 +133,23 @@ public unsafe class TargetCastBarCountdown : GameModification {
             castBarEnemyStyle.Save(castBarEnemyPath);
         }
         
-        primaryTargetStyle.StyleChanged += () => {
-            primaryTargetStyle.Save(primaryTargetPath);
+        primaryTargetStyle.StyleChanged += styleObj => {
+            styleObj.Save(primaryTargetPath);
             primaryTargetStyle.ApplyStyle(primaryTargetTextNode);
         };
         
-        primaryTargetAltStyle.StyleChanged += () => {
-            primaryTargetAltStyle.Save(primaryTargetAltPath);
+        primaryTargetAltStyle.StyleChanged += styleObj => {
+            styleObj.Save(primaryTargetAltPath);
             primaryTargetAltStyle.ApplyStyle(primaryTargetAltTextNode);
         };
         
-        focusTargetStyle.StyleChanged += () => {
-            focusTargetStyle.Save(focusTargetPath);
+        focusTargetStyle.StyleChanged += styleObj => {
+            styleObj.Save(focusTargetPath);
             focusTargetStyle.ApplyStyle(focusTargetTextNode);
         };
         
-        castBarEnemyStyle.StyleChanged += () => {
-            castBarEnemyStyle.Save(castBarEnemyPath);
+        castBarEnemyStyle.StyleChanged += styleObj => {
+            styleObj.Save(castBarEnemyPath);
             castBarEnemyStyle.ApplyStyle(castBarEnemyTextNode);
         };
     }
