@@ -29,7 +29,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
     private DutyLootFilterBarNode? filterBarNode;
     private HorizontalLineNode? separatorNode;
-    private ScrollingAreaNode<VerticalListNode>? scrollingAreaNode;
+    private ScrollingListNode? scrollingAreaNode;
     private TextNode? hintTextNode;
 
     private bool updateRequested = true;
@@ -79,12 +79,11 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         var listAreaPosition = ContentStartPosition + new Vector2(0, filterBarHeight + separatorHeight);
         var listAreaSize = ContentSize - new Vector2(0, filterBarHeight + separatorHeight);
 
-        scrollingAreaNode = new ScrollingAreaNode<VerticalListNode> {
+        scrollingAreaNode = new ScrollingListNode {
             Position = listAreaPosition,
             Size = listAreaSize,
-            ContentHeight = 100,
+            FitContents = true,
         };
-        scrollingAreaNode.ContentNode.FitContents = true;
         scrollingAreaNode.AttachNode(this);
 
         hintTextNode = new TextNode {
@@ -245,12 +244,11 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
             _ => items,
         };
 
-        var list = scrollingAreaNode.ContentNode;
-        var listUpdated = list.SyncWithListData(
+        var listUpdated = scrollingAreaNode.SyncWithListData(
             filteredItems,
             node => node.Item,
             data => new DutyLootNode {
-                Size = new Vector2(list.Width, 36.0f),
+                Size = new Vector2(scrollingAreaNode.ContentWidth, 36.0f),
                 Item = data,
                 IsFavorite = Config.FavoriteItems.Contains(data.ItemId),
                 OnLeftClick = OnDutyLootItemLeftClick,
@@ -260,16 +258,16 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
         if (listUpdated) {
             scrollingAreaNode.ScrollPosition = 0;
-            scrollingAreaNode.ContentHeight = scrollingAreaNode.ContentNode.Nodes.Sum(node => node.IsVisible ? node.Height : 0.0f);
+            scrollingAreaNode.RecalculateLayout();
 
-            list.ReorderNodes((a, b) => {
+            scrollingAreaNode.ReorderNodes((a, b) => {
                 if (a is not DutyLootNode left || b is not DutyLootNode right) return 0;
                 return left.Item.CompareTo(right.Item);
             });
         }
 
         var hasData = items.Count > 0 && !isLoading;
-        var hasResults = list.GetNodes<DutyLootNode>().Any();
+        var hasResults = scrollingAreaNode.GetNodes<DutyLootNode>().Any();
 
         filterBarNode.IsVisible = hasData;
         separatorNode!.IsVisible = hasData;
@@ -289,7 +287,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     private void UpdateFavoriteStars() {
         if (scrollingAreaNode is null) return;
 
-        foreach (var node in scrollingAreaNode.ContentNode.GetNodes<DutyLootNode>()) {
+        foreach (var node in scrollingAreaNode.GetNodes<DutyLootNode>()) {
             node.IsFavorite = Config.FavoriteItems.Contains(node.Item.ItemId);
         }
     }

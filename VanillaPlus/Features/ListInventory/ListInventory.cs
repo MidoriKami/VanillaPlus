@@ -108,7 +108,7 @@ public class ListInventory : GameModification {
         var filteredInventoryItems = Inventory.GetInventoryItems(searchString);
 
         var listUpdated = list.SyncWithListData(filteredInventoryItems, node => node.Item, data => new InventoryItemNode {
-            Size = new Vector2(list.VerticalListNode.Width, 32.0f),
+            Size = new Vector2(list.ContentWidth, 32.0f),
             Item = data,
         });
 

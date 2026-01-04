@@ -77,7 +77,7 @@ public unsafe class QuestListWindow : GameModification {
             .ToList();
 
         var listUpdated = listNode.SyncWithListData(filteredInventoryItems, node => node.QuestInfo, data => new QuestEntryNode {
-            Size = new Vector2(listNode.VerticalListNode.Width, 48.0f),
+            Size = new Vector2(listNode.ContentWidth, 48.0f),
             Height = 48.0f,
             QuestInfo = data,
         });

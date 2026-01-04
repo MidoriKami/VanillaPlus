@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
@@ -9,7 +8,7 @@ using VanillaPlus.Classes;
 namespace VanillaPlus.NativeElements.Config;
 
 public unsafe class ConfigAddon : NativeAddon {
-    private ScrollingAreaNode<VerticalListNode>? configurationListNode;
+    private ScrollingListNode? configurationListNode;
 
     private readonly List<ConfigCategory> configCategories = [];
     
@@ -19,14 +18,14 @@ public unsafe class ConfigAddon : NativeAddon {
     private const float Width = 400.0f;
 
     protected override void OnSetup(AtkUnitBase* addon) {
-        configurationListNode = new ScrollingAreaNode<VerticalListNode> {
-            ContentHeight = ContentSize.Y,
+        configurationListNode = new ScrollingListNode {
             AutoHideScrollBar = true,
+            FitContents = true,
         };
         configurationListNode.AttachNode(this);
 
         foreach (var category in configCategories) {
-            configurationListNode.ContentNode.AddNode(category.BuildNode());
+            configurationListNode.AddNode(category.BuildNode());
         }
         RecalculateWindowSize();
     }
@@ -34,10 +33,10 @@ public unsafe class ConfigAddon : NativeAddon {
     private void RecalculateWindowSize() {
         if (configurationListNode is null) return;
 
-        configurationListNode.ContentHeight = configurationListNode.ContentNode.Nodes.Sum(node => node.Height) + 10.0f;
+        configurationListNode.RecalculateLayout();
 
-        if (configurationListNode.ContentHeight < MaximumHeight) {
-            Size = new Vector2(Width, configurationListNode.ContentHeight + ContentStartPosition.Y + 24.0f);
+        if (configurationListNode.VerticalListNode.Height < MaximumHeight) {
+            Size = new Vector2(Width, configurationListNode.VerticalListNode.Height + ContentStartPosition.Y + 24.0f);
         }
         else {
             Size = new Vector2(Width, MaximumHeight + ContentStartPosition.Y + 24.0f);
@@ -47,10 +46,10 @@ public unsafe class ConfigAddon : NativeAddon {
         
         configurationListNode.Size = ContentSize + new Vector2(0.0f, ContentPadding.Y);
         configurationListNode.Position = ContentStartPosition - new Vector2(0.0f, ContentPadding.Y);
-        configurationListNode.ContentNode.RecalculateLayout();
+        configurationListNode.RecalculateLayout();
 
-        foreach (var node in configurationListNode.ContentNode.GetNodes<TabbedVerticalListNode>()) {
-            node.Width = configurationListNode.ContentNode.Width;
+        foreach (var node in configurationListNode.GetNodes<TabbedVerticalListNode>()) {
+            node.Width = configurationListNode.ContentWidth;
             node.RecalculateLayout();
         }
     }

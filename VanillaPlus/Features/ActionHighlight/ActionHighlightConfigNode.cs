@@ -8,24 +8,22 @@ using Lumina.Excel.Sheets;
 namespace VanillaPlus.Features.ActionHighlight;
 
 public class ActionHighlightConfigNode : ConfigNode<ClassJobWrapper> {
-    private readonly ScrollingAreaNode<VerticalListNode> actionsList;
-    private readonly ScrollingAreaNode<VerticalListNode>? generalSettingsArea;
+    private readonly ScrollingListNode actionsList;
+    private readonly ScrollingListNode? generalSettingsArea;
     private ActionHighlightConfig? config;
 
     public ActionHighlightConfigNode() {
-        actionsList = new ScrollingAreaNode<VerticalListNode> {
-            ContentHeight = 100.0f,
+        actionsList = new ScrollingListNode {
             AutoHideScrollBar = true,
+            FitContents = true,
         };
-        actionsList.ContentNode.FitContents = true;
         actionsList.AttachNode(this);
 
-        generalSettingsArea = new ScrollingAreaNode<VerticalListNode> {
-            ContentHeight = 100.0f,
+        generalSettingsArea = new ScrollingListNode {
             AutoHideScrollBar = true,
             IsVisible = false,
+            FitContents = true,
         };
-        generalSettingsArea.ContentNode.FitContents = true;
         generalSettingsArea.AttachNode(this);
     }
 
@@ -45,14 +43,13 @@ public class ActionHighlightConfigNode : ConfigNode<ClassJobWrapper> {
             if (generalSettingsArea != null) {
                 generalSettingsArea.IsVisible = true;
 
-                if (generalSettingsArea.ContentNode.Nodes.Count == 0) {
+                if (generalSettingsArea.Nodes.Count == 0) {
                     var settingsNode = new GeneralSettingsNode(config) {
-                        Size = new Vector2(generalSettingsArea.ContentNode.Width - 32.0f, 200.0f),
+                        Size = new Vector2(generalSettingsArea.Width - 32.0f, 200.0f),
                         Position = new Vector2(16.0f, 0.0f),
                     };
-                    generalSettingsArea.ContentNode.AddNode(settingsNode);
-                    generalSettingsArea.ContentNode.RecalculateLayout();
-                    generalSettingsArea.ContentHeight = generalSettingsArea.ContentNode.Height;
+                    generalSettingsArea.AddNode(settingsNode);
+                    generalSettingsArea.RecalculateLayout();
                 }
             }
             return;
@@ -73,29 +70,20 @@ public class ActionHighlightConfigNode : ConfigNode<ClassJobWrapper> {
                 .ToList();
         }
 
-        actionsList.ContentNode.SyncWithListData(actions, node => node.Action, action => new ActionSettingNode(config, action) {
-            Size = new Vector2(actionsList.ContentNode.Width, 40.0f),
+        actionsList.SyncWithListData(actions, node => node.Action, action => new ActionSettingNode(config, action) {
+            Size = new Vector2(actionsList.ContentWidth, 40.0f),
         });
 
-        actionsList.ContentNode.RecalculateLayout();
-        actionsList.ContentHeight = actionsList.ContentNode.Height;
+        actionsList.RecalculateLayout();
     }
 
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
+
+        generalSettingsArea?.Size = Size;
         actionsList.Size = Size;
-        actionsList.ContentNode.Width = Width;
-
-        if (generalSettingsArea != null) {
-            generalSettingsArea.Size = Size;
-            generalSettingsArea.ContentNode.Width = Width;
-            foreach (var node in generalSettingsArea.ContentNode.GetNodes<GeneralSettingsNode>()) {
-                node.Size = new Vector2(Width, node.Height);
-            }
-        }
-
-        foreach (var node in actionsList.ContentNode.GetNodes<ActionSettingNode>()) {
-            node.Size = new Vector2(Width, 40.0f);
-        }
+        
+        generalSettingsArea?.RecalculateLayout();
+        actionsList.RecalculateLayout();
     }
 }
