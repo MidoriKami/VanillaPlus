@@ -8,7 +8,7 @@ namespace VanillaPlus.Extensions;
 
 public static unsafe class AddonArgsExtensions {
     extension(AddonArgs args) {
-        public Span<AtkValue> AtkValueSpan => args.GetAddon<AtkUnitBase>()->AtkValuesSpan;
+        public Span<AtkValue> ValueSpan => args.GetAddon<AtkUnitBase>()->AtkValuesSpan;
         public AtkEventData.AtkMouseData* MouseData => args.GetMouseData();
         public Vector2 ClickPosition => args.GetMouseClickPosition();
 
@@ -24,11 +24,23 @@ public static unsafe class AddonArgsExtensions {
             foreach (var index in Enumerable.Range(0, atkValues.Length)) {
                 ref var value = ref atkValues[index];
                 if (value.Type is 0) continue;
-            
+
                 Services.PluginLog.Debug($"[{index,4}]{value.GetValueAsString()}");
             }
         }
-        
+
+        public Span<AtkValue> GetAtkValueSpan() {
+            var (ptr, count) = args switch {
+                AddonRefreshArgs refresh => (refresh.AtkValues, refresh.AtkValueCount),
+                AddonSetupArgs setup => (setup.AtkValues, setup.AtkValueCount),
+                _ => (IntPtr.Zero, 0u)
+            };
+
+            if (ptr == IntPtr.Zero || count == 0) return Span<AtkValue>.Empty;
+
+            return new Span<AtkValue>((AtkValue*)ptr, (int)count);
+        }
+
         private AtkEventData.AtkMouseData* GetMouseData() {
             if (args is not AddonReceiveEventArgs eventArgs) return null;
 
