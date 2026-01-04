@@ -14,5 +14,3 @@ public class ClockOverlayConfig : GameModificationConfig<ClockOverlayConfig> {
     public bool ShowPrefix = true;
     public TextFlags Flags = TextFlags.Edge;
 }
-
-public enum ClockType { Local, Server, Eorzea }
