@@ -97,7 +97,7 @@ public class AddonModificationBrowser : NativeAddon {
     private void BuildOptionsContainer() {
         optionContainerNode = new ScrollingAreaNode<TreeListNode> {
             ContentHeight = 1000.0f,
-            ScrollSpeed = 24,
+            ScrollSpeed = 38,
         };
         optionContainerNode.AttachNode(mainContainerNode);
     }
