@@ -16,6 +16,7 @@ public class NodeConfig<T> : IConfigEntry where T : NodeStyle, new() {
             Height = 24.0f,
             FitContents = true,
             FitWidth = true,
+            ItemSpacing = 4.0f,
         };
     
         BuildOptions(layoutNode);

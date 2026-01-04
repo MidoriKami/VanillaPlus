@@ -18,6 +18,7 @@ public class ConfigCategory : IDisposable {
     public TabbedVerticalListNode BuildNode() {
         var tabbedListNode = new TabbedVerticalListNode {
             FitWidth = true,
+            ItemVerticalSpacing = 4.0f,
         };
 
         tabbedListNode.AddNode(new ResNode {
