@@ -27,6 +27,7 @@ public class DropDownConfig : BaseConfigEntry {
                     Config.Save();
                 }
             },
+            MaxListOptions = 20,
         };
 
         layoutNode.AddNode(dropdown);
