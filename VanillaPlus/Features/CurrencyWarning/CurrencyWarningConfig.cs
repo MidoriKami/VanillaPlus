@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Numerics;
 using System.Text.Json.Serialization;
@@ -22,4 +22,42 @@ public class CurrencyWarningConfig : GameModificationConfig<CurrencyWarningConfi
     public List<CurrencyWarningSetting> WarningSettings = [];
     
     [JsonIgnore] public bool IsMoveable = false;
+
+    public void Migrate() {
+        bool needsSave = false;
+
+        foreach (var setting in WarningSettings) {
+            if (setting.OldSettings == null) continue;
+
+            bool TryGetBool(string key) => setting.OldSettings!.TryGetValue(key, out var val) && val.GetBoolean();
+            int TryGetInt(string key) => setting.OldSettings!.TryGetValue(key, out var val) ? val.GetInt32() : 0;
+
+            if (setting.OldSettings.ContainsKey("EnableHighLimit") ||
+                setting.OldSettings.ContainsKey("EnableLowLimit")) {
+
+                bool oldEnableHigh = TryGetBool("EnableHighLimit");
+                bool oldEnableLow = TryGetBool("EnableLowLimit");
+                int oldHighLimit = TryGetInt("HighLimit");
+                int oldLowLimit = TryGetInt("LowLimit");
+
+                if (oldEnableHigh) {
+                    setting.Mode = WarningMode.Above;
+                    setting.Limit = oldHighLimit;
+                } else if (oldEnableLow) {
+                    setting.Mode = WarningMode.Below;
+                    setting.Limit = oldLowLimit;
+                } else {
+                    setting.Mode = WarningMode.Above;
+                    setting.Limit = oldHighLimit != 0 ? oldHighLimit : oldLowLimit;
+                }
+
+                setting.OldSettings = null;
+                needsSave = true;
+            }
+        }
+
+        if (needsSave) {
+            Save();
+        }
+    }
 }

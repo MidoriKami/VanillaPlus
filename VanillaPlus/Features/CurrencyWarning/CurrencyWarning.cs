@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Overlay;
@@ -31,6 +31,8 @@ public unsafe class CurrencyWarning : GameModification {
 
     public override void OnEnable() {
         config = CurrencyWarningConfig.Load();
+        config.Migrate();
+
         if (!config.IsConfigured) {
             config.IsMoveable = true;
             config.IsConfigured = true;
@@ -68,8 +70,8 @@ public unsafe class CurrencyWarning : GameModification {
                 itemSearchAddon.SelectionResult = item => {
                     var newSetting = new CurrencyWarningSetting {
                         ItemId = item.RowId,
-                        EnableHighLimit = true,
-                        HighLimit = (int)item.StackSize,
+                        Mode = WarningMode.Above,
+                        Limit = (int)item.StackSize,
                     };
                     listNode.AddOption(newSetting);
                     config.Save();

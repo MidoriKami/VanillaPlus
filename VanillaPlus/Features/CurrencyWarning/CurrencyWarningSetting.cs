@@ -1,27 +1,31 @@
-﻿using KamiToolKit.Premade;
+﻿using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using KamiToolKit.Premade;
 
 namespace VanillaPlus.Features.CurrencyWarning;
 
 public class CurrencyWarningSetting : IInfoNodeData {
     public uint ItemId;
-    public bool EnableLowLimit;
-    public bool EnableHighLimit;
-    public int LowLimit;
-    public int HighLimit;
+    public WarningMode Mode = WarningMode.Above;
+    public int Limit;
 
-    public string GetLabel() 
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement>? OldSettings { get; set; }
+
+    public string GetLabel()
         => ItemId == 0 ? "Unknown" : Services.DataManager.GetItem(ItemId).Name.ToString();
-    
-    public string GetSubLabel() 
+
+    public string GetSubLabel()
         => "";
-    
-    public uint? GetIconId() 
+
+    public uint? GetIconId()
         => Services.DataManager.GetItem(ItemId).Icon;
-    
+
     public uint? GetId()
         => ItemId;
-    
-    public string? GetTexturePath() 
+
+    public string? GetTexturePath()
         => null;
 
     public int Compare(IInfoNodeData other, string sortingMode) {
