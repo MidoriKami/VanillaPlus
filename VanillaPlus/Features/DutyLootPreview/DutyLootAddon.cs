@@ -252,7 +252,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
                 Item = data,
                 IsFavorite = Config.FavoriteItems.Contains(data.ItemId),
                 OnLeftClick = OnDutyLootItemLeftClick,
-                OnRightClick = OnDutyLootItemRightClick
+                OnRightClick = OnDutyLootItemRightClick,
             }
         );
 
