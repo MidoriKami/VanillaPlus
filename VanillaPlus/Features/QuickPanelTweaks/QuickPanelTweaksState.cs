@@ -8,8 +8,8 @@ public class QuickPanelTweaksState {
     public bool hidePanelBackground = false;
     public bool hideEmptySlots = false;
 
-    public Vector2 closeButtonPosition = new(232f, 6f);
-    public Vector2 settingsButtonPosition = new(258f, 10f);
+    public Vector2 closeButtonPosition = new(258f, 10f);
+    public Vector2 settingsButtonPosition = new(232f, 6f);
     public Vector3 backgroundColor = new(0f, 0f, 0f);
     public Vector2 backgroundPosition = new(0f, 0f);
     public Vector2 backgroundSize = new(292f, 320f);
