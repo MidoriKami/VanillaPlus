@@ -68,9 +68,7 @@ public unsafe class CurrencyNode : OverlayNode {
         }
     }
 
-    public override void Update() {
-        base.Update();
-
+    protected override void OnUpdate() {
         var inventoryCount = InventoryManager.Instance()->GetInventoryItemCount(Currency.ItemId);
 
         countNode.Number = inventoryCount;

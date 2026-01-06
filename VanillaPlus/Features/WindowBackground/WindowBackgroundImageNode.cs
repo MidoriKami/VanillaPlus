@@ -28,9 +28,7 @@ public unsafe class WindowBackgroundImageNode : OverlayNode {
         backgroundImageNode.Size = Size;
     }
 
-    public override void Update() {
-        base.Update();
-
+    protected override void OnUpdate() {
         var addon = Services.GameGui.GetAddonByName<AtkUnitBase>(Settings.AddonName);
         backgroundImageNode.IsVisible = addon is not null && addon->IsActuallyVisible;
 

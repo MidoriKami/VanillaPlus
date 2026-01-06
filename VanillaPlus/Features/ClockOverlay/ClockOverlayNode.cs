@@ -26,9 +26,7 @@ public class ClockOverlayNode : OverlayNode {
         timeNode.Size = Size;
     }
 
-    public override void Update() {
-        base.Update();
-
+    protected override void OnUpdate() {
         timeNode.TextFlags = config.TextFlags;
         timeNode.TextColor = config.TextColor;
         timeNode.TextOutlineColor = config.TextOutlineColor;

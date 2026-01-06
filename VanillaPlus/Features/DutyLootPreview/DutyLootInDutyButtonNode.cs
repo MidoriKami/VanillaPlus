@@ -43,9 +43,7 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
         }
     }
 
-    public override void Update() {
-        base.Update();
-
+    protected override void OnUpdate() {
         var dutyInfoAddon = Services.GameGui.GetAddonByName<AddonToDoList>("_ToDoList");
         var dutyInfoPos = dutyInfoAddon->AtkUnitBase.Position;
         var dutyInfoScale = dutyInfoAddon->AtkUnitBase.Scale;

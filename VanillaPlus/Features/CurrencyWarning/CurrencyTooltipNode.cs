@@ -39,6 +39,8 @@ public class CurrencyTooltipNode : OverlayNode {
         IsVisible = false;
     }
 
+    protected override void OnUpdate() { }
+
     public void UpdateContents(List<WarningInfo> warnings) {
         listContainer.Clear();
 
