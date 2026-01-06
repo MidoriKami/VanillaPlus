@@ -41,7 +41,7 @@ public unsafe class QuickPanelTweaks : GameModification {
             .AddCheckbox(Strings.QuickPanelTweaks_LabelHidePanelBackground, nameof(config.HidePanelBackground))
             .AddCheckbox(Strings.QuickPanelTweaks_LabelHideEmptySlots, nameof(config.HideEmptySlots))
             .AddCheckbox(Strings.QuickPanelTweaks_LabelMoveButtons, nameof(config.MoveButtons))
-            .AddColorEdit(Strings.QuickPanelTweaks_BackgroundColor, nameof(config.BackgroundColor), new Vector4(0f, 0f, 0f, 1f));
+            .AddColorEdit(Strings.QuickPanelTweaks_BackgroundColor, nameof(config.BackgroundColor), new(0f, 0f, 0f, 1f));
 
         OpenConfigAction = configWindow.Toggle;
 
@@ -72,61 +72,52 @@ public unsafe class QuickPanelTweaks : GameModification {
     }
 
     private void updateNodes(AtkUnitBase* addon) {
-        var windowNode = addon->GetComponentByNodeId(QuickPanelData.WindowComponentNodeId);
+        var windowComponent = addon->GetComponentNodeById(45)->GetAsAtkComponentWindow();
 
-        if (windowNode is not null) {
-            var focusBorderNode = windowNode->GetNodeById(QuickPanelData.FocusBorderNodeId);
+        if (windowComponent is not null) {
+            var focusBorderNode = windowComponent->GetNodeById(8);
             if (focusBorderNode is not null) {
                 focusBorderNode->ToggleVisibility(!data.hideFocusBorder);
             }
 
-            var highlightNode = windowNode->GetNodeById(QuickPanelData.HighlightNodeId);
+            var backgroundNode = windowComponent->GetNodeById(9);
+            if (backgroundNode is not null) {
+                backgroundNode->SetColor(data.backgroundColor.AsVector3());
+                backgroundNode->Position = data.backgroundPosition;
+                backgroundNode->Size = data.backgroundSize;
+            }
+
+            var highlightNode = windowComponent->GetNodeById(10);
             if (highlightNode is not null) {
                 highlightNode->ToggleVisibility(!data.hideHighlighting);
             }
 
-            var backgroundNode = windowNode->GetNodeById(QuickPanelData.BackgroundNodeId);
-            if (backgroundNode is not null) {
-                backgroundNode->AddRed = data.backgroundColor.red;
-                backgroundNode->AddGreen = data.backgroundColor.green;
-                backgroundNode->AddBlue = data.backgroundColor.blue;
-
-                backgroundNode->X = data.backgroundPosition.x;
-                backgroundNode->Y = data.backgroundPosition.y;
-                backgroundNode->Width = data.backgroundSize.width;
-                backgroundNode->Height = data.backgroundSize.height;
-            }
-
-            var closeButtonNode = windowNode->GetNodeById(QuickPanelData.CloseButtonNodeId);
+            var closeButtonNode = windowComponent->GetNodeById(6);
             if (closeButtonNode is not null) {
-                closeButtonNode->X = data.closeButtonPosition.x;
-                closeButtonNode->Y = data.closeButtonPosition.y;
+                closeButtonNode->Position = data.closeButtonPosition;
             }
         }
 
-        var settingsButtonNode = addon->GetNodeById(QuickPanelData.SettingsButtonNodeId);
+        var settingsButtonNode = addon->GetNodeById(2);
         if (settingsButtonNode is not null) {
-            settingsButtonNode->X = data.settingsButtonPosition.x;
-            settingsButtonNode->Y = data.settingsButtonPosition.y;
+            settingsButtonNode->Position = data.settingsButtonPosition;
         }
 
-        var skillBackgroundNode = addon->GetNodeById(QuickPanelData.PanelBackgroundNodeId);
-        if (skillBackgroundNode is not null) {
-            skillBackgroundNode->ToggleVisibility(!data.hideHighlighting);
+        var panelBackgroundNode = addon->GetNodeById(44);
+        if (panelBackgroundNode is not null) {
+            panelBackgroundNode->ToggleVisibility(!data.hidePanelBackground);
         }
     }
 
-    private void updateDragDropComponents(AtkUnitBase* addon, bool reset = false) {
+    private void updateDragDropComponents(AtkUnitBase* addon) {
         bool draggingOngoing = AtkStage.Instance()->DragDropManager.IsDragging;
 
-        for (uint nodeId = QuickPanelData.CommandsStartNodeId; nodeId <= QuickPanelData.CommandsEndNodeId; nodeId++) {
-            var skillNode = addon->GetComponentByNodeId(nodeId);
-            if (skillNode is not null) {
-                if (config?.HideEmptySlots ?? false) {
-                    var skillIconNode = skillNode->GetNodeById(2);
-                    if (skillIconNode->IsVisible() == false) {
-                        skillNode->GetNodeById(3)->ToggleVisibility(draggingOngoing || data.hideEmptySlots);
-                    }
+        for (uint nodeId = 19; nodeId <= 43; nodeId++) {
+            var skillComponent = addon->GetComponentNodeById(nodeId)->GetAsAtkComponentDragDrop();
+            if (skillComponent is not null) {
+                var slotImageNode = skillComponent->GetNodeById(3);
+                if (slotImageNode is not null) {
+                    slotImageNode->ToggleVisibility(draggingOngoing || !data.hideEmptySlots);
                 }
             }
         }
