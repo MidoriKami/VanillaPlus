@@ -22,7 +22,7 @@ public unsafe class QuickPanelTweaks : GameModification {
 
     private AddonController? quickPanelController;
     private QuickPanelTweaksConfig? config;
-    private QuickPanelData data = new QuickPanelData();
+    private QuickPanelTweaksState? state;
     private ConfigAddon? configWindow;
 
     public override void OnEnable() {
@@ -45,18 +45,20 @@ public unsafe class QuickPanelTweaks : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
+        state = new QuickPanelTweaksState();
+
         quickPanelController = new AddonController("QuickPanel");
         quickPanelController.OnAttach += (addon) => {
-            if (config is not null) data.updateFromConfig(config);
-            updateNodes(addon);
+            state.updateFromConfig(config);
+            updateNodes(addon, state);
         };
         quickPanelController.OnUpdate += (addon) => {
-            updateDragDropComponents(addon);
+            updateDragDropComponents(addon, state);
         };
         quickPanelController.OnDetach += (addon) => {
-            data.reset();
-            updateNodes(addon);
-            updateDragDropComponents(addon);
+            state = new QuickPanelTweaksState();
+            updateNodes(addon, state);
+            updateDragDropComponents(addon, state);
         };
         quickPanelController.Enable();
     }
@@ -66,58 +68,61 @@ public unsafe class QuickPanelTweaks : GameModification {
         quickPanelController = null;
 
         config = null;
+        state = null;
 
         configWindow?.Dispose();
         configWindow = null;
     }
 
-    private void updateNodes(AtkUnitBase* addon) {
-        var windowComponent = addon->GetComponentNodeById(45)->GetAsAtkComponentWindow();
+    private void updateNodes(AtkUnitBase* addon, QuickPanelTweaksState state) {
+        var windowComponentNode = addon->GetComponentNodeById(45);
+        var windowComponent = windowComponentNode is null ? null : windowComponentNode->GetAsAtkComponentWindow();
 
         if (windowComponent is not null) {
             var focusBorderNode = windowComponent->GetNodeById(8);
             if (focusBorderNode is not null) {
-                focusBorderNode->ToggleVisibility(!data.hideFocusBorder);
+                focusBorderNode->ToggleVisibility(!state.hideFocusBorder);
             }
 
             var backgroundNode = windowComponent->GetNodeById(9);
             if (backgroundNode is not null) {
-                backgroundNode->SetColor(data.backgroundColor.AsVector3());
-                backgroundNode->Position = data.backgroundPosition;
-                backgroundNode->Size = data.backgroundSize;
+                backgroundNode->SetColor(state.backgroundColor);
+                backgroundNode->Position = state.backgroundPosition;
+                backgroundNode->Size = state.backgroundSize;
             }
 
             var highlightNode = windowComponent->GetNodeById(10);
             if (highlightNode is not null) {
-                highlightNode->ToggleVisibility(!data.hideHighlighting);
+                highlightNode->ToggleVisibility(!state.hideHighlighting);
             }
 
             var closeButtonNode = windowComponent->GetNodeById(6);
             if (closeButtonNode is not null) {
-                closeButtonNode->Position = data.closeButtonPosition;
+                closeButtonNode->Position = state.closeButtonPosition;
             }
         }
 
         var settingsButtonNode = addon->GetNodeById(2);
         if (settingsButtonNode is not null) {
-            settingsButtonNode->Position = data.settingsButtonPosition;
+            settingsButtonNode->Position = state.settingsButtonPosition;
         }
 
         var panelBackgroundNode = addon->GetNodeById(44);
         if (panelBackgroundNode is not null) {
-            panelBackgroundNode->ToggleVisibility(!data.hidePanelBackground);
+            panelBackgroundNode->ToggleVisibility(!state.hidePanelBackground);
         }
     }
 
-    private void updateDragDropComponents(AtkUnitBase* addon) {
+    private void updateDragDropComponents(AtkUnitBase* addon, QuickPanelTweaksState state) {
         bool draggingOngoing = AtkStage.Instance()->DragDropManager.IsDragging;
 
         for (uint nodeId = 19; nodeId <= 43; nodeId++) {
-            var skillComponent = addon->GetComponentNodeById(nodeId)->GetAsAtkComponentDragDrop();
+            var skillComponentNode = addon->GetComponentNodeById(nodeId);
+            var skillComponent = skillComponentNode is null ? null : skillComponentNode->GetAsAtkComponentDragDrop();
             if (skillComponent is not null) {
                 var slotImageNode = skillComponent->GetNodeById(3);
                 if (slotImageNode is not null) {
-                    slotImageNode->ToggleVisibility(draggingOngoing || !data.hideEmptySlots);
+                    slotImageNode->ToggleVisibility(draggingOngoing || !state.hideEmptySlots);
                 }
             }
         }
