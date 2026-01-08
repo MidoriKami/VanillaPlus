@@ -45,7 +45,7 @@ public sealed class VanillaPlus : IDalamudPlugin {
         PluginSystem.KeyListener = new KeyListener();
         PluginSystem.ModificationManager = new ModificationManager();
 
-        AutoOpenBrowser(false);
+        AutoOpenBrowser(PluginSystem.SystemConfig.IsDebugMode);
     }
 
     public void Dispose() {
@@ -77,9 +77,17 @@ public sealed class VanillaPlus : IDalamudPlugin {
     }
 
     private static void Handler(string command, string arguments) {
-        switch (command, arguments) {
-            case { command: "/vanillaplus" or "/plus", arguments: "" }:
+        if (command is not ("/vanillaplus" or "/plus")) return;
+        
+        switch (arguments) {
+            case "" or null:
                 PluginSystem.AddonModificationBrowser.Open();
+                break;
+            
+            case "debug":
+                PluginSystem.SystemConfig.IsDebugMode = !PluginSystem.SystemConfig.IsDebugMode;
+                Services.ChatGui.Print($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled": "Disabled")}", "VanillaPlus");
+                PluginSystem.SystemConfig.Save();
                 break;
         }
     }
