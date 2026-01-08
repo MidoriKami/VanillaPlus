@@ -75,7 +75,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             TextFlags = TextFlags.MultiLine | TextFlags.Edge | TextFlags.WordWrap,
             SeString = perfectTails.SolveAndGetProbabilitySeString(),
         };
-        probabilityTextNode.AttachNode((AtkResNode*)existingTextNode, NodePosition.AfterTarget);
+        probabilityTextNode.AttachNode(existingTextNode, NodePosition.AfterTarget);
 
         animationContainer = new ResNode {
             Size = new Vector2(72.0f, 48.0f),

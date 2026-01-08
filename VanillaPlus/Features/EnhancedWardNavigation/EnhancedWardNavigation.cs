@@ -90,7 +90,7 @@ public unsafe class EnhancedWardNavigation : GameModification {
         var newWard = args.ValueSpan[1].Int;
 
         currentWard = newWard;
-        ToggleButtons(eventKind == 4);
+        ToggleButtons(eventKind is 4);
     }
 
     private void SetCurrentWard(TextButtonNode? textButtonNode, bool isNext = false) {

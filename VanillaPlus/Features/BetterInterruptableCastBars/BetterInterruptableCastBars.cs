@@ -55,7 +55,7 @@ public unsafe class BetterInterruptableCastBars : GameModification {
             };
 
             LoadAssets(targetInfoCastbarPulseNode);
-            targetInfoCastbarPulseNode.AttachNode((AtkResNode*)existingPulseNode, NodePosition.BeforeTarget);
+            targetInfoCastbarPulseNode.AttachNode(existingPulseNode, NodePosition.BeforeTarget);
         };
         
         targetInfoCastbarController.OnDetach += addon => {
