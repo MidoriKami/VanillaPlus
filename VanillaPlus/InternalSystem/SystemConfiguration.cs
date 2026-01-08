@@ -7,6 +7,7 @@ public class SystemConfiguration {
     public int Version = 1;
 
     public HashSet<string> EnabledModifications = [];
+    public bool IsDebugMode = false;
 
     public static SystemConfiguration Load()
         => Config.LoadConfig<SystemConfiguration>("system.config.json");
