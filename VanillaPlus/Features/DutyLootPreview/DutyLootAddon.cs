@@ -244,26 +244,33 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
             _ => items,
         };
 
-        var listUpdated = scrollingAreaNode.SyncWithListData(
-            filteredItems,
-            node => node.Item,
-            data => new DutyLootNode {
-                Size = new Vector2(scrollingAreaNode.ContentWidth, 36.0f),
-                Item = data,
-                IsFavorite = Config.FavoriteItems.Contains(data.ItemId),
-                OnLeftClick = OnDutyLootItemLeftClick,
-                OnRightClick = OnDutyLootItemRightClick,
+        var dutyLootItems = filteredItems.ToList();
+        if (dutyLootItems.Any()) {
+            scrollingAreaNode.IsVisible = true;
+            var listUpdated = scrollingAreaNode.SyncWithListData(
+                dutyLootItems,
+                node => node.Item,
+                data => new DutyLootNode {
+                    Size = new Vector2(scrollingAreaNode.ContentWidth, 36.0f),
+                    Item = data,
+                    IsFavorite = Config.FavoriteItems.Contains(data.ItemId),
+                    OnLeftClick = OnDutyLootItemLeftClick,
+                    OnRightClick = OnDutyLootItemRightClick,
+                }
+            );
+
+            if (listUpdated) {
+                scrollingAreaNode.ScrollPosition = 0;
+                scrollingAreaNode.RecalculateLayout();
+
+                scrollingAreaNode.ReorderNodes((a, b) => {
+                    if (a is not DutyLootNode left || b is not DutyLootNode right) return 0;
+                    return left.Item.CompareTo(right.Item);
+                });
             }
-        );
-
-        if (listUpdated) {
-            scrollingAreaNode.ScrollPosition = 0;
-            scrollingAreaNode.RecalculateLayout();
-
-            scrollingAreaNode.ReorderNodes((a, b) => {
-                if (a is not DutyLootNode left || b is not DutyLootNode right) return 0;
-                return left.Item.CompareTo(right.Item);
-            });
+        }
+        else {
+            scrollingAreaNode.IsVisible = false;
         }
 
         var hasData = items.Count > 0 && !isLoading;
