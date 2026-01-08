@@ -18,6 +18,8 @@ public class DutyLootPreview : GameModification {
         ],
     };
 
+    public override bool IsExperimental => true;
+
     public override string ImageName => "DutyLootPreview.png";
 
     private DutyLootJournalUiController? journalUiController;

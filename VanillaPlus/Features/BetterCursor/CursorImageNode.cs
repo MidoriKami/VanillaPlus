@@ -53,9 +53,7 @@ public unsafe class CursorImageNode : OverlayNode {
         imageNode.Origin = new Vector2(Config.Size / 2.0f);
     }
 
-    public override void Update() {
-        base.Update();
-        
+    protected override void OnUpdate() {
         Size = new Vector2(Config.Size);
 
         imageNode.Color = Config.Color;

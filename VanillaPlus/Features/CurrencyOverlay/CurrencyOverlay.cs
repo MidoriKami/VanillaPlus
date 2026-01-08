@@ -125,11 +125,10 @@ public unsafe class CurrencyOverlay : GameModification {
         var newCurrencyNode = new CurrencyNode {
             Size = new Vector2(164.0f, 36.0f),
             Currency = setting,
-        };
-
-        newCurrencyNode.OnMoveComplete = () => {
-            setting.Position = newCurrencyNode.Position;
-            config?.Save();
+            OnMoveComplete = thisNode => {
+                setting.Position = thisNode.Position;
+                config?.Save();
+            },
         };
 
         if (setting.Position == Vector2.Zero) {

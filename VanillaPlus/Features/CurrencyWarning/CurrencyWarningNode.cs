@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -21,7 +21,7 @@ public unsafe class CurrencyWarningNode : OverlayNode {
     public bool IsHovered { get; private set; }
     public List<WarningInfo> ActiveWarnings { get; } = [];
 
-    public Action? OnUpdate { get; set; }
+    public required CurrencyTooltipNode TooltipNode { get; init; }
 
     public CurrencyWarningNode() {
         iconNode = new IconImageNode {
@@ -34,8 +34,7 @@ public unsafe class CurrencyWarningNode : OverlayNode {
         BuildPulseAnimation();
     }
 
-    public override void Update() {
-        base.Update();
+    protected override void OnUpdate() {
         Scale = new Vector2(Config.Scale);
         EnableMoving = Config.IsMoveable;
 
@@ -44,12 +43,12 @@ public unsafe class CurrencyWarningNode : OverlayNode {
 
         foreach (var setting in Config.WarningSettings) {
             var count = InventoryManager.Instance()->GetInventoryItemCount(setting.ItemId);
-            var isLow = setting.EnableLowLimit && count < setting.LowLimit;
-            var isHigh = setting.EnableHighLimit && count >= setting.HighLimit;
+            var isLow = setting.Mode == WarningMode.Below && count < setting.Limit;
+            var isHigh = setting.Mode == WarningMode.Above && count >= setting.Limit;
 
             if (isLow || isHigh) {
                 var item = Services.DataManager.GetItem(setting.ItemId);
-                ActiveWarnings.Add(new WarningInfo(item.Icon, item.Name.ToString(), count, isHigh, isLow ? setting.LowLimit : setting.HighLimit));
+                ActiveWarnings.Add(new WarningInfo(item.Icon, item.Name.ToString(), count, isHigh, setting.Limit));
                 if (isHigh) hasHigh = true;
             }
         }
@@ -74,9 +73,41 @@ public unsafe class CurrencyWarningNode : OverlayNode {
                     cursorPos.X >= screenPos.X && cursorPos.X <= screenPos.X + size.X &&
                     cursorPos.Y >= screenPos.Y && cursorPos.Y <= screenPos.Y + size.Y;
 
-        OnUpdate?.Invoke();
+        HandleWarningUpdate();
     }
 
+    private void HandleWarningUpdate() {
+        if (IsHovered && ActiveWarnings.Count > 0) {
+            TooltipNode.UpdateContents(ActiveWarnings);
+            TooltipNode.IsVisible = true;
+            UpdateTooltipPosition();
+        } else {
+            TooltipNode.IsVisible = false;
+        }
+    }
+
+    private void UpdateTooltipPosition() {
+        var screenSize = (Vector2)AtkStage.Instance()->ScreenSize;
+        var iconScale = Scale.X;
+        var iconSize = Size * iconScale;
+        var tooltipSize = TooltipNode.Size;
+
+        var targetX = Position.X + iconSize.X + 10.0f;
+        var targetY = Position.Y;
+
+        if (targetX + tooltipSize.X > screenSize.X) {
+            targetX = Position.X - tooltipSize.X - 10.0f;
+        }
+
+        if (targetY + tooltipSize.Y > screenSize.Y) {
+            targetY = screenSize.Y - tooltipSize.Y - 10.0f;
+        }
+
+        if (targetY < 0) targetY = 10.0f;
+
+        TooltipNode.Position = new Vector2(targetX, targetY);
+    }
+    
     private void BuildPulseAnimation() {
         AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 60)

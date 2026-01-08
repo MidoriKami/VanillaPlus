@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -26,9 +26,7 @@ public class ClockOverlayNode : OverlayNode {
         timeNode.Size = Size;
     }
 
-    public override void Update() {
-        base.Update();
-
+    protected override void OnUpdate() {
         timeNode.TextFlags = config.TextFlags;
         timeNode.TextColor = config.TextColor;
         timeNode.TextOutlineColor = config.TextOutlineColor;
@@ -49,8 +47,8 @@ public class ClockOverlayNode : OverlayNode {
         };
     }
 
-    private static DateTime GetServerTime() 
-        => DateTimeOffset.FromUnixTimeSeconds(Framework.GetServerTime()).LocalDateTime;
+    private static DateTime GetServerTime()
+        => DateTimeOffset.FromUnixTimeSeconds(Framework.GetServerTime()).DateTime;
 
     private static DateTime GetEorzeaTime() {
         const double eorzeaMultiplier = 3600.0D / 175.0D;

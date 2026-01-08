@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Overlay;
@@ -31,6 +31,7 @@ public unsafe class CurrencyWarning : GameModification {
 
     public override void OnEnable() {
         config = CurrencyWarningConfig.Load();
+
         if (!config.IsConfigured) {
             config.IsMoveable = true;
             config.IsConfigured = true;
@@ -40,8 +41,8 @@ public unsafe class CurrencyWarning : GameModification {
         overlayController = new OverlayController();
 
         InitializeConfiguration();
-        CreateTooltipNode();
-        CreateWarningNode();
+
+        Services.Framework.RunOnFrameworkThread(LoadNodes);
     }
 
     private void InitializeConfiguration() {
@@ -68,8 +69,8 @@ public unsafe class CurrencyWarning : GameModification {
                 itemSearchAddon.SelectionResult = item => {
                     var newSetting = new CurrencyWarningSetting {
                         ItemId = item.RowId,
-                        EnableHighLimit = true,
-                        HighLimit = (int)item.StackSize,
+                        Mode = WarningMode.Above,
+                        Limit = (int)item.StackSize,
                     };
                     listNode.AddOption(newSetting);
                     config.Save();
@@ -98,81 +99,36 @@ public unsafe class CurrencyWarning : GameModification {
         configWindow.AddCategory("Above Target Icon")
             .AddMultiSelectIcon(Strings.Icon, nameof(config.HighIcon), true, 60074u, 63908u, 230403u);
 
-        configWindow.AddCategory("")
+        configWindow.AddCategory("Currency Selection")
             .AddButton("Configure Tracked Currencies", () => listConfigWindow.Toggle());
 
         OpenConfigAction = configWindow.Toggle;
     }
-
-    private void CreateTooltipNode() {
+    
+    private void LoadNodes() {
         if (config is null) return;
-
-        overlayController?.CreateNode(() => tooltipNode = new CurrencyTooltipNode {
+        
+        tooltipNode = new CurrencyTooltipNode {
             Config = config,
-        });
-    }
-
-    private void CreateWarningNode() {
-        if (config is null) return;
-
-        overlayController?.CreateNode(() => {
-            warningNode = new CurrencyWarningNode {
-                Config = config,
-                Size = new Vector2(48.0f, 48.0f),
-            };
-
-            warningNode.OnUpdate = HandleWarningUpdate;
-
-            var screenCenter = (Vector2)AtkStage.Instance()->ScreenSize / 2.0f;
-            warningNode.Position = config.Position != Vector2.Zero ? config.Position : screenCenter;
-
-            warningNode.OnMoveComplete = () => {
-                config.Position = warningNode.Position;
+        };
+        overlayController?.AddNode(tooltipNode);
+        
+        warningNode = new CurrencyWarningNode {
+            Config = config,
+            Size = new Vector2(48.0f, 48.0f),
+            TooltipNode = tooltipNode,
+            OnMoveComplete = thisNode => {
+                config.Position = thisNode.Position;
                 config.Save();
-            };
+            },
+        };
 
-            return warningNode;
-        });
+        var screenCenter = (Vector2)AtkStage.Instance()->ScreenSize / 2.0f;
+        warningNode.Position = config.Position != Vector2.Zero ? config.Position : screenCenter;
+        
+        overlayController?.AddNode(warningNode);
     }
-
-    private void HandleWarningUpdate() {
-        if (tooltipNode is null) return;
-        if (warningNode is null) return;
-
-        if (warningNode.IsHovered && warningNode.ActiveWarnings.Count > 0) {
-            tooltipNode.UpdateContents(warningNode.ActiveWarnings);
-            tooltipNode.IsVisible = true;
-            UpdateTooltipPosition();
-        } else {
-            tooltipNode.IsVisible = false;
-        }
-    }
-
-    private void UpdateTooltipPosition() {
-        if (tooltipNode is null) return;
-        if (warningNode is null) return;
-
-        var screenSize = (Vector2)AtkStage.Instance()->ScreenSize;
-        var iconScale = warningNode.Scale.X;
-        var iconSize = warningNode.Size * iconScale;
-        var tooltipSize = tooltipNode.Size;
-
-        var targetX = warningNode.Position.X + iconSize.X + 10.0f;
-        var targetY = warningNode.Position.Y;
-
-        if (targetX + tooltipSize.X > screenSize.X) {
-            targetX = warningNode.Position.X - tooltipSize.X - 10.0f;
-        }
-
-        if (targetY + tooltipSize.Y > screenSize.Y) {
-            targetY = screenSize.Y - tooltipSize.Y - 10.0f;
-        }
-
-        if (targetY < 0) targetY = 10.0f;
-
-        tooltipNode.Position = new Vector2(targetX, targetY);
-    }
-
+    
     public override void OnDisable() {
         overlayController?.Dispose();
         overlayController = null;
