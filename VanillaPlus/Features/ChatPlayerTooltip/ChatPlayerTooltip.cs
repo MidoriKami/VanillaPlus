@@ -1,15 +1,12 @@
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
-using Dalamud.Game.Config;
-using Dalamud.Game.Text;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using Lumina.Excel.Sheets;
 using Lumina.Text.Payloads;
 using Lumina.Text.ReadOnly;
 using System;
-using System.Numerics;
+using Dalamud.Game.Text.SeStringHandling;
 using VanillaPlus.Classes;
-using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.ChatPlayerTooltip;
 
@@ -25,90 +22,54 @@ public class ChatPlayerTooltip : GameModification {
         ],
     };
 
-    private ChatPlayerTooltipConfig? config;
-    private ConfigAddon? configWindow;
     private bool tooltipActive;
     private ushort activeTooltipAddonId;
-    private ReadOnlySeString flower;
 
-    public override void OnEnable() {
-        config = ChatPlayerTooltipConfig.Load();
-        configWindow = new ConfigAddon {
-            Size = new Vector2(400.0f, 125.0f),
-            InternalName = "ChatTooltipConfig",
-            Title = "Chat Tooltip Config",
-            Config = config,
-        };
-
-        configWindow.AddCategory(Strings.Settings)
-            .AddCheckbox("Show World Name", nameof(config.showWorldName));
-
-        OpenConfigAction = configWindow.Toggle;
-
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, ["ChatLogPanel_0", "ChatLogPanel_1", "ChatLogPanel_2", "ChatLogPanel_3"], PreReceiveEvent);
-        flower = SeIconChar.CrossWorld.ToIconString();
-    }
+    public override void OnEnable()
+        => Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, ["ChatLogPanel_0", "ChatLogPanel_1", "ChatLogPanel_2", "ChatLogPanel_3"], PreReceiveEvent);
 
     public override void OnDisable() {
         Services.AddonLifecycle.UnregisterListener(PreReceiveEvent);
         HideTooltip(); 
-        
-        configWindow?.Dispose();
-        configWindow = null;
-
-        config = null;
     }
 
     private unsafe void PreReceiveEvent(AddonEvent type, AddonArgs args) {
-        Services.GameConfig.TryGet(UiConfigOption.LogCrossWorldName, out bool crossWorldName);
-        Services.GameConfig.TryGet(UiConfigOption.LogNameType, out uint nameType);
-
-        // name is not abbreviated
-        if (nameType == 0 && crossWorldName == true) return;
-
         if (args is not AddonReceiveEventArgs eventArgs) return;
 
         switch ((AtkEventType)eventArgs.AtkEventType) {
-            case AtkEventType.LinkMouseOver:
-                
-                if (eventArgs.AtkEventData == nint.Zero) return; 
-                var linkData = ((LinkData**)eventArgs.AtkEventData)[0];
+            case AtkEventType.LinkMouseOver: {
 
+                if (eventArgs.AtkEventData == nint.Zero) return;
+
+                var eventData = (AtkEventData*)eventArgs.AtkEventData;
+                var linkData = eventData->LinkData;
                 if (linkData is null) return;
-                if (linkData->LinkType is not (byte)LinkMacroPayloadType.Character) return;
-                if (linkData->Payload == null) return;
 
-                var charName = new ReadOnlySeStringSpan();
+                if ((LinkMacroPayloadType)linkData->LinkType is not LinkMacroPayloadType.Character) return;
+                if (linkData->Payload is null) return;
 
-                var seString = new ReadOnlySeStringSpan(linkData->Payload);
-                foreach (var payload in seString) {
-                    if (payload.Type == ReadOnlySePayloadType.Macro &&
-                        payload.MacroCode == MacroCode.Link &&
-                        payload.TryGetExpression(out var typeExpression) &&
-                        typeExpression.TryGetInt(out var linkType)) {
-                        if (linkType == (int)LinkMacroPayloadType.Character &&
-                            payload.TryGetExpression(out _, out _, out var worldExpression, out _, out var nameExpression) &&
-                            nameExpression.TryGetString(out charName)) {
-                        }
-                        else if (linkType == (int)LinkMacroPayloadType.Terminator) // end of the link
-                        {
-                            break;
-                        }
-                    }
-                }
-                
-                // IntValue2 of character link is world id
-                var worldId = (uint)linkData->IntValue2;
+                var payloadStringSpan = new ReadOnlySeStringSpan(linkData->Payload);
+                var enumerator = payloadStringSpan.GetEnumerator();
+                enumerator.MoveNext();
+                var payload = enumerator.Current;
 
-                // Not able to find world
-                if (!Services.DataManager.GetExcelSheet<World>().TryGetRow(worldId, out var world)) return;
-                var worldName = flower + world.Name;
-                if (worldId == (uint)0 || !config.showWorldName || Services.PlayerState.HomeWorld.RowId == worldId)
-                    worldName = new ReadOnlySeString();
-                var tooltipString = (charName + worldName).AsSpan();
+                if (!payload.TryGetExpression(out _, out _, out var worldExpression, out _, out var nameExpression)) return;
+                if (!worldExpression.TryGetUInt(out var worldId)) return;
+                if (!nameExpression.TryGetString(out var playerName)) return;
+                if (!Services.DataManager.GetExcelSheet<World>().TryGetRow(worldId, out var worldData)) return;
+
                 var addon = args.GetAddon<AtkUnitBase>();
-                ShowTooltip(addon->Id, null, tooltipString.Data);
+                using var rentedStringBuilder = new RentedSeStringBuilder();
+                
+                var tooltipString = rentedStringBuilder.Builder
+                    .Append(playerName)
+                    .AppendIcon((uint)BitmapFontIcon.CrossWorld)
+                    .Append(worldData.Name)
+                    .ToReadOnlySeString();
+                
+                ShowTooltip(addon->Id, null, tooltipString);
                 break;
+            }
             
             case AtkEventType.LinkMouseOut:
                 HideTooltip();
