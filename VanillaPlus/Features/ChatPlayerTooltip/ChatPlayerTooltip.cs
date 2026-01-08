@@ -55,6 +55,7 @@ public class ChatPlayerTooltip : GameModification {
 
                 if (!payload.TryGetExpression(out _, out _, out var worldExpression, out _, out var nameExpression)) return;
                 if (!worldExpression.TryGetUInt(out var worldId)) return;
+                if (worldId is 0) return;
                 if (!nameExpression.TryGetString(out var playerName)) return;
                 if (!Services.DataManager.GetExcelSheet<World>().TryGetRow(worldId, out var worldData)) return;
 
