@@ -2,7 +2,6 @@
 using System.Numerics;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
-using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes.Controllers;
@@ -39,7 +38,6 @@ public unsafe class EnhancedWardNavigation : GameModification {
     }
 
     private void AttachNodes(AtkUnitBase* addon) {
-        if (addon is null) return;
         if (addon->RootNode is null) return;
 
         var selectButton = addon->GetNodeById(34);
@@ -54,7 +52,7 @@ public unsafe class EnhancedWardNavigation : GameModification {
             Position = new Vector2(buttonX, buttonY),
             Size = new Vector2(56.0f, 28.0f),
             String = "Prev",
-            OnClick = () => SetCurrentWard(previousWardButtonNode),
+            OnClick = () => SetCurrentWard(),
             IsEnabled = currentWard > 0,
         };
         previousWardButtonNode.AttachNode(addon->RootNode);
@@ -63,7 +61,7 @@ public unsafe class EnhancedWardNavigation : GameModification {
             Position = new Vector2(buttonX + 60.0f, buttonY),
             Size = new Vector2(56.0f, 28.0f),
             String = "Next",
-            OnClick = () => SetCurrentWard(nextWardButtonNode, true),
+            OnClick = () => SetCurrentWard(true),
             IsEnabled = currentWard < 29,
         };
         nextWardButtonNode.AttachNode(addon->RootNode);
@@ -93,12 +91,7 @@ public unsafe class EnhancedWardNavigation : GameModification {
         ToggleButtons(eventKind is 4);
     }
 
-    private void SetCurrentWard(TextButtonNode? textButtonNode, bool isNext = false) {
-        if (textButtonNode is null) return;
-
-        var addon = RaptureAtkUnitManager.Instance()->GetAddonByNode(textButtonNode);
-        if (addon is null) return;
-
+    private void SetCurrentWard(bool isNext = false) {
         var destinationWard = Math.Clamp(currentWard + (isNext ? 1 : -1), 0, 29);
         ToggleButtons(false);
         AgentHousingPortal.Instance()->AgentInterface.SendCommand(1, [1, destinationWard]);
