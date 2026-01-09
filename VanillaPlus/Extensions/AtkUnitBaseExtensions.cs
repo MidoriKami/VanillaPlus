@@ -4,7 +4,6 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 namespace VanillaPlus.Extensions;
 
 public static unsafe class AtkUnitBaseExtensions {
-    /// <param name="addon">Pointer to the addon you wish to resize</param>
     extension(ref AtkUnitBase addon) {
         public T* GetNodeById<T>(uint nodeId) where T : unmanaged => addon.UldManager.SearchNodeById<T>(nodeId);
 

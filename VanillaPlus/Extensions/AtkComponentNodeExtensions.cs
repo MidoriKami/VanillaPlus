@@ -13,5 +13,4 @@ public static unsafe class AtkComponentNodeExtensions {
             node.MultiplyBlue = (byte) ((1 - fadePercentage) * 100);
         }
     }
-
 }
