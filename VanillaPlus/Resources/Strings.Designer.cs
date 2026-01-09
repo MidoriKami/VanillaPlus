@@ -3369,6 +3369,87 @@ namespace VanillaPlus.Resources {
                 return ResourceManager.GetString("Tooltip_SelectPreset", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Quick Panel Tweaks.
+        /// </summary>
+        internal static string QuickPanelTweaks_DisplayName {
+            get {
+                return ResourceManager.GetString("QuickPanelTweaks_DisplayName", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Makes visual changes to the Quick Panel HUD.
+        /// </summary>
+        internal static string QuickPanelTweaks_Description {
+            get {
+                return ResourceManager.GetString("QuickPanelTweaks_Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Quick Panel Configuration.
+        /// </summary>
+        internal static string QuickPanelTweaks_ConfigTitle {
+            get {
+                return ResourceManager.GetString("QuickPanelTweaks_ConfigTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hide the additional focus border.
+        /// </summary>
+        internal static string QuickPanelTweaks_LabelHideFocusBorder {
+            get {
+                return ResourceManager.GetString("QuickPanelTweaks_LabelHideFocusBorder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hide the border and background highlighting.
+        /// </summary>
+        internal static string QuickPanelTweaks_LabelHideHighlighting {
+            get {
+                return ResourceManager.GetString("QuickPanelTweaks_LabelHideHighlighting", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hide the background for the command panel.
+        /// </summary>
+        internal static string QuickPanelTweaks_LabelHidePanelBackground {
+            get {
+                return ResourceManager.GetString("QuickPanelTweaks_LabelHidePanelBackground", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hide the empty slots in the command panel.
+        /// </summary>
+        internal static string QuickPanelTweaks_LabelHideEmptySlots {
+            get {
+                return ResourceManager.GetString("QuickPanelTweaks_LabelHideEmptySlots", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Move settings and close buttons closer.
+        /// </summary>
+        internal static string QuickPanelTweaks_LabelMoveButtons {
+            get {
+                return ResourceManager.GetString("QuickPanelTweaks_LabelMoveButtons", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Background color.
+        /// </summary>
+        internal static string QuickPanelTweaks_BackgroundColor {
+            get {
+                return ResourceManager.GetString("QuickPanelTweaks_BackgroundColor", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Version {0}.
