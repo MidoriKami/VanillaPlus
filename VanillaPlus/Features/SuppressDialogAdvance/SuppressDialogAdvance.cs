@@ -55,7 +55,7 @@ public unsafe class SuppressDialogueAdvance : GameModification {
         if ((AtkEventType)eventArgs.AtkEventType is AtkEventType.MouseClick) {
             var addon = args.GetAddon<AddonTalk>();
 
-            if (!addon->RootNode->CheckCollisionAtCoords(args.ClickPosition)) {
+            if (!addon->RootNode->CheckCollision(args.ClickPosition)) {
                 eventArgs.AtkEventType = 0;
             }
         }

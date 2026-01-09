@@ -28,7 +28,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             InternalName = "WindowBackgroundColor",
             Title = Strings.WindowBackground_ColorPickerTitle,
             DefaultColor = KnownColor.Black.Vector() with { W = 0.50f },
-            OnHsvaColorPreviewed = color => colorPreviewNode?.HsvaColor = color,
+            OnHsvaColorPreviewed = color => colorPreviewNode?.ColorHsva = color,
         };
         
         windowNameTextNode = new TextNode {
