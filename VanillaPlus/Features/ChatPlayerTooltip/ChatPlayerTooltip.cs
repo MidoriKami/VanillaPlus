@@ -24,9 +24,15 @@ public class ChatPlayerTooltip : GameModification {
 
     private bool tooltipActive;
     private ushort activeTooltipAddonId;
+    private readonly string[] addonNames = [
+        "ChatLogPanel_0",
+        "ChatLogPanel_1",
+        "ChatLogPanel_2",
+        "ChatLogPanel_3",
+    ];
 
     public override void OnEnable()
-        => Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, ["ChatLogPanel_0", "ChatLogPanel_1", "ChatLogPanel_2", "ChatLogPanel_3"], PreReceiveEvent);
+        => Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, addonNames, PreReceiveEvent);
 
     public override void OnDisable() {
         Services.AddonLifecycle.UnregisterListener(PreReceiveEvent);
