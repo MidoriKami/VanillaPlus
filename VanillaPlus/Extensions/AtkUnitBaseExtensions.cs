@@ -8,6 +8,8 @@ public static unsafe class AtkUnitBaseExtensions {
     extension(ref AtkUnitBase addon) {
         public T* GetNodeById<T>(uint nodeId) where T : unmanaged => addon.UldManager.SearchNodeById<T>(nodeId);
 
+        public T* GetComponentById<T>(uint nodeId) where T : unmanaged => (T*)addon.GetComponentByNodeId(nodeId);
+        
         public bool IsActuallyVisible => addon.GetIsActuallyVisible();
 
         public void SubscribeStringArrayData(StringArrayType arrayType) => addon.SubscribeAtkArrayData(0, (byte)arrayType);
