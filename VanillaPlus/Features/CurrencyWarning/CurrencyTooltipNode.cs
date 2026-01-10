@@ -35,8 +35,6 @@ public class CurrencyTooltipNode : OverlayNode {
             FitContents = true,
         };
         listContainer.AttachNode(this);
-
-        IsVisible = false;
     }
 
     protected override void OnUpdate() { }

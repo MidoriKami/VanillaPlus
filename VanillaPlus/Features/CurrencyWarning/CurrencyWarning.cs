@@ -110,6 +110,7 @@ public unsafe class CurrencyWarning : GameModification {
         
         tooltipNode = new CurrencyTooltipNode {
             Config = config,
+            IsVisible = false,
         };
         overlayController?.AddNode(tooltipNode);
         
