@@ -67,7 +67,7 @@ public class GameModificationOptionNode : SelectableNode {
             TextTooltip = Strings.Tooltip_OpenConfiguration,
             OnClick = () => {
                 Modification?.Modification.OpenConfigAction?.Invoke();
-                OnClick?.Invoke();
+                OnClick?.Invoke(this);
             },
         };
         configButtonNode.AttachNode(this);
@@ -103,7 +103,7 @@ public class GameModificationOptionNode : SelectableNode {
 
         UpdateDisabledState();
         
-        OnClick?.Invoke();
+        OnClick?.Invoke(this);
         RefreshConfigWindowButton();
     }
 
