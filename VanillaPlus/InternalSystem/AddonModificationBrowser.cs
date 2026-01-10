@@ -75,15 +75,13 @@ public class AddonModificationBrowser : NativeAddon {
                 }
 
                 foreach (var mod in subCategory.OrderBy(modification => modification.Modification.ModificationInfo.DisplayName)) {
-                    var newOptionNode = new GameModificationOptionNode {
+                    newCategoryNode.AddNode(new GameModificationOptionNode {
                         NodeId = optionIndex++,
                         Height = 38.0f,
                         Modification = mod,
                         IsVisible = true,
-                    };
-
-                    newOptionNode.OnClick = () => OnOptionClicked(newOptionNode);
-                    newCategoryNode.AddNode(newOptionNode);
+                        OnClick = thisNode => OnOptionClicked((GameModificationOptionNode) thisNode),
+                    });
                 }
             }
             
@@ -92,6 +90,9 @@ public class AddonModificationBrowser : NativeAddon {
 
         RecalculateScrollableAreaSize();
         UpdateSizes();
+        
+        OnSearchBoxInputReceived(PluginSystem.SystemConfig.CurrentSearch);
+        searchBoxNode.SeString = PluginSystem.SystemConfig.CurrentSearch;
     }
     
     private void BuildOptionsContainer() {
@@ -110,9 +111,13 @@ public class AddonModificationBrowser : NativeAddon {
         searchContainerNode.AttachNode(mainContainerNode);
         
         searchBoxNode = new TextInputNode {
-            OnInputReceived = OnSearchBoxInputReceived,
             PlaceholderString = Strings.SearchPlaceholder,
             AutoSelectAll = true,
+            OnInputReceived = OnSearchBoxInputReceived,
+            OnFocusLost = () => {
+                PluginSystem.SystemConfig.CurrentSearch = searchBoxNode.String;
+                PluginSystem.SystemConfig.Save();
+            },
         };
         searchContainerNode.AddNode(searchBoxNode);
     }
