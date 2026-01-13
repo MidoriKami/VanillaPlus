@@ -2,7 +2,7 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 
-namespace VanillaPlus.Features.ActionHighlight;
+namespace VanillaPlus.Features.ActionHighlight.Nodes;
 
 public sealed class GeneralSettingsNode : SimpleComponentNode {
     private readonly ActionHighlightConfig config;

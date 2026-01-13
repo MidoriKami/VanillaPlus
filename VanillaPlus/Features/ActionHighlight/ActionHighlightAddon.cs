@@ -1,57 +1,59 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
-using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Nodes;
+using VanillaPlus.Features.ActionHighlight.Nodes;
 
 namespace VanillaPlus.Features.ActionHighlight;
 
 public class ActionHighlightAddon : NativeAddon {
-
-    private ModifyListNode<ClassJobWrapper>? selectionListNode;
-    private VerticalLineNode? separatorLine;
+    private ModifyListNode<ActionCategory, ActionCategoryListItemNode>? selectionListNode;
     private ActionHighlightConfigNode? configNode;
     private TextNode? nothingSelectedTextNode;
+
+    private readonly List<ActionCategory> allCategories = [];
 
     public ActionHighlightConfig? Config { get; init; }
 
     protected override unsafe void OnSetup(AtkUnitBase* addon) {
-        var classJobs = Services.DataManager.GetExcelSheet<Lumina.Excel.Sheets.ClassJob>()
-            .Where(classJob => classJob.JobIndex > 0)
-            .Select(classJob => new ClassJobWrapper(classJob))
+        var combatJobs = Services.DataManager.GetExcelSheet<Lumina.Excel.Sheets.ClassJob>()
+            .Where(classJob => classJob.JobIndex > 0 && classJob.Role != 0)
+            .Select(classJob => new ActionCategory(CategoryType.Job, classJob))
             .ToList();
 
-        classJobs.Add(ClassJobWrapper.RoleActions);
-        classJobs.Add(ClassJobWrapper.GeneralSettings);
+        allCategories.Add(new ActionCategory(CategoryType.General));
+        allCategories.AddRange(combatJobs);
+        allCategories.Add(new ActionCategory(CategoryType.Role));
 
-        classJobs.Sort((left, right) => left.Compare(right, ""));
+        allCategories.Sort(ActionCategory.Compare);
 
-        selectionListNode = new ModifyListNode<ClassJobWrapper> {
+        selectionListNode = new ModifyListNode<ActionCategory, ActionCategoryListItemNode> {
             Position = ContentStartPosition,
-            Size = new Vector2(250.0f, ContentSize.Y),
-            SelectionOptions = classJobs,
-            OnOptionChanged = OnOptionChanged,
+            Size = ContentSize with { X = 250.0f },
+            Options = allCategories,
+            SortOptions = ["Role Priority", "Alphabetical"],
+            SelectionChanged = OnSelectionChanged,
+            ItemComparer = (left, right, mode) => mode switch {
+                "Alphabetical" => string.CompareOrdinal(left.Name, right.Name),
+                _ => ActionCategory.Compare(left, right)
+            },
+            IsSearchMatch = (data, search) => data.Name.Contains(search, System.StringComparison.OrdinalIgnoreCase)
         };
         selectionListNode.AttachNode(this);
 
-        separatorLine = new VerticalLineNode {
+        new VerticalLineNode {
             Position = ContentStartPosition + new Vector2(250.0f + 8.0f, 0.0f),
-            Size = new Vector2(4.0f, ContentSize.Y),
-        };
-        separatorLine.AttachNode(this);
+            Size = ContentSize with { X = 4.0f },
+        }.AttachNode(this);
 
         nothingSelectedTextNode = new TextNode {
             Position = ContentStartPosition + new Vector2(250.0f + 16.0f, 0.0f),
             Size = ContentSize - new Vector2(250.0f + 16.0f, 0.0f),
             AlignmentType = AlignmentType.Center,
-            TextFlags = TextFlags.WordWrap | TextFlags.MultiLine,
-            FontSize = 14,
-            LineSpacing = 22,
-            FontType = FontType.Axis,
             String = Strings.SelectionPrompt,
-            TextColor = ColorHelper.GetColor(1),
         };
         nothingSelectedTextNode.AttachNode(this);
 
@@ -60,18 +62,14 @@ public class ActionHighlightAddon : NativeAddon {
             Size = ContentSize - new Vector2(250.0f + 16.0f, 0.0f),
             IsVisible = false,
         };
-        if (Config != null) {
-            configNode.SetConfig(Config);
-        }
+        if (Config != null) configNode.SetConfig(Config);
         configNode.AttachNode(this);
     }
 
-    private void OnOptionChanged(ClassJobWrapper? newOption) {
+    private void OnSelectionChanged(ActionCategory? category) {
         if (configNode is null) return;
-
-        configNode.IsVisible = newOption is not null;
-        nothingSelectedTextNode?.IsVisible = newOption is null;
-
-        configNode.ConfigurationOption = newOption;
+        configNode.ConfigurationOption = category;
+        configNode.IsVisible = category is not null;
+        if (nothingSelectedTextNode != null) nothingSelectedTextNode.IsVisible = category is null;
     }
 }
