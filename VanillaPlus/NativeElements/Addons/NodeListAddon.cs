@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using Dalamud.Game.Command;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -8,8 +9,8 @@ using VanillaPlus.Classes;
 
 namespace VanillaPlus.NativeElements.Addons;
 
-public unsafe class NodeListAddon : NativeAddon {
-    protected ScrollingListNode? ScrollingAreaNode;
+public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, new() {
+    protected ListNode<T, TU>? ListNode;
 
     private AddonConfig? config;
     private KeybindListener? keybindListener;
@@ -37,16 +38,17 @@ public unsafe class NodeListAddon : NativeAddon {
     }
 
     protected override void OnSetup(AtkUnitBase* addon) {
-        ScrollingAreaNode = new ScrollingListNode {
+        ListNode = new ListNode<T, TU> {
             Position = ContentStartPosition,
             Size = ContentSize,
-            FitContents = true,
-            FitWidth = true,
+            OptionsList = ListItems,
+            ItemSpacing = ItemSpacing,
         };
-        ScrollingAreaNode.AttachNode(this);
-        
-        DoListUpdate(true);
+        ListNode.AttachNode(this);
     }
+    
+    protected override void OnUpdate(AtkUnitBase* addon)
+        => ListNode?.Update();
 
     public override void Dispose() {
         config = null;
@@ -90,22 +92,17 @@ public unsafe class NodeListAddon : NativeAddon {
 
     private void OnOpenCommand(string command, string arguments)
         => Toggle();
-    
-    /// <summary>
-    ///     Return true to indicate contents were changed.
-    /// </summary>
-    public delegate bool UpdateList(ScrollingListNode listNode, bool isOpening);
-    
-    public required UpdateList UpdateListFunction { get; init; }
 
-    protected override void OnUpdate(AtkUnitBase* addon)
-        => DoListUpdate();
+    public required List<T> ListItems {
+        get => ListNode?.OptionsList ?? [];
+        set => ListNode?.OptionsList = value;
+    }
 
-    public void DoListUpdate(bool isOpening = false) {
-        if (ScrollingAreaNode is null) return;
-        
-        if (UpdateListFunction(ScrollingAreaNode, isOpening)) {
-            ScrollingAreaNode.RecalculateLayout();
+    public float ItemSpacing {
+        get;
+        set {
+            field = value;
+            ListNode?.ItemSpacing = value;
         }
     }
 }
