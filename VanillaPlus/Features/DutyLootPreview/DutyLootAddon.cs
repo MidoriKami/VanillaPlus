@@ -12,10 +12,11 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
-using KamiToolKit.Classes.ContextMenu;
-using KamiToolKit.Classes.Controllers;
+using KamiToolKit.ContextMenu;
+using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
-using ContextMenu = KamiToolKit.Classes.ContextMenu.ContextMenu;
+using VanillaPlus.Features.DutyLootPreview.Nodes;
+using ContextMenu = KamiToolKit.ContextMenu.ContextMenu;
 
 namespace VanillaPlus.Features.DutyLootPreview;
 
@@ -29,7 +30,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
     private DutyLootFilterBarNode? filterBarNode;
     private HorizontalLineNode? separatorNode;
-    private ScrollingListNode? scrollingAreaNode;
+    private ListNode<DutyLootItem, DutyLootNode>? scrollingAreaNode;
     private TextNode? hintTextNode;
 
     private bool updateRequested = true;
@@ -79,10 +80,10 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         var listAreaPosition = ContentStartPosition + new Vector2(0, filterBarHeight + separatorHeight);
         var listAreaSize = ContentSize - new Vector2(0, filterBarHeight + separatorHeight);
 
-        scrollingAreaNode = new ScrollingListNode {
+        scrollingAreaNode = new ListNode<DutyLootItem, DutyLootNode> {
             Position = listAreaPosition,
             Size = listAreaSize,
-            FitContents = true,
+            OptionsList = [], // todo: init this
         };
         scrollingAreaNode.AttachNode(this);
 
@@ -232,71 +233,80 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         LoadDuty(contentFinderId);
     }
 
+    private LootFilter? lastLootFilter;
+    
     private void UpdateList(bool isOpening = false) {
         if (scrollingAreaNode is null || hintTextNode is null || filterBarNode is null) return;
         if (!updateRequested && !isOpening) return;
         updateRequested = false;
 
-        var filteredItems = filterBarNode.CurrentFilter switch {
-            LootFilter.Favorites => items.Where(item => Config.FavoriteItems.Contains(item.ItemId)),
-            LootFilter.Equipment => items.Where(item => item.IsEquipment),
-            LootFilter.Misc => items.Where(item => !item.IsEquipment),
-            _ => items,
-        };
-
-        var dutyLootItems = filteredItems.ToList();
-        if (dutyLootItems.Any()) {
-            scrollingAreaNode.IsVisible = true;
-            var listUpdated = scrollingAreaNode.SyncWithListData(
-                dutyLootItems,
-                node => node.Item,
-                data => new DutyLootNode {
-                    Size = new Vector2(scrollingAreaNode.ContentWidth, 36.0f),
-                    Item = data,
-                    IsFavorite = Config.FavoriteItems.Contains(data.ItemId),
-                    OnLeftClick = OnDutyLootItemLeftClick,
-                    OnRightClick = OnDutyLootItemRightClick,
-                }
-            );
-
-            if (listUpdated) {
-                scrollingAreaNode.ScrollPosition = 0;
-                scrollingAreaNode.RecalculateLayout();
-
-                scrollingAreaNode.ReorderNodes((a, b) => {
-                    if (a is not DutyLootNode left || b is not DutyLootNode right) return 0;
-                    return left.Item.CompareTo(right.Item);
-                });
-            }
-        }
-        else {
-            scrollingAreaNode.IsVisible = false;
-        }
-
-        var hasData = items.Count > 0 && !isLoading;
-        var hasResults = scrollingAreaNode.GetNodes<DutyLootNode>().Any();
-
-        filterBarNode.IsVisible = hasData;
-        separatorNode!.IsVisible = hasData;
-        scrollingAreaNode.IsVisible = hasResults;
-        hintTextNode.IsVisible = !hasResults;
-
-        if (!hasResults) {
-            hintTextNode.String = true switch {
-                _ when isLoading => LoadingMessage,
-                _ when hasData => NoResultsMessage,
-                _ => NoItemsMessage,
+        if (lastLootFilter != filterBarNode.CurrentFilter) {
+            var filteredItems = filterBarNode.CurrentFilter switch {
+                LootFilter.Favorites => items.Where(item => Config.FavoriteItems.Contains(item.ItemId)),
+                LootFilter.Equipment => items.Where(item => item.IsEquipment),
+                LootFilter.Misc => items.Where(item => !item.IsEquipment),
+                _ => items,
             };
-            UpdateHintTextNodePosition();
+            
+            scrollingAreaNode.OptionsList = filteredItems.ToList();
+            lastLootFilter = filterBarNode.CurrentFilter;
         }
+        
+        
+
+        // var dutyLootItems = filteredItems.ToList();
+        // if (dutyLootItems.Any()) {
+        //     scrollingAreaNode.IsVisible = true;
+        //     var listUpdated = scrollingAreaNode.SyncWithListData(
+        //         dutyLootItems,
+        //         node => node.Item,
+        //         data => new DutyLootNode {
+        //             Size = new Vector2(scrollingAreaNode.ContentWidth, 36.0f),
+        //             ItemData = data,
+        //             IsFavorite = Config.FavoriteItems.Contains(data.ItemId),
+        //             OnLeftClick = OnDutyLootItemLeftClick,
+        //             OnRightClick = OnDutyLootItemRightClick,
+        //         }
+        //     );
+        //
+        //     if (listUpdated) {
+        //         scrollingAreaNode.ScrollPosition = 0;
+        //         scrollingAreaNode.RecalculateLayout();
+        //
+        //         scrollingAreaNode.ReorderNodes((a, b) => {
+        //             if (a is not DutyLootNode left || b is not DutyLootNode right) return 0;
+        //             return left.Item.CompareTo(right.Item);
+        //         });
+        //     }
+        // }
+        // else {
+        //     scrollingAreaNode.IsVisible = false;
+        // }
+
+        // var hasData = items.Count > 0 && !isLoading;
+        // var hasResults = scrollingAreaNode.GetNodes<DutyLootNode>().Any();
+        //
+        // filterBarNode.IsVisible = hasData;
+        // separatorNode!.IsVisible = hasData;
+        // scrollingAreaNode.IsVisible = hasResults;
+        // hintTextNode.IsVisible = !hasResults;
+        //
+        // if (!hasResults) {
+        //     hintTextNode.String = true switch {
+        //         _ when isLoading => LoadingMessage,
+        //         _ when hasData => NoResultsMessage,
+        //         _ => NoItemsMessage,
+        //     };
+        //     UpdateHintTextNodePosition();
+        // }
     }
 
     private void UpdateFavoriteStars() {
         if (scrollingAreaNode is null) return;
 
-        foreach (var node in scrollingAreaNode.GetNodes<DutyLootNode>()) {
-            node.IsFavorite = Config.FavoriteItems.Contains(node.Item.ItemId);
-        }
+        // foreach (var node in scrollingAreaNode.GetNodes<DutyLootNode>()) {
+        //     node.IsFavorite = Config.FavoriteItems.Contains(node.Item.ItemId);
+        // }
     }
 
     private void UpdateHintTextNodePosition() {

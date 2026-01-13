@@ -5,9 +5,9 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using KamiToolKit.Classes;
-using KamiToolKit.Classes.Controllers;
-using KamiToolKit.Classes.Timelines;
+using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
+using KamiToolKit.Timelines;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.BetterInterruptableCastBars;

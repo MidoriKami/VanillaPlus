@@ -4,16 +4,16 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
-using KamiToolKit.Classes.Timelines;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Overlay;
+using KamiToolKit.Timelines;
 
 namespace VanillaPlus.Features.CurrencyWarning;
 
 public record WarningInfo(uint IconId, string Name, long Count, bool IsHigh, int Limit);
 
-public unsafe class CurrencyWarningNode : OverlayNode {
+public unsafe class CurrencyWarningOverlayNode : OverlayNode {
     public override OverlayLayer OverlayLayer => OverlayLayer.BehindUserInterface;
     private readonly IconImageNode iconNode;
     public required CurrencyWarningConfig Config { get; init; }
@@ -23,7 +23,7 @@ public unsafe class CurrencyWarningNode : OverlayNode {
 
     public required CurrencyTooltipNode TooltipNode { get; init; }
 
-    public CurrencyWarningNode() {
+    public CurrencyWarningOverlayNode() {
         iconNode = new IconImageNode {
             Size = new Vector2(48.0f, 48.0f),
             FitTexture = true,
@@ -55,7 +55,7 @@ public unsafe class CurrencyWarningNode : OverlayNode {
 
         var shouldShow = ActiveWarnings.Count > 0 || Config.IsMoveable;
         IsVisible = shouldShow && !(Services.Condition.IsBoundByDuty || Services.Condition.IsInCutsceneOrQuestEvent);
-
+        
         if (ActiveWarnings.Count > 0) {
             iconNode.IconId = hasHigh ? Config.HighIcon : Config.LowIcon;
             Timeline?.PlayAnimation(Config.PlayAnimations ? 1 : 2);
@@ -120,18 +120,19 @@ public unsafe class CurrencyWarningNode : OverlayNode {
         
         iconNode.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 30)
-            .AddFrame(1, rotation: MathF.PI * 2.0f)
-            .AddFrame(5, rotation: MathF.PI * 2.0f - MathF.PI / 12.0f)
-            .AddFrame(10, rotation: MathF.PI * 2.0f + MathF.PI / 12.0f)
-            .AddFrame(15, rotation: MathF.PI * 2.0f - MathF.PI / 12.0f)
-            .AddFrame(20, rotation: MathF.PI * 2.0f)
-            .AddFrame(30, rotation: MathF.PI * 2.0f)
-            
+            .AddFrame(1, rotationDegrees: 0.0f)
+            .AddFrame(5, rotationDegrees: 25.0f)
+            .AddFrame(10, rotationDegrees: -25.0f)
+            .AddFrame(15, rotationDegrees: 25.0f)
+            .AddFrame(20, rotationDegrees: 0.0f)
+            .AddFrame(30, rotationDegrees: 0.0f)
+
             .AddFrame(1, scale: new Vector2(0.95f, 0.95f), alpha: 175)
             .AddFrame(10, scale: new Vector2(0.95f, 0.95f), alpha: 175)
             .AddFrame(15, scale: new Vector2(1.0f, 1.0f), alpha: 255)
             .AddFrame(25, scale: new Vector2(0.95f, 0.95f), alpha: 175)
             .AddFrame(30, scale: new Vector2(0.95f, 0.95f), alpha: 175)
+
             .EndFrameSet()
             .BeginFrameSet(31, 60)
             .AddFrame(31, alpha: 255, scale: new Vector2(1.0f, 1.0f), rotation: MathF.PI * 2.0f)

@@ -1,13 +1,15 @@
 using System;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using VanillaPlus.NativeElements.Nodes;
 
-namespace VanillaPlus.Features.DutyLootPreview;
+namespace VanillaPlus.Features.DutyLootPreview.Nodes;
 
-public unsafe class DutyLootNode : SelectableNode {
+public unsafe class DutyLootNode : ListItemNode<DutyLootItem> {
+    public override float ItemHeight => 36.0f;
+    
     private readonly IconWithCountNode iconNode;
     private readonly TextNode itemNameTextNode;
     private readonly SimpleImageNode favoriteStarNode;
@@ -53,36 +55,17 @@ public unsafe class DutyLootNode : SelectableNode {
         checkmarkIconNode.AttachNode(this);
 
         CollisionNode.AddEvent(AtkEventType.MouseClick, (_, _, _, _, atkEventData) => {
-            if (Item is null) return;
+            if (ItemData is null) return;
 
             if (atkEventData->IsLeftClick) {
-                OnLeftClick?.Invoke(Item);
+                OnLeftClick?.Invoke(ItemData);
             }
             else if (atkEventData->IsRightClick) {
-                OnRightClick?.Invoke(Item);
+                OnRightClick?.Invoke(ItemData);
             }
         });
     }
 
-    public bool IsFavorite {
-        get => favoriteStarNode.IsVisible;
-        set => favoriteStarNode.IsVisible = value;
-    }
-
-    public required DutyLootItem Item {
-        get;
-        set {
-            field = value;
-
-            iconNode.IconId = value.IconId;
-            itemNameTextNode.SeString = value.Name;
-            iconNode.Count = 1;
-            infoIconNode.TextTooltip = string.Join("\n", value.Sources);
-            checkmarkIconNode.IsVisible = value.IsUnlocked;
-            CollisionNode.ItemTooltip = Item.ItemId;
-        }
-    }
-    
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
 
@@ -105,5 +88,19 @@ public unsafe class DutyLootNode : SelectableNode {
 
         itemNameTextNode.Size = new Vector2(Width - iconNode.Width - infoSize - 12.0f, Height);
         itemNameTextNode.Position = new Vector2(iconNode.Width + 4.0f, 0.0f);
+    }
+    
+    public bool IsFavorite {
+        get => favoriteStarNode.IsVisible;
+        set => favoriteStarNode.IsVisible = value;
+    }
+    
+    protected override void SetNodeData(DutyLootItem itemData) {
+        iconNode.IconId = itemData.IconId;
+        itemNameTextNode.SeString = itemData.Name;
+        iconNode.Count = 1;
+        infoIconNode.TextTooltip = string.Join("\n", itemData.Sources);
+        checkmarkIconNode.IsVisible = itemData.IsUnlocked;
+        CollisionNode.ItemTooltip = itemData.ItemId;
     }
 }

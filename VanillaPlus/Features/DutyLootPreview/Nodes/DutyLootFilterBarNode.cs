@@ -5,7 +5,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 
-namespace VanillaPlus.Features.DutyLootPreview;
+namespace VanillaPlus.Features.DutyLootPreview.Nodes;
 
 public enum LootFilter {
     All,

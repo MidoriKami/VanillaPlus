@@ -1,13 +1,13 @@
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Overlay;
 using Lumina.Excel.Sheets;
 using Action = System.Action;
 
-namespace VanillaPlus.Features.DutyLootPreview;
+namespace VanillaPlus.Features.DutyLootPreview.Nodes;
 
 public unsafe class DutyLootInDutyButtonNode : OverlayNode {
     public override OverlayLayer OverlayLayer => OverlayLayer.BehindUserInterface;

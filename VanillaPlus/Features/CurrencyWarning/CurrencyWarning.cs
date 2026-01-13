@@ -1,9 +1,7 @@
-using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Overlay;
-using KamiToolKit.Premade.Addons;
-using Lumina.Excel.Sheets;
+using KamiToolKit.Premade.SearchAddons;
 using VanillaPlus.Classes;
 using VanillaPlus.NativeElements.Config;
 
@@ -22,12 +20,12 @@ public unsafe class CurrencyWarning : GameModification {
 
     private CurrencyWarningConfig? config;
     private OverlayController? overlayController;
-    private CurrencyWarningNode? warningNode;
+    private CurrencyWarningOverlayNode? warningNode;
     private CurrencyTooltipNode? tooltipNode;
 
     private ConfigAddon? configWindow;
     private ListConfigAddon<CurrencyWarningSetting, CurrencyWarningConfigNode>? listConfigWindow;
-    private LuminaSearchAddon<Item>? itemSearchAddon;
+    private CurrencySearchAddon? itemSearchAddon;
 
     public override void OnEnable() {
         config = CurrencyWarningConfig.Load();
@@ -48,14 +46,11 @@ public unsafe class CurrencyWarning : GameModification {
     private void InitializeConfiguration() {
         if (config is null) return;
 
-        itemSearchAddon = new LuminaSearchAddon<Item> {
+        itemSearchAddon = new CurrencySearchAddon {
             InternalName = "CurrencyWarningSearch",
             Title = "Search Currencies",
             Size = new Vector2(350.0f, 500.0f),
-            SearchOptions = Services.DataManager.GetCurrencyItems().ToList(),
             SortingOptions = [ "Name", "ID" ],
-            GetLabelFunc = item => item.Name.ToString(),
-            GetIconIdFunc = item => item.Icon,
         };
 
         listConfigWindow = new ListConfigAddon<CurrencyWarningSetting, CurrencyWarningConfigNode> {
@@ -114,7 +109,7 @@ public unsafe class CurrencyWarning : GameModification {
         };
         overlayController?.AddNode(tooltipNode);
         
-        warningNode = new CurrencyWarningNode {
+        warningNode = new CurrencyWarningOverlayNode {
             Config = config,
             Size = new Vector2(48.0f, 48.0f),
             TooltipNode = tooltipNode,

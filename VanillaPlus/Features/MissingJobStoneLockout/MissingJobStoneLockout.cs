@@ -4,9 +4,9 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes.Controllers;
-using KamiToolKit.Classes.Timelines;
+using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
+using KamiToolKit.Timelines;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 

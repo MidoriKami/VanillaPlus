@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using Lumina.Text.ReadOnly;
 using VanillaPlus.Classes;
@@ -105,7 +106,7 @@ public class AddonModificationBrowser : NativeAddon {
 
     private void BuildSearchContainer() {
         searchContainerNode = new HorizontalFlexNode {
-            Height = 28.0f,
+            Size = new Vector2(ContentSize.X, 28.0f),
             AlignmentFlags = FlexFlags.FitHeight | FlexFlags.FitWidth,
         };
         searchContainerNode.AttachNode(mainContainerNode);
