@@ -1,10 +1,12 @@
+using System;
 using System.Numerics;
 using System.Text.Json.Serialization;
-using KamiToolKit.Premade;
+using System.Text.RegularExpressions;
+using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 
-public class CurrencySetting : IInfoNodeData {
+public class CurrencySetting : IComparable<CurrencySetting> {
     public uint ItemId;
     public Vector2 Position = Vector2.Zero;
     public bool EnableLowLimit;
@@ -17,28 +19,18 @@ public class CurrencySetting : IInfoNodeData {
     public float FadePercent;
     public bool FadeIfNoWarnings;
 
-    [JsonIgnore]
-    public bool IsNodeMoveable;
+    [JsonIgnore] public bool IsNodeMoveable;
 
-    public string GetLabel()
-        => ItemId is 0 ? "Currency Not Set" : Services.DataManager.GetItem(ItemId).Name.ToString();
+    public int CompareTo(CurrencySetting? other) {
+        if (ReferenceEquals(this, other)) return 0;
+        return other is null ? 1 : ItemId.CompareTo(other.ItemId);
+    }
 
-    public string GetSubLabel()
-        => Services.DataManager.GetItem(ItemId).ItemSearchCategory.Value.Name.ToString().FirstCharToUpper();
+    public bool IsMatch(string searchString) {
+        var regex = new Regex(searchString, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    public uint? GetId()
-        => ItemId;
-
-    public uint? GetIconId()
-        => ItemId is 0 ? (uint) 5 : Services.DataManager.GetItem(ItemId).Icon;
-
-    public string? GetTexturePath()
-        => null;
-
-    public int Compare(IInfoNodeData other, string sortingMode) {
-        return sortingMode switch {
-            var s when s == Strings.SortOption_Alphabetical => string.CompareOrdinal(GetLabel(), other.GetLabel()),
-            _ => 0,
-        };
+        var itemData = Services.DataManager.GetExcelSheet<Item>().GetRow(ItemId);
+        
+        return regex.IsMatch(itemData.Name.ToString());
     }
 }

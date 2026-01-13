@@ -6,9 +6,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Addons;
-using KamiToolKit.Premade.Nodes;
-using VanillaPlus.NativeElements.Addons.SearchAddons;
+using VanillaPlus.NativeElements.SearchAddons;
 
 namespace VanillaPlus.Features.GearsetRedirect;
 
@@ -24,7 +22,11 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
 
     public required GearsetRedirectConfig Config { get; init; }
 
-    private readonly SearchAddon<GearsetInfo> gearsetSearchAddon = GearsetSearchAddon.GetAddon();
+    private readonly GearsetSearchAddon gearsetSearchAddon = new() {
+        Size = new Vector2(275.0f, 600.0f),
+        InternalName = "GearsetSearch",
+        Title = Strings.SearchAddon_GearsetTitle,
+    };
 
     private readonly NewRedirectionAddon newRedirectionAddon = new() {
         Size = new Vector2(500.0f, 275.0f),

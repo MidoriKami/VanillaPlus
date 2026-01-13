@@ -1,21 +1,20 @@
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
-using KamiToolKit.Classes.Timelines;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using KamiToolKit.Overlay;
+using KamiToolKit.Timelines;
 using Lumina.Excel.Sheets;
 
-namespace VanillaPlus.Features.CurrencyOverlay;
+namespace VanillaPlus.Features.CurrencyOverlay.Nodes;
 
-public unsafe class CurrencyNode : OverlayNode {
+public unsafe class CurrencyOverlayNode : KamiToolKit.Overlay.OverlayNode {
     public override OverlayLayer OverlayLayer => OverlayLayer.BehindUserInterface;
 
-    private IconImageNode iconImageNode;
-    private CounterNode countNode;
+    private readonly IconImageNode iconImageNode;
+    private readonly CounterNode countNode;
 
-    public CurrencyNode() {
+    public CurrencyOverlayNode() {
         iconImageNode = new IconImageNode {
             FitTexture = true,
         };
@@ -58,7 +57,7 @@ public unsafe class CurrencyNode : OverlayNode {
 
     public required CurrencySetting Currency {
         get;
-        set {
+        init {
             field = value;
             iconImageNode.IconId = Services.DataManager.GetExcelSheet<Item>().GetRow(Currency.ItemId).Icon;
 
@@ -97,11 +96,13 @@ public unsafe class CurrencyNode : OverlayNode {
         iconImageNode.Alpha = alpha;
         countNode.Alpha = alpha;
 
-        if (hasWarning) {
-                Timeline?.PlayAnimation(1);
+        if (hasWarning) { 
+            Timeline?.PlayAnimation(1);
         }
-        else {
+        else { 
             Timeline?.PlayAnimation(2);
         }
+
+        IsVisible = true;
     }
 }

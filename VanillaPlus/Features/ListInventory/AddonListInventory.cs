@@ -1,12 +1,11 @@
-﻿using System;
-using FFXIVClientStructs.FFXIV.Component.GUI;
+﻿using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Premade.SearchResultNodes;
+using Lumina.Excel.Sheets;
 using VanillaPlus.NativeElements.Addons;
 
 namespace VanillaPlus.Features.ListInventory;
 
-public class AddonListInventory : SearchableNodeListAddon {
-    public required Action? OnInventoryDataChanged { get; init; }
-
+public class AddonListInventory : SearchableNodeListAddon<Item, ItemListItemNode> {
     protected override unsafe void OnSetup(AtkUnitBase* addon) {
         base.OnSetup(addon);
 
@@ -14,7 +13,7 @@ public class AddonListInventory : SearchableNodeListAddon {
     }
 
     protected override unsafe void OnRequestedUpdate(AtkUnitBase* addon, NumberArrayData** numberArrayData, StringArrayData** stringArrayData) {
-        OnInventoryDataChanged?.Invoke();
+        // todo, fix this
     }
 
     protected override unsafe void OnFinalize(AtkUnitBase* addon) {

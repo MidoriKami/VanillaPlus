@@ -4,9 +4,9 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Addons;
-using KamiToolKit.Premade.Nodes;
+using KamiToolKit.Premade.SearchAddons;
 using Lumina.Excel.Sheets;
-using VanillaPlus.NativeElements.Addons.SearchAddons;
+using VanillaPlus.NativeElements.SearchAddons;
 using Action = System.Action;
 
 namespace VanillaPlus.Features.GearsetRedirect;
@@ -29,7 +29,15 @@ public class NewRedirectionAddon : NativeAddon {
     private TextButtonNode? cancelButtonNode;
 
     private readonly SearchAddon<GearsetInfo> gearsetSearchAddon = GearsetSearchAddon.GetAddon();
-    private readonly LuminaSearchAddon<TerritoryType> territorySearchAddon = TerritorySearchAddon.GetAddon();
+    private readonly TerritorySearchAddon? territorySearchAddon = new() {
+        Size = new Vector2(400.0f, 735.0f),
+        InternalName = "TerritorySearch",
+        Title = Strings.SearchAddon_TerritoryTitle,
+    };
+
+    public NewRedirectionAddon() {
+        territorySearchAddon?.DebugOpen();
+    }
 
     public GearsetInfo? SelectedGearset { get; private set; }
     public TerritoryType? SelectedTerritory { get; private set; }
@@ -38,7 +46,7 @@ public class NewRedirectionAddon : NativeAddon {
         base.Dispose();
 
         gearsetSearchAddon.Dispose();
-        territorySearchAddon.Dispose();
+        territorySearchAddon?.Dispose();
     }
 
     protected override unsafe void OnSetup(AtkUnitBase* addon) {
@@ -154,13 +162,13 @@ public class NewRedirectionAddon : NativeAddon {
     }
 
     private void OnSelectZone() {
-        territorySearchAddon.SelectionResult = result => {
+        territorySearchAddon?.SelectionResult = result => {
             SelectedTerritory = result;
 
             zoneInfoNode?.Option = result;
         };
 
-        territorySearchAddon.Open();
+        territorySearchAddon?.Open();
     }
 
     public Action? OnSelectionsConfirmed { get; set; }

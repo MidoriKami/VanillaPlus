@@ -2,15 +2,13 @@
 using System.Numerics;
 using Dalamud.Game.ClientState.Fates;
 using Dalamud.Game.Text;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes.Timelines;
 using KamiToolKit.Nodes;
+using KamiToolKit.Timelines;
 
 namespace VanillaPlus.Features.FateListWindow;
 
-public unsafe class FateEntryNode : SelectableNode {
-
+public class FateListItemNode : ListItemNode<IFate> {
     private readonly IconImageNode iconNode;
     private readonly TextNode nameNode;
     private readonly TextNode timeRemainingNode;
@@ -18,7 +16,7 @@ public unsafe class FateEntryNode : SelectableNode {
     private readonly ProgressBarNode progressNode;
     private readonly TextNode progressTextNode;
     
-    public FateEntryNode() {
+    public FateListItemNode() {
         iconNode = new IconImageNode {
             FitTexture = true,
         };
@@ -40,7 +38,9 @@ public unsafe class FateEntryNode : SelectableNode {
         };
         levelNode.AttachNode(this);
 
-        progressNode = new ProgressBarNode();
+        progressNode = new ProgressBarNode {
+            DisableCollisionNode = true,
+        };
         progressNode.AttachNode(this);
 
         progressTextNode = new TextNode {
@@ -48,17 +48,7 @@ public unsafe class FateEntryNode : SelectableNode {
         };
         progressTextNode.AttachNode(this);
 
-        CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
-            if (Fate is null) return;
-            
-            var agentMap = AgentMap.Instance();
-            if (agentMap is not null) {
-                agentMap->FlagMarkerCount = 0;
-                agentMap->SetFlagMapMarker(agentMap->CurrentTerritoryId, agentMap->CurrentMapId, Fate.Position, Fate.IconId);
-                agentMap->OpenMap(agentMap->CurrentMapId, agentMap->CurrentTerritoryId, Fate.Name.ToString(), MapType.QuestLog);
-                agentMap->OpenMap(agentMap->CurrentMapId, agentMap->CurrentTerritoryId, Fate.Name.ToString());
-            }
-        });
+        CollisionNode.AddEvent(AtkEventType.MouseClick, () => ItemData?.FocusMarker());
         
         AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 120)
@@ -84,27 +74,6 @@ public unsafe class FateEntryNode : SelectableNode {
         Timeline?.PlayAnimation(1);
     }
 
-    public required IFate Fate {
-        get;
-        set {
-            field = value;
-
-            iconNode.IconId = value.MapIconId;
-            nameNode.SeString = value.Name.EncodeWithNullTerminator();
-            timeRemainingNode.String = TimeSpan.FromSeconds(value.TimeRemaining).ToString(@"mm\:ss");
-
-            if (Fate is not { Level: 1, MaxLevel: 255 }) {
-                levelNode.String = Strings.FateEntry_LevelRangeFormat.Format(value.Level, value.MaxLevel);
-            }
-            else {
-                levelNode.String = Strings.FateEntry_LevelUnknown;
-            }
-           
-            progressTextNode.String = $"{value.Progress}%";
-            progressNode.Progress = value.Progress / 100.0f;
-        }
-    }
-
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
         iconNode.Position = new Vector2(2.0f, 2.0f);
@@ -126,18 +95,45 @@ public unsafe class FateEntryNode : SelectableNode {
         nameNode.Position = new Vector2(iconNode.Width + 4.0f, 0.0f);
     }
 
-    public void Update() {
-        var timeRemaining = TimeSpan.FromSeconds(Fate.TimeRemaining);
+    public override void Update() {
+        if (ItemData is null) return;
         
-        timeRemainingNode.String = $"{SeIconChar.Clock.ToIconChar()} {timeRemaining:mm\\:ss}";
-        progressTextNode.String = $"{Fate.Progress}%";
-        progressNode.Progress = Fate.Progress / 100.0f;
+        if (ItemData.TimeRemainingSpan > TimeSpan.Zero) {
+            timeRemainingNode.String = $"{SeIconChar.Clock.ToIconChar()} {ItemData.TimeRemainingString}";
+            
+            if (ItemData.TimeRemaining < 300 && Timeline?.ActiveLabelId is 1) {
+                Timeline?.PlayAnimation(2);
+            }
+            else if (ItemData.TimeRemaining > 300 && Timeline?.ActiveLabelId is 2) {
+                Timeline?.PlayAnimation(1);
+            }
+        }
+        else {
+            timeRemainingNode.String = "Pending";
+            if (Timeline?.ActiveLabelId is 2) {
+                Timeline?.PlayAnimation(1);
+            }
+        }
+        
+        progressTextNode.String = $"{ItemData.Progress}%";
+        progressNode.Progress = ItemData.Progress / 100.0f;
+    }
 
-        if (Fate.TimeRemaining < 300 && Timeline?.ActiveLabelId is 1) {
-            Timeline?.PlayAnimation(2);
+    public override float ItemHeight => 53.0f;
+
+    protected override void SetNodeData(IFate itemData) {
+        iconNode.IconId = itemData.MapIconId;
+        nameNode.SeString = itemData.NameString;
+        timeRemainingNode.String = itemData.TimeRemainingString;
+
+        if (ItemData is not { Level: 1, MaxLevel: 255 }) {
+            levelNode.String = Strings.FateEntry_LevelRangeFormat.Format(itemData.Level, itemData.MaxLevel);
         }
-        else if (Fate.TimeRemaining > 300 && Timeline?.ActiveLabelId is 2) {
-            Timeline?.PlayAnimation(1);
+        else {
+            levelNode.String = Strings.FateEntry_LevelUnknown;
         }
+           
+        progressTextNode.String = $"{itemData.Progress}%";
+        progressNode.Progress = itemData.Progress / 100.0f;
     }
 }

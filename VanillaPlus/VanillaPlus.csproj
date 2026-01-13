@@ -33,6 +33,14 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Strings.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Remove="Features\ActionHighlight\**" />
+      <EmbeddedResource Remove="Features\CurrencyWarning\**" />
+      <EmbeddedResource Remove="Features\GearsetRedirect\**" />
+      <EmbeddedResource Remove="Features\PartyFinderPresets\**" />
+      <EmbeddedResource Remove="Features\WindowBackground\**" />
+      <EmbeddedResource Remove="Features\DutyLootPreview\**" />
+      <EmbeddedResource Remove="Features\HideUnwantedBanners\**" />
+      <EmbeddedResource Remove="Features\RecentlyLootedWindow\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -41,5 +49,13 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Strings.resx</DependentUpon>
       </Compile>
+      <Compile Remove="Features\ActionHighlight\**" />
+      <Compile Remove="Features\CurrencyWarning\**" />
+      <Compile Remove="Features\GearsetRedirect\**" />
+      <Compile Remove="Features\PartyFinderPresets\**" />
+      <Compile Remove="Features\WindowBackground\**" />
+      <Compile Remove="Features\DutyLootPreview\**" />
+      <Compile Remove="Features\HideUnwantedBanners\**" />
+      <Compile Remove="Features\RecentlyLootedWindow\**" />
     </ItemGroup>
 </Project>
