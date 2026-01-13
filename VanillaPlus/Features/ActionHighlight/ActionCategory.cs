@@ -1,27 +1,24 @@
 using Lumina.Excel.Sheets;
-using KamiToolKit.Premade;
 
 namespace VanillaPlus.Features.ActionHighlight;
 
-public enum CategoryType { General = 0, Job = 1, Role = 2 }
-
-public record ActionCategory(CategoryType Type, ClassJob? Job = null) {
+public record ActionCategory(ActionCategoryType Type, ClassJob? Job = null) {
     public string Name => Type switch {
-        CategoryType.General => "General Settings",
-        CategoryType.Role => "Role Actions",
-        _ => Job?.NameEnglish.ExtractText() ?? "Unknown"
+        ActionCategoryType.General => "General Settings",
+        ActionCategoryType.Role => "Role Actions",
+        _ => Job?.NameEnglish.ExtractText() ?? "Unknown",
     };
 
     public string SubLabel => Type switch {
-        CategoryType.General => "CONFIG",
-        CategoryType.Role => "ALL",
-        _ => Job?.Abbreviation.ExtractText() ?? string.Empty
+        ActionCategoryType.General => "CONFIG",
+        ActionCategoryType.Role => "ALL",
+        _ => Job?.Abbreviation.ExtractText() ?? string.Empty,
     };
 
     public uint IconId => Type switch {
-        CategoryType.General => 91178,
-        CategoryType.Role => 62143,
-        _ => Job?.IconId ?? 0
+        ActionCategoryType.General => 91178,
+        ActionCategoryType.Role => 62143,
+        _ => Job?.IconId ?? 0,
     };
 
     public static int Compare(ActionCategory left, ActionCategory right) {

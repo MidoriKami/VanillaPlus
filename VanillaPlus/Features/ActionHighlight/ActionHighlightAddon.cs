@@ -21,12 +21,12 @@ public class ActionHighlightAddon : NativeAddon {
     protected override unsafe void OnSetup(AtkUnitBase* addon) {
         var combatJobs = Services.DataManager.GetExcelSheet<Lumina.Excel.Sheets.ClassJob>()
             .Where(classJob => classJob.JobIndex > 0 && classJob.Role != 0)
-            .Select(classJob => new ActionCategory(CategoryType.Job, classJob))
+            .Select(classJob => new ActionCategory(ActionCategoryType.Job, classJob))
             .ToList();
 
-        allCategories.Add(new ActionCategory(CategoryType.General));
+        allCategories.Add(new ActionCategory(ActionCategoryType.General));
         allCategories.AddRange(combatJobs);
-        allCategories.Add(new ActionCategory(CategoryType.Role));
+        allCategories.Add(new ActionCategory(ActionCategoryType.Role));
 
         allCategories.Sort(ActionCategory.Compare);
 
@@ -34,7 +34,7 @@ public class ActionHighlightAddon : NativeAddon {
             Position = ContentStartPosition,
             Size = ContentSize with { X = 250.0f },
             Options = allCategories,
-            SortOptions = ["Role Priority", "Alphabetical"],
+            SortOptions = [ "Role Priority", "Alphabetical" ],
             SelectionChanged = OnSelectionChanged,
             ItemComparer = (left, right, mode) => mode switch {
                 "Alphabetical" => string.CompareOrdinal(left.Name, right.Name),
@@ -62,14 +62,19 @@ public class ActionHighlightAddon : NativeAddon {
             Size = ContentSize - new Vector2(250.0f + 16.0f, 0.0f),
             IsVisible = false,
         };
-        if (Config != null) configNode.SetConfig(Config);
+
+        if (Config is not null) {
+            configNode.SetConfig(Config);
+        }
+
         configNode.AttachNode(this);
     }
 
     private void OnSelectionChanged(ActionCategory? category) {
         if (configNode is null) return;
+
         configNode.ConfigurationOption = category;
         configNode.IsVisible = category is not null;
-        if (nothingSelectedTextNode != null) nothingSelectedTextNode.IsVisible = category is null;
+        nothingSelectedTextNode?.IsVisible = category is null;
     }
 }
