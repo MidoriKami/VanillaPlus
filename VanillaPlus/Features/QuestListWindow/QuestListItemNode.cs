@@ -1,20 +1,21 @@
 ﻿using System.Numerics;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.QuestListWindow;
 
-public unsafe class QuestEntryNode : SelectableNode {
-
+public class QuestListItemNode : ListItemNode<MarkerInfo> {
+    public override float ItemHeight => 48.0f;
+    
     private readonly IconImageNode questIconNode;
     private readonly TextNode questNameTextNode;
     private readonly TextNode questLevelTextNode;
     private readonly TextNode issuerNameTextNode;
     private readonly TextNode distanceTextNode;
 
-    public QuestEntryNode() {
+    public QuestListItemNode() {
         questIconNode = new IconImageNode {
             FitTexture = true,
         };
@@ -47,35 +48,7 @@ public unsafe class QuestEntryNode : SelectableNode {
         };
         distanceTextNode.AttachNode(this);
         
-        CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
-            if (QuestInfo is null) return;
-
-            var agentMap = AgentMap.Instance();
-            if (agentMap is not null) {
-                agentMap->FlagMarkerCount = 0;
-                agentMap->SetFlagMapMarker(agentMap->CurrentTerritoryId, agentMap->CurrentMapId, QuestInfo.Position, QuestInfo.IconId);
-                agentMap->OpenMap(agentMap->CurrentMapId, agentMap->CurrentTerritoryId, QuestInfo.Name.ToString(), MapType.QuestLog);
-                agentMap->OpenMap(agentMap->CurrentMapId, agentMap->CurrentTerritoryId, QuestInfo.Name.ToString());
-            }
-        });
-    }
-
-    public required QuestInfo QuestInfo {
-        get;
-        set {
-            field = value;
-
-            if (value.Level > 0) {
-                questLevelTextNode.String = $"Lv. {value.Level}";
-            }
-            else {
-                questNameTextNode.Width = Width - questIconNode.Width - 4.0f;
-            }
-            
-            questIconNode.IconId = value.IconId;
-            questNameTextNode.SeString = value.Name;
-            issuerNameTextNode.SeString = value.IssuerName;
-        }
+        CollisionNode.AddEvent(AtkEventType.MouseClick, () => ItemData.FocusMarker());
     }
 
     protected override void OnSizeChanged() {
@@ -97,6 +70,19 @@ public unsafe class QuestEntryNode : SelectableNode {
         distanceTextNode.Position = new Vector2(Width - questLevelTextNode.Width - 4.0f, Height / 2.0f);
     }
 
-    public void Update()
-        => distanceTextNode.String = $"{QuestInfo.Distance:F1} y";
+    protected override void SetNodeData(MarkerInfo itemData) {
+        if (itemData.ClassJobLevel > 0) {
+            questLevelTextNode.String = $"Lv. {itemData.ClassJobLevel}";
+        }
+        else {
+            questNameTextNode.Width = Width - questIconNode.Width - 4.0f;
+        }
+        
+        questIconNode.IconId = itemData.IconId;
+        questNameTextNode.SeString = itemData.Name;
+        issuerNameTextNode.SeString = itemData.IssuerName;
+    }
+
+    public override void Update()
+        => distanceTextNode.String = $"{ItemData.Distance:F1} y";
 }
