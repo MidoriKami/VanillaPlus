@@ -33,7 +33,6 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Strings.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Remove="Features\ActionHighlight\**" />
       <EmbeddedResource Remove="Features\CurrencyWarning\**" />
       <EmbeddedResource Remove="Features\GearsetRedirect\**" />
       <EmbeddedResource Remove="Features\PartyFinderPresets\**" />
@@ -49,7 +48,6 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Strings.resx</DependentUpon>
       </Compile>
-      <Compile Remove="Features\ActionHighlight\**" />
       <Compile Remove="Features\CurrencyWarning\**" />
       <Compile Remove="Features\GearsetRedirect\**" />
       <Compile Remove="Features\PartyFinderPresets\**" />

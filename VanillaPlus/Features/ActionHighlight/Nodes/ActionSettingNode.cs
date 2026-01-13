@@ -3,7 +3,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 using Action = Lumina.Excel.Sheets.Action;
 
-namespace VanillaPlus.Features.ActionHighlight;
+namespace VanillaPlus.Features.ActionHighlight.Nodes;
 
 public class ActionSettingNode : SimpleComponentNode {
     private readonly ActionHighlightConfig config;
