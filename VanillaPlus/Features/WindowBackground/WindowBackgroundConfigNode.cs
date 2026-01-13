@@ -4,7 +4,7 @@ using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Addons;
+using KamiToolKit.Premade.Color;
 using KamiToolKit.Premade.Nodes;
 using KamiToolKit.Premade.Widgets;
 

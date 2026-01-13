@@ -4,10 +4,10 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
-using KamiToolKit.Classes.Controllers;
+using KamiToolKit.Controllers;
 using KamiToolKit.Overlay;
 using KamiToolKit.Premade.Addons;
-using KamiToolKit.Premade.Nodes;
+using KamiToolKit.Premade.SearchAddons;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.WindowBackground;
@@ -32,7 +32,7 @@ public unsafe class WindowBackground : GameModification {
 
     private WindowBackgroundConfig? config;
     private ListConfigAddon<WindowBackgroundSetting, WindowBackgroundConfigNode>? configWindow;
-    private SearchAddon<StringInfoNode>? addonSearchAddon;
+    private AddonSearchAddon? addonSearchAddon;
 
     private DynamicAddonController? dynamicAddonController;
     private OverlayController? overlayController;
@@ -52,12 +52,10 @@ public unsafe class WindowBackground : GameModification {
 
         dynamicAddonController.Enable();
 
-        addonSearchAddon = new SearchAddon<StringInfoNode> {
+        addonSearchAddon = new AddonSearchAddon {
             InternalName = "AddonSearch",
             Title = Strings.WindowBackground_SearchTitle,
             Size = new Vector2(350.0f, 600.0f),
-            SortingOptions = [ "Visibility", "Alphabetical" ],
-            SearchOptions = GetOptions(),
         };
 
         configWindow = new ListConfigAddon<WindowBackgroundSetting, WindowBackgroundConfigNode> {
@@ -175,20 +173,5 @@ public unsafe class WindowBackground : GameModification {
         backgroundImageNodes = null;
 
         config = null;
-    }
-
-    private static List<StringInfoNode> GetOptions() {
-        List<StringInfoNode> results = [];
-
-        foreach (var unit in RaptureAtkUnitManager.Instance()->AllLoadedUnitsList.Entries) {
-            if (unit.Value is null) continue;
-            if (!unit.Value->IsReady) continue;
-            
-            results.Add(new AddonStringInfoNode {
-                Label = unit.Value->NameString,
-            });
-        }
-
-        return results;
     }
 }
