@@ -193,14 +193,16 @@ public unsafe class ResourceBarPercentages : GameModification {
     }
 
     private void OnParameterDisable() {
-        var addon = Services.GameGui.GetAddonByName<AddonParameterWidget>("_ParameterWidget");
-        if (addon is null) return;
-        if (Services.ObjectTable.LocalPlayer is not { } localPlayer) return;
+        Services.Framework.RunOnFrameworkThread(() => {
+            var addon = Services.GameGui.GetAddonByName<AddonParameterWidget>("_ParameterWidget");
+            if (addon is null) return;
+            if (Services.ObjectTable.LocalPlayer is not { } localPlayer) return;
 
-        var activeResource = GetActiveResource(localPlayer);
+            var activeResource = GetActiveResource(localPlayer);
 
-        addon->HealthAmount->SetText(localPlayer.CurrentHp.ToString());
-        addon->ManaAmount->SetText(GetCorrectText(activeResource.Current, activeResource.Max, false));
+            addon->HealthAmount->SetText(localPlayer.CurrentHp.ToString());
+            addon->ManaAmount->SetText(GetCorrectText(activeResource.Current, activeResource.Max, false));
+        });
     }
 
     private string GetCorrectText(uint current, uint max, bool enabled = true)
