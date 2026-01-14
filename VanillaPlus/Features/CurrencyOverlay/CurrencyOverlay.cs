@@ -86,8 +86,6 @@ public unsafe class CurrencyOverlay : GameModification {
             },
         };
 
-        configAddon.DebugOpen();
-        
         OpenConfigAction = configAddon.Toggle;
 
         Services.Framework.RunOnFrameworkThread(AddOverlayNodes);
