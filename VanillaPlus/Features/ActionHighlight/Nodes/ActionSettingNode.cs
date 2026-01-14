@@ -18,8 +18,8 @@ public class ActionSettingNode : SimpleComponentNode {
         this.config = config;
         Action = action;
 
-        var isEnabled = config.ActiveActions.ContainsKey(action.RowId);
-        var threshold = isEnabled ? config.ActiveActions[action.RowId] : 3000;
+        var isEnabled = config.ActionSettings.ContainsKey(action.RowId);
+        var threshold = isEnabled ? config.ActionSettings[action.RowId].ThresholdMs : 3000;
 
         enabledCheckbox = new CheckboxNode {
             IsChecked = isEnabled,
@@ -52,17 +52,20 @@ public class ActionSettingNode : SimpleComponentNode {
 
     private void OnCheckboxClicked(bool isChecked) {
         if (isChecked) {
-            config.ActiveActions[Action.RowId] = thresholdInput.Value;
+            config.ActionSettings[Action.RowId] = new ActionHighlightSetting {
+                ActionId = Action.RowId,
+                ThresholdMs = thresholdInput.Value
+            };
         } else {
-            config.ActiveActions.Remove(Action.RowId);
+            config.ActionSettings.Remove(Action.RowId);
         }
         config.Save();
     }
 
     private void OnThresholdChanged(int newValue) {
-        if (!config.ActiveActions.ContainsKey(Action.RowId)) return;
+        if (!config.ActionSettings.TryGetValue(Action.RowId, out var action)) return;
 
-        config.ActiveActions[Action.RowId] = newValue;
+        action.ThresholdMs = newValue;
         config.Save();
     }
 
