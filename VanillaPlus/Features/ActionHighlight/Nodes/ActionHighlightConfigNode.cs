@@ -7,8 +7,8 @@ using Lumina.Excel.Sheets;
 namespace VanillaPlus.Features.ActionHighlight.Nodes;
 
 public class ActionHighlightConfigNode : ConfigNode<ActionCategory> {
-    private readonly ScrollingListNode actionsList;
-    private readonly ScrollingListNode generalSettingsArea;
+    private readonly ScrollingListNode actionsList;         // todo: use ListNode<T, TU>
+    private readonly VerticalListNode generalSettingsArea;
     private ActionHighlightConfig? config;
 
     public ActionHighlightConfigNode() {
@@ -18,8 +18,7 @@ public class ActionHighlightConfigNode : ConfigNode<ActionCategory> {
         };
         actionsList.AttachNode(this);
 
-        generalSettingsArea = new ScrollingListNode {
-            AutoHideScrollBar = true, 
+        generalSettingsArea = new VerticalListNode {
             IsVisible = false, 
             FitContents = true,
         };
