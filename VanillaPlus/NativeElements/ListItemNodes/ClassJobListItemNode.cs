@@ -1,7 +1,7 @@
 ﻿using KamiToolKit.Premade.GenericSearchListItemNodes;
 using Lumina.Excel.Sheets;
 
-namespace VanillaPlus.NativeElements.SearchResultNodes;
+namespace VanillaPlus.NativeElements.ListItemNodes;
 
 public class ClassJobListItemNode : GenericListItemNode<ClassJob> {
     protected override uint GetIconId(ClassJob data)

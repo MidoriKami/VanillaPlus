@@ -46,7 +46,7 @@ public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T
         };
         ListNode.AttachNode(this);
     }
-    
+
     protected override void OnUpdate(AtkUnitBase* addon)
         => ListNode?.Update();
 
@@ -94,8 +94,11 @@ public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T
         => Toggle();
 
     public required List<T> ListItems {
-        get => ListNode?.OptionsList ?? [];
-        set => ListNode?.OptionsList = value;
+        get;
+        set {
+            field = value;
+            ListNode?.OptionsList = value;
+        }
     }
 
     public float ItemSpacing {

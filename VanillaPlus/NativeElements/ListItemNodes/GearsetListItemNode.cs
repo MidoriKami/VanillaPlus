@@ -2,7 +2,7 @@
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using KamiToolKit.Premade.GenericSearchListItemNodes;
 
-namespace VanillaPlus.NativeElements.SearchResultNodes;
+namespace VanillaPlus.NativeElements.ListItemNodes;
 
 public class GearsetListItemNode : GenericListItemNode<RaptureGearsetModule.GearsetEntry> {
     protected override uint GetIconId(RaptureGearsetModule.GearsetEntry data)

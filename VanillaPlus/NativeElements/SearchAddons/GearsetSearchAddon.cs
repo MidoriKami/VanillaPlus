@@ -1,7 +1,7 @@
 ﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Premade.SearchAddons;
-using VanillaPlus.NativeElements.SearchResultNodes;
+using VanillaPlus.NativeElements.ListItemNodes;
 
 namespace VanillaPlus.NativeElements.SearchAddons;
 

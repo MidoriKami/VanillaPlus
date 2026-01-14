@@ -78,7 +78,7 @@ public unsafe class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where 
             Size = ContentSize - new Vector2(0.0f, searchContainerNode.Height + widgetsContainerNode.Height + listPadding),
             Position = new Vector2(0.0f, listPadding),
             OptionsList = ListItems,
-            ItemSpacing = 6.0f,
+            ItemSpacing = ItemSpacing,
         };
         
         mainContainerNode.AttachNode(this);
