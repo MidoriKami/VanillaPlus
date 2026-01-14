@@ -77,4 +77,9 @@ public class ActionHighlightAddon : NativeAddon {
         configNode.IsVisible = category is not null;
         nothingSelectedTextNode?.IsVisible = category is null;
     }
+
+    protected override unsafe void OnFinalize(AtkUnitBase* addon) {
+        allCategories.Clear();
+        base.OnFinalize(addon);
+    }
 }
