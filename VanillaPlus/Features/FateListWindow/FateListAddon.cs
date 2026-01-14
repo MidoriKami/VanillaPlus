@@ -20,4 +20,10 @@ public class FateListAddon : NodeListAddon<IFate, FateListItemNode> {
             lastFateCount = Services.FateTable.Count;
         }
     }
+
+    protected override unsafe void OnFinalize(AtkUnitBase* addon) {
+        base.OnFinalize(addon);
+
+        lastFateCount = null;
+    }
 }

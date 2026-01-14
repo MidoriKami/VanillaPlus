@@ -27,7 +27,6 @@ public class FateListWindow : GameModification {
             InternalName = "FateList",
             Title = Strings.FateListWindow_Title,
             OpenCommand = "/fatelist",
-            ListItems = [],
             ItemSpacing = 3.0f,
         };
 

@@ -29,7 +29,13 @@ public unsafe class QuestListAddon : SearchableNodeListAddon<MarkerInfo, QuestLi
         
         base.OnUpdate(addon);
     }
-    
+
+    protected override void OnFinalize(AtkUnitBase* addon) {
+        base.OnFinalize(addon);
+
+        lastQuestCount = null;
+    }
+
     private void UpdateSorting(string newFilterString, bool reversed) {
         var enumValue = newFilterString.ParseAsEnum(QuestFilterMode.Type);
 

@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Numerics;
 using VanillaPlus.Classes;
-using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.ListInventory;
 
@@ -34,7 +33,6 @@ public class ListInventory : GameModification {
             OpenCommand = "/listinventory",
             DropDownOptions = Enum.GetValues<InventoryFilterMode>().Select(value => value.Description).ToList(),
             ItemSpacing = 2.25f,
-            ListItems = Inventory.GetInventoryStacks().ToList(),
         };
 
         addonListInventory.Initialize();

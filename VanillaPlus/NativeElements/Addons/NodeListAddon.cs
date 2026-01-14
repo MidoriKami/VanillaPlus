@@ -93,13 +93,13 @@ public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T
     private void OnOpenCommand(string command, string arguments)
         => Toggle();
 
-    public required List<T> ListItems {
+    public List<T> ListItems {
         get;
         set {
             field = value;
             ListNode?.OptionsList = value;
         }
-    }
+    } = [];
 
     public float ItemSpacing {
         get;
