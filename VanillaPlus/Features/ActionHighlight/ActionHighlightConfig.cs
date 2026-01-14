@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json.Linq;
 using VanillaPlus.Classes;
 
@@ -20,22 +19,20 @@ public class ActionHighlightConfig : GameModificationConfig<ActionHighlightConfi
     public Dictionary<uint, ActionHighlightSetting> ActionSettings { get; set; } = [];
 
     protected override bool TryMigrateConfig(int? fileVersion, JObject jObject) {
-        switch (fileVersion)
-        {
-            case 1:
-            {
+        switch (fileVersion) {
+            case 1: 
                 var oldActions = jObject["ActiveActions"]?.ToObject<Dictionary<uint, int>>();
-                if (oldActions == null) return true;
+                if (oldActions is null) return true;
 
                 ActionSettings.Clear();
                 foreach (var (id, ms) in oldActions) {
                     ActionSettings[id] = new ActionHighlightSetting {
                         ActionId = id,
-                        ThresholdMs = ms
+                        ThresholdMs = ms,
+                        IsEnabled = true,
                     };
                 }
                 return true;
-            }
         }
 
         return false;

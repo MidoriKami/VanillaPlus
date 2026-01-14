@@ -1,6 +1,11 @@
-﻿namespace VanillaPlus.Features.ActionHighlight;
+﻿using System.Text.Json.Serialization;
+
+namespace VanillaPlus.Features.ActionHighlight;
 
 public class ActionHighlightSetting {
-    public uint ActionId { get; set; }
-    public int ThresholdMs { get; set; } = 3000;
+    public bool IsEnabled;
+    public uint ActionId;
+    public int ThresholdMs = 3000;
+
+    [JsonIgnore] public ActionHighlightConfig? ParentConfig;
 }

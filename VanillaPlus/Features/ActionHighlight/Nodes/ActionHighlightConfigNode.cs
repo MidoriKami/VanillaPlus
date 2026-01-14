@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using KamiToolKit.Nodes;
@@ -7,14 +8,14 @@ using Lumina.Excel.Sheets;
 namespace VanillaPlus.Features.ActionHighlight.Nodes;
 
 public class ActionHighlightConfigNode : ConfigNode<ActionCategory> {
-    private readonly ScrollingListNode actionsList;         // todo: use ListNode<T, TU>
+    private readonly ListNode<ActionHighlightSetting, ActionSettingNode> actionsList;
     private readonly VerticalListNode generalSettingsArea;
     private ActionHighlightConfig? config;
 
     public ActionHighlightConfigNode() {
-        actionsList = new ScrollingListNode {
-            AutoHideScrollBar = true, 
-            FitContents = true,
+        actionsList = new ListNode<ActionHighlightSetting, ActionSettingNode> {
+            OptionsList = [],
+            ItemSpacing = 6.0f,
         };
         actionsList.AttachNode(this);
 
@@ -32,9 +33,8 @@ public class ActionHighlightConfigNode : ConfigNode<ActionCategory> {
         base.OnSizeChanged();
 
         actionsList.Size = Size;
-        generalSettingsArea.Size = Size;
 
-        actionsList.RecalculateLayout();
+        generalSettingsArea.Size = Size;
         generalSettingsArea.RecalculateLayout();
     }
 
@@ -69,11 +69,20 @@ public class ActionHighlightConfigNode : ConfigNode<ActionCategory> {
             _ => [],
         };
 
-        actionsList.SyncWithListData(actions, node => node.Action, action => new ActionSettingNode(config, action) {
-            Size = new Vector2(actionsList.ContentWidth, 40.0f),
-        });
+        List<ActionHighlightSetting> configList = [];
 
-        actionsList.RecalculateLayout();
+        foreach (var action in actions) {
+            config.ActionSettings.TryAdd(action.RowId, new ActionHighlightSetting {
+                ActionId = action.RowId,
+            });
+            
+            var actionSettings = config.ActionSettings[action.RowId];
+            
+            actionSettings.ParentConfig = config;
+            configList.Add(actionSettings);
+        }
+        
+        actionsList.OptionsList = configList;
     }
     
     private static bool IsValidAction(ClassJob job, Action action) {

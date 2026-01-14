@@ -5,82 +5,91 @@ using Action = Lumina.Excel.Sheets.Action;
 
 namespace VanillaPlus.Features.ActionHighlight.Nodes;
 
-public class ActionSettingNode : SimpleComponentNode {
-    private readonly ActionHighlightConfig config;
-    public Action Action { get; }
+public class ActionSettingNode : ListItemNode<ActionHighlightSetting> {
+    public override float ItemHeight => 38.0f;
 
     private readonly CheckboxNode enabledCheckbox;
     private readonly IconImageNode iconNode;
     private readonly TextNode nameNode;
     private readonly NumericInputNode thresholdInput;
 
-    public ActionSettingNode(ActionHighlightConfig config, Action action) {
-        this.config = config;
-        Action = action;
-
-        var isEnabled = config.ActionSettings.ContainsKey(action.RowId);
-        var threshold = isEnabled ? config.ActionSettings[action.RowId].ThresholdMs : 3000;
+    public ActionSettingNode() {
+        EnableSelection = false;
+        EnableHighlight = false;
+        DisableCollisionNode = true;
 
         enabledCheckbox = new CheckboxNode {
-            IsChecked = isEnabled,
             OnClick = OnCheckboxClicked,
         };
         enabledCheckbox.AttachNode(this);
 
         iconNode = new IconImageNode {
-            IconId = action.Icon,
-            Size = new Vector2(32.0f, 32.0f),
             FitTexture = true,
             ShowClickableCursor = true,
-            ActionTooltip = action.RowId,
+            ActionTooltip = 1, // Sketch hack to make tooltips update correctly.
         };
         iconNode.AttachNode(this);
 
         nameNode = new TextNode {
-            String = action.Name.ToString(),
-            FontSize = 14,
             AlignmentType = AlignmentType.Left,
         };
         nameNode.AttachNode(this);
 
         thresholdInput = new NumericInputNode {
-            Value = threshold,
             OnValueUpdate = OnThresholdChanged,
         };
         thresholdInput.AttachNode(this);
     }
 
-    private void OnCheckboxClicked(bool isChecked) {
-        if (isChecked) {
-            config.ActionSettings[Action.RowId] = new ActionHighlightSetting {
-                ActionId = Action.RowId,
-                ThresholdMs = thresholdInput.Value
-            };
-        } else {
-            config.ActionSettings.Remove(Action.RowId);
-        }
-        config.Save();
-    }
-
-    private void OnThresholdChanged(int newValue) {
-        if (!config.ActionSettings.TryGetValue(Action.RowId, out var action)) return;
-
-        action.ThresholdMs = newValue;
-        config.Save();
-    }
-
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
 
-        enabledCheckbox.Position = new Vector2(5.0f, (Height - 24.0f) / 2.0f);
-        enabledCheckbox.Size = new Vector2(24.0f, 24.0f);
+        enabledCheckbox.Size = new Vector2(Height - 8.0f, Height - 8.0f);
+        enabledCheckbox.Position = new Vector2(4.0f, 4.0f);
 
-        iconNode.Position = new Vector2(35.0f, (Height - 32.0f) / 2.0f);
+        iconNode.Size = new Vector2(Height, Height);
+        iconNode.Position = new Vector2(enabledCheckbox.Bounds.Right + 8.0f, 0.0f);
 
-        thresholdInput.Size = new Vector2(120.0f, 30.0f);
-        thresholdInput.Position = new Vector2(Width - 160.0f, (Height - 30.0f) / 2.0f);
+        thresholdInput.Size = new Vector2(120.0f, Height - 8.0f);
+        thresholdInput.Position = new Vector2(Width - thresholdInput.Width - 4.0f, 4.0f);
 
-        nameNode.Position = new Vector2(75.0f, (Height - 20.0f) / 2.0f);
-        nameNode.Size = new Vector2(Width - 75.0f - 170.0f, 20.0f);
+        nameNode.Size = new Vector2(Width - iconNode.Bounds.Right - thresholdInput.Width - 16.0f, Height);
+        nameNode.Position = new Vector2(iconNode.Bounds.Right + 8.0f, 0.0f);
+    }
+    
+    private bool isReloading;
+
+    private void OnCheckboxClicked(bool isChecked) {
+        if (isReloading) return;
+        if (ItemData is null) return;
+        
+        ItemData.IsEnabled = isChecked;
+        ItemData.ParentConfig?.Save();
+    }
+
+    private void OnThresholdChanged(int newValue) {
+        if (isReloading) return;
+        if (ItemData is null) return;
+        
+        ItemData.ThresholdMs = newValue;
+        ItemData.ParentConfig?.Save();
+    }
+
+    protected override void SetNodeData(ActionHighlightSetting itemData) {
+        isReloading = true;
+        
+        var actionData = Services.DataManager.GetExcelSheet<Action>().GetRow(itemData.ActionId);
+        
+        enabledCheckbox.IsChecked = itemData.IsEnabled;
+        
+        iconNode.HideTooltip();
+        iconNode.IconId = actionData.Icon;
+        iconNode.ActionTooltip = itemData.ActionId;
+
+        nameNode.String = actionData.Name.ToString();
+        
+        thresholdInput.Value = itemData.ThresholdMs;
+        
+        isReloading = false;
     }
 }
