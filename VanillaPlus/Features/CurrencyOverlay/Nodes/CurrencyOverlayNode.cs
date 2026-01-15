@@ -3,12 +3,13 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
+using KamiToolKit.Overlay;
 using KamiToolKit.Timelines;
 using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.CurrencyOverlay.Nodes;
 
-public unsafe class CurrencyOverlayNode : KamiToolKit.Overlay.OverlayNode {
+public unsafe class CurrencyOverlayNode : OverlayNode {
     public override OverlayLayer OverlayLayer => OverlayLayer.BehindUserInterface;
 
     private readonly IconImageNode iconImageNode;
@@ -102,7 +103,5 @@ public unsafe class CurrencyOverlayNode : KamiToolKit.Overlay.OverlayNode {
         else { 
             Timeline?.PlayAnimation(2);
         }
-
-        IsVisible = true;
     }
 }
