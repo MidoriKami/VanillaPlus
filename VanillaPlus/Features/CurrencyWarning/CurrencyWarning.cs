@@ -1,8 +1,13 @@
+using System;
 using System.Numerics;
+using System.Text.RegularExpressions;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Overlay;
+using KamiToolKit.Premade.Addons;
 using KamiToolKit.Premade.SearchAddons;
+using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
+using VanillaPlus.Features.CurrencyWarning.Nodes;
 using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.CurrencyWarning;
@@ -24,7 +29,7 @@ public unsafe class CurrencyWarning : GameModification {
     private CurrencyTooltipNode? tooltipNode;
 
     private ConfigAddon? configWindow;
-    private ListConfigAddon<CurrencyWarningSetting, CurrencyWarningConfigNode>? listConfigWindow;
+    private ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode>? listConfigWindow;
     private CurrencySearchAddon? itemSearchAddon;
 
     public override void OnEnable() {
@@ -53,26 +58,48 @@ public unsafe class CurrencyWarning : GameModification {
             SortingOptions = [ "Name", "ID" ],
         };
 
-        listConfigWindow = new ListConfigAddon<CurrencyWarningSetting, CurrencyWarningConfigNode> {
+        listConfigWindow = new ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode> {
             InternalName = "CurrencyWarningList",
             Title = "Tracked Currencies",
             Size = new Vector2(700.0f, 500.0f),
             SortOptions = [ "Alphabetical" ],
             Options = config.WarningSettings,
-            OnConfigChanged = _ => config.Save(),
-            OnAddClicked = listNode => {
+            
+            ItemComparer = (left, right, _) => {
+                var leftItem = Services.DataManager.GetExcelSheet<Item>().GetRow(left.ItemId);
+                var rightItem = Services.DataManager.GetExcelSheet<Item>().GetRow(right.ItemId);
+
+                return string.Compare(leftItem.Name.ToString(), rightItem.Name.ToString(), StringComparison.Ordinal);
+            },
+
+            IsSearchMatch = (item, search) => {
+                var regex = new Regex(search, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+                var itemData = Services.DataManager.GetExcelSheet<Item>().GetRow(item.ItemId);
+
+                return regex.IsMatch(itemData.Name.ToString());
+            },
+
+            AddClicked = listNode => {
                 itemSearchAddon.SelectionResult = item => {
                     var newSetting = new CurrencyWarningSetting {
                         ItemId = item.RowId,
                         Mode = WarningMode.Above,
                         Limit = (int)item.StackSize,
                     };
-                    listNode.AddOption(newSetting);
+                    
+                    config.WarningSettings.Add(newSetting);
                     config.Save();
+                    
+                    listNode.RefreshList();
+                    listNode.SelectItem(newSetting);
                 };
                 itemSearchAddon.Toggle();
             },
-            OnItemRemoved = _ => config.Save(),
+
+            RemoveClicked = (_, setting) => {
+                config.WarningSettings.Remove(setting);
+                config.Save();
+            },
         };
 
         configWindow = new ConfigAddon {

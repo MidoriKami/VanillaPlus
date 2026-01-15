@@ -5,7 +5,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Nodes;
 
-namespace VanillaPlus.Features.CurrencyWarning;
+namespace VanillaPlus.Features.CurrencyWarning.Nodes;
 
 public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
     private readonly TextNode itemNameTextNode;
@@ -71,7 +71,7 @@ public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
         isUpdating = true;
 
         var item = Services.DataManager.GetItem(option.ItemId);
-        itemNameTextNode.String = option.GetLabel();
+        itemNameTextNode.String = item.Name.ToString();
         iconImageNode.IconId = item.Icon;
 
         modeStateButton.SelectedState = option.Mode;

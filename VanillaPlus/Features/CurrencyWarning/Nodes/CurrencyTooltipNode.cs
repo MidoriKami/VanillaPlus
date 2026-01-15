@@ -6,7 +6,7 @@ using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Overlay;
 
-namespace VanillaPlus.Features.CurrencyWarning;
+namespace VanillaPlus.Features.CurrencyWarning.Nodes;
 
 public class CurrencyTooltipNode : OverlayNode {
     public override OverlayLayer OverlayLayer => OverlayLayer.AboveUserInterface;

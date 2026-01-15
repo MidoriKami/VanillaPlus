@@ -9,7 +9,7 @@ using KamiToolKit.Nodes;
 using KamiToolKit.Overlay;
 using KamiToolKit.Timelines;
 
-namespace VanillaPlus.Features.CurrencyWarning;
+namespace VanillaPlus.Features.CurrencyWarning.Nodes;
 
 public record WarningInfo(uint IconId, string Name, long Count, bool IsHigh, int Limit);
 
