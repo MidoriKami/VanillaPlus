@@ -34,7 +34,6 @@
         <LastGenOutput>Strings.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Remove="Features\DutyLootPreview\**" />
-      <EmbeddedResource Remove="Features\HideUnwantedBanners\**" />
       <EmbeddedResource Remove="Features\RecentlyLootedWindow\**" />
     </ItemGroup>
 
@@ -45,7 +44,6 @@
         <DependentUpon>Strings.resx</DependentUpon>
       </Compile>
       <Compile Remove="Features\DutyLootPreview\**" />
-      <Compile Remove="Features\HideUnwantedBanners\**" />
       <Compile Remove="Features\RecentlyLootedWindow\**" />
     </ItemGroup>
 </Project>

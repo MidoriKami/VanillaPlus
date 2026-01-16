@@ -1,18 +1,24 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.HideUnwantedBanners;
 
-public class BannerInfoNode : SimpleComponentNode {
+public class BannerConfigListItemNode : ListItemNode<BannerConfig> {
 
+    public override float ItemHeight => 96.0f;
+    
     private readonly CheckboxNode checkboxNode;
     private readonly SimpleComponentNode imageContainerNode;
     private readonly IconImageNode iconImageNode;
 
-    public BannerInfoNode() {
-        checkboxNode = new CheckboxNode();
+    public BannerConfigListItemNode() {
+        EnableHighlight = false;
+        EnableSelection = false;
+        
+        checkboxNode = new CheckboxNode {
+            OnClick = OnCheckboxClicked,
+        };
         checkboxNode.AttachNode(this);
 
         imageContainerNode = new SimpleComponentNode();
@@ -25,7 +31,6 @@ public class BannerInfoNode : SimpleComponentNode {
 
         iconImageNode.AddEvent(AtkEventType.MouseClick, () => {
             checkboxNode.IsChecked = !checkboxNode.IsChecked;
-            OnChecked?.Invoke(checkboxNode.IsChecked);
         });
         iconImageNode.AttachNode(imageContainerNode);
     }
@@ -38,15 +43,6 @@ public class BannerInfoNode : SimpleComponentNode {
 
         imageContainerNode.Size = new Vector2(Width - Height - 2.0f, Height);
         imageContainerNode.Position = new Vector2(Height + 2.0f, 0.0f);
-    }
-
-    public required uint ImageIconId {
-        get;
-        set {
-            field = value;
-
-            iconImageNode.IconId = value;
-        }
     }
 
     private void RecalculateLayout() {
@@ -63,26 +59,27 @@ public class BannerInfoNode : SimpleComponentNode {
     }
 
     private bool textureResized;
+    
+    protected override void SetNodeData(BannerConfig itemData) {
+        iconImageNode.IconId = (uint) itemData.BannerId;
+        checkboxNode.IsChecked = itemData.IsSuppressed;
 
-    public void Update() {
+        textureResized = false;
+    }
+    
+    private void OnCheckboxClicked(bool newValue) {
+        if (IsSettingNodeData) return;
+        
+        ItemData?.IsSuppressed = newValue;
+    }
+    
+    public override void Update() {
+        base.Update();
+    
         if (textureResized) return;
-
         if (iconImageNode.IsTextureReady) {
             RecalculateLayout();
             textureResized = true;
         }
-    }
-
-    public Action<bool>? OnChecked {
-        get;
-        set {
-            field = value;
-            checkboxNode.OnClick = value;
-        }
-    }
-
-    public bool IsChecked {
-        get => checkboxNode.IsChecked;
-        set => checkboxNode.IsChecked = value;
     }
 }

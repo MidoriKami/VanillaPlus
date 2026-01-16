@@ -50,6 +50,12 @@ public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T
     protected override void OnUpdate(AtkUnitBase* addon)
         => ListNode?.Update();
 
+    protected override void OnFinalize(AtkUnitBase* addon) {
+        base.OnFinalize(addon);
+        
+        OnClose?.Invoke();
+    }
+
     public override void Dispose() {
         config = null;
         
@@ -108,4 +114,6 @@ public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T
             ListNode?.ItemSpacing = value;
         }
     }
+    
+    public Action? OnClose { get; set; }
 }
