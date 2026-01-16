@@ -2,10 +2,9 @@
 using System.Linq;
 using Dalamud.Game.Inventory;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using VanillaPlus.Classes;
 
 namespace VanillaPlus.Utilities;
-
-public record ItemStack(InventoryItem Item, int Quantity);
 
 public static unsafe class Inventory {
     public static List<InventoryType> StandardInventories => [

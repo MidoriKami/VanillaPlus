@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace VanillaPlus.Features.ListInventory;
+namespace VanillaPlus.Classes;
 
 public enum InventoryFilterMode {
     [Description(nameof(Strings.ListInventory_FilterAlphabetically))]

@@ -3,8 +3,8 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;
+using VanillaPlus.Classes;
 using VanillaPlus.NativeElements.Nodes;
-using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.ListInventory;
 
