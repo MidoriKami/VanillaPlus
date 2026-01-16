@@ -1269,4 +1269,31 @@ ID: {0}</value>
     <data name="ClockOverlay_Visual_Style" xml:space="preserve">
     <value>ビジュアルスタイル</value>
 </data>
+  <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
+      <value>Quick Panel Tweaks</value>
+  </data>
+  <data name="QuickPanelAdjustments_Description" xml:space="preserve">
+      <value>Makes visual changes to the Quick Panel HUD</value>
+  </data>
+  <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
+      <value>Quick Panel Configuration</value>
+  </data>
+  <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
+      <value>Hide the additional focus border</value>
+  </data>
+  <data name="QuickPanelAdjustments_LabelHideHighlighting" xml:space="preserve">
+      <value>Hide the border and background highlighting</value>
+  </data>
+  <data name="QuickPanelAdjustments_LabelHidePanelBackground" xml:space="preserve">
+      <value>Hide the background for the command panel</value>
+  </data>
+  <data name="QuickPanelAdjustments_LabelHideEmptySlots" xml:space="preserve">
+      <value>Hide the empty slots in the command panel</value>
+  </data>
+  <data name="QuickPanelAdjustments_LabelMoveButtons" xml:space="preserve">
+      <value>Move settings and close buttons closer</value>
+  </data>
+  <data name="QuickPanelAdjustments_BackgroundColor" xml:space="preserve">
+      <value>Background color</value>
+  </data>
 </root>
