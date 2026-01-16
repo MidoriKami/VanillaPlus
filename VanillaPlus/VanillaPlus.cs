@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Numerics;
+using System.Threading;
 using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
@@ -12,6 +14,8 @@ namespace VanillaPlus;
 
 public sealed class VanillaPlus : IDalamudPlugin {
     public VanillaPlus(IDalamudPluginInterface pluginInterface) {
+        DebugDelayStartup();
+
         pluginInterface.Create<Services>();
         PluginSystem.SystemConfig = SystemConfiguration.Load();
 
@@ -75,6 +79,10 @@ public sealed class VanillaPlus : IDalamudPlugin {
 
         PluginSystem.AddonModificationBrowser.Open();
     }
+
+    [Conditional("DEBUG")]
+    private static void DebugDelayStartup()
+        => Thread.Sleep(TimeSpan.FromMilliseconds(350));
 
     private static void Handler(string command, string arguments) {
         if (command is not ("/vanillaplus" or "/plus")) return;
