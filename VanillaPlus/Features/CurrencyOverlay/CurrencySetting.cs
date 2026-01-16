@@ -6,7 +6,7 @@ using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 
-public class CurrencySetting : IComparable<CurrencySetting> {
+public class CurrencySetting {
     public uint ItemId;
     public Vector2 Position = Vector2.Zero;
     public bool EnableLowLimit;
@@ -21,15 +21,24 @@ public class CurrencySetting : IComparable<CurrencySetting> {
 
     [JsonIgnore] public bool IsNodeMoveable;
 
-    public int CompareTo(CurrencySetting? other) {
-        if (ReferenceEquals(this, other)) return 0;
-        return other is null ? 1 : ItemId.CompareTo(other.ItemId);
+    public static int Comparison(CurrencySetting left, CurrencySetting right, string mode) {
+        switch (mode) {
+            case "Alphabetical":
+                var leftItem = Services.DataManager.GetItem(left.ItemId);
+                var rightItem = Services.DataManager.GetItem(right.ItemId);
+                return string.Compare(leftItem.Name.ToString(), rightItem.Name.ToString(), StringComparison.OrdinalIgnoreCase);
+            
+            case "Id":
+                return left.ItemId.CompareTo(right.ItemId);
+        }
+
+        return 0;
     }
 
-    public bool IsMatch(string searchString) {
+    public static bool IsMatch(CurrencySetting item, string searchString) {
         var regex = new Regex(searchString, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-        var itemData = Services.DataManager.GetExcelSheet<Item>().GetRow(ItemId);
+        var itemData = Services.DataManager.GetExcelSheet<Item>().GetRow(item.ItemId);
         
         return regex.IsMatch(itemData.Name.ToString());
     }

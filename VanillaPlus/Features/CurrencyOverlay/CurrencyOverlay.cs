@@ -51,8 +51,8 @@ public unsafe class CurrencyOverlay : GameModification {
             Title = Strings.CurrencyOverlay_ConfigTitle,
             SortOptions = [ Strings.SortOptionAlphabetical ],
             Options = config.Currencies,
-            ItemComparer = (left, right, _) => left.CompareTo(right),
-            IsSearchMatch = (item, search) => item.IsMatch(search),
+            ItemComparer = CurrencySetting.Comparison,
+            IsSearchMatch = CurrencySetting.IsMatch,
 
             EditCompleted = _ => config.Save(),
 
