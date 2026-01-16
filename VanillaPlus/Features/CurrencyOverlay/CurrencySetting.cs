@@ -2,7 +2,6 @@ using System;
 using System.Numerics;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 
@@ -38,7 +37,7 @@ public class CurrencySetting {
     public static bool IsMatch(CurrencySetting item, string searchString) {
         var regex = new Regex(searchString, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-        var itemData = Services.DataManager.GetExcelSheet<Item>().GetRow(item.ItemId);
+        var itemData = Services.DataManager.GetItem(item.ItemId);
         
         return regex.IsMatch(itemData.Name.ToString());
     }

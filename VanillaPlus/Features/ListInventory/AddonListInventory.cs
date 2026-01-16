@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using Lumina.Excel.Sheets;
 using VanillaPlus.NativeElements.Addons;
 using VanillaPlus.Utilities;
 
@@ -63,8 +62,8 @@ public class AddonListInventory : SearchableNodeListAddon<ItemStack, InventoryIt
     }
     
     private static int Comparison(ItemStack left, ItemStack right, InventoryFilterMode filterMode) {
-        var leftItem = Services.DataManager.GetExcelSheet<Item>().GetRow(left.Item.ItemId);
-        var rightItem = Services.DataManager.GetExcelSheet<Item>().GetRow(right.Item.ItemId);
+        var leftItem = Services.DataManager.GetItem(left.Item.ItemId);
+        var rightItem = Services.DataManager.GetItem(right.Item.ItemId);
     
         var result = filterMode switch {
             InventoryFilterMode.Alphabetical => string.CompareOrdinal(leftItem.Name.ToString(), rightItem.Name.ToString()),
@@ -85,7 +84,7 @@ public class AddonListInventory : SearchableNodeListAddon<ItemStack, InventoryIt
         
         var regex = new Regex(searchTerms, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
-        var itemInfo = Services.DataManager.GetExcelSheet<Item>().GetRow(itemStack.Item.ItemId);
+        var itemInfo = Services.DataManager.GetItem(itemStack.Item.ItemId);
         
         if (regex.IsMatch(itemInfo.Name.ToString())) return true;
         if (regex.IsMatch(itemInfo.LevelEquip.ToString())) return true;

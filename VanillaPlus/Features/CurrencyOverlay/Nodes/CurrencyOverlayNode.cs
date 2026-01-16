@@ -5,7 +5,6 @@ using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Overlay;
 using KamiToolKit.Timelines;
-using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.CurrencyOverlay.Nodes;
 
@@ -60,7 +59,7 @@ public unsafe class CurrencyOverlayNode : OverlayNode {
         get;
         init {
             field = value;
-            iconImageNode.IconId = Services.DataManager.GetExcelSheet<Item>().GetRow(Currency.ItemId).Icon;
+            iconImageNode.IconId = Services.DataManager.GetItem(Currency.ItemId).Icon;
 
             countNode.Size = new Vector2(128.0f, 22.0f);
             countNode.Origin = countNode.Size / 2.0f;

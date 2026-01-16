@@ -38,9 +38,9 @@ public class ActionHighlightAddon : NativeAddon {
             SelectionChanged = OnSelectionChanged,
             ItemComparer = (left, right, mode) => mode switch {
                 "Alphabetical" => string.CompareOrdinal(left.Name, right.Name),
-                _ => ActionCategory.Compare(left, right)
+                _ => ActionCategory.Compare(left, right),
             },
-            IsSearchMatch = (data, search) => data.Name.Contains(search, System.StringComparison.OrdinalIgnoreCase)
+            IsSearchMatch = (data, search) => data.Name.Contains(search, System.StringComparison.OrdinalIgnoreCase),
         };
         selectionListNode.AttachNode(this);
 

@@ -1,11 +1,8 @@
-using System;
 using System.Numerics;
-using System.Text.RegularExpressions;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Overlay;
 using KamiToolKit.Premade.Addons;
 using KamiToolKit.Premade.SearchAddons;
-using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Features.CurrencyWarning.Nodes;
 using VanillaPlus.NativeElements.Config;
@@ -43,14 +40,6 @@ public unsafe class CurrencyWarning : GameModification {
         
         overlayController = new OverlayController();
 
-        InitializeConfiguration();
-
-        Services.Framework.RunOnFrameworkThread(LoadNodes);
-    }
-
-    private void InitializeConfiguration() {
-        if (config is null) return;
-
         itemSearchAddon = new CurrencySearchAddon {
             InternalName = "CurrencyWarningSearch",
             Title = "Search Currencies",
@@ -64,42 +53,10 @@ public unsafe class CurrencyWarning : GameModification {
             Size = new Vector2(700.0f, 500.0f),
             SortOptions = [ "Alphabetical" ],
             Options = config.WarningSettings,
-            
-            ItemComparer = (left, right, _) => {
-                var leftItem = Services.DataManager.GetExcelSheet<Item>().GetRow(left.ItemId);
-                var rightItem = Services.DataManager.GetExcelSheet<Item>().GetRow(right.ItemId);
-
-                return string.Compare(leftItem.Name.ToString(), rightItem.Name.ToString(), StringComparison.Ordinal);
-            },
-
-            IsSearchMatch = (item, search) => {
-                var regex = new Regex(search, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-                var itemData = Services.DataManager.GetExcelSheet<Item>().GetRow(item.ItemId);
-
-                return regex.IsMatch(itemData.Name.ToString());
-            },
-
-            AddClicked = listNode => {
-                itemSearchAddon.SelectionResult = item => {
-                    var newSetting = new CurrencyWarningSetting {
-                        ItemId = item.RowId,
-                        Mode = WarningMode.Above,
-                        Limit = (int)item.StackSize,
-                    };
-                    
-                    config.WarningSettings.Add(newSetting);
-                    config.Save();
-                    
-                    listNode.RefreshList();
-                    listNode.SelectItem(newSetting);
-                };
-                itemSearchAddon.Toggle();
-            },
-
-            RemoveClicked = (_, setting) => {
-                config.WarningSettings.Remove(setting);
-                config.Save();
-            },
+            ItemComparer = CurrencyWarningSetting.ItemComparer,
+            IsSearchMatch = CurrencyWarningSetting.IsSearchMatch,
+            AddClicked = OnAddClicked,
+            RemoveClicked = OnRemoveClicked,
         };
 
         configWindow = new ConfigAddon {
@@ -125,8 +82,10 @@ public unsafe class CurrencyWarning : GameModification {
             .AddButton("Configure Tracked Currencies", () => listConfigWindow.Toggle());
 
         OpenConfigAction = configWindow.Toggle;
+
+        Services.Framework.RunOnFrameworkThread(LoadNodes);
     }
-    
+
     private void LoadNodes() {
         if (config is null) return;
         
@@ -172,5 +131,25 @@ public unsafe class CurrencyWarning : GameModification {
         warningNode = null;
 
         config = null;
+    }
+
+    private void OnAddClicked(ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode> listNode) {
+        itemSearchAddon?.SelectionResult = item => {
+            var newSetting = new CurrencyWarningSetting {
+                ItemId = item.RowId, Mode = WarningMode.Above, Limit = (int)item.StackSize,
+            };
+
+            config?.WarningSettings.Add(newSetting);
+            config?.Save();
+
+            listNode.RefreshList();
+            listNode.SelectItem(newSetting);
+        };
+        itemSearchAddon?.Toggle();
+    }
+
+    private void OnRemoveClicked(ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode> _, CurrencyWarningSetting setting) {
+        config?.WarningSettings.Remove(setting);
+        config?.Save();
     }
 }

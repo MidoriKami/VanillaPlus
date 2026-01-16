@@ -3,7 +3,6 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Nodes;
-using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.CurrencyOverlay.Nodes;
 
@@ -161,7 +160,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
     protected override void OptionChanged(CurrencySetting? option) {
         if (option is null) return;
 
-        var itemInfo = Services.DataManager.GetExcelSheet<Item>().GetRow(option.ItemId);
+        var itemInfo = Services.DataManager.GetItem(option.ItemId);
         
         itemNameTextNode.String = itemInfo.Name.ToString();
         
