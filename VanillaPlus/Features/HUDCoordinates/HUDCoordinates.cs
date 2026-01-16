@@ -43,7 +43,7 @@ public unsafe class HUDCoordinates : GameModification {
                 };
                 
                 textNodes.Add(newTextNode);
-                newTextNode.AttachNode((AtkComponentNode*)node.Value, NodePosition.AsFirstChild);
+                newTextNode.AttachNode(node.Value);
             }
         };
 
