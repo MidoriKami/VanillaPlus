@@ -1,9 +1,9 @@
-﻿using KamiToolKit.Premade.GenericSearchListItemNodes;
+﻿using KamiToolKit.Premade.GenericListItemNodes;
 using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.CurrencyWarning.Nodes;
 
-public class CurrencyWarningSettingListItemNode : GenericCurrencyListItemNode<CurrencyWarningSetting> {
+public class CurrencyWarningSettingListItemNode : GenericSimpleListItemNode<CurrencyWarningSetting> {
     protected override void SetNodeData(CurrencyWarningSetting itemData) {
         if (!Services.DataManager.GetExcelSheet<Item>().TryGetRow(itemData.ItemId, out var item)) return;
 

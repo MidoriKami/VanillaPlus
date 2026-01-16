@@ -4,7 +4,7 @@ using KamiToolKit.Premade.Nodes;
 
 namespace VanillaPlus.Features.PartyFinderPresets;
 
-public class PartyFinderPresetConfigNode : ConfigNode<PresetInfo> {
+public class PartyFinderPresetConfigNode : ConfigNode<string> {
 
     private readonly CategoryTextNode renameCategoryNode;
     private readonly TextInputNode renameInputNode;
@@ -17,7 +17,7 @@ public class PartyFinderPresetConfigNode : ConfigNode<PresetInfo> {
         renameCategoryNode.AttachNode(this);
 
         renameInputNode = new TextInputNode {
-            OnInputReceived = input => renameInputNode!.IsError = !PresetManager.IsValidFileName(input.ToString()),
+            OnInputReceived = input => renameInputNode?.IsError = !PresetManager.IsValidFileName(input.ToString()),
         };
         renameInputNode.AttachNode(this);
 
@@ -25,9 +25,9 @@ public class PartyFinderPresetConfigNode : ConfigNode<PresetInfo> {
             String = "Apply",
             OnClick = () => {
                 if (ConfigurationOption is not null && !renameInputNode.IsError) {
-                    PresetManager.RenamePreset(ConfigurationOption.Name, renameInputNode.String);
+                    PresetManager.RenamePreset(ConfigurationOption, renameInputNode.String);
 
-                    ConfigurationOption.Name = renameInputNode.String;
+                    ConfigurationOption = renameInputNode.String;
                     OptionChanged(ConfigurationOption);
                     OnConfigChanged?.Invoke(ConfigurationOption);
                 }
@@ -49,7 +49,7 @@ public class PartyFinderPresetConfigNode : ConfigNode<PresetInfo> {
         confirmButtonNode.Position = new Vector2(renameInputNode.X + renameInputNode.Width - 100.0f, renameInputNode.Y + renameInputNode.Height);
     }
 
-    protected override void OptionChanged(PresetInfo? option) {
-        renameInputNode.String = option?.Name ?? string.Empty;
+    protected override void OptionChanged(string? option) {
+        renameInputNode.String = option ?? string.Empty;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using KamiToolKit.Premade.GenericSearchListItemNodes;
+using KamiToolKit.Premade.GenericListItemNodes;
 using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.GearsetRedirect.Nodes;

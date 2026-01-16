@@ -1,4 +1,4 @@
-﻿using KamiToolKit.Premade.GenericSearchListItemNodes;
+﻿using KamiToolKit.Premade.GenericListItemNodes;
 using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.NativeElements.ListItemNodes;

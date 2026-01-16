@@ -5,7 +5,6 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Enums;
-using VanillaPlus.Features.QuestListWindow;
 using MapType = FFXIVClientStructs.FFXIV.Client.UI.Agent.MapType;
 
 namespace VanillaPlus.Extensions;

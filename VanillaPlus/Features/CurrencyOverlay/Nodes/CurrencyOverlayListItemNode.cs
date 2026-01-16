@@ -1,8 +1,8 @@
-﻿using KamiToolKit.Premade.GenericSearchListItemNodes;
+﻿using KamiToolKit.Premade.GenericListItemNodes;
 
 namespace VanillaPlus.Features.CurrencyOverlay.Nodes;
 
-public class CurrencyOverlayListItemNode : GenericCurrencyListItemNode<CurrencySetting> {
+public class CurrencyOverlayListItemNode : GenericSimpleListItemNode<CurrencySetting> {
     protected override void SetNodeData(CurrencySetting itemData) {
         var item = Services.DataManager.GetItem(itemData.ItemId);
         
