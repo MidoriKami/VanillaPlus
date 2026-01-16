@@ -1,4 +1,8 @@
-﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Premade.SearchAddons;
 using VanillaPlus.NativeElements.ListItemNodes;
@@ -6,15 +10,17 @@ using VanillaPlus.NativeElements.ListItemNodes;
 namespace VanillaPlus.NativeElements.SearchAddons;
 
 public unsafe class GearsetSearchAddon : BaseSearchAddon<RaptureGearsetModule.GearsetEntry, GearsetListItemNode> {
-    public GearsetSearchAddon()
-        => SearchOptions = [ ..RaptureGearsetModule.Instance()->Entries.ToArray() ];
-
     protected override int Comparer(RaptureGearsetModule.GearsetEntry left, RaptureGearsetModule.GearsetEntry right, string sortingString, bool reversed) {
-        return 0;
+        return sortingString switch {
+            "Alphabetical" => string.Compare(left.NameString, right.NameString, StringComparison.Ordinal),
+            "Id" => left.Id.CompareTo(right.Id),
+            _ => 0,
+        } * (reversed ? -1 : 1);
     }
 
     protected override bool IsMatch(RaptureGearsetModule.GearsetEntry item, string searchString) {
-        return true;
+        var regex = new Regex(searchString, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        return regex.IsMatch(item.NameString);
     }
 
     private int lastGearsetCount;
@@ -24,8 +30,17 @@ public unsafe class GearsetSearchAddon : BaseSearchAddon<RaptureGearsetModule.Ge
 
         var newCount = RaptureGearsetModule.Instance()->NumGearsets;
         if (newCount != lastGearsetCount) {
-            SearchOptions = [ ..RaptureGearsetModule.Instance()->Entries.ToArray() ];
+            SearchOptions = GetGearsetEntries();
             lastGearsetCount = newCount;
         }
+    }
+
+    private List<RaptureGearsetModule.GearsetEntry> GetGearsetEntries() {
+        List<RaptureGearsetModule.GearsetEntry> entries = [];
+        
+        entries.AddRange(Enumerable.Range(0, RaptureGearsetModule.Instance()->NumGearsets)
+            .Select(index => RaptureGearsetModule.Instance()->Entries[index]));
+
+        return entries;
     }
 }

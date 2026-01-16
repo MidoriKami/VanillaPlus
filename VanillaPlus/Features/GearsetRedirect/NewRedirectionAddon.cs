@@ -1,175 +1,154 @@
-﻿using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Addons;
 using KamiToolKit.Premade.SearchAddons;
+using KamiToolKit.Premade.SearchResultNodes;
 using Lumina.Excel.Sheets;
+using VanillaPlus.Features.GearsetRedirect.Nodes;
 using VanillaPlus.NativeElements.SearchAddons;
 using Action = System.Action;
 
 namespace VanillaPlus.Features.GearsetRedirect;
 
 public class NewRedirectionAddon : NativeAddon {
+    private GearsetInfoListItemNode? gearsetInfoNode;
+    private TerritoryTypeListItemNode? zoneInfoNode;
 
-    private TextNode? gearsetLabelNode;
-    private SearchInfoNode<GearsetInfo>? gearsetInfoNode;
-    private TextButtonNode? selectGearsetButtonNode;
+    private readonly GearsetSearchAddon gearsetSearchAddon = new() {
+        Size = new Vector2(275.0f, 555.0f),
+        InternalName = "GearsetSearch",
+        Title = Strings.SearchAddon_GearsetTitle,
+    };
 
-    private VerticalLineNode? verticalLineNode;
-
-    private TextNode? zoneLabelNode;
-    private LuminaSearchInfoNode<TerritoryType>? zoneInfoNode;
-    private TextButtonNode? selectZoneButtonNode;
-
-    private HorizontalLineNode? horizontalLineNode;
-
-    private TextButtonNode? confirmButtonNode;
-    private TextButtonNode? cancelButtonNode;
-
-    private readonly SearchAddon<GearsetInfo> gearsetSearchAddon = GearsetSearchAddon.GetAddon();
     private readonly TerritorySearchAddon? territorySearchAddon = new() {
         Size = new Vector2(400.0f, 735.0f),
         InternalName = "TerritorySearch",
         Title = Strings.SearchAddon_TerritoryTitle,
     };
 
-    public NewRedirectionAddon() {
-        territorySearchAddon?.DebugOpen();
-    }
-
     public GearsetInfo? SelectedGearset { get; private set; }
     public TerritoryType? SelectedTerritory { get; private set; }
-    
+    public Action? OnSelectionsConfirmed { get; set; }
+
+    protected override unsafe void OnSetup(AtkUnitBase* addon) {
+        SelectedGearset = null;
+        SelectedTerritory = null;
+
+        AddNode(new VerticalListNode {
+            Size = ContentSize,
+            Position = ContentStartPosition,
+            FitWidth = true,
+            ItemSpacing = 2.0f,
+            InitialNodes = [
+                new HorizontalListNode {
+                    Height = ContentSize.Y - 36.0f,
+                    FitHeight = true,
+                    InitialNodes = [
+                        new VerticalListNode {
+                            Width = ContentSize.X * 3.0f / 7.0f - 8.0f,
+                            FitWidth = true,
+                            InitialNodes = [
+                                new TextNode {
+                                    Height = 48.0f,
+                                    FontSize = 24,
+                                    String = "Gearset",
+                                    AlignmentType = AlignmentType.Center,
+                                },
+                                new ResNode { Height = 16.0f },
+                                gearsetInfoNode = new GearsetInfoListItemNode {
+                                    EnableSelection = false,
+                                    EnableHighlight = false,
+                                    Height = 64.0f,
+                                },
+                                new ResNode { Height = 24.0f },
+                                new TextButtonNode {
+                                    Height = 28.0f,
+                                    String = "Select Gearset",
+                                    OnClick = () => {
+                                        gearsetSearchAddon.SelectionResult = result => {
+                                            SelectedGearset = new GearsetInfo {
+                                                GearsetId = result.Id,
+                                            };
+        
+                                            gearsetInfoNode?.ItemData = SelectedGearset;
+                                        };
+        
+                                        gearsetSearchAddon.Open();
+                                    },
+                                },
+                            ],
+                        },
+                        new ResNode { Width = 8.0f },
+                        new VerticalLineNode{ Width = 2.0f },
+                        new VerticalListNode {
+                            Width = ContentSize.X * 4.0f / 7.0f,
+                            FitWidth = true,
+                            InitialNodes = [
+                                new TextNode {
+                                    Height = 48.0f,
+                                    FontSize = 24,
+                                    String = "Zone",
+                                    AlignmentType = AlignmentType.Center,
+                                },
+                                new ResNode { Height = 16.0f },
+                                zoneInfoNode = new TerritoryTypeListItemNode {
+                                    EnableSelection = false,
+                                    EnableHighlight = false,
+                                    Height = 64.0f,
+                                },
+                                new ResNode { Height = 24.0f },
+                                new TextButtonNode {
+                                    Height = 28.0f,
+                                    String = "Select Zone",
+                                    OnClick = () => {
+                                        territorySearchAddon?.SelectionResult = result => {
+                                            SelectedTerritory = result;
+        
+                                            zoneInfoNode?.ItemData = result;
+                                        };
+        
+                                        territorySearchAddon?.Open();
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                },
+                new HorizontalLineNode { Height = 4.0f },
+                new HorizontalListNode {
+                    Height = 28.0f,
+                    Alignment = HorizontalListAnchor.Right,
+                    FitHeight = true,
+                    ItemSpacing = 4.0f,
+                    InitialNodes = [
+                        new TextButtonNode {
+                            Width = 100.0f,
+                            String = "Confirm",
+                            OnClick = () => {
+                                if (SelectedGearset is not null && SelectedTerritory is not null) {
+                                    OnSelectionsConfirmed?.Invoke();
+                                } 
+
+                                Close();
+                            },
+                        },
+                        new TextButtonNode {
+                            Width = 100.0f,
+                            String = "Cancel",
+                            OnClick = Close,
+                        },
+                    ],
+                },
+            ],
+        });
+    }
+
     public override void Dispose() {
         base.Dispose();
 
         gearsetSearchAddon.Dispose();
         territorySearchAddon?.Dispose();
     }
-
-    protected override unsafe void OnSetup(AtkUnitBase* addon) {
-        SelectedGearset = null;
-        SelectedTerritory = null;
-        
-        var halfWidth = ContentSize.X / 2.0f - 8.0f;
-        
-        gearsetLabelNode = new TextNode {
-            Size = new Vector2(halfWidth, 32.0f),
-            Position = ContentStartPosition + new Vector2(0.0f, 6.0f),
-            AlignmentType = AlignmentType.Center,
-            FontSize = 24,
-            String = "Gearset",
-        };
-        gearsetLabelNode.AttachNode(this);
-
-        gearsetInfoNode = new SearchInfoNode<GearsetInfo> {
-            Size = new Vector2(halfWidth, 64.0f),
-            Position = new Vector2(ContentStartPosition.X, gearsetLabelNode.Y + gearsetLabelNode.Height + 16.0f),
-            Option = new GearsetInfo {
-                GearsetId = -1,
-            },
-        };
-        gearsetInfoNode.AttachNode(this);
-
-        selectGearsetButtonNode = new TextButtonNode {
-            Size = new Vector2(halfWidth * 2.0f / 3.0f, 32.0f),
-            Position = new Vector2(ContentStartPosition.X + halfWidth / 2.0f - new Vector2(halfWidth * 2.0f / 3.0f, 32.0f).X / 2.0f, gearsetInfoNode.Y + gearsetInfoNode.Height + 4.0f),
-            String = "Select Gearset",
-            OnClick = OnSelectGearset,
-        };
-        selectGearsetButtonNode.AttachNode(this);
-
-        verticalLineNode = new VerticalLineNode {
-            Size = new Vector2(8.0f, ContentSize.Y - 36.0f),
-            Position = new Vector2(gearsetLabelNode.X + gearsetLabelNode.Width + 12.0f, ContentStartPosition.Y),
-        };
-        verticalLineNode.AttachNode(this);
-
-        horizontalLineNode = new HorizontalLineNode {
-            Size = new Vector2(ContentSize.X, 8.0f),
-            Position = ContentStartPosition + new Vector2(0.0f, ContentSize.Y - 32.0f - 5.0f),
-        };
-        horizontalLineNode.AttachNode(this);
-
-        zoneLabelNode = new TextNode {
-            Size = new Vector2(halfWidth, 32.0f),
-            Position = ContentStartPosition + new Vector2(ContentSize.X - halfWidth, 6.0f),
-            FontSize = 24,
-            AlignmentType = AlignmentType.Center,
-            String = "Zone",
-        };
-        zoneLabelNode.AttachNode(this);
-
-        zoneInfoNode = new LuminaSearchInfoNode<TerritoryType> {
-            Size = new Vector2(halfWidth, 64.0f),
-            Position = new Vector2(zoneLabelNode.X, zoneLabelNode.Y + zoneLabelNode.Height + 16.0f),
-            GetLabelFunc = territory => territory.RowId is 1 ? "Nothing Selected" : territory.PlaceName.Value.Name.ToString(),
-            GetSubLabelFunc = territory => territory.ContentFinderCondition.RowId is 0 ? string.Empty : territory.ContentFinderCondition.Value.Name.ToString(),
-            GetIconIdFunc = _ => 60072,
-            GetTexturePathFunc = territory => territory.LoadingImage.Value.FileName.ToString().IsNullOrEmpty() ? string.Empty : $"ui/loadingimage/{territory.LoadingImage.Value.FileName}_hr1.tex",
-            Option = Services.DataManager.GetExcelSheet<TerritoryType>().First(),
-        };
-        zoneInfoNode.AttachNode(this);
-
-        selectZoneButtonNode = new TextButtonNode {
-            Size = new Vector2(halfWidth * 2.0f / 3.0f, 32.0f),
-            Position = new Vector2(zoneLabelNode.X + halfWidth / 2.0f - new Vector2(halfWidth * 2.0f / 3.0f, 32.0f).X / 2.0f, zoneInfoNode.Y + zoneInfoNode.Height + 4.0f),
-            String = "Select Zone",
-            OnClick = OnSelectZone,
-        };
-        selectZoneButtonNode.AttachNode(this);
-
-        confirmButtonNode = new TextButtonNode {
-            Size = new Vector2(100.0f, 24.0f),
-            Position = ContentStartPosition + new Vector2(0.0f, ContentSize.Y - 24.0f),
-            String = "Confirm",
-            OnClick = OnConfirm,
-        };
-        confirmButtonNode.AttachNode(this);
-
-        cancelButtonNode = new TextButtonNode {
-            Size = new Vector2(100.0f, 24.0f),
-            Position = ContentStartPosition + new Vector2(ContentSize.X - 100.0f, ContentSize.Y - 24.0f),
-            String = "Cancel",
-            OnClick = OnCancel,
-        };
-        cancelButtonNode.AttachNode(this);
-    }
-
-    private void OnCancel() {
-        Close();
-    }
-
-    private void OnConfirm() {
-        if (selectGearsetButtonNode is not null && selectZoneButtonNode is not null) {
-            OnSelectionsConfirmed?.Invoke();
-        } 
-
-        Close();
-    }
-
-    private void OnSelectGearset() {
-        gearsetSearchAddon.UpdateGearsets();
-        gearsetSearchAddon.SelectionResult = result => {
-            SelectedGearset = result;
-
-            gearsetInfoNode?.Option = result;
-        };
-        
-        gearsetSearchAddon.Open();
-    }
-
-    private void OnSelectZone() {
-        territorySearchAddon?.SelectionResult = result => {
-            SelectedTerritory = result;
-
-            zoneInfoNode?.Option = result;
-        };
-
-        territorySearchAddon?.Open();
-    }
-
-    public Action? OnSelectionsConfirmed { get; set; }
 }
