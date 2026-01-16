@@ -3,7 +3,7 @@ using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Overlay;
 
-namespace VanillaPlus.Features.WindowBackground;
+namespace VanillaPlus.Features.WindowBackground.Nodes;
 
 public unsafe class WindowBackgroundImageNode : OverlayNode {
 

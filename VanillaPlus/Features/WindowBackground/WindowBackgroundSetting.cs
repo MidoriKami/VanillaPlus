@@ -1,32 +1,23 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Numerics;
+using System.Text.RegularExpressions;
 using Dalamud.Interface;
-using KamiToolKit.Premade;
 
 namespace VanillaPlus.Features.WindowBackground;
 
-public class WindowBackgroundSetting : IInfoNodeData {
+public class WindowBackgroundSetting {
     public const string InvalidName = "Window not Set";
 
-    public string AddonName { get; set; } = InvalidName;
-    public Vector4 Color { get; set; } = KnownColor.Black.Vector() with { W = 50.0f };
-    public Vector2 Padding { get; set; } = new(30.0f, 30.0f);
+    public string AddonName = InvalidName;
+    public Vector4 Color = KnownColor.Black.Vector() with { W = 50.0f };
+    public Vector2 Padding = new(30.0f, 30.0f);
 
-    public string GetLabel() 
-        => AddonName;
+    public static bool IsMatch(WindowBackgroundSetting itemData, string searchString) {
+        var regex = new Regex(searchString, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        return regex.IsMatch(itemData.AddonName);
+    }
 
-    public string? GetSubLabel()
-        => null;
-
-    public uint? GetId()
-        => null;
-
-    public uint? GetIconId()
-        => AddonName == InvalidName ? (uint) 5 : 61483;
-
-    public string? GetTexturePath()
-        => null;
-
-    public int Compare(IInfoNodeData other, string sortingMode)
-        => string.CompareOrdinal(AddonName, ((WindowBackgroundSetting)other).AddonName);
+    public static int Compare(WindowBackgroundSetting left, WindowBackgroundSetting right, string mode)
+        => string.Compare(left.AddonName, right.AddonName, StringComparison.OrdinalIgnoreCase);
 }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
@@ -9,6 +8,8 @@ using KamiToolKit.Overlay;
 using KamiToolKit.Premade.Addons;
 using KamiToolKit.Premade.SearchAddons;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
+using VanillaPlus.Features.WindowBackground.Nodes;
 
 namespace VanillaPlus.Features.WindowBackground;
 
@@ -31,7 +32,7 @@ public unsafe class WindowBackground : GameModification {
     public override string ImageName => "WindowBackgrounds.png";
 
     private WindowBackgroundConfig? config;
-    private ListConfigAddon<WindowBackgroundSetting, WindowBackgroundConfigNode>? configWindow;
+    private ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode>? configWindow;
     private AddonSearchAddon? addonSearchAddon;
 
     private DynamicAddonController? dynamicAddonController;
@@ -58,33 +59,40 @@ public unsafe class WindowBackground : GameModification {
             Size = new Vector2(350.0f, 600.0f),
         };
 
-        configWindow = new ListConfigAddon<WindowBackgroundSetting, WindowBackgroundConfigNode> {
+        configWindow = new ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode> {
             InternalName = "WindowBackgroundConfig",
             Title = Strings.WindowBackground_ConfigTitle,
             Size = new Vector2(600.0f, 500.0f),
             Options = config.Settings,
 
-            OnConfigChanged = _ => config.Save(),
+            // OnConfigChanged = _ => config.Save(),
 
-            OnAddClicked = listNode => {
-                addonSearchAddon.SearchOptions = GetOptions();
+            AddClicked = listNode => {
                 addonSearchAddon.SelectionResult = searchResult => {
+                    if (searchResult.Value is null)
+                        return;
+
                     var newOption = new WindowBackgroundSetting {
-                        AddonName = searchResult.Label,
+                        AddonName = searchResult.Value->NameString,
                     };
 
-                    listNode.AddOption(newOption);
-                    dynamicAddonController.AddAddon(searchResult.Label);
+                    config.Settings.Add(newOption);
                     config.Save();
+
+                    dynamicAddonController.AddAddon(searchResult.Value->NameString);
+                    listNode.RefreshList();
                 };
 
                 addonSearchAddon.Toggle();
             },
 
-            OnItemRemoved = oldItem => {
+            RemoveClicked = (_, oldItem) => {
+                config.Settings.Remove(oldItem);
                 config.Save();
                 dynamicAddonController.RemoveAddon(oldItem.AddonName);
             },
+            ItemComparer = WindowBackgroundSetting.Compare,
+            IsSearchMatch = WindowBackgroundSetting.IsMatch,
         };
 
         OpenConfigAction = configWindow.Toggle;

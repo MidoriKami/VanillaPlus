@@ -2,13 +2,12 @@
 using System.Numerics;
 using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Color;
 using KamiToolKit.Premade.Nodes;
 using KamiToolKit.Premade.Widgets;
 
-namespace VanillaPlus.Features.WindowBackground;
+namespace VanillaPlus.Features.WindowBackground.Nodes;
 
 public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
 
@@ -16,21 +15,12 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
     
     private readonly TextNode windowNameTextNode;
 
-    private readonly ColorPreviewNode colorPreviewNode;
+    private readonly ColorEditNode colorEditNode;
     private readonly Vector2EditWidget sizeEditWidget;
 
-    private readonly ColorPickerAddon colorPickerAddon;
-    
     public WindowBackgroundConfigNode() {
         CollisionNode.IsVisible = false;
 
-        colorPickerAddon = new ColorPickerAddon {
-            InternalName = "WindowBackgroundColor",
-            Title = Strings.WindowBackground_ColorPickerTitle,
-            DefaultColor = KnownColor.Black.Vector() with { W = 0.50f },
-            OnHsvaColorPreviewed = color => colorPreviewNode?.ColorHsva = color,
-        };
-        
         windowNameTextNode = new TextNode {
             AlignmentType = AlignmentType.Center,
             FontSize = 18,
@@ -47,31 +37,11 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             String = Strings.WindowBackground_CategoryBackgroundColor,
         });
 
-        var horizontalLayoutNode = new HorizontalListNode {
-            Height = 32.0f,
-            ItemSpacing = 10.0f,
+        colorEditNode = new ColorEditNode {
+            Size = new Vector2(150.0f, 32.0f),
+            Label = Strings.Color,
         };
-        verticalListNode.AddNode(1, horizontalLayoutNode);
-        
-        colorPreviewNode = new ColorPreviewNode {
-            Size = new Vector2(32.0f, 32.0f),
-            ShowClickableCursor = true,
-        };
-        horizontalLayoutNode.AddNode(colorPreviewNode);
-        
-        var colorLabelNode1 = new TextNode {
-            Size = new Vector2(100.0f, 32.0f),
-            AlignmentType = AlignmentType.Left,
-            FontType = FontType.Axis,
-            FontSize = 14,
-            LineSpacing = 14,
-            TextColor = ColorHelper.GetColor(8),
-            TextOutlineColor = ColorHelper.GetColor(7),
-            TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
-            String = Strings.Color,
-            ShowClickableCursor = true,
-        };
-        horizontalLayoutNode.AddNode(colorLabelNode1);
+        verticalListNode.AddNode(1, colorEditNode);
 
         verticalListNode.AddNode(0, new CategoryTextNode {
             String = Strings.WindowBackground_CategoryPaddingSize,
@@ -88,11 +58,6 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             },
         };
         verticalListNode.AddNode(1, sizeEditWidget);
-
-        horizontalLayoutNode.ShowClickableCursor = true;
-        ShowClickableCursor = true;
-        horizontalLayoutNode.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
-        colorPreviewNode.CollisionNode.AddEvent(AtkEventType.MouseClick, OpenColorPicker);
     }
 
     protected override void OnSizeChanged() {
@@ -113,20 +78,9 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         
         windowNameTextNode.String = option.AddonName;
         
-        colorPreviewNode.Color = option.Color;
-        colorPickerAddon.InitialColor = option.Color;
-        sizeEditWidget.Value = option.Padding;
-    }
+        colorEditNode.CurrentColor = option.Color;
+        colorEditNode.DefaultColor = KnownColor.Black.Vector() with { W = 50.0f };
 
-    private void OpenColorPicker() {
-        colorPickerAddon.OnColorConfirmed = newColor => {
-            if (ConfigurationOption is not null) {
-                ConfigurationOption.Color = newColor;
-                OptionChanged(ConfigurationOption);
-                OnConfigChanged?.Invoke(ConfigurationOption);
-            }
-        };
-                
-        colorPickerAddon.Toggle();
+        sizeEditWidget.Value = option.Padding;
     }
 }
