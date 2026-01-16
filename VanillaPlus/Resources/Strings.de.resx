@@ -1269,31 +1269,31 @@ This game modification fixes it by always triggering the normal mouse click in a
   <data name="CompatibilityModule_ActivePluginMessage" xml:space="preserve">
     <value>The original version of this feature is from a plugin that is currently active: {0}</value>
   </data>
-  <data name="QuickPanelTweaks_DisplayName" xml:space="preserve">
+  <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
       <value>Anpassungen an der Kommandotafel</value>
   </data>
-  <data name="QuickPanelTweaks_Description" xml:space="preserve">
+  <data name="QuickPanelAdjustments_Description" xml:space="preserve">
       <value>Ändert das Aussehen der Kommandotafel</value>
   </data>
-  <data name="QuickPanelTweaks_ConfigTitle" xml:space="preserve">
+  <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
       <value>Kommandotafel-Konfiguration</value>
   </data>
-  <data name="QuickPanelTweaks_LabelHideFocusBorder" xml:space="preserve">
+  <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
       <value>Verstecke den zusätzlichen Fokus-Rahmen</value>
   </data>
-  <data name="QuickPanelTweaks_LabelHideHighlighting" xml:space="preserve">
+  <data name="QuickPanelAdjustments_LabelHideHighlighting" xml:space="preserve">
       <value>Verstecke Rahmen und Schattierung</value>
   </data>
-  <data name="QuickPanelTweaks_LabelHidePanelBackground" xml:space="preserve">
+  <data name="QuickPanelAdjustments_LabelHidePanelBackground" xml:space="preserve">
       <value>Verstecke den Kommandofeld-Hintergrund</value>
   </data>
-  <data name="QuickPanelTweaks_LabelHideEmptySlots" xml:space="preserve">
+  <data name="QuickPanelAdjustments_LabelHideEmptySlots" xml:space="preserve">
       <value>Verstecke die leeren Slots</value>
   </data>
-  <data name="QuickPanelTweaks_LabelMoveButtons" xml:space="preserve">
+  <data name="QuickPanelAdjustments_LabelMoveButtons" xml:space="preserve">
       <value>Bewege Buttons näher heran</value>
   </data>
-  <data name="QuickPanelTweaks_BackgroundColor" xml:space="preserve">
+  <data name="QuickPanelAdjustments_BackgroundColor" xml:space="preserve">
       <value>Hintergrundfarbe</value>
   </data>
 </root>

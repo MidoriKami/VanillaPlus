@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace VanillaPlus.Extensions;
@@ -10,6 +11,8 @@ public static unsafe class AtkUnitBaseExtensions {
         public T* GetComponentById<T>(uint nodeId) where T : unmanaged => (T*)addon.GetComponentByNodeId(nodeId);
         
         public bool IsActuallyVisible => addon.GetIsActuallyVisible();
+
+        public bool IsFocused => addon.GetIsFocused();
 
         public void SubscribeStringArrayData(StringArrayType arrayType) => addon.SubscribeAtkArrayData(0, (byte)arrayType);
         public void UnsubscribeStringArrayData(StringArrayType arrayType) => addon.UnsubscribeAtkArrayData(0, (byte)arrayType);
@@ -23,6 +26,15 @@ public static unsafe class AtkUnitBaseExtensions {
             if ((addon.VisibilityFlags & 5) is not 0) return false;
 
             return true;
+        }
+
+        private bool GetIsFocused() {
+            foreach (var focusedAddon in RaptureAtkUnitManager.Instance()->FocusedUnitsList.Entries) {
+                if (focusedAddon.Value is null) continue;
+                if (focusedAddon.Value->NameString == addon.NameString) return true;
+            }
+
+            return false;
         }
 
         /// <summary>
