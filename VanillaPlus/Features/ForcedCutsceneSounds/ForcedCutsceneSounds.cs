@@ -6,6 +6,7 @@ using FFXIVClientStructs.FFXIV.Client.System.Scheduler;
 using FFXIVClientStructs.FFXIV.Client.System.Scheduler.Base;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.ForcedCutsceneSounds;

@@ -1,8 +1,7 @@
 ﻿using System.Linq;
-using System.Text.RegularExpressions;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using Lumina.Excel.Sheets;
+using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Addons;
 using Map = FFXIVClientStructs.FFXIV.Client.Game.UI.Map;
 
@@ -25,7 +24,7 @@ public unsafe class QuestListAddon : SearchableNodeListAddon<MarkerInfo, QuestLi
             lastQuestCount = Map.Instance()->UnacceptedQuestMarkers.Count;
         }
 
-        ListItems.Sort((left, right) => Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
+        ListItems.Sort((left, right) => MarkerInfoExtensions.Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
         
         base.OnUpdate(addon);
     }
@@ -45,35 +44,9 @@ public unsafe class QuestListAddon : SearchableNodeListAddon<MarkerInfo, QuestLi
 
     private void UpdateSearch(string newSearchString) {
         ListItems = Map.Instance()->UnacceptedQuestMarkers
-            .Where(item => IsRegexMatch(item, newSearchString))
+            .Where(item => MarkerInfoExtensions.IsRegexMatch(item, newSearchString))
             .ToList();
         
-        ListItems.Sort((left, right) => Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
-    }
-    
-    private static bool IsRegexMatch(MarkerInfo marker, string searchString) {
-        if (!Services.DataManager.GetExcelSheet<Quest>().TryGetRow(marker.ObjectiveId + ushort.MaxValue + 1, out var questInfo)) return false;
-        if (questInfo.RowId is 0) return false;
-        
-        var regex = new Regex(searchString, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-    
-        if (regex.IsMatch(questInfo.Name.ToString())) return true;
-        if (regex.IsMatch(questInfo.ClassJobLevel.First().ToString())) return true;
-        if (regex.IsMatch(questInfo.IssuerStart.GetValueOrDefault<ENpcResident>()?.Singular.ToString() ?? string.Empty)) return true;
-    
-        return false;
-    }
-    
-    private static int Comparison(MarkerInfo left, MarkerInfo right, QuestFilterMode filterMode) {
-        var result = filterMode switch {
-            QuestFilterMode.Alphabetically => string.CompareOrdinal(left.Name, right.Name),
-            QuestFilterMode.Type => left.IconId.CompareTo(right.IconId),
-            QuestFilterMode.ClassJobLevel => left.ClassJobLevel.CompareTo(right.ClassJobLevel),
-            QuestFilterMode.IssuerName => string.CompareOrdinal(left.IssuerName, right.IssuerName),
-            QuestFilterMode.Distance => left.Distance.CompareTo(right.Distance),
-            _ => string.CompareOrdinal(left.Name, right.Name),
-        };
-    
-        return result is 0 ? string.CompareOrdinal(left.Name, right.Name) : result;
+        ListItems.Sort((left, right) => MarkerInfoExtensions.Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
     }
 }

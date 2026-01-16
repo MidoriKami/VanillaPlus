@@ -4,6 +4,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Overlay;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ClockOverlay;
 

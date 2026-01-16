@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ClockOverlay;
 

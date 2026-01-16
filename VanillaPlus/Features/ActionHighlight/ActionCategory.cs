@@ -1,4 +1,5 @@
 using Lumina.Excel.Sheets;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ActionHighlight;
 

@@ -7,6 +7,7 @@ using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
 using VanillaPlus.NativeElements.Config.NodeEntries;
 using VanillaPlus.Utilities;

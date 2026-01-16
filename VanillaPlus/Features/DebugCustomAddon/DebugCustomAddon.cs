@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using KamiToolKit;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.DebugCustomAddon;
 

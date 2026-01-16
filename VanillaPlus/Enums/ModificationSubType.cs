@@ -1,4 +1,4 @@
-﻿namespace VanillaPlus.Classes;
+﻿namespace VanillaPlus.Enums;
 
 public enum ModificationSubType {
     Inventory,

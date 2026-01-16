@@ -8,6 +8,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.Sheets;
 using Lumina.Extensions;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ShowAetherCurrents;
 

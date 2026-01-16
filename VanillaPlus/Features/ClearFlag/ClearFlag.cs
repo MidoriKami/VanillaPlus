@@ -5,6 +5,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Enums;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ClearFlag;
 

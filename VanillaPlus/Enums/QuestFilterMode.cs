@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace VanillaPlus.Features.QuestListWindow;
+namespace VanillaPlus.Enums;
 
 public enum QuestFilterMode {
     [Description(nameof(Strings.QuestListWindow_FilterType))]

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace VanillaPlus.Features.CurrencyWarning;
+namespace VanillaPlus.Enums;
 
 public enum WarningMode {
     [Description("Warn when Above")]

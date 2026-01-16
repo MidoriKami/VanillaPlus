@@ -8,6 +8,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.DraggableWindowDeadSpace;
 

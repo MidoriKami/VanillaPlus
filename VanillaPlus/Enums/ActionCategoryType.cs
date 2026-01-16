@@ -1,4 +1,4 @@
-﻿namespace VanillaPlus.Features.ActionHighlight;
+﻿namespace VanillaPlus.Enums;
 
 public enum ActionCategoryType {
     General = 0, 

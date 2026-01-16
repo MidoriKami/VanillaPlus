@@ -9,6 +9,7 @@ using KamiToolKit.Nodes;
 using KamiToolKit.Timelines;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.MissingJobStoneLockout;
 

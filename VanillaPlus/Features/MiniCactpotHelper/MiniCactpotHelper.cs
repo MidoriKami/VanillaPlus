@@ -7,6 +7,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
 using Exception = System.Exception;
 using OperationCanceledException = System.OperationCanceledException;

@@ -9,6 +9,7 @@ using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using KamiToolKit.Timelines;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.BetterInterruptableCastBars;
 

@@ -7,6 +7,7 @@ using Lumina.Text.ReadOnly;
 using System;
 using Dalamud.Game.Text.SeStringHandling;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ChatPlayerTooltip;
 

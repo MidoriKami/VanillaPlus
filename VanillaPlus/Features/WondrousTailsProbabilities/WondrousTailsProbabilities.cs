@@ -12,6 +12,7 @@ using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using KamiToolKit.Timelines;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.WondrousTailsProbabilities;

@@ -1,4 +1,4 @@
-﻿namespace VanillaPlus.InternalSystem;
+﻿namespace VanillaPlus.Enums;
 
 public enum LoadedState {
     Unknown,

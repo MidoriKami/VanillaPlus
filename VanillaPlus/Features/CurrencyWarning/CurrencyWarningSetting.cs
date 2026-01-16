@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.CurrencyWarning;
 

@@ -6,6 +6,7 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.ResourceBarPercentages;

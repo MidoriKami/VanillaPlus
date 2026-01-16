@@ -3,6 +3,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using Addon = VanillaPlus.Utilities.Addon;
 
 namespace VanillaPlus.InternalSystem;

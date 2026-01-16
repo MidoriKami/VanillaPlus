@@ -4,6 +4,7 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Nodes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.CurrencyWarning.Nodes;
 

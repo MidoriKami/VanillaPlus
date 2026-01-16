@@ -6,6 +6,7 @@ using KamiToolKit.Overlay;
 using KamiToolKit.Premade.Addons;
 using KamiToolKit.Premade.SearchAddons;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.Features.CurrencyOverlay.Nodes;
 
 namespace VanillaPlus.Features.CurrencyOverlay;

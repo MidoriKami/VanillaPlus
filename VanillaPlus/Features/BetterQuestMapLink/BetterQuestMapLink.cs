@@ -2,6 +2,7 @@
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.BetterQuestMapLink;
 

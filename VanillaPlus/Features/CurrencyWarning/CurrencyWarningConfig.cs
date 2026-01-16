@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using Dalamud.Interface;
 using Newtonsoft.Json.Linq;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.CurrencyWarning;
 

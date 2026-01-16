@@ -4,6 +4,7 @@ using System.Numerics;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.GearsetRedirect;
 

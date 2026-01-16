@@ -2,6 +2,7 @@
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.FadeStrategyBoard;

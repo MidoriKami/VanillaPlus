@@ -1,4 +1,4 @@
-﻿namespace VanillaPlus.Features.ClockOverlay;
+﻿namespace VanillaPlus.Enums;
 
 public enum ClockType {
     Local,

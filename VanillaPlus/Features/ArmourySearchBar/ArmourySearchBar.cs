@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.Config;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ArmourySearchBar;
 

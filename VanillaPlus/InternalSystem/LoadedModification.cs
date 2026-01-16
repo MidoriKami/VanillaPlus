@@ -1,4 +1,5 @@
 ﻿using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.InternalSystem;
 

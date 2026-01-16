@@ -4,6 +4,7 @@ using System.Numerics;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Nodes;
 using Lumina.Excel.Sheets;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ActionHighlight.Nodes;
 

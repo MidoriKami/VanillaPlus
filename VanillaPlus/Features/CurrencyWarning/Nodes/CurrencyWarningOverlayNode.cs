@@ -8,6 +8,7 @@ using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Overlay;
 using KamiToolKit.Timelines;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.CurrencyWarning.Nodes;
 

@@ -10,6 +10,7 @@ using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using Lumina.Text.ReadOnly;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.InternalSystem;

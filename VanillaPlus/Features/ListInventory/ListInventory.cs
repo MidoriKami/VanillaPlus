@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Numerics;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ListInventory;
 

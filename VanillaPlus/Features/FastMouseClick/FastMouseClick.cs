@@ -1,5 +1,6 @@
 ﻿using Dalamud.Utility.Signatures;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.FastMouseClick;
 

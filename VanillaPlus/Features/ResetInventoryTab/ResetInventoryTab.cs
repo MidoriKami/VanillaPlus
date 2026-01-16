@@ -4,6 +4,7 @@ using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using ValueType = FFXIVClientStructs.FFXIV.Component.GUI.ValueType;
 
 namespace VanillaPlus.Features.ResetInventoryTab;
