@@ -2,4 +2,4 @@
 
 namespace VanillaPlus.Features.RecentlyLootedWindow;
 
-public record LootedItemInfo(int Index, uint ItemId, uint IconId, ReadOnlySeString Name, int Quantity);
+public record LootedItemInfo(uint ItemId, uint IconId, ReadOnlySeString Name, int Quantity);

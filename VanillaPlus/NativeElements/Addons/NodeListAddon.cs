@@ -115,5 +115,8 @@ public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T
         }
     }
     
+    public void RefreshList() 
+        => ListNode?.FullRebuild();
+    
     public Action? OnClose { get; set; }
 }

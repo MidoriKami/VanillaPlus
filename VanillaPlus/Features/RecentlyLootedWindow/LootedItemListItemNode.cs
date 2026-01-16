@@ -5,13 +5,20 @@ using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.RecentlyLootedWindow;
 
-public class LootItemNode : SelectableNode {
-
+public class LootedItemListItemNode : ListItemNode<LootedItemInfo> {
+    public override float ItemHeight => 32.0f;
+    
     private readonly IconWithCountNode iconNode;
     private readonly TextNode itemNameTextNode;
     
-    public LootItemNode() {
-        iconNode = new IconWithCountNode();
+    public LootedItemListItemNode() {
+        EnableHighlight = false;
+        EnableSelection = false;
+        DisableCollisionNode = true;
+        
+        iconNode = new IconWithCountNode {
+            ShowClickableCursor = true,
+        };
         iconNode.AttachNode(this);
 
         itemNameTextNode = new TextNode {
@@ -19,18 +26,6 @@ public class LootItemNode : SelectableNode {
             AlignmentType = AlignmentType.Left,
         };
         itemNameTextNode.AttachNode(this);
-    }
-
-    public required LootedItemInfo Item {
-        get;
-        set {
-            field = value;
-
-            iconNode.IconId = value.IconId;
-            itemNameTextNode.SeString = value.Name;
-            iconNode.Count = value.Quantity;
-            CollisionNode.ItemTooltip = Item.ItemId;
-        }
     }
     
     protected override void OnSizeChanged() {
@@ -41,5 +36,12 @@ public class LootItemNode : SelectableNode {
 
         itemNameTextNode.Size = new Vector2(Width - iconNode.Width - 4.0f, Height);
         itemNameTextNode.Position = new Vector2(iconNode.Width + 4.0f, 0.0f);
+    }
+
+    protected override void SetNodeData(LootedItemInfo itemData) {
+        iconNode.IconId = itemData.IconId;
+        itemNameTextNode.SeString = itemData.Name;
+        iconNode.Count = itemData.Quantity;
+        iconNode.CollisionNode.ItemTooltip = itemData.ItemId;
     }
 }
