@@ -4,8 +4,10 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Overlay;
 using KamiToolKit.Premade.Addons;
-using Lumina.Excel.Sheets;
+using KamiToolKit.Premade.SearchAddons;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
+using VanillaPlus.Features.CurrencyOverlay.Nodes;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 
@@ -24,11 +26,11 @@ public unsafe class CurrencyOverlay : GameModification {
     public override string ImageName => "CurrencyOverlay.png";
 
     private CurrencyOverlayConfig? config;
-    private ListConfigAddon<CurrencySetting, CurrencyOverlayConfigNode>? configAddon;
-    private LuminaSearchAddon<Item>? itemSearchAddon;
+    private ListConfigAddon<CurrencySetting, CurrencyOverlayListItemNode, CurrencyOverlayConfigNode>? configAddon;
+    private CurrencySearchAddon? itemSearchAddon;
 
     private OverlayController? overlayController;
-    private List<CurrencyNode>? currencyNodes;
+    private List<CurrencyOverlayNode>? currencyNodes;
 
     public override void OnEnable() {
         currencyNodes = [];
@@ -37,53 +39,50 @@ public unsafe class CurrencyOverlay : GameModification {
 
         overlayController = new OverlayController();
         
-        itemSearchAddon = new LuminaSearchAddon<Item> {
-            InternalName = "LuminaItemSearch",
-            Title = Strings.CurrencyOverlay_ItemSearchTitle,
+        itemSearchAddon = new CurrencySearchAddon {
+            InternalName = "CurrencySearch",
+            Title = "Currency Search",
             Size = new Vector2(350.0f, 500.0f),
-
-            GetLabelFunc = item => item.Name.ToString(),
-            GetSubLabelFunc = item => item.ItemSearchCategory.Value.Name.ToString(),
-            GetIconIdFunc = item => item.Icon,
-
-            SortingOptions = [Strings.SortOptionAlphabetical, Strings.CurrencyOverlay_SortOptionId ],
-            SearchOptions = Services.DataManager.GetCurrencyItems().ToList(),
+            SortingOptions = [ Strings.SortOptionAlphabetical, Strings.CurrencyOverlay_SortOptionId ],
         };
 
-        configAddon = new ListConfigAddon<CurrencySetting, CurrencyOverlayConfigNode> {
-            Size = new Vector2(700.0f, 500.0f),
+        configAddon = new ListConfigAddon<CurrencySetting, CurrencyOverlayListItemNode, CurrencyOverlayConfigNode> {
+            Size = new Vector2(600.0f, 500.0f),
             InternalName = "CurrencyOverlayConfig",
             Title = Strings.CurrencyOverlay_ConfigTitle,
             SortOptions = [ Strings.SortOptionAlphabetical ],
-
             Options = config.Currencies,
+            ItemComparer = CurrencySetting.Comparison,
+            IsSearchMatch = CurrencySetting.IsMatch,
 
-            OnConfigChanged = _ => config.Save(),
+            EditCompleted = _ => config.Save(),
 
-            OnAddClicked = listNode => {
+            AddClicked = listNode => {
                 itemSearchAddon.SelectionResult = searchResult => {
                     var newCurrencyOption = new CurrencySetting {
                         ItemId = searchResult.RowId,
                     };
-
-                    listNode.AddOption(newCurrencyOption);
-
+            
+                    config.Currencies.Add(newCurrencyOption);
+                    config.Save();
+                    listNode.RefreshList();
+                    listNode.SelectItem(newCurrencyOption);
+                    
                     var newCurrencyNode = BuildCurrencyNode(newCurrencyOption);
                     currencyNodes.Add(newCurrencyNode);
                     overlayController.AddNode(newCurrencyNode);
-                    
-                    config.Save();
                 };
                 itemSearchAddon.Toggle();
             },
-
-            OnItemRemoved = setting => {
+            
+            RemoveClicked = (_, setting) => {
                 var targetNode = currencyNodes.FirstOrDefault(node => node.Currency == setting);
                 if (targetNode is not null) {
                     overlayController.RemoveNode(targetNode);
                     currencyNodes.Remove(targetNode);
                 }
 
+                config.Currencies.Remove(setting);
                 config.Save();
             },
         };
@@ -121,15 +120,14 @@ public unsafe class CurrencyOverlay : GameModification {
         currencyNodes = null;
     }
 
-    private CurrencyNode BuildCurrencyNode(CurrencySetting setting) {
-        var newCurrencyNode = new CurrencyNode {
+    private CurrencyOverlayNode BuildCurrencyNode(CurrencySetting setting) {
+        var newCurrencyNode = new CurrencyOverlayNode {
             Size = new Vector2(164.0f, 36.0f),
             Currency = setting,
-        };
-
-        newCurrencyNode.OnMoveComplete = () => {
-            setting.Position = newCurrencyNode.Position;
-            config?.Save();
+            OnMoveComplete = thisNode => {
+                setting.Position = thisNode.Position;
+                config?.Save();
+            },
         };
 
         if (setting.Position == Vector2.Zero) {

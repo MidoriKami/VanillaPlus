@@ -55,12 +55,4 @@ public class SelectIconConfig : BaseConfigEntry {
         MemberInfo.SetValue(Config, (uint)iconId);
         Config.Save();
     }
-
-    public override void Dispose() {
-        iconImageNode?.Dispose();
-        iconImageNode = null;
-
-        inputIntNode?.Dispose();
-        inputIntNode = null;
-    }
 }

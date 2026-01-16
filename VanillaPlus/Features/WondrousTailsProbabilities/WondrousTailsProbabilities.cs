@@ -8,10 +8,11 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
-using KamiToolKit.Classes.Controllers;
-using KamiToolKit.Classes.Timelines;
+using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
+using KamiToolKit.Timelines;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.WondrousTailsProbabilities;
@@ -75,7 +76,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             TextFlags = TextFlags.MultiLine | TextFlags.Edge | TextFlags.WordWrap,
             SeString = perfectTails.SolveAndGetProbabilitySeString(),
         };
-        probabilityTextNode.AttachNode((AtkResNode*)existingTextNode, NodePosition.AfterTarget);
+        probabilityTextNode.AttachNode(existingTextNode, NodePosition.AfterTarget);
 
         animationContainer = new ResNode {
             Size = new Vector2(72.0f, 48.0f),

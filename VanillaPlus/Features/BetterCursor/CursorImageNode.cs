@@ -2,10 +2,10 @@
 using FFXIVClientStructs.FFXIV.Client.System.Input;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
-using KamiToolKit.Classes.Timelines;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Overlay;
+using KamiToolKit.Timelines;
 
 namespace VanillaPlus.Features.BetterCursor;
 
@@ -53,9 +53,7 @@ public unsafe class CursorImageNode : OverlayNode {
         imageNode.Origin = new Vector2(Config.Size / 2.0f);
     }
 
-    public override void Update() {
-        base.Update();
-        
+    protected override void OnUpdate() {
         Size = new Vector2(Config.Size);
 
         imageNode.Color = Config.Color;

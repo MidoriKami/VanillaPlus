@@ -3,6 +3,7 @@ using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.StickyShopCategories;
 
@@ -36,7 +37,7 @@ public unsafe class StickyShopCategories : GameModification {
     private void OnInclusionShopSetup(AddonEvent type, AddonArgs args) {
         if (config is null) return;
 
-        var shopId = args.AtkValueSpan[0].UInt;
+        var shopId = args.ValueSpan[0].UInt;
 
         if (config.ShopConfigs.TryGetValue(shopId, out var currentShopConfig)) {
             var categoryDropDown = GetCategoryDropDown(args);
@@ -51,7 +52,7 @@ public unsafe class StickyShopCategories : GameModification {
     private void OnInclusionShopFinalize(AddonEvent type, AddonArgs args) {
         if (config is null) return;
 
-        var shopId = args.AtkValueSpan[0].UInt;
+        var shopId = args.ValueSpan[0].UInt;
         var dropDownCategoryIndex = GetCategoryDropDown(args)->GetSelectedItemIndex();
         var dropDownSubCategoryIndex = GetSubCategoryDropDown(args)->GetSelectedItemIndex();
 

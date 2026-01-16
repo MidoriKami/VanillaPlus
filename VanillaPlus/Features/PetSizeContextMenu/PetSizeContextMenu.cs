@@ -2,6 +2,7 @@
 using Dalamud.Game.Config;
 using Dalamud.Game.Gui.ContextMenu;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.PetSizeContextMenu;
 

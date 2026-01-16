@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
-using KamiToolKit.Classes.Controllers;
+using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.HUDCoordinates;
 
@@ -43,7 +43,7 @@ public unsafe class HUDCoordinates : GameModification {
                 };
                 
                 textNodes.Add(newTextNode);
-                newTextNode.AttachNode((AtkComponentNode*)node.Value, NodePosition.AsFirstChild);
+                newTextNode.AttachNode(node.Value);
             }
         };
 

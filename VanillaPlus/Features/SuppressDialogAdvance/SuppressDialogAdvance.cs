@@ -3,6 +3,7 @@ using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.SuppressDialogAdvance;
@@ -55,7 +56,7 @@ public unsafe class SuppressDialogueAdvance : GameModification {
         if ((AtkEventType)eventArgs.AtkEventType is AtkEventType.MouseClick) {
             var addon = args.GetAddon<AddonTalk>();
 
-            if (!addon->RootNode->CheckCollisionAtCoords(args.ClickPosition)) {
+            if (!addon->RootNode->CheckCollision(args.ClickPosition)) {
                 eventArgs.AtkEventType = 0;
             }
         }

@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 
 namespace VanillaPlus.NativeElements.Addons;
 
-public unsafe class SearchableNodeListAddon : NodeListAddon {
+public unsafe class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where TU : ListItemNode<T>, new() {
 
     private TextInputNode? textInputNode;
     private TextDropDownNode? sortDropdownNode;
@@ -47,7 +47,7 @@ public unsafe class SearchableNodeListAddon : NodeListAddon {
             Options = DropDownOptions,
             OnOptionSelected = newOption => {
                 filterOption = newOption;
-                OnFilterUpdated(newOption, reverseSort);
+                OnSortingUpdated?.Invoke(newOption, reverseSort);
             },
         };
         sortDropdownNode.SelectedOption = DropDownOptions.First();
@@ -57,7 +57,7 @@ public unsafe class SearchableNodeListAddon : NodeListAddon {
             Icon = ButtonIcon.Sort,
             OnClick = () => {
                 reverseSort = !reverseSort;
-                OnFilterUpdated(filterOption, reverseSort);
+                OnSortingUpdated?.Invoke(filterOption, reverseSort);
             },
             TextTooltip = Strings.Tooltip_ReverseSortDirection,
         };
@@ -69,14 +69,16 @@ public unsafe class SearchableNodeListAddon : NodeListAddon {
 
         textInputNode.OnInputReceived += newSearchString => {
             searchText = newSearchString.ToString();
-            OnSearchUpdated(searchText);
+            OnSearchUpdated?.Invoke(searchText);
         };
         
         const float listPadding = 4.0f;
         
-        ScrollingAreaNode = new ScrollingListNode {
+        ListNode = new ListNode<T, TU> {
             Size = ContentSize - new Vector2(0.0f, searchContainerNode.Height + widgetsContainerNode.Height + listPadding),
             Position = new Vector2(0.0f, listPadding),
+            OptionsList = ListItems,
+            ItemSpacing = ItemSpacing,
         };
         
         mainContainerNode.AttachNode(this);
@@ -89,14 +91,18 @@ public unsafe class SearchableNodeListAddon : NodeListAddon {
         widgetsContainerNode.AddNode(sortDropdownNode);
 
         mainContainerNode.AddDummy(4.0f);
-        mainContainerNode.AddNode(ScrollingAreaNode);
-        
-        DoListUpdate(true);
+        mainContainerNode.AddNode(ListNode);
+    }
+
+    protected override void OnUpdate(AtkUnitBase* addon) {
+        base.OnUpdate(addon);
+
+        ListNode?.Update();
     }
 
     public delegate void SearchUpdated(string searchString);
     public delegate void FilterUpdated(string filterString, bool reversed);
 
-    public required SearchUpdated OnSearchUpdated { get; init; }
-    public required FilterUpdated OnFilterUpdated { get; init; }
+    public SearchUpdated? OnSearchUpdated { get; set; }
+    public FilterUpdated? OnSortingUpdated { get; set; }
 }

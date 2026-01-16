@@ -5,6 +5,7 @@ using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ActionHighlight;
 
@@ -16,6 +17,7 @@ public unsafe class ActionHighlight : GameModification {
         Authors = [ "attickdoor", "Zeffuro" ],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
+            new ChangeLogInfo(2, "Fixed abilities like Ikishoten being highlighted when actually not usable"),
         ],
         CompatibilityModule = new PluginCompatibilityModule("AbilityAnts"),
     };
@@ -64,7 +66,7 @@ public unsafe class ActionHighlight : GameModification {
     }
 
     private bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {
-        if (Services.ObjectTable.LocalPlayer is not { Level: var playerLevel } ) return false;
+        if (Services.ObjectTable.LocalPlayer is not { Level: var playerLevel, GameObjectId: var playerId } ) return false;
         if (config is null) return false;
         if (cachedActions is null) return false;
 
@@ -72,12 +74,15 @@ public unsafe class ActionHighlight : GameModification {
 
         if (original) return original;
         if (actionType is not ActionType.Action) return original;
+
+        if (!config.ActionSettings.TryGetValue(actionId, out var setting)) return original;
+
+        if (actionManager->GetActionStatus(actionType, actionId, playerId, false) != 0) return original;
+
         if (config.ShowOnlyInCombat && !Services.Condition.IsInCombat) return original;
-        if (!config.ActiveActions.TryGetValue(actionId, out var thresholdMs)) return original;
         if (!cachedActions.TryGetValue(actionId, out var action)) return original;
 
-        if (config.UseGlocalPreAntMs)
-            thresholdMs = config.PreAntTimeMs;
+        var thresholdMs = config.UseGlocalPreAntMs ? config.PreAntTimeMs : setting.ThresholdMs;
 
         if (config.ShowOnlyUsableActions && action.ClassJobLevel > playerLevel)
             return original;
@@ -88,7 +93,7 @@ public unsafe class ActionHighlight : GameModification {
         var recastElapsed = actionManager->GetRecastTimeElapsed(actionType, actionId);
 
         if (maxCharges is 0) {
-            if (! recastActive) return true;
+            if (!recastActive) return true;
             return recastTime - recastElapsed <= thresholdMs / 1000f;
         }
 

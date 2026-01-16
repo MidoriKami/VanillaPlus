@@ -2,6 +2,7 @@
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Overlay;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.ClockOverlay;
@@ -55,11 +56,10 @@ public class ClockOverlay : GameModification {
             clockNode = new ClockOverlayNode(config) {
                 Size = new Vector2(150.0f, 30.0f),
                 Position = config.Position,
-            };
-
-            clockNode.OnMoveComplete = () => {
-                config.Position = clockNode.Position;
-                config.Save();
+                OnMoveComplete = thisNode => {
+                    config.Position = thisNode.Position;
+                    config.Save();
+                },
             };
             
             return clockNode;

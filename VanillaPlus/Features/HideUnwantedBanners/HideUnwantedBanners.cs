@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Numerics;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Addons;
 
 namespace VanillaPlus.Features.HideUnwantedBanners;
@@ -19,6 +20,8 @@ public unsafe class HideUnwantedBanners : GameModification {
             new ChangeLogInfo(1, "Initial Implementation"),
             new ChangeLogInfo(2, "Configuration will now allow you to suppress new banners that you come across " +
                                  "once you see a new banner, it will appear in the configuration window."),
+            new ChangeLogInfo(3, "Rebuilt feature to utilize new systems, however config system had to be reimplemented, " +
+                                 "configs have been reset."),
         ],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@HideUnwantedBanner"),
     };
@@ -26,16 +29,17 @@ public unsafe class HideUnwantedBanners : GameModification {
     private Hook<AddonImage.Delegates.SetImage>? setImageTextureHook;
 
     private HideUnwantedBannersConfig? config;
-    private NodeListAddon? configWindow;
+    private NodeListAddon<BannerConfig, BannerConfigListItemNode>? configWindow;
 
     public override void OnEnable() {
         config = HideUnwantedBannersConfig.Load();
 
-        configWindow = new NodeListAddon {
+        configWindow = new NodeListAddon<BannerConfig, BannerConfigListItemNode> {
             InternalName = "BannersConfig",
             Title = Strings.HideUnwantedBanners_ConfigTitle,
-            Size = new Vector2(500.0f, 600.0f),
-            UpdateListFunction = UpdateList,
+            Size = new Vector2(550.0f, 650.0f),
+            ListItems = config.BannerSettings,
+            OnClose = config.Save,
         };
 
         OpenConfigAction = configWindow.Toggle;
@@ -54,48 +58,21 @@ public unsafe class HideUnwantedBanners : GameModification {
         config = null;
     }
 
-    private bool UpdateList(ScrollingListNode node, bool opening) {
-        if (config is null) return false;
-
-        foreach (var child in node.GetNodes<BannerInfoNode>()) {
-            child.Update();
-        }
-
-        if (!opening) return false;
-
-        foreach (var id in config.SeenBanners) {
-            var newBannerInfoNode = new BannerInfoNode {
-                Size = new Vector2(node.Width, 96.0f),
-                ImageIconId = id,
-                IsChecked = config.HiddenBanners.Contains(id),
-                OnChecked = shouldHide => {
-                    if (shouldHide) {
-                        config.HiddenBanners.Add(id);
-                    }
-                    else {
-                        config.HiddenBanners.Remove(id);
-                    }
-
-                    config.Save();
-                },
-            };
-
-            node.AddNode(newBannerInfoNode);
-        }
-
-        return true;
-    }
-
     private void OnSetImageTexture(AddonImage* addon, int bannerId, IconSubFolder language, int soundEffectId) {
         try {
             if (config is not null) {
-                if (config.SeenBanners.Add((uint)bannerId)) {
+                if (config.BannerSettings.All(entry => entry.BannerId != bannerId)) {
+                    config.BannerSettings.Add(new BannerConfig {
+                        BannerId = bannerId,
+                        IsSuppressed = false,
+                    });
                     config.Save();
                 }
-
-                if (config.HiddenBanners.Contains((uint)bannerId)) {
-                    bannerId = 0;
-                    soundEffectId = 0;
+                else {
+                    if (config.BannerSettings.FirstOrDefault(entry => entry.BannerId == bannerId) is { IsSuppressed: true }) {
+                        bannerId = 0;
+                        soundEffectId = 0;
+                    }
                 }
             }
         } catch (Exception e) { 

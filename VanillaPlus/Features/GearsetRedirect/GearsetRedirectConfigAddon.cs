@@ -2,55 +2,52 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Addons;
 using KamiToolKit.Premade.Nodes;
-using VanillaPlus.NativeElements.Addons.SearchAddons;
+using VanillaPlus.Features.GearsetRedirect.Nodes;
+using VanillaPlus.NativeElements.SearchAddons;
 
 namespace VanillaPlus.Features.GearsetRedirect;
 
 public unsafe class GearsetRedirectConfigAddon : NativeAddon {
-
-    private ModifyListNode<GearsetInfo>? gearsetListNode;
+    private ModifyListNode<GearsetInfo, GearsetInfoListItemNode>? gearsetListNode;
     private VerticalLineNode? lineNode;
     private SimpleComponentNode? optionsContainerNode;
     private IconImageNode? jobImageNode;
     private TextNode? gearsetLabelNode;
 
-    private ModifyListNode<RedirectInfo>? redirectListNode;
+    private ModifyListNode<RedirectInfo, RedirectInfoListItemNode>? redirectListNode;
 
     public required GearsetRedirectConfig Config { get; init; }
 
-    private readonly SearchAddon<GearsetInfo> gearsetSearchAddon = GearsetSearchAddon.GetAddon();
+    private readonly GearsetSearchAddon gearsetSearchAddon = new() {
+        Size = new Vector2(275.0f, 555.0f),
+        InternalName = "GearsetSearch",
+        Title = Strings.SearchAddon_GearsetTitle,
+    };
 
     private readonly NewRedirectionAddon newRedirectionAddon = new() {
-        Size = new Vector2(500.0f, 275.0f),
+        Size = new Vector2(550.0f, 275.0f),
         InternalName = "AddRedirectionWindow",
         Title = Strings.GearsetRedirect_AddRedirectionTitle,
     };
 
-    public override void Dispose() {
-        base.Dispose();
-
-        gearsetSearchAddon.Dispose();
-        newRedirectionAddon.Dispose();
-    }
-
     protected override void OnSetup(AtkUnitBase* addon) {
-        gearsetListNode = new ModifyListNode<GearsetInfo> {
+        gearsetListNode = new ModifyListNode<GearsetInfo, GearsetInfoListItemNode> {
             Size = new Vector2(225.0f, ContentSize.Y),
             Position = ContentStartPosition,
-            SelectionOptions = GetConfigInfos(),
-            SortOptions = [
-                Strings.GearsetRedirect_SortAlphabetical,
-                Strings.GearsetRedirect_SortId,
-            ],
+            Options = GetConfigInfos(),
+            ItemSpacing = 3.0f,
+            SortOptions = [ Strings.GearsetRedirect_SortAlphabetical, Strings.GearsetRedirect_SortId ],
             AddNewEntry = OnAddEntry,
             RemoveEntry = OnRemoveEntry,
-            OnOptionChanged = OnOptionChanged,
+            SelectionChanged = OnOptionChanged,
+            ItemComparer = GearsetInfo.Comparer,
+            IsSearchMatch = GearsetInfo.IsMatch,
         };
         gearsetListNode.AttachNode(this);
 
@@ -61,8 +58,8 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         lineNode.AttachNode(this);
 
         optionsContainerNode = new SimpleComponentNode {
-            Position = new Vector2(lineNode.X + lineNode.Width, ContentStartPosition.Y),
-            Size = new Vector2(ContentSize.X - lineNode.X - lineNode.Width, ContentSize.Y),
+            Size = new Vector2(ContentSize.X - lineNode.Bounds.Left, ContentSize.Y),
+            Position = new Vector2(lineNode.Bounds.Right + 4.0f, ContentStartPosition.Y),
         };
         optionsContainerNode.AttachNode(this);
 
@@ -73,7 +70,6 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         jobImageNode = new IconImageNode {
             Size = adjustedSize,
             Position = optionsContainerNode.Size / 2.0f - adjustedSize / 2.0f,
-            IconId = gearsetListNode.SelectedOption?.GetIconId() ?? 0,
             IsVisible = gearsetListNode.SelectedOption is not null,
             FitTexture = true,
             Alpha = 0.1f,
@@ -84,7 +80,6 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
             Size = new Vector2(optionsContainerNode.Width, 28.0f),
             Position = new Vector2(0.0f, 45.0f),
             IsVisible = gearsetListNode.SelectedOption is not null,
-            String = gearsetListNode.SelectedOption?.GetLabel() ?? string.Empty,
             FontSize = 28,
             TextColor = ColorHelper.GetColor(8),
             TextOutlineColor = ColorHelper.GetColor(7),
@@ -92,47 +87,65 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         };
         gearsetLabelNode.AttachNode(optionsContainerNode);
 
-        redirectListNode = new ModifyListNode<RedirectInfo> {
+        redirectListNode = new ModifyListNode<RedirectInfo, RedirectInfoListItemNode> {
             Position = new Vector2(0.0f, gearsetLabelNode.Y + gearsetLabelNode.Height + 10.0f),
             Size = optionsContainerNode.Size - new Vector2(0.0f, gearsetLabelNode.Y + gearsetLabelNode.Height + 10.0f),
             IsVisible = gearsetListNode.SelectedOption is not null,
-            AddNewEntry = thisListNode => {
+            ItemSpacing = 6.0f,
+            AddNewEntry = () => {
                 newRedirectionAddon.OnSelectionsConfirmed = () => {
                     if (newRedirectionAddon.SelectedGearset is null) return;
                     if (newRedirectionAddon.SelectedTerritory is null) return;
                     if (gearsetListNode?.SelectedOption is null) return;
-
+                
                     var redirectInfo = new RedirectInfo {
                         AlternateGearsetId = newRedirectionAddon.SelectedGearset.GearsetId,
                         TerritoryType = newRedirectionAddon.SelectedTerritory.Value.RowId,
                     };
+
+                    if (!Config.Redirections.TryAdd(gearsetListNode.SelectedOption.GearsetId, [redirectInfo])) {
+                        Config.Redirections[gearsetListNode.SelectedOption.GearsetId].Add(redirectInfo);
+                    }
                     
-                    thisListNode.AddOption(redirectInfo);
                     Config.Save();
+                    redirectListNode?.RefreshList();
                 };
                 
                 newRedirectionAddon.Open();
             },
-            RemoveEntry = _ => {
+            RemoveEntry = entry => {
+                if (gearsetListNode?.SelectedOption is null) return;
+                
+                Config.Redirections[gearsetListNode.SelectedOption.GearsetId].Remove(entry);
                 Config.Save();
             },
+            IsSearchMatch = RedirectInfo.IsMatch,
         };
         redirectListNode.AttachNode(optionsContainerNode);
     }
+    
+    public override void Dispose() {
+        base.Dispose();
 
-    private void OnOptionChanged(GearsetInfo? obj) {
+        gearsetSearchAddon.Dispose();
+        newRedirectionAddon.Dispose();
+    }
+
+    private void OnOptionChanged(GearsetInfo? gearsetInfo) {
         if (jobImageNode is null) return;
         if (gearsetLabelNode is null) return;
-        if (redirectListNode is null) return; 
+        if (redirectListNode is null) return;
 
-        jobImageNode.IconId = obj?.GetIconId() ?? 0;
-        jobImageNode.IsVisible = obj is not null;
+        if (gearsetInfo is not null) {
+            var gearsetData = RaptureGearsetModule.Instance()->GetGearset(gearsetInfo.GearsetId);
         
-        gearsetLabelNode.IsVisible = obj is not null;
-        gearsetLabelNode.String = obj?.GetLabel() ?? string.Empty;
-
-        if (obj is not null) {
-            redirectListNode.SelectionOptions = Config.Redirections[obj.GearsetId];
+            jobImageNode.IconId = gearsetData->ClassJob + 62000u;
+            jobImageNode.IsVisible = true;
+        
+            gearsetLabelNode.IsVisible = true;
+            gearsetLabelNode.String = gearsetData->NameString;
+            
+            redirectListNode.Options = Config.Redirections[gearsetInfo.GearsetId];
             redirectListNode.IsVisible = true;
         }
         else {
@@ -141,18 +154,14 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
     }
 
     private void OnRemoveEntry(GearsetInfo obj) {
-        OnOptionChanged(null);
-        
         Config.Redirections.Remove(obj.GearsetId);
         Config.Save();
     }
 
-    private void OnAddEntry(ModifyListNode<GearsetInfo> obj) {
-        gearsetSearchAddon.UpdateGearsets(Config.Redirections.Keys.ToList());
+    private void OnAddEntry() {
         gearsetSearchAddon.SelectionResult = result => {
-            if (Config.Redirections.TryAdd(result.GearsetId, [])) {
-                gearsetListNode?.SelectionOptions = GetConfigInfos();
-
+            if (Config.Redirections.TryAdd(result.Id, [])) {
+                gearsetListNode?.Options = GetConfigInfos();
                 Config.Save();
             }
         };

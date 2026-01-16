@@ -4,7 +4,7 @@ using KamiToolKit.Nodes;
 
 namespace VanillaPlus.NativeElements.Nodes;
 
-public class IconWithCountNode : ResNode {
+public class IconWithCountNode : SimpleComponentNode {
 
     private readonly IconImageNode iconNode;
     private readonly TextNode countTextNode;
@@ -42,11 +42,15 @@ public class IconWithCountNode : ResNode {
         get => int.Parse(countTextNode.String);
         set {
             if (ShowCountWhenOne || value > 1) {
+                countTextNode.IsVisible = true;
                 countTextNode.String = value switch {
                     >= 1_000_000 => Strings.IconWithCount_MillionsFormat.Format(value / 1_000_000),
                     >= 10_000 => Strings.IconWithCount_ThousandsFormat.Format(value / 1_000),
                     _ => $"{value}",
                 };
+            }
+            else {
+                countTextNode.IsVisible = false;
             }
         }
     }

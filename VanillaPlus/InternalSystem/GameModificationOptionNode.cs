@@ -3,6 +3,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using Addon = VanillaPlus.Utilities.Addon;
 
 namespace VanillaPlus.InternalSystem;
@@ -67,7 +68,7 @@ public class GameModificationOptionNode : SelectableNode {
             TextTooltip = Strings.Tooltip_OpenConfiguration,
             OnClick = () => {
                 Modification?.Modification.OpenConfigAction?.Invoke();
-                OnClick?.Invoke();
+                OnClick?.Invoke(this);
             },
         };
         configButtonNode.AttachNode(this);
@@ -103,7 +104,7 @@ public class GameModificationOptionNode : SelectableNode {
 
         UpdateDisabledState();
         
-        OnClick?.Invoke();
+        OnClick?.Invoke(this);
         RefreshConfigWindowButton();
     }
 

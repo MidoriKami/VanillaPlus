@@ -2,7 +2,7 @@
 using System.Linq;
 using Dalamud.Game.Inventory;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using VanillaPlus.Features.ListInventory;
+using VanillaPlus.Classes;
 
 namespace VanillaPlus.Utilities;
 
@@ -32,8 +32,15 @@ public static unsafe class Inventory {
 
     public static bool Contains(this List<InventoryType> inventoryTypes, GameInventoryType type) 
         => inventoryTypes.Contains((InventoryType)type);
-    
-    public static List<ItemInfo> GetInventoryItems() {
+
+    public static IEnumerable<ItemStack> GetInventoryStacks()
+        => from itemGroup in GetInventoryItems().GroupBy(item => item.ItemId) 
+           where itemGroup.Key is not 0
+           let totalCount = itemGroup.Sum(item => item.Quantity) 
+           let item = itemGroup.First() 
+           select new ItemStack(item, totalCount);
+
+    public static List<InventoryItem> GetInventoryItems() {
         List<InventoryType> inventories = [ InventoryType.Inventory1, InventoryType.Inventory2, InventoryType.Inventory3, InventoryType.Inventory4 ];
         List<InventoryItem> items = [];
 
@@ -48,18 +55,9 @@ public static unsafe class Inventory {
             }
         }
 
-        List<ItemInfo> itemInfos = [];
-        itemInfos.AddRange(from itemGroups in items.GroupBy(item => item.ItemId)
-                           where itemGroups.Key is not 0
-                           let item = itemGroups.First()
-                           let itemCount = itemGroups.Sum(duplicateItem => duplicateItem.Quantity)
-                           select new ItemInfo {
-                               Item = item, ItemCount = itemCount,
-                           });
-
-        return itemInfos;
+        return items;
     }
     
-    public static List<ItemInfo> GetInventoryItems(string filterString, bool invert = false) 
+    public static List<InventoryItem> GetInventoryItems(string filterString, bool invert = false) 
         => GetInventoryItems().Where(item => item.IsRegexMatch(filterString) != invert).ToList();
 }

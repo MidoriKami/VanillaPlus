@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Dalamud.Plugin;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.InternalSystem;
 

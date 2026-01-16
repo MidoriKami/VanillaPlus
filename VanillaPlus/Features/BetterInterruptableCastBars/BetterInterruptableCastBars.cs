@@ -4,12 +4,12 @@ using System.Numerics;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
-using KamiToolKit.Classes.Controllers;
-using KamiToolKit.Classes.Timelines;
+using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
+using KamiToolKit.Timelines;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.BetterInterruptableCastBars;
 
@@ -55,7 +55,7 @@ public unsafe class BetterInterruptableCastBars : GameModification {
             };
 
             LoadAssets(targetInfoCastbarPulseNode);
-            targetInfoCastbarPulseNode.AttachNode((AtkResNode*)existingPulseNode, NodePosition.BeforeTarget);
+            targetInfoCastbarPulseNode.AttachNode(existingPulseNode, NodePosition.BeforeTarget);
         };
         
         targetInfoCastbarController.OnDetach += addon => {

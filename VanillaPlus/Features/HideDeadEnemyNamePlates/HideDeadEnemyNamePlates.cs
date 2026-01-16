@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dalamud.Game.Gui.NamePlate;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.HideDeadEnemyNamePlates;
 

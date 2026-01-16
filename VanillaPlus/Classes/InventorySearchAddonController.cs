@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes.Controllers;
+using KamiToolKit.Controllers;
 using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Classes;
@@ -25,6 +25,8 @@ public unsafe class InventorySearchAddonController : IDisposable {
     }
 
     public void Dispose() {
+        Services.PluginLog.Info("InventorySearchAddonController.Dispose");
+
         inventoryController?.Dispose();
         inventoryController = null;
 
@@ -40,6 +42,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
     }
     
     private void OnInventoryDetach(AtkUnitBase* addon) {
+        Services.PluginLog.Info($"OnInventoryAttach: {addon->NameString}");
         if (inputTextNodes?.TryGetValue(addon->NameString, out var node) ?? false) {
             node.Dispose();
             inputTextNodes.Remove(addon->NameString);
@@ -62,6 +65,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
     }
 
     private void OnInventoryAttach(AtkUnitBase* addon) {
+        Services.PluginLog.Info($"OnInventoryAttach: {addon->NameString}");
         if (inputTextNodes is null) return;
         var size = new Vector2(addon->Size.X / 2.0f, 28.0f);
 

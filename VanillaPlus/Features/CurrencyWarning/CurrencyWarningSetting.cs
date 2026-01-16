@@ -1,30 +1,25 @@
-﻿using KamiToolKit.Premade;
+﻿using System;
+using System.Text.RegularExpressions;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.CurrencyWarning;
 
-public class CurrencyWarningSetting : IInfoNodeData {
+public class CurrencyWarningSetting {
     public uint ItemId;
-    public bool EnableLowLimit;
-    public bool EnableHighLimit;
-    public int LowLimit;
-    public int HighLimit;
+    public WarningMode Mode = WarningMode.Above;
+    public int Limit;
 
-    public string GetLabel() 
-        => ItemId == 0 ? "Unknown" : Services.DataManager.GetItem(ItemId).Name.ToString();
-    
-    public string GetSubLabel() 
-        => "";
-    
-    public uint? GetIconId() 
-        => Services.DataManager.GetItem(ItemId).Icon;
-    
-    public uint? GetId()
-        => ItemId;
-    
-    public string? GetTexturePath() 
-        => null;
+    public static bool IsSearchMatch(CurrencyWarningSetting item, string search) {
+        var regex = new Regex(search, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        var itemData = Services.DataManager.GetItem(item.ItemId);
 
-    public int Compare(IInfoNodeData other, string sortingMode) {
-        return string.CompareOrdinal(GetLabel(), other.GetLabel());
+        return regex.IsMatch(itemData.Name.ToString());
+    }
+
+    public static int ItemComparer(CurrencyWarningSetting left, CurrencyWarningSetting right, string _) {
+        var leftItem = Services.DataManager.GetItem(left.ItemId);
+        var rightItem = Services.DataManager.GetItem(right.ItemId);
+
+        return string.Compare(leftItem.Name.ToString(), rightItem.Name.ToString(), StringComparison.OrdinalIgnoreCase);
     }
 }

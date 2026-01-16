@@ -1,11 +1,8 @@
+using System;
+using System.Linq;
 using System.Numerics;
-using Dalamud.Game.Addon.Lifecycle;
-using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
-using KamiToolKit;
-using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
-using VanillaPlus.NativeElements.Addons;
-using VanillaPlus.Utilities;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ListInventory;
 
@@ -25,20 +22,7 @@ public class ListInventory : GameModification {
         ],
     };
     
-    private SearchableNodeListAddon? addonListInventory;
-
-    private string filterString = string.Empty;
-    private string searchString = string.Empty;
-    private bool filterReversed;
-    private bool updateRequested;
-
-    private static string FilterAlphabeticallyLabel => Strings.ListInventory_FilterAlphabetically;
-    private static string FilterQuantityLabel => Strings.ListInventory_FilterQuantity;
-    private static string FilterLevelLabel => Strings.ListInventory_FilterLevel;
-    private static string FilterItemLevelLabel => Strings.ListInventory_FilterItemLevel;
-    private static string FilterRarityLabel => Strings.ListInventory_FilterRarity;
-    private static string FilterItemIdLabel => Strings.ListInventory_FilterItemId;
-    private static string FilterItemCategoryLabel => Strings.ListInventory_FilterItemCategory;
+    private AddonListInventory? addonListInventory;
 
     public override string ImageName => "ListInventory.png";
 
@@ -46,100 +30,19 @@ public class ListInventory : GameModification {
         addonListInventory = new AddonListInventory {
             InternalName = "ListInventory",
             Title = Strings.ListInventory_Title,
-            Size = new Vector2(450.0f, 700.0f),
-            OnFilterUpdated = OnFilterUpdated,
-            OnSearchUpdated = OnSearchUpdated,
-            UpdateListFunction = OnListUpdated,
-            DropDownOptions = [
-                FilterAlphabeticallyLabel,
-                FilterQuantityLabel,
-                FilterLevelLabel,
-                FilterItemLevelLabel,
-                FilterRarityLabel,
-                FilterItemIdLabel,
-                FilterItemCategoryLabel,
-            ],
+            Size = new Vector2(500.0f, 500.0f),
             OpenCommand = "/listinventory",
-            OnInventoryDataChanged = OnInventoryChanged,
+            DropDownOptions = Enum.GetValues<InventoryFilterMode>().Select(value => value.Description).ToList(),
+            ItemSpacing = 2.25f,
         };
 
         addonListInventory.Initialize();
 
         OpenConfigAction = addonListInventory.OpenAddonConfig;
-
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "Inventory", OnInventoryUpdate);
-        
-        updateRequested = true;
     }
 
     public override void OnDisable() {
         addonListInventory?.Dispose();
         addonListInventory = null;
-        
-        Services.AddonLifecycle.UnregisterListener(OnInventoryUpdate);
-    }
-    
-    private void OnInventoryUpdate(AddonEvent type, AddonArgs args) {
-        updateRequested = true;
-        addonListInventory?.DoListUpdate();
-    }
-
-    private void OnInventoryChanged() {
-        updateRequested = true;
-        addonListInventory?.DoListUpdate();
-    }
-
-    private void OnFilterUpdated(string newFilterString, bool reversed) {
-        updateRequested = true;
-        filterString = newFilterString;
-        filterReversed = reversed;
-        addonListInventory?.DoListUpdate();
-    }
-
-    private void OnSearchUpdated(string newSearchString) {
-        updateRequested = true;
-        searchString = newSearchString;
-        addonListInventory?.DoListUpdate();
-    }
-
-    private bool OnListUpdated(ScrollingListNode list, bool isOpening) {
-        if (!updateRequested && !isOpening) return false;
-
-        var filteredInventoryItems = Inventory.GetInventoryItems(searchString);
-
-        var listUpdated = list.SyncWithListData(filteredInventoryItems, node => node.Item, data => new InventoryItemNode {
-            Size = new Vector2(list.ContentWidth, 32.0f),
-            Item = data,
-        });
-
-        list.ReorderNodes(Comparison);
-        
-        updateRequested = false;
-        return listUpdated;
-    }
-    
-    private int Comparison(NodeBase x, NodeBase y) {
-        if (x is not InventoryItemNode left || y is not InventoryItemNode right) return 0;
-
-        var leftItem = left.Item;
-        var rightItem = right.Item;
-        if (leftItem is null || rightItem is null) return 0;
-
-        // Note: Compares in opposite direction to be descending instead of ascending, except for alphabetically
-
-        var result = filterString switch {
-            var s when s == FilterAlphabeticallyLabel  => string.CompareOrdinal(leftItem.Name, rightItem.Name),
-            var s when s == FilterLevelLabel => rightItem.Level.CompareTo(leftItem.Level),
-            var s when s == FilterItemLevelLabel  => rightItem.ItemLevel.CompareTo(leftItem.ItemLevel),
-            var s when s == FilterRarityLabel  => rightItem.Rarity.CompareTo(leftItem.Rarity),
-            var s when s == FilterItemIdLabel => rightItem.Item.ItemId.CompareTo(leftItem.Item.ItemId),
-            var s when s == FilterItemCategoryLabel => rightItem.UiCategory.CompareTo(leftItem.UiCategory),
-            var s when s == FilterQuantityLabel => rightItem.ItemCount.CompareTo(leftItem.ItemCount),
-            _ => string.CompareOrdinal(leftItem.Name, rightItem.Name),
-        };
-
-        var reverseModifier = filterReversed ? -1 : 1;
-        
-        return ( result is 0 ? string.CompareOrdinal(leftItem.Name, rightItem.Name) : result ) * reverseModifier;
     }
 }

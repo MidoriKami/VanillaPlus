@@ -2,6 +2,7 @@
 using Dalamud.Interface;
 using KamiToolKit.Overlay;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.BetterCursor;

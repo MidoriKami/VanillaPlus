@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Numerics;
+using System.Threading;
 using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
@@ -12,13 +14,15 @@ namespace VanillaPlus;
 
 public sealed class VanillaPlus : IDalamudPlugin {
     public VanillaPlus(IDalamudPluginInterface pluginInterface) {
+        DebugDelayStartup();
+
         pluginInterface.Create<Services>();
         PluginSystem.SystemConfig = SystemConfiguration.Load();
 
         SetCultureInfo(pluginInterface.UiLanguage);
         pluginInterface.LanguageChanged += SetCultureInfo;
 
-        KamiToolKitLibrary.Initialize(pluginInterface);
+        KamiToolKitLibrary.Initialize(pluginInterface, "VanillaPlus");
 
         PluginSystem.AddonModificationBrowser = new AddonModificationBrowser {
             InternalName = "VanillaPlusConfig",
@@ -45,7 +49,7 @@ public sealed class VanillaPlus : IDalamudPlugin {
         PluginSystem.KeyListener = new KeyListener();
         PluginSystem.ModificationManager = new ModificationManager();
 
-        AutoOpenBrowser(false);
+        AutoOpenBrowser(PluginSystem.SystemConfig.IsDebugMode);
     }
 
     public void Dispose() {
@@ -76,10 +80,23 @@ public sealed class VanillaPlus : IDalamudPlugin {
         PluginSystem.AddonModificationBrowser.Open();
     }
 
+    [Conditional("DEBUG")]
+    private static void DebugDelayStartup()
+        => Thread.Sleep(TimeSpan.FromMilliseconds(350));
+
     private static void Handler(string command, string arguments) {
-        switch (command, arguments) {
-            case { command: "/vanillaplus" or "/plus", arguments: "" }:
+        if (command is not ("/vanillaplus" or "/plus")) return;
+        
+        switch (arguments) {
+            case "" or null:
                 PluginSystem.AddonModificationBrowser.Open();
+                break;
+            
+            case "debug":
+                PluginSystem.SystemConfig.IsDebugMode = !PluginSystem.SystemConfig.IsDebugMode;
+                Services.ChatGui.Print($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled": "Disabled")}", "VanillaPlus");
+                Services.PluginLog.Info($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled": "Disabled")}");
+                PluginSystem.SystemConfig.Save();
                 break;
         }
     }

@@ -1,10 +1,11 @@
+using System;
 using System.Numerics;
 using System.Text.Json.Serialization;
-using KamiToolKit.Premade;
+using System.Text.RegularExpressions;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 
-public class CurrencySetting : IInfoNodeData {
+public class CurrencySetting {
     public uint ItemId;
     public Vector2 Position = Vector2.Zero;
     public bool EnableLowLimit;
@@ -17,28 +18,27 @@ public class CurrencySetting : IInfoNodeData {
     public float FadePercent;
     public bool FadeIfNoWarnings;
 
-    [JsonIgnore]
-    public bool IsNodeMoveable;
+    [JsonIgnore] public bool IsNodeMoveable;
 
-    public string GetLabel()
-        => ItemId is 0 ? "Currency Not Set" : Services.DataManager.GetItem(ItemId).Name.ToString();
+    public static int Comparison(CurrencySetting left, CurrencySetting right, string mode) {
+        switch (mode) {
+            case "Alphabetical":
+                var leftItem = Services.DataManager.GetItem(left.ItemId);
+                var rightItem = Services.DataManager.GetItem(right.ItemId);
+                return string.Compare(leftItem.Name.ToString(), rightItem.Name.ToString(), StringComparison.OrdinalIgnoreCase);
+            
+            case "Id":
+                return left.ItemId.CompareTo(right.ItemId);
+        }
 
-    public string GetSubLabel()
-        => Services.DataManager.GetItem(ItemId).ItemSearchCategory.Value.Name.ToString().FirstCharToUpper();
+        return 0;
+    }
 
-    public uint? GetId()
-        => ItemId;
+    public static bool IsMatch(CurrencySetting item, string searchString) {
+        var regex = new Regex(searchString, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-    public uint? GetIconId()
-        => ItemId is 0 ? (uint) 5 : Services.DataManager.GetItem(ItemId).Icon;
-
-    public string? GetTexturePath()
-        => null;
-
-    public int Compare(IInfoNodeData other, string sortingMode) {
-        return sortingMode switch {
-            var s when s == Strings.SortOption_Alphabetical => string.CompareOrdinal(GetLabel(), other.GetLabel()),
-            _ => 0,
-        };
+        var itemData = Services.DataManager.GetItem(item.ItemId);
+        
+        return regex.IsMatch(itemData.Name.ToString());
     }
 }

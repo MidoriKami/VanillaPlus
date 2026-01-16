@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Text.RegularExpressions;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes.Controllers;
+using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Addons;
+using KamiToolKit.Premade.ListItemNodes;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Addons;
 
 namespace VanillaPlus.Features.PartyFinderPresets;
@@ -32,22 +36,29 @@ public unsafe class PartyFinderPresets : GameModification {
     
     private RenameAddon? savePresetWindow;
 
-    private ListConfigAddon<PresetInfo, PartyFinderPresetConfigNode>? presetEditorAddon;
+    private ListConfigAddon<string, StringListItemNode, PartyFinderPresetConfigNode>? presetEditorAddon;
 
     public override string ImageName => "PartyFinderPresets.png";
 
     public override void OnEnable() {
-        presetEditorAddon = new ListConfigAddon<PresetInfo, PartyFinderPresetConfigNode> {
+        presetEditorAddon = new ListConfigAddon<string, StringListItemNode, PartyFinderPresetConfigNode> {
             Size = new Vector2(600.0f, 400.0f),
             InternalName = "PresetConfigManager",
             Title = Strings.Title_PresetConfigManager,
             Options = GetPresetInfos(),
-            OnConfigChanged = _ => {
+            ItemSpacing = 2.0f,
+            RemoveClicked = (_, toRemove) => {
+                PresetManager.DeletePreset(toRemove);
                 UpdateDropDownOptions();
             },
-            OnItemRemoved = toRemove => {
-                PresetManager.DeletePreset(toRemove.Name);
-                UpdateDropDownOptions();
+            EditCompleted = _ => {
+                presetEditorAddon?.RefreshList();
+                presetEditorAddon?.SelectItem(null);
+            },
+            ItemComparer = (left, right, _) => string.Compare(left, right, StringComparison.OrdinalIgnoreCase),
+            IsSearchMatch = (item, searchString) => {
+                var regex = new Regex(searchString, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+                return regex.IsMatch(item);
             },
         };
 
@@ -150,15 +161,11 @@ public unsafe class PartyFinderPresets : GameModification {
             presetDropDown.Options = presets;
             presetDropDown.IsEnabled = anyPresets;
 
-            presetDropDown.TextTooltip = anyPresets
-                                             ? Strings.Tooltip_SelectPreset
-                                             : Strings.Tooltip_NoPresets;
+            presetDropDown.TextTooltip = anyPresets ? Strings.Tooltip_SelectPreset : Strings.Tooltip_NoPresets;
         }
     }
 
-    private static List<PresetInfo> GetPresetInfos() => PresetManager.GetPresetNames()
+    private static List<string> GetPresetInfos() => PresetManager.GetPresetNames()
         .Where(name => name != PresetManager.DefaultString && name != PresetManager.DontUseString)
-        .Select(name => new PresetInfo {
-            Name = name,
-        }).ToList();
+        .ToList();
 }

@@ -3,6 +3,7 @@ using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.PersistentRetainerGil;
 
@@ -65,7 +66,7 @@ public unsafe class PersistentRetainerGil : GameModification {
         if ((AtkEventType)eventArgs.AtkEventType is not AtkEventType.ButtonClick) return;
         if (eventArgs.EventParam is not 3) return;
 
-        previousGil = eventArgs.AtkValueSpan[4].Int;
+        previousGil = eventArgs.ValueSpan[4].Int;
         needsUpdate = true;
     }
 }
