@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using Lumina.Text.ReadOnly;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.PartyFinderPresets;
@@ -81,8 +82,8 @@ public static unsafe class PresetManager {
         return directoryInfo;
     }
 
-    public static bool IsValidFileName(string fileName)
-        => !fileName.Any(character => Enumerable.Contains(Path.GetInvalidFileNameChars(), character));
+    public static bool IsValidFileName(ReadOnlySeString fileName)
+        => !fileName.ToString().Any(character => Enumerable.Contains(Path.GetInvalidFileNameChars(), character));
 
     public static void DeletePreset(string fileName) {
         var presetFile = FileHelpers.GetFileInfo("Data", "PartyFinderPresets", $"{fileName}.preset.data");

@@ -123,7 +123,7 @@ public class FateListItemNode : ListItemNode<IFate> {
 
     protected override void SetNodeData(IFate itemData) {
         iconNode.IconId = itemData.MapIconId;
-        nameNode.SeString = itemData.NameString;
+        nameNode.String = itemData.NameString;
         timeRemainingNode.String = itemData.TimeRemainingString;
 
         if (ItemData is not { Level: 1, MaxLevel: 255 }) {

@@ -65,7 +65,7 @@ public unsafe class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where 
         textInputNode = new TextInputNode {
             PlaceholderString = Strings.SearchPlaceholder,
         };
-        textInputNode.SeString = searchText;
+        textInputNode.String = searchText;
 
         textInputNode.OnInputReceived += newSearchString => {
             searchText = newSearchString.ToString();

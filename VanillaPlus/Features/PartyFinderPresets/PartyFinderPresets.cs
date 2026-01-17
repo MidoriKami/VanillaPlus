@@ -67,7 +67,7 @@ public unsafe class PartyFinderPresets : GameModification {
             Title = Strings.Title_PartyFinderPreset,
             IsInputValid = PresetManager.IsValidFileName,
             OnRenameComplete = newOption => {
-                PresetManager.SavePreset(newOption);
+                PresetManager.SavePreset(newOption.ToString());
                 presetEditorAddon.Options = GetPresetInfos();
                 UpdateDropDownOptions();
             },

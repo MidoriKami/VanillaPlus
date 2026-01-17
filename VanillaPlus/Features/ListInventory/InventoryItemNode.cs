@@ -61,7 +61,7 @@ public class InventoryItemNode : ListItemNode<ItemStack> {
         if (!Services.DataManager.GetExcelSheet<Item>().TryGetRow(itemData.Item.ItemId, out var luminaData)) return;
         
         iconNode.IconId = luminaData.Icon;
-        itemNameTextNode.SeString = luminaData.Name;
+        itemNameTextNode.String = luminaData.Name;
         iconNode.Count = itemData.Quantity;
         iconNode.CollisionNode.InventoryItemTooltip = new InventoryItemTooltip(itemData.Item.Container, itemData.Item.Slot);
 

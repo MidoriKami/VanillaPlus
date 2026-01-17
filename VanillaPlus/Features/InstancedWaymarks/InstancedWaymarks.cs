@@ -140,8 +140,8 @@ public unsafe class InstancedWaymarks : GameModification {
 
         renameWindow.OnRenameComplete = newString => {
             config.NamedWaymarks.TryAdd(cfc, []);
-            config.NamedWaymarks[cfc].TryAdd(slotClicked, newString);
-            config.NamedWaymarks[cfc][slotClicked] = newString;
+            config.NamedWaymarks[cfc].TryAdd(slotClicked, newString.ToString());
+            config.NamedWaymarks[cfc][slotClicked] = newString.ToString();
             config.Save();
         };
 

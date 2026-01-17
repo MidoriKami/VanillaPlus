@@ -40,7 +40,7 @@ public class LootedItemListItemNode : ListItemNode<LootedItemInfo> {
 
     protected override void SetNodeData(LootedItemInfo itemData) {
         iconNode.IconId = itemData.IconId;
-        itemNameTextNode.SeString = itemData.Name;
+        itemNameTextNode.String = itemData.Name;
         iconNode.Count = itemData.Quantity;
         iconNode.CollisionNode.ItemTooltip = itemData.ItemId;
     }

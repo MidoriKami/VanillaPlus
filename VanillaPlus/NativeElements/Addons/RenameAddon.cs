@@ -3,6 +3,7 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Nodes;
+using Lumina.Text.ReadOnly;
 
 namespace VanillaPlus.NativeElements.Addons;
 
@@ -11,7 +12,7 @@ public class RenameAddon : NativeAddon {
     private TextButtonNode? confirmButton;
     private TextButtonNode? cancelButton;
 
-    public Action<string>? OnRenameComplete { get; set; }
+    public Action<ReadOnlySeString>? OnRenameComplete { get; set; }
     
     protected override unsafe void OnSetup(AtkUnitBase* addon) {
         SetWindowSize(250.0f, 125.0f);
@@ -56,5 +57,5 @@ public class RenameAddon : NativeAddon {
     public string PlaceholderString { get; set; } = string.Empty;
     public string DefaultString { get; set; } = string.Empty;
     public bool AutoSelectAll { get; set; }
-    public Func<string, bool>? IsInputValid { get; set; }
+    public Func<ReadOnlySeString, bool>? IsInputValid { get; set; }
 }

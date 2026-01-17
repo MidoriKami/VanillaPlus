@@ -74,7 +74,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             TextColor = ColorHelper.GetColor(1),
             LineSpacing = 18,
             TextFlags = TextFlags.MultiLine | TextFlags.Edge | TextFlags.WordWrap,
-            SeString = perfectTails.SolveAndGetProbabilitySeString(),
+            String = perfectTails.SolveAndGetProbabilitySeString(),
         };
         probabilityTextNode.AttachNode(existingTextNode, NodePosition.AfterTarget);
 
@@ -152,7 +152,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             perfectTails.GameState[index] = PlayerState.Instance()->IsWeeklyBingoStickerPlaced(index);
         }
 
-        probabilityTextNode?.SeString = perfectTails.SolveAndGetProbabilitySeString();
+        probabilityTextNode?.String = perfectTails.SolveAndGetProbabilitySeString();
 
         AdjustCurrentDutyIndicator(addon);
     }

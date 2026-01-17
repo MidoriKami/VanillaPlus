@@ -79,8 +79,8 @@ public class QuestListItemNode : ListItemNode<MarkerInfo> {
         }
         
         questIconNode.IconId = itemData.IconId;
-        questNameTextNode.SeString = itemData.Name;
-        issuerNameTextNode.SeString = itemData.IssuerName;
+        questNameTextNode.String = itemData.Name;
+        issuerNameTextNode.String = itemData.IssuerName;
     }
 
     public override void Update()

@@ -177,9 +177,9 @@ public unsafe class HUDPresets : GameModification {
         renameAddon.PlaceholderString = Strings.HUDPresets_PlaceholderNewPreset;
         renameAddon.DefaultString = string.Empty;
         renameAddon.OnRenameComplete = newName => {
-            HUDPresetManager.SavePreset(newName);
+            HUDPresetManager.SavePreset(newName.ToString());
             if (presetDropdownNode?.Options is not null) {
-                presetDropdownNode.Options.Add(newName);
+                presetDropdownNode.Options.Add(newName.ToString());
                 presetDropdownNode.RecalculateScrollParams();
             }
         };

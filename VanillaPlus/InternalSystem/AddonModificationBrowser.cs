@@ -60,7 +60,7 @@ public class AddonModificationBrowser : NativeAddon {
 
         foreach (var category in PluginSystem.ModificationManager.CategoryGroups) {
             var newCategoryNode = new TreeListCategoryNode {
-                SeString = category.Key.Description,
+                String = category.Key.Description,
                 OnToggle = isVisible => OnCategoryToggled(isVisible, category.Key),
                 VerticalPadding = 0.0f,
             };
@@ -69,7 +69,7 @@ public class AddonModificationBrowser : NativeAddon {
                 if (subCategory.Key is not null) {
                     var newHeaderNode = new TreeListHeaderNode {
                         Size = new Vector2(0.0f, 24.0f), 
-                        SeString = subCategory.Key.Description, 
+                        String = subCategory.Key.Description, 
                     };
                     
                     newCategoryNode.AddNode(newHeaderNode);
@@ -93,7 +93,7 @@ public class AddonModificationBrowser : NativeAddon {
         UpdateSizes();
         
         OnSearchBoxInputReceived(PluginSystem.SystemConfig.CurrentSearch);
-        searchBoxNode.SeString = PluginSystem.SystemConfig.CurrentSearch;
+        searchBoxNode.String = PluginSystem.SystemConfig.CurrentSearch;
     }
     
     private void BuildOptionsContainer() {
@@ -116,7 +116,7 @@ public class AddonModificationBrowser : NativeAddon {
             AutoSelectAll = true,
             OnInputReceived = OnSearchBoxInputReceived,
             OnFocusLost = () => {
-                PluginSystem.SystemConfig.CurrentSearch = searchBoxNode.String;
+                PluginSystem.SystemConfig.CurrentSearch = searchBoxNode.String.ToString();
                 PluginSystem.SystemConfig.Save();
             },
         };
@@ -149,7 +149,7 @@ public class AddonModificationBrowser : NativeAddon {
         descriptionImageTextNode.AttachNode(descriptionContainerNode);
 
         changelogButtonNode = new TextButtonNode {
-            SeString = Strings.ChangelogButtonLabel,
+            String = Strings.ChangelogButtonLabel,
             OnClick = OnChangelogButtonClicked,
             IsVisible = false,
         };
@@ -235,7 +235,7 @@ public class AddonModificationBrowser : NativeAddon {
         }
 
         foreach (var categoryNode in optionContainerNode.ContentNode.CategoryNodes) {
-            categoryNode.IsVisible = validOptions.Any(option => option.ModificationInfo.Type.Description == categoryNode.SeString.ToString());
+            categoryNode.IsVisible = validOptions.Any(option => option.ModificationInfo.Type.Description == categoryNode.String.ToString());
             categoryNode.RecalculateLayout();
         }
 

@@ -25,9 +25,9 @@ public class PartyFinderPresetConfigNode : ConfigNode<string> {
             String = "Apply",
             OnClick = () => {
                 if (ConfigurationOption is not null && !renameInputNode.IsError) {
-                    PresetManager.RenamePreset(ConfigurationOption, renameInputNode.String);
+                    PresetManager.RenamePreset(ConfigurationOption, renameInputNode.String.ToString());
 
-                    ConfigurationOption = renameInputNode.String;
+                    ConfigurationOption = renameInputNode.String.ToString();
                     OptionChanged(ConfigurationOption);
                     OnConfigChanged?.Invoke(ConfigurationOption);
                 }

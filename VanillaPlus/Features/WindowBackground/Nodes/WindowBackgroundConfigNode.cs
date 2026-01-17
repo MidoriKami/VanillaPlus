@@ -39,7 +39,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
 
         colorEditNode = new ColorEditNode {
             Size = new Vector2(150.0f, 32.0f),
-            Label = Strings.Color,
+            String = Strings.Color,
         };
         verticalListNode.AddNode(1, colorEditNode);
 

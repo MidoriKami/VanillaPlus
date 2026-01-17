@@ -40,7 +40,7 @@ public class TextInputWithHintNode : SimpleComponentNode {
     }
 
     public ReadOnlySeString SearchString {
-        get => textInputNode.SeString;
-        set => textInputNode.SeString = value;
+        get => textInputNode.String;
+        set => textInputNode.String = value;
     }
 }

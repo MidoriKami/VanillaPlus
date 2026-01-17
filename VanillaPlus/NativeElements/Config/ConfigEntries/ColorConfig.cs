@@ -10,7 +10,7 @@ public class ColorConfig : BaseConfigEntry {
 
     public override NodeBase BuildNode() => new ColorEditNode {
         Size = new Vector2(200.0f, 28.0f),
-        Label = Label,
+        String = Label,
         CurrentColor = Color,
         DefaultColor = DefaultColor,
         OnColorConfirmed = color => {
