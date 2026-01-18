@@ -31,7 +31,7 @@ public class DutyLootItem : IComparable {
         // Load boss data and build lookup by FightNo
         var bosses = LoadItems<DungeonBoss>(CsvLoader.DungeonBossResourceName)
             .Where(boss => boss.ContentFinderConditionId == contentId)
-            .DistinctBy(boss => boss.FightNo) // TODO: Why do some duties have duplicate FightNo's?
+            .DistinctBy(boss => boss.FightNo) // Why do some duties have duplicate FightNo's?
             .ToDictionary(boss => boss.FightNo);
 
         // Track sources per item
