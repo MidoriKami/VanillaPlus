@@ -1,5 +1,7 @@
 using System.Numerics;
 using VanillaPlus.Classes;
+using VanillaPlus.Features.DutyLootPreview.Data;
+using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.DutyLootPreview;
 
@@ -26,15 +28,20 @@ public class DutyLootPreview : GameModification {
     private DutyLootInDutyUiController? inDutyUiController;
     private DutyLootPreviewAddon? addonDutyLoot;
     private DutyLootPreviewConfig? config;
+    private DutyLootDataLoader? dataLoader;
 
     public override void OnEnable() {
         config = DutyLootPreviewConfig.Load();
-        
+
+        dataLoader = new DutyLootDataLoader();
+        dataLoader.Enable();
+
         addonDutyLoot = new DutyLootPreviewAddon {
             InternalName = "DutyLootPreview",
             Title = Strings.Title_DutyLootPreview,
             Size = new Vector2(300.0f, 350.0f),
             Config = config,
+            DataLoader = dataLoader,
         };
 
         journalUiController = new DutyLootJournalUiController {
@@ -57,6 +64,9 @@ public class DutyLootPreview : GameModification {
 
         addonDutyLoot?.Dispose();
         addonDutyLoot = null;
+
+        dataLoader?.Dispose();
+        dataLoader = null;
 
         config = null;
     }

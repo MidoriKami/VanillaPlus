@@ -7,7 +7,7 @@ using Lumina.Text.ReadOnly;
 using LuminaSupplemental.Excel.Model;
 using LuminaSupplemental.Excel.Services;
 
-namespace VanillaPlus.Features.DutyLootPreview;
+namespace VanillaPlus.Features.DutyLootPreview.Data;
 
 public class DutyLootItem : IComparable {
     public required uint ItemId { get; init; }
