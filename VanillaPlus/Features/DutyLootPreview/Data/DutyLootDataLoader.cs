@@ -18,43 +18,42 @@ namespace VanillaPlus.Features.DutyLootPreview.Data;
 public class DutyLootDataLoader : IDisposable {
     public event Action<DutyLootData>? OnDutyLootDataChanged;
 
-    private DutyLootData _currentDutyLootData = DutyLootData.Empty;
     public DutyLootData CurrentDutyLootData {
-        get => _currentDutyLootData;
+        get;
         private set {
-            _currentDutyLootData = value;
+            field = value;
             OnDutyLootDataChanged?.Invoke(value);
         }
-    }
+    } = DutyLootData.Empty;
 
-    private int _loadGeneration;
-    private AddonController<AddonContentsFinder>? _contentsFinder;
+    private int loadGeneration;
+    private AddonController<AddonContentsFinder>? contentsFinder;
 
     public unsafe void Enable() {
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
         Services.GameGui.AgentUpdate += OnAgentUpdate;
 
-        _contentsFinder = new AddonController<AddonContentsFinder>("ContentsFinder");
-        _contentsFinder.OnAttach += OnContentsFinderChanged;
-        _contentsFinder.OnRefresh += OnContentsFinderChanged;
-        _contentsFinder.OnDetach += OnContentsFinderChanged;
-        _contentsFinder.Enable();
+        contentsFinder = new AddonController<AddonContentsFinder>("ContentsFinder");
+        contentsFinder.OnAttach += OnContentsFinderChanged;
+        contentsFinder.OnRefresh += OnContentsFinderChanged;
+        contentsFinder.OnDetach += OnContentsFinderChanged;
+        contentsFinder.Enable();
 
         RefreshActiveDuty();
     }
 
     public void Dispose() {
-        Interlocked.Increment(ref _loadGeneration); // Invalidate any in-flight loads
+        Interlocked.Increment(ref loadGeneration); // Invalidate any in-flight loads
 
-        _contentsFinder?.Dispose();
-        _contentsFinder = null;
+        contentsFinder?.Dispose();
+        contentsFinder = null;
 
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
         Services.GameGui.AgentUpdate -= OnAgentUpdate;
     }
 
     private void Clear() {
-        Interlocked.Increment(ref _loadGeneration); // Invalidate any in-flight loads
+        Interlocked.Increment(ref loadGeneration); // Invalidate any in-flight loads
         CurrentDutyLootData = DutyLootData.Empty;
     }
 
@@ -69,7 +68,7 @@ public class DutyLootDataLoader : IDisposable {
             return;
         }
 
-        var generation = Interlocked.Increment(ref _loadGeneration);
+        var generation = Interlocked.Increment(ref loadGeneration);
         _ = LoadDutyAsync(contentId, generation);
     }
 
@@ -79,7 +78,7 @@ public class DutyLootDataLoader : IDisposable {
 
             // Only show loading state if it takes longer than 50ms (avoid flicker)
             if (await Task.WhenAny(loadTask, Task.Delay(50)) != loadTask) {
-                if (generation != _loadGeneration) return;
+                if (generation != loadGeneration) return;
                 CurrentDutyLootData = new DutyLootData {
                     IsLoading = true,
                     ContentId = contentId,
@@ -88,7 +87,7 @@ public class DutyLootDataLoader : IDisposable {
             }
 
             var items = await loadTask;
-            if (generation != _loadGeneration) return;
+            if (generation != loadGeneration) return;
 
             CurrentDutyLootData = new DutyLootData {
                 IsLoading = false,
@@ -98,7 +97,7 @@ public class DutyLootDataLoader : IDisposable {
         }
         catch (Exception ex) {
             Services.PluginLog.Error(ex, "Failed to load duty loot");
-            if (generation != _loadGeneration) return;
+            if (generation != loadGeneration) return;
             CurrentDutyLootData = new DutyLootData {
                 IsLoading = false,
                 ContentId = contentId,
@@ -135,7 +134,7 @@ public class DutyLootDataLoader : IDisposable {
         return cfc.ContentType.RowId is not (3 or 6 or 19);
     }
 
-    private unsafe void RefreshActiveDuty() {
+    private void RefreshActiveDuty() {
         if (GetActiveContentId() is { } contentId) {
             RequestLoad(contentId);
         } else {
@@ -145,7 +144,7 @@ public class DutyLootDataLoader : IDisposable {
 
     private unsafe void OnContentsFinderChanged(AddonContentsFinder* addon) => RefreshActiveDuty();
 
-    private unsafe void OnTerritoryChanged(ushort territory) => RefreshActiveDuty();
+    private void OnTerritoryChanged(ushort territory) => RefreshActiveDuty();
 
     private void OnAgentUpdate(AgentUpdateFlag flag) {
         if (flag.HasFlag(AgentUpdateFlag.UnlocksUpdate)) {
