@@ -13,10 +13,6 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// The window that shows loot for a duty.
 /// </summary>
 public unsafe class DutyLootPreviewAddon : NativeAddon {
-    private static string NoItemsMessage => Strings.DutyLoot_NoItemsMessage;
-    private static string NoResultsMessage => Strings.DutyLoot_NoResultsMessage;
-    private static string LoadingMessage => Strings.DutyLoot_LoadingMessage;
-
     private DutyLootFilterBarNode? filterBarNode;
     private HorizontalLineNode? separatorNode;
     private ListNode<DutyLootItemView, DutyLootNode>? scrollingAreaNode;
@@ -61,7 +57,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
             LineSpacing = 18,
             TextFlags = TextFlags.MultiLine | TextFlags.Edge | TextFlags.WordWrap,
             AlignmentType = AlignmentType.Center,
-            String = NoItemsMessage,
+            String = Strings.DutyLoot_NoItemsMessage,
         };
         UpdateHintTextNodePosition();
         hintTextNode.AttachNode(this);
@@ -69,13 +65,11 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         UpdateList();
     }
 
-    private void OnDataLoaderStateChanged(DutyLootData state) {
-        Services.Framework.RunOnFrameworkThread(() => UpdateList());
-    }
+    private void OnDataLoaderStateChanged(DutyLootData state)
+        => Services.Framework.RunOnFrameworkThread(UpdateList);
 
-    protected override void OnFinalize(AtkUnitBase* addon) {
-        DataLoader.OnDutyLootDataChanged -= OnDataLoaderStateChanged;
-    }
+    protected override void OnFinalize(AtkUnitBase* addon)
+        => DataLoader.OnDutyLootDataChanged -= OnDataLoaderStateChanged;
 
     private void UpdateList() {
         if (scrollingAreaNode is null || hintTextNode is null || filterBarNode is null || separatorNode is null) return;
@@ -118,9 +112,9 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
         if (!hasResults) {
             hintTextNode.String = true switch {
-                _ when isLoading => LoadingMessage,
-                _ when hasData => NoResultsMessage,
-                _ => NoItemsMessage,
+                _ when isLoading => Strings.DutyLoot_LoadingMessage,
+                _ when hasData => Strings.DutyLoot_NoResultsMessage,
+                _ => Strings.DutyLoot_NoItemsMessage,
             };
             UpdateHintTextNodePosition();
         }

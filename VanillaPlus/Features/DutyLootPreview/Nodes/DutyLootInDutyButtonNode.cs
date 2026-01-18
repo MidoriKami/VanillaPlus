@@ -25,7 +25,7 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
         buttonNode = new DutyLootOpenWindowButtonNode(dataLoader) {
             Size = new Vector2(20.0f, 20.0f),
             TextTooltip = Strings.DutyLoot_Tooltip_InDutyButton,
-            IsVisible = true
+            IsVisible = true,
         };
         buttonNode.AttachNode(this);
     }

@@ -14,7 +14,7 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
     private readonly TextureButtonNode buttonNode;
     private readonly SimpleImageNode checkmarkNode;
 
-    private readonly DutyLootDataLoader DataLoader;
+    private readonly DutyLootDataLoader dataLoader;
 
     public Action? OnClick {
         get => buttonNode.OnClick;
@@ -43,14 +43,14 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
         };
         checkmarkNode.AttachNode(this);
 
-        DataLoader = dataLoader;
-        DataLoader.OnDutyLootDataChanged += OnDataLoaderStateChanged;
+        this.dataLoader = dataLoader;
+        this.dataLoader.OnDutyLootDataChanged += OnDataLoaderStateChanged;
         OnDataLoaderStateChanged();
     }
 
     protected override void Dispose(bool disposing, bool isNativeDestructor) {
         if (disposing) {
-            DataLoader.OnDutyLootDataChanged -= OnDataLoaderStateChanged;
+            dataLoader.OnDutyLootDataChanged -= OnDataLoaderStateChanged;
         }
 
         base.Dispose(disposing, isNativeDestructor);
@@ -70,14 +70,14 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
     private void OnDataLoaderStateChanged(DutyLootData data) { OnDataLoaderStateChanged(); }
 
     private void OnDataLoaderStateChanged() {
-        var lootData = DataLoader.CurrentDutyLootData;
+        var lootData = dataLoader.CurrentDutyLootData;
         if (lootData.IsLoading || lootData.ContentId is null) {
             CheckmarkVisible = false;
             return;
         }
 
-        var unlockableItems = lootData.Items.Where(item => item.IsUnlockable).ToList();
-        var allUnlockableItemsUnlocked = unlockableItems.Count == 0 || unlockableItems.All(item => item.IsUnlocked);
+        var unlockableItems = lootData.Items.Where(item => item.IsUnlockable);
+        var allUnlockableItemsUnlocked = unlockableItems.All(item => item.IsUnlocked);
         CheckmarkVisible = allUnlockableItemsUnlocked;
     }
 }

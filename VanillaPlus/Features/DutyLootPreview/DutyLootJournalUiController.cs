@@ -53,11 +53,8 @@ public unsafe class DutyLootJournalUiController {
         lootButtonNode.AttachNode(dutyTitleNode, NodePosition.AfterTarget);
     }
 
-    private void RefreshNodes(AddonJournalDetail* addon) {
-        if (lootButtonNode == null) return;
-
-        lootButtonNode.IsVisible = ShouldShow(addon);
-    }
+    private void RefreshNodes(AddonJournalDetail* addon)
+        => lootButtonNode?.IsVisible = ShouldShow(addon);
 
     private void OnDataChanged(DutyLootData data) {
         if (lootButtonNode == null) return;
