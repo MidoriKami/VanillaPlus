@@ -7,6 +7,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using KamiToolKit.Controllers;
+using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.DutyLootPreview.Data;
 
@@ -109,21 +110,29 @@ public class DutyLootDataLoader : IDisposable {
     private unsafe uint? GetActiveContentId() {
         // Priority 1: Currently in a duty
         var currentDutyId = GameMain.Instance()->CurrentContentFinderConditionId;
-        if (currentDutyId != 0) {
+        if (currentDutyId != 0 && IsSupportedContent(new ContentsId { ContentType = ContentsId.ContentsType.Regular, Id = currentDutyId })) {
             return currentDutyId;
         }
 
         // Priority 2: Viewing a specific duty in ContentsFinder
         var agent = AgentContentsFinder.Instance();
-        var content = agent->SelectedDuty;
-
-        if (agent->IsAddonShown()) {
-            if (content.ContentType == ContentsId.ContentsType.Regular) {
-                return content.Id;
-            }
+        if (agent->IsAddonShown() && IsSupportedContent(agent->SelectedDuty)) {
+            return agent->SelectedDuty.Id;
         }
 
         return null;
+    }
+
+    private static bool IsSupportedContent(ContentsId content) {
+        // Not for Content Roulette
+        if (content.ContentType != ContentsId.ContentsType.Regular)
+            return false;
+
+        if (!Services.DataManager.GetExcelSheet<ContentFinderCondition>().TryGetRow(content.Id, out var cfc))
+            return false;
+
+        // Not for Guildhests (3), PvP (6), Gold Saucer (19)
+        return cfc.ContentType.RowId is not (3 or 6 or 19);
     }
 
     private unsafe void RefreshActiveDuty() {

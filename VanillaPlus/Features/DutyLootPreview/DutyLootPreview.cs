@@ -16,7 +16,8 @@ public class DutyLootPreview : GameModification {
             new ChangeLogInfo(2, "Added Context Menu, Filter Buttons, Favorites and\nItem Drop info"),
             new ChangeLogInfo(3, "Added button to view current duty loot"),
             new ChangeLogInfo(4, "- Loot is now properly loaded when opening the\n  Duty Loot Preview from the Duty Journal\n- Unlocked items now show a checkmark"),
-            new ChangeLogInfo(5, "- Arm Containers now appear under Equipment\n- In Duty button no longer appears above all windows")
+            new ChangeLogInfo(5, "- Arm Containers now appear under Equipment\n- In Duty button no longer appears above all windows"),
+            new ChangeLogInfo(6, "- Fix crash when changing filters\n- Now indicates when all unlockables are collected from a Duty")
         ],
     };
 
@@ -24,11 +25,11 @@ public class DutyLootPreview : GameModification {
 
     public override string ImageName => "DutyLootPreview.png";
 
+    private DutyLootPreviewConfig? config;
+    private DutyLootDataLoader? dataLoader;
     private DutyLootJournalUiController? journalUiController;
     private DutyLootInDutyUiController? inDutyUiController;
     private DutyLootPreviewAddon? addonDutyLoot;
-    private DutyLootPreviewConfig? config;
-    private DutyLootDataLoader? dataLoader;
 
     public override void OnEnable() {
         config = DutyLootPreviewConfig.Load();
@@ -45,11 +46,13 @@ public class DutyLootPreview : GameModification {
         };
 
         journalUiController = new DutyLootJournalUiController {
+            DataLoader = dataLoader,
             OnButtonClicked = addonDutyLoot.Toggle,
         };
         journalUiController.OnEnable();
 
         inDutyUiController = new DutyLootInDutyUiController {
+            DataLoader = dataLoader,
             OnButtonClicked = addonDutyLoot.Toggle,
         };
         inDutyUiController.OnEnable();

@@ -2,9 +2,8 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
-using KamiToolKit.Nodes;
 using KamiToolKit.Overlay;
-using Lumina.Excel.Sheets;
+using VanillaPlus.Features.DutyLootPreview.Data;
 using Action = System.Action;
 
 namespace VanillaPlus.Features.DutyLootPreview.Nodes;
@@ -12,35 +11,23 @@ namespace VanillaPlus.Features.DutyLootPreview.Nodes;
 public unsafe class DutyLootInDutyButtonNode : OverlayNode {
     public override OverlayLayer OverlayLayer => OverlayLayer.BehindUserInterface;
 
-    private readonly TextureButtonNode buttonNode;
+    private readonly DutyLootOpenWindowButtonNode buttonNode;
+    private readonly DutyLootDataLoader dataLoader;
 
     public Action? OnClick {
         get => buttonNode.OnClick;
         set => buttonNode.OnClick = value;
     }
 
-    private bool shouldShow;
+    public DutyLootInDutyButtonNode(DutyLootDataLoader dataLoader) {
+        this.dataLoader = dataLoader;
 
-    public DutyLootInDutyButtonNode() {
-        buttonNode = new TextureButtonNode {
-            TexturePath = "ui/uld/Inventory.tex",
-            TextureCoordinates = new Vector2(90.0f, 125.0f),
-            TextureSize = new Vector2(32.0f, 32.0f),
+        buttonNode = new DutyLootOpenWindowButtonNode(dataLoader) {
             Size = new Vector2(20.0f, 20.0f),
             TextTooltip = Strings.DutyLoot_Tooltip_InDutyButton,
+            IsVisible = true
         };
         buttonNode.AttachNode(this);
-
-        Services.ClientState.TerritoryChanged += OnTerritoryChanged;
-        OnTerritoryChanged(0);
-    }
-
-    protected override void Dispose(bool disposing, bool isNativeDestructor) {
-        if (disposing) {
-            Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
-            
-            base.Dispose(disposing, isNativeDestructor);
-        }
     }
 
     protected override void OnUpdate() {
@@ -62,17 +49,13 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
 
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
-        
+
         buttonNode.Size = Size;
     }
 
-    private void OnTerritoryChanged(ushort territoryTypeId) {
-        shouldShow = ShouldShowButton();
-        UpdateVisibility();
-    }
-
     private void UpdateVisibility() {
-        if (!shouldShow) {
+        var lootData = dataLoader.CurrentDutyLootData;
+        if (lootData.ContentId is null && !lootData.IsLoading) {
             IsVisible = false;
             return;
         }
@@ -90,14 +73,5 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
         }
 
         IsVisible = true;
-    }
-    
-    private static bool ShouldShowButton(ushort? territoryRow = null) {
-        var territory = territoryRow ?? Services.ClientState.TerritoryType;
-        if (territory is 0) return false;
-        
-        var territoryType = Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(territory);
-        var contentTypeId = territoryType.ContentFinderCondition.Value.ContentType.RowId;
-        return contentTypeId is 2 or 4 or 5; // Dungeon, Trial, Raid (including Alliance)
     }
 }

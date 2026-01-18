@@ -1,10 +1,9 @@
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
-using KamiToolKit.Nodes;
-using Lumina.Excel.Sheets;
+using VanillaPlus.Features.DutyLootPreview.Data;
+using VanillaPlus.Features.DutyLootPreview.Nodes;
 using Action = System.Action;
 
 namespace VanillaPlus.Features.DutyLootPreview;
@@ -14,7 +13,9 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// </summary>
 public unsafe class DutyLootJournalUiController {
     private AddonController<AddonJournalDetail>? journalDetail;
-    private TextureButtonNode? lootButtonNode;
+    private DutyLootOpenWindowButtonNode? lootButtonNode;
+
+    public required DutyLootDataLoader DataLoader;
 
     public Action? OnButtonClicked { get; init; }
 
@@ -24,9 +25,13 @@ public unsafe class DutyLootJournalUiController {
         journalDetail.OnDetach += DetachNodes;
         journalDetail.OnRefresh += RefreshNodes;
         journalDetail.Enable();
+
+        DataLoader.OnDutyLootDataChanged += OnDataChanged;
     }
 
     public void OnDisable() {
+        DataLoader.OnDutyLootDataChanged -= OnDataChanged;
+
         journalDetail?.Dispose();
         journalDetail = null;
     }
@@ -38,16 +43,12 @@ public unsafe class DutyLootJournalUiController {
         var existing = addon->DutyNameTextNode; // ID: 38
         if (existing is null) return;
 
-        lootButtonNode = new TextureButtonNode {
-            TexturePath = "ui/uld/Inventory.tex",
-            TextureCoordinates = new Vector2(90.0f, 125.0f),
-            TextureSize = new Vector2(32.0f, 32.0f),
-
+        lootButtonNode = new DutyLootOpenWindowButtonNode(DataLoader) {
             Position = new Vector2(420.0f, 68.0f),
             Size = new Vector2(32.0f, 32.0f),
             TextTooltip = Strings.DutyLoot_Tooltip_JournalButton,
             OnClick = () => OnButtonClicked?.Invoke(),
-            IsVisible = ShouldShow,
+            IsVisible = ShouldShow(addon),
         };
         lootButtonNode.AttachNode(dutyTitleNode, NodePosition.AfterTarget);
     }
@@ -55,32 +56,29 @@ public unsafe class DutyLootJournalUiController {
     private void RefreshNodes(AddonJournalDetail* addon) {
         if (lootButtonNode == null) return;
 
-        // We should only show the button if our parent is the duty finder.
+        lootButtonNode.IsVisible = ShouldShow(addon);
+    }
+
+    private void OnDataChanged(DutyLootData data) {
+        if (lootButtonNode == null) return;
+
+        var addon = Services.GameGui.GetAddonByName<AddonJournalDetail>("JournalDetail");
+        if (addon == null) return;
+
+        lootButtonNode.IsVisible = ShouldShow(addon);
+    }
+
+    private bool ShouldShow(AddonJournalDetail* addon) {
+        // Only show if parent is the Duty Finder
         if (addon->ParentId is not 0) {
             var parentAddon = RaptureAtkUnitManager.Instance()->GetAddonById(addon->ParentId);
             if (parentAddon is null || parentAddon->NameString != "ContentsFinder") {
-                lootButtonNode.IsVisible = false;
-                return;
+                return false;
             }
         }
 
-        lootButtonNode.IsVisible = ShouldShow;
-    }
-
-    private static bool ShouldShow {
-        get {
-            ref var selectedDuty = ref AgentContentsFinder.Instance()->SelectedDuty;
-
-            // not for Content Roulette
-            if (selectedDuty.ContentType != ContentsId.ContentsType.Regular)
-                return false;
-
-            if (!Services.DataManager.GetExcelSheet<ContentFinderCondition>().TryGetRow(selectedDuty.Id, out var cfcRow))
-                return false;
-
-            // not for Guildhests (3), PvP (6), Gold Saucer (19)
-            return cfcRow.ContentType.RowId is not (3 or 6 or 19);
-        }
+        var lootData = DataLoader.CurrentDutyLootData;
+        return lootData.ContentId is not null || lootData.IsLoading;
     }
 
     private void DetachNodes(AddonJournalDetail* addon) {

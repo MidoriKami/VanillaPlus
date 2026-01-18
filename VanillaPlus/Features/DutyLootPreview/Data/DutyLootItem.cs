@@ -17,6 +17,7 @@ public class DutyLootItem : IComparable {
     public required byte FilterGroup { get; init; }
     public required byte OrderMajor { get; init; }
     public required byte OrderMinor { get; init; }
+    public required bool IsUnlockable { get; init; }
     public required bool IsUnlocked { get; init; }
     public required bool CanTryOn { get; init; }
     public required List<ReadOnlySeString> Sources { get; init; }
@@ -75,6 +76,7 @@ public class DutyLootItem : IComparable {
                 FilterGroup = item.FilterGroup,
                 OrderMajor = item.ItemUICategory.ValueNullable?.OrderMajor ?? 0,
                 OrderMinor = item.ItemUICategory.ValueNullable?.OrderMinor ?? 0,
+                IsUnlockable = Services.UnlockState.IsItemUnlockable(item),
                 IsUnlocked = Services.UnlockState.IsItemUnlockable(item) && Services.UnlockState.IsItemUnlocked(item),
                 CanTryOn = CheckCanTryOn(item),
                 Sources = sources,
