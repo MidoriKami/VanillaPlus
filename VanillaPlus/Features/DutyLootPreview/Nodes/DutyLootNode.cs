@@ -153,7 +153,7 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView> {
         iconNode.Count = 1;
         infoIconNode.TextTooltip = string.Join("\n", item.Sources);
         checkmarkIconNode.IsVisible = item.IsUnlocked;
-        CollisionNode.ItemTooltip = item.ItemId;
+        iconNode.CollisionNode.ItemTooltip = item.ItemId;
         favoriteStarNode.IsVisible = view.IsFavorite;
     }
 }
