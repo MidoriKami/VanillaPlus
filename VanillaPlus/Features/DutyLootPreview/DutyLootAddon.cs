@@ -101,6 +101,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         };
 
         var viewModels = filteredItems
+            .Order()
             .Select(item => new DutyLootItemView(
                 Item: item,
                 IsFavorite: Config.FavoriteItems.Contains(item.ItemId),

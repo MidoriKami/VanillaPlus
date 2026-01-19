@@ -147,6 +147,10 @@ public class DutyLootItem : IComparable {
     public int CompareTo(object? other) {
         if (other is not DutyLootItem otherItem) return 1;
 
+        // Sort by category: Misc+Unlockable > Misc > Equipment
+        var categoryResult = GetCategoryPriority().CompareTo(otherItem.GetCategoryPriority());
+        if (categoryResult != 0) return categoryResult;
+
         var result = -OrderMajor.CompareTo(otherItem.OrderMajor);
         if (result != 0) return result;
 
@@ -154,5 +158,11 @@ public class DutyLootItem : IComparable {
         if (result != 0) return result;
 
         return string.Compare(Name.ToString(), otherItem.Name.ToString(), StringComparison.Ordinal);
+    }
+
+    private int GetCategoryPriority() {
+        if (!IsEquipment && IsUnlockable) return 0; // Misc + Unlockable (highest)
+        if (!IsEquipment) return 1;                  // Misc
+        return 2;                                     // Equipment (lowest)
     }
 }
