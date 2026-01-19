@@ -2,6 +2,7 @@ using System.Linq;
 using System.Numerics;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
+using KamiToolKit.Timelines;
 using VanillaPlus.Features.DutyLootPreview.Data;
 using Action = System.Action;
 
@@ -41,7 +42,7 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
             WrapMode = WrapMode.Stretch,
             IsVisible = false
         };
-        checkmarkNode.AttachNode(this);
+        checkmarkNode.AttachNode(buttonNode);
 
         this.dataLoader = dataLoader;
         this.dataLoader.OnDutyLootDataChanged += OnDataLoaderStateChanged;
@@ -64,7 +65,18 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
         // Scale checkmark proportionally (28x24 checkmark designed for 44px icons)
         var scale = Size.X / 44f;
         checkmarkNode.Size = new Vector2(28, 24) * scale;
-        checkmarkNode.Position = Size - checkmarkNode.Size;
+
+        var checkmarkPosition = buttonNode.Size - checkmarkNode.Size;
+        var checkmarkBouncePosition = checkmarkPosition + new Vector2(0.0f, 1.0f);
+
+        checkmarkNode.AddTimeline(new TimelineBuilder()
+            .AddFrameSetWithFrame(1, 9, 1, checkmarkPosition, 255, multiplyColor: new Vector3(100.0f))
+            .AddFrameSetWithFrame(10, 19, 10, checkmarkPosition, 255, multiplyColor: new Vector3(100.0f), addColor: new Vector3(16.0f))
+            .AddFrameSetWithFrame(20, 29, 20, checkmarkBouncePosition, 255, multiplyColor: new Vector3(100.0f), addColor: new Vector3(16.0f))
+            .AddFrameSetWithFrame(30, 39, 30, checkmarkPosition, 178, multiplyColor: new Vector3(50.0f))
+            .AddFrameSetWithFrame(40, 49, 40, checkmarkPosition, 255, multiplyColor: new Vector3(100.0f), addColor: new Vector3(16.0f))
+            .AddFrameSetWithFrame(50, 59, 50, checkmarkPosition, 255, multiplyColor: new Vector3(100.0f))
+            .Build());
     }
 
     private void OnDataLoaderStateChanged(DutyLootData data) { OnDataLoaderStateChanged(); }

@@ -26,6 +26,7 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView> {
 
         iconNode = new IconWithCountNode();
         iconNode.AttachNode(this);
+        iconNode.CollisionNode.ShowClickableCursor = true;
 
         favoriteStarNode = new SimpleImageNode {
             TextureCoordinates = new Vector2(96, 0),
@@ -47,6 +48,7 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView> {
             TextureSize = new Vector2(28, 28),
             TexturePath = "ui/uld/CircleButtons.tex",
             WrapMode = WrapMode.Stretch,
+            ShowClickableCursor = true
         };
         infoIconNode.AttachNode(this);
 
@@ -58,7 +60,7 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView> {
         };
         checkmarkIconNode.AttachNode(this);
 
-        CollisionNode.AddEvent(AtkEventType.MouseClick, (_, _, _, _, atkEventData) => {
+        AtkEventListener.Delegates.ReceiveEvent mouseClickCallback = (_, _, _, _, atkEventData) => {
             if (ItemData is null) return;
 
             if (atkEventData->IsLeftClick) {
@@ -67,7 +69,10 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView> {
             else if (atkEventData->IsRightClick) {
                 OnRightClick();
             }
-        });
+        };
+
+        CollisionNode.AddEvent(AtkEventType.MouseClick, mouseClickCallback);
+        iconNode.CollisionNode.AddEvent(AtkEventType.MouseClick, mouseClickCallback);
     }
 
     private void OnLeftClick() {

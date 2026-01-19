@@ -40,7 +40,7 @@ public class DutyLootPreview : GameModification {
         addonDutyLoot = new DutyLootPreviewAddon {
             InternalName = "DutyLootPreview",
             Title = Strings.Title_DutyLootPreview,
-            Size = new Vector2(300.0f, 350.0f),
+            Size = new Vector2(300.0f, DutyLootPreviewAddon.WindowHeight),
             Config = config,
             DataLoader = dataLoader,
         };

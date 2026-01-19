@@ -13,6 +13,16 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// The window that shows loot for a duty.
 /// </summary>
 public unsafe class DutyLootPreviewAddon : NativeAddon {
+    internal const int VisibleItemCount = 10;
+    internal const float ItemHeight = 36.0f;
+    internal const float ItemSpacing = 2.25f;
+    internal const float FilterBarHeight = 36.0f;
+    internal const float SeparatorHeight = 4.0f;
+    private const float WindowOverhead = 67.75f;
+
+    private const float ListAreaHeight = VisibleItemCount * ItemHeight + (VisibleItemCount - 1) * ItemSpacing;
+    internal const float WindowHeight = ListAreaHeight + FilterBarHeight + SeparatorHeight + ItemSpacing + WindowOverhead;
+
     private DutyLootFilterBarNode? filterBarNode;
     private HorizontalLineNode? separatorNode;
     private ListNode<DutyLootItemView, DutyLootNode>? scrollingAreaNode;
@@ -22,31 +32,29 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     public required DutyLootDataLoader DataLoader { get; init; }
 
     protected override void OnSetup(AtkUnitBase* addon) {
-        const float filterBarHeight = 36f;
-        const float separatorHeight = 4f;
-
         DataLoader.OnDutyLootDataChanged += OnDataLoaderStateChanged;
 
         filterBarNode = new DutyLootFilterBarNode {
             Position = ContentStartPosition,
-            Size = new Vector2(ContentSize.X, filterBarHeight),
+            Size = new Vector2(ContentSize.X, FilterBarHeight),
             OnFilterChanged = _ => UpdateList(),
         };
         filterBarNode.AttachNode(this);
 
         separatorNode = new HorizontalLineNode {
-            Position = ContentStartPosition + new Vector2(0, filterBarHeight),
-            Size = new Vector2(ContentSize.X, 4.0f),
+            Position = ContentStartPosition + new Vector2(0, FilterBarHeight),
+            Size = new Vector2(ContentSize.X, SeparatorHeight),
         };
         separatorNode.AttachNode(this);
 
-        var listAreaPosition = ContentStartPosition + new Vector2(0, filterBarHeight + separatorHeight);
-        var listAreaSize = ContentSize - new Vector2(0, filterBarHeight + separatorHeight);
+        var listAreaPosition = ContentStartPosition + new Vector2(0, FilterBarHeight + SeparatorHeight + ItemSpacing);
+        var listAreaSize = ContentSize - new Vector2(0, FilterBarHeight + SeparatorHeight + ItemSpacing);
 
         scrollingAreaNode = new ListNode<DutyLootItemView, DutyLootNode> {
             Position = listAreaPosition,
             Size = listAreaSize,
             OptionsList = [],
+            ItemSpacing = ItemSpacing,
         };
         scrollingAreaNode.AttachNode(this);
 
