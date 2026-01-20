@@ -58,6 +58,7 @@ public unsafe class CurrencyWarning : GameModification {
             IsSearchMatch = CurrencyWarningSetting.IsSearchMatch,
             AddClicked = OnAddClicked,
             RemoveClicked = OnRemoveClicked,
+            EditCompleted = _ => config.Save(),
         };
 
         configWindow = new ConfigAddon {
