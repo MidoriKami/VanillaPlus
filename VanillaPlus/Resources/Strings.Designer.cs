@@ -312,6 +312,24 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to When mousing over player names in chat, shows their full name and world as a tooltip.
+        /// </summary>
+        internal static string ChatPlayerTooltip_Description {
+            get {
+                return ResourceManager.GetString("ChatPlayerTooltip_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat Player Tooltip.
+        /// </summary>
+        internal static string ChatPlayerTooltip_DisplayName {
+            get {
+                return ResourceManager.GetString("ChatPlayerTooltip_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear Selected Duties Config.
         /// </summary>
         internal static string ClearSelectedDuties_ConfigTitle {
@@ -638,6 +656,177 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Above Target Color.
+        /// </summary>
+        internal static string CurrencyWarning_AboveColor {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_AboveColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Above Target Icon.
+        /// </summary>
+        internal static string CurrencyWarning_CategoryAboveIcon {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_CategoryAboveIcon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Below Target Icon.
+        /// </summary>
+        internal static string CurrencyWarning_CategoryBelowIcon {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_CategoryBelowIcon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        internal static string CurrencyWarning_CategoryGeneral {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_CategoryGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currency Selection.
+        /// </summary>
+        internal static string CurrencyWarning_CategorySelection {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_CategorySelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currency Warning Settings.
+        /// </summary>
+        internal static string CurrencyWarning_ConfigTitle {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_ConfigTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configure Tracked Currencies.
+        /// </summary>
+        internal static string CurrencyWarning_ConfigureButton {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_ConfigureButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shows an animated notification icon when tracked currencies approach or exceed set limits.
+        /// </summary>
+        internal static string CurrencyWarning_Description {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currency Warning.
+        /// </summary>
+        internal static string CurrencyWarning_DisplayName {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Moving.
+        /// </summary>
+        internal static string CurrencyWarning_EnableMoving {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_EnableMoving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Icon Scale.
+        /// </summary>
+        internal static string CurrencyWarning_IconScale {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_IconScale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Currencies.
+        /// </summary>
+        internal static string CurrencyWarning_ItemSearchTitle {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_ItemSearchTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tracked Currencies.
+        /// </summary>
+        internal static string CurrencyWarning_ListTitle {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_ListTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play Animations.
+        /// </summary>
+        internal static string CurrencyWarning_PlayAnimations {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_PlayAnimations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID.
+        /// </summary>
+        internal static string CurrencyWarning_SortOptionId {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_SortOptionId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string CurrencyWarning_SortOptionName {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_SortOptionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Above Limit.
+        /// </summary>
+        internal static string CurrencyWarning_TooltipAboveLimit {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_TooltipAboveLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Below Limit.
+        /// </summary>
+        internal static string CurrencyWarning_TooltipBelowLimit {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_TooltipBelowLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Below Target Color.
+        /// </summary>
+        internal static string CurrencyWarning_BelowColor {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_BelowColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Debug Addon Window.
         /// </summary>
         internal static string DebugCustomAddon_Title {
@@ -737,6 +926,42 @@ namespace VanillaPlus.Resources {
         internal static string DutyTimer_CompletedMessage {
             get {
                 return ResourceManager.GetString("DutyTimer_CompletedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        internal static string EnhancedWardNavigation_ButtonNext {
+            get {
+                return ResourceManager.GetString("EnhancedWardNavigation_ButtonNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prev.
+        /// </summary>
+        internal static string EnhancedWardNavigation_ButtonPrevious {
+            get {
+                return ResourceManager.GetString("EnhancedWardNavigation_ButtonPrevious", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adds previous and next buttons to the housing ward selection list.
+        /// </summary>
+        internal static string EnhancedWardNavigation_Description {
+            get {
+                return ResourceManager.GetString("EnhancedWardNavigation_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enhanced Ward Navigation.
+        /// </summary>
+        internal static string EnhancedWardNavigation_DisplayName {
+            get {
+                return ResourceManager.GetString("EnhancedWardNavigation_DisplayName", resourceCulture);
             }
         }
         

@@ -13,8 +13,8 @@ namespace VanillaPlus.Features.ChatPlayerTooltip;
 
 public class ChatPlayerTooltip : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Chat Player Tooltip",
-        Description = "When mousing over player names in chat, shows their full name and world as a toolip",
+        DisplayName = Strings.ChatPlayerTooltip_DisplayName,
+        Description = Strings.ChatPlayerTooltip_Description,
         Type = ModificationType.UserInterface,
         Authors = [ "anqied" ],
         ChangeLog = [

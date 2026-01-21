@@ -45,6 +45,7 @@ public class CurrencyTooltipNode : OverlayNode {
         var maxRowWidth = 0.0f;
 
         foreach (var (iconId, name, count, isHigh, limit) in warnings) {
+            var limitStatus = isHigh ? Strings.CurrencyWarning_TooltipAboveLimit : Strings.CurrencyWarning_TooltipBelowLimit;
             var row = new HorizontalListNode {
                 ItemSpacing = 8.0f, 
                 Height = 24.0f,
@@ -55,7 +56,7 @@ public class CurrencyTooltipNode : OverlayNode {
                         FitTexture = true,
                     },
                     new TextNode {
-                        String = $"{name} {(isHigh ? "Above Limit" : "Below Limit")}: {count:N0} / {limit:N0}",
+                        String = $"{name} {limitStatus}: {count:N0} / {limit:N0}",
                         TextColor = isHigh ? Config.HighColor : Config.LowColor,
                         FontSize = 14,
                         TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,

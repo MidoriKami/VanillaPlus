@@ -13,8 +13,8 @@ namespace VanillaPlus.Features.EnhancedWardNavigation;
 
 public unsafe class EnhancedWardNavigation : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Enhanced Ward Navigation",
-        Description = "Adds previous and next buttons to the housing ward selection list.",
+        DisplayName = Strings.EnhancedWardNavigation_DisplayName,
+        Description = Strings.EnhancedWardNavigation_Description,
         Type = ModificationType.UserInterface,
         Authors = [ "Zeffuro" ],
         ChangeLog = [
@@ -52,7 +52,7 @@ public unsafe class EnhancedWardNavigation : GameModification {
         previousWardButtonNode = new TextButtonNode {
             Position = new Vector2(buttonX, buttonY),
             Size = new Vector2(56.0f, 28.0f),
-            String = "Prev",
+            String = Strings.EnhancedWardNavigation_ButtonPrevious,
             OnClick = () => SetCurrentWard(),
             IsEnabled = currentWard > 0,
         };
@@ -61,7 +61,7 @@ public unsafe class EnhancedWardNavigation : GameModification {
         nextWardButtonNode = new TextButtonNode {
             Position = new Vector2(buttonX + 60.0f, buttonY),
             Size = new Vector2(56.0f, 28.0f),
-            String = "Next",
+            String = Strings.EnhancedWardNavigation_ButtonNext,
             OnClick = () => SetCurrentWard(true),
             IsEnabled = currentWard < 29,
         };
