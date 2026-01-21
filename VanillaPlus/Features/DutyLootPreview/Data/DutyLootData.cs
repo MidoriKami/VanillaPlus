@@ -6,9 +6,26 @@ namespace VanillaPlus.Features.DutyLootPreview.Data;
 /// Immutable state representing the current duty loot data.
 /// </summary>
 public record DutyLootData {
-    public static readonly DutyLootData Empty = new();
+    public static DutyLootData Empty(uint contentId) => new() {
+        ContentId = contentId,
+        Items = []
+    };
 
-    public bool IsLoading { get; init; }
     public uint? ContentId { get; init; }
-    public IReadOnlyList<DutyLootItem> Items { get; init; } = [];
+
+    public List<DutyLootItem> Items { get; init; } = new();
+    public Dictionary<uint, DutyLootItem> ItemIndex { get; init; } = new();
+
+    internal DutyLootItem? GetOrAddItem(uint itemId) {
+        if (ItemIndex.TryGetValue(itemId, out var item)) {
+            return item;
+        }
+
+        var newItem = DutyLootItem.FromItemId(itemId);
+        if (newItem == null) return null;
+
+        Items.Add(newItem);
+        ItemIndex.Add(itemId, newItem);
+        return newItem;
+    }
 }

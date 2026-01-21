@@ -54,8 +54,8 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
     }
 
     private void UpdateVisibility() {
-        var lootData = dataLoader.CurrentDutyLootData;
-        if (lootData.ContentId is null && !lootData.IsLoading) {
+        var dutyLootData = dataLoader.ActiveDutyLootData;
+        if (dutyLootData is null && !dataLoader.IsLoading) {
             IsVisible = false;
             return;
         }

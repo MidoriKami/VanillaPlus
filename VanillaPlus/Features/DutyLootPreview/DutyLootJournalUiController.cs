@@ -26,11 +26,11 @@ public unsafe class DutyLootJournalUiController {
         journalDetail.OnRefresh += RefreshNodes;
         journalDetail.Enable();
 
-        DataLoader.OnDutyLootDataChanged += OnDataChanged;
+        DataLoader.OnChanged += OnDataChanged;
     }
 
     public void OnDisable() {
-        DataLoader.OnDutyLootDataChanged -= OnDataChanged;
+        DataLoader.OnChanged -= OnDataChanged;
 
         journalDetail?.Dispose();
         journalDetail = null;
@@ -56,7 +56,7 @@ public unsafe class DutyLootJournalUiController {
     private void RefreshNodes(AddonJournalDetail* addon)
         => lootButtonNode?.IsVisible = ShouldShow(addon);
 
-    private void OnDataChanged(DutyLootData data) {
+    private void OnDataChanged() {
         if (lootButtonNode == null) return;
 
         var addon = Services.GameGui.GetAddonByName<AddonJournalDetail>("JournalDetail");
@@ -74,8 +74,8 @@ public unsafe class DutyLootJournalUiController {
             }
         }
 
-        var lootData = DataLoader.CurrentDutyLootData;
-        return lootData.ContentId is not null || lootData.IsLoading;
+        var lootData = DataLoader.ActiveDutyLootData;
+        return lootData is not null || DataLoader.IsLoading;
     }
 
     private void DetachNodes(AddonJournalDetail* addon) {

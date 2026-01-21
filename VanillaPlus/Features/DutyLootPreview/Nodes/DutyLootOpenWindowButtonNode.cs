@@ -45,13 +45,13 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
         checkmarkNode.AttachNode(buttonNode);
 
         this.dataLoader = dataLoader;
-        this.dataLoader.OnDutyLootDataChanged += OnDataLoaderStateChanged;
+        this.dataLoader.OnChanged += OnDataLoaderStateChanged;
         OnDataLoaderStateChanged();
     }
 
     protected override void Dispose(bool disposing, bool isNativeDestructor) {
         if (disposing) {
-            dataLoader.OnDutyLootDataChanged -= OnDataLoaderStateChanged;
+            dataLoader.OnChanged -= OnDataLoaderStateChanged;
         }
 
         base.Dispose(disposing, isNativeDestructor);
@@ -79,11 +79,9 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
             .Build());
     }
 
-    private void OnDataLoaderStateChanged(DutyLootData data) { OnDataLoaderStateChanged(); }
-
     private void OnDataLoaderStateChanged() {
-        var lootData = dataLoader.CurrentDutyLootData;
-        if (lootData.IsLoading || lootData.ContentId is null) {
+        var lootData = dataLoader.ActiveDutyLootData;
+        if (dataLoader.IsLoading || lootData == null) {
             CheckmarkVisible = false;
             return;
         }

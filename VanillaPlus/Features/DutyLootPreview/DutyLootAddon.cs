@@ -32,7 +32,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     public required DutyLootDataLoader DataLoader { get; init; }
 
     protected override void OnSetup(AtkUnitBase* addon) {
-        DataLoader.OnDutyLootDataChanged += OnDataLoaderStateChanged;
+        DataLoader.OnChanged += OnDataLoaderStateChanged;
 
         filterBarNode = new DutyLootFilterBarNode {
             Position = ContentStartPosition,
@@ -73,25 +73,22 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         UpdateList();
     }
 
-    private void OnDataLoaderStateChanged(DutyLootData state)
+    private void OnDataLoaderStateChanged()
         => Services.Framework.RunOnFrameworkThread(UpdateList);
 
     protected override void OnFinalize(AtkUnitBase* addon)
-        => DataLoader.OnDutyLootDataChanged -= OnDataLoaderStateChanged;
+        => DataLoader.OnChanged -= OnDataLoaderStateChanged;
 
     private void UpdateList() {
         if (scrollingAreaNode is null || hintTextNode is null || filterBarNode is null || separatorNode is null) return;
 
-        var state = DataLoader.CurrentDutyLootData;
-
-        // Close if no valid content
-        if (state.ContentId is null && !state.IsLoading) {
+        var dutyLootData = DataLoader.ActiveDutyLootData;
+        if (dutyLootData is null && !DataLoader.IsLoading) {
             Close();
             return;
         }
 
-        var items = state.Items;
-        var isLoading = state.IsLoading;
+        var items = dutyLootData?.Items ?? [];
 
         var filteredItems = filterBarNode.CurrentFilter switch {
             LootFilter.Favorites => items.Where(item => Config.FavoriteItems.Contains(item.ItemId)),
@@ -121,7 +118,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
         if (!hasResults) {
             hintTextNode.String = true switch {
-                _ when isLoading => Strings.DutyLoot_LoadingMessage,
+                _ when DataLoader.IsLoading => Strings.DutyLoot_LoadingMessage,
                 _ when hasData => Strings.DutyLoot_NoResultsMessage,
                 _ => Strings.DutyLoot_NoItemsMessage,
             };

@@ -24,6 +24,25 @@ public class DutyLootItem : IComparable {
 
     private static readonly ReadOnlySeString DungeonChestSource = "Dungeon Chest";
 
+    public static DutyLootItem? FromItemId(uint itemId) {
+        var item = Services.DataManager.GetItem(itemId);
+        if (item.Icon == 0 || item.Name.IsEmpty)
+            return null;
+
+        return new DutyLootItem {
+            ItemId = item.RowId,
+            IconId = item.Icon,
+            Name = item.Name,
+            FilterGroup = item.FilterGroup,
+            OrderMajor = item.ItemUICategory.ValueNullable?.OrderMajor ?? 0,
+            OrderMinor = item.ItemUICategory.ValueNullable?.OrderMinor ?? 0,
+            IsUnlockable = Services.UnlockState.IsItemUnlockable(item),
+            IsUnlocked = Services.UnlockState.IsItemUnlockable(item) && Services.UnlockState.IsItemUnlocked(item),
+            CanTryOn = CheckCanTryOn(item),
+            Sources = [],
+        };
+    }
+
     /// <summary>
     /// Get the loot items available for some content
     /// </summary>
