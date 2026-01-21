@@ -48,34 +48,28 @@ public class CurrencyTooltipNode : OverlayNode {
             var row = new HorizontalListNode {
                 ItemSpacing = 8.0f, 
                 Height = 24.0f,
+                InitialNodes = [
+                    new IconImageNode {
+                        Size = new Vector2(24.0f, 24.0f),
+                        IconId = iconId,
+                        FitTexture = true,
+                    },
+                    new TextNode {
+                        String = $"{name} {(isHigh ? "Above Limit" : "Below Limit")}: {count:N0} / {limit:N0}",
+                        TextColor = isHigh ? Config.HighColor : Config.LowColor,
+                        FontSize = 14,
+                        TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
+                        AlignmentType = AlignmentType.Left,
+                        Height = 24.0f,
+                    },
+                ],
             };
-
-            row.AddNode(new IconImageNode {
-                Size = new Vector2(24.0f, 24.0f),
-                IconId = iconId,
-                FitTexture = true,
-            });
-
-            var color = isHigh ? Config.HighColor : Config.LowColor;
-
-            var text = new TextNode {
-                String = $"{name} {(isHigh ? "Above Limit" : "Below Limit")}: {count:N0} / {limit:N0}",
-                TextColor = color,
-                FontSize = 14,
-                TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
-                AlignmentType = AlignmentType.Left,
-                Height = 24.0f,
-            };
-            row.AddNode(text);
 
             listContainer.AddNode(row);
 
-            row.RecalculateLayout();
             var rowWidth = row.Nodes.Where(n => n.IsVisible).Sum(n => n.Width + row.ItemSpacing) - row.ItemSpacing;
             if (rowWidth > maxRowWidth) maxRowWidth = rowWidth;
         }
-
-        listContainer.RecalculateLayout();
 
         var finalSize = new Vector2(maxRowWidth + 30, listContainer.Height + 20);
         background.Size = finalSize;
