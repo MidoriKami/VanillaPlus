@@ -25,19 +25,16 @@ public unsafe class RecentlyLootedWindow : GameModification {
     private NodeListAddon<LootedItemInfo, LootedItemListItemNode>? addonRecentlyLooted;
 
     private bool enableTracking;
-    private List<LootedItemInfo>? items;
 
     public override string ImageName => "RecentlyLootedWindow.png";
 
     public override void OnEnable() {
-        items = [];
-
         addonRecentlyLooted = new NodeListAddon<LootedItemInfo, LootedItemListItemNode> {
             Size = new Vector2(250.0f, 350.0f),
             InternalName = "RecentlyLooted",
             Title = Strings.RecentlyLootedWindow_Title,
             OpenCommand = "/recentloot",
-            ListItems = items,
+            ListItems = [],
             ItemSpacing = 2.0f,
         };
 
@@ -56,9 +53,6 @@ public unsafe class RecentlyLootedWindow : GameModification {
         addonRecentlyLooted?.Dispose();
         addonRecentlyLooted = null;
 
-        items?.Clear();
-        items = null;
-
         Services.GameInventory.InventoryChanged -= OnRawItemAdded;
         Services.ClientState.Login -= OnLogin;
         Services.ClientState.Logout -= OnLogout;
@@ -66,7 +60,7 @@ public unsafe class RecentlyLootedWindow : GameModification {
 
     private void OnLogin() {
         enableTracking = true;
-        items?.Clear();
+        addonRecentlyLooted?.ListItems.Clear();
     }
 
     private void OnLogout(int type, int code)
@@ -74,6 +68,7 @@ public unsafe class RecentlyLootedWindow : GameModification {
 
     private void OnRawItemAdded(IReadOnlyCollection<InventoryEventArgs> events) {
         if (!enableTracking) return;
+        if (addonRecentlyLooted is null) return;
         
         foreach (var eventData in events) {
             if (!Inventory.StandardInventories.Contains(eventData.Item.ContainerType)) continue;
@@ -84,14 +79,16 @@ public unsafe class RecentlyLootedWindow : GameModification {
 
             var inventoryItem = (InventoryItem*)eventData.Item.Address;
             var changeAmount = eventData is InventoryItemChangedArgs changed ? changed.Item.Quantity - changed.OldItemState.Quantity : eventData.Item.Quantity;
-        
-            items?.Add(new LootedItemInfo(inventoryItem->GetItemId(), 
-                inventoryItem->IconId, 
-                inventoryItem->Name, 
-                changeAmount)
-            );
+
+            addonRecentlyLooted.ListItems = [ 
+                new LootedItemInfo(inventoryItem->GetItemId(),
+                    inventoryItem->IconId,
+                    inventoryItem->Name,
+                    changeAmount),
+                ..addonRecentlyLooted.ListItems,
+            ];
         }
-        
-        addonRecentlyLooted?.RefreshList();
+
+        addonRecentlyLooted.RefreshList();
     }
 }
