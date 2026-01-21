@@ -1301,4 +1301,79 @@ This game modification fixes it by always triggering the normal mouse click in a
   <data name="QuickPanelAdjustments_BackgroundColor" xml:space="preserve">
       <value>Background color</value>
   </data>
+    <data name="ChatPlayerTooltip_DisplayName" xml:space="preserve">
+      <value>Chat Player Tooltip</value>
+    </data>
+    <data name="ChatPlayerTooltip_Description" xml:space="preserve">
+      <value>When mousing over player names in chat, shows their full name and world as a tooltip.</value>
+    </data>
+    <data name="EnhancedWardNavigation_DisplayName" xml:space="preserve">
+      <value>Enhanced Ward Navigation</value>
+    </data>
+    <data name="EnhancedWardNavigation_Description" xml:space="preserve">
+      <value>Adds previous and next buttons to the housing ward selection list.</value>
+    </data>
+    <data name="EnhancedWardNavigation_ButtonPrevious" xml:space="preserve">
+      <value>Prev</value>
+    </data>
+    <data name="EnhancedWardNavigation_ButtonNext" xml:space="preserve">
+      <value>Next</value>
+    </data>
+    <data name="CurrencyWarning_DisplayName" xml:space="preserve">
+      <value>Currency Warning</value>
+    </data>
+    <data name="CurrencyWarning_Description" xml:space="preserve">
+      <value>Shows an animated notification icon when tracked currencies approach or exceed set limits.</value>
+    </data>
+    <data name="CurrencyWarning_ItemSearchTitle" xml:space="preserve">
+      <value>Search Currencies</value>
+    </data>
+    <data name="CurrencyWarning_SortOptionName" xml:space="preserve">
+      <value>Name</value>
+    </data>
+    <data name="CurrencyWarning_SortOptionId" xml:space="preserve">
+      <value>ID</value>
+    </data>
+    <data name="CurrencyWarning_ListTitle" xml:space="preserve">
+      <value>Tracked Currencies</value>
+    </data>
+    <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
+      <value>Currency Warning Settings</value>
+    </data>
+    <data name="CurrencyWarning_CategoryGeneral" xml:space="preserve">
+      <value>General</value>
+    </data>
+    <data name="CurrencyWarning_EnableMoving" xml:space="preserve">
+      <value>Enable Moving</value>
+    </data>
+    <data name="CurrencyWarning_PlayAnimations" xml:space="preserve">
+      <value>Play Animations</value>
+    </data>
+    <data name="CurrencyWarning_IconScale" xml:space="preserve">
+      <value>Icon Scale</value>
+    </data>
+    <data name="CurrencyWarning_BelowColor" xml:space="preserve">
+      <value>Below Target Color</value>
+    </data>
+    <data name="CurrencyWarning_AboveColor" xml:space="preserve">
+      <value>Above Target Color</value>
+    </data>
+    <data name="CurrencyWarning_CategoryBelowIcon" xml:space="preserve">
+      <value>Below Target Icon</value>
+    </data>
+    <data name="CurrencyWarning_CategoryAboveIcon" xml:space="preserve">
+      <value>Above Target Icon</value>
+    </data>
+    <data name="CurrencyWarning_CategorySelection" xml:space="preserve">
+      <value>Currency Selection</value>
+    </data>
+    <data name="CurrencyWarning_ConfigureButton" xml:space="preserve">
+      <value>Configure Tracked Currencies</value>
+    </data>
+    <data name="CurrencyWarning_TooltipAboveLimit" xml:space="preserve">
+      <value>Above Limit</value>
+    </data>
+    <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
+      <value>Below Limit</value>
+    </data>
 </root>

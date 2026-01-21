@@ -12,8 +12,8 @@ namespace VanillaPlus.Features.CurrencyWarning;
 
 public unsafe class CurrencyWarning : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Currency Warning",
-        Description = "Shows a animated notification icon when tracked currencies approach or exceed set limits.",
+        DisplayName = Strings.CurrencyWarning_DisplayName,
+        Description = Strings.CurrencyWarning_Description,
         Type = ModificationType.NewOverlay,
         Authors = [ "Zeffuro" ],
         ChangeLog = [
@@ -43,16 +43,16 @@ public unsafe class CurrencyWarning : GameModification {
 
         itemSearchAddon = new CurrencySearchAddon {
             InternalName = "CurrencyWarningSearch",
-            Title = "Search Currencies",
+            Title = Strings.CurrencyWarning_ItemSearchTitle,
             Size = new Vector2(350.0f, 500.0f),
-            SortingOptions = [ "Name", "ID" ],
+            SortingOptions = [ Strings.CurrencyWarning_SortOptionName, Strings.CurrencyWarning_SortOptionId ],
         };
 
         listConfigWindow = new ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode> {
             InternalName = "CurrencyWarningList",
-            Title = "Tracked Currencies",
+            Title = Strings.CurrencyWarning_ListTitle,
             Size = new Vector2(700.0f, 500.0f),
-            SortOptions = [ "Alphabetical" ],
+            SortOptions = [ Strings.SortOptionAlphabetical ],
             Options = config.WarningSettings,
             ItemComparer = CurrencyWarningSetting.ItemComparer,
             IsSearchMatch = CurrencyWarningSetting.IsSearchMatch,
@@ -63,25 +63,25 @@ public unsafe class CurrencyWarning : GameModification {
 
         configWindow = new ConfigAddon {
             InternalName = "CurrencyWarningConfig",
-            Title = "Currency Warning Settings",
+            Title = Strings.CurrencyWarning_ConfigTitle,
             Config = config,
         };
 
-        configWindow.AddCategory("General")
-            .AddCheckbox("Enable Moving", nameof(config.IsMoveable))
-            .AddCheckbox("Play Animations", nameof(config.PlayAnimations))
-            .AddFloatSlider("Icon Scale", 0.5f, 5.0f, 2, 0.1f, nameof(config.Scale))
-            .AddColorEdit("Below Target Color", nameof(config.LowColor))
-            .AddColorEdit("Above Target Color", nameof(config.HighColor));
+        configWindow.AddCategory(Strings.CurrencyWarning_CategoryGeneral)
+            .AddCheckbox(Strings.CurrencyWarning_EnableMoving, nameof(config.IsMoveable))
+            .AddCheckbox(Strings.CurrencyWarning_PlayAnimations, nameof(config.PlayAnimations))
+            .AddFloatSlider(Strings.CurrencyWarning_IconScale, 0.5f, 5.0f, 2, 0.1f, nameof(config.Scale))
+            .AddColorEdit(Strings.CurrencyWarning_BelowColor, nameof(config.LowColor))
+            .AddColorEdit(Strings.CurrencyWarning_AboveColor, nameof(config.HighColor));
 
-        configWindow.AddCategory("Below Target Icon")
+        configWindow.AddCategory(Strings.CurrencyWarning_CategoryBelowIcon)
             .AddMultiSelectIcon(Strings.Icon, nameof(config.LowIcon), true, 60073u, 60357u, 230402u);
 
-        configWindow.AddCategory("Above Target Icon")
+        configWindow.AddCategory(Strings.CurrencyWarning_CategoryAboveIcon)
             .AddMultiSelectIcon(Strings.Icon, nameof(config.HighIcon), true, 60074u, 63908u, 230403u);
 
-        configWindow.AddCategory("Currency Selection")
-            .AddButton("Configure Tracked Currencies", () => listConfigWindow.Toggle());
+        configWindow.AddCategory(Strings.CurrencyWarning_CategorySelection)
+            .AddButton(Strings.CurrencyWarning_ConfigureButton, () => listConfigWindow.Toggle());
 
         OpenConfigAction = configWindow.Toggle;
 
