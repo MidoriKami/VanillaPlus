@@ -43,66 +43,6 @@ public class DutyLootItem : IComparable {
         };
     }
 
-    /// <summary>
-    /// Get the loot items available for some content
-    /// </summary>
-    public static IEnumerable<DutyLootItem> ForContent(uint contentId) {
-        // Load boss data and build lookup by FightNo
-        var bosses = LoadItems<DungeonBoss>(CsvLoader.DungeonBossResourceName)
-            .Where(boss => boss.ContentFinderConditionId == contentId)
-            .DistinctBy(boss => boss.FightNo) // Why do some duties have duplicate FightNo's?
-            .ToDictionary(boss => boss.FightNo);
-
-        // Track sources per item
-        var itemSources = new Dictionary<uint, List<ReadOnlySeString>>();
-
-        // Process boss drops
-        var bossDrops = LoadItems<DungeonBossDrop>(CsvLoader.DungeonBossDropResourceName)
-            .Where(drop => drop.ContentFinderConditionId == contentId);
-
-        foreach (var drop in bossDrops) {
-            AddBossSource(drop.ItemId, drop.FightNo, bosses, itemSources);
-        }
-
-        var bossChestDrops = LoadItems<DungeonBossChest>(CsvLoader.DungeonBossChestResourceName)
-            .Where(drop => drop.ContentFinderConditionId == contentId);
-
-        foreach (var drop in bossChestDrops) {
-            AddBossSource(drop.ItemId, drop.FightNo, bosses, itemSources);
-        }
-
-        var dungeonChestIds = LoadItems<DungeonChest>(CsvLoader.DungeonChestResourceName)
-            .Where(chest => chest.ContentFinderConditionId == contentId)
-            .Select(chest => chest.RowId)
-            .ToHashSet();
-
-        var dungeonChestItems = LoadItems<DungeonChestItem>(CsvLoader.DungeonChestItemResourceName)
-            .Where(drop => dungeonChestIds.Contains(drop.ChestId));
-
-        foreach (var drop in dungeonChestItems) {
-            AddDungeonChestSource(drop.ItemId, itemSources);
-        }
-
-        foreach (var (itemId, sources) in itemSources) {
-            var item = Services.DataManager.GetItem(itemId);
-            if (item.Icon == 0 || item.Name.IsEmpty)
-                continue;
-
-            yield return new DutyLootItem {
-                ItemId = item.RowId,
-                IconId = item.Icon,
-                Name = item.Name,
-                FilterGroup = item.FilterGroup,
-                OrderMajor = item.ItemUICategory.ValueNullable?.OrderMajor ?? 0,
-                OrderMinor = item.ItemUICategory.ValueNullable?.OrderMinor ?? 0,
-                IsUnlockable = Services.UnlockState.IsItemUnlockable(item),
-                IsUnlocked = Services.UnlockState.IsItemUnlockable(item) && Services.UnlockState.IsItemUnlocked(item),
-                CanTryOn = CheckCanTryOn(item),
-                Sources = sources,
-            };
-        }
-    }
-
     public bool IsEquipment =>
         FilterGroup is 1 or 2 or 3 or 4 or 45;
 

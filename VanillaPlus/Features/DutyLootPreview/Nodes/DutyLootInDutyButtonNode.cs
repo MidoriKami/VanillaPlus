@@ -23,7 +23,7 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
         this.dataLoader = dataLoader;
 
         buttonNode = new DutyLootOpenWindowButtonNode(dataLoader) {
-            Size = new Vector2(20.0f, 20.0f),
+            Scale = new Vector2(20.0f / 32.0f),
             TextTooltip = Strings.DutyLoot_Tooltip_InDutyButton,
             IsVisible = true,
         };
@@ -45,12 +45,6 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
         Scale = new Vector2(dutyInfoScale, dutyInfoScale);
 
         UpdateVisibility();
-    }
-
-    protected override void OnSizeChanged() {
-        base.OnSizeChanged();
-
-        buttonNode.Size = Size;
     }
 
     private void UpdateVisibility() {

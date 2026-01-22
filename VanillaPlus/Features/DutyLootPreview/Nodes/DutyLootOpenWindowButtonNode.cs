@@ -28,21 +28,39 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
     }
 
     public DutyLootOpenWindowButtonNode(DutyLootDataLoader dataLoader) {
+        Size = new Vector2(32.0f, 32.0f);
+
         buttonNode = new TextureButtonNode {
             TexturePath = "ui/uld/Inventory.tex",
             TextureCoordinates = new Vector2(90.0f, 125.0f),
             TextureSize = new Vector2(32.0f, 32.0f),
+            Size = new Vector2(32.0f, 32.0f),
         };
         buttonNode.AttachNode(this);
+
+        var checkmarkSize = new Vector2(20.0f, 18.0f);
+        var checkmarkPosition = buttonNode.Size - checkmarkSize;
+        var checkmarkBouncePosition = checkmarkPosition + new Vector2(0.0f, 1.0f);
 
         checkmarkNode = new SimpleImageNode {
             TextureCoordinates = new Vector2(64, 32),
             TextureSize = new Vector2(20, 16),
             TexturePath = "ui/uld/RecipeNoteBook.tex",
             WrapMode = WrapMode.Stretch,
+            Size = checkmarkSize,
+            Position = checkmarkPosition,
             IsVisible = false
         };
         checkmarkNode.AttachNode(buttonNode);
+
+        checkmarkNode.AddTimeline(new TimelineBuilder()
+            .AddFrameSetWithFrame(1, 9, 1, checkmarkPosition, 255, multiplyColor: new Vector3(100.0f))
+            .AddFrameSetWithFrame(10, 19, 10, checkmarkPosition, 255, multiplyColor: new Vector3(100.0f), addColor: new Vector3(16.0f))
+            .AddFrameSetWithFrame(20, 29, 20, checkmarkBouncePosition, 255, multiplyColor: new Vector3(100.0f), addColor: new Vector3(16.0f))
+            .AddFrameSetWithFrame(30, 39, 30, checkmarkPosition, 178, multiplyColor: new Vector3(50.0f))
+            .AddFrameSetWithFrame(40, 49, 40, checkmarkPosition, 255, multiplyColor: new Vector3(100.0f), addColor: new Vector3(16.0f))
+            .AddFrameSetWithFrame(50, 59, 50, checkmarkPosition, 255, multiplyColor: new Vector3(100.0f))
+            .Build());
 
         this.dataLoader = dataLoader;
         this.dataLoader.OnChanged += OnDataLoaderStateChanged;
@@ -55,28 +73,6 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
         }
 
         base.Dispose(disposing, isNativeDestructor);
-    }
-
-    protected override void OnSizeChanged() {
-        base.OnSizeChanged();
-
-        buttonNode.Size = Size;
-
-        // Scale checkmark proportionally (28x24 checkmark designed for 44px icons)
-        var scale = Size.X / 44f;
-        checkmarkNode.Size = new Vector2(28, 24) * scale;
-
-        var checkmarkPosition = buttonNode.Size - checkmarkNode.Size;
-        var checkmarkBouncePosition = checkmarkPosition + new Vector2(0.0f, 1.0f);
-
-        checkmarkNode.AddTimeline(new TimelineBuilder()
-            .AddFrameSetWithFrame(1, 9, 1, checkmarkPosition, 255, multiplyColor: new Vector3(100.0f))
-            .AddFrameSetWithFrame(10, 19, 10, checkmarkPosition, 255, multiplyColor: new Vector3(100.0f), addColor: new Vector3(16.0f))
-            .AddFrameSetWithFrame(20, 29, 20, checkmarkBouncePosition, 255, multiplyColor: new Vector3(100.0f), addColor: new Vector3(16.0f))
-            .AddFrameSetWithFrame(30, 39, 30, checkmarkPosition, 178, multiplyColor: new Vector3(50.0f))
-            .AddFrameSetWithFrame(40, 49, 40, checkmarkPosition, 255, multiplyColor: new Vector3(100.0f), addColor: new Vector3(16.0f))
-            .AddFrameSetWithFrame(50, 59, 50, checkmarkPosition, 255, multiplyColor: new Vector3(100.0f))
-            .Build());
     }
 
     private void OnDataLoaderStateChanged() {
