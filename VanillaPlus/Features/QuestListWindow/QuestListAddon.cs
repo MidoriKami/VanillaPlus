@@ -18,7 +18,7 @@ public unsafe class QuestListAddon : SearchableNodeListAddon<MarkerInfo, QuestLi
 
     protected override void OnUpdate(AtkUnitBase* addon) {
         ListNode?.OptionsList = Map.Instance()->UnacceptedQuestMarkers.ToList();
-        ListItems.Sort((left, right) => MarkerInfoExtensions.Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
+        ListNode?.OptionsList.Sort((left, right) => MarkerInfoExtensions.Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
 
         base.OnUpdate(addon);
     }
@@ -31,10 +31,10 @@ public unsafe class QuestListAddon : SearchableNodeListAddon<MarkerInfo, QuestLi
     }
 
     private void UpdateSearch(string newSearchString) {
-        ListItems = Map.Instance()->UnacceptedQuestMarkers
+        ListNode?.OptionsList = Map.Instance()->UnacceptedQuestMarkers
             .Where(item => MarkerInfoExtensions.IsRegexMatch(item, newSearchString))
             .ToList();
         
-        ListItems.Sort((left, right) => MarkerInfoExtensions.Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
+        ListNode?.OptionsList.Sort((left, right) => MarkerInfoExtensions.Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
     }
 }
