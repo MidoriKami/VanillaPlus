@@ -33,9 +33,9 @@ public class DutyLootDataCache : IDisposable {
         return DutyLootData.Empty(contentId);
     }
 
-    public void LoadCacheAsync(bool forceReload = false) {
+    public void LoadCacheAsync(bool forceReload = false, uint? onlyContentId = null) {
         if (!forceReload && State == CacheState.Loaded) return;
-        loadDebouncer.Run(LoadCacheAsync);
+        loadDebouncer.Run(ct => LoadCacheAsync(ct, onlyContentId));
     }
 
     public void ClearCache() {
@@ -47,7 +47,7 @@ public class DutyLootDataCache : IDisposable {
         OnChanged?.Invoke();
     }
 
-    private void LoadCacheAsync(CancellationToken ct) {
+    private void LoadCacheAsync(CancellationToken ct, uint? onlyContentId) {
         dungeonBossIndex.Clear();
         dungeonChestIndex.Clear();
         dutyLootByContentId.Clear();
@@ -57,17 +57,19 @@ public class DutyLootDataCache : IDisposable {
         try {
             foreach (var drop in LoadItems<DungeonBossDrop>(CsvLoader.DungeonBossDropResourceName)) {
                 if (ct.IsCancellationRequested) return;
+                if (onlyContentId.HasValue && drop.ContentFinderConditionId != onlyContentId) continue;
                 AddBossSource(drop.ContentFinderConditionId, drop.FightNo, drop.ItemId);
             }
 
             foreach (var drop in LoadItems<DungeonBossChest>(CsvLoader.DungeonBossChestResourceName)) {
                 if (ct.IsCancellationRequested) return;
+                if (onlyContentId.HasValue && drop.ContentFinderConditionId != onlyContentId) continue;
                 AddBossSource(drop.ContentFinderConditionId, drop.FightNo, drop.ItemId);
             }
 
             foreach (var drop in LoadItems<DungeonChestItem>(CsvLoader.DungeonChestItemResourceName)) {
                 if (ct.IsCancellationRequested) return;
-                AddDungeonChestSource(drop.ChestId, drop.ItemId);
+                AddDungeonChestSource(drop.ChestId, drop.ItemId, onlyContentId);
             }
 
             State = CacheState.Loaded;
@@ -97,13 +99,15 @@ public class DutyLootDataCache : IDisposable {
         item.Sources.Add(bossName);
     }
 
-    private void AddDungeonChestSource(uint chestRowId, uint itemId) {
+    private void AddDungeonChestSource(uint chestRowId, uint itemId, uint? onlyContentId) {
         if (itemId == 0) return;
 
         var chest = GetDungeonChest(chestRowId);
-        if (chest == null) return; 
+        if (chest == null) return;
 
         var cfcId = chest.ContentFinderConditionId;
+        if (onlyContentId.HasValue && cfcId != onlyContentId) return;
+
         var dutyLootData = dutyLootByContentId.GetOrAdd(cfcId, DutyLootData.Empty(cfcId));
         var item = dutyLootData.GetOrAddItem(itemId);
         if (item == null) return;

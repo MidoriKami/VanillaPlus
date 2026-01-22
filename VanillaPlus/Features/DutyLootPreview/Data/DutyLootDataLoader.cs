@@ -79,13 +79,15 @@ public class DutyLootDataLoader : IDisposable {
         return cfc.ContentType.RowId is not (3 or 6 or 19);
     }
 
-    private void RefreshActiveDuty() {
+    private unsafe void RefreshActiveDuty() {
         var newContentId = GetActiveContentId();
         if (newContentId == ActiveDutyContentFinderConditionId) return;
 
         ActiveDutyContentFinderConditionId = newContentId;
         if (newContentId.HasValue) {
-            dutyLootDataCache.LoadCacheAsync();
+            // Load only the current duty when in-duty, all duties when browsing duty finder
+            var inDuty = GameMain.Instance()->CurrentContentFinderConditionId != 0;
+            dutyLootDataCache.LoadCacheAsync(onlyContentId: inDuty ? newContentId : null);
         } else {
             dutyLootDataCache.ClearCache();
         }
