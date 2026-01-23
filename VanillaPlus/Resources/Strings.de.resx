@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,79 +26,79 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -118,160 +118,160 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Icon" xml:space="preserve">
-    <value>Symbol</value>
+    <value>Icon</value>
   </data>
   <data name="SortOptionAlphabetical" xml:space="preserve">
-    <value>Alphabetisch</value>
+    <value>Alphabetical</value>
   </data>
   <data name="Visibility" xml:space="preserve">
-    <value>Sichtbarkeit</value>
+    <value>Visibility</value>
   </data>
   <data name="Color" xml:space="preserve">
-    <value>Farbe</value>
+    <value>Color</value>
   </data>
   <data name="Toggles" xml:space="preserve">
-    <value>Umschalter</value>
+    <value>Toggles</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>Settings</value>
   </data>
   <data name="Button_SavePreset" xml:space="preserve">
-    <value>Voreinstellung speichern</value>
+    <value>Save Preset</value>
   </data>
   <data name="ChangelogBrowserTitle" xml:space="preserve">
-    <value>Vanilla Plus Änderungsprotokoll Browser</value>
+    <value>Vanilla Plus Changelog Browser</value>
   </data>
   <data name="ChangelogButtonLabel" xml:space="preserve">
-    <value>Änderungsprotokoll</value>
+    <value>Changelog</value>
   </data>
   <data name="ChangelogTitleFormat" xml:space="preserve">
-    <value>{0} Änderungsprotokoll</value>
+    <value>{0} Changelog</value>
   </data>
   <data name="CommandHelpOpenBrowser" xml:space="preserve">
-    <value>Modifikationsbrowser öffnen</value>
+    <value>Open Game Modification Browser</value>
   </data>
   <data name="ConfigCategory_Animations" xml:space="preserve">
-    <value>Animationen</value>
+    <value>Animations</value>
   </data>
   <data name="ConfigCategory_Colors" xml:space="preserve">
-    <value>Farben</value>
+    <value>Colors</value>
   </data>
   <data name="ConfigLabel_ButtonColor" xml:space="preserve">
-    <value>Knopf</value>
+    <value>Button</value>
   </data>
   <data name="ConfigLabel_EnableAnimations" xml:space="preserve">
-    <value>Animationen aktivieren</value>
+    <value>Enable Animations</value>
   </data>
   <data name="ConfigLabel_LaneColor" xml:space="preserve">
-    <value>Linie</value>
+    <value>Lane</value>
   </data>
   <data name="BetterCursor_CategoryFunctions" xml:space="preserve">
-    <value>Funktionen</value>
+    <value>Functions</value>
   </data>
   <data name="BetterCursor_CategoryIconSelection" xml:space="preserve">
-    <value>Symbolauswahl</value>
+    <value>Icon Selection</value>
   </data>
   <data name="BetterCursor_CategoryStyle" xml:space="preserve">
-    <value>Stil</value>
+    <value>Style</value>
   </data>
   <data name="BetterCursor_ConfigTitle" xml:space="preserve">
-    <value>Bessere Cursor-Konfiguration</value>
+    <value>Better Cursor Config</value>
   </data>
   <data name="BetterCursor_EnableAnimation" xml:space="preserve">
-    <value>Animation aktivieren</value>
+    <value>Enable Animation</value>
   </data>
   <data name="BetterCursor_HideOnCameraMove" xml:space="preserve">
-    <value>Auf „Links halten“ oder „Rechts halten“ ausblenden</value>
+    <value>Hide on Left-Hold or Right-Hold</value>
   </data>
   <data name="BetterCursor_LabelSize" xml:space="preserve">
-    <value>Größe</value>
+    <value>Size</value>
   </data>
   <data name="BetterCursor_OnlyShowInCombat" xml:space="preserve">
-    <value>Nur im Kampf anzeigen</value>
+    <value>Only show in Combat</value>
   </data>
   <data name="BetterCursor_OnlyShowInDuties" xml:space="preserve">
-    <value>Nur im Inhalt anzeigen</value>
+    <value>Only Show in Duties</value>
   </data>
   <data name="CurrencyOverlay_ConfigTitle" xml:space="preserve">
-    <value>Vermögensübersichtkonfiguration</value>
+    <value>Currency Overlay Config</value>
   </data>
   <data name="CurrencyOverlay_ItemSearchTitle" xml:space="preserve">
-    <value>Itemsuche</value>
+    <value>Item Search</value>
   </data>
   <data name="CurrencyOverlay_SortOptionId" xml:space="preserve">
     <value>Id</value>
   </data>
   <data name="CurrencyOverlay_LabelFadePercentage" xml:space="preserve">
-    <value>&#x8;Überblendungsprozentsatz</value>
+    <value>Fade Percentage</value>
   </data>
   <data name="FadeStrategyBoard_ConfigTitle" xml:space="preserve">
-    <value>Strategietafel-Verblassung Konfiguration</value>
+    <value>Fade Strategy Board Config</value>
   </data>
   <data name="FadeStrategyBoard_CategoryStyleSettings" xml:space="preserve">
-    <value>Stileinstellungen</value>
+    <value>Style Settings</value>
   </data>
   <data name="FadeStrategyBoard_LabelFadePercentage" xml:space="preserve">
-    <value>Verblassungsprozentsatz</value>
+    <value>Fade Percentage</value>
   </data>
   <data name="WindowBackground_ConfigTitle" xml:space="preserve">
-    <value>Fensterhintergründe konfigurieren</value>
+    <value>Window Backgrounds Config</value>
   </data>
   <data name="WindowBackground_SearchTitle" xml:space="preserve">
-    <value>Fenster-Suche</value>
+    <value>Window Search</value>
   </data>
   <data name="WindowBackground_ColorPickerTitle" xml:space="preserve">
-    <value>Fensterhintergrund-Farbauswahl</value>
+    <value>Window Background Color Picker</value>
   </data>
   <data name="WindowBackground_CategoryBackgroundColor" xml:space="preserve">
-    <value>Hintergrundfarbe</value>
+    <value>Background Color</value>
   </data>
   <data name="WindowBackground_CategoryPaddingSize" xml:space="preserve">
-    <value>Padding Größe</value>
+    <value>Padding Size</value>
   </data>
   <data name="TargetCastBarCountdown_CategoryFocusStyle" xml:space="preserve">
-    <value>Fokusziel Fortschrittsbalken-Stil</value>
+    <value>Focus Target Castbar Style</value>
   </data>
   <data name="TargetCastBarCountdown_CategoryNameplateStyle" xml:space="preserve">
-    <value>Namensschild Fortschrittsbalken-Stil</value>
+    <value>Nameplate Castbar Style</value>
   </data>
   <data name="TargetCastBarCountdown_CategoryPrimaryAltStyle" xml:space="preserve">
-    <value>Ziel Fortschrittsbalken-Stil (Getrennt)</value>
+    <value>Target Castbar Style (Separate)</value>
   </data>
   <data name="TargetCastBarCountdown_CategoryPrimaryStyle" xml:space="preserve">
-    <value>Ziel Fortschrittsbalken-Stil (Kombiniert)</value>
+    <value>Target Castbar Style (Combined)</value>
   </data>
   <data name="TargetCastBarCountdown_CheckboxFocus" xml:space="preserve">
-    <value>Auf "Fokusziel Fortschrittsbalken" anzeigen</value>
+    <value>Show on Focus Target Castbar</value>
   </data>
   <data name="TargetCastBarCountdown_CheckboxNameplate" xml:space="preserve">
-    <value>Auf "Namensschild Fortschrittsbalken" anzeigen</value>
+    <value>Show on Nameplate Target Castbar</value>
   </data>
   <data name="TargetCastBarCountdown_CheckboxPrimary" xml:space="preserve">
-    <value>Auf "Primäres Ziel Fortschrittsbalken" anzeigen</value>
+    <value>Show on Primary Target Castbar</value>
   </data>
   <data name="TargetCastBarCountdown_ConfigTitle" xml:space="preserve">
-    <value>Ziel Fortschrittsbalken Countdown Konfiguration</value>
+    <value>Target Castbar Countdown Config</value>
   </data>
   <data name="SuppressDialogAdvance_ApplyOnlyInCutscenes" xml:space="preserve">
-    <value>Nur in Zwischensequenzen anwenden</value>
+    <value>Apply only in Cutscenes</value>
   </data>
   <data name="SuppressDialogAdvance_CategoryGeneral" xml:space="preserve">
-    <value>Allgemeines</value>
+    <value>General</value>
   </data>
   <data name="SuppressDialogAdvance_ConfigTitle" xml:space="preserve">
-    <value>Dialog unterdrücken - Erweiterte Konfiguration</value>
+    <value>Suppress Dialog Advance Config</value>
   </data>
   <data name="ClearSelectedDuties_ConfigTitle" xml:space="preserve">
-    <value>Inhalte-Auswahl zurücksetzen</value>
+    <value>Clear Selected Duties Config</value>
   </data>
   <data name="ClearSelectedDuties_DisableWhenUnrestricted" xml:space="preserve">
-    <value>Bei uneingeschränkter Gruppe deaktivieren</value>
+    <value>Disable when Unrestricted</value>
   </data>
   <data name="Label_ModAuthorBy" xml:space="preserve">
-    <value>Von {0}</value>
+    <value>By {0}</value>
   </data>
   <data name="ModificationBrowserTitle" xml:space="preserve">
-    <value>Vanilla Plus Änderungsbrowser</value>
+    <value>Vanilla Plus Modification Browser</value>
   </data>
   <data name="ModificationType_Debug" xml:space="preserve">
     <value>Debug</value>
@@ -282,184 +282,198 @@
   <data name="ModificationType_UserInterface" xml:space="preserve">
     <value>UI Modification</value>
   </data>
+  <data name="ModificationType_GameBehavior" xml:space="preserve">
+    <value>Game Behavior Modification</value>
+  </data>
+  <data name="ModificationType_NewOverlay" xml:space="preserve">
+    <value>Custom Native Overlay</value>
+  </data>
   <data name="ModificationDescription_DisableTitleScreenMovie" xml:space="preserve">
-    <value>Verhindert, dass auf dem Titelbildschirm der Einführungsvideo abgespielt wird.</value>
+    <value>Prevents the title screen from playing the introduction movie.</value>
   </data>
   <data name="ModificationDescription_FadeStrategyBoard" xml:space="preserve">
-    <value>Blendet die Strategietafel-Schaltfläche aus.</value>
+    <value>Fades the strategy board button.</value>
   </data>
   <data name="ModificationDescription_HideDeadEnemyNamePlates" xml:space="preserve">
-    <value>Blendet Namensschilder von bereits besiegten Gegnern aus.</value>
+    <value>Hides the nameplates of enemies that are already dead.</value>
   </data>
   <data name="ModificationDescription_MiniCactpotHelper" xml:space="preserve">
-    <value>Zeigt an, welche Mini-Cactpot-Spots du als nächstes aufdecken solltest.</value>
+    <value>Indicates which Mini Cactpot spots you should reveal next.</value>
   </data>
   <data name="ModificationDescription_PartyFinderPresets" xml:space="preserve">
-    <value>Ermöglicht es dir, Vorlagen für das Gruppensuche Rekrutierungsfenster zu speichern und zu verwenden.</value>
+    <value>Allows you to save and use presets for the Party Finder Recruitment window.</value>
   </data>
   <data name="ModificationDisplay_DisableTitleScreenMovie" xml:space="preserve">
-    <value>Titelbildschirm-Video deaktivieren</value>
+    <value>Disable Title Screen Movie</value>
   </data>
   <data name="ModificationDisplay_FadeStrategyBoard" xml:space="preserve">
-    <value>Strategietafel ausblenden</value>
+    <value>Fade Strategy Board</value>
   </data>
   <data name="ModificationDisplay_HideDeadEnemyNamePlates" xml:space="preserve">
-    <value>Tote Gegner-Namensschilder verbergen</value>
+    <value>Hide Dead Enemy Nameplates</value>
   </data>
   <data name="ModificationDisplay_MiniCactpotHelper" xml:space="preserve">
-    <value>Mini-Cactpot Helfer</value>
+    <value>Mini Cactpot Helper</value>
   </data>
   <data name="ModificationDisplay_PartyFinderPresets" xml:space="preserve">
-    <value>Party Finder Vorlagen</value>
+    <value>Party Finder Presets</value>
   </data>
   <data name="Preset_DefaultOption" xml:space="preserve">
-    <value>Keine Vorlagen gespeichert</value>
+    <value>No Presets Saved</value>
   </data>
   <data name="Preset_DontUseOption" xml:space="preserve">
-    <value>Keine Vorlagen verwenden</value>
+    <value>Don't Use Preset</value>
   </data>
   <data name="SearchPlaceholder" xml:space="preserve">
-    <value>Suche . . .</value>
+    <value>Search . . .</value>
   </data>
   <data name="SelectionPrompt" xml:space="preserve">
-    <value>Bitte wähle links eine Option aus.</value>
+    <value>Please select an option on the left</value>
   </data>
   <data name="Title_MiniCactpotConfig" xml:space="preserve">
-    <value>Mini Cactpot Helferkonfiguration</value>
+    <value>Mini Cactpot Helper Config</value>
   </data>
   <data name="Title_PartyFinderPreset" xml:space="preserve">
-    <value>Gruppensuche Vorlagen</value>
+    <value>Party Finder Preset</value>
   </data>
   <data name="Title_PresetConfigManager" xml:space="preserve">
-    <value>Vorlagenkonfigurationsmanager</value>
+    <value>Preset Config Manager</value>
   </data>
   <data name="Tooltip_ConfigEzMiniCactpot" xml:space="preserve">
-    <value>EzMiniCactpot-Plugin konfigurieren</value>
+    <value>Configure EzMiniCactpot Plugin</value>
   </data>
   <data name="Tooltip_ExperimentalFeature" xml:space="preserve">
-    <value>Achtung, diese Funktion ist experimentell.
-Kann Fehler enthalten oder dein Spiel zum Absturz bringen.</value>
+    <value>Caution, this feature is experimental.
+May contain bugs or crash your game.</value>
   </data>
   <data name="Tooltip_ModificationFailedToLoad" xml:space="preserve">
-    <value>Das Laden ist fehlgeschlagen, dieses Modul wurde deaktiviert.</value>
+    <value>Failed to load, this module has been disabled</value>
   </data>
   <data name="Tooltip_NoPresets" xml:space="preserve">
-    <value>[VanillaPlus]: Keine Vorlagen gespeichert</value>
+    <value>[VanillaPlus]: No presets saved</value>
   </data>
   <data name="Tooltip_OpenConfiguration" xml:space="preserve">
-    <value>Konfigurationsfenster öffnen</value>
+    <value>Open configuration window</value>
   </data>
   <data name="Tooltip_ReverseSortDirection" xml:space="preserve">
-    <value>Sortierreihenfolge umkehren</value>
+    <value>Reverse Sort Direction</value>
   </data>
   <data name="Tooltip_RetryCompatibility" xml:space="preserve">
-    <value>Kompatibilitätsprüfung wiederholen</value>
+    <value>Retry compatibility check</value>
+  </data>
+  <data name="CompatibilityModule_ActivePluginMessage" xml:space="preserve">
+    <value>The original version of this feature is from a plugin that is currently active: {0}</value>
+  </data>
+  <data name="CompatibilityModule_SimpleTweaksActive" xml:space="preserve">
+    <value>The original version of this feature is already active in Simple Tweaks Plugin.
+
+ID: {0}</value>
   </data>
   <data name="Tooltip_SavePreset" xml:space="preserve">
-    <value>[VanillaPlus]: Aktuelle Einstellungen als Vorlage speichern</value>
+    <value>[VanillaPlus]: Save current settings to a preset</value>
   </data>
   <data name="Tooltip_SearchRegexSupport" xml:space="preserve">
-    <value>[VanillaPlus]: Unterstützt die Regex-Suche
-Beginnen Sie die Eingabe mit '$', um nach der Beschreibung zu suchen.</value>
+    <value>[VanillaPlus]: Supports Regex Search
+Start input with '$' to search by description</value>
   </data>
   <data name="Tooltip_SelectPreset" xml:space="preserve">
-    <value>[VanillaPlus]: Eine Vorlage auswählen</value>
+    <value>[VanillaPlus]: Select a preset</value>
   </data>
   <data name="DutyTimer_CompletedMessage" xml:space="preserve">
-    <value>Inhalt abgeschlossen in: {0}</value>
+    <value>Duty Completed in: {0}</value>
   </data>
   <data name="DutyLoot_Filter_All" xml:space="preserve">
-    <value>Alle Gegenstände</value>
+    <value>All Items</value>
   </data>
   <data name="DutyLoot_Filter_Equipment" xml:space="preserve">
-    <value>Ausrüstung</value>
+    <value>Equipment</value>
   </data>
   <data name="DutyLoot_Filter_Favorites" xml:space="preserve">
-    <value>Favoriten</value>
+    <value>Favorites</value>
   </data>
   <data name="DutyLoot_Filter_Misc" xml:space="preserve">
-    <value>Verschiedenes</value>
+    <value>Miscellaneous</value>
   </data>
   <data name="DutyLoot_LoadingMessage" xml:space="preserve">
-    <value>Beute-Daten werden geladen...</value>
+    <value>Loading loot data...</value>
   </data>
   <data name="DutyLoot_NoItemsMessage" xml:space="preserve">
-    <value>Für diesen Inhalt wurden keine Beutegegenstände gefunden.
+    <value>No loot data found for this duty.
 
-Die Daten stammen aus einer externen Quelle und sind möglicherweise unvollständig.
-
-Die Daten werden aktualisiert, sobald sie verfügbar sind. Bitte keine Datenaktualisierungen anfordern.</value>
+Data is provided by a external source and may be incomplete.
+        
+Data will be updated as it becomes available, do not request data updates.</value>
   </data>
   <data name="DutyLoot_NoResultsMessage" xml:space="preserve">
-    <value>Keine Ergebnisse</value>
+    <value>No results</value>
   </data>
   <data name="DutyLoot_Tooltip_InDutyButton" xml:space="preserve">
-    <value>[VanillaPlus] Vorschaufenster mit Beutevorschau öffnen</value>
+    <value>[VanillaPlus] Open Duty Loot Preview Window</value>
   </data>
   <data name="DutyLoot_Tooltip_JournalButton" xml:space="preserve">
-    <value>Beute anzeigen, die in diesem Inhalt verdient werden kann.</value>
+    <value>View Loot that can be earned in this duty.</value>
   </data>
   <data name="FateEntry_LevelRangeFormat" xml:space="preserve">
-    <value>St. {0}-{1}</value>
+    <value>Lv. {0}-{1}</value>
   </data>
   <data name="FateEntry_LevelUnknown" xml:space="preserve">
-    <value>St. ???</value>
+    <value>Lv. ???</value>
   </data>
   <data name="FateListWindow_Title" xml:space="preserve">
-    <value>FATE List</value>
+    <value>Fate List</value>
   </data>
   <data name="HUDPresets_ButtonDelete" xml:space="preserve">
-    <value>Löschen</value>
+    <value>Delete</value>
   </data>
   <data name="HUDPresets_ButtonLoad" xml:space="preserve">
-    <value>Laden</value>
+    <value>Load</value>
   </data>
   <data name="HUDPresets_ButtonLoadTooltip" xml:space="preserve">
-    <value>Ausgewählte Vorlage laden</value>
+    <value>Load selected preset</value>
   </data>
   <data name="HUDPresets_ButtonOverwrite" xml:space="preserve">
-    <value>Überschreiben</value>
+    <value>Overwrite</value>
   </data>
   <data name="HUDPresets_ButtonOverwriteTooltip" xml:space="preserve">
-    <value>Ausgewählte Vorlage überschreiben</value>
+    <value>Overwrite selected preset</value>
   </data>
   <data name="HUDPresets_ButtonSave" xml:space="preserve">
-    <value>Speichern</value>
+    <value>Save</value>
   </data>
   <data name="HUDPresets_DefaultOption" xml:space="preserve">
-    <value>Keine Option ausgewählt</value>
+    <value>No Option Selected</value>
   </data>
   <data name="HUDPresets_DeleteTooltip" xml:space="preserve">
-    <value>In Bearbeitung
-Lösche vorläufig die Vorlagen manuell.</value>
+    <value>Work in Progress
+Manually delete preset files for now</value>
   </data>
   <data name="HUDPresets_DropdownTooltip" xml:space="preserve">
-    <value>HUD-Layout Vorlage auswählen</value>
+    <value>Select a HUD Layout Preset</value>
   </data>
   <data name="HUDPresets_Label" xml:space="preserve">
-    <value>[VanillaPlus] HUD Vorlage</value>
+    <value>[VanillaPlus] HUD Presets</value>
   </data>
   <data name="HUDPresets_PlaceholderNewPreset" xml:space="preserve">
-    <value>Neuer Vorlagen Name</value>
+    <value>New Preset Name</value>
   </data>
   <data name="HUDPresets_RenameTitle" xml:space="preserve">
-    <value>HUD Vorlage Name</value>
+    <value>HUD Preset Name</value>
   </data>
   <data name="HUDPresets_SaveTooltipDisabled" xml:space="preserve">
-    <value>Vor dem Speichern einer neuen Voreinstellung oben auf "Speichern" klicken.</value>
+    <value>Click save above before saving a new preset</value>
   </data>
   <data name="HUDPresets_SaveTooltipEnabled" xml:space="preserve">
-    <value>Aktuelle Benutzeroberfläche als neue Vorlage speichern</value>
+    <value>Save Current UI as a new preset</value>
   </data>
   <data name="Label_LocationDisplayInstructions" xml:space="preserve">
-    <value>Definiere in dem Textfeld unten, wie der Text formatiert werden soll.
-Verwende dafür die Symbole {0} {1} {2} {3} {4}, wo die folgenden Werte in der Zeichenfolge stehen sollen
+    <value>Use the text box below to define how you want the text to be formatted.
+Use symbols {0} {1} {2} {3} {4} where you want the following values to be in the string
 
-{0} – Region (z. B. Die nördliche Leere)
-{1} – Territorium (z. B. Altes Sharlayan)
-{2} – Gebiet (z. B. Archons Design)
-{3} – Untergebiet (z. B. Altes Sharlayan Aetheryte Plaza)
-{4} – Wohnbezirk (z. B. 14. Bezirk)</value>
+{0} - Region (Ex. The Northern Empty)
+{1} - Territory (Ex. Old Sharlayan)
+{2} - Area (Ex. Archons Design)
+{3} - Sub-Area (Ex. Old Sharlayan Aetheryte Plaza)
+{4} - Housing Ward (Ex. Ward 14)</value>
   </data>
   <data name="LocationDisplay_DefaultEntryFormat" xml:space="preserve">
     <value>{0}, {1}, {2}, {3}</value>
@@ -468,159 +482,159 @@ Verwende dafür die Symbole {0} {1} {2} {3} {4}, wo die folgenden Werte in der Z
     <value>{0}, {1}, {2}, {3}</value>
   </data>
   <data name="LocationDisplay_InfoBarEntryLabel" xml:space="preserve">
-    <value>Infoleiste Eintrag</value>
+    <value>Info Bar Entry</value>
   </data>
   <data name="LocationDisplay_InfoBarTooltipLabel" xml:space="preserve">
-    <value>Infoleiste Tooltip</value>
+    <value>Info Bar Tooltip</value>
   </data>
   <data name="LocationDisplay_ResetButton" xml:space="preserve">
-    <value>Auf Standard zurücksetzen</value>
+    <value>Reset to Default</value>
   </data>
   <data name="LocationDisplay_ShowInstanceNumber" xml:space="preserve">
-    <value>Instanznummer anzeigen</value>
+    <value>Show Instance Number</value>
   </data>
   <data name="LocationDisplay_ShowPreciseHousing" xml:space="preserve">
-    <value>Genaue Lage des Hauses anzeigen</value>
+    <value>Show Precise Housing Location</value>
   </data>
   <data name="LocationDisplay_ConfigTitle" xml:space="preserve">
-    <value>Standortanzeige-Konfiguration</value>
+    <value>Location Display Config</value>
   </data>
   <data name="LocationDisplay_DtrEntryName" xml:space="preserve">
-    <value>VanillaPlus – Standortanzeige</value>
+    <value>VanillaPlus - LocationDisplay</value>
   </data>
   <data name="LocationDisplay_WardFormat" xml:space="preserve">
-    <value>{0}. Bezirk</value>
+    <value>Ward {0}</value>
   </data>
   <data name="LocationDisplay_SubdivisionLabel" xml:space="preserve">
-    <value>Erweiterung</value>
+    <value>Subdivision</value>
   </data>
   <data name="LocationDisplay_ApartmentFormat" xml:space="preserve">
-    <value>Wohnung {0}</value>
+    <value>Apartment {0}</value>
   </data>
   <data name="LocationDisplay_ApartmentLobby" xml:space="preserve">
-    <value>Eingangshalle</value>
+    <value>Lobby</value>
   </data>
   <data name="LocationDisplay_PlotFormat" xml:space="preserve">
-    <value>Hausnummer {0}</value>
+    <value>Plot {0}</value>
   </data>
   <data name="LocationDisplay_RoomFormat" xml:space="preserve">
-    <value>Zimmer {0}</value>
+    <value>Room {0}</value>
   </data>
   <data name="MissingJobStone_Tooltip" xml:space="preserve">
-    <value>[VanillaPlus]: Klicken, um Sperre zu deaktivieren</value>
+    <value>[VanillaPlus]: Click to disable lock</value>
   </data>
   <data name="MissingJobStone_TooltipWithCountdown" xml:space="preserve">
-    <value>[VanillaPlus]: Klicken, um Sperre zu deaktivieren
-{0} verbleibende Klicks</value>
+    <value>[VanillaPlus]: Click to disable lock
+{0} Clicks remaining</value>
   </data>
   <data name="MissingJobStone_WarningText" xml:space="preserve">
-    <value>Fehlender Jobkristall!</value>
+    <value>Missing Job Stone!</value>
   </data>
   <data name="ModificationDescription_ArmourySearchBar" xml:space="preserve">
-    <value>Fügt dem Fenster Arsenal eine Suchleiste hinzu.</value>
+    <value>Adds a search bar to the armoury window.</value>
   </data>
   <data name="ModificationDescription_ClearFlag" xml:space="preserve">
-    <value>Mit einem Rechtsklick auf die Minikarte wird die aktuell gesetzte Markierung gelöscht.</value>
+    <value>Allows you to right click the minimap to clear the currently set flag marker.</value>
   </data>
   <data name="ModificationDescription_ClearSelectedDuties" xml:space="preserve">
-    <value>Beim Öffnen der Inhaltssuche werden alle ausgewählten Bedingungen abgewählt.</value>
+    <value>When opening the Duty Finder, deselects any selected duties.</value>
   </data>
   <data name="ModificationDescription_ClearTextInputs" xml:space="preserve">
-    <value>Mit dieser Funktion lässt sich der Text in einem Texteingabefeld löschen, indem man mit der rechten Maustaste auf das Texteingabefeld klickt.</value>
+    <value>Allows you to clear the text in a text input, by right clicking the text input.</value>
   </data>
   <data name="ModificationDescription_WondrousTailsProbabilities" xml:space="preserve">
-    <value>Zeigt die aktuellen Zeilenwahrscheinlichkeiten und durchschnittlichen Wiederholungswahrscheinlichkeiten im Abenteueralbum an.</value>
+    <value>Displays current line probabilities and average reroll probabilities in the Wondrous Tails Book.</value>
   </data>
   <data name="ModificationDescription_WindowBackground" xml:space="preserve">
-    <value>Mit dieser Funktion kann ein beliebiges natives Fenster mit einem Hintergrund versehen werden.
+    <value>Allows you to add a background to any native window.
 
-Beispiele: Cast-Leiste, Ziel-Gesundheitsleiste, Inventar-Widget, Aufgabenliste.</value>
+Examples: Cast Bar, Target Health Bar, Inventory Widget, Todo List.</value>
   </data>
   <data name="ModificationDescription_TargetCastBarCountdown" xml:space="preserve">
-    <value>Fügt die verbleibende Zeit für den aktuellen Zauber des Ziels zur Zauberleiste hinzu.</value>
+    <value>Adds the time remaining for your targets current cast to the cast bar.</value>
   </data>
   <data name="ModificationDescription_SuppressDialogAdvance" xml:space="preserve">
-    <value>Verhindert das Weiterblättern eines Cutscene-Dialogs, es sei denn, man klickt auf das Dialogfeld selbst.</value>
+    <value>Prevents advancing a cutscene dialogue, unless you click on the dialogue box itself.</value>
   </data>
   <data name="ModificationDescription_StickyShopCategories" xml:space="preserve">
-    <value>Speichert die ausgewählte Kategorie und Unterkategorien für bestimmte Verkäufer.</value>
+    <value>Remembers the selected category and subcategories for certain vendors.</value>
   </data>
   <data name="ModificationDescription_SkipTeleportConfirm" xml:space="preserve">
-    <value>Überspringt das Popup-Fenster 'Teleportieren nach [Ort] für [Betrag] Gil?' bei Verwendung der Karte zum Teleportieren.</value>
+    <value>Skips the 'Teleport to [Location] for [amount] gil?' popup when using the map to teleport.</value>
   </data>
   <data name="ModificationDescription_ShowAetherCurrents" xml:space="preserve">
-    <value>Zeigt alle verfügbaren Windätherquellen auf der Karte an.</value>
+    <value>Shows all available aether currents on the map.</value>
   </data>
   <data name="ModificationDescription_SelectNextLootItem" xml:space="preserve">
-    <value>Nach dem Klicken auf „Brauche“, „Gier“ oder „Passe“ wird automatisch zum nächsten Beutegegenstand weitergeblättert.
+    <value>Automatically advance to the next loot item after clicking Need, Greed, or Pass.
 
-Hinweis: Diese Änderung führt nicht automatisch zu einem Würfelwurf für Beute.</value>
+Note: this modification does not automatically roll on loot.</value>
   </data>
   <data name="ModificationDescription_SaddlebagSearchBar" xml:space="preserve">
-    <value>Fügt eine Suchleiste zum Satteltaschenfenster hinzu.</value>
+    <value>Adds a search bar to the saddlebag window.</value>
   </data>
   <data name="ModificationDescription_RetainerSearchBar" xml:space="preserve">
-    <value>Fügt dem Gehilfen-Fenster eine Suchleiste hinzu.</value>
+    <value>Adds a search bar to the retainer window.</value>
   </data>
   <data name="ModificationDescription_ResourceBarPercentages" xml:space="preserve">
-    <value>Zeigt LP-, MP-, SP- und HP-Balken als Prozentsätze statt als Rohwerte an.</value>
+    <value>Displays HP, MP, GP and CP bars as percentages instead of raw values.</value>
   </data>
   <data name="ModificationDescription_ResetInventoryTab" xml:space="preserve">
-    <value>Setzt das Inventar beim Öffnen automatisch auf die erste Registerkarte zurück.</value>
+    <value>Automatically resets the inventory to the first tab when opened.</value>
   </data>
   <data name="ModificationDescription_RecentlyLootedWindow" xml:space="preserve">
-    <value>Fügt ein Fenster hinzu, das eine scrollbare Liste aller Gegenstände anzeigt, die in der aktuellen Sitzung erbeutet wurden.
+    <value>Adds a window that shows a scrollable list of all items that you have looted this session.
 
-Es können nur Gegenstände angezeigt werden, die nach Aktivierung dieser Funktion erbeutet wurden.</value>
+Can only show items looted after this feature is enabled.</value>
   </data>
   <data name="ModificationDescription_QuestListWindow" xml:space="preserve">
-    <value>Zeigt eine Liste aller verfügbaren Quests für die aktuell besetzte Zone an.</value>
+    <value>Displays a list of all available quests for the currently occupied zone.</value>
   </data>
   <data name="ModificationDescription_OpenGlamourDresserToCurrentJob" xml:space="preserve">
-    <value>Beim Öffnen der Projektions-Kommode wird automatisch die Registerkarte für Ihren aktuellen Job ausgewählt.</value>
+    <value>When opening the glamour dresser, the tab for your current job will be automatically selected.</value>
   </data>
   <data name="ModificationDescription_HideGuildhestObjectivePopup" xml:space="preserve">
-    <value>Bei Beginn einer Gildenquest verhindert diese Änderung das Erscheinen des Popup-Fensters mit den Anweisungen zur Durchführung der Gildenquest.
+    <value>When starting a guildhest this modification will prevent the popup window that contains the instructions on how to do the Guildhest.
 
-Diese Funktion wird nicht empfohlen, wenn Sie zum ersten Mal eine Gildenquest durchführen.</value>
+This feature is not recommended if this is your first time doing Guildhests.</value>
   </data>
   <data name="ModificationDescription_HideMpBars" xml:space="preserve">
-    <value>Versteckt MP-Balken in der Gruppenliste für Jobs, die keine MP verwenden.</value>
+    <value>Hides MP Bars in party list for jobs that don't use MP.</value>
   </data>
   <data name="ModificationDescription_HideUnwantedBanners" xml:space="preserve">
-    <value>Verhindert, dass große Textbanner angezeigt werden und deren Soundeffekte abgespielt werden.</value>
+    <value>Prevents large text banners from appearing and playing their sound effect.</value>
   </data>
   <data name="ModificationDescription_HUDCoordinates" xml:space="preserve">
-    <value>Zeigt Koordinatenpositionen in HUD-Layout-Knoten an, sodass du alles genau richtig einstellen kannst.
+    <value>Display coordinate positions in HUD Layout nodes, allows you get get things exactly right.
 
-Zeigt Koordinaten für die Mitte des HUD-Elements an.</value>
+Displays coordinates for the center of the HUD element.</value>
   </data>
   <data name="ModificationDescription_InstancedWaymarks" xml:space="preserve">
-    <value>Ermöglicht die Verwendung aller gespeicherten Waymark-Slots pro Inhalt, anstatt sie über alle Inhalte hinweg zu teilen, mit der Option, jeden Slot zu benennen.</value>
+    <value>Enables the use of all saved Waymark Slots per duty, instead of sharing them across all duties, with the option to name each slot.</value>
   </data>
   <data name="ModificationDescription_InventorySearchBar" xml:space="preserve">
-    <value>Fügt eine Suchleiste zum Inventar-Fenster hinzu.</value>
+    <value>Adds a search bar to the inventory window.</value>
   </data>
   <data name="ModificationDescription_ListInventory" xml:space="preserve">
-    <value>Fügt ein Fenster hinzu, in dem Ihr Inventar als Liste mit umschaltbaren Filtern angezeigt wird.</value>
+    <value>Adds a window that displays your inventory as a list, with toggleable filters.</value>
   </data>
   <data name="ModificationDescription_LocationDisplay" xml:space="preserve">
-    <value>Zeigt Ihren aktuellen Standort in der Server-Informationsleiste an.</value>
+    <value>Displays your current location in the server information bar.</value>
   </data>
   <data name="ModificationDescription_MacroLineNumbers" xml:space="preserve">
-    <value>Fügt Zeilennummern zum Fenster 'Benutzermakros' hinzu.</value>
+    <value>Adds line numbers to the User Macros window.</value>
   </data>
   <data name="ModificationDescription_MacroTooltips" xml:space="preserve">
-    <value>Zeigt Aktions-Tooltips an, wenn Sie mit der Maus über ein Makro mit "/macroicon" fahren, das mit einer 'Aktion" versehen ist.</value>
+    <value>Displays action tooltips when hovering over a macro with "/macroicon" set with an 'action'.</value>
   </data>
   <data name="ModificationDescription_DebugCustomAddon" xml:space="preserve">
-    <value>Ein Modul zum Ausprobieren und Testen der Funktionen von VanillaPlus</value>
+    <value>A module for playing around and testing VanillaPlus features</value>
   </data>
   <data name="ModificationDescription_DebugGameModification" xml:space="preserve">
-    <value>Ein Modul zum Ausprobieren und Testen der Funktionen von VanillaPlus</value>
+    <value>A module for playing around and testing VanillaPlus features</value>
   </data>
   <data name="ModificationDescription_SampleGameModification" xml:space="preserve">
-    <value>Beispielbeschreibung</value>
+    <value>SampleDescription</value>
   </data>
   <data name="ModificationDescription_BetterCursor" xml:space="preserve">
     <value>Draws a ring around the cursor to make it easier to see.</value>
@@ -1183,122 +1197,183 @@ This game modification fixes it by always triggering the normal mouse click in a
     <value>Toggles</value>
   </data>
   <data name="ActionHighlight_Configuration" xml:space="preserve">
-    <value>Aktions-Highlight Konfiguration</value>
+    <value>Action Highlight Configuration</value>
   </data>
   <data name="ActionHighlight_ShowInCombat" xml:space="preserve">
-    <value>Nur im Kampf anzeigen</value>
+    <value>Show Only In Combat</value>
   </data>
   <data name="ActionHighlight_AntOnlyOnFinalStack" xml:space="preserve">
-    <value>Ameisen-Effekt nur bei letztem Stack</value>
+    <value>Ant Only On Final Stack</value>
   </data>
   <data name="ActionHighlight_ShowOnlyUsableActions" xml:space="preserve">
-    <value>Nur nutzbare Aktionen anzeigen</value>
+    <value>Show Only Usable Actions</value>
   </data>
   <data name="ActionHighlight_UseGlobalPreAntMs" xml:space="preserve">
-    <value>Globale Vor-Ameisen-Zeit (ms) verwenden</value>
+    <value>Use Global Pre-Ant Ms</value>
   </data>
   <data name="ActionHighlight_GlobalPreAntTimeMs" xml:space="preserve">
-    <value>Globale Vor-Ameisen-Zeit (ms)</value>
+    <value>Global Pre-Ant Time (ms)</value>
   </data>
   <data name="ActionHighlight_DisplayName" xml:space="preserve">
-    <value>Aktions-Highlight</value>
+    <value>Action Highlight</value>
   </data>
   <data name="ActionHighlight_Description" xml:space="preserve">
-    <value>Hebt Fähigkeiten mit dem Ameisen-Effekt hervor, wenn sie bereit sind oder kurz bevor sie verfügbar werden.</value>
+    <value>Highlights abilities with the ants effect when they are off cooldown or shortly before they become available.</value>
   </data>
   <data name="PersistentRetainerGil_PersistentRetainerGil" xml:space="preserve">
-    <value>Dauerhafter Gehilfen-Gil-Betrag</value>
+      <value>Persistent Retainer Gil</value>
   </data>
   <data name="PersistentRetainerGil_Description" xml:space="preserve">
-    <value>Speichert den eingegebenen Gil-Betrag beim Wechsel zwischen Einzahlen und Auszahlen.</value>
+      <value>Remembers the entered gil amount when switching between deposit and withdraw modes.</value>
   </data>
-  <data name="ModificationType_GameBehavior" xml:space="preserve">
-    <value>Game Behavior Modification</value>
+  <data name="ClockOverlay_Title" xml:space="preserve">
+      <value>Clock Overlay</value>
   </data>
-  <data name="ModificationType_NewOverlay" xml:space="preserve">
-    <value>Custom Native Overlay</value>
+  <data name="ClockOverlay_Description" xml:space="preserve">
+      <value>Adds a customizable clock overlay (LT/ST/ET) to the game</value>
   </data>
-    <data name="ClockOverlay_Title" xml:space="preserve">
-    <value>Uhr-Overlay</value>
-</data>
-    <data name="ClockOverlay_Description" xml:space="preserve">
-    <value>Fügt dem Spiel ein anpassbares Uhr-Overlay (LT/ST/ET) hinzu.</value>
-</data>
-    <data name="ClockOverlay_ConfigurationTitle" xml:space="preserve">
-    <value>Uhr-Overlay-Konfiguration</value>
-</data>
-    <data name="ClockOverlay_ClockSettings" xml:space="preserve">
-    <value>Uhr-Einstellungen</value>
-</data>
-    <data name="ClockOverlay_ShowSeconds" xml:space="preserve">
-    <value>Sekunden anzeigen</value>
-</data>
-    <data name="ClockOverlay_ShowSourcePrefix" xml:space="preserve">
-    <value>Quellen-Präfix anzeigen</value>
-</data>
-    <data name="ClockOverlay_EnableMoving" xml:space="preserve">
-    <value>Bewegen aktivieren</value>
-</data>
-    <data name="ClockOverlay_TimeSource" xml:space="preserve">
-    <value>Zeitquelle</value>
-</data>
-    <data name="ClockOverlay_LocalTime" xml:space="preserve">
-    <value>Lokale Zeit</value>
-</data>
-    <data name="ClockOverlay_ServerTime" xml:space="preserve">
-    <value>Serverzeit</value>
-</data>
-    <data name="ClockOverlay_EorzeaTime" xml:space="preserve">
-    <value>Eorzea-Zeit</value>
-</data>
-    <data name="ClockOverlay_TextRendering" xml:space="preserve">
-    <value>Text-Rendering</value>
-</data>
-    <data name="ClockOverlay_Edge" xml:space="preserve">
-    <value>Rand</value>
-</data>
-    <data name="ClockOverlay_Glare" xml:space="preserve">
-    <value>Glanz</value>
-</data>
-    <data name="ClockOverlay_Emboss" xml:space="preserve">
-    <value>Relief</value>
-</data>
-    <data name="ClockOverlay_Visual_Style" xml:space="preserve">
-    <value>Visueller Stil</value>
-</data>
-  <data name="CompatibilityModule_ActivePluginMessage" xml:space="preserve">
-    <value>The original version of this feature is from a plugin that is currently active: {0}</value>
+  <data name="ClockOverlay_ConfigurationTitle" xml:space="preserve">
+      <value>Clock Overlay Configuration</value>
+  </data>
+  <data name="ClockOverlay_ClockSettings" xml:space="preserve">
+      <value>Clock Settings</value>
+  </data>
+  <data name="ClockOverlay_ShowSeconds" xml:space="preserve">
+      <value>Show Seconds</value>
+  </data>
+  <data name="ClockOverlay_ShowSourcePrefix" xml:space="preserve">
+      <value>Show Source Prefix</value>
+  </data>
+  <data name="ClockOverlay_EnableMoving" xml:space="preserve">
+      <value>Enable Moving</value>
+  </data>
+  <data name="ClockOverlay_TimeSource" xml:space="preserve">
+      <value>Time Source</value>
+  </data>
+  <data name="ClockOverlay_LocalTime" xml:space="preserve">
+      <value>Local Time</value>
+  </data>
+  <data name="ClockOverlay_ServerTime" xml:space="preserve">
+      <value>Server Time</value>
+  </data>
+  <data name="ClockOverlay_EorzeaTime" xml:space="preserve">
+      <value>Eorzea Time</value>
+  </data>
+  <data name="ClockOverlay_TextRendering" xml:space="preserve">
+      <value>Text Rendering</value>
+  </data>
+  <data name="ClockOverlay_Edge" xml:space="preserve">
+      <value>Edge</value>
+  </data>
+  <data name="ClockOverlay_Glare" xml:space="preserve">
+      <value>Glare</value>
+  </data>
+  <data name="ClockOverlay_Emboss" xml:space="preserve">
+      <value>Emboss</value>
+  </data>
+  <data name="ClockOverlay_Visual_Style" xml:space="preserve">
+      <value>Visual Style</value>
   </data>
   <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
-      <value>Anpassungen an der Kommandotafel</value>
+      <value>Quick Panel Adjustments</value>
   </data>
   <data name="QuickPanelAdjustments_Description" xml:space="preserve">
-      <value>Ändert das Aussehen der Kommandotafel</value>
+      <value>Makes visual changes to the Quick Panel HUD</value>
   </data>
   <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
-      <value>Kommandotafel-Konfiguration</value>
+      <value>Quick Panel Configuration</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
-      <value>Verstecke den zusätzlichen Fokus-Rahmen</value>
+      <value>Hide the additional focus border</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideHighlighting" xml:space="preserve">
-      <value>Verstecke Rahmen und Schattierung</value>
+      <value>Hide the border and background highlighting</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHidePanelBackground" xml:space="preserve">
-      <value>Verstecke den Kommandofeld-Hintergrund</value>
+      <value>Hide the background for the command panel</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideEmptySlots" xml:space="preserve">
-      <value>Verstecke die leeren Slots</value>
+      <value>Hide the empty slots in the command panel</value>
   </data>
   <data name="QuickPanelAdjustments_LabelMoveButtons" xml:space="preserve">
-      <value>Bewege Buttons näher heran</value>
+      <value>Move settings and close buttons closer</value>
   </data>
   <data name="QuickPanelAdjustments_BackgroundColor" xml:space="preserve">
-      <value>Hintergrundfarbe</value>
+      <value>Background color</value>
   </data>
-  <data name="CompatibilityModule_SimpleTweaksActive" xml:space="preserve">
-    <value>The original version of this feature is already active in Simple Tweaks Plugin.
-
-ID: {0}</value>
-  </data>
+  <data name="ChatPlayerTooltip_DisplayName" xml:space="preserve">
+      <value>Chat Player Tooltip</value>
+    </data>
+  <data name="ChatPlayerTooltip_Description" xml:space="preserve">
+      <value>When mousing over player names in chat, shows their full name and world as a tooltip.</value>
+    </data>
+  <data name="EnhancedWardNavigation_DisplayName" xml:space="preserve">
+      <value>Enhanced Ward Navigation</value>
+    </data>
+  <data name="EnhancedWardNavigation_Description" xml:space="preserve">
+      <value>Adds previous and next buttons to the housing ward selection list.</value>
+    </data>
+  <data name="EnhancedWardNavigation_ButtonPrevious" xml:space="preserve">
+      <value>Prev</value>
+    </data>
+  <data name="EnhancedWardNavigation_ButtonNext" xml:space="preserve">
+      <value>Next</value>
+    </data>
+  <data name="CurrencyWarning_DisplayName" xml:space="preserve">
+      <value>Currency Warning</value>
+    </data>
+  <data name="CurrencyWarning_Description" xml:space="preserve">
+      <value>Shows an animated notification icon when tracked currencies approach or exceed set limits.</value>
+    </data>
+  <data name="CurrencyWarning_ItemSearchTitle" xml:space="preserve">
+      <value>Search Currencies</value>
+    </data>
+  <data name="CurrencyWarning_SortOptionName" xml:space="preserve">
+      <value>Name</value>
+    </data>
+  <data name="CurrencyWarning_SortOptionId" xml:space="preserve">
+      <value>ID</value>
+    </data>
+  <data name="CurrencyWarning_ListTitle" xml:space="preserve">
+      <value>Tracked Currencies</value>
+    </data>
+  <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
+      <value>Currency Warning Settings</value>
+    </data>
+  <data name="CurrencyWarning_CategoryGeneral" xml:space="preserve">
+      <value>General</value>
+    </data>
+  <data name="CurrencyWarning_EnableMoving" xml:space="preserve">
+      <value>Enable Moving</value>
+    </data>
+  <data name="CurrencyWarning_PlayAnimations" xml:space="preserve">
+      <value>Play Animations</value>
+    </data>
+  <data name="CurrencyWarning_IconScale" xml:space="preserve">
+      <value>Icon Scale</value>
+    </data>
+  <data name="CurrencyWarning_BelowColor" xml:space="preserve">
+      <value>Below Target Color</value>
+    </data>
+  <data name="CurrencyWarning_AboveColor" xml:space="preserve">
+      <value>Above Target Color</value>
+    </data>
+  <data name="CurrencyWarning_CategoryBelowIcon" xml:space="preserve">
+      <value>Below Target Icon</value>
+    </data>
+  <data name="CurrencyWarning_CategoryAboveIcon" xml:space="preserve">
+      <value>Above Target Icon</value>
+    </data>
+  <data name="CurrencyWarning_CategorySelection" xml:space="preserve">
+      <value>Currency Selection</value>
+    </data>
+  <data name="CurrencyWarning_ConfigureButton" xml:space="preserve">
+      <value>Configure Tracked Currencies</value>
+    </data>
+  <data name="CurrencyWarning_TooltipAboveLimit" xml:space="preserve">
+      <value>Above Limit</value>
+    </data>
+  <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
+      <value>Below Limit</value>
+    </data>
 </root>

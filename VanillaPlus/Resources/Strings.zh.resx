@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,79 +26,79 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -1191,6 +1191,9 @@ ID：{0}</value>
   <data name="VersionLabelFormat" xml:space="preserve">
     <value>版本 {0}</value>
   </data>
+  <data name="ForcedCutsceneSounds_CategoryToggles" xml:space="preserve">
+    <value>Toggles</value>
+  </data>
   <data name="ActionHighlight_Configuration" xml:space="preserve">
     <value>技能高亮设置</value>
   </data>
@@ -1216,159 +1219,159 @@ ID：{0}</value>
     <value>在技能冷却完毕或即将完毕时，使用蚂蚁线虚框效果进行高亮提示。</value>
   </data>
   <data name="PersistentRetainerGil_PersistentRetainerGil" xml:space="preserve">
-    <value>雇员金币金额记录</value>
+      <value>雇员金币金额记录</value>
   </data>
   <data name="PersistentRetainerGil_Description" xml:space="preserve">
-    <value>在存款和取款模式之间切换时，记录已输入的金币金额。</value>
+      <value>在存款和取款模式之间切换时，记录已输入的金币金额。</value>
   </data>
-    <data name="ClockOverlay_Title" xml:space="preserve">
-    <value>时钟串流</value>
-</data>
-    <data name="ClockOverlay_Description" xml:space="preserve">
-    <value>在游戏中添加一个可自定义的时钟（本地/服务器/艾欧泽亚时间）。</value>
-</data>
-    <data name="ClockOverlay_ConfigurationTitle" xml:space="preserve">
-    <value>时钟设置</value>
-</data>
-    <data name="ClockOverlay_ClockSettings" xml:space="preserve">
-    <value>时钟设置</value>
-</data>
-    <data name="ClockOverlay_ShowSeconds" xml:space="preserve">
-    <value>显示秒</value>
-</data>
-    <data name="ClockOverlay_ShowSourcePrefix" xml:space="preserve">
-    <value>显示时间来源前缀</value>
-</data>
-    <data name="ClockOverlay_EnableMoving" xml:space="preserve">
-    <value>启用移动</value>
-</data>
-    <data name="ClockOverlay_TimeSource" xml:space="preserve">
-    <value>时间来源</value>
-</data>
-    <data name="ClockOverlay_LocalTime" xml:space="preserve">
-    <value>本地时间</value>
-</data>
-    <data name="ClockOverlay_ServerTime" xml:space="preserve">
-    <value>服务器时间</value>
-</data>
-    <data name="ClockOverlay_EorzeaTime" xml:space="preserve">
-    <value>艾欧泽亚时间</value>
-</data>
-    <data name="ClockOverlay_TextRendering" xml:space="preserve">
-    <value>文本渲染</value>
-</data>
-    <data name="ClockOverlay_Edge" xml:space="preserve">
-    <value>描边</value>
-</data>
-    <data name="ClockOverlay_Glare" xml:space="preserve">
-    <value>光泽</value>
-</data>
-    <data name="ClockOverlay_Emboss" xml:space="preserve">
-    <value>浮雕</value>
-</data>
-    <data name="ClockOverlay_Visual_Style" xml:space="preserve">
-    <value>视觉样式</value>
-</data>
-    <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
+  <data name="ClockOverlay_Title" xml:space="preserve">
+      <value>时钟串流</value>
+  </data>
+  <data name="ClockOverlay_Description" xml:space="preserve">
+      <value>在游戏中添加一个可自定义的时钟（本地/服务器/艾欧泽亚时间）。</value>
+  </data>
+  <data name="ClockOverlay_ConfigurationTitle" xml:space="preserve">
+      <value>时钟设置</value>
+  </data>
+  <data name="ClockOverlay_ClockSettings" xml:space="preserve">
+      <value>时钟设置</value>
+  </data>
+  <data name="ClockOverlay_ShowSeconds" xml:space="preserve">
+      <value>显示秒</value>
+  </data>
+  <data name="ClockOverlay_ShowSourcePrefix" xml:space="preserve">
+      <value>显示时间来源前缀</value>
+  </data>
+  <data name="ClockOverlay_EnableMoving" xml:space="preserve">
+      <value>启用移动</value>
+  </data>
+  <data name="ClockOverlay_TimeSource" xml:space="preserve">
+      <value>时间来源</value>
+  </data>
+  <data name="ClockOverlay_LocalTime" xml:space="preserve">
+      <value>本地时间</value>
+  </data>
+  <data name="ClockOverlay_ServerTime" xml:space="preserve">
+      <value>服务器时间</value>
+  </data>
+  <data name="ClockOverlay_EorzeaTime" xml:space="preserve">
+      <value>艾欧泽亚时间</value>
+  </data>
+  <data name="ClockOverlay_TextRendering" xml:space="preserve">
+      <value>文本渲染</value>
+  </data>
+  <data name="ClockOverlay_Edge" xml:space="preserve">
+      <value>描边</value>
+  </data>
+  <data name="ClockOverlay_Glare" xml:space="preserve">
+      <value>光泽</value>
+  </data>
+  <data name="ClockOverlay_Emboss" xml:space="preserve">
+      <value>浮雕</value>
+  </data>
+  <data name="ClockOverlay_Visual_Style" xml:space="preserve">
+      <value>视觉样式</value>
+  </data>
+  <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
       <value>快捷面板调整</value>
-    </data>
-    <data name="QuickPanelAdjustments_Description" xml:space="preserve">
+  </data>
+  <data name="QuickPanelAdjustments_Description" xml:space="preserve">
       <value>为快捷面板界面提供视觉调整。</value>
-    </data>
-    <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
+  </data>
+  <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
       <value>快捷面板设置</value>
-    </data>
-    <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
+  </data>
+  <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
       <value>隐藏额外的焦点边框</value>
-    </data>
-    <data name="QuickPanelAdjustments_LabelHideHighlighting" xml:space="preserve">
+  </data>
+  <data name="QuickPanelAdjustments_LabelHideHighlighting" xml:space="preserve">
       <value>隐藏边框与背景高亮</value>
-    </data>
-    <data name="QuickPanelAdjustments_LabelHidePanelBackground" xml:space="preserve">
+  </data>
+  <data name="QuickPanelAdjustments_LabelHidePanelBackground" xml:space="preserve">
       <value>隐藏指令面板背景</value>
-    </data>
-    <data name="QuickPanelAdjustments_LabelHideEmptySlots" xml:space="preserve">
+  </data>
+  <data name="QuickPanelAdjustments_LabelHideEmptySlots" xml:space="preserve">
       <value>隐藏指令面板空槽</value>
-    </data>
-    <data name="QuickPanelAdjustments_LabelMoveButtons" xml:space="preserve">
+  </data>
+  <data name="QuickPanelAdjustments_LabelMoveButtons" xml:space="preserve">
       <value>将设置与关闭按钮拉近</value>
-    </data>
-    <data name="QuickPanelAdjustments_BackgroundColor" xml:space="preserve">
+  </data>
+  <data name="QuickPanelAdjustments_BackgroundColor" xml:space="preserve">
       <value>背景颜色</value>
-    </data>
-    <data name="ChatPlayerTooltip_DisplayName" xml:space="preserve">
+  </data>
+  <data name="ChatPlayerTooltip_DisplayName" xml:space="preserve">
       <value>聊天玩家信息提示</value>
     </data>
-    <data name="ChatPlayerTooltip_Description" xml:space="preserve">
+  <data name="ChatPlayerTooltip_Description" xml:space="preserve">
       <value>当鼠标悬停在聊天栏中的玩家名上时，显示其完整姓名与所处服务器。</value>
     </data>
-    <data name="EnhancedWardNavigation_DisplayName" xml:space="preserve">
+  <data name="EnhancedWardNavigation_DisplayName" xml:space="preserve">
       <value>强化住宅区导航</value>
     </data>
-    <data name="EnhancedWardNavigation_Description" xml:space="preserve">
+  <data name="EnhancedWardNavigation_Description" xml:space="preserve">
       <value>为住宅区选择列表添加上一页与下一页按钮。</value>
     </data>
-    <data name="EnhancedWardNavigation_ButtonPrevious" xml:space="preserve">
+  <data name="EnhancedWardNavigation_ButtonPrevious" xml:space="preserve">
       <value>上一个</value>
     </data>
-    <data name="EnhancedWardNavigation_ButtonNext" xml:space="preserve">
+  <data name="EnhancedWardNavigation_ButtonNext" xml:space="preserve">
       <value>下一个</value>
     </data>
-    <data name="CurrencyWarning_DisplayName" xml:space="preserve">
+  <data name="CurrencyWarning_DisplayName" xml:space="preserve">
       <value>货币阈值提醒</value>
     </data>
-    <data name="CurrencyWarning_Description" xml:space="preserve">
+  <data name="CurrencyWarning_Description" xml:space="preserve">
       <value>当追踪的货币接近或超过设定阈值时显示动画提示图标。</value>
     </data>
-    <data name="CurrencyWarning_ItemSearchTitle" xml:space="preserve">
+  <data name="CurrencyWarning_ItemSearchTitle" xml:space="preserve">
       <value>货币搜索</value>
     </data>
-    <data name="CurrencyWarning_SortOptionName" xml:space="preserve">
+  <data name="CurrencyWarning_SortOptionName" xml:space="preserve">
       <value>名称</value>
     </data>
-    <data name="CurrencyWarning_SortOptionId" xml:space="preserve">
+  <data name="CurrencyWarning_SortOptionId" xml:space="preserve">
       <value>ID</value>
     </data>
-    <data name="CurrencyWarning_ListTitle" xml:space="preserve">
+  <data name="CurrencyWarning_ListTitle" xml:space="preserve">
       <value>已追踪的货币</value>
     </data>
-    <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
+  <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
       <value>货币提醒设置</value>
     </data>
-    <data name="CurrencyWarning_CategoryGeneral" xml:space="preserve">
+  <data name="CurrencyWarning_CategoryGeneral" xml:space="preserve">
       <value>通用</value>
     </data>
-    <data name="CurrencyWarning_EnableMoving" xml:space="preserve">
+  <data name="CurrencyWarning_EnableMoving" xml:space="preserve">
       <value>允许移动</value>
     </data>
-    <data name="CurrencyWarning_PlayAnimations" xml:space="preserve">
+  <data name="CurrencyWarning_PlayAnimations" xml:space="preserve">
       <value>播放动画</value>
     </data>
-    <data name="CurrencyWarning_IconScale" xml:space="preserve">
+  <data name="CurrencyWarning_IconScale" xml:space="preserve">
       <value>图标缩放</value>
     </data>
-    <data name="CurrencyWarning_BelowColor" xml:space="preserve">
+  <data name="CurrencyWarning_BelowColor" xml:space="preserve">
       <value>低于阈值颜色</value>
     </data>
-    <data name="CurrencyWarning_AboveColor" xml:space="preserve">
+  <data name="CurrencyWarning_AboveColor" xml:space="preserve">
       <value>高于阈值颜色</value>
     </data>
-    <data name="CurrencyWarning_CategoryBelowIcon" xml:space="preserve">
+  <data name="CurrencyWarning_CategoryBelowIcon" xml:space="preserve">
       <value>低于目标图标</value>
     </data>
-    <data name="CurrencyWarning_CategoryAboveIcon" xml:space="preserve">
+  <data name="CurrencyWarning_CategoryAboveIcon" xml:space="preserve">
       <value>高于目标图标</value>
     </data>
-    <data name="CurrencyWarning_CategorySelection" xml:space="preserve">
+  <data name="CurrencyWarning_CategorySelection" xml:space="preserve">
       <value>货币筛选</value>
     </data>
-    <data name="CurrencyWarning_ConfigureButton" xml:space="preserve">
+  <data name="CurrencyWarning_ConfigureButton" xml:space="preserve">
       <value>配置追踪货币</value>
     </data>
-    <data name="CurrencyWarning_TooltipAboveLimit" xml:space="preserve">
+  <data name="CurrencyWarning_TooltipAboveLimit" xml:space="preserve">
       <value>超过阈值</value>
     </data>
-    <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
+  <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
       <value>低于阈值</value>
     </data>
 </root>
