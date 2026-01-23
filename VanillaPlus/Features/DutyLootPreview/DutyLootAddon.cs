@@ -1,22 +1,11 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Threading;
-using System.Threading.Tasks;
-using Dalamud.Game.Gui;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using VanillaPlus.Features.DutyLootPreview.Data;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
-using KamiToolKit.ContextMenu;
-using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using VanillaPlus.Features.DutyLootPreview.Nodes;
-using ContextMenu = KamiToolKit.ContextMenu.ContextMenu;
 
 namespace VanillaPlus.Features.DutyLootPreview;
 
@@ -24,66 +13,48 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// The window that shows loot for a duty.
 /// </summary>
 public unsafe class DutyLootPreviewAddon : NativeAddon {
-    private static string NoItemsMessage => Strings.DutyLoot_NoItemsMessage;
-    private static string NoResultsMessage => Strings.DutyLoot_NoResultsMessage;
-    private static string LoadingMessage => Strings.DutyLoot_LoadingMessage;
+    private const int VisibleItemCount = 10;
+    private const float ItemHeight = 36.0f;
+    private const float ItemSpacing = 2.25f;
+    private const float FilterBarHeight = 36.0f;
+    private const float SeparatorHeight = 4.0f;
+    private const float WindowOverhead = 67.75f;
+
+    private const float ListAreaHeight = VisibleItemCount * ItemHeight + (VisibleItemCount - 1) * ItemSpacing;
+    internal const float WindowHeight = ListAreaHeight + FilterBarHeight + SeparatorHeight + ItemSpacing + WindowOverhead;
 
     private DutyLootFilterBarNode? filterBarNode;
     private HorizontalLineNode? separatorNode;
-    private ListNode<DutyLootItem, DutyLootNode>? scrollingAreaNode;
+    private ListNode<DutyLootItemView, DutyLootNode>? scrollingAreaNode;
     private TextNode? hintTextNode;
 
-    private bool updateRequested = true;
-    private bool isLoading;
-    private List<DutyLootItem> items = [];
-
-    private AddonController<AddonContentsFinder>? contentsFinder;
-    private CancellationTokenSource? loadingCts;
-    private uint? lastLoadedContentId;
-
     public required DutyLootPreviewConfig Config { get; init; }
-    
-    private ContextMenu? contextMenu;
-
-    public override void Dispose() {
-        base.Dispose();
-
-        loadingCts?.Cancel();
-        loadingCts?.Dispose();
-        loadingCts = null;
-
-        contentsFinder?.Dispose();
-        contentsFinder = null;
-    }
+    public required DutyLootDataLoader DataLoader { get; init; }
 
     protected override void OnSetup(AtkUnitBase* addon) {
-        const float filterBarHeight = 36f;
-        const float separatorHeight = 4f;
-
-        contextMenu = new ContextMenu();
-        Services.ClientState.TerritoryChanged += OnTerritoryChanged;
-        Services.GameGui.AgentUpdate += OnAgentUpdate;
+        DataLoader.OnChanged += OnDataLoaderStateChanged;
 
         filterBarNode = new DutyLootFilterBarNode {
             Position = ContentStartPosition,
-            Size = new Vector2(ContentSize.X, filterBarHeight),
-            OnFilterChanged = _ => updateRequested = true,
+            Size = new Vector2(ContentSize.X, FilterBarHeight),
+            OnFilterChanged = _ => UpdateList(),
         };
         filterBarNode.AttachNode(this);
 
         separatorNode = new HorizontalLineNode {
-            Position = ContentStartPosition + new Vector2(0, filterBarHeight),
-            Size = new Vector2(ContentSize.X, 4.0f),
+            Position = ContentStartPosition + new Vector2(0, FilterBarHeight),
+            Size = new Vector2(ContentSize.X, SeparatorHeight),
         };
         separatorNode.AttachNode(this);
 
-        var listAreaPosition = ContentStartPosition + new Vector2(0, filterBarHeight + separatorHeight);
-        var listAreaSize = ContentSize - new Vector2(0, filterBarHeight + separatorHeight);
+        var listAreaPosition = ContentStartPosition + new Vector2(0, FilterBarHeight + SeparatorHeight + ItemSpacing);
+        var listAreaSize = ContentSize - new Vector2(0, FilterBarHeight + SeparatorHeight + ItemSpacing);
 
-        scrollingAreaNode = new ListNode<DutyLootItem, DutyLootNode> {
+        scrollingAreaNode = new ListNode<DutyLootItemView, DutyLootNode> {
             Position = listAreaPosition,
             Size = listAreaSize,
-            OptionsList = [], // todo: init this
+            OptionsList = [],
+            ItemSpacing = ItemSpacing,
         };
         scrollingAreaNode.AttachNode(this);
 
@@ -94,219 +65,65 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
             LineSpacing = 18,
             TextFlags = TextFlags.MultiLine | TextFlags.Edge | TextFlags.WordWrap,
             AlignmentType = AlignmentType.Center,
-            String = NoItemsMessage,
+            String = Strings.DutyLoot_NoItemsMessage,
         };
         UpdateHintTextNodePosition();
         hintTextNode.AttachNode(this);
 
-        contentsFinder = new AddonController<AddonContentsFinder>("ContentsFinder");
-        contentsFinder.OnAttach += OnContentsFinderUpdate;
-        contentsFinder.OnRefresh += OnContentsFinderUpdate;
-        contentsFinder.OnDetach += _ => Close();
-        contentsFinder.Enable();
-
-        UpdateList(true);
-
-        LoadCurrentDuty(); // We might already be in a duty
-    }
-    
-    protected override void OnUpdate(AtkUnitBase* addon) => UpdateList();
-    
-    protected override void OnFinalize(AtkUnitBase* addon) {
-        contextMenu?.Dispose();
-        Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
-        Services.GameGui.AgentUpdate -= OnAgentUpdate;
+        UpdateList();
     }
 
-    private static void OnDutyLootItemLeftClick(DutyLootItem item) {
-        if (item.CanTryOn) {
-            AgentTryon.TryOn(0, item.ItemId);
-        }
-    }
+    private void OnDataLoaderStateChanged()
+        => Services.Framework.RunOnFrameworkThread(UpdateList);
 
-    private void OnDutyLootItemRightClick(DutyLootItem item) {
-        if (contextMenu is null) return;
-        contextMenu.Clear();
+    protected override void OnFinalize(AtkUnitBase* addon)
+        => DataLoader.OnChanged -= OnDataLoaderStateChanged;
 
-        if (item.CanTryOn) {
-            contextMenu.AddItem(
-            Services.DataManager.GetAddonText(2426), // Try On
-            () => AgentTryon.TryOn(0, item.ItemId));
-        }
+    private void UpdateList() {
+        if (scrollingAreaNode is null || hintTextNode is null || filterBarNode is null || separatorNode is null) return;
 
-        var isFavorite = Config.FavoriteItems.Contains(item.ItemId);
-        contextMenu.AddItem(new ContextMenuItem {
-            Name = isFavorite
-                ? Services.DataManager.GetAddonText(8324) // Remove from Favorites
-                : Services.DataManager.GetAddonText(8323), // Add to Favorites
-            OnClick = () => {
-                if (isFavorite) {
-                    Config.FavoriteItems.Remove(item.ItemId);
-                } else {
-                    Config.FavoriteItems.Add(item.ItemId);
-                }
-                Config.Save();
-                UpdateFavoriteStars();
-            },
-        });
-
-        contextMenu.AddItem(
-            Services.DataManager.GetAddonText(4379), // Search for Item
-            () => ItemFinderModule.Instance()->SearchForItem(item.ItemId));
-
-        contextMenu.AddItem(
-            Services.DataManager.GetAddonText(4697), // Link
-            () => AgentChatLog.Instance()->LinkItem(item.ItemId));
-
-        contextMenu.AddItem(
-            Services.DataManager.GetAddonText(13439), // Search Recipes Using This Material
-            () => AgentRecipeProductList.Instance()->SearchForRecipesUsingItem(item.ItemId));
-
-        contextMenu.Open();
-    }
-
-    internal void SetItems(IEnumerable<DutyLootItem> itemsEnumerable) {
-        items = itemsEnumerable.ToList();
-        isLoading = false;
-        updateRequested = true;
-    }
-
-    internal void SetLoading() {
-        items = [];
-        isLoading = true;
-        updateRequested = true;
-    }
-
-    private void LoadDuty(uint? contentId, bool forceReload = false) {
-        if (!forceReload && contentId == lastLoadedContentId) return;
-        if (forceReload) contentId ??= lastLoadedContentId;
-        lastLoadedContentId = contentId;
-
-        if (contentId is null) {
-            items = [];
-            isLoading = false;
-            updateRequested = true;
-            lastLoadedContentId = null;
-            return;
-        }
-
-        loadingCts?.Cancel();
-        loadingCts?.Dispose();
-        loadingCts = null;
-
-        loadingCts = new CancellationTokenSource();
-        var token = loadingCts.Token;
-        var id = contentId.Value;
-
-        Task.Run(() => this.LoadDutyItemsAsync(id, token), token);
-    }
-
-    private void OnContentsFinderUpdate(AddonContentsFinder* addon) {
-        if (!IsOpen) return;
-
-        var content = AgentContentsFinder.Instance()->SelectedDuty;
-
-        if (content.ContentType == ContentsId.ContentsType.Roulette) {
+        var dutyLootData = DataLoader.ActiveDutyLootData;
+        if (dutyLootData is null && !DataLoader.IsLoading) {
             Close();
             return;
         }
 
-        if (content.ContentType == ContentsId.ContentsType.Regular) {
-            LoadDuty(content.Id);
-        }
-    }
+        var items = dutyLootData?.Items ?? [];
 
-    private void OnTerritoryChanged(ushort territory) {
-        LoadCurrentDuty();
-    }
+        var filteredItems = filterBarNode.CurrentFilter switch {
+            LootFilter.Favorites => items.Where(item => Config.FavoriteItems.Contains(item.ItemId)),
+            LootFilter.Equipment => items.Where(item => item.IsEquipment),
+            LootFilter.Misc => items.Where(item => !item.IsEquipment),
+            _ => items,
+        };
 
-    private void OnAgentUpdate(AgentUpdateFlag flag) {
-        if (flag.HasFlag(AgentUpdateFlag.UnlocksUpdate)) {
-            LoadDuty(null, true);
-        }
-    }
+        var viewModels = filteredItems
+            .Order()
+            .Select(item => new DutyLootItemView(
+                Item: item,
+                IsFavorite: Config.FavoriteItems.Contains(item.ItemId),
+                Config: Config
+            ))
+            .ToList();
 
-    private void LoadCurrentDuty() {
-        var contentFinderId = GameMain.Instance()->CurrentContentFinderConditionId;
-        if (contentFinderId == 0) { return; }
+        scrollingAreaNode.OptionsList = viewModels;
 
-        LoadDuty(contentFinderId);
-    }
+        var hasData = items.Any();
+        filterBarNode.IsVisible = hasData;
+        separatorNode.IsVisible = hasData;
 
-    private LootFilter? lastLootFilter;
-    
-    private void UpdateList(bool isOpening = false) {
-        if (scrollingAreaNode is null || hintTextNode is null || filterBarNode is null) return;
-        if (!updateRequested && !isOpening) return;
-        updateRequested = false;
+        var hasResults = viewModels.Count > 0;
+        scrollingAreaNode.IsVisible = hasResults;
+        hintTextNode.IsVisible = !hasResults;
 
-        if (lastLootFilter != filterBarNode.CurrentFilter) {
-            var filteredItems = filterBarNode.CurrentFilter switch {
-                LootFilter.Favorites => items.Where(item => Config.FavoriteItems.Contains(item.ItemId)),
-                LootFilter.Equipment => items.Where(item => item.IsEquipment),
-                LootFilter.Misc => items.Where(item => !item.IsEquipment),
-                _ => items,
+        if (!hasResults) {
+            hintTextNode.String = true switch {
+                _ when DataLoader.IsLoading => Strings.DutyLoot_LoadingMessage,
+                _ when hasData => Strings.DutyLoot_NoResultsMessage,
+                _ => Strings.DutyLoot_NoItemsMessage,
             };
-            
-            scrollingAreaNode.OptionsList = filteredItems.ToList();
-            lastLootFilter = filterBarNode.CurrentFilter;
+            UpdateHintTextNodePosition();
         }
-        
-        
-
-        // var dutyLootItems = filteredItems.ToList();
-        // if (dutyLootItems.Any()) {
-        //     scrollingAreaNode.IsVisible = true;
-        //     var listUpdated = scrollingAreaNode.SyncWithListData(
-        //         dutyLootItems,
-        //         node => node.Item,
-        //         data => new DutyLootNode {
-        //             Size = new Vector2(scrollingAreaNode.ContentWidth, 36.0f),
-        //             ItemData = data,
-        //             IsFavorite = Config.FavoriteItems.Contains(data.ItemId),
-        //             OnLeftClick = OnDutyLootItemLeftClick,
-        //             OnRightClick = OnDutyLootItemRightClick,
-        //         }
-        //     );
-        //
-        //     if (listUpdated) {
-        //         scrollingAreaNode.ScrollPosition = 0;
-        //         scrollingAreaNode.RecalculateLayout();
-        //
-        //         scrollingAreaNode.ReorderNodes((a, b) => {
-        //             if (a is not DutyLootNode left || b is not DutyLootNode right) return 0;
-        //             return left.Item.CompareTo(right.Item);
-        //         });
-        //     }
-        // }
-        // else {
-        //     scrollingAreaNode.IsVisible = false;
-        // }
-
-        // var hasData = items.Count > 0 && !isLoading;
-        // var hasResults = scrollingAreaNode.GetNodes<DutyLootNode>().Any();
-        //
-        // filterBarNode.IsVisible = hasData;
-        // separatorNode!.IsVisible = hasData;
-        // scrollingAreaNode.IsVisible = hasResults;
-        // hintTextNode.IsVisible = !hasResults;
-        //
-        // if (!hasResults) {
-        //     hintTextNode.String = true switch {
-        //         _ when isLoading => LoadingMessage,
-        //         _ when hasData => NoResultsMessage,
-        //         _ => NoItemsMessage,
-        //     };
-        //     UpdateHintTextNodePosition();
-        // }
-    }
-
-    private void UpdateFavoriteStars() {
-        if (scrollingAreaNode is null) return;
-
-        // foreach (var node in scrollingAreaNode.GetNodes<DutyLootNode>()) {
-        //     node.IsFavorite = Config.FavoriteItems.Contains(node.Item.ItemId);
-        // }
     }
 
     private void UpdateHintTextNodePosition() {
@@ -316,27 +133,5 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         if (separatorNode.IsVisible) offsetTop += separatorNode.Height;
         hintTextNode.Size = hintTextNode.Size with { Y = ContentSize.Y - offsetTop };
         hintTextNode.Position = hintTextNode.Position with { Y = ContentStartPosition.Y + offsetTop };
-    }
-}
-
-// async can't live in unsafe so we define an extension method.
-internal static class DutyLootPreviewAddonExtensions {
-    internal static async Task LoadDutyItemsAsync(this DutyLootPreviewAddon addon, uint contentId, CancellationToken token) {
-        try {
-            var loadTask = Task.Run(() => DutyLootItem.ForContent(contentId).ToList(), token);
-
-            // Show loading message only if loading takes longer than 50ms
-            if (await Task.WhenAny(loadTask, Task.Delay(50, token)) != loadTask) {
-                token.ThrowIfCancellationRequested();
-                addon.SetLoading();
-            }
-
-            token.ThrowIfCancellationRequested();
-            addon.SetItems(await loadTask);
-        }
-        catch (OperationCanceledException) { }
-        catch (Exception ex) {
-            Services.PluginLog.Error(ex, "Failed to load duty loot");
-        }
     }
 }

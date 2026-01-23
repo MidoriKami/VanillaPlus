@@ -1,5 +1,6 @@
 using System.Numerics;
 using KamiToolKit.Overlay;
+using VanillaPlus.Features.DutyLootPreview.Data;
 using VanillaPlus.Features.DutyLootPreview.Nodes;
 using Action = System.Action;
 
@@ -11,13 +12,15 @@ namespace VanillaPlus.Features.DutyLootPreview;
 public class DutyLootInDutyUiController {
     private OverlayController? overlayController;
 
+    public required DutyLootDataLoader DataLoader;
+
     public Action? OnButtonClicked { get; init; }
 
     public void OnEnable() {
         overlayController = new OverlayController();
 
         overlayController?.CreateNode(() => {
-            return new DutyLootInDutyButtonNode {
+            return new DutyLootInDutyButtonNode(DataLoader) {
                 OnClick = () => OnButtonClicked?.Invoke(),
                 Size = new Vector2(20.0f, 20.0f),
             };
