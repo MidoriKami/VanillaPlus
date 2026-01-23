@@ -76,6 +76,7 @@ public unsafe class ActionHighlight : GameModification {
         if (actionType is not ActionType.Action) return original;
 
         if (!config.ActionSettings.TryGetValue(actionId, out var setting)) return original;
+        if (!setting.IsEnabled) return original;
 
         if (actionManager->GetActionStatus(actionType, actionId, playerId, false) != 0) return original;
 

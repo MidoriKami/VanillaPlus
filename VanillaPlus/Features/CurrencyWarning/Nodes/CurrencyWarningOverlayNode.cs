@@ -22,6 +22,8 @@ public unsafe class CurrencyWarningOverlayNode : OverlayNode {
     public bool IsHovered { get; private set; }
     public List<WarningInfo> ActiveWarnings { get; } = [];
 
+    private bool lastIsHovered;
+
     public required CurrencyTooltipNode TooltipNode { get; init; }
 
     public CurrencyWarningOverlayNode() {
@@ -79,12 +81,17 @@ public unsafe class CurrencyWarningOverlayNode : OverlayNode {
 
     private void HandleWarningUpdate() {
         if (IsHovered && ActiveWarnings.Count > 0) {
-            TooltipNode.UpdateContents(ActiveWarnings);
-            TooltipNode.IsVisible = true;
+            if (lastIsHovered != IsHovered) {
+                TooltipNode.UpdateContents(ActiveWarnings);
+                TooltipNode.IsVisible = true;
+            }
+
             UpdateTooltipPosition();
         } else {
             TooltipNode.IsVisible = false;
         }
+        
+        lastIsHovered = IsHovered;
     }
 
     private void UpdateTooltipPosition() {
