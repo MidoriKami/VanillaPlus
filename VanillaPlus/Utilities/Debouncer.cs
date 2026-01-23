@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 namespace VanillaPlus.Utilities;
 
 public class Debouncer : IDisposable {
-    private CancellationTokenSource? _cts;
+    private CancellationTokenSource? cts;
 
     public void Run(Action<CancellationToken> action) {
         var newCts = new CancellationTokenSource();
-        var oldCts = Interlocked.Exchange(ref _cts, newCts);
+        var oldCts = Interlocked.Exchange(ref cts, newCts);
 
         oldCts?.Cancel();
         oldCts?.Dispose();
@@ -18,7 +18,7 @@ public class Debouncer : IDisposable {
     }
 
     public void Cancel() {
-        var oldCts = Interlocked.Exchange(ref _cts, null);
+        var oldCts = Interlocked.Exchange(ref cts, null);
         oldCts?.Cancel();
         oldCts?.Dispose();
     }
