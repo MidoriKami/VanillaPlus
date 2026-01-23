@@ -28,8 +28,6 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
     }
 
     public DutyLootOpenWindowButtonNode(DutyLootDataLoader dataLoader) {
-        Size = new Vector2(32.0f, 32.0f);
-
         buttonNode = new TextureButtonNode {
             TexturePath = "ui/uld/Inventory.tex",
             TextureCoordinates = new Vector2(90.0f, 125.0f),
@@ -49,7 +47,7 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
             WrapMode = WrapMode.Stretch,
             Size = checkmarkSize,
             Position = checkmarkPosition,
-            IsVisible = false
+            IsVisible = false,
         };
         checkmarkNode.AttachNode(buttonNode);
 

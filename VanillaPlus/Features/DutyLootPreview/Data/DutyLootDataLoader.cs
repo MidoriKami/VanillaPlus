@@ -22,7 +22,7 @@ public class DutyLootDataLoader : IDisposable {
 
     public DutyLootData? ActiveDutyLootData => ActiveDutyContentFinderConditionId.HasValue ? dutyLootDataCache.ReadDutyLootData(ActiveDutyContentFinderConditionId.Value) : null;
 
-    private DutyLootDataCache dutyLootDataCache = new();
+    private readonly DutyLootDataCache dutyLootDataCache = new();
     private AddonController<AddonContentsFinder>? contentsFinder;
 
     public unsafe void Enable() {
@@ -51,7 +51,7 @@ public class DutyLootDataLoader : IDisposable {
         dutyLootDataCache.Dispose();
     }
 
-    private unsafe uint? GetActiveContentId() {
+    private static unsafe uint? GetActiveContentId() {
         // Priority 1: Currently in a duty
         var currentDutyId = GameMain.Instance()->CurrentContentFinderConditionId;
         if (currentDutyId != 0 && IsSupportedContent(new ContentsId { ContentType = ContentsId.ContentsType.Regular, Id = currentDutyId })) {

@@ -18,23 +18,24 @@ public class DutyLootDataCache : IDisposable {
 
     private readonly Debouncer loadDebouncer = new();
 
-    public void Dispose() => loadDebouncer.Dispose();
-    private ConcurrentDictionary<(uint, uint), DungeonBoss> dungeonBossIndex = new(); // (cfcId, fightNo)
-    private ConcurrentDictionary<uint, DungeonChest> dungeonChestIndex = new(); // (cfcId, chest rowId)
-    private ConcurrentDictionary<uint, DutyLootData> dutyLootByContentId = new();
+    private readonly ConcurrentDictionary<(uint, uint), DungeonBoss> dungeonBossIndex = new(); // (cfcId, fightNo)
+    private readonly ConcurrentDictionary<uint, DungeonChest> dungeonChestIndex = new();       // (cfcId, chest rowId)
+    private readonly ConcurrentDictionary<uint, DutyLootData> dutyLootByContentId = new();
 
     private static readonly ReadOnlySeString DungeonChestSource = "Dungeon Chest";
 
+    public void Dispose() => loadDebouncer.Dispose();
+    
     public DutyLootData ReadDutyLootData(uint contentId) {
-        if (State != CacheState.Loaded) { return DutyLootData.Empty(contentId); }
-        if (dutyLootByContentId.TryGetValue(contentId, out var data)) {
-            return data;
-        }
+        if (State != CacheState.Loaded) return DutyLootData.Empty(contentId);
+        if (dutyLootByContentId.TryGetValue(contentId, out var data)) return data;
+
         return DutyLootData.Empty(contentId);
     }
-
+    
     public void LoadCacheAsync(bool forceReload = false, uint? onlyContentId = null) {
-        if (!forceReload && State == CacheState.Loaded) return;
+        if (!forceReload && State is CacheState.Loaded) return;
+
         loadDebouncer.Run(ct => LoadCacheAsync(ct, onlyContentId));
     }
 
@@ -94,25 +95,23 @@ public class DutyLootDataCache : IDisposable {
 
         var dutyLootData = dutyLootByContentId.GetOrAdd(cfcId, DutyLootData.Empty(cfcId));
         var item = dutyLootData.GetOrAddItem(itemId);
-        if (item == null) return;
 
-        item.Sources.Add(bossName);
+        item?.Sources.Add(bossName);
     }
 
     private void AddDungeonChestSource(uint chestRowId, uint itemId, uint? onlyContentId) {
-        if (itemId == 0) return;
+        if (itemId is 0) return;
 
         var chest = GetDungeonChest(chestRowId);
-        if (chest == null) return;
+        if (chest is null) return;
 
         var cfcId = chest.ContentFinderConditionId;
         if (onlyContentId.HasValue && cfcId != onlyContentId) return;
 
         var dutyLootData = dutyLootByContentId.GetOrAdd(cfcId, DutyLootData.Empty(cfcId));
         var item = dutyLootData.GetOrAddItem(itemId);
-        if (item == null) return;
 
-        item.Sources.Add(DungeonChestSource);
+        item?.Sources.Add(DungeonChestSource);
     }
 
     private DungeonBoss? GetDungeonBoss(uint cfcId, uint fightNo) {

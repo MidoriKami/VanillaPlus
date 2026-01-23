@@ -48,7 +48,7 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView> {
             TextureSize = new Vector2(28, 28),
             TexturePath = "ui/uld/CircleButtons.tex",
             WrapMode = WrapMode.Stretch,
-            ShowClickableCursor = true
+            ShowClickableCursor = true,
         };
         infoIconNode.AttachNode(this);
 

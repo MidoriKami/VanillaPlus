@@ -8,12 +8,12 @@ namespace VanillaPlus.Features.DutyLootPreview.Data;
 public record DutyLootData {
     public static DutyLootData Empty(uint contentId) => new() {
         ContentId = contentId,
-        Items = []
+        Items = [],
     };
 
     public uint? ContentId { get; init; }
 
-    public List<DutyLootItem> Items { get; init; } = new();
+    public List<DutyLootItem> Items { get; init; } = [];
     public Dictionary<uint, DutyLootItem> ItemIndex { get; init; } = new();
 
     internal DutyLootItem? GetOrAddItem(uint itemId) {
@@ -22,7 +22,7 @@ public record DutyLootData {
         }
 
         var newItem = DutyLootItem.FromItemId(itemId);
-        if (newItem == null) return null;
+        if (newItem is null) return null;
 
         Items.Add(newItem);
         ItemIndex.Add(itemId, newItem);
