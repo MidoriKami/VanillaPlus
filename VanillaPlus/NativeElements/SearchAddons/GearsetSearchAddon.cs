@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -35,11 +34,13 @@ public unsafe class GearsetSearchAddon : BaseSearchAddon<RaptureGearsetModule.Ge
         }
     }
 
-    private List<RaptureGearsetModule.GearsetEntry> GetGearsetEntries() {
+    private static List<RaptureGearsetModule.GearsetEntry> GetGearsetEntries() {
         List<RaptureGearsetModule.GearsetEntry> entries = [];
-        
-        entries.AddRange(Enumerable.Range(0, RaptureGearsetModule.Instance()->NumGearsets)
-            .Select(index => RaptureGearsetModule.Instance()->Entries[index]));
+
+        foreach (var gearset in RaptureGearsetModule.Instance()->Entries) {
+            if (!gearset.Flags.HasFlag(RaptureGearsetModule.GearsetFlag.Exists)) continue;
+            entries.Add(gearset);
+        }
 
         return entries;
     }

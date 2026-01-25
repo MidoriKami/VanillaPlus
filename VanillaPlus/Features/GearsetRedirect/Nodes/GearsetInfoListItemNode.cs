@@ -27,17 +27,17 @@ public unsafe class GearsetInfo {
 
 public unsafe class GearsetInfoListItemNode : GenericListItemNode<GearsetInfo> {
     protected override uint GetIconId(GearsetInfo data)
-        => data.GearsetId < 0 ? 60072 : GetGearsetData(data.GearsetId).ClassJob + 62000u;
+        => data.GearsetId < 0 ? 60072 : GetGearsetData(data.GearsetId)->ClassJob + 62000u;
 
     protected override string GetLabelText(GearsetInfo data)
-        => data.GearsetId < 0 ? "Nothing Selected" : GetGearsetData(data.GearsetId).NameString;
+        => data.GearsetId < 0 ? "Nothing Selected" : GetGearsetData(data.GearsetId)->NameString;
 
     protected override string GetSubLabelText(GearsetInfo data)
-        => data.GearsetId < 0 ? string.Empty : $"{SeIconChar.ItemLevel.ToIconString()} {GetGearsetData(data.GearsetId).ItemLevel}";
+        => data.GearsetId < 0 ? string.Empty : $"{SeIconChar.ItemLevel.ToIconString()} {GetGearsetData(data.GearsetId)->ItemLevel}";
 
     protected override uint? GetId(GearsetInfo data)
         => data.GearsetId < 0 ? null : (uint) data.GearsetId;
-    
-    private static ref RaptureGearsetModule.GearsetEntry GetGearsetData(int gearsetId)
-        => ref RaptureGearsetModule.Instance()->Entries[gearsetId];
+
+    private static RaptureGearsetModule.GearsetEntry* GetGearsetData(int gearsetId)
+        => RaptureGearsetModule.Instance()->GetGearset(gearsetId);
 }

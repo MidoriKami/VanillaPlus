@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -169,8 +168,31 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         gearsetSearchAddon.Open();
     }
 
-    private List<GearsetInfo> GetConfigInfos()
-        => Config.Redirections.Keys.Select(key => new GearsetInfo {
-            GearsetId = key,
-        }).ToList();
+    private List<GearsetInfo> GetConfigInfos() {
+        List<GearsetInfo> gearsets = [];
+        List<int> invalidGearsets = [];
+        
+        foreach (var redirection in Config.Redirections.Keys) {
+            var gearset = RaptureGearsetModule.Instance()->GetGearset(redirection);
+            if (gearset is null) continue;
+            if (!gearset->Flags.HasFlag(RaptureGearsetModule.GearsetFlag.Exists)) {
+                invalidGearsets.Add(redirection);
+                continue;
+            }
+            
+            gearsets.Add(new GearsetInfo {
+                GearsetId = redirection,
+            });
+        }
+
+        foreach (var gearset in invalidGearsets) {
+            Config.Redirections.Remove(gearset);
+        }
+
+        if (invalidGearsets.Count is not 0) {
+            Config.Save();
+        }
+        
+        return gearsets;
+    }
 }
