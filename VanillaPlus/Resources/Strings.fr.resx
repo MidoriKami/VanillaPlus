@@ -795,7 +795,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Sélecteur de Couleur</value>
   </data>
   <data name="NodeStyle_PositionLabel" xml:space="preserve">
-    <value>Position</value>
+    <value>Emplacement</value>
   </data>
   <data name="TextNodeConfig_TextColor" xml:space="preserve">
     <value>Couleur du Texte</value>
@@ -900,7 +900,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>SampleDisplayName</value>
   </data>
   <data name="ModificationDisplay_BetterCursor" xml:space="preserve">
-    <value>Better Cursor</value>
+    <value>Meilleur Curseur</value>
   </data>
   <data name="ModificationDisplay_BetterInterruptableCastBars" xml:space="preserve">
     <value>Meilleures Barres d'Incantation Interruptibles</value>
@@ -1299,7 +1299,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Move settings and close buttons closer</value>
   </data>
   <data name="QuickPanelAdjustments_BackgroundColor" xml:space="preserve">
-      <value>Background color</value>
+      <value>Couleur d'arrière-plan</value>
   </data>
   <data name="ChatPlayerTooltip_DisplayName" xml:space="preserve">
       <value>Chat Player Tooltip</value>
@@ -1317,7 +1317,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Prev</value>
     </data>
   <data name="EnhancedWardNavigation_ButtonNext" xml:space="preserve">
-      <value>Next</value>
+      <value>Suivant</value>
     </data>
   <data name="CurrencyWarning_DisplayName" xml:space="preserve">
       <value>Currency Warning</value>
@@ -1329,19 +1329,19 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Search Currencies</value>
     </data>
   <data name="CurrencyWarning_SortOptionName" xml:space="preserve">
-      <value>Name</value>
+      <value>Nom</value>
     </data>
   <data name="CurrencyWarning_SortOptionId" xml:space="preserve">
       <value>ID</value>
     </data>
   <data name="CurrencyWarning_ListTitle" xml:space="preserve">
-      <value>Tracked Currencies</value>
+      <value>Devises suivies</value>
     </data>
   <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
       <value>Currency Warning Settings</value>
     </data>
   <data name="CurrencyWarning_CategoryGeneral" xml:space="preserve">
-      <value>General</value>
+      <value>Général</value>
     </data>
   <data name="CurrencyWarning_EnableMoving" xml:space="preserve">
       <value>Enable Moving</value>
@@ -1350,7 +1350,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Play Animations</value>
     </data>
   <data name="CurrencyWarning_IconScale" xml:space="preserve">
-      <value>Icon Scale</value>
+      <value>Taille de l'icône</value>
     </data>
   <data name="CurrencyWarning_BelowColor" xml:space="preserve">
       <value>Below Target Color</value>
@@ -1371,7 +1371,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Configure Tracked Currencies</value>
     </data>
   <data name="CurrencyWarning_TooltipAboveLimit" xml:space="preserve">
-      <value>Above Limit</value>
+      <value>Limite haute</value>
     </data>
   <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
       <value>Below Limit</value>
