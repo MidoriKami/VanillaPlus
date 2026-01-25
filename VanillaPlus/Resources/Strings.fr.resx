@@ -1335,13 +1335,13 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>ID</value>
     </data>
   <data name="CurrencyWarning_ListTitle" xml:space="preserve">
-      <value>Tracked Currencies</value>
+      <value>Devises suivies</value>
     </data>
   <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
       <value>Currency Warning Settings</value>
     </data>
   <data name="CurrencyWarning_CategoryGeneral" xml:space="preserve">
-      <value>General</value>
+      <value>Général</value>
     </data>
   <data name="CurrencyWarning_EnableMoving" xml:space="preserve">
       <value>Enable Moving</value>
@@ -1350,7 +1350,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Play Animations</value>
     </data>
   <data name="CurrencyWarning_IconScale" xml:space="preserve">
-      <value>Icon Scale</value>
+      <value>Taille de l'icône</value>
     </data>
   <data name="CurrencyWarning_BelowColor" xml:space="preserve">
       <value>Below Target Color</value>
@@ -1371,7 +1371,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Configure Tracked Currencies</value>
     </data>
   <data name="CurrencyWarning_TooltipAboveLimit" xml:space="preserve">
-      <value>Above Limit</value>
+      <value>Limite haute</value>
     </data>
   <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
       <value>Below Limit</value>
