@@ -1308,7 +1308,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>When mousing over player names in chat, shows their full name and world as a tooltip.</value>
     </data>
   <data name="EnhancedWardNavigation_DisplayName" xml:space="preserve">
-      <value>Enhanced Ward Navigation</value>
+      <value>Navigation améliorée dans les quartiers</value>
     </data>
   <data name="EnhancedWardNavigation_Description" xml:space="preserve">
       <value>Ajoute les boutons précédent et suivant à la liste de sélection de la zone de logement.</value>
