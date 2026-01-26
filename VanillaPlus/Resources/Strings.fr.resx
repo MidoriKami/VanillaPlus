@@ -813,10 +813,10 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Alignement</value>
   </data>
   <data name="IconWithCount_MillionsFormat" xml:space="preserve">
-    <value>{0}m</value>
+    <value>{0} M</value>
   </data>
   <data name="IconWithCount_ThousandsFormat" xml:space="preserve">
-    <value>{0}k</value>
+    <value>{0} k</value>
   </data>
   <data name="ModificationDisplay_WindowBackground" xml:space="preserve">
     <value>Arrière-Plans de Fenêtre</value>
@@ -900,7 +900,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>SampleDisplayName</value>
   </data>
   <data name="ModificationDisplay_BetterCursor" xml:space="preserve">
-    <value>Meilleur Curseur</value>
+    <value>Améliorations du Curseur</value>
   </data>
   <data name="ModificationDisplay_BetterInterruptableCastBars" xml:space="preserve">
     <value>Meilleures Barres d'Incantation Interruptibles</value>
@@ -1194,7 +1194,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Version {0}</value>
   </data>
   <data name="ForcedCutsceneSounds_CategoryToggles" xml:space="preserve">
-    <value>Toggles</value>
+    <value>Boutons</value>
   </data>
   <data name="ActionHighlight_Configuration" xml:space="preserve">
     <value>Configuration de mise en évidence d'action</value>
@@ -1278,25 +1278,25 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Quick Panel Tweaks</value>
   </data>
   <data name="QuickPanelAdjustments_Description" xml:space="preserve">
-      <value>Makes visual changes to the Quick Panel HUD</value>
+      <value>Effectuer des changements visuels de la fenêtre d'accès rapide</value>
   </data>
   <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
-      <value>Quick Panel Configuration</value>
+      <value>Configuration de la fenêtre d'accès rapide</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
-      <value>Hide the additional focus border</value>
+      <value>Masquer la bordure additionnelle</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideHighlighting" xml:space="preserve">
-      <value>Hide the border and background highlighting</value>
+      <value>Masquer la bordure et l'arrière-plan</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHidePanelBackground" xml:space="preserve">
-      <value>Hide the background for the command panel</value>
+      <value>Masquer l'arrière-plan</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideEmptySlots" xml:space="preserve">
-      <value>Hide the empty slots in the command panel</value>
+      <value>Masquer les emplacements vides</value>
   </data>
   <data name="QuickPanelAdjustments_LabelMoveButtons" xml:space="preserve">
-      <value>Move settings and close buttons closer</value>
+      <value>Déplacer les boutons des paramètres et de fermeture de la fenêtre</value>
   </data>
   <data name="QuickPanelAdjustments_BackgroundColor" xml:space="preserve">
       <value>Couleur d'arrière-plan</value>
@@ -1311,22 +1311,22 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Enhanced Ward Navigation</value>
     </data>
   <data name="EnhancedWardNavigation_Description" xml:space="preserve">
-      <value>Adds previous and next buttons to the housing ward selection list.</value>
+      <value>Ajoute les boutons précédent et suivant à la liste de sélection de la zone de logement.</value>
     </data>
   <data name="EnhancedWardNavigation_ButtonPrevious" xml:space="preserve">
-      <value>Prev</value>
+      <value>Précédent</value>
     </data>
   <data name="EnhancedWardNavigation_ButtonNext" xml:space="preserve">
       <value>Suivant</value>
     </data>
   <data name="CurrencyWarning_DisplayName" xml:space="preserve">
-      <value>Currency Warning</value>
+      <value>Avertissement des devises</value>
     </data>
   <data name="CurrencyWarning_Description" xml:space="preserve">
-      <value>Shows an animated notification icon when tracked currencies approach or exceed set limits.</value>
+      <value>Affiche une icône de notification animée lorsque les devises sont suivies ou dépassent les limites définies.</value>
     </data>
   <data name="CurrencyWarning_ItemSearchTitle" xml:space="preserve">
-      <value>Search Currencies</value>
+      <value>Recherche des devises</value>
     </data>
   <data name="CurrencyWarning_SortOptionName" xml:space="preserve">
       <value>Nom</value>
@@ -1338,42 +1338,42 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Devises suivies</value>
     </data>
   <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
-      <value>Currency Warning Settings</value>
+      <value>Paramètres d'avertissement des devises</value>
     </data>
   <data name="CurrencyWarning_CategoryGeneral" xml:space="preserve">
       <value>Général</value>
     </data>
   <data name="CurrencyWarning_EnableMoving" xml:space="preserve">
-      <value>Enable Moving</value>
+      <value>Activer le déplacement</value>
     </data>
   <data name="CurrencyWarning_PlayAnimations" xml:space="preserve">
-      <value>Play Animations</value>
+      <value>Lire les animations</value>
     </data>
   <data name="CurrencyWarning_IconScale" xml:space="preserve">
       <value>Taille de l'icône</value>
     </data>
   <data name="CurrencyWarning_BelowColor" xml:space="preserve">
-      <value>Below Target Color</value>
+      <value>Couleur au-dessous de la cible</value>
     </data>
   <data name="CurrencyWarning_AboveColor" xml:space="preserve">
-      <value>Above Target Color</value>
+      <value>Couleur au-dessus de la cible</value>
     </data>
   <data name="CurrencyWarning_CategoryBelowIcon" xml:space="preserve">
-      <value>Below Target Icon</value>
+      <value>En dessous de l'icône cible</value>
     </data>
   <data name="CurrencyWarning_CategoryAboveIcon" xml:space="preserve">
-      <value>Above Target Icon</value>
+      <value>Au-dessus de l'icône cible</value>
     </data>
   <data name="CurrencyWarning_CategorySelection" xml:space="preserve">
-      <value>Currency Selection</value>
+      <value>Sélection des devises</value>
     </data>
   <data name="CurrencyWarning_ConfigureButton" xml:space="preserve">
-      <value>Configure Tracked Currencies</value>
+      <value>Configurer les devises suivies</value>
     </data>
   <data name="CurrencyWarning_TooltipAboveLimit" xml:space="preserve">
       <value>Limite haute</value>
     </data>
   <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
-      <value>Below Limit</value>
+      <value>Limite basse</value>
     </data>
 </root>
