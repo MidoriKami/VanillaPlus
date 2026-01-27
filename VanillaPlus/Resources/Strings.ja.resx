@@ -498,7 +498,7 @@ ID: {0}</value>
     <value>ロケーション表示設定</value>
   </data>
   <data name="LocationDisplay_DtrEntryName" xml:space="preserve">
-    <value>VanillaPlus - LocationDisplay</value>
+    <value>VanillaPlus - ロケーション表示</value>
   </data>
   <data name="LocationDisplay_WardFormat" xml:space="preserve">
     <value>{0}区</value>
@@ -898,7 +898,7 @@ ID: {0}</value>
     <value>サンプル表示名</value>
   </data>
   <data name="ModificationDisplay_BetterCursor" xml:space="preserve">
-    <value>Better Cursor</value>
+    <value>より良いカーソル</value>
   </data>
   <data name="ModificationDisplay_BetterInterruptableCastBars" xml:space="preserve">
     <value>割り込み詠唱バー強調</value>
@@ -1192,7 +1192,7 @@ ID: {0}</value>
     <value>バージョン {0}</value>
   </data>
   <data name="ForcedCutsceneSounds_CategoryToggles" xml:space="preserve">
-    <value>Toggles</value>
+    <value>切り替え</value>
   </data>
   <data name="ActionHighlight_Configuration" xml:space="preserve">
     <value>アクションハイライト設定</value>
@@ -1276,10 +1276,10 @@ ID: {0}</value>
       <value>Quick Panel Tweaks</value>
   </data>
   <data name="QuickPanelAdjustments_Description" xml:space="preserve">
-      <value>Makes visual changes to the Quick Panel HUD</value>
+      <value>クイックパネルHUDに視覚的な変更を加えます</value>
   </data>
   <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
-      <value>Quick Panel Configuration</value>
+      <value>クイックパネルの設定</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
       <value>Hide the additional focus border</value>
