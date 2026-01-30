@@ -20,6 +20,7 @@ public class AddonConfig {
 
     public Vector2 WindowSize = Vector2.Zero;
     public bool KeybindEnabled = true;
+    public bool DisableInCombat = true;
 
     public Keybind Keybind = new();
 }

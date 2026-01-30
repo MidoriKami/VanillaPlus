@@ -21,7 +21,8 @@ public unsafe class KeybindListener : IDisposable {
 
     private void OnFrameworkUpdate(IFramework framework) {
         if (!AddonConfig.KeybindEnabled) return;
-        
+        if (AddonConfig.DisableInCombat && Services.Condition.IsBoundByDuty) return;
+
         // Don't process keybinds if we are settings up a new keybind
         if (PluginSystem.WindowSystem.Windows.Any(window => window.WindowName.Contains("Keybind Modal") && window.IsOpen)) return;
 
