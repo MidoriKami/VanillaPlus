@@ -51,17 +51,10 @@ public class ModificationManager : IDisposable {
         Services.PluginInterface.ActivePluginsChanged -= OnPluginsChanged;
 
         Services.PluginLog.Debug("Disposing Modification Manager, now disabling all GameModifications");
-        
+
         foreach (var loadedMod in loadedModifications) {
             if (loadedMod.State is LoadedState.Enabled) {
-                try {
-                    Services.PluginLog.Info($"Disabling {loadedMod.Name}");
-                    loadedMod.Modification.OnDisable();
-                    Services.PluginLog.Info($"Successfully Disabled {loadedMod.Name}");
-                }
-                catch (Exception e) {
-                    Services.PluginLog.Error(e, $"Error while unloading modification {loadedMod.Name}");
-                }
+                TryDisableModification(loadedMod, false);
             }
         }
     }
@@ -146,7 +139,7 @@ public class ModificationManager : IDisposable {
         }
     }
 
-    public static void TryDisableModification(LoadedModification modification, bool removeFromList = true) {
+    public static void TryDisableModification(LoadedModification modification, bool removeFromList = true) => Services.Framework.RunOnFrameworkThread(() => {
         if (modification.State is LoadedState.Errored) {
             Services.PluginLog.Error($"[{modification.Name}] Attempted to disable errored modification");
             return;
@@ -156,20 +149,19 @@ public class ModificationManager : IDisposable {
             Services.PluginLog.Info($"Disabling {modification.Name}");
             modification.Modification.OnDisable();
             modification.Modification.OpenConfigAction = null;
+            modification.State = LoadedState.Disabled;
+            Services.PluginLog.Debug($"Successfully Disabled {modification.Name}");
         }
         catch (Exception e) {
             modification.State = LoadedState.Errored;
             Services.PluginLog.Error(e, $"Failed to Disable {modification.Name}");
-        } finally {
-            modification.State = LoadedState.Disabled;
-            Services.PluginLog.Debug($"Successfully Disabled {modification.Name}");
-
-            if (removeFromList) {
-                PluginSystem.SystemConfig.EnabledModifications.Remove(modification.Name);
-                PluginSystem.SystemConfig.Save();
-            }
         }
-    }
+
+        if (removeFromList) {
+            PluginSystem.SystemConfig.EnabledModifications.Remove(modification.Name);
+            PluginSystem.SystemConfig.Save();
+        }
+    });
 
     private static List<GameModification> GetGameModifications() => Assembly
        .GetCallingAssembly()
