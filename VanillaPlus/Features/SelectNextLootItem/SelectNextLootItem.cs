@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Runtime.InteropServices;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -31,7 +32,10 @@ public unsafe class SelectNextLootItem : GameModification {
     private void OnNeedGreedSetup(AddonEvent type, AddonArgs args) {
         // Find first item that hasn't been rolled on, and select it.
         var addonNeedGreed = args.GetAddon<AddonNeedGreed>();
-        foreach (var index in Enumerable.Range(0, addonNeedGreed->NumItems)) {
+        var correctNumItems = Marshal.ReadByte((nint)addonNeedGreed, 0x5AC);
+        
+        // foreach (var index in Enumerable.Range(0, addonNeedGreed->NumItems)) {
+        foreach (var index in Enumerable.Range(0, correctNumItems)) {
             if (addonNeedGreed->Items[index] is { Roll: 0, ItemId: not 0 }) {
                 SelectItem(addonNeedGreed, index);
                 break;
@@ -55,7 +59,8 @@ public unsafe class SelectNextLootItem : GameModification {
             
             // Don't select next item if we are passing on an item that we already rolled on
             case ButtonType.Pass when addon->Items[addon->SelectedItemIndex] is { Roll: 0, ItemId: not 0 }: 
-                var currentItemCount = addon->NumItems;
+                // var currentItemCount = addon->NumItems;
+                var currentItemCount = Marshal.ReadByte((nint)addon, 0x5AC);
                 var nextIndex = addon->SelectedItemIndex + 1;
 
                 if (nextIndex < currentItemCount) {
