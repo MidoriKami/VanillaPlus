@@ -29,7 +29,7 @@ public unsafe class SelectNextLootItem : GameModification {
     public override void OnDisable()
         => Services.AddonLifecycle.UnregisterListener(OnNeedGreedSetup, OnNeedGreedEvent);
 
-    private void OnNeedGreedSetup(AddonEvent type, AddonArgs args) {
+    private static void OnNeedGreedSetup(AddonEvent type, AddonArgs args) {
         // Find first item that hasn't been rolled on, and select it.
         var addonNeedGreed = args.GetAddon<AddonNeedGreed>();
         var correctNumItems = Marshal.ReadByte((nint)addonNeedGreed, 0x5AC);
@@ -43,7 +43,7 @@ public unsafe class SelectNextLootItem : GameModification {
         }
     }
     
-    private void OnNeedGreedEvent(AddonEvent type, AddonArgs args) {
+    private static void OnNeedGreedEvent(AddonEvent type, AddonArgs args) {
         if (args is not AddonReceiveEventArgs eventArgs) return;
         
         var eventType = (AtkEventType) eventArgs.AtkEventType;
