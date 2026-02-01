@@ -52,8 +52,10 @@ public unsafe class PartyFinderPresets : GameModification {
                 UpdateDropDownOptions();
             },
             EditCompleted = _ => {
+                presetEditorAddon?.Options = GetPresetInfos();
                 presetEditorAddon?.RefreshList();
                 presetEditorAddon?.SelectItem(null);
+                UpdateDropDownOptions();
             },
             ItemComparer = (left, right, _) => string.Compare(left, right, StringComparison.OrdinalIgnoreCase),
             IsSearchMatch = (item, searchString) => {
@@ -154,15 +156,14 @@ public unsafe class PartyFinderPresets : GameModification {
     }
 
     private void UpdateDropDownOptions() {
-        if (presetDropDown is not null) {
-            var presets = PresetManager.GetPresetNames();
-            var anyPresets = presets.All(presetName => presetName != PresetManager.DefaultString);
-            
-            presetDropDown.Options = presets;
-            presetDropDown.IsEnabled = anyPresets;
+        if (presetDropDown is null) return;
 
-            presetDropDown.TextTooltip = anyPresets ? Strings.Tooltip_SelectPreset : Strings.Tooltip_NoPresets;
-        }
+        var presets = PresetManager.GetPresetNames();
+        var anyPresets = presets.All(presetName => presetName != PresetManager.DefaultString);
+
+        presetDropDown.Options = presets;
+        presetDropDown.IsEnabled = anyPresets;
+        presetDropDown.TextTooltip = anyPresets ? Strings.Tooltip_SelectPreset : Strings.Tooltip_NoPresets;
     }
 
     private static List<string> GetPresetInfos() => PresetManager.GetPresetNames()
