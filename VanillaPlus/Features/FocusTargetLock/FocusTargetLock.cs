@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Dalamud.Game.ClientState.Objects.Types;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -16,6 +17,7 @@ public class FocusTargetLock : GameModification {
     };
 
     private uint? targetBaseId;
+    private uint? targetEntityId;
 
     public override void OnEnable() {
         Services.DutyState.DutyWiped += OnDutyWiped;
@@ -30,17 +32,30 @@ public class FocusTargetLock : GameModification {
     }
 
     private void OnDutyRecommenced(object? sender, ushort e) {
-        if (targetBaseId is null) return;
+        if (targetBaseId is null || targetEntityId is null) return;
 
-        var desiredTarget = Services.ObjectTable.CharacterManagerObjects.FirstOrDefault(obj => obj.BaseId == targetBaseId);
-        if (desiredTarget is null) return;
+        IGameObject? targetObject;
 
-        Services.TargetManager.FocusTarget = desiredTarget;
+        // BaseId works well for reacquiring bosses, but doesn't work for other players.
+        if (targetBaseId is not 0) { 
+            targetObject = Services.ObjectTable.CharacterManagerObjects.FirstOrDefault(obj => obj.BaseId == targetBaseId);
+        }
+        
+        // Player EntityId's never change once in an instance, but enemies do, so this works to reacquire players.
+        else {
+            targetObject = Services.ObjectTable.CharacterManagerObjects.FirstOrDefault(obj => obj.EntityId == targetEntityId);
+        }
+
+        Services.TargetManager.FocusTarget = targetObject;
     }
 
-    private void OnDutyWiped(object? sender, ushort e)
-        => targetBaseId = Services.TargetManager.FocusTarget?.BaseId;
+    private void OnDutyWiped(object? sender, ushort e) {
+        targetBaseId = Services.TargetManager.FocusTarget?.BaseId;
+        targetEntityId = Services.TargetManager.FocusTarget?.EntityId;
+    }
 
-    private void OnTerritoryChanged(ushort obj)
-        => targetBaseId = null;
+    private void OnTerritoryChanged(ushort obj) {
+        targetBaseId = null;
+        targetEntityId = null;
+    }
 }
