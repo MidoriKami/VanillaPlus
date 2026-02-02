@@ -65,7 +65,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
     }
 
     private void OnInventoryAttach(AtkUnitBase* addon) {
-        Services.PluginLog.Info($"OnInventoryAttach: {addon->NameString}");
+        Services.PluginLog.Info($"OnInventoryDetach: {addon->NameString}");
         if (inputTextNodes is null) return;
         var size = new Vector2(addon->Size.X / 2.0f, 28.0f);
 
