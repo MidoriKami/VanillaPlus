@@ -20,6 +20,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Changelog"),
             new ChangeLogInfo(2, "Added option to change resource on Party Members and added Trust support"),
+            new ChangeLogInfo(3, "Added option to disable the modification during Computation Mode on Construct 7"),
         ],
         Tags = [ "Party List", "Parameter Bars" ],
     };
@@ -35,7 +36,7 @@ public unsafe class ResourceBarPercentages : GameModification {
     public override void OnEnable() {
         config = ResourceBarPercentagesConfig.Load();
         config.OnSave += OnConfigChanged;
-        
+
         configWindow = new ConfigAddon {
             Size = new Vector2(400.0f, 300.0f),
             InternalName = "ResourcePercentageConfig",
@@ -70,7 +71,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         configWindow.AddCategory(Strings.ResourceBarPercentages_CategoryPercentageFormat)
             .AddIntSlider(Strings.ResourceBarPercentages_DecimalPlaces, 0, 2, nameof(config.DecimalPlaces))
             .AddCheckbox(Strings.ResourceBarPercentages_ShowDecimalsBelowHundred, nameof(config.ShowDecimalsBelowHundredOnly));
-        
+
         OpenConfigAction = configWindow.Toggle;
 
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);
@@ -111,7 +112,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         var addon = args.GetAddon<AddonParameterWidget>();
         if (Services.ObjectTable.LocalPlayer is not { } localPlayer) return;
 
-        addon->HealthAmount->SetText(GetCorrectText(localPlayer.CurrentHp, localPlayer.MaxHp, config.ParameterHpEnabled));
+        addon->HealthAmount->SetText(GetCorrectHpText(localPlayer.CurrentHp, localPlayer.MaxHp, config.ParameterHpEnabled));
 
         var activeResource = GetActiveResource(localPlayer);
         addon->ManaAmount->SetText(GetCorrectText(activeResource.Current, activeResource.Max, activeResource.Enabled));
@@ -133,7 +134,7 @@ public unsafe class ResourceBarPercentages : GameModification {
     private void OnPartyListDisable() {
         var addon = Services.GameGui.GetAddonByName<AddonPartyList>("_PartyList");
         if (addon is null) return;
-        
+
         foreach (var member in addon->HudMembers) {
             ApplyModification(member, true);
         }
@@ -151,7 +152,7 @@ public unsafe class ResourceBarPercentages : GameModification {
 
         var health = hudData.HudMember->HealthValues;
         if (health is null) return;
-        
+
         var hpGaugeTextNode = hudData.PartyListMember->HPGaugeComponent->GetTextNodeById(2);
         if (hpGaugeTextNode is null) return;
 
@@ -160,7 +161,7 @@ public unsafe class ResourceBarPercentages : GameModification {
                 hpGaugeTextNode->SetText(health.Current > 0 ? Strings.ResourceBarPercentages_StatusAlive : Strings.ResourceBarPercentages_StatusDead);
             }
             else {
-                hpGaugeTextNode->SetText(GetCorrectText((uint)health.Current, (uint)health.Max, config.PartyListHpEnabled));
+                hpGaugeTextNode->SetText(GetCorrectHpText((uint)health.Current, (uint)health.Max, config.PartyListHpEnabled));
             }
         }
         else {
@@ -188,7 +189,7 @@ public unsafe class ResourceBarPercentages : GameModification {
 
         var isPercentageEnabled = IsResourcePercentageEnabled(config, classJob);
         var newResourceText = GetCorrectPartyResourceText(hudData, isPercentageEnabled, shouldRevertResource);
-        
+
         resourceGaugeTextNode->SetText(newResourceText);
         resourceGaugeTextSubNode->ToggleVisibility(isMpDisabled);
     }
@@ -204,15 +205,21 @@ public unsafe class ResourceBarPercentages : GameModification {
         addon->ManaAmount->SetText(GetCorrectText(activeResource.Current, activeResource.Max, false));
     }
 
+    // Check max HP for fights like Construct 7 on Ridorina Lighthouse to force showing their max HP
+    private string GetCorrectHpText(uint current, uint max, bool enabled) {
+        var maxHpModified = max is > 0 and < 50;
+        return GetCorrectText(current, max, enabled && !maxHpModified);
+    }
+
     private string GetCorrectText(uint current, uint max, bool enabled = true)
         => !enabled ? current.ToString() : FormatPercentage(current, max);
 
     private string GetCorrectPartyResourceText(PartyListHudData hudData, bool enabled = true, bool revertToDefault = false) {
         if (hudData.HudMember->ClassJob is not { } classJob) return string.Empty;
-        
+
         var currentMana = (uint)hudData.NumberArrayData->CurrentMana;
         var maxMana = (uint)hudData.NumberArrayData->MaxMana;
-        
+
         if (revertToDefault || classJob.IsNotCrafterGatherer && !enabled) {
             if (classJob.IsNotCrafterGatherer) {
                 currentMana /= 100;
@@ -241,10 +248,10 @@ public unsafe class ResourceBarPercentages : GameModification {
     private static bool IsResourcePercentageEnabled(ResourceBarPercentagesConfig resourceConfig, ClassJob classJob) {
         if (classJob.IsCrafter)
             return resourceConfig.PartyListCpEnabled;
-        
+
         if (classJob.IsGatherer)
             return resourceConfig.PartyListGpEnabled;
-        
+
         return resourceConfig.PartyListMpEnabled;
     }
 
