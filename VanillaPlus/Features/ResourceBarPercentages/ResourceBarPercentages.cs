@@ -20,7 +20,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Changelog"),
             new ChangeLogInfo(2, "Added option to change resource on Party Members and added Trust support"),
-            new ChangeLogInfo(3, "Added option to disable the modification during Computation Mode on Construct 7"),
+            new ChangeLogInfo(3, "Automatically disables when max hp is being manipulated via game mecahnics"),
         ],
         Tags = [ "Party List", "Parameter Bars" ],
     };
