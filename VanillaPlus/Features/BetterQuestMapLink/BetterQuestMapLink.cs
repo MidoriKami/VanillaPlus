@@ -1,8 +1,10 @@
 ﻿using System;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
+using MapType = FFXIVClientStructs.FFXIV.Client.UI.Agent.MapType;
 
 namespace VanillaPlus.Features.BetterQuestMapLink;
 
@@ -34,6 +36,11 @@ public unsafe class BetterQuestMapLink : GameModification {
         openMapHook!.Original(agent, data);
         
         try {
+            if (!Services.DataManager.GetExcelSheet<Map>().TryGetRow(data->MapId, out var mapData)) return;
+
+            // Disable in Cosmic Zones
+            if (mapData.TerritoryType.ValueNullable?.TerritoryIntendedUse.RowId is 60) return; 
+
             if (data->Type is MapType.QuestLog && agent->CurrentMapId != data->MapId) {
                 data->Type = MapType.Centered;
                 data->TerritoryId = 0;
