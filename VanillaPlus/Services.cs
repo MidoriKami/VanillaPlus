@@ -12,6 +12,7 @@ public class Services {
     [PluginService] public static IClientState ClientState { get; set; } = null!;
     [PluginService] public static IPluginLog PluginLog { get; set; } = null!;
     [PluginService] public static IAddonLifecycle AddonLifecycle { get; set; } = null!;
+    [PluginService] public static IAgentLifecycle AgentLifecycle { get; set; } = null!;
     [PluginService] public static IDutyState DutyState { get; set; } = null!;
     [PluginService] public static IChatGui ChatGui { get; set; } = null!;
     [PluginService] public static ICommandManager CommandManager { get; set; } = null!; 
