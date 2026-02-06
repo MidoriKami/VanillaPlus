@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Text.ReadOnly;
 using VanillaPlus.Utilities;
@@ -32,12 +30,7 @@ public static unsafe class PresetManager {
     public static void LoadPreset(string fileName) {
         var agent = AgentLookingForGroup.Instance();
 
-        var address = Unsafe.AsPointer(ref agent->StoredRecruitmentInfo);
-        var size = sizeof(AgentLookingForGroup.RecruitmentSub);
-
-        var result = Data.LoadBinaryData(size, "PartyFinderPresets", $"{fileName}.preset.data");
-        Marshal.Copy(result, 0, (nint)address, size);
-
+        Data.LoadBinaryData(&agent->StoredRecruitmentInfo, sizeof(AgentLookingForGroup.RecruitmentSub), "PartyFinderPresets", $"{fileName}.preset.data");
         var extrasFile = Data.LoadData<PresetExtras>("PartyFinderPresets", $"{fileName}.extras.data");
 
         agent->AvgItemLv = extrasFile.ItemLevel;
@@ -46,14 +39,8 @@ public static unsafe class PresetManager {
 
     public static void SavePreset(string fileName) {
         var agent = AgentLookingForGroup.Instance();
-        
-        var address = Unsafe.AsPointer(ref agent->StoredRecruitmentInfo);
-        var size = sizeof(AgentLookingForGroup.RecruitmentSub);
-        
-        var dataSpan = new Span<byte>(address, size);
 
-        Data.SaveBinaryData(dataSpan.ToArray(), "PartyFinderPresets", $"{fileName}.preset.data");
-
+        Data.SaveBinaryData(&agent->StoredRecruitmentInfo, sizeof(AgentLookingForGroup.RecruitmentSub), "PartyFinderPresets", $"{fileName}.preset.data");
         Data.SaveData(new PresetExtras {
             ItemLevel = agent->AvgItemLv,
             ItemLevelEnabled = agent->AvgItemLvEnabled,
