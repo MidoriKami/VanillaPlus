@@ -87,8 +87,8 @@ public unsafe class CurrencyOverlayNode : OverlayNode {
 
         Scale = new Vector2(Currency.Scale, Currency.Scale);
 
-        var isLowWarning = Currency.EnableLowLimit && inventoryCount < Currency.LowLimit;
-        var isHighWarning = Currency.EnableHighLimit && inventoryCount > Currency.HighLimit;
+        var isLowWarning = Currency.EnableLowLimit && inventoryCount <= Currency.LowLimit;
+        var isHighWarning = Currency.EnableHighLimit && inventoryCount >= Currency.HighLimit;
         var hasWarning = isLowWarning || isHighWarning;
 
         var shouldFade = Currency.FadeIfNoWarnings && !hasWarning;
