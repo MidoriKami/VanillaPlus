@@ -312,7 +312,7 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When mousing over player names in chat, shows their full name and world as a tooltip.
+        ///   Looks up a localized string similar to When mousing over player names in chat, shows their full name and world as a tooltip..
         /// </summary>
         internal static string ChatPlayerTooltip_Description {
             get {
@@ -620,6 +620,15 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Research Progress [VanillaPlus].
+        /// </summary>
+        internal static string CosmicExplorationProgressWindow_HudButtonTooltip {
+            get {
+                return ResourceManager.GetString("CosmicExplorationProgressWindow_HudButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Currency Overlay Config.
         /// </summary>
         internal static string CurrencyOverlay_ConfigTitle {
@@ -661,6 +670,15 @@ namespace VanillaPlus.Resources {
         internal static string CurrencyWarning_AboveColor {
             get {
                 return ResourceManager.GetString("CurrencyWarning_AboveColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Below Target Color.
+        /// </summary>
+        internal static string CurrencyWarning_BelowColor {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_BelowColor", resourceCulture);
             }
         }
         
@@ -719,7 +737,7 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shows an animated notification icon when tracked currencies approach or exceed set limits.
+        ///   Looks up a localized string similar to Shows an animated notification icon when tracked currencies approach or exceed set limits..
         /// </summary>
         internal static string CurrencyWarning_Description {
             get {
@@ -814,15 +832,6 @@ namespace VanillaPlus.Resources {
         internal static string CurrencyWarning_TooltipBelowLimit {
             get {
                 return ResourceManager.GetString("CurrencyWarning_TooltipBelowLimit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Below Target Color.
-        /// </summary>
-        internal static string CurrencyWarning_BelowColor {
-            get {
-                return ResourceManager.GetString("CurrencyWarning_BelowColor", resourceCulture);
             }
         }
         
@@ -930,42 +939,6 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next.
-        /// </summary>
-        internal static string EnhancedWardNavigation_ButtonNext {
-            get {
-                return ResourceManager.GetString("EnhancedWardNavigation_ButtonNext", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Prev.
-        /// </summary>
-        internal static string EnhancedWardNavigation_ButtonPrevious {
-            get {
-                return ResourceManager.GetString("EnhancedWardNavigation_ButtonPrevious", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Adds previous and next buttons to the housing ward selection list.
-        /// </summary>
-        internal static string EnhancedWardNavigation_Description {
-            get {
-                return ResourceManager.GetString("EnhancedWardNavigation_Description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enhanced Ward Navigation.
-        /// </summary>
-        internal static string EnhancedWardNavigation_DisplayName {
-            get {
-                return ResourceManager.GetString("EnhancedWardNavigation_DisplayName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Enhanced Loot Window Config.
         /// </summary>
         internal static string EnhancedLootWindow_ConfigTitle {
@@ -989,6 +962,42 @@ namespace VanillaPlus.Resources {
         internal static string EnhancedLootWindow_LabelMarkUnobtainable {
             get {
                 return ResourceManager.GetString("EnhancedLootWindow_LabelMarkUnobtainable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        internal static string EnhancedWardNavigation_ButtonNext {
+            get {
+                return ResourceManager.GetString("EnhancedWardNavigation_ButtonNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prev.
+        /// </summary>
+        internal static string EnhancedWardNavigation_ButtonPrevious {
+            get {
+                return ResourceManager.GetString("EnhancedWardNavigation_ButtonPrevious", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adds previous and next buttons to the housing ward selection list..
+        /// </summary>
+        internal static string EnhancedWardNavigation_Description {
+            get {
+                return ResourceManager.GetString("EnhancedWardNavigation_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enhanced Ward Navigation.
+        /// </summary>
+        internal static string EnhancedWardNavigation_DisplayName {
+            get {
+                return ResourceManager.GetString("EnhancedWardNavigation_DisplayName", resourceCulture);
             }
         }
         
@@ -1877,6 +1886,15 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A floating window that shows the Cosmic Exploration dataset progress for your current DoH/DoL job.
+        /// </summary>
+        internal static string ModificationDescription_CosmicExplorationProgressWindow {
+            get {
+                return ResourceManager.GetString("ModificationDescription_CosmicExplorationProgressWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allows you to add additional currencies to your UI Overlay.
         ///
         ///Additionally allows you to set minimum and maximum values to trigger a warning..
@@ -2402,6 +2420,15 @@ namespace VanillaPlus.Resources {
         internal static string ModificationDisplay_ClearTextInputs {
             get {
                 return ResourceManager.GetString("ModificationDisplay_ClearTextInputs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cosmic Exploration Dataset Progress.
+        /// </summary>
+        internal static string ModificationDisplay_CosmicExplorationProgressWindow {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_CosmicExplorationProgressWindow", resourceCulture);
             }
         }
         
