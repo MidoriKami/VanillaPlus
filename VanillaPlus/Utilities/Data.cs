@@ -59,6 +59,14 @@ public static class Data {
         var result = LoadBinaryData(memorySize, folderName, fileName);
         Marshal.Copy(result, 0, (nint)targetMemoryAddress, memorySize);
     }
+    
+    /// <summary>
+    /// Loads a binary file from PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName} directly into game memory.
+    /// </summary>
+    public static void LoadBinaryData(nint targetMemoryAddress, int memorySize, string folderName, string fileName) {
+        var result = LoadBinaryData(memorySize, folderName, fileName);
+        Marshal.Copy(result, 0, targetMemoryAddress, memorySize);
+    }
 
     /// <summary>
     /// Saves a binary file to PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName}
@@ -71,4 +79,11 @@ public static class Data {
     /// </summary>
     public static unsafe void SaveBinaryData<T>(T* dataPointer, int dataSize, string folderName, string fileName) where T : unmanaged
         => FileHelpers.SaveBinaryFile(new Span<byte>(dataPointer, dataSize).ToArray(), FileHelpers.GetFileInfo("Data", folderName, fileName).FullName);
+    
+    /// <summary>
+    /// Saves a memory block to PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName}
+    /// </summary>
+    public static unsafe void SaveBinaryData(nint dataPointer, int dataSize, string folderName, string fileName)
+        => FileHelpers.SaveBinaryFile(new Span<byte>((void*)dataPointer, dataSize).ToArray(), FileHelpers.GetFileInfo("Data", folderName, fileName).FullName);
+
 }

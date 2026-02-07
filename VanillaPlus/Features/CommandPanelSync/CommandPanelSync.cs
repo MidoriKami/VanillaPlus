@@ -67,35 +67,19 @@ public unsafe class CommandPanelSync : GameModification {
     private static bool SharedExists
         => FileHelpers.GetFileInfo("Data", "CommandPanelSync", $"Shared.v{CurrentVersion}.qpnl.dat").Exists;
 
+    private static nint QuickPanelAddress => (nint)QuickPanelModule.Instance() + sizeof(UserFileManager.UserFileEvent);
+
+    private static int QuickPanelSize => sizeof(QuickPanelModule) - sizeof(UserFileManager.UserFileEvent);
+    
     private static void SaveOriginal()
-        => Data.SaveBinaryData(
-            QuickPanelModule.Instance() + sizeof(UserFileManager.UserFileEvent), 
-            sizeof(QuickPanelModule) - sizeof(UserFileManager.UserFileEvent), 
-            "CommandPanelSync", 
-            $"Original.v{CurrentVersion}.qpnl.dat"
-        );
+        => Data.SaveBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Original.v{CurrentVersion}.qpnl.dat");
 
     private static void LoadOriginal()
-        => Data.LoadBinaryData(
-            QuickPanelModule.Instance() + sizeof(UserFileManager.UserFileEvent), 
-            sizeof(QuickPanelModule) - sizeof(UserFileManager.UserFileEvent), 
-            "CommandPanelSync", 
-            $"Original.v{CurrentVersion}.qpnl.dat"
-        );
+        => Data.LoadBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Original.v{CurrentVersion}.qpnl.dat");
 
     private static void SaveShared()
-        => Data.SaveBinaryData(
-            QuickPanelModule.Instance() + sizeof(UserFileManager.UserFileEvent), 
-            sizeof(QuickPanelModule) - sizeof(UserFileManager.UserFileEvent), 
-            "CommandPanelSync", 
-            $"Shared.v{CurrentVersion}.qpnl.dat"
-        );
+        => Data.SaveBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Shared.v{CurrentVersion}.qpnl.dat");
 
     private static void LoadShared()
-        => Data.LoadBinaryData(
-            QuickPanelModule.Instance() + sizeof(UserFileManager.UserFileEvent), 
-            sizeof(QuickPanelModule) - sizeof(UserFileManager.UserFileEvent), 
-            "CommandPanelSync", 
-            $"Shared.v{CurrentVersion}.qpnl.dat"
-        );
+        => Data.LoadBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Shared.v{CurrentVersion}.qpnl.dat");
 }
