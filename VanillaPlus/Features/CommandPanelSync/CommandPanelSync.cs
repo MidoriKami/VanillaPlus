@@ -25,8 +25,14 @@ public unsafe class CommandPanelSync : GameModification {
         }
     }
 
-    public override void OnDisable()
-        => RestoreOriginalQuickPanel();
+    public override void OnDisable() {
+        Services.ClientState.Login -= OnLogin;
+        Services.ClientState.Logout -= OnLogout;
+        
+        if (Services.ClientState.IsLoggedIn) {
+            RestoreOriginalQuickPanel();
+        }
+    }
 
     private static void OnLogin()
         => ApplySharedQuickPanel();
@@ -58,16 +64,28 @@ public unsafe class CommandPanelSync : GameModification {
     
     private static bool SharedExists
         => FileHelpers.GetFileInfo("Data", "CommandPanelSync", "Shared.qpnl.dat").Exists;
-    
-    private static void SaveOriginal()
-        => Data.SaveBinaryData(QuickPanelModule.Instance(), sizeof(QuickPanelModule), "CommandPanelSync", "Original.qpnl.dat");
-    
-    private static void LoadOriginal()
-        => Data.LoadBinaryData(QuickPanelModule.Instance(), sizeof(QuickPanelModule), "CommandPanelSync", "Original.qpnl.dat");
-    
-    private static void SaveShared()
-        => Data.SaveBinaryData(QuickPanelModule.Instance(), sizeof(QuickPanelModule), "CommandPanelSync", "Shared.qpnl.dat");
-    
-    private static void LoadShared()
-        => Data.LoadBinaryData(QuickPanelModule.Instance(), sizeof(QuickPanelModule), "CommandPanelSync", "Shared.qpnl.dat");
+
+    private static void SaveOriginal() {
+        if (QuickPanelModule.Instance() is null) return;
+
+        Data.SaveBinaryData(QuickPanelModule.Instance(), sizeof(QuickPanelModule), "CommandPanelSync", "Original.qpnl.dat");
+    }
+
+    private static void LoadOriginal() {
+        if (QuickPanelModule.Instance() is null) return;
+
+        Data.LoadBinaryData(QuickPanelModule.Instance(), sizeof(QuickPanelModule), "CommandPanelSync", "Original.qpnl.dat");
+    }
+
+    private static void SaveShared() {
+        if (QuickPanelModule.Instance() is null) return;
+
+        Data.SaveBinaryData(QuickPanelModule.Instance(), sizeof(QuickPanelModule), "CommandPanelSync", "Shared.qpnl.dat");
+    }
+
+    private static void LoadShared() {
+        if (QuickPanelModule.Instance() is null) return;
+
+        Data.LoadBinaryData(QuickPanelModule.Instance(), sizeof(QuickPanelModule), "CommandPanelSync", "Shared.qpnl.dat");
+    }
 }
