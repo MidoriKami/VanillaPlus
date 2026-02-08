@@ -9,7 +9,13 @@ public static class EnumExtensions {
 
         private string GetDescription() {
             var attribute = enumValue.GetAttribute<DescriptionAttribute>();
-            return Strings.ResourceManager.GetString(attribute?.Description ?? string.Empty, Strings.Culture) ?? enumValue.ToString();
+
+            var translatedString = Strings.ResourceManager.GetString(attribute?.Description ?? string.Empty, Strings.Culture);
+            if (translatedString is not null) return translatedString;
+
+            if (attribute is not null) return attribute.Description;
+
+            return enumValue.ToString();
         }
     }
     
