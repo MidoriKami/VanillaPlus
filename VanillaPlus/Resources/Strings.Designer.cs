@@ -620,7 +620,7 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show Research Progress [VanillaPlus].
+        ///   Looks up a localized string similar to [VanillaPlus] Show Research Progress.
         /// </summary>
         internal static string CosmicExplorationProgressWindow_HudButtonTooltip {
             get {

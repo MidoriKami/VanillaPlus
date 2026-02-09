@@ -39,9 +39,9 @@ public class CosmicExplorationProgressAddon : NativeAddon {
     }
 
     protected override unsafe void OnUpdate(AtkUnitBase* addon) {
-        // This behavior is a bit spicy- in general we don't want long-lived custom addons. This particular
+        // This behavior is a bit spicy, in general we don't want long-lived custom addons. This particular
         // addon is limited to only exist in WKS zones so this is reasonably safe.
-        // Seriously, please don't do this- there are real risks to having too many long-lived custom addons. Those are
+        // Seriously, please don't do this, there are real risks to having too many long-lived custom addons. Those are
         // generally best-suited as overlays instead.
 
         // If we don't set this to false in OnHide, for some reason the addon never gets cleaned up out of AtkUnitManager
