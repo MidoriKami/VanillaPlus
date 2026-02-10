@@ -1376,4 +1376,13 @@ This game modification fixes it by always triggering the normal mouse click in a
     <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
       <value>Below Limit</value>
     </data>
+  <data name="ModificationDisplay_CosmicExplorationProgressWindow" xml:space="preserve">
+      <value>Cosmic Exploration Dataset Progress</value>
+  </data>
+  <data name="ModificationDescription_CosmicExplorationProgressWindow" xml:space="preserve">
+      <value>A floating window that shows the Cosmic Exploration dataset progress for your current DoH/DoL job</value>
+  </data>
+  <data name="CosmicExplorationProgressWindow_HudButtonTooltip" xml:space="preserve">
+      <value>[VanillaPlus] Show Research Progress</value>
+  </data>
 </root>
