@@ -11,7 +11,7 @@ public unsafe class KeybindListener : IDisposable {
 
     public required AddonConfig AddonConfig { get; set; }
 
-    public required Action? KeybindCallback { get; init; }
+    public Action? KeybindCallback { get; set; }
 
     public KeybindListener()
         => Services.Framework.Update += OnFrameworkUpdate;
