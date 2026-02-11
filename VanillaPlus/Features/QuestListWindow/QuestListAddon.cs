@@ -10,6 +10,7 @@ namespace VanillaPlus.Features.QuestListWindow;
 public unsafe class QuestListAddon : SearchableNodeListAddon<MarkerInfo, QuestListItemNode> {
     private QuestFilterMode lastSortingMode = QuestFilterMode.Type;
     private bool isReversed;
+    private string searchString = string.Empty;
 
     public QuestListAddon() {
         OnSortingUpdated = UpdateSorting;
@@ -17,8 +18,12 @@ public unsafe class QuestListAddon : SearchableNodeListAddon<MarkerInfo, QuestLi
     }
 
     protected override void OnUpdate(AtkUnitBase* addon) {
-        ListNode?.OptionsList = Map.Instance()->UnacceptedQuestMarkers.ToList();
-        ListNode?.OptionsList.Sort((left, right) => MarkerInfoExtensions.Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
+        ListNode?.OptionsList = Map.Instance()->UnacceptedQuestMarkers
+            .Where(item => searchString == string.Empty || MarkerInfoExtensions.IsRegexMatch(item, searchString))
+            .ToList();
+
+        ListNode?.OptionsList
+            .Sort((left, right) => MarkerInfoExtensions.Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
 
         base.OnUpdate(addon);
     }
@@ -31,10 +36,6 @@ public unsafe class QuestListAddon : SearchableNodeListAddon<MarkerInfo, QuestLi
     }
 
     private void UpdateSearch(string newSearchString) {
-        ListNode?.OptionsList = Map.Instance()->UnacceptedQuestMarkers
-            .Where(item => MarkerInfoExtensions.IsRegexMatch(item, newSearchString))
-            .ToList();
-        
-        ListNode?.OptionsList.Sort((left, right) => MarkerInfoExtensions.Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
+        searchString = newSearchString;
     }
 }
