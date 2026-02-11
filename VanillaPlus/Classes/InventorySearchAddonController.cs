@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Dalamud.Game.ClientState.Keys;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using VanillaPlus.NativeElements.Nodes;
@@ -13,10 +15,26 @@ public unsafe class InventorySearchAddonController : IDisposable {
     private Dictionary<string, TextInputWithHintNode>? inputTextNodes;
     private Dictionary<string, int>? selectedTabs;
 
+    private static KeybindListener? keybindListener;
+
     public InventorySearchAddonController(params string[] addons) {
         inputTextNodes = [];
         selectedTabs = [];
 
+        keybindListener ??= new KeybindListener {
+            AddonConfig = new AddonConfig {
+                DisableInCombat = true,
+                Keybind = new Keybind {
+                    Modifiers = [ VirtualKey.CONTROL ],
+                    Key = VirtualKey.F,
+                },
+                KeybindEnabled = true,
+                WindowSize = Vector2.Zero,
+            },
+        };
+
+        keybindListener.KeybindCallback += OnKeybindPressed;
+        
         inventoryController = new MultiAddonController(addons);
         inventoryController.OnAttach += OnInventoryAttach;
         inventoryController.OnUpdate += OnInventoryUpdate;
@@ -39,6 +57,27 @@ public unsafe class InventorySearchAddonController : IDisposable {
                 
         selectedTabs?.Clear();
         selectedTabs = null;
+
+        keybindListener?.KeybindCallback -= OnKeybindPressed;
+    }
+    
+    private void OnKeybindPressed() {
+        var focusedAddonCount = RaptureAtkUnitManager.Instance()->FocusedUnitsList.Count;
+        if (focusedAddonCount < 1)  return;
+
+        var focusedAddon = RaptureAtkUnitManager.Instance()->FocusedUnitsList.Entries[focusedAddonCount - 1];
+        if (focusedAddon.Value is null) return;
+        if (focusedAddon.Value->Id is 0) return;
+        
+        foreach (var (addonName, searchBarNode) in inputTextNodes ?? []) {
+            var addonPointer = RaptureAtkUnitManager.Instance()->GetAddonByName(addonName);
+            if (addonPointer is null) continue;
+
+            if (focusedAddon.Value->Id == addonPointer->Id || focusedAddon.Value->ParentId == addonPointer->Id) {
+                AtkStage.Instance()->AtkInputManager->SetFocus(searchBarNode.FocusNode, addonPointer, 0);
+                return;
+            }
+        }
     }
     
     private void OnInventoryDetach(AtkUnitBase* addon) {
