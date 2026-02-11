@@ -9,6 +9,8 @@ public class TextInputWithHintNode : SimpleComponentNode {
     private readonly TextInputNode textInputNode;
     private readonly ImageNode helpNode;
 
+    public CollisionNode FocusNode => textInputNode.CollisionNode;
+
     public TextInputWithHintNode() {
         textInputNode = new TextInputNode {
             PlaceholderString = Strings.SearchPlaceholder,
