@@ -21,12 +21,14 @@ public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T
 
         keybindListener = new KeybindListener {
             AddonConfig = config,
-            KeybindCallback = () => {
+            KeybindCallback = (ref isHandled) => {
                 if (config.WindowSize != Vector2.Zero) {
                     Size = config.WindowSize;
                 }
 
                 Toggle();
+
+                isHandled = true;
             },
         };
 

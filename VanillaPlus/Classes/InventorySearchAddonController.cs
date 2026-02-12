@@ -61,7 +61,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
         keybindListener?.KeybindCallback -= OnKeybindPressed;
     }
     
-    private void OnKeybindPressed() {
+    private void OnKeybindPressed(ref bool isHandled) {
         var focusedAddonCount = RaptureAtkUnitManager.Instance()->FocusedUnitsList.Count;
         if (focusedAddonCount < 1)  return;
 
@@ -75,6 +75,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
 
             if (focusedAddon.Value->Id == addonPointer->Id || focusedAddon.Value->ParentId == addonPointer->Id) {
                 AtkStage.Instance()->AtkInputManager->SetFocus(searchBarNode.FocusNode, addonPointer, 0);
+                isHandled = true;
                 return;
             }
         }

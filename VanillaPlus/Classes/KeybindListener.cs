@@ -11,7 +11,9 @@ public unsafe class KeybindListener : IDisposable {
 
     public required AddonConfig AddonConfig { get; set; }
 
-    public Action? KeybindCallback { get; set; }
+    public delegate void KeybindCallbackDelegate(ref bool isHandled);
+    
+    public KeybindCallbackDelegate? KeybindCallback { get; set; }
 
     public KeybindListener()
         => Services.Framework.Update += OnFrameworkUpdate;
@@ -28,12 +30,17 @@ public unsafe class KeybindListener : IDisposable {
 
         // Don't process keybinds if any input text is active
         if (RaptureAtkModule.Instance()->IsTextInputActive()) return;
-        
+
         if (AddonConfig.Keybind.IsPressed() && debouncer.ElapsedMilliseconds >= 25) {
-            AddonConfig.Keybind.Reset();
             debouncer.Restart();
 
-            KeybindCallback?.Invoke();
+            var isHandled = false;
+            KeybindCallback?.Invoke(ref isHandled);
+
+            // If we handled this keypress, then suppress it.
+            if (isHandled) {
+                AddonConfig.Keybind.Reset();
+            }
         }
     }
 }
