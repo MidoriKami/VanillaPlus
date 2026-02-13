@@ -498,7 +498,7 @@ ID：{0}</value>
     <value>位置显示配置</value>
   </data>
   <data name="LocationDisplay_DtrEntryName" xml:space="preserve">
-    <value>VanillaPlus - LocationDisplay</value>
+    <value>VanillaPlus - 位置显示</value>
   </data>
   <data name="LocationDisplay_WardFormat" xml:space="preserve">
     <value>{0}区</value>
@@ -811,10 +811,10 @@ ID：{0}</value>
     <value>对齐方式</value>
   </data>
   <data name="IconWithCount_MillionsFormat" xml:space="preserve">
-    <value>{0}m</value>
+    <value>{0}百万</value>
   </data>
   <data name="IconWithCount_ThousandsFormat" xml:space="preserve">
-    <value>{0}k</value>
+    <value>{0}千</value>
   </data>
   <data name="ModificationDisplay_WindowBackground" xml:space="preserve">
     <value>窗口背景</value>
@@ -1192,7 +1192,7 @@ ID：{0}</value>
     <value>版本 {0}</value>
   </data>
   <data name="ForcedCutsceneSounds_CategoryToggles" xml:space="preserve">
-    <value>Toggles</value>
+    <value>开关</value>
   </data>
   <data name="ActionHighlight_Configuration" xml:space="preserve">
     <value>技能高亮设置</value>
@@ -1375,12 +1375,12 @@ ID：{0}</value>
       <value>低于阈值</value>
     </data>
   <data name="ModificationDisplay_CosmicExplorationProgressWindow" xml:space="preserve">
-      <value>Cosmic Exploration Dataset Progress</value>
+      <value>宇宙探索研究数据进度</value>
   </data>
   <data name="ModificationDescription_CosmicExplorationProgressWindow" xml:space="preserve">
-      <value>A floating window that shows the Cosmic Exploration dataset progress for your current DoH/DoL job</value>
+      <value>显示当前生产/采集职业宇宙探索研究数据进度悬浮窗</value>
   </data>
   <data name="CosmicExplorationProgressWindow_HudButtonTooltip" xml:space="preserve">
-      <value>[VanillaPlus] Show Research Progress</value>
+      <value>[VanillaPlus] 显示研究进度</value>
   </data>
 </root>
