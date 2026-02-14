@@ -9,7 +9,10 @@ using KamiToolKit.Timelines;
 namespace VanillaPlus.Features.FateListWindow;
 
 public class FateListItemNode : ListItemNode<IFate> {
+    public override float ItemHeight => 53.0f;
+    
     private readonly IconImageNode iconNode;
+    private readonly IconImageNode expBonusIconNode;
     private readonly TextNode nameNode;
     private readonly TextNode timeRemainingNode;
     private readonly TextNode levelNode;
@@ -21,6 +24,12 @@ public class FateListItemNode : ListItemNode<IFate> {
             FitTexture = true,
         };
         iconNode.AttachNode(this);
+
+        expBonusIconNode = new IconImageNode {
+            FitTexture = true,
+            IconId = 60934,
+        };
+        expBonusIconNode.AttachNode(this);
 
         nameNode = new TextNode {
             AlignmentType = AlignmentType.BottomLeft,
@@ -79,6 +88,9 @@ public class FateListItemNode : ListItemNode<IFate> {
         iconNode.Position = new Vector2(2.0f, 2.0f);
         iconNode.Size = new Vector2(48.0f, 48.0f);
 
+        expBonusIconNode.Position = iconNode.Position + new Vector2(iconNode.Width / 4.0f, -iconNode.Height / 4.0f);
+        expBonusIconNode.Size = iconNode.Size;
+
         progressTextNode.Size = new Vector2(50.0f, Height / 2.0f);
         progressTextNode.Position = new Vector2(Width - progressTextNode.Width, Height / 2.0f);
         
@@ -95,36 +107,24 @@ public class FateListItemNode : ListItemNode<IFate> {
         nameNode.Position = new Vector2(iconNode.Width + 4.0f, 0.0f);
     }
 
-    public override void Update() {
-        if (ItemData is null) return;
-        
-        if (ItemData.TimeRemainingSpan > TimeSpan.Zero) {
-            timeRemainingNode.String = $"{SeIconChar.Clock.ToIconChar()} {ItemData.TimeRemainingString}";
-            
-            if (ItemData.TimeRemaining < 300 && Timeline?.ActiveLabelId is 1) {
-                Timeline?.PlayAnimation(2);
-            }
-            else if (ItemData.TimeRemaining > 300 && Timeline?.ActiveLabelId is 2) {
-                Timeline?.PlayAnimation(1);
-            }
-        }
-        else {
-            timeRemainingNode.String = "Pending";
-            if (Timeline?.ActiveLabelId is 2) {
-                Timeline?.PlayAnimation(1);
-            }
-        }
-        
-        progressTextNode.String = $"{ItemData.Progress}%";
-        progressNode.Progress = ItemData.Progress / 100.0f;
-    }
-
-    public override float ItemHeight => 53.0f;
-
     protected override void SetNodeData(IFate itemData) {
         iconNode.IconId = itemData.MapIconId;
         nameNode.String = itemData.NameString;
-        timeRemainingNode.String = itemData.TimeRemainingString;
+
+        expBonusIconNode.IsVisible = itemData.HasBonus;
+
+        switch (itemData.State) {
+            case FateState.Preparation:
+            case FateState.Running when itemData.TimeRemainingSpan <= TimeSpan.Zero:
+                timeRemainingNode.String = "Pending";
+                Timeline?.PlayAnimation(1);
+                break;
+            
+            case FateState.Running:
+                timeRemainingNode.String = $"{SeIconChar.Clock.ToIconChar()} {itemData.TimeRemainingString}";
+                Timeline?.PlayAnimation(itemData.TimeRemaining < 300 ? 2 : 1);
+                break;
+        }
 
         if (ItemData is not { Level: 1, MaxLevel: 255 }) {
             levelNode.String = Strings.FateEntry_LevelRangeFormat.Format(itemData.Level, itemData.MaxLevel);
