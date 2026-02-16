@@ -98,14 +98,22 @@ public unsafe class ActionHighlight : GameModification {
             return recastTime - recastElapsed <= thresholdMs / 1000f;
         }
 
-        if (!config.AntOnlyOnFinalStack) {
-            var currentCharges = actionManager->GetCurrentCharges(actionId);
-            if (currentCharges > 0 && !recastActive) return true;
-            recastTime /= maxCharges;
-        }
+        var currentCharges = actionManager->GetCurrentCharges(actionId);
+        var perChargeRecast = ActionManager.GetAdjustedRecastTime(ActionType.Action, actionId) / 1000f;
 
-        var timeLeft = recastTime - recastElapsed;
-        return timeLeft <= thresholdMs / 1000f;
+        if (!config.AntOnlyOnFinalStack) {
+            if (currentCharges > 0 && !recastActive) return true;
+            var nextChargeBoundary = (currentCharges + 1) * perChargeRecast;
+            var timeLeft = nextChargeBoundary - recastElapsed;
+            return timeLeft <= thresholdMs / 1000f;
+        }
+        else {
+            if (currentCharges >= maxCharges) return true;
+            if (currentCharges < maxCharges - 1) return false;
+            var finalChargeBoundary = maxCharges * perChargeRecast;
+            var timeLeft = finalChargeBoundary - recastElapsed;
+            return timeLeft <= thresholdMs / 1000f;
+        }
     }
 
     private void CacheActions() {
