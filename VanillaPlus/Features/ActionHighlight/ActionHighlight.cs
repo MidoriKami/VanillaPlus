@@ -18,6 +18,7 @@ public unsafe class ActionHighlight : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
             new ChangeLogInfo(2, "Fixed abilities like Ikishoten being highlighted when actually not usable"),
+            new ChangeLogInfo(3, "Fix synced abilities with charges sometimes not lighting up in time"),
         ],
         CompatibilityModule = new PluginCompatibilityModule("AbilityAnts"),
     };
