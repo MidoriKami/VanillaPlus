@@ -170,7 +170,7 @@ public unsafe class EnhancedLootWindow : GameModification {
         }
     }
 
-    private bool IsItemAlreadyUnlocked(uint itemId) {
+    private static bool IsItemAlreadyUnlocked(uint itemId) {
         var exdItem = ExdModule.GetItemRowById(itemId);
         return exdItem is null || UIState.Instance()->IsItemActionUnlocked(exdItem) is 1;
     }
