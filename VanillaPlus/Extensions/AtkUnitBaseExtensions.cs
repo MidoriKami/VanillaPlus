@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using FFXIVClientStructs.FFXIV.Client.UI;
+﻿using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace VanillaPlus.Extensions;
@@ -35,28 +34,6 @@ public static unsafe class AtkUnitBaseExtensions {
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Resizes the target addon to the new size, making sure to adjust various WindowNode properties
-        /// to make the window appear and behave normally.
-        /// </summary>
-        /// <param name="newSize">The new size of the addon</param>
-        public void Resize(Vector2 newSize) {
-            var windowNode = addon.WindowNode;
-            if (windowNode is null) return;
-
-            addon.WindowNode->SetWidth((ushort)newSize.X);
-            addon.WindowNode->SetHeight((ushort)newSize.Y);
-
-            if (addon.WindowHeaderCollisionNode is not null) {
-                addon.WindowHeaderCollisionNode->SetWidth((ushort)(newSize.X - 14.0f));
-            }
-
-            addon.SetSize((ushort)newSize.X, (ushort)newSize.Y);
-
-            addon.WindowNode->Component->UldManager.UpdateDrawNodeList();
-            addon.UpdateCollisionNodeList(false);
         }
     }
 }
