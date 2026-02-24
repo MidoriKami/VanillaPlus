@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Config;
 using Dalamud.Game.Gui.ContextMenu;
@@ -14,18 +16,23 @@ public class RetrieveAllMateriaFromGearPieceContextMenu : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         // todo replace with Strings. class
         DisplayName = "Retrieve All Materia From Gear Piece Context Menu",
-        Description = "Makes it possible to retrieve all materia at once from a gear piece, instead of having to do it one by one.",
+        Description =
+            "Makes it possible to retrieve all materia at once from a gear piece, instead of having to do it one by one.",
         Authors = ["Marci696"],
         Type = ModificationType.GameBehavior,
         ChangeLog = [new ChangeLogInfo(1, "Initial Implementation"),],
     };
-    
+
     private GameInventoryItem? _pendingItemToRetrieveMateriaFrom;
+
+    private List<IntPtr> queuedItemsForMateriaRetrieval = [];
 
     // todo replace image
     public override string ImageName => null;
 
     public override void OnEnable() {
+        queuedItemsForMateriaRetrieval = [];
+
         Services.ContextMenu.OnMenuOpened += OnMenuOpened;
         Services.Framework.Update += OnFrameworkUpdate;
     }
@@ -36,13 +43,9 @@ public class RetrieveAllMateriaFromGearPieceContextMenu : GameModification {
     }
 
     private void OnMenuOpened(IMenuOpenedArgs args) {
-        var test = args.AddonName;
-
-
         if (args.MenuType != ContextMenuType.Inventory) {
             return;
         }
-
 
         if (args.Target is not MenuTargetInventory invTarget) {
             return;
@@ -52,22 +55,18 @@ public class RetrieveAllMateriaFromGearPieceContextMenu : GameModification {
             return;
         }
 
-        if (targetItem.MateriaEntries.Count == 0) {
-            return;
-        }
-
         args.AddMenuItem(
             new MenuItem {
                 IsSubmenu = false,
                 // todo replace with access to Strings class
-                Name = "Extract All Materia",
-                OnClicked = _ => { this._pendingItemToRetrieveMateriaFrom = invTarget.TargetItem; },
+                Name = "Retrieve All Materia",
+                OnClicked = _ => { queuedItemsForMateriaRetrieval.Add(targetItem.Address); },
             }
         );
     }
 
     private unsafe void OnFrameworkUpdate(Dalamud.Plugin.Services.IFramework framework) {
-        if (_pendingItemToRetrieveMateriaFrom is not { } itemToRetrieveMateriaFrom) {
+        if (queuedItemsForMateriaRetrieval.Count == 0) {
             return;
         }
 
@@ -75,15 +74,13 @@ public class RetrieveAllMateriaFromGearPieceContextMenu : GameModification {
             return;
         }
 
-        var inventorySlot = (InventoryItem*)itemToRetrieveMateriaFrom.Address;
-        inventorySlot->GetMateriaCount();
-
+        var inventorySlot = (InventoryItem*)queuedItemsForMateriaRetrieval.First();
+        
+        RetrieveMateria(inventorySlot);
+        
         if (inventorySlot->GetMateriaCount() == 0) {
-            _pendingItemToRetrieveMateriaFrom = null;
-            return;
+            queuedItemsForMateriaRetrieval.RemoveAt(0);
         }
-
-        RetrieveMateria(itemToRetrieveMateriaFrom);
     }
 
     private static bool IsCharacterBusy() {
@@ -107,15 +104,12 @@ public class RetrieveAllMateriaFromGearPieceContextMenu : GameModification {
             || c[ConditionFlag.Occupied39];
     }
 
-    private unsafe void RetrieveMateria(GameInventoryItem inventoryItem) {
+    private unsafe void RetrieveMateria(InventoryItem* inventoryItem) {
         var eventFramework = EventFramework.Instance();
         if (eventFramework is null) {
             return;
         }
-
-        var inventorySlot = (InventoryItem*)inventoryItem.Address;
-        inventorySlot->GetMateriaCount();
-
-        eventFramework->MaterializeItem(inventorySlot, MaterializeEntryId.Retrieve);
+        
+        eventFramework->MaterializeItem(inventoryItem, MaterializeEntryId.Retrieve);
     }
 }
