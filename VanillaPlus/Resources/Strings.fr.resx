@@ -1395,7 +1395,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Retrieve All Materia</value>
   </data>
   <data name="RetrieveAllMateriaFromGearPieceContextMenu_MenuItemConfirm" xml:space="preserve">
-    <value>Confirm: Retrieve All</value>
+    <value>Confirm</value>
   </data>
   <data name="RetrieveAllMateriaFromGearPieceContextMenu_MenuItemCancel" xml:space="preserve">
     <value>Cancel</value>

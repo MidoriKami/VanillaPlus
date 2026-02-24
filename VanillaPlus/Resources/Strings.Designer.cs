@@ -3369,7 +3369,7 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm: Retrieve All.
+        ///   Looks up a localized string similar to Confirm.
         /// </summary>
         internal static string RetrieveAllMateriaFromGearPieceContextMenu_MenuItemConfirm {
             get {
