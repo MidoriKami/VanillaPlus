@@ -1383,4 +1383,19 @@ ID: {0}</value>
   <data name="CosmicExplorationProgressWindow_HudButtonTooltip" xml:space="preserve">
       <value>[VanillaPlus] Show Research Progress</value>
   </data>
+  <data name="ModificationDisplay_RetrieveAllMateriaFromGearPieceContextMenu" xml:space="preserve">
+    <value>Retrieve All Materia From Gear Piece Context Menu</value>
+  </data>
+  <data name="ModificationDescription_RetrieveAllMateriaFromGearPieceContextMenu" xml:space="preserve">
+    <value>Makes it possible to retrieve all materia at once from a gear piece, instead of having to do it one by one.</value>
+  </data>
+  <data name="RetrieveAllMateriaFromGearPieceContextMenu_MenuItemName" xml:space="preserve">
+    <value>Retrieve All Materia</value>
+  </data>
+  <data name="RetrieveAllMateriaFromGearPieceContextMenu_MenuItemConfirm" xml:space="preserve">
+    <value>Confirm: Retrieve All</value>
+  </data>
+  <data name="RetrieveAllMateriaFromGearPieceContextMenu_MenuItemCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 </root>

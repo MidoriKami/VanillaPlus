@@ -2258,6 +2258,15 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Makes it possible to retrieve all materia at once from a gear piece, instead of having to do it one by one..
+        /// </summary>
+        internal static string ModificationDescription_RetrieveAllMateriaFromGearPieceContextMenu {
+            get {
+                return ResourceManager.GetString("ModificationDescription_RetrieveAllMateriaFromGearPieceContextMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adds a search bar to the saddlebag window..
         /// </summary>
         internal static string ModificationDescription_SaddlebagSearchBar {
@@ -2780,6 +2789,15 @@ namespace VanillaPlus.Resources {
         internal static string ModificationDisplay_RetainerSearchBar {
             get {
                 return ResourceManager.GetString("ModificationDisplay_RetainerSearchBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retrieve All Materia From Gear Piece Context Menu.
+        /// </summary>
+        internal static string ModificationDisplay_RetrieveAllMateriaFromGearPieceContextMenu {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_RetrieveAllMateriaFromGearPieceContextMenu", resourceCulture);
             }
         }
         
@@ -3338,6 +3356,33 @@ namespace VanillaPlus.Resources {
         internal static string ResourceBarPercentages_StatusDead {
             get {
                 return ResourceManager.GetString("ResourceBarPercentages_StatusDead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string RetrieveAllMateriaFromGearPieceContextMenu_MenuItemCancel {
+            get {
+                return ResourceManager.GetString("RetrieveAllMateriaFromGearPieceContextMenu_MenuItemCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm: Retrieve All.
+        /// </summary>
+        internal static string RetrieveAllMateriaFromGearPieceContextMenu_MenuItemConfirm {
+            get {
+                return ResourceManager.GetString("RetrieveAllMateriaFromGearPieceContextMenu_MenuItemConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retrieve All Materia.
+        /// </summary>
+        internal static string RetrieveAllMateriaFromGearPieceContextMenu_MenuItemName {
+            get {
+                return ResourceManager.GetString("RetrieveAllMateriaFromGearPieceContextMenu_MenuItemName", resourceCulture);
             }
         }
         

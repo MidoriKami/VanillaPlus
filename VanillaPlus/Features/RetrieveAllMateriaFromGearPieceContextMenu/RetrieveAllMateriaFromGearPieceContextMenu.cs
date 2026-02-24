@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.Config;
 using Dalamud.Game.Gui.ContextMenu;
-using Dalamud.Game.Inventory;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using VanillaPlus.Classes;
@@ -14,22 +12,15 @@ namespace VanillaPlus.Features.RetrieveAllMateriaFromGearPieceContextMenu;
 
 public class RetrieveAllMateriaFromGearPieceContextMenu : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        // todo replace with Strings. class
-        DisplayName = "Retrieve All Materia From Gear Piece Context Menu",
-        Description =
-            "Makes it possible to retrieve all materia at once from a gear piece, instead of having to do it one by one.",
+        DisplayName = Strings.ModificationDisplay_RetrieveAllMateriaFromGearPieceContextMenu,
+        Description = Strings.ModificationDescription_RetrieveAllMateriaFromGearPieceContextMenu,
         Authors = ["Marci696"],
         Type = ModificationType.GameBehavior,
         ChangeLog = [new ChangeLogInfo(1, "Initial Implementation"),],
     };
-
-    private GameInventoryItem? _pendingItemToRetrieveMateriaFrom;
-
+    
     private List<IntPtr> queuedItemsForMateriaRetrieval = [];
-
-    // todo replace image
-    public override string ImageName => null;
-
+    
     public override void OnEnable() {
         queuedItemsForMateriaRetrieval = [];
 
@@ -86,33 +77,34 @@ public class RetrieveAllMateriaFromGearPieceContextMenu : GameModification {
         }
 
         var inventorySlot = (InventoryItem*)queuedItemsForMateriaRetrieval.First();
-        
+
         RetrieveMateria(inventorySlot);
-        
+
         if (inventorySlot->GetMateriaCount() == 0) {
             queuedItemsForMateriaRetrieval.RemoveAt(0);
         }
     }
 
     private static bool IsCharacterBusy() {
-        // Keep this conservative: if the game says we're occupied by UI/event/etc, don't spam actions.
-        var c = Services.Condition;
-
+        var condition = Services.Condition;
+        
+        // todo make any condition cancel the queue, except retrieving material which should be occupied39
+        
         return
-            c[ConditionFlag.Occupied]
-            || c[ConditionFlag.OccupiedInEvent]
-            || c[ConditionFlag.OccupiedInQuestEvent]
-            || c[ConditionFlag.OccupiedInCutSceneEvent]
-            || c[ConditionFlag.BetweenAreas]
-            || c[ConditionFlag.BetweenAreas51]
-            || c[ConditionFlag.Jumping]
-            || c[ConditionFlag.Mounted]
-            || c[ConditionFlag.InCombat]
-            || c[ConditionFlag.Casting]
-            || c[ConditionFlag.MeldingMateria]
-            || c[ConditionFlag.Crafting]
-            || c[ConditionFlag.Gathering]
-            || c[ConditionFlag.Occupied39];
+            condition[ConditionFlag.Occupied]
+            || condition[ConditionFlag.OccupiedInEvent]
+            || condition[ConditionFlag.OccupiedInQuestEvent]
+            || condition[ConditionFlag.OccupiedInCutSceneEvent]
+            || condition[ConditionFlag.BetweenAreas]
+            || condition[ConditionFlag.BetweenAreas51]
+            || condition[ConditionFlag.Jumping]
+            || condition[ConditionFlag.Mounted]
+            || condition[ConditionFlag.InCombat]
+            || condition[ConditionFlag.Casting]
+            || condition[ConditionFlag.MeldingMateria]
+            || condition[ConditionFlag.Crafting]
+            || condition[ConditionFlag.Gathering]
+            || condition[ConditionFlag.Occupied39];
     }
 
     private unsafe void RetrieveMateria(InventoryItem* inventoryItem) {
@@ -120,7 +112,7 @@ public class RetrieveAllMateriaFromGearPieceContextMenu : GameModification {
         if (eventFramework is null) {
             return;
         }
-        
+
         eventFramework->MaterializeItem(inventoryItem, MaterializeEntryId.Retrieve);
     }
 }
