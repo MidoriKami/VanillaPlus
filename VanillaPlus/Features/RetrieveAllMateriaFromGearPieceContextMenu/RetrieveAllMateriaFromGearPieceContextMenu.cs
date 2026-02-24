@@ -58,9 +58,20 @@ public class RetrieveAllMateriaFromGearPieceContextMenu : GameModification {
         args.AddMenuItem(
             new MenuItem {
                 IsSubmenu = false,
-                // todo replace with access to Strings class
-                Name = "Retrieve All Materia",
-                OnClicked = _ => { queuedItemsForMateriaRetrieval.Add(targetItem.Address); },
+                Name = Strings.RetrieveAllMateriaFromGearPieceContextMenu_MenuItemName,
+                OnClicked = clickedArgs => {
+                    clickedArgs.OpenSubmenu(
+                        [
+                            new MenuItem {
+                                Name = Strings.RetrieveAllMateriaFromGearPieceContextMenu_MenuItemConfirm,
+                                OnClicked = _ => queuedItemsForMateriaRetrieval.Add(targetItem.Address),
+                            },
+                            new MenuItem {
+                                Name = Strings.RetrieveAllMateriaFromGearPieceContextMenu_MenuItemCancel,
+                            },
+                        ]
+                    );
+                },
             }
         );
     }
