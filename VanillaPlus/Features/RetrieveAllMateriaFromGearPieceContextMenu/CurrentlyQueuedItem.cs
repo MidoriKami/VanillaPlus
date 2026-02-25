@@ -10,6 +10,7 @@ internal enum RetrievalAttemptStatus {
     RetrievedSome,
     RetrievedAll,
     AttemptRunning,
+    RetryNeeded,
     TimedOut
 }
 
@@ -18,21 +19,27 @@ internal unsafe class CurrentlyQueuedItem(Pointer<InventoryItem> inventoryItem) 
 
     private DateTime lastRetrievalAttemptAt = DateTime.UtcNow;
 
-    private byte retrievalAttemptNumber = 0;
+    private bool firstAttemptWasMade = false;
+
+    private byte failedAttemptsCounter = 0;
 
     public RetrievalAttemptStatus GetRetrievalAttemptStatus() {
-        if (retrievalAttemptNumber == 0) {
+        if (!firstAttemptWasMade) {
             return RetrievalAttemptStatus.NoAttemptMade;
         }
 
         var currentCount = inventoryItem.Value->GetMateriaCount();
 
         if (currentCount != previousMateriaCount) {
+            failedAttemptsCounter = 0;
+
             return currentCount == 0 ? RetrievalAttemptStatus.RetrievedAll : RetrievalAttemptStatus.RetrievedSome;
         }
 
         if (lastRetrievalAttemptAt.AddSeconds(3) < DateTime.UtcNow) {
-            return RetrievalAttemptStatus.TimedOut;
+            return ++failedAttemptsCounter < 3
+                       ? RetrievalAttemptStatus.RetryNeeded
+                       : RetrievalAttemptStatus.TimedOut;
         }
 
         return RetrievalAttemptStatus.AttemptRunning;
@@ -50,7 +57,7 @@ internal unsafe class CurrentlyQueuedItem(Pointer<InventoryItem> inventoryItem) 
 
         previousMateriaCount = inventoryItem.Value->GetMateriaCount();
         lastRetrievalAttemptAt = DateTime.UtcNow;
-        retrievalAttemptNumber++;
+        firstAttemptWasMade = true;
 
         Services.PluginLog.Debug($"Attempt materia retrieval of itemId: {GetItemId()}");
 

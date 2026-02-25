@@ -58,11 +58,11 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
                 IsSubmenu = false,
                 IsEnabled = inventoryItem->GetMateriaCount() > 0,
                 Name = Strings.RetrieveAllMateriaFromGearPieceContextMenu_MenuItemName,
-           
+
                 // Blue circle to imitate the look of melded materia.
                 PrefixColor = 37,
                 Prefix = SeIconChar.Circle,
-                
+
                 OnClicked = clickedArgs => {
                     clickedArgs.OpenSubmenu(
                         [
@@ -113,6 +113,13 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
                 case RetrievalAttemptStatus.AttemptRunning:
                     // Check again in the next update tick.
                     return;
+                case RetrievalAttemptStatus.RetryNeeded:
+                    Services.PluginLog.Debug(
+                        $"Retrying retrieval of materia from itemId: {itemForRetrieval.GetItemId()}"
+                    );
+                    currentItemForRetrieval.AttemptRetrieval();
+
+                    return;
                 case RetrievalAttemptStatus.TimedOut:
                     // Character must have been busy and unable to retrieve materia in current state.
                     Services.PluginLog.Debug("Timed out while retrieving materia from one gear piece");
@@ -140,7 +147,7 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
 
     private static bool DoesInventoryItemSupportMateria(InventoryItem* item) {
         var itemSheet = Services.DataManager.Excel.GetSheet<Item>();
-        
+
         return itemSheet.GetRowOrDefault(item->ItemId)?.MateriaSlotCount > 0;
     }
 
