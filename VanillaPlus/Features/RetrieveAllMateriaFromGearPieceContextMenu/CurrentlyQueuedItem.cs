@@ -38,6 +38,10 @@ internal unsafe class CurrentlyQueuedItem(Pointer<InventoryItem> inventoryItem) 
         return RetrievalAttemptStatus.AttemptRunning;
     }
 
+    public uint GetItemId() {
+        return inventoryItem.Value->ItemId;
+    }
+
     public void AttemptRetrieval() {
         var eventFramework = EventFramework.Instance();
         if (eventFramework is null) {
@@ -48,8 +52,9 @@ internal unsafe class CurrentlyQueuedItem(Pointer<InventoryItem> inventoryItem) 
         lastRetrievalAttemptAt = DateTime.UtcNow;
         retrievalAttemptNumber++;
 
-        Services.PluginLog.Debug("Attempt materia retrieval");
+        Services.PluginLog.Debug($"Attempt materia retrieval of itemId: {GetItemId()}");
 
+        // This runs asynchronously and gives no insights whether it started or failed.
         eventFramework->MaterializeItem(inventoryItem, MaterializeEntryId.Retrieve);
     }
 }
