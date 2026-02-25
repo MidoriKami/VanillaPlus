@@ -3387,6 +3387,15 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Materia cannot be retrieved in current state..
+        /// </summary>
+        internal static string RetrieveAllMateriaFromGearPieceContextMenu_NotPossibleInState {
+            get {
+                return ResourceManager.GetString("RetrieveAllMateriaFromGearPieceContextMenu_NotPossibleInState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gearset Search.
         /// </summary>
         internal static string SearchAddon_GearsetTitle {

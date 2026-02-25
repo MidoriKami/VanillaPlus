@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Gui.ContextMenu;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
+using FFXIVClientStructs.Interop;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -18,11 +20,13 @@ public class RetrieveAllMateriaFromGearPieceContextMenu : GameModification {
         Type = ModificationType.GameBehavior,
         ChangeLog = [new ChangeLogInfo(1, "Initial Implementation"),],
     };
-    
-    private List<IntPtr> queuedItemsForMateriaRetrieval = [];
-    
+
+    private readonly Queue<Pointer<InventoryItem>> queuedItemsForMateriaRetrieval = [];
+
+    private CurrentlyQueuedItem? currentItemForRetrieval;
+
     public override void OnEnable() {
-        queuedItemsForMateriaRetrieval = [];
+        ClearQueue();
 
         Services.ContextMenu.OnMenuOpened += OnMenuOpened;
         Services.Framework.Update += OnFrameworkUpdate;
@@ -51,68 +55,79 @@ public class RetrieveAllMateriaFromGearPieceContextMenu : GameModification {
                 IsSubmenu = false,
                 Name = Strings.RetrieveAllMateriaFromGearPieceContextMenu_MenuItemName,
                 OnClicked = clickedArgs => {
-                    clickedArgs.OpenSubmenu(
-                        [
-                            new MenuItem {
-                                Name = Strings.RetrieveAllMateriaFromGearPieceContextMenu_MenuItemConfirm,
-                                OnClicked = _ => queuedItemsForMateriaRetrieval.Add(targetItem.Address),
-                            },
-                            new MenuItem {
-                                Name = Strings.RetrieveAllMateriaFromGearPieceContextMenu_MenuItemCancel,
-                            },
-                        ]
-                    );
+                    unsafe {
+                        clickedArgs.OpenSubmenu(
+                            [
+                                new MenuItem {
+                                    Name = Strings.RetrieveAllMateriaFromGearPieceContextMenu_MenuItemConfirm,
+                                    OnClicked = _ =>
+                                        queuedItemsForMateriaRetrieval.Enqueue((InventoryItem*)targetItem.Address),
+                                },
+                                new MenuItem {
+                                    Name = Strings.RetrieveAllMateriaFromGearPieceContextMenu_MenuItemCancel,
+                                },
+                            ]
+                        );
+                    }
                 },
             }
         );
     }
 
-    private unsafe void OnFrameworkUpdate(Dalamud.Plugin.Services.IFramework framework) {
-        if (queuedItemsForMateriaRetrieval.Count == 0) {
+    private void OnFrameworkUpdate(Dalamud.Plugin.Services.IFramework framework) {
+        if (queuedItemsForMateriaRetrieval.Count == 0 && currentItemForRetrieval is null) {
             return;
         }
 
-        if (IsCharacterBusy()) {
+        if (IsCurrentlyRetrievingMateria()) {
             return;
         }
 
-        var inventorySlot = (InventoryItem*)queuedItemsForMateriaRetrieval.First();
+        if (currentItemForRetrieval is { } itemForRetrieval) {
+            switch (itemForRetrieval.GetRetrievalAttemptStatus()) {
+                case RetrievalAttemptStatus.NoAttemptMade:
+                    itemForRetrieval.AttemptRetrieval();
 
-        RetrieveMateria(inventorySlot);
+                    return;
+                case RetrievalAttemptStatus.RetrievedSome:
+                    Services.PluginLog.Debug("Retrieved some materia from one gear piece");
+                    // There is more materia left to retrieve.
+                    itemForRetrieval.AttemptRetrieval();
 
-        if (inventorySlot->GetMateriaCount() == 0) {
-            queuedItemsForMateriaRetrieval.RemoveAt(0);
+                    return;
+                case RetrievalAttemptStatus.RetrievedAll:
+                    Services.PluginLog.Debug("Retrieved all materia from one gear piece");
+                    currentItemForRetrieval = null;
+
+                    // Continue with dequeuing.
+                    break;
+                case RetrievalAttemptStatus.AttemptRunning:
+                    // Check again in the next update tick.
+                    return;
+                case RetrievalAttemptStatus.TimedOut:
+                    // Character must have been busy and unable to retrieve materia in current state.
+                    Services.PluginLog.Debug("Timed out while retrieving materia from one gear piece");
+                    Services.ChatGui.PrintError(Strings.RetrieveAllMateriaFromGearPieceContextMenu_NotPossibleInState);
+                    ClearQueue();
+
+                    return;
+            }
         }
+
+        if (!queuedItemsForMateriaRetrieval.TryDequeue(out var queuedItemForMaterialRetrievalPointer)) {
+            return;
+        }
+
+        currentItemForRetrieval = new CurrentlyQueuedItem(queuedItemForMaterialRetrievalPointer);
+        currentItemForRetrieval.AttemptRetrieval();
     }
 
-    private static bool IsCharacterBusy() {
-        var condition = Services.Condition;
-        
-        // todo make any condition cancel the queue, except retrieving material which should be occupied39
-        
-        return
-            condition[ConditionFlag.Occupied]
-            || condition[ConditionFlag.OccupiedInEvent]
-            || condition[ConditionFlag.OccupiedInQuestEvent]
-            || condition[ConditionFlag.OccupiedInCutSceneEvent]
-            || condition[ConditionFlag.BetweenAreas]
-            || condition[ConditionFlag.BetweenAreas51]
-            || condition[ConditionFlag.Jumping]
-            || condition[ConditionFlag.Mounted]
-            || condition[ConditionFlag.InCombat]
-            || condition[ConditionFlag.Casting]
-            || condition[ConditionFlag.MeldingMateria]
-            || condition[ConditionFlag.Crafting]
-            || condition[ConditionFlag.Gathering]
-            || condition[ConditionFlag.Occupied39];
+    private void ClearQueue() {
+        currentItemForRetrieval = null;
+        queuedItemsForMateriaRetrieval.Clear();
     }
-
-    private unsafe void RetrieveMateria(InventoryItem* inventoryItem) {
-        var eventFramework = EventFramework.Instance();
-        if (eventFramework is null) {
-            return;
-        }
-
-        eventFramework->MaterializeItem(inventoryItem, MaterializeEntryId.Retrieve);
+    
+    private static bool IsCurrentlyRetrievingMateria() {
+        return Services.Condition[ConditionFlag.Occupied39];
     }
 }

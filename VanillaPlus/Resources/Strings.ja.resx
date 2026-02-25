@@ -1398,4 +1398,7 @@ ID: {0}</value>
   <data name="RetrieveAllMateriaFromGearPieceContextMenu_MenuItemCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="RetrieveAllMateriaFromGearPieceContextMenu_NotPossibleInState" xml:space="preserve">
+    <value>Materia cannot be retrieved in current state.</value>
+  </data>
 </root>

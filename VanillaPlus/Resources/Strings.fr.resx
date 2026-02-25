@@ -1400,4 +1400,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
   <data name="RetrieveAllMateriaFromGearPieceContextMenu_MenuItemCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="RetrieveAllMateriaFromGearPieceContextMenu_NotPossibleInState" xml:space="preserve">
+    <value>Materia cannot be retrieved in current state.</value>
+  </data>
 </root>
