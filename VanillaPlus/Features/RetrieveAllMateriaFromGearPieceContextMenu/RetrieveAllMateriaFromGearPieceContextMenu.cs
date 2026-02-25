@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Gui.ContextMenu;
 using Dalamud.Game.Text;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.Interop;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
@@ -35,19 +36,9 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
     }
 
     private void OnMenuOpened(IMenuOpenedArgs args) {
-        if (args.MenuType != ContextMenuType.Inventory) {
+        if (GetInventoryItem(args) is not { } inventoryItem) {
             return;
         }
-
-        if (args.Target is not MenuTargetInventory invTarget) {
-            return;
-        }
-
-        if (invTarget.TargetItem is not { } targetItem) {
-            return;
-        }
-
-        var inventoryItem = (InventoryItem*)targetItem.Address;
 
         if (!DoesInventoryItemSupportMateria(inventoryItem)) {
             return;
@@ -56,7 +47,7 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
         args.AddMenuItem(
             new MenuItem {
                 IsSubmenu = false,
-                IsEnabled = inventoryItem->GetMateriaCount() > 0,
+                IsEnabled = inventoryItem.Value->GetMateriaCount() > 0,
                 Name = Strings.RetrieveAllMateriaFromGearPieceContextMenu_MenuItemName,
 
                 // Blue circle to imitate the look of melded materia.
@@ -78,6 +69,38 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
                 },
             }
         );
+    }
+
+    private Pointer<InventoryItem>? GetInventoryItem(IMenuOpenedArgs args) {
+        if (args.AddonName == "MateriaAttach") {
+            var agent = AgentMateriaAttach.Instance();
+
+            if (agent->SelectedItemIndex < 0) {
+                return null;
+            }
+
+            if (agent->Data->ItemsSorted.Length <= agent->SelectedItemIndex) {
+                return null;
+            }
+
+            var itemByIndex = agent->Data->ItemsSorted[agent->SelectedItemIndex];
+
+            return itemByIndex.Value->Item;
+        }
+
+        if (args.MenuType != ContextMenuType.Inventory) {
+            return null;
+        }
+
+        if (args.Target is not MenuTargetInventory invTarget) {
+            return null;
+        }
+
+        if (invTarget.TargetItem is not { } targetItem) {
+            return null;
+        }
+
+        return (InventoryItem*)targetItem.Address;
     }
 
     private void OnFrameworkUpdate(Dalamud.Plugin.Services.IFramework framework) {
