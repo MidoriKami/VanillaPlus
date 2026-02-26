@@ -1389,13 +1389,13 @@ This game modification fixes it by always triggering the normal mouse click in a
     <value>Retrieve All Materia From Gear Piece</value>
   </data>
   <data name="ModificationDescription_RetrieveAllMateriaFromGearPiece" xml:space="preserve">
-    <value>Ermöglicht es, mehrere Materien pro Ausrüstungsgegenstand auf einmal zurückzugewinnen.
+    <value>Ermöglicht es, mehrere Materia pro Ausrüstungsgegenstand auf einmal zurückzugewinnen.
 
 Mehrere Gegenstände können in die Warteschlange hinzugefügt werden, während die vorherigen Zurückgewinnungen noch laufen.
 </value>
   </data>
   <data name="RetrieveAllMateriaFromGearPiece_MenuItemName" xml:space="preserve">
-    <value>Alle Materie zurückgewinnen</value>
+    <value>Alle Materia zurückgewinnen</value>
   </data>
   <data name="RetrieveAllMateriaFromGearPiece_MenuItemConfirm" xml:space="preserve">
     <value>Bestätigen</value>
@@ -1404,6 +1404,21 @@ Mehrere Gegenstände können in die Warteschlange hinzugefügt werden, während 
     <value>Abbrechen</value>
   </data>
   <data name="RetrieveAllMateriaFromGearPiece_NotPossibleInState" xml:space="preserve">
-    <value>Materie kann im aktuellen Zustand nicht zurückgewonnen werden.</value>
+    <value>Materia kann im aktuellen Zustand nicht zurückgewonnen werden.</value>
+  </data>
+  <data name="RetrieveAllMateriaFromGearPiece_ProgressWindowTitle" xml:space="preserve">
+    <value>Materia‑Zurückgewinnung</value>
+  </data>
+  <data name="RetrieveAllMateriaFromGearPiece_ProgressWindowPending" xml:space="preserve">
+    <value>Ausstehend</value>
+  </data>
+  <data name="RetrieveAllMateriaFromGearPiece_ProgressWindowSucceeded" xml:space="preserve">
+    <value>Erfolgreich</value>
+  </data>
+  <data name="RetrieveAllMateriaFromGearPiece_ProgressWindowRetrieving" xml:space="preserve">
+    <value>läuft...</value>
+  </data>
+  <data name="RetrieveAllMateriaFromGearPiece_ProgressWindowFailed" xml:space="preserve">
+    <value>Fehlgeschlagen</value>
   </data>
 </root>

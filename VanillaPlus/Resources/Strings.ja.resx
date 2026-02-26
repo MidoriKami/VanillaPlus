@@ -1403,4 +1403,19 @@ Multiple gear pieces can be queued while the earlier retrievals are still runnin
   <data name="RetrieveAllMateriaFromGearPiece_NotPossibleInState" xml:space="preserve">
     <value>Materia cannot be retrieved in current state.</value>
   </data>
+  <data name="RetrieveAllMateriaFromGearPiece_ProgressWindowTitle" xml:space="preserve">
+    <value>Materia Retrieval Progress</value>
+  </data>
+  <data name="RetrieveAllMateriaFromGearPiece_ProgressWindowPending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="RetrieveAllMateriaFromGearPiece_ProgressWindowSucceeded" xml:space="preserve">
+    <value>Succeeded</value>
+  </data>
+  <data name="RetrieveAllMateriaFromGearPiece_ProgressWindowRetrieving" xml:space="preserve">
+    <value>Retrieving...</value>
+  </data>
+  <data name="RetrieveAllMateriaFromGearPiece_ProgressWindowFailed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
 </root>

@@ -3398,6 +3398,51 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed.
+        /// </summary>
+        internal static string RetrieveAllMateriaFromGearPiece_ProgressWindowFailed {
+            get {
+                return ResourceManager.GetString("RetrieveAllMateriaFromGearPiece_ProgressWindowFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending.
+        /// </summary>
+        internal static string RetrieveAllMateriaFromGearPiece_ProgressWindowPending {
+            get {
+                return ResourceManager.GetString("RetrieveAllMateriaFromGearPiece_ProgressWindowPending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retrieving....
+        /// </summary>
+        internal static string RetrieveAllMateriaFromGearPiece_ProgressWindowRetrieving {
+            get {
+                return ResourceManager.GetString("RetrieveAllMateriaFromGearPiece_ProgressWindowRetrieving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Succeeded.
+        /// </summary>
+        internal static string RetrieveAllMateriaFromGearPiece_ProgressWindowSucceeded {
+            get {
+                return ResourceManager.GetString("RetrieveAllMateriaFromGearPiece_ProgressWindowSucceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Materia Retrieval Progress.
+        /// </summary>
+        internal static string RetrieveAllMateriaFromGearPiece_ProgressWindowTitle {
+            get {
+                return ResourceManager.GetString("RetrieveAllMateriaFromGearPiece_ProgressWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gearset Search.
         /// </summary>
         internal static string SearchAddon_GearsetTitle {

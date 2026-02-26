@@ -36,7 +36,7 @@ public unsafe class RetrieveAllMateriaFromGearPiece : GameModification {
         ) {
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "MateriaRetrievalProgress",
-            Title = "Materia Retrieval Progress",
+            Title = Strings.RetrieveAllMateriaFromGearPiece_ProgressWindowTitle,
             ItemSpacing = 3.0f,
             OnClose = ClearLists,
         };

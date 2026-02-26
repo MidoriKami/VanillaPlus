@@ -75,21 +75,21 @@ public class QueuedItemNode : ListItemNode<QueuedItemNodeData> {
 
         switch (itemData.Status) {
             case RetrievalAttemptStatus.NoAttemptMade:
-                statusNode.String = "Pending";
+                statusNode.String = Strings.RetrieveAllMateriaFromGearPiece_ProgressWindowPending;
                 statusNode.TextColor = new Vector4(1f, 1f, 1f, 1f);
                 break;
             case RetrievalAttemptStatus.RetrievedAll:
-                statusNode.String = "Succeeded";
+                statusNode.String = Strings.RetrieveAllMateriaFromGearPiece_ProgressWindowSucceeded;
                 statusNode.TextColor = new Vector4(0f, 1f, 0f, 1f);
                 break;
             case RetrievalAttemptStatus.RetrievedSome:
             case RetrievalAttemptStatus.AttemptRunning:
             case RetrievalAttemptStatus.RetryNeeded:
-                statusNode.String = "Retrieving...";
+                statusNode.String = Strings.RetrieveAllMateriaFromGearPiece_ProgressWindowRetrieving;
                 statusNode.TextColor = new Vector4(0.4f, 0.4f, 1f, 1f);
                 break;
             case RetrievalAttemptStatus.TimedOut:
-                statusNode.String = "Failed";
+                statusNode.String = Strings.RetrieveAllMateriaFromGearPiece_ProgressWindowFailed;
                 statusNode.TextColor = new Vector4(0.9f, 0.1f, 0.1f, 1f);
                 break;
         }
