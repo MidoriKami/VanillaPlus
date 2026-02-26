@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Gui.ContextMenu;
 using Dalamud.Game.Text;
@@ -19,20 +20,41 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
         Type = ModificationType.GameBehavior,
         ChangeLog = [new ChangeLogInfo(1, "Initial Implementation"),],
     };
+    
+    private MateriaRetrievalProgressAddon? materiaRetrievalProgressAddon;
 
-    private readonly Queue<Pointer<InventoryItem>> queuedItemsForMateriaRetrieval = [];
+    private readonly List<QueuedItem> fullListOfQueuedMateriaRetrieval = [];
+    private readonly Queue<QueuedItem> queuedItemsForMateriaRetrieval = [];
 
-    private CurrentlyQueuedItem? currentItemForRetrieval;
+    private QueuedItem? currentItemForRetrieval;
 
     public override void OnEnable() {
         ClearQueue();
+        fullListOfQueuedMateriaRetrieval.Clear();
 
+        materiaRetrievalProgressAddon = new MateriaRetrievalProgressAddon(fullListOfQueuedMateriaRetrieval) {
+            Size = new Vector2(300.0f, 400.0f),
+            InternalName = "MateriaRetrievalProgress",
+            Title = "Materia Retrieval Progress",
+            OpenCommand = "/materiaProgress",
+            ItemSpacing = 3.0f,
+            OnClose = () => {
+                ClearQueue();
+                fullListOfQueuedMateriaRetrieval.Clear();
+            },
+            
+        };
+        materiaRetrievalProgressAddon.Initialize();
+            
         Services.ContextMenu.OnMenuOpened += OnMenuOpened;
     }
 
     public override void OnDisable() {
         Services.ContextMenu.OnMenuOpened -= OnMenuOpened;
         Services.Framework.Update -= OnFrameworkUpdate;
+        
+        materiaRetrievalProgressAddon?.Dispose();
+        materiaRetrievalProgressAddon = null;
     }
 
     private void OnMenuOpened(IMenuOpenedArgs args) {
@@ -157,12 +179,17 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
             return;
         }
 
-        currentItemForRetrieval = new CurrentlyQueuedItem(queuedItemForMaterialRetrievalPointer);
+        currentItemForRetrieval = queuedItemForMaterialRetrievalPointer;
         currentItemForRetrieval.AttemptRetrieval();
     }
 
     private void AddItemToQueue(InventoryItem* item) {
-        queuedItemsForMateriaRetrieval.Enqueue(item);
+        var queuedItem = new QueuedItem(item);
+        
+        queuedItemsForMateriaRetrieval.Enqueue(queuedItem);
+        fullListOfQueuedMateriaRetrieval.Add(queuedItem);
+        
+        materiaRetrievalProgressAddon?.Open();
         Services.Framework.Update += OnFrameworkUpdate;
 
         Services.PluginLog.Debug($"Queued material retrieval for itemId: {item->ItemId}");
