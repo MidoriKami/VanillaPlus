@@ -1383,22 +1383,24 @@ ID：{0}</value>
   <data name="CosmicExplorationProgressWindow_HudButtonTooltip" xml:space="preserve">
       <value>[VanillaPlus] 显示研究进度</value>
   </data>
-  <data name="ModificationDisplay_RetrieveAllMateriaFromGearPieceContextMenu" xml:space="preserve">
-    <value>Retrieve All Materia From Gear Piece Context Menu</value>
+  <data name="ModificationDisplay_RetrieveAllMateriaFromGearPiece" xml:space="preserve">
+    <value>Retrieve All Materia From Gear Piece</value>
   </data>
-  <data name="ModificationDescription_RetrieveAllMateriaFromGearPieceContextMenu" xml:space="preserve">
-    <value>Makes it possible to retrieve all materia at once from a gear piece, instead of having to do it one by one.</value>
+  <data name="ModificationDescription_RetrieveAllMateriaFromGearPiece" xml:space="preserve">
+    <value>Makes it possible to retrieve all materia at once from a gear piece, instead of having to do it one after another.
+
+Multiple gear pieces can be queued while the earlier retrievals are still running.</value>
   </data>
-  <data name="RetrieveAllMateriaFromGearPieceContextMenu_MenuItemName" xml:space="preserve">
+  <data name="RetrieveAllMateriaFromGearPiece_MenuItemName" xml:space="preserve">
     <value>Retrieve All Materia</value>
   </data>
-  <data name="RetrieveAllMateriaFromGearPieceContextMenu_MenuItemConfirm" xml:space="preserve">
+  <data name="RetrieveAllMateriaFromGearPiece_MenuItemConfirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
-  <data name="RetrieveAllMateriaFromGearPieceContextMenu_MenuItemCancel" xml:space="preserve">
+  <data name="RetrieveAllMateriaFromGearPiece_MenuItemCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="RetrieveAllMateriaFromGearPieceContextMenu_NotPossibleInState" xml:space="preserve">
+  <data name="RetrieveAllMateriaFromGearPiece_NotPossibleInState" xml:space="preserve">
     <value>Materia cannot be retrieved in current state.</value>
   </data>
 </root>

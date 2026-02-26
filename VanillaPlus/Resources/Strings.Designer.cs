@@ -2258,11 +2258,13 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Makes it possible to retrieve all materia at once from a gear piece, instead of having to do it one by one..
+        ///   Looks up a localized string similar to Makes it possible to retrieve all materia at once from a gear piece, instead of having to do it one after another.
+        ///
+        ///Multiple gear pieces can be queued while the earlier retrievals are still running..
         /// </summary>
-        internal static string ModificationDescription_RetrieveAllMateriaFromGearPieceContextMenu {
+        internal static string ModificationDescription_RetrieveAllMateriaFromGearPiece {
             get {
-                return ResourceManager.GetString("ModificationDescription_RetrieveAllMateriaFromGearPieceContextMenu", resourceCulture);
+                return ResourceManager.GetString("ModificationDescription_RetrieveAllMateriaFromGearPiece", resourceCulture);
             }
         }
         
@@ -2793,11 +2795,11 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Retrieve All Materia From Gear Piece Context Menu.
+        ///   Looks up a localized string similar to Retrieve All Materia From Gear Piece.
         /// </summary>
-        internal static string ModificationDisplay_RetrieveAllMateriaFromGearPieceContextMenu {
+        internal static string ModificationDisplay_RetrieveAllMateriaFromGearPiece {
             get {
-                return ResourceManager.GetString("ModificationDisplay_RetrieveAllMateriaFromGearPieceContextMenu", resourceCulture);
+                return ResourceManager.GetString("ModificationDisplay_RetrieveAllMateriaFromGearPiece", resourceCulture);
             }
         }
         
@@ -3362,36 +3364,36 @@ namespace VanillaPlus.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
-        internal static string RetrieveAllMateriaFromGearPieceContextMenu_MenuItemCancel {
+        internal static string RetrieveAllMateriaFromGearPiece_MenuItemCancel {
             get {
-                return ResourceManager.GetString("RetrieveAllMateriaFromGearPieceContextMenu_MenuItemCancel", resourceCulture);
+                return ResourceManager.GetString("RetrieveAllMateriaFromGearPiece_MenuItemCancel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
-        internal static string RetrieveAllMateriaFromGearPieceContextMenu_MenuItemConfirm {
+        internal static string RetrieveAllMateriaFromGearPiece_MenuItemConfirm {
             get {
-                return ResourceManager.GetString("RetrieveAllMateriaFromGearPieceContextMenu_MenuItemConfirm", resourceCulture);
+                return ResourceManager.GetString("RetrieveAllMateriaFromGearPiece_MenuItemConfirm", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Retrieve All Materia.
         /// </summary>
-        internal static string RetrieveAllMateriaFromGearPieceContextMenu_MenuItemName {
+        internal static string RetrieveAllMateriaFromGearPiece_MenuItemName {
             get {
-                return ResourceManager.GetString("RetrieveAllMateriaFromGearPieceContextMenu_MenuItemName", resourceCulture);
+                return ResourceManager.GetString("RetrieveAllMateriaFromGearPiece_MenuItemName", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Materia cannot be retrieved in current state..
         /// </summary>
-        internal static string RetrieveAllMateriaFromGearPieceContextMenu_NotPossibleInState {
+        internal static string RetrieveAllMateriaFromGearPiece_NotPossibleInState {
             get {
-                return ResourceManager.GetString("RetrieveAllMateriaFromGearPieceContextMenu_NotPossibleInState", resourceCulture);
+                return ResourceManager.GetString("RetrieveAllMateriaFromGearPiece_NotPossibleInState", resourceCulture);
             }
         }
         

@@ -3,9 +3,8 @@ using System.Linq;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.NativeElements.Addons;
 
-namespace VanillaPlus.Features.RetrieveAllMateriaFromGearPieceContextMenu;
+namespace VanillaPlus.Features.RetrieveAllMateriaFromGearPiece;
 
-// todo pass current queue and past items separately
 public class MateriaRetrievalProgressAddon(Queue<QueuedItem> queuedItems, List<QueuedItemNodeData> finishedItems)
     : NodeListAddon<QueuedItemNodeData, QueuedItemNode> {
     protected override unsafe void OnUpdate(AtkUnitBase* addon) {

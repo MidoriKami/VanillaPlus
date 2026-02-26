@@ -3,7 +3,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;
 
-namespace VanillaPlus.Features.RetrieveAllMateriaFromGearPieceContextMenu;
+namespace VanillaPlus.Features.RetrieveAllMateriaFromGearPiece;
 
 public class QueuedItemNode : ListItemNode<QueuedItemNodeData> {
     public override float ItemHeight => 53.0f;

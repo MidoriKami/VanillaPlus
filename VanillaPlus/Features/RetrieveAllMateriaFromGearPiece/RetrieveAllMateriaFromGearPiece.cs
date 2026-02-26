@@ -11,12 +11,12 @@ using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
-namespace VanillaPlus.Features.RetrieveAllMateriaFromGearPieceContextMenu;
+namespace VanillaPlus.Features.RetrieveAllMateriaFromGearPiece;
 
-public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModification {
+public unsafe class RetrieveAllMateriaFromGearPiece : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings.ModificationDisplay_RetrieveAllMateriaFromGearPieceContextMenu,
-        Description = Strings.ModificationDescription_RetrieveAllMateriaFromGearPieceContextMenu,
+        DisplayName = Strings.ModificationDisplay_RetrieveAllMateriaFromGearPiece,
+        Description = Strings.ModificationDescription_RetrieveAllMateriaFromGearPiece,
         Authors = ["Marci696"],
         Type = ModificationType.GameBehavior,
         ChangeLog = [new ChangeLogInfo(1, "Initial Implementation"),],
@@ -68,7 +68,7 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
             new MenuItem {
                 IsSubmenu = false,
                 IsEnabled = inventoryItem.Value->GetMateriaCount() > 0,
-                Name = Strings.RetrieveAllMateriaFromGearPieceContextMenu_MenuItemName,
+                Name = Strings.RetrieveAllMateriaFromGearPiece_MenuItemName,
 
                 // Blue circle to imitate the look of melded materia.
                 PrefixColor = 37,
@@ -78,11 +78,11 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
                     clickedArgs.OpenSubmenu(
                         [
                             new MenuItem {
-                                Name = Strings.RetrieveAllMateriaFromGearPieceContextMenu_MenuItemConfirm,
+                                Name = Strings.RetrieveAllMateriaFromGearPiece_MenuItemConfirm,
                                 OnClicked = _ => AddItemToQueue(inventoryItem),
                             },
                             new MenuItem {
-                                Name = Strings.RetrieveAllMateriaFromGearPieceContextMenu_MenuItemCancel,
+                                Name = Strings.RetrieveAllMateriaFromGearPiece_MenuItemCancel,
                             },
                         ]
                     );
@@ -167,7 +167,7 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
             case RetrievalAttemptStatus.TimedOut:
                 // Character must have been busy and unable to retrieve materia in the current state.
                 Services.PluginLog.Debug("Timed out while retrieving materia from one gear piece");
-                Services.ChatGui.PrintError(Strings.RetrieveAllMateriaFromGearPieceContextMenu_NotPossibleInState);
+                Services.ChatGui.PrintError(Strings.RetrieveAllMateriaFromGearPiece_NotPossibleInState);
 
                 DequeueItem();
 

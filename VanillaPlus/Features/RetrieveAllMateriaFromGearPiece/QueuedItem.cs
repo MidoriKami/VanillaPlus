@@ -3,7 +3,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using FFXIVClientStructs.Interop;
 
-namespace VanillaPlus.Features.RetrieveAllMateriaFromGearPieceContextMenu;
+namespace VanillaPlus.Features.RetrieveAllMateriaFromGearPiece;
 
 public enum RetrievalAttemptStatus {
     NoAttemptMade,

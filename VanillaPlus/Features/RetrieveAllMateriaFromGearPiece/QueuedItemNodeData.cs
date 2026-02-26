@@ -1,4 +1,4 @@
-﻿namespace VanillaPlus.Features.RetrieveAllMateriaFromGearPieceContextMenu;
+﻿namespace VanillaPlus.Features.RetrieveAllMateriaFromGearPiece;
 
 public record struct QueuedItemNodeData {
     public uint ItemId;
