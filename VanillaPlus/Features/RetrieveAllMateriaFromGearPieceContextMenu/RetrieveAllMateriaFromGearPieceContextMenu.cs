@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Gui.ContextMenu;
@@ -20,39 +21,36 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
         Type = ModificationType.GameBehavior,
         ChangeLog = [new ChangeLogInfo(1, "Initial Implementation"),],
     };
-    
+
     private MateriaRetrievalProgressAddon? materiaRetrievalProgressAddon;
 
-    private readonly List<QueuedItem> fullListOfQueuedMateriaRetrieval = [];
+    private readonly List<QueuedItemNodeData> finishedItemsForMateriaRetrieval = [];
     private readonly Queue<QueuedItem> queuedItemsForMateriaRetrieval = [];
 
-    private QueuedItem? currentItemForRetrieval;
-
     public override void OnEnable() {
-        ClearQueue();
-        fullListOfQueuedMateriaRetrieval.Clear();
+        ClearLists();
 
-        materiaRetrievalProgressAddon = new MateriaRetrievalProgressAddon(fullListOfQueuedMateriaRetrieval) {
+        materiaRetrievalProgressAddon = new MateriaRetrievalProgressAddon(
+            queuedItemsForMateriaRetrieval,
+            finishedItemsForMateriaRetrieval
+        ) {
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "MateriaRetrievalProgress",
             Title = "Materia Retrieval Progress",
-            OpenCommand = "/materiaProgress",
             ItemSpacing = 3.0f,
-            OnClose = () => {
-                ClearQueue();
-                fullListOfQueuedMateriaRetrieval.Clear();
-            },
-            
+            OnClose = ClearLists,
         };
         materiaRetrievalProgressAddon.Initialize();
-            
+
         Services.ContextMenu.OnMenuOpened += OnMenuOpened;
     }
 
     public override void OnDisable() {
+        ClearLists();
+
         Services.ContextMenu.OnMenuOpened -= OnMenuOpened;
         Services.Framework.Update -= OnFrameworkUpdate;
-        
+
         materiaRetrievalProgressAddon?.Dispose();
         materiaRetrievalProgressAddon = null;
     }
@@ -93,7 +91,7 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
         );
     }
 
-    private Pointer<InventoryItem>? GetInventoryItem(IMenuOpenedArgs args) {
+    private static Pointer<InventoryItem>? GetInventoryItem(IMenuOpenedArgs args) {
         if (args.AddonName == "MateriaAttach") {
             var agent = AgentMateriaAttach.Instance();
 
@@ -126,7 +124,9 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
     }
 
     private void OnFrameworkUpdate(Dalamud.Plugin.Services.IFramework framework) {
-        if (queuedItemsForMateriaRetrieval.Count == 0 && currentItemForRetrieval is null) {
+        var currentItemForRetrieval = queuedItemsForMateriaRetrieval.FirstOrDefault();
+
+        if (currentItemForRetrieval is null) {
             Services.PluginLog.Debug("Queue is empty and framework update will be unsubscribed to.");
             Services.Framework.Update -= OnFrameworkUpdate;
 
@@ -137,62 +137,66 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
             return;
         }
 
-        if (currentItemForRetrieval is { } itemForRetrieval) {
-            switch (itemForRetrieval.GetRetrievalAttemptStatus()) {
-                case RetrievalAttemptStatus.NoAttemptMade:
-                    itemForRetrieval.AttemptRetrieval();
+        switch (currentItemForRetrieval.GetRetrievalAttemptStatus()) {
+            case RetrievalAttemptStatus.NoAttemptMade:
+                currentItemForRetrieval.AttemptRetrieval();
 
-                    return;
-                case RetrievalAttemptStatus.RetrievedSome:
-                    Services.PluginLog.Debug($"Retrieved some materia from itemId: {itemForRetrieval.GetItemId()}");
-                    // There is more materia left to retrieve.
-                    itemForRetrieval.AttemptRetrieval();
+                return;
+            case RetrievalAttemptStatus.RetrievedSome:
+                Services.PluginLog.Debug($"Retrieved some materia from itemId: {currentItemForRetrieval.GetItemId()}");
+                // There is more materia left to retrieve.
+                currentItemForRetrieval.AttemptRetrieval();
 
-                    return;
-                case RetrievalAttemptStatus.RetrievedAll:
-                    Services.PluginLog.Debug($"Retrieved all materia from itemId: {itemForRetrieval.GetItemId()}");
-                    currentItemForRetrieval = null;
+                return;
+            case RetrievalAttemptStatus.RetrievedAll:
+                Services.PluginLog.Debug($"Retrieved all materia from itemId: {currentItemForRetrieval.GetItemId()}");
 
-                    // Continue with dequeuing.
-                    break;
-                case RetrievalAttemptStatus.AttemptRunning:
-                    // Check again in the next update tick.
-                    return;
-                case RetrievalAttemptStatus.RetryNeeded:
-                    Services.PluginLog.Debug(
-                        $"Retrying retrieval of materia from itemId: {itemForRetrieval.GetItemId()}"
-                    );
-                    currentItemForRetrieval.AttemptRetrieval();
+                DequeueItem();
 
-                    return;
-                case RetrievalAttemptStatus.TimedOut:
-                    // Character must have been busy and unable to retrieve materia in current state.
-                    Services.PluginLog.Debug("Timed out while retrieving materia from one gear piece");
-                    Services.ChatGui.PrintError(Strings.RetrieveAllMateriaFromGearPieceContextMenu_NotPossibleInState);
-                    ClearQueue();
+                return;
+            case RetrievalAttemptStatus.AttemptRunning:
+                // Check again in the next update tick.
+                return;
+            case RetrievalAttemptStatus.RetryNeeded:
+                Services.PluginLog.Debug(
+                    $"Retrying retrieval of materia from itemId: {currentItemForRetrieval.GetItemId()}"
+                );
+                currentItemForRetrieval.AttemptRetrieval();
 
-                    return;
-            }
+                return;
+            case RetrievalAttemptStatus.TimedOut:
+                // Character must have been busy and unable to retrieve materia in the current state.
+                Services.PluginLog.Debug("Timed out while retrieving materia from one gear piece");
+                Services.ChatGui.PrintError(Strings.RetrieveAllMateriaFromGearPieceContextMenu_NotPossibleInState);
+
+                DequeueItem();
+
+                return;
         }
-
-        if (!queuedItemsForMateriaRetrieval.TryDequeue(out var queuedItemForMaterialRetrievalPointer)) {
-            return;
-        }
-
-        currentItemForRetrieval = queuedItemForMaterialRetrievalPointer;
-        currentItemForRetrieval.AttemptRetrieval();
     }
 
     private void AddItemToQueue(InventoryItem* item) {
+        // No need to queue duplicates.
+        if (queuedItemsForMateriaRetrieval.Any((alreadyQueuedItem) => alreadyQueuedItem.EqualsInventoryItem(item))) {
+            return;
+        }
+
         var queuedItem = new QueuedItem(item);
-        
+
         queuedItemsForMateriaRetrieval.Enqueue(queuedItem);
-        fullListOfQueuedMateriaRetrieval.Add(queuedItem);
-        
+
         materiaRetrievalProgressAddon?.Open();
         Services.Framework.Update += OnFrameworkUpdate;
 
         Services.PluginLog.Debug($"Queued material retrieval for itemId: {item->ItemId}");
+    }
+
+    private void DequeueItem() {
+        if (!queuedItemsForMateriaRetrieval.TryDequeue(out var dequeuedItem)) {
+            return;
+        }
+
+        finishedItemsForMateriaRetrieval.Add(dequeuedItem.ToQueuedItemNodeData());
     }
 
     private static bool DoesInventoryItemSupportMateria(InventoryItem* item) {
@@ -201,9 +205,9 @@ public unsafe class RetrieveAllMateriaFromGearPieceContextMenu : GameModificatio
         return itemSheet.GetRowOrDefault(item->ItemId)?.MateriaSlotCount > 0;
     }
 
-    private void ClearQueue() {
-        currentItemForRetrieval = null;
+    private void ClearLists() {
         queuedItemsForMateriaRetrieval.Clear();
+        finishedItemsForMateriaRetrieval.Clear();
     }
 
     private static bool IsCurrentlyRetrievingMateria() {

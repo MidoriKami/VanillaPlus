@@ -65,6 +65,10 @@ public unsafe class QueuedItem(Pointer<InventoryItem> inventoryItem) {
         return inventoryItem.Value->ItemId;
     }
 
+    public bool EqualsInventoryItem(Pointer<InventoryItem> outsideItem) {
+        return inventoryItem.Equals(outsideItem);
+    }
+
     public void AttemptRetrieval() {
         var eventFramework = EventFramework.Instance();
         if (eventFramework is null) {
@@ -80,5 +84,14 @@ public unsafe class QueuedItem(Pointer<InventoryItem> inventoryItem) {
 
         // This runs asynchronously and gives no insights whether it started or failed.
         eventFramework->MaterializeItem(inventoryItem, MaterializeEntryId.Retrieve);
+    }
+    
+    public QueuedItemNodeData ToQueuedItemNodeData() {
+        return new QueuedItemNodeData {
+            ItemId = GetItemId(),
+            StartingMateriaCount = StartingPointMateriaCount,
+            CurrentMateriaCount = CurrentMateriaCount,
+            Status = GetRetrievalAttemptStatus()
+        };
     }
 }
