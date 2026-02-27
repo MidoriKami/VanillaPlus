@@ -24,15 +24,15 @@ public unsafe class RetrieveAllMateriaFromGearPiece : GameModification {
 
     private MateriaRetrievalProgressAddon? materiaRetrievalProgressAddon;
 
-    private readonly List<QueuedItemNodeData> finishedItemsForMateriaRetrieval = [];
-    private readonly Queue<QueuedItem> queuedItemsForMateriaRetrieval = [];
+    private readonly List<GearPieceNodeData> finishedGearPieces = [];
+    private readonly Queue<QueuedGearPiece> queuedGearPieces = [];
 
     public override void OnEnable() {
         ClearLists();
 
         materiaRetrievalProgressAddon = new MateriaRetrievalProgressAddon(
-            queuedItemsForMateriaRetrieval,
-            finishedItemsForMateriaRetrieval
+            queuedGearPieces,
+            finishedGearPieces
         ) {
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "MateriaRetrievalProgress",
@@ -79,7 +79,7 @@ public unsafe class RetrieveAllMateriaFromGearPiece : GameModification {
                         [
                             new MenuItem {
                                 Name = Strings.RetrieveAllMateriaFromGearPiece_MenuItemConfirm,
-                                OnClicked = _ => AddItemToQueue(inventoryItem),
+                                OnClicked = _ => AddGearPieceToQueue(inventoryItem),
                             },
                             new MenuItem {
                                 Name = Strings.RetrieveAllMateriaFromGearPiece_MenuItemCancel,
@@ -124,7 +124,7 @@ public unsafe class RetrieveAllMateriaFromGearPiece : GameModification {
     }
 
     private void OnFrameworkUpdate(Dalamud.Plugin.Services.IFramework framework) {
-        var currentItemForRetrieval = queuedItemsForMateriaRetrieval.FirstOrDefault();
+        var currentItemForRetrieval = queuedGearPieces.FirstOrDefault();
 
         if (currentItemForRetrieval is null) {
             Services.PluginLog.Debug("Queue is empty and framework update will be unsubscribed to.");
@@ -151,7 +151,7 @@ public unsafe class RetrieveAllMateriaFromGearPiece : GameModification {
             case RetrievalAttemptStatus.RetrievedAll:
                 Services.PluginLog.Debug($"Retrieved all materia from itemId: {currentItemForRetrieval.GetItemId()}");
 
-                DequeueItem();
+                DequeueGearPiece();
 
                 return;
             case RetrievalAttemptStatus.AttemptRunning:
@@ -169,21 +169,21 @@ public unsafe class RetrieveAllMateriaFromGearPiece : GameModification {
                 Services.PluginLog.Debug("Timed out while retrieving materia from one gear piece");
                 Services.ChatGui.PrintError(Strings.RetrieveAllMateriaFromGearPiece_NotPossibleInState);
 
-                DequeueItem();
+                DequeueGearPiece();
 
                 return;
         }
     }
 
-    private void AddItemToQueue(InventoryItem* item) {
+    private void AddGearPieceToQueue(InventoryItem* item) {
         // No need to queue duplicates.
-        if (queuedItemsForMateriaRetrieval.Any((alreadyQueuedItem) => alreadyQueuedItem.EqualsInventoryItem(item))) {
+        if (queuedGearPieces.Any((alreadyQueuedItem) => alreadyQueuedItem.EqualsInventoryItem(item))) {
             return;
         }
 
-        var queuedItem = new QueuedItem(item);
+        var queuedItem = new QueuedGearPiece(item);
 
-        queuedItemsForMateriaRetrieval.Enqueue(queuedItem);
+        queuedGearPieces.Enqueue(queuedItem);
 
         materiaRetrievalProgressAddon?.Open();
         Services.Framework.Update += OnFrameworkUpdate;
@@ -191,12 +191,12 @@ public unsafe class RetrieveAllMateriaFromGearPiece : GameModification {
         Services.PluginLog.Debug($"Queued material retrieval for itemId: {item->ItemId}");
     }
 
-    private void DequeueItem() {
-        if (!queuedItemsForMateriaRetrieval.TryDequeue(out var dequeuedItem)) {
+    private void DequeueGearPiece() {
+        if (!queuedGearPieces.TryDequeue(out var dequeuedGearPiece)) {
             return;
         }
 
-        finishedItemsForMateriaRetrieval.Add(dequeuedItem.ToQueuedItemNodeData());
+        finishedGearPieces.Add(dequeuedGearPiece.ToGearListItemNodeData());
     }
 
     private static bool DoesInventoryItemSupportMateria(InventoryItem* item) {
@@ -206,8 +206,8 @@ public unsafe class RetrieveAllMateriaFromGearPiece : GameModification {
     }
 
     private void ClearLists() {
-        queuedItemsForMateriaRetrieval.Clear();
-        finishedItemsForMateriaRetrieval.Clear();
+        queuedGearPieces.Clear();
+        finishedGearPieces.Clear();
     }
 
     private static bool IsCurrentlyRetrievingMateria() {

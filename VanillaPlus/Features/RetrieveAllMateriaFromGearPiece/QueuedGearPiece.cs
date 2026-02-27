@@ -14,7 +14,7 @@ public enum RetrievalAttemptStatus {
     TimedOut
 }
 
-public unsafe class QueuedItem(Pointer<InventoryItem> inventoryItem) {
+public unsafe class QueuedGearPiece(Pointer<InventoryItem> inventoryItem) {
     public readonly byte StartingPointMateriaCount = inventoryItem.Value->GetMateriaCount();
 
     public byte CurrentMateriaCount => inventoryItem.Value->GetMateriaCount();
@@ -86,8 +86,8 @@ public unsafe class QueuedItem(Pointer<InventoryItem> inventoryItem) {
         eventFramework->MaterializeItem(inventoryItem, MaterializeEntryId.Retrieve);
     }
     
-    public QueuedItemNodeData ToQueuedItemNodeData() {
-        return new QueuedItemNodeData {
+    public GearPieceNodeData ToGearListItemNodeData() {
+        return new GearPieceNodeData {
             ItemId = GetItemId(),
             StartingMateriaCount = StartingPointMateriaCount,
             CurrentMateriaCount = CurrentMateriaCount,

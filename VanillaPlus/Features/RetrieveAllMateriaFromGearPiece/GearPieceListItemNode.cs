@@ -5,7 +5,7 @@ using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.RetrieveAllMateriaFromGearPiece;
 
-public class QueuedItemNode : ListItemNode<QueuedItemNodeData> {
+public class GearPieceListItemNode : ListItemNode<GearPieceNodeData> {
     public override float ItemHeight => 53.0f;
 
     private readonly IconImageNode iconNode;
@@ -14,7 +14,7 @@ public class QueuedItemNode : ListItemNode<QueuedItemNodeData> {
     private readonly ProgressBarNode progressNode;
     private readonly TextNode progressTextNode;
 
-    public QueuedItemNode() {
+    public GearPieceListItemNode() {
         ShowClickableCursor = false;
         DisableCollisionNode = true;
 
@@ -67,7 +67,7 @@ public class QueuedItemNode : ListItemNode<QueuedItemNodeData> {
         statusNode.Position = progressTextNode.Position + new Vector2(progressTextNode.Width + 4, 0f);
     }
 
-    protected override void SetNodeData(QueuedItemNodeData itemData) {
+    protected override void SetNodeData(GearPieceNodeData itemData) {
         var excelSheet = Services.DataManager.Excel.GetSheet<Item>().GetRow(itemData.ItemId);
 
         iconNode.IconId = excelSheet.Icon;
