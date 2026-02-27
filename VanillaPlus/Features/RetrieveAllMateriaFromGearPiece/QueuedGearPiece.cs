@@ -18,7 +18,7 @@ public unsafe class QueuedGearPiece(Pointer<InventoryItem> inventoryItem) {
     public readonly byte StartingPointMateriaCount = inventoryItem.Value->GetMateriaCount();
 
     public byte CurrentMateriaCount => inventoryItem.Value->GetMateriaCount();
-    
+
     public RetrievalAttemptStatus LastRetrievalAttemptStatus { get; private set; }
         = RetrievalAttemptStatus.NoAttemptMade;
 
@@ -30,7 +30,7 @@ public unsafe class QueuedGearPiece(Pointer<InventoryItem> inventoryItem) {
 
     public RetrievalAttemptStatus GetRetrievalAttemptStatus() {
         LastRetrievalAttemptStatus = CalculateRetrievalAttemptStatus();
-        
+
         return LastRetrievalAttemptStatus;
     }
 
@@ -40,7 +40,7 @@ public unsafe class QueuedGearPiece(Pointer<InventoryItem> inventoryItem) {
         if (currentCount == 0) {
             return RetrievalAttemptStatus.RetrievedAll;
         }
-        
+
         if (!lastRetrievalAttemptAt.HasValue) {
             return RetrievalAttemptStatus.NoAttemptMade;
         }
@@ -85,7 +85,7 @@ public unsafe class QueuedGearPiece(Pointer<InventoryItem> inventoryItem) {
         // This runs asynchronously and gives no insights whether it started or failed.
         eventFramework->MaterializeItem(inventoryItem, MaterializeEntryId.Retrieve);
     }
-    
+
     public GearPieceNodeData ToGearListItemNodeData() {
         return new GearPieceNodeData {
             ItemId = GetItemId(),
