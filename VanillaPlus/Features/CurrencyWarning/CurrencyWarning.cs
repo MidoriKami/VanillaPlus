@@ -30,6 +30,8 @@ public unsafe class CurrencyWarning : GameModification {
     private ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode>? listConfigWindow;
     private CurrencySearchAddon? itemSearchAddon;
 
+    public override string ImageName => "CurrencyWarning.png";
+
     public override void OnEnable() {
         config = CurrencyWarningConfig.Load();
 

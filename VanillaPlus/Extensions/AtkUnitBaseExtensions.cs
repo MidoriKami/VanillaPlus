@@ -1,7 +1,11 @@
-﻿using FFXIVClientStructs.FFXIV.Client.UI;
+﻿using System;
+using FFXIVClientStructs.FFXIV.Client.UI;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace VanillaPlus.Extensions;
+
+public record CallbackHandlerInfo(AgentId AgentId, ulong EventKind);
 
 public static unsafe class AtkUnitBaseExtensions {
     extension(ref AtkUnitBase addon) {
@@ -17,6 +21,27 @@ public static unsafe class AtkUnitBaseExtensions {
         public void UnsubscribeStringArrayData(StringArrayType arrayType) => addon.UnsubscribeAtkArrayData(0, (byte)arrayType);
         public void SubscribeNumberArrayData(NumberArrayType arrayType) => addon.SubscribeAtkArrayData(1, (byte)arrayType);
         public void UnsubscribeNumberArrayData(NumberArrayType arrayType) => addon.UnsubscribeAtkArrayData(1, (byte)arrayType);
+
+        public CallbackHandlerInfo? GetCallbackHandlerInfo() {
+            var agentModule = AgentModule.Instance();
+            if (agentModule is null) return null;
+            
+            var atkModule = RaptureAtkModule.Instance();
+            if (atkModule is null) return null;
+
+            if (atkModule->AddonCallbackMapping.TryGetValue(addon.Id, out var addonCallbackEntry, false)) {
+                if (addonCallbackEntry.AgentInterface is not null) {
+                    foreach (var agentId in Enum.GetValues<AgentId>()) {
+                        var agent = agentModule->GetAgentByInternalId(agentId);
+                        if (agent == addonCallbackEntry.AgentInterface) {
+                            return new CallbackHandlerInfo(agentId, addonCallbackEntry.EventKind);
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
         
         private bool GetIsActuallyVisible() {
             if (!addon.IsVisible) return false;
