@@ -30,14 +30,12 @@ public static unsafe class AtkUnitBaseExtensions {
             if (atkModule is null) return null;
 
             if (atkModule->AddonCallbackMapping.TryGetValue(addon.Id, out var addonCallbackEntry, false)) {
-                if (addonCallbackEntry.AgentInterface != null) {
+                if (addonCallbackEntry.AgentInterface is not null) {
                     foreach (var agentId in Enum.GetValues<AgentId>()) {
                         var agent = agentModule->GetAgentByInternalId(agentId);
-                        if (agent != addonCallbackEntry.AgentInterface) {
-                            continue;
+                        if (agent == addonCallbackEntry.AgentInterface) {
+                            return new CallbackHandlerInfo(agentId, addonCallbackEntry.EventKind);
                         }
-                        
-                        return new CallbackHandlerInfo(agentId, addonCallbackEntry.EventKind);
                     }
                 }
             }
