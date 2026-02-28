@@ -38,10 +38,12 @@ public unsafe class SkipTeleportConfirm : GameModification {
             if (valueCount is 2 && values[0].Int is 7) {
                 var addon = Services.GameGui.GetAddonByName<AddonSelectYesno>("SelectYesno");
                 if (addon is not null) {
-                    var newValues = stackalloc AtkValue[1];
-                    newValues->SetInt(0);
+                    if (addon->AtkUnitBase.GetCallbackHandlerInfo() is { AgentId: AgentId.Map, EventKind: 1 }) {
+                        var newValues = stackalloc AtkValue[1];
+                        newValues->SetInt(0);
 
-                    addon->FireCallback(1, newValues, true);
+                        addon->FireCallback(1, newValues, true);
+                    }
                 }
             }
         }
