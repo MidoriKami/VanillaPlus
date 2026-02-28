@@ -21,7 +21,6 @@ public unsafe class QueuedGearPiece(Pointer<InventoryItem> inventoryItem) {
 
     private byte CurrentMateriaCount => inventoryItem.Value->GetMateriaCount();
 
-
     private RetrievalAttemptStatus lastRetrievalAttemptStatus
         = RetrievalAttemptStatus.NoAttemptMade;
 
@@ -64,25 +63,19 @@ public unsafe class QueuedGearPiece(Pointer<InventoryItem> inventoryItem) {
         return RetrievalAttemptStatus.AttemptRunning;
     }
 
-    public bool EqualsInventoryItem(Pointer<InventoryItem> outsideItem) {
+    public bool IsForInventoryItem(Pointer<InventoryItem> outsideItem) {
         return inventoryItem.Equals(outsideItem);
     }
 
     public void AttemptRetrieval() {
-        var eventFramework = EventFramework.Instance();
-        if (eventFramework is null) {
-            return;
-        }
+        Services.PluginLog.Debug($"Attempt materia retrieval of itemId: {ItemId}");
 
         previousMateriaCount = inventoryItem.Value->GetMateriaCount();
         lastRetrievalAttemptAt = DateTime.UtcNow;
-
-        Services.PluginLog.Debug($"Attempt materia retrieval of itemId: {ItemId}");
-
         attemptsCounter++;
 
         // This runs asynchronously and gives no insights whether it started or failed.
-        eventFramework->MaterializeItem(inventoryItem, MaterializeEntryId.Retrieve);
+        EventFramework.Instance()->MaterializeItem(inventoryItem, MaterializeEntryId.Retrieve);
     }
 
     public GearPieceNodeData ToGearListItemNodeData() {
@@ -90,7 +83,7 @@ public unsafe class QueuedGearPiece(Pointer<InventoryItem> inventoryItem) {
             ItemId = ItemId,
             StartingMateriaCount = startingPointMateriaCount,
             CurrentMateriaCount = CurrentMateriaCount,
-            Status = GetRetrievalAttemptStatus()
+            Status = lastRetrievalAttemptStatus,
         };
     }
 }

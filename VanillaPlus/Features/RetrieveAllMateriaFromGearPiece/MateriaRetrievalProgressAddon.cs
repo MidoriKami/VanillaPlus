@@ -16,11 +16,7 @@ public class MateriaRetrievalProgressAddon(
         ListNode?.DisableCollisionNode = true;
         ListNode?.ShowClickableCursor = false;
         ListNode?.OptionsList = finishedGearItems.Concat(
-                queuedGearItems.Select(
-                    // Need to convert it to a basic type and cannot use QueuedItem,
-                    // because then equal check does not work from NodeList and the values are never updated.
-                    item => item.ToGearListItemNodeData()
-                )
+                queuedGearItems.Select(item => item.ToGearListItemNodeData())
             )
             .ToList();
     }

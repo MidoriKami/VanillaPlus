@@ -179,13 +179,11 @@ public unsafe class RetrieveAllMateriaFromGearPiece : GameModification {
 
     private void AddGearPieceToQueue(InventoryItem* item) {
         // No need to queue duplicates.
-        if (queuedGearPieces.Any((alreadyQueuedItem) => alreadyQueuedItem.EqualsInventoryItem(item))) {
+        if (queuedGearPieces.Any((alreadyQueuedItem) => alreadyQueuedItem.IsForInventoryItem(item))) {
             return;
         }
 
-        var queuedItem = new QueuedGearPiece(item);
-
-        queuedGearPieces.Enqueue(queuedItem);
+        queuedGearPieces.Enqueue(new QueuedGearPiece(item));
 
         materiaRetrievalProgressAddon?.Open();
         Services.Framework.Update += OnFrameworkUpdate;

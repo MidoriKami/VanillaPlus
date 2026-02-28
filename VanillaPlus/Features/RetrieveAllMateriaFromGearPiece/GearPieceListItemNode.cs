@@ -94,11 +94,11 @@ public class GearPieceListItemNode : ListItemNode<GearPieceNodeData> {
                 break;
         }
 
-        var progress = itemData.StartingMateriaCount - itemData.CurrentMateriaCount;
+        var alreadyRemovedCount = itemData.StartingMateriaCount - itemData.CurrentMateriaCount;
 
-        progressTextNode.String = $"{progress} / {itemData.StartingMateriaCount}";
+        progressTextNode.String = $"{alreadyRemovedCount} / {itemData.StartingMateriaCount}";
         progressNode.Progress = itemData.StartingMateriaCount == 0
                                     ? 0
-                                    : (float)progress / itemData.StartingMateriaCount;
+                                    : (float)alreadyRemovedCount / itemData.StartingMateriaCount;
     }
 }
