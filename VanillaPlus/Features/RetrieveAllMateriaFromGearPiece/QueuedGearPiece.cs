@@ -15,11 +15,14 @@ public enum RetrievalAttemptStatus {
 }
 
 public unsafe class QueuedGearPiece(Pointer<InventoryItem> inventoryItem) {
-    public readonly byte StartingPointMateriaCount = inventoryItem.Value->GetMateriaCount();
+    public uint ItemId => inventoryItem.Value->ItemId;
 
-    public byte CurrentMateriaCount => inventoryItem.Value->GetMateriaCount();
+    private readonly byte startingPointMateriaCount = inventoryItem.Value->GetMateriaCount();
 
-    public RetrievalAttemptStatus LastRetrievalAttemptStatus { get; private set; }
+    private byte CurrentMateriaCount => inventoryItem.Value->GetMateriaCount();
+
+
+    private RetrievalAttemptStatus lastRetrievalAttemptStatus
         = RetrievalAttemptStatus.NoAttemptMade;
 
     private byte previousMateriaCount = inventoryItem.Value->GetMateriaCount();
@@ -29,9 +32,9 @@ public unsafe class QueuedGearPiece(Pointer<InventoryItem> inventoryItem) {
     private byte attemptsCounter = 0;
 
     public RetrievalAttemptStatus GetRetrievalAttemptStatus() {
-        LastRetrievalAttemptStatus = CalculateRetrievalAttemptStatus();
+        lastRetrievalAttemptStatus = CalculateRetrievalAttemptStatus();
 
-        return LastRetrievalAttemptStatus;
+        return lastRetrievalAttemptStatus;
     }
 
     private RetrievalAttemptStatus CalculateRetrievalAttemptStatus() {
@@ -61,10 +64,6 @@ public unsafe class QueuedGearPiece(Pointer<InventoryItem> inventoryItem) {
         return RetrievalAttemptStatus.AttemptRunning;
     }
 
-    public uint GetItemId() {
-        return inventoryItem.Value->ItemId;
-    }
-
     public bool EqualsInventoryItem(Pointer<InventoryItem> outsideItem) {
         return inventoryItem.Equals(outsideItem);
     }
@@ -78,7 +77,7 @@ public unsafe class QueuedGearPiece(Pointer<InventoryItem> inventoryItem) {
         previousMateriaCount = inventoryItem.Value->GetMateriaCount();
         lastRetrievalAttemptAt = DateTime.UtcNow;
 
-        Services.PluginLog.Debug($"Attempt materia retrieval of itemId: {GetItemId()}");
+        Services.PluginLog.Debug($"Attempt materia retrieval of itemId: {ItemId}");
 
         attemptsCounter++;
 
@@ -88,8 +87,8 @@ public unsafe class QueuedGearPiece(Pointer<InventoryItem> inventoryItem) {
 
     public GearPieceNodeData ToGearListItemNodeData() {
         return new GearPieceNodeData {
-            ItemId = GetItemId(),
-            StartingMateriaCount = StartingPointMateriaCount,
+            ItemId = ItemId,
+            StartingMateriaCount = startingPointMateriaCount,
             CurrentMateriaCount = CurrentMateriaCount,
             Status = GetRetrievalAttemptStatus()
         };

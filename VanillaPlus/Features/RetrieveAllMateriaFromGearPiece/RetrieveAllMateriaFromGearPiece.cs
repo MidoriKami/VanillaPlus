@@ -22,6 +22,8 @@ public unsafe class RetrieveAllMateriaFromGearPiece : GameModification {
         ChangeLog = [new ChangeLogInfo(1, "Initial Implementation"),],
     };
 
+    public override string ImageName => "RetrieveAllMateriaContextMenu.png";
+
     private MateriaRetrievalProgressAddon? materiaRetrievalProgressAddon;
 
     private readonly List<GearPieceNodeData> finishedGearPieces = [];
@@ -143,13 +145,13 @@ public unsafe class RetrieveAllMateriaFromGearPiece : GameModification {
 
                 return;
             case RetrievalAttemptStatus.RetrievedSome:
-                Services.PluginLog.Debug($"Retrieved some materia from itemId: {currentItemForRetrieval.GetItemId()}");
+                Services.PluginLog.Debug($"Retrieved some materia from itemId: {currentItemForRetrieval.ItemId}");
                 // There is more materia left to retrieve.
                 currentItemForRetrieval.AttemptRetrieval();
 
                 return;
             case RetrievalAttemptStatus.RetrievedAll:
-                Services.PluginLog.Debug($"Retrieved all materia from itemId: {currentItemForRetrieval.GetItemId()}");
+                Services.PluginLog.Debug($"Retrieved all materia from itemId: {currentItemForRetrieval.ItemId}");
 
                 DequeueGearPiece();
 
@@ -159,7 +161,7 @@ public unsafe class RetrieveAllMateriaFromGearPiece : GameModification {
                 return;
             case RetrievalAttemptStatus.RetryNeeded:
                 Services.PluginLog.Debug(
-                    $"Retrying retrieval of materia from itemId: {currentItemForRetrieval.GetItemId()}"
+                    $"Retrying retrieval of materia from itemId: {currentItemForRetrieval.ItemId}"
                 );
                 currentItemForRetrieval.AttemptRetrieval();
 
