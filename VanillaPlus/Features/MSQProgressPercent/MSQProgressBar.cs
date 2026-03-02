@@ -19,8 +19,8 @@ namespace VanillaPlus.Features.MSQProgressPercent;
 
 public unsafe class MSQProgressBar : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "MSQ Progress Percent",
-        Description = "Displays current MSQ Progress as a progress bar in the Main Scenario Guide.",
+        DisplayName = Strings.MSQProgressBar_DisplayName,
+        Description = Strings.MSQProgressBar_Description,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
@@ -58,12 +58,15 @@ public unsafe class MSQProgressBar : GameModification {
         configAddon = new ConfigAddon {
             Config = config,
             InternalName = "MSQProgressBarConfig",
-            Title = "MSQ Progress Percent Config",
+            Title = Strings.MSQProgressBar_ConfigTitle,
         };
 
-        configAddon.AddCategory("General")
-            .AddDropdown<MSQProgressBarMode>("Mode", nameof(config.Mode))
-            .AddColorEdit("Bar Color", nameof(config.BarColor), KnownColor.White.Vector());
+        configAddon.AddCategory(Strings.MSQProgressBar_CategoryGeneral)
+            .AddDropdown(Strings.MSQProgressBar_LabelMode, nameof(config.Mode), new Dictionary<string, object> {
+                [Strings.MSQProgressBar_ModeEntireGame] = MSQProgressBarMode.EntireGame,
+                [Strings.MSQProgressBar_ModeExpansion] = MSQProgressBarMode.Expansion,
+            })
+            .AddColorEdit(Strings.MSQProgressBar_LabelBarColor, nameof(config.BarColor), KnownColor.White.Vector());
 
         OpenConfigAction = configAddon.Toggle;
         
@@ -76,7 +79,7 @@ public unsafe class MSQProgressBar : GameModification {
             progressBarNode = new ProgressBarNode {
                 Size = new Vector2(msqTextNode->Width, 9.0f),
                 Position = new Vector2(0.0f, msqTextNode->Height - 3.0f),
-                TextTooltip = "Current Progress: 000%",
+                TextTooltip = string.Format(Strings.MSQProgressBar_TooltipCurrentProgress, "000"),
                 Progress = 0.5f,
             };
             progressBarNode.AttachNode(msqTextNode, NodePosition.BeforeTarget);
@@ -119,7 +122,7 @@ public unsafe class MSQProgressBar : GameModification {
 
         if (addon->AtkValuesSpan[6].Type is not ValueType.String) {
             progressBarNode?.Progress = 1.0f;
-            progressBarNode?.TextTooltip = "Game Complete! Good Job.";
+            progressBarNode?.TextTooltip = Strings.MSQProgressBar_TooltipGameComplete;
             return;
         }
 
@@ -134,12 +137,12 @@ public unsafe class MSQProgressBar : GameModification {
                 var length = maxTreeEntry - minTreeEntry;
                 
                 progressBarNode?.Progress = (float)(currentQuest - minTreeEntry) / length;
-                progressBarNode?.TextTooltip = $"Game Progress: {progressBarNode.Progress * 100.0f:F}%";
+                progressBarNode?.TextTooltip = string.Format(Strings.MSQProgressBar_TooltipGameProgress, progressBarNode.Progress * 100.0f);
                 break;
             
             case MSQProgressBarMode.Expansion:
                 progressBarNode?.Progress = (float)(currentQuest - range.Start.Value) / range.Length;
-                progressBarNode?.TextTooltip = $"Expansion Progress: {progressBarNode.Progress * 100.0f:F}%";
+                progressBarNode?.TextTooltip = string.Format(Strings.MSQProgressBar_TooltipExpansionProgress, progressBarNode.Progress * 100.0f);
                 break;
         }
     }

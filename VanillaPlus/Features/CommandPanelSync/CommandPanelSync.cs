@@ -7,8 +7,8 @@ namespace VanillaPlus.Features.CommandPanelSync;
 
 public unsafe class CommandPanelSync : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Command Panel Sync",
-        Description = "Synchronizes the command panel across all your characters.",
+        DisplayName = Strings.CommandPanelSync_DisplayName,
+        Description = Strings.CommandPanelSync_Description,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
