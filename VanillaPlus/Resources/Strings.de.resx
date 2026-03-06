@@ -1376,6 +1376,66 @@ This game modification fixes it by always triggering the normal mouse click in a
   <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
       <value>Below Limit</value>
     </data>
+  <data name="BiggerConfigWindows_DisplayName" xml:space="preserve">
+      <value>Bigger Config Windows</value>
+    </data>
+  <data name="BiggerConfigWindows_Description" xml:space="preserve">
+      <value>Increases the vertical height of the game's character and system config windows.</value>
+    </data>
+  <data name="BiggerConfigWindows_ConfigTitle" xml:space="preserve">
+      <value>Bigger Config Windows Config</value>
+    </data>
+  <data name="BiggerConfigWindows_CategoryGeneral" xml:space="preserve">
+      <value>General</value>
+    </data>
+  <data name="BiggerConfigWindows_SystemConfigAdditionalSize" xml:space="preserve">
+      <value>System Config Additional Size</value>
+    </data>
+  <data name="BiggerConfigWindows_CharacterConfigAdditionalSize" xml:space="preserve">
+      <value>Character Config Additional Size</value>
+    </data>
+  <data name="MSQProgressBar_DisplayName" xml:space="preserve">
+      <value>MSQ Progress Percent</value>
+    </data>
+  <data name="MSQProgressBar_Description" xml:space="preserve">
+      <value>Displays current MSQ Progress as a progress bar in the Main Scenario Guide.</value>
+    </data>
+  <data name="MSQProgressBar_ConfigTitle" xml:space="preserve">
+      <value>MSQ Progress Percent Config</value>
+    </data>
+  <data name="MSQProgressBar_CategoryGeneral" xml:space="preserve">
+      <value>General</value>
+    </data>
+  <data name="MSQProgressBar_LabelMode" xml:space="preserve">
+      <value>Mode</value>
+    </data>
+  <data name="MSQProgressBar_LabelBarColor" xml:space="preserve">
+      <value>Bar Color</value>
+    </data>
+  <data name="MSQProgressBar_ModeEntireGame" xml:space="preserve">
+      <value>Entire Game</value>
+    </data>
+  <data name="MSQProgressBar_ModeExpansion" xml:space="preserve">
+      <value>Expansion</value>
+    </data>
+  <data name="MSQProgressBar_TooltipCurrentProgress" xml:space="preserve">
+      <value>Current Progress: {0}%</value>
+    </data>
+  <data name="MSQProgressBar_TooltipGameComplete" xml:space="preserve">
+      <value>Game Complete! Good Job.</value>
+    </data>
+  <data name="MSQProgressBar_TooltipGameProgress" xml:space="preserve">
+      <value>Game Progress: {0:F}%</value>
+    </data>
+  <data name="MSQProgressBar_TooltipExpansionProgress" xml:space="preserve">
+      <value>Expansion Progress: {0:F}%</value>
+    </data>
+  <data name="CommandPanelSync_DisplayName" xml:space="preserve">
+        <value>Command Panel Sync</value>
+      </data>
+  <data name="CommandPanelSync_Description" xml:space="preserve">
+        <value>Synchronizes the command panel across all your characters.</value>
+      </data>
   <data name="ModificationDisplay_CosmicExplorationProgressWindow" xml:space="preserve">
       <value>Cosmic Exploration Dataset Progress</value>
   </data>

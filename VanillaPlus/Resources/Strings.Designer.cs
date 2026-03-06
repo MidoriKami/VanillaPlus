@@ -276,6 +276,60 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        internal static string BiggerConfigWindows_CategoryGeneral {
+            get {
+                return ResourceManager.GetString("BiggerConfigWindows_CategoryGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Character Config Additional Size.
+        /// </summary>
+        internal static string BiggerConfigWindows_CharacterConfigAdditionalSize {
+            get {
+                return ResourceManager.GetString("BiggerConfigWindows_CharacterConfigAdditionalSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bigger Config Windows Config.
+        /// </summary>
+        internal static string BiggerConfigWindows_ConfigTitle {
+            get {
+                return ResourceManager.GetString("BiggerConfigWindows_ConfigTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increases the vertical height of the game&apos;s character and system config windows.
+        /// </summary>
+        internal static string BiggerConfigWindows_Description {
+            get {
+                return ResourceManager.GetString("BiggerConfigWindows_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bigger Config Windows.
+        /// </summary>
+        internal static string BiggerConfigWindows_DisplayName {
+            get {
+                return ResourceManager.GetString("BiggerConfigWindows_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Config Additional Size.
+        /// </summary>
+        internal static string BiggerConfigWindows_SystemConfigAdditionalSize {
+            get {
+                return ResourceManager.GetString("BiggerConfigWindows_SystemConfigAdditionalSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save Preset.
         /// </summary>
         internal static string Button_SavePreset {
@@ -515,6 +569,24 @@ namespace VanillaPlus.Resources {
         internal static string CommandHelpOpenBrowser {
             get {
                 return ResourceManager.GetString("CommandHelpOpenBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronizes the command panel across all your characters.
+        /// </summary>
+        internal static string CommandPanelSync_Description {
+            get {
+                return ResourceManager.GetString("CommandPanelSync_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command Panel Sync.
+        /// </summary>
+        internal static string CommandPanelSync_DisplayName {
+            get {
+                return ResourceManager.GetString("CommandPanelSync_DisplayName", resourceCulture);
             }
         }
         
@@ -2915,6 +2987,114 @@ namespace VanillaPlus.Resources {
         internal static string ModificationType_UserInterface {
             get {
                 return ResourceManager.GetString("ModificationType_UserInterface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        internal static string MSQProgressBar_CategoryGeneral {
+            get {
+                return ResourceManager.GetString("MSQProgressBar_CategoryGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MSQ Progress Percent Config.
+        /// </summary>
+        internal static string MSQProgressBar_ConfigTitle {
+            get {
+                return ResourceManager.GetString("MSQProgressBar_ConfigTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Displays current MSQ Progress as a progress bar in the Main Scenario Guide.
+        /// </summary>
+        internal static string MSQProgressBar_Description {
+            get {
+                return ResourceManager.GetString("MSQProgressBar_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MSQ Progress Percent.
+        /// </summary>
+        internal static string MSQProgressBar_DisplayName {
+            get {
+                return ResourceManager.GetString("MSQProgressBar_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bar Color.
+        /// </summary>
+        internal static string MSQProgressBar_LabelBarColor {
+            get {
+                return ResourceManager.GetString("MSQProgressBar_LabelBarColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mode.
+        /// </summary>
+        internal static string MSQProgressBar_LabelMode {
+            get {
+                return ResourceManager.GetString("MSQProgressBar_LabelMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entire Game.
+        /// </summary>
+        internal static string MSQProgressBar_ModeEntireGame {
+            get {
+                return ResourceManager.GetString("MSQProgressBar_ModeEntireGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expansion.
+        /// </summary>
+        internal static string MSQProgressBar_ModeExpansion {
+            get {
+                return ResourceManager.GetString("MSQProgressBar_ModeExpansion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Progress: {0}%.
+        /// </summary>
+        internal static string MSQProgressBar_TooltipCurrentProgress {
+            get {
+                return ResourceManager.GetString("MSQProgressBar_TooltipCurrentProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expansion Progress: {0:F}%.
+        /// </summary>
+        internal static string MSQProgressBar_TooltipExpansionProgress {
+            get {
+                return ResourceManager.GetString("MSQProgressBar_TooltipExpansionProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game Complete! Good Job..
+        /// </summary>
+        internal static string MSQProgressBar_TooltipGameComplete {
+            get {
+                return ResourceManager.GetString("MSQProgressBar_TooltipGameComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game Progress: {0:F}%.
+        /// </summary>
+        internal static string MSQProgressBar_TooltipGameProgress {
+            get {
+                return ResourceManager.GetString("MSQProgressBar_TooltipGameProgress", resourceCulture);
             }
         }
         
