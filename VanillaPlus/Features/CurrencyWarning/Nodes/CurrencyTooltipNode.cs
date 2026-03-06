@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
+using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
@@ -58,6 +60,7 @@ public class CurrencyTooltipNode : OverlayNode {
                     new TextNode {
                         String = $"{name} {limitStatus}: {count:N0} / {limit:N0}",
                         TextColor = isHigh ? Config.HighColor : Config.LowColor,
+                        TextOutlineColor = KnownColor.Black.Vector(),
                         FontSize = 14,
                         TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
                         AlignmentType = AlignmentType.Left,
