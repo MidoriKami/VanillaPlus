@@ -1314,10 +1314,10 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Ajoute les boutons précédent et suivant à la liste de sélection de la zone de logement.</value>
     </data>
   <data name="EnhancedWardNavigation_ButtonPrevious" xml:space="preserve">
-      <value>Précédent</value>
+      <value>Préc.</value>
     </data>
   <data name="EnhancedWardNavigation_ButtonNext" xml:space="preserve">
-      <value>Suivant</value>
+      <value>Suiv.</value>
     </data>
   <data name="CurrencyWarning_DisplayName" xml:space="preserve">
       <value>Avertissement des devises</value>
