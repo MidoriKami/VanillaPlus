@@ -16,6 +16,7 @@ public unsafe class SelectNextLootItem : GameModification {
         Authors = [ "MidoriKami" ],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
+            new ChangeLogInfo(2, "Now automatically closes loot when when the last item is rolled on."),
         ],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@LootWindowSelectNext", "1.14.0.2"),
     };
@@ -61,6 +62,9 @@ public unsafe class SelectNextLootItem : GameModification {
 
                 if (nextIndex < currentItemCount) {
                     SelectItem(addon, nextIndex);
+                }
+                else {
+                    addon->Close(true);
                 }
                 break;
         }
