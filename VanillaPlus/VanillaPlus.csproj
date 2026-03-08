@@ -6,7 +6,6 @@
     <PropertyGroup>
         <Author>MidoriKami</Author>
         <Name>VanillaPlus</Name>
-        <InternalName>VanillaPlus</InternalName>
         <Punchline>A collection of various game modifications</Punchline>
         <Description>This plugin is primarily focused on various UI adjustments, behavior adjustments, and adding new native elements to the game</Description>
         <RepoUrl>https://github.com/MidoriKami/VanillaPlus</RepoUrl>
