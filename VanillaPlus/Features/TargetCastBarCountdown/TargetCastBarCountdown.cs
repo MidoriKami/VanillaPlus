@@ -174,16 +174,16 @@ public unsafe class TargetCastBarCountdown : GameModification {
             .AddCheckbox(Strings.TargetCastBarCountdown_CheckboxNameplate, nameof(config.NamePlateTargets));
 
         configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryPrimaryStyle)
-            .AddNodeConfig(primaryTargetStyle);
+            .AddNodeConfig(primaryTargetStyle, TextNodeConfigOptions.TextAlignment);
 
         configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryPrimaryAltStyle)
-            .AddNodeConfig(primaryTargetAltStyle);
+            .AddNodeConfig(primaryTargetAltStyle, TextNodeConfigOptions.TextAlignment);
         
         configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryFocusStyle)
-            .AddNodeConfig(focusTargetStyle);
+            .AddNodeConfig(focusTargetStyle, TextNodeConfigOptions.TextAlignment);
         
         configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryNameplateStyle)
-            .AddNodeConfig(castBarEnemyStyle);
+            .AddNodeConfig(castBarEnemyStyle, TextNodeConfigOptions.TextAlignment);
         
         OpenConfigAction = configWindow.Toggle;
     }
@@ -196,7 +196,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
         TextColor = ColorHelper.GetColor(1),
         TextOutlineColor = ColorHelper.GetColor(23),
         FontType = FontType.Miedinger,
-        AlignmentType = AlignmentType.Right,
+        AlignmentType = AlignmentType.Center,
     };
 
     private void AttachNode(AtkUnitBase* addon) {

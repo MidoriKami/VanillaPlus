@@ -234,9 +234,10 @@ public class ConfigCategory : IDisposable {
         return this;
     }
 
-    public ConfigCategory AddNodeConfig(TextNodeStyle primaryTargetStyle) {
+    public ConfigCategory AddNodeConfig(TextNodeStyle primaryTargetStyle, TextNodeConfigOptions omitOptions = TextNodeConfigOptions.None) {
         configEntries.Add(new TextNodeConfig {
             StyleObject = primaryTargetStyle,
+            Options = TextNodeConfigOptions.All & ~omitOptions,
         });
 
         return this;

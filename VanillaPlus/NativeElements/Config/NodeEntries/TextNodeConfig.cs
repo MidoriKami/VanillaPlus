@@ -7,10 +7,26 @@ using KamiToolKit.Premade.Color;
 
 namespace VanillaPlus.NativeElements.Config.NodeEntries;
 
+[Flags]
+public enum TextNodeConfigOptions {
+    None = 0,
+    
+    Base = 1,
+    TextColor = 1 << 1,
+    OutlineColor = 1 << 2,
+    TextSize = 1 << 3,
+    TextFont = 1 << 4,
+    TextAlignment = 1 << 5,
+    
+    All = 0xFF,
+}
+
 public class TextNodeConfig : NodeConfig<TextNodeStyle> {
 
     private ColorPickerAddon? colorPickerAddon;
 
+    public TextNodeConfigOptions Options { get; set; } = TextNodeConfigOptions.All;
+    
     private void InitializeColorPicker() {
         if (colorPickerAddon is not null) return;
 
@@ -28,13 +44,13 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
     }
 
     protected override void BuildOptions(VerticalListNode container) {
-        base.BuildOptions(container);
-        
-        container.AddNode(BuildTextColor());
-        container.AddNode(BuildTextOutlineColor());
-        container.AddNode(BuildTextSize());
-        container.AddNode(BuildTextFont());
-        container.AddNode(BuildTextAlignment());
+        if (Options.HasFlag(TextNodeConfigOptions.Base)) base.BuildOptions(container);
+
+        if (Options.HasFlag(TextNodeConfigOptions.TextColor)) container.AddNode(BuildTextColor());
+        if (Options.HasFlag(TextNodeConfigOptions.OutlineColor)) container.AddNode(BuildTextOutlineColor());
+        if (Options.HasFlag(TextNodeConfigOptions.TextSize)) container.AddNode(BuildTextSize());
+        if (Options.HasFlag(TextNodeConfigOptions.TextFont)) container.AddNode(BuildTextFont());
+        if (Options.HasFlag(TextNodeConfigOptions.TextAlignment)) container.AddNode(BuildTextAlignment());
     }
 
     private SimpleComponentNode? BuildTextColor() {
