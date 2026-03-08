@@ -9,9 +9,9 @@ namespace VanillaPlus.Extensions;
 
 public static class AddonLifecycleExtensions {
     extension(IAddonLifecycle addonLifecycle) {
-        public void LogAddon(string addonName, params AddonEvent[] loggedModules) {
-            if (loggedModules.Length is 0) {
-                loggedModules = [
+        public void LogAddon(string addonName, params AddonEvent[] loggedEvents) {
+            if (loggedEvents.Length is 0) {
+                loggedEvents = [
                     AddonEvent.PreSetup,
                     AddonEvent.PreFinalize,
                     AddonEvent.PreRequestedUpdate,
@@ -24,9 +24,9 @@ public static class AddonLifecycleExtensions {
                 ];
             }
 
-            ActiveLoggers.TryAdd(addonName, loggedModules.ToList());
-            foreach (var loggedModule in loggedModules) {
-                addonLifecycle.RegisterListener(loggedModule, addonName, LogEventMessage);
+            ActiveLoggers.TryAdd(addonName, loggedEvents.ToList());
+            foreach (var eventType in loggedEvents) {
+                addonLifecycle.RegisterListener(eventType, addonName, LogEventMessage);
             }
         }
 

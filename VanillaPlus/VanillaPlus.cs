@@ -56,11 +56,6 @@ public sealed class VanillaPlus : IDalamudPlugin {
         PluginSystem.KeyListener.Dispose();
         PluginSystem.ModificationManager.Dispose();
 
-        foreach (var (_, agentInfo) in AgentInterfaceExtensions.HookedAgents) {
-            agentInfo.ReceiveEventHook?.Dispose();
-        }
-        AgentInterfaceExtensions.HookedAgents.Clear();
-
         Services.PluginInterface.UiBuilder.OpenConfigUi -= OpenModificationBrowser;
         Services.PluginInterface.UiBuilder.Draw -= PluginSystem.WindowSystem.Draw;
         PluginSystem.WindowSystem.RemoveAllWindows();
