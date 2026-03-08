@@ -1,5 +1,4 @@
-﻿using Dalamud.Game.Agent;
-using VanillaPlus.Classes;
+﻿using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.DebugGameModification;
@@ -20,11 +19,9 @@ public class DebugGameModification : GameModification {
     };
 
     public override void OnEnable() {
-        Services.AgentLifecycle.LogAgent(AgentId.Config);
     }
 
     public override void OnDisable() {
-        Services.AgentLifecycle.UnLogAgent(AgentId.Config);
     }
 }
 #endif
