@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 
@@ -24,9 +23,6 @@ public unsafe class KeybindListener : IDisposable {
     private void OnFrameworkUpdate(IFramework framework) {
         if (!AddonConfig.KeybindEnabled) return;
         if (AddonConfig.DisableInCombat && Services.Condition.IsInCombat) return;
-
-        // Don't process keybinds if we are settings up a new keybind
-        if (PluginSystem.WindowSystem.Windows.Any(window => window.WindowName.Contains("Keybind Modal") && window.IsOpen)) return;
 
         // Don't process keybinds if any input text is active
         if (RaptureAtkModule.Instance()->IsTextInputActive()) return;

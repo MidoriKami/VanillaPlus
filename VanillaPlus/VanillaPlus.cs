@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Threading;
 using Dalamud.Game.Command;
-using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using KamiToolKit;
 using VanillaPlus.Classes;
@@ -42,8 +41,6 @@ public sealed class VanillaPlus : IDalamudPlugin {
             HelpMessage = Strings.CommandHelpOpenBrowser,
         });
 
-        PluginSystem.WindowSystem = new WindowSystem("VanillaPlus");
-        Services.PluginInterface.UiBuilder.Draw += PluginSystem.WindowSystem.Draw;
         Services.PluginInterface.UiBuilder.OpenConfigUi += OpenModificationBrowser;
 
         PluginSystem.KeyListener = new KeyListener();
@@ -57,8 +54,6 @@ public sealed class VanillaPlus : IDalamudPlugin {
         PluginSystem.ModificationManager.Dispose();
 
         Services.PluginInterface.UiBuilder.OpenConfigUi -= OpenModificationBrowser;
-        Services.PluginInterface.UiBuilder.Draw -= PluginSystem.WindowSystem.Draw;
-        PluginSystem.WindowSystem.RemoveAllWindows();
 
         Services.CommandManager.RemoveHandler("/vanillaplus");
         Services.PluginInterface.LanguageChanged -= SetCultureInfo;
