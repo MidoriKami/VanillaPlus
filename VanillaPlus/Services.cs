@@ -35,6 +35,7 @@ public class Services {
     [PluginService] public static IPlayerState PlayerState { get; set; } = null!;
     [PluginService] public static IUnlockState UnlockState { get; set; } = null!;
     [PluginService] public static INamePlateGui NamePlateGui { get; set; } = null!;
+    [PluginService] public static IReliableFileStorage ReliableFileStorage { get; set; } = null!;
 
     // I dislike the name GameInteropProvider, so this is my mini rebellion on a bad name.
     // It's just an alias, use whichever you want.
