@@ -72,7 +72,7 @@ public sealed class VanillaPlus : IDalamudPlugin {
 
     [Conditional("DEBUG")]
     private static void DebugDelayStartup()
-        => Thread.Sleep(TimeSpan.FromMilliseconds(350));
+        => Thread.Sleep(TimeSpan.FromMilliseconds(500));
 
     private static void Handler(string command, string arguments) {
         if (command is not ("/vanillaplus" or "/plus")) return;
