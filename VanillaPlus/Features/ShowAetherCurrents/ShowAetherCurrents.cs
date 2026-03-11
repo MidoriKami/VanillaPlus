@@ -1,22 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Numerics;
-using Dalamud.Hooking;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using FFXIVClientStructs.FFXIV.Client.System.String;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+﻿using System.Linq;
+using KamiToolKit.Overlay;
 using Lumina.Excel.Sheets;
-using Lumina.Extensions;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ShowAetherCurrents;
 
-public unsafe class ShowAetherCurrents : GameModification {
+public class ShowAetherCurrents : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_ShowAetherCurrents,
         Description = Strings.ModificationDescription_ShowAetherCurrents,
-        Type = ModificationType.GameBehavior,
+        Type = ModificationType.UserInterface,
+        SubType = ModificationSubType.Map,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
@@ -25,62 +20,35 @@ public unsafe class ShowAetherCurrents : GameModification {
 
     public override string ImageName => "ShowAetherCurrents.png";
 
-    private Utf8String* tooltipString;
-
-    private Hook<AgentMap.Delegates.CreateMapMarkers>? populateMapMarkersHook;
+    private MapOverlayController? mapOverlayController;
 
     public override void OnEnable() {
-        populateMapMarkersHook = Services.Hooker.HookFromAddress<AgentMap.Delegates.CreateMapMarkers>(AgentMap.MemberFunctionPointers.CreateMapMarkers, CreateMapMarkers);
-        populateMapMarkersHook?.Enable();
+        mapOverlayController = new MapOverlayController();
 
-        Services.Framework.RunOnFrameworkThread(() => {
-            tooltipString = Utf8String.FromString(Strings.ShowAetherCurrents_Tooltip);
-            
-            AgentMap.Instance()->ResetMapMarkers();
-        });
+        Services.Framework.RunOnFrameworkThread(AddAetherCurrents);
     }
 
     public override void OnDisable() {
-        populateMapMarkersHook?.Dispose();
-        populateMapMarkersHook = null;
-
-        AgentMap.Instance()->ResetMapMarkers();
-
-        if (tooltipString is not null) {
-            tooltipString->Dtor(true);
-            tooltipString = null;
-        }
+        mapOverlayController?.Dispose();
+        mapOverlayController = null;
     }
 
-    private void CreateMapMarkers(AgentMap* thisPtr, bool omitAetherytes) {
+    private void AddAetherCurrents() {
+        if (mapOverlayController is null) return;
 
-        populateMapMarkersHook!.Original(thisPtr, omitAetherytes);
-        if (omitAetherytes) return;
-        if (tooltipString is null) return;
+        var aetherCurrents = Services.DataManager
+            .GetExcelSheet<AetherCurrentCompFlgSet>()
+            .SelectMany(currentSet => currentSet.AetherCurrents);
 
-        try {
-            var aetherCurrents = Services.DataManager
-                .GetExcelSheet<AetherCurrentCompFlgSet>()
-                .Where(aetherCurrentSet => aetherCurrentSet.Territory.RowId == thisPtr->SelectedTerritoryId)
-                .SelectMany(currentSet => currentSet.AetherCurrents);
+        foreach (var aetherCurrent in aetherCurrents) {
+            if (!aetherCurrent.IsValid) continue;
 
-            foreach (var aetherCurrent in aetherCurrents) {
-                if (!aetherCurrent.IsValid) continue;
+            // Skip any aether currents that require quests as they don't need to be shown on the map.
+            if (aetherCurrent.Value.Quest.IsValid) continue;
 
-                // Skip any aether currents that require quests as they don't need to be shown on the map.
-                if (aetherCurrent.Value.Quest.IsValid) continue;
-
-                // Skip any that are already unlocked
-                if (PlayerState.Instance()->IsAetherCurrentUnlocked(aetherCurrent.RowId)) continue;
-
-                if (!Services.DataManager.GetExcelSheet<EObj>().TryGetFirst(rowObject => rowObject.Data.RowId == aetherCurrent.RowId, out var eventObject)) continue;
-                if (!Services.DataManager.GetExcelSheet<Level>().TryGetFirst(rowObject => rowObject.Object.RowId == eventObject.RowId, out var level)) continue;
-
-                thisPtr->AddMapMarker(new Vector3(level.X, level.Y, level.Z), 60653, 0, tooltipString->StringPtr);
-            }
-        }
-        catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception while trying to add Aether Currents to Map");
+            mapOverlayController.AddMarker(new AetherCurrentMapMarker {
+                AetherCurrent = aetherCurrent,
+            });
         }
     }
 }
