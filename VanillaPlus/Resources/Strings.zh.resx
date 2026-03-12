@@ -1273,13 +1273,13 @@ ID：{0}</value>
       <value>视觉样式</value>
   </data>
   <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
-      <value>快捷面板调整</value>
+      <value>Command Panel Adjustments</value>
   </data>
   <data name="QuickPanelAdjustments_Description" xml:space="preserve">
       <value>为快捷面板界面提供视觉调整。</value>
   </data>
   <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
-      <value>快捷面板设置</value>
+      <value>Command Panel Configuration</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
       <value>隐藏额外的焦点边框</value>
