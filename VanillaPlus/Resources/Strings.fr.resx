@@ -1275,13 +1275,13 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Style visuel</value>
   </data>
   <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
-      <value>Quick Panel Tweaks</value>
+      <value>Command Panel Adjustments</value>
   </data>
   <data name="QuickPanelAdjustments_Description" xml:space="preserve">
       <value>Effectuer des changements visuels de la fenêtre d'accès rapide</value>
   </data>
   <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
-      <value>Configuration de la fenêtre d'accès rapide</value>
+      <value>Command Panel Configuration</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
       <value>Masquer la bordure additionnelle</value>
