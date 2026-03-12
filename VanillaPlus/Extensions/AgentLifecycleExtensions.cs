@@ -51,7 +51,7 @@ public static unsafe class AgentLifecycleExtensions {
                     if (value.IsNull) continue;
 
                     var valuePointer = (AtkValue*)value.Address;
-                    logString += $"\n[{index++}] {valuePointer->GetValueAsString().IfEmpty("empty")}";
+                    logString += $"\n[{index++}] [{valuePointer->Type}] {valuePointer->GetValueAsString().IfEmpty("empty")}";
                 }
                 break;
 
