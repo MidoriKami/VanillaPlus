@@ -303,7 +303,7 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Increases the vertical height of the game&apos;s character and system config windows.
+        ///   Looks up a localized string similar to Increases the vertical height of the game&apos;s character and system config windows..
         /// </summary>
         internal static string BiggerConfigWindows_Description {
             get {
@@ -573,7 +573,7 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Synchronizes the command panel across all your characters.
+        ///   Looks up a localized string similar to Synchronizes the command panel across all your characters..
         /// </summary>
         internal static string CommandPanelSync_Description {
             get {
@@ -3009,7 +3009,7 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Displays current MSQ Progress as a progress bar in the Main Scenario Guide.
+        ///   Looks up a localized string similar to Displays current MSQ Progress as a progress bar in the Main Scenario Guide..
         /// </summary>
         internal static string MSQProgressBar_Description {
             get {
@@ -3261,7 +3261,7 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Quick Panel Configuration.
+        ///   Looks up a localized string similar to Command Panel Configuration.
         /// </summary>
         internal static string QuickPanelAdjustments_ConfigTitle {
             get {
@@ -3279,7 +3279,7 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Quick Panel Adjustments.
+        ///   Looks up a localized string similar to Command Panel Adjustments.
         /// </summary>
         internal static string QuickPanelAdjustments_DisplayName {
             get {

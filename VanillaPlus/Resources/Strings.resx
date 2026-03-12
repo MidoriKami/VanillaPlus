@@ -1275,13 +1275,13 @@ This game modification fixes it by always triggering the normal mouse click in a
       <value>Visual Style</value>
   </data>
   <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
-      <value>Quick Panel Adjustments</value>
+      <value>Command Panel Adjustments</value>
   </data>
   <data name="QuickPanelAdjustments_Description" xml:space="preserve">
       <value>Makes visual changes to the Quick Panel HUD</value>
   </data>
   <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
-      <value>Quick Panel Configuration</value>
+      <value>Command Panel Configuration</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
       <value>Hide the additional focus border</value>
