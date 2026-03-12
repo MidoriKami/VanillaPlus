@@ -8,7 +8,7 @@ using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.QuickPanelAdjustments;
 
-public unsafe class QuickPanelAdjustments : GameModification {
+public unsafe class CommandPanelAdjustments : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.QuickPanelAdjustments_DisplayName,
         Description = Strings.QuickPanelAdjustments_Description,
@@ -16,6 +16,7 @@ public unsafe class QuickPanelAdjustments : GameModification {
         Authors = ["Pixis Lepus"],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
+            new ChangeLogInfo(2, "Renamed to Command Panel Adjustments"),
         ],
     };
 
@@ -30,7 +31,7 @@ public unsafe class QuickPanelAdjustments : GameModification {
 
         configWindow = new ConfigAddon {
             Size = new Vector2(600.0f, 125.0f),
-            InternalName = "QuickPanelAdjustmentsConfig",
+            InternalName = "CommandPanelAdjustmentsConfig",
             Title = Strings.QuickPanelAdjustments_ConfigTitle,
             Config = config,
         };
@@ -47,6 +48,7 @@ public unsafe class QuickPanelAdjustments : GameModification {
 
         quickPanelController = new AddonController("QuickPanel");
         quickPanelController.OnUpdate += UpdateQuickPanelStyle;
+        quickPanelController.OnRefresh += UpdateQuickPanelStyle;
         quickPanelController.Enable();
     }
 
