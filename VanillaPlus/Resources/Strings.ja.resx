@@ -1273,13 +1273,13 @@ ID: {0}</value>
       <value>ビジュアルスタイル</value>
   </data>
   <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
-      <value>Quick Panel Tweaks</value>
+      <value>Command Panel Adjustments</value>
   </data>
   <data name="QuickPanelAdjustments_Description" xml:space="preserve">
       <value>クイックパネルHUDに視覚的な変更を加えます</value>
   </data>
   <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
-      <value>クイックパネルの設定</value>
+      <value>Command Panel Configuration</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
       <value>Hide the additional focus border</value>
