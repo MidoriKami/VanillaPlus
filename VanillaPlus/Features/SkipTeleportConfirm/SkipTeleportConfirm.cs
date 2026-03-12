@@ -1,10 +1,13 @@
 ﻿using System;
-using Dalamud.Hooking;
+using Dalamud.Game.Addon.Lifecycle;
+using Dalamud.Game.Agent;
+using Dalamud.Game.Agent.AgentArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
+using CsAgentId = FFXIVClientStructs.FFXIV.Client.UI.Agent.AgentId;
+using AgentId = Dalamud.Game.Agent.AgentId;
 
 namespace VanillaPlus.Features.SkipTeleportConfirm;
 
@@ -19,38 +22,31 @@ public unsafe class SkipTeleportConfirm : GameModification {
         ],
     };
 
-    private Hook<AgentInterface.Delegates.ReceiveEvent>? mapReceiveEventHook;
+    public override void OnEnable()
+        => Services.AgentLifecycle.RegisterListener(AgentEvent.PreReceiveEvent, AgentId.Map, OnAgentMapReceiveEvent);
 
-    public override void OnEnable() {
-        mapReceiveEventHook = Services.Hooker.HookFromAddress<AgentInterface.Delegates.ReceiveEvent>(AgentMap.Instance()->VirtualTable->ReceiveEvent, OnAgentMapReceiveEvent);
-        mapReceiveEventHook?.Enable();
-    }
+    public override void OnDisable()
+        => Services.AgentLifecycle.UnregisterListener(OnAgentMapReceiveEvent);
 
-    public override void OnDisable() {
-        mapReceiveEventHook?.Dispose();
-        mapReceiveEventHook = null;
-    }
+    private static void OnAgentMapReceiveEvent(AgentEvent type, AgentArgs args) {
+        if (args is not AgentReceiveEventArgs receiveEventArgs) return;
 
-    private AtkValue* OnAgentMapReceiveEvent(AgentInterface* thisPtr, AtkValue* returnValue, AtkValue* values, uint valueCount, ulong eventKind) {
-        var result = mapReceiveEventHook!.Original(thisPtr, returnValue, values, valueCount, eventKind);
+        var valueCount = (int) receiveEventArgs.ValueCount;
+        var valueSpan = new Span<AtkValue>((AtkValue*)receiveEventArgs.AtkValues, valueCount);
 
-        try {
-            if (valueCount is 2 && values[0].Int is 7) {
-                var addon = Services.GameGui.GetAddonByName<AddonSelectYesno>("SelectYesno");
-                if (addon is not null) {
-                    if (addon->AtkUnitBase.GetCallbackHandlerInfo() is { AgentId: AgentId.Map, EventKind: 1 }) {
-                        var newValues = stackalloc AtkValue[1];
-                        newValues->SetInt(0);
+        if (receiveEventArgs.ValueCount is 2 && valueSpan[0].Int is 7) {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", (_, yesNoArgs) => {
+                var addon = yesNoArgs.GetAddon<AddonSelectYesno>();
 
-                        addon->FireCallback(1, newValues, true);
-                    }
+                if (addon->AtkUnitBase.GetCallbackHandlerInfo() is { AgentId: CsAgentId.Map, EventKind: 1 }) {
+                    var newValues = stackalloc AtkValue[1];
+                    newValues->SetInt(0);
+
+                    addon->FireCallback(1, newValues, true);
                 }
-            }
-        }
-        catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception in OnAgentMapReceiveEvent");
-        }
 
-        return result;
+                Services.AddonLifecycle.UnregisterListener(AddonEvent.PostSetup, "SelectYesno");
+            });
+        }
     }
 }
