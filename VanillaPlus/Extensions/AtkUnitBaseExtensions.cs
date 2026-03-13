@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -22,6 +23,18 @@ public static unsafe class AtkUnitBaseExtensions {
         public void SubscribeNumberArrayData(NumberArrayType arrayType) => addon.SubscribeAtkArrayData(1, (byte)arrayType);
         public void UnsubscribeNumberArrayData(NumberArrayType arrayType) => addon.UnsubscribeAtkArrayData(1, (byte)arrayType);
 
+        public void FireCallbackCommand(params int[] commands)
+            => addon.FireCallbackCommand(false, commands);
+
+        public void FireCallbackCommand(bool triggerClose, params int[] commands) {
+            var atkValues = stackalloc AtkValue[commands.Length];
+            foreach (var (index, command) in commands.Index()) {
+                atkValues[index].SetInt(command);
+            }
+
+            addon.FireCallback((uint) commands.Length, atkValues, triggerClose);
+        }
+        
         public CallbackHandlerInfo? GetCallbackHandlerInfo() {
             var agentModule = AgentModule.Instance();
             if (agentModule is null) return null;

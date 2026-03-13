@@ -36,11 +36,7 @@ public unsafe class SkipLoginConfirm : GameModification {
         var addon = yesNoArgs.GetAddon<AtkUnitBase>();
 
         if (addon->GetCallbackHandlerInfo() is { AgentId: AgentId.Lobby, EventKind: 3 }) {
-            var newValues = stackalloc AtkValue[1];
-            newValues->SetInt(0);
-            
-            // Note, do not trigger close else this will break Dalamud's Per-Character Collections
-            addon->FireCallback(1, newValues); 
+            addon->FireCallbackCommand(1);
         }
 
         Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
