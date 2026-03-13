@@ -58,7 +58,7 @@ public class CurrencyTooltipNode : OverlayNode {
                         FitTexture = true,
                     },
                     new TextNode {
-                        String = $"{name} {limitStatus}: {count:N0} / {limit:N0}",
+                        String = $"{name} {limitStatus}: {count:N0} {(isHigh ? ">" : "<")} {limit:N0}",
                         TextColor = isHigh ? Config.HighColor : Config.LowColor,
                         TextOutlineColor = KnownColor.Black.Vector(),
                         FontSize = 14,
