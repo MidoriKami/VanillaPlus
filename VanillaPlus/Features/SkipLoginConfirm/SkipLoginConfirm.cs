@@ -27,10 +27,7 @@ public unsafe class SkipLoginConfirm : GameModification {
     private static void OnCharacterListReceiveEvent(AddonEvent type, AddonArgs args) {
         if (args is not AddonReceiveEventArgs receiveEventArgs) return;
         if ((AtkEventType)receiveEventArgs.AtkEventType is not AtkEventType.MouseClick) return;
-        if (receiveEventArgs.EventParam < 5) return;
-
-        // Possibly too low to allow auto login from someone with a lot of characters.
-        if (receiveEventArgs.EventParam >= 16) return; 
+        if (receiveEventArgs.EventParam is < 5 or > 12) return;
 
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
     }
