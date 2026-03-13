@@ -36,7 +36,7 @@ public unsafe class SkipLoginConfirm : GameModification {
         var addon = yesNoArgs.GetAddon<AtkUnitBase>();
 
         if (addon->GetCallbackHandlerInfo() is { AgentId: AgentId.Lobby, EventKind: 3 }) {
-            addon->FireCallbackCommand(1);
+            addon->FireCallbackCommand([ 1 ]);
         }
 
         Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);

@@ -44,7 +44,7 @@ public unsafe class SkipTeleportConfirm : GameModification {
         var addon = yesNoArgs.GetAddon<AddonSelectYesno>();
 
         if (addon->AtkUnitBase.GetCallbackHandlerInfo() is { AgentId: CsAgentId.Map, EventKind: 1 }) {
-            addon->AtkUnitBase.FireCallbackCommand(true, 1);
+            addon->AtkUnitBase.FireCallbackCommand(true, [ 1 ]);
         }
 
         Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
