@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
@@ -33,10 +34,11 @@ public unsafe class SkipLoginConfirm : GameModification {
     }
 
     private static void SelectYesNoHandler(AddonEvent _, AddonArgs yesNoArgs) {
-        var addon = yesNoArgs.GetAddon<AtkUnitBase>();
+        var addon = yesNoArgs.GetAddon<AddonSelectYesno>();
 
-        if (addon->GetCallbackHandlerInfo() is { AgentId: AgentId.Lobby, EventKind: 3 }) {
-            addon->FireCallbackCommand([ 0 ]);
+        if (addon->AtkUnitBase.GetCallbackHandlerInfo() is { AgentId: AgentId.Lobby, EventKind: 3 }) {
+            addon->YesButton->SetEnabledState(false);
+            addon->AtkUnitBase.FireCallbackCommand([ 0 ]);
         }
 
         Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
