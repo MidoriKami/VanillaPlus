@@ -52,16 +52,7 @@ public unsafe class MacroTooltips : GameModification {
             var hotbarSlot = RaptureHotbarModule.Instance()->Hotbars[realHotbarId].Slots[realSlotId];
 
             if (hotbarSlot is { CommandType: RaptureHotbarModule.HotbarSlotType.Macro, ApparentSlotType: RaptureHotbarModule.HotbarSlotType.Action }) {
-
-                var isShared = (hotbarSlot.CommandId & 0x100) > 0;
-                var macroIndex = hotbarSlot.CommandId & 0xFF;
-                var slotType = stackalloc RaptureHotbarModule.HotbarSlotType[1];
-                var rowId = stackalloc uint[1];
-                var itemId = stackalloc uint[1];
-
-                RaptureMacroModule.Instance()->TryResolveMacroIcon(UIModule.Instance(), slotType, rowId, isShared ? 1 : 0, macroIndex, itemId);
-
-                macroResNode->ShowActionTooltip(*rowId, originalTooltip);
+                macroResNode->ShowActionTooltip(hotbarSlot.ApparentActionId, originalTooltip);
                 return;
             }
         }
