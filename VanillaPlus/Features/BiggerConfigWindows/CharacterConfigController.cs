@@ -59,7 +59,6 @@ public unsafe class CharacterConfigController : IDisposable {
 
         // Adjust vertical line ninegridnode
         addon->GetNodeById(34)->Size += new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
-
     }
 
     private void OnDetach(AtkUnitBase* addon) {
@@ -77,6 +76,9 @@ public unsafe class CharacterConfigController : IDisposable {
         if (scrollBarComponent is null) return;
         
         ResizeHelpers.ResizeScrollBarNode(scrollBarComponent, config.CharacterConfigAdditionalHeight);
+        
+        // Adjust list area stop, only visible in certain themes
+        addon->GetNodeById(5)->Position += new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
     }
 
     private void OnChildDetach(AtkUnitBase* addon) {
@@ -84,6 +86,9 @@ public unsafe class CharacterConfigController : IDisposable {
         if (scrollBarComponent is null) return;
         
         ResizeHelpers.ResizeScrollBarNode(scrollBarComponent, -config.CharacterConfigAdditionalHeight);
+        
+        // Adjust list area stop, only visible in certain themes
+        addon->GetNodeById(5)->Position -= new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
     }
 
     private AtkComponentScrollBar* GetScrollbarForChild(AtkUnitBase* addon)
