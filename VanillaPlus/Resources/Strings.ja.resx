@@ -362,7 +362,7 @@
     <value>互換性チェックを再試行</value>
   </data>
   <data name="CompatibilityModule_ActivePluginMessage" xml:space="preserve">
-    <value>この機能の元となるプラグインが現在アクティブです：{0}</value>
+    <value>An incompatible version of this feature is active from plugin '{0}'</value>
   </data>
   <data name="CompatibilityModule_SimpleTweaksActive" xml:space="preserve">
     <value>この機能の元となる Simple Tweaks プラグインの機能が既に有効です。
