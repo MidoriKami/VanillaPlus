@@ -16,6 +16,7 @@ public unsafe class ShowTreasureChests : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
+        CompatibilityModule = new QuestAwayCompatabilityModule(),
     };
 
     public override string ImageName => "ShowTreasureChests.png";

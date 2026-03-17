@@ -16,6 +16,7 @@ public unsafe class ShowEnemies : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
+        CompatibilityModule = new QuestAwayCompatabilityModule(),
     };
 
     public override string ImageName => "ShowEnemies.png";

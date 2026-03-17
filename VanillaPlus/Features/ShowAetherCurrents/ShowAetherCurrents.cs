@@ -16,6 +16,7 @@ public class ShowAetherCurrents : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
+        CompatibilityModule = new QuestAwayCompatabilityModule(),
     };
 
     public override string ImageName => "ShowAetherCurrents.png";

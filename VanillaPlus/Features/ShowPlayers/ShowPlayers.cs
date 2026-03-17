@@ -15,6 +15,7 @@ public class ShowPlayersOnMap : GameModification {
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
         ],
+        CompatibilityModule = new QuestAwayCompatabilityModule(),
     };
 
     public override string ImageName => "ShowPlayers.png";
