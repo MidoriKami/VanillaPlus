@@ -362,7 +362,7 @@ Peut contenir des bugs ou faire planter votre jeu.</value>
     <value>Réessayer la Vérification de Compatibilité</value>
   </data>
   <data name="CompatibilityModule_ActivePluginMessage" xml:space="preserve">
-    <value>La version originale de cette fonctionnalité provient d'un plugin actuellement actif : {0}</value>
+    <value>An incompatible version of this feature is active from plugin '{0}'</value>
   </data>
   <data name="CompatibilityModule_SimpleTweaksActive" xml:space="preserve">
     <value>La version originale de cette fonctionnalité est déjà active dans le plugin Simple Tweaks.
