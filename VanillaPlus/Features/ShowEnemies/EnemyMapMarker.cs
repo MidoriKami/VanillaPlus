@@ -22,9 +22,13 @@ public sealed unsafe class EnemyMapMarker : MapMarkerNode {
         var battleChara = CharacterManager.Instance()->BattleCharas[ObjectIndex].Value;
         if (battleChara is null) return;
 
+        var localChara = Services.ObjectTable.LocalPlayer;
+        if (localChara is null) return;
+
         if (battleChara->ObjectKind is not ObjectKind.BattleNpc) return;
         if (battleChara->SubKind != (byte)BattleNpcSubKind.Enemy) return;
         if (!battleChara->GetIsTargetable()) return;
+        if (Vector3.Distance(battleChara->Position, localChara.Position) > 150.0f) return;
         
         var objectPosition = new Vector2(battleChara->Position.X, battleChara->Position.Z);
         var objectLevel = battleChara->Level;

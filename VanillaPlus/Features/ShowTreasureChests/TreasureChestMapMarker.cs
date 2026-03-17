@@ -16,11 +16,15 @@ public sealed unsafe class TreasureChestMapMarker : MapMarkerNode {
     protected override void OnUpdate() {
         IsVisible = false;
 
+        var localChara = Services.ObjectTable.LocalPlayer;
+        if (localChara is null) return; 
+        
         var treasureObject = EventObjectManager.Instance()->EventObjects[ObjectIndex].Value;
         if (treasureObject is null) return;
 
         if (treasureObject->ObjectKind is not ObjectKind.Treasure) return;
         if (!treasureObject->GetIsTargetable()) return;
+        if (Vector3.Distance(treasureObject->Position, localChara.Position) > 150.0f) return;
         
         var objectPosition = new Vector2(treasureObject->Position.X, treasureObject->Position.Z);
         var objectName = treasureObject->NameString;

@@ -18,10 +18,14 @@ public sealed unsafe class PlayerMapMarker : MapMarkerNode {
     protected override void OnUpdate() {
         IsVisible = false;
 
+        var localChara = Services.ObjectTable.LocalPlayer;
+        if (localChara is null) return;
+        
         if (PlayerIndex >= Services.ObjectTable.PlayerObjects.Count()) return;
 
         var player = Services.ObjectTable.PlayerObjects.ElementAt(PlayerIndex);
         if (!player.IsTargetable) return;
+        if (Vector3.Distance(player.Position, localChara.Position) > 150.0f) return;
         
         IsVisible = true;
         Position = new Vector2(player.Position.X, player.Position.Z);
