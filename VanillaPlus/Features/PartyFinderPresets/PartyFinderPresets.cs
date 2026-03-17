@@ -47,6 +47,7 @@ public unsafe class PartyFinderPresets : GameModification {
             Title = Strings.Title_PresetConfigManager,
             Options = GetPresetInfos(),
             ItemSpacing = 2.0f,
+            EnableAddButton = false,
             RemoveClicked = (_, toRemove) => {
                 PresetManager.DeletePreset(toRemove);
                 UpdateDropDownOptions();
