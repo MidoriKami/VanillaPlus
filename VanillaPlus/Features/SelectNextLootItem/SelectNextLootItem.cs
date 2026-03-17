@@ -63,9 +63,6 @@ public unsafe class SelectNextLootItem : GameModification {
                 if (nextIndex < currentItemCount) {
                     SelectItem(addon, nextIndex);
                 }
-                else {
-                    addon->Close(true);
-                }
                 break;
         }
     }
