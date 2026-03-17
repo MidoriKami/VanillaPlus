@@ -6,10 +6,8 @@ namespace VanillaPlus.Classes;
 public class QuestAwayCompatabilityModule : CompatibilityModule {
 
     public override bool ShouldLoadGameModification() {
-        // If SimpleTweaks is not loaded, we can load our module
         if (!IsQuestAwayLoaded()) return true;
-        
-        // If SimpleTweaks is loaded, but doesn't contain our module, then we can load our module
+
         return !IsAetheryteFeatureEnabled();
     }
 
