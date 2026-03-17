@@ -627,7 +627,7 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The original version of this feature is from a plugin that is currently active: {0}.
+        ///   Looks up a localized string similar to An incompatible version of this feature is active from plugin &apos;{0}&apos;.
         /// </summary>
         internal static string CompatibilityModule_ActivePluginMessage {
             get {
