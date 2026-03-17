@@ -362,7 +362,7 @@
     <value>重新尝试兼容性检查</value>
   </data>
   <data name="CompatibilityModule_ActivePluginMessage" xml:space="preserve">
-    <value>该功能的原始版本来自当前启用的插件：{0}</value>
+    <value>An incompatible version of this feature is active from plugin '{0}'</value>
   </data>
   <data name="CompatibilityModule_SimpleTweaksActive" xml:space="preserve">
     <value>该功能的原始版本已经在 Simple Tweaks 插件中启用。
