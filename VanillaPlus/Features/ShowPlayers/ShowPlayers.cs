@@ -1,11 +1,12 @@
 ﻿using System.Linq;
+using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using KamiToolKit.Overlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ShowPlayers;
 
-public class ShowPlayersOnMap : GameModification {
+public unsafe class ShowPlayersOnMap : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Show Players",
         Description = "Shows icons for other players on the map.",
@@ -26,7 +27,7 @@ public class ShowPlayersOnMap : GameModification {
         mapOverlayController = new MapOverlayController();
 
         Services.Framework.RunOnFrameworkThread(() => {
-            foreach (var index in Enumerable.Range(1, 99)) {
+            foreach (var index in Enumerable.Range(0, CharacterManager.Instance()->BattleCharas.Length)) {
                 mapOverlayController.AddMarker(new PlayerMapMarker {
                     PlayerIndex = index,
                 });

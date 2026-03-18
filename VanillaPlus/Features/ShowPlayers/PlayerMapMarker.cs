@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
-using System.Linq;
 using System.Numerics;
+using FFXIVClientStructs.FFXIV.Client.Game.Character;
+using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using KamiToolKit.Premade.Nodes;
 
@@ -12,24 +13,41 @@ public sealed unsafe class PlayerMapMarker : MapMarkerNode {
     public PlayerMapMarker() {
         IconId = 60575;
         Size = new Vector2(16.0f, 16.0f);
-        MultiplyColor = KnownColor.DeepSkyBlue.Vector3();
     }
     
     protected override void OnUpdate() {
         IsVisible = false;
 
-        var localChara = Services.ObjectTable.LocalPlayer;
+        var localChara = GameObjectManager.Instance()->Objects.IndexSorted[0].Value;
         if (localChara is null) return;
-        
-        if (PlayerIndex >= Services.ObjectTable.PlayerObjects.Count()) return;
 
-        var player = Services.ObjectTable.PlayerObjects.ElementAt(PlayerIndex);
-        if (!player.IsTargetable) return;
-        if (Vector3.Distance(player.Position, localChara.Position) > 150.0f) return;
+        var battleChara = CharacterManager.Instance()->BattleCharas[PlayerIndex].Value;
+        if (battleChara is null) return;
+
+        if (localChara == battleChara) return;
+
+        if (battleChara->ObjectKind is not ObjectKind.Pc) return;
+        if (!battleChara->GetIsTargetable()) return;
+        
+        var objectPosition = new Vector2(battleChara->Position.X, battleChara->Position.Z);
+        var objectName = battleChara->NameString;
+        var objectLevel = battleChara->Level.ToString();
+
+        if (Vector3.Distance(battleChara->Position, localChara->Position) > 150.0f) return;
+
+        if (battleChara->IsPartyMember) {
+            MultiplyColor = KnownColor.CornflowerBlue.Vector3();
+        }
+        else if (battleChara->IsFriend) {
+            MultiplyColor = KnownColor.Orange.Vector3();
+        }
+        else {
+            MultiplyColor = KnownColor.White.Vector3();
+        }
         
         IsVisible = true;
-        Position = new Vector2(player.Position.X, player.Position.Z);
-        TextTooltip = $"Lv. {player.Level} {player.Name}";
+        Position = new Vector2(objectPosition.X, objectPosition.Y);
+        TextTooltip = $"Lv. {objectLevel} {objectName}";
         MapId = AgentMap.Instance()->CurrentMapId;
     }
 }
