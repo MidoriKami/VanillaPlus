@@ -1428,7 +1428,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Game Progress: {0:F}%</value>
     </data>
   <data name="MSQProgressBar_TooltipExpansionProgress" xml:space="preserve">
-      <value>Expansion Progress: {0:F}%</value>
+      <value>Progression de l'extension : {0:F}%</value>
     </data>
   <data name="CommandPanelSync_DisplayName" xml:space="preserve">
         <value>Command Panel Sync</value>
