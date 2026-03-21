@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Dalamud.Plugin;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -61,7 +62,7 @@ public class ModificationManager : IDisposable {
 
     // When loaded plugins change, re-evaluate any compat modules
     private void OnPluginsChanged(IActivePluginsChangedEventArgs args)
-        => ReloadConflictedModules();
+        => Task.Run(ReloadConflictedModules);
 
     public void ReloadConflictedModules() {
         foreach (var gameModification in loadedModifications) {
