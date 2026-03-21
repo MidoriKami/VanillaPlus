@@ -111,7 +111,9 @@ public unsafe class InventorySearchAddonController : IDisposable {
 
         var headerSize = new Vector2(addon->WindowHeaderCollisionNode->Width, addon->WindowHeaderCollisionNode->Height);
         var newInputNode = new TextInputWithHintNode {
-            Position = headerSize / 2.0f - size / 2.0f + new Vector2(25.0f, 10.0f), Size = size, OnInputReceived = searchString => PerformSearch(addon, searchString.ToString()),
+            Position = headerSize / 2.0f - size / 2.0f + new Vector2(25.0f, 10.0f), 
+            Size = size, 
+            OnInputReceived = searchString => PerformSearch(addon, searchString.ToString()),
         };
 
         newInputNode.AttachNode(addon);
