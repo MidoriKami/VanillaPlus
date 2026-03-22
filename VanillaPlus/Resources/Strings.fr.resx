@@ -362,7 +362,7 @@ Peut contenir des bugs ou faire planter votre jeu.</value>
     <value>Réessayer la Vérification de Compatibilité</value>
   </data>
   <data name="CompatibilityModule_ActivePluginMessage" xml:space="preserve">
-    <value>An incompatible version of this feature is active from plugin '{0}'</value>
+    <value>Une version incompatible de cette fonctionnalité est active depuis le plugin '{0}'</value>
   </data>
   <data name="CompatibilityModule_SimpleTweaksActive" xml:space="preserve">
     <value>La version originale de cette fonctionnalité est déjà active dans le plugin Simple Tweaks.
@@ -1275,13 +1275,13 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Style visuel</value>
   </data>
   <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
-      <value>Command Panel Adjustments</value>
+      <value>Fenêtre d'accès rapide</value>
   </data>
   <data name="QuickPanelAdjustments_Description" xml:space="preserve">
       <value>Effectuer des changements visuels de la fenêtre d'accès rapide</value>
   </data>
   <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
-      <value>Command Panel Configuration</value>
+      <value>Configuration de la fenêtre d'accès rapide</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
       <value>Masquer la bordure additionnelle</value>
@@ -1377,55 +1377,55 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Limite basse</value>
     </data>
   <data name="BiggerConfigWindows_DisplayName" xml:space="preserve">
-      <value>Bigger Config Windows</value>
+      <value>Fenêtres de configuration plus grande</value>
     </data>
   <data name="BiggerConfigWindows_Description" xml:space="preserve">
-      <value>Increases the vertical height of the game's character and system config windows.</value>
+      <value>Augmente la hauteur verticale des fenêtres de configuration personnage et système.</value>
     </data>
   <data name="BiggerConfigWindows_ConfigTitle" xml:space="preserve">
-      <value>Bigger Config Windows Config</value>
+      <value>Configuration de fenêtre plus grande</value>
     </data>
   <data name="BiggerConfigWindows_CategoryGeneral" xml:space="preserve">
-      <value>General</value>
+      <value>Général</value>
     </data>
   <data name="BiggerConfigWindows_SystemConfigAdditionalSize" xml:space="preserve">
-      <value>System Config Additional Size</value>
+      <value>Taille supplémentaire de la configuration système</value>
     </data>
   <data name="BiggerConfigWindows_CharacterConfigAdditionalSize" xml:space="preserve">
-      <value>Character Config Additional Size</value>
+      <value>Taille supplémentaire de la configuration personnage</value>
     </data>
   <data name="MSQProgressBar_DisplayName" xml:space="preserve">
-      <value>MSQ Progress Percent</value>
+      <value>Pourcentage de progression de la MSQ</value>
     </data>
   <data name="MSQProgressBar_Description" xml:space="preserve">
-      <value>Displays current MSQ Progress as a progress bar in the Main Scenario Guide.</value>
+      <value>Affiche la progression actuelle de la MSQ sous la forme d'une barre de progression dans le guide de scénario principal.</value>
     </data>
   <data name="MSQProgressBar_ConfigTitle" xml:space="preserve">
-      <value>MSQ Progress Percent Config</value>
+      <value>Configuration du pourcentage de progression de la MSQ</value>
     </data>
   <data name="MSQProgressBar_CategoryGeneral" xml:space="preserve">
-      <value>General</value>
+      <value>Général</value>
     </data>
   <data name="MSQProgressBar_LabelMode" xml:space="preserve">
       <value>Mode</value>
     </data>
   <data name="MSQProgressBar_LabelBarColor" xml:space="preserve">
-      <value>Bar Color</value>
+      <value>Couleur de la barre</value>
     </data>
   <data name="MSQProgressBar_ModeEntireGame" xml:space="preserve">
-      <value>Entire Game</value>
+      <value>Jeu complet</value>
     </data>
   <data name="MSQProgressBar_ModeExpansion" xml:space="preserve">
-      <value>Expansion</value>
+      <value>Extension</value>
     </data>
   <data name="MSQProgressBar_TooltipCurrentProgress" xml:space="preserve">
-      <value>Current Progress: {0}%</value>
+      <value>Progression actuelle : {0}%</value>
     </data>
   <data name="MSQProgressBar_TooltipGameComplete" xml:space="preserve">
-      <value>Game Complete! Good Job.</value>
+      <value>Jeu terminé ! Bon travail.</value>
     </data>
   <data name="MSQProgressBar_TooltipGameProgress" xml:space="preserve">
-      <value>Game Progress: {0:F}%</value>
+      <value>Progression générale du jeu : {0:F}%</value>
     </data>
   <data name="MSQProgressBar_TooltipExpansionProgress" xml:space="preserve">
       <value>Progression de l'extension : {0:F}%</value>
@@ -1437,12 +1437,12 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
         <value>Synchronizes the command panel across all your characters.</value>
       </data>
   <data name="ModificationDisplay_CosmicExplorationProgressWindow" xml:space="preserve">
-      <value>Cosmic Exploration Dataset Progress</value>
+      <value>Progression des outils de l'exploration cosmique</value>
   </data>
   <data name="ModificationDescription_CosmicExplorationProgressWindow" xml:space="preserve">
-      <value>A floating window that shows the Cosmic Exploration dataset progress for your current DoH/DoL job</value>
+      <value>Une bulle d'aide qui montre la progression des outils de l'exploration cosmique pour vos DoH/DoL actuel</value>
   </data>
   <data name="CosmicExplorationProgressWindow_HudButtonTooltip" xml:space="preserve">
-      <value>[VanillaPlus] Show Research Progress</value>
+      <value>[VanillaPlus] Afficher la progression de la recherche</value>
   </data>
 </root>
