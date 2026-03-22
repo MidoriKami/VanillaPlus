@@ -57,7 +57,9 @@ public unsafe class CurrencyWarningOverlayNode : OverlayNode {
         }
 
         var shouldShow = ActiveWarnings.Count > 0 || Config.IsMoveable;
-        IsVisible = shouldShow && !(Services.Condition.IsBoundByDuty || Services.Condition.IsInCutsceneOrQuestEvent);
+        var shouldDisableInDuty = Config.HideInDuties && Services.Condition.IsBoundByDuty;
+
+        IsVisible = shouldShow && !(shouldDisableInDuty || Services.Condition.IsInCutsceneOrQuestEvent);
         
         if (ActiveWarnings.Count > 0) {
             iconNode.IconId = hasHigh ? Config.HighIcon : Config.LowIcon;

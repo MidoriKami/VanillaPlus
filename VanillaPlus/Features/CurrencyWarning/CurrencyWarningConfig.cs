@@ -13,6 +13,7 @@ namespace VanillaPlus.Features.CurrencyWarning;
 public class CurrencyWarningConfig : GameModificationConfig<CurrencyWarningConfig> {
     protected override string FileName => "CurrencyWarning";
 
+    public bool HideInDuties = true;
     public bool IsConfigured = false;
     public Vector2 Position = Vector2.Zero;
     public float Scale = 1.0f;

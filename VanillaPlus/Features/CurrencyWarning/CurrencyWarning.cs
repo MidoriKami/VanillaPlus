@@ -18,6 +18,7 @@ public unsafe class CurrencyWarning : GameModification {
         Authors = [ "Zeffuro" ],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
+            new ChangeLogInfo(2, "Added Disable In Duties option"),
         ],
     };
 
@@ -72,6 +73,7 @@ public unsafe class CurrencyWarning : GameModification {
         configWindow.AddCategory(Strings.CurrencyWarning_CategoryGeneral)
             .AddCheckbox(Strings.CurrencyWarning_EnableMoving, nameof(config.IsMoveable))
             .AddCheckbox(Strings.CurrencyWarning_PlayAnimations, nameof(config.PlayAnimations))
+            .AddCheckbox("Hide in Duties", nameof(config.HideInDuties))
             .AddFloatSlider(Strings.CurrencyWarning_IconScale, 0.5f, 5.0f, 2, 0.1f, nameof(config.Scale))
             .AddColorEdit(Strings.CurrencyWarning_BelowColor, nameof(config.LowColor))
             .AddColorEdit(Strings.CurrencyWarning_AboveColor, nameof(config.HighColor));
