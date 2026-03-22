@@ -1,0 +1,10 @@
+﻿using VanillaPlus.Classes;
+
+namespace VanillaPlus.Features.AprilFools;
+
+public class AprilFoolsConfig : GameModificationConfig<AprilFoolsConfig> {
+    protected override string FileName => "AprilFools";
+
+    public bool InvertScroll = true;
+    public bool InsaneScrollMode = false;
+}

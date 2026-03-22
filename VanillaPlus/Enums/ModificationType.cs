@@ -38,4 +38,10 @@ public enum ModificationType {
     /// </summary>
     [Description(nameof(Strings.ModificationType_NewOverlay))]
     NewOverlay,
+    
+    /// <summary>
+    /// Seasonal modules that may be available only for a limited time
+    /// </summary>
+    [Description("Seasonal")]
+    Seasonal,
 }
