@@ -8,7 +8,7 @@ namespace VanillaPlus.Features.AprilFools;
 public class AprilFools : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "April Fools",
-        Description = "Do you dare? Let's see who the real fool is.\nYou've been warned.",
+        Description = "\nDo you dare? Let's see who the real fool is.\n\nYou've been warned.",
         Type = ModificationType.Seasonal,
         Authors = [ "Evil MidoriKami" ],
         ChangeLog = [
@@ -17,7 +17,7 @@ public class AprilFools : GameModification {
         CompatibilityModule = new AprilFoolsCompatabilityModule(),
     };
 
-    // public override string ImageName => "SampleGameModification.png";
+    public override string ImageName => "AprilFools.png";
 
     public override bool IsExperimental => true;
 
