@@ -42,7 +42,7 @@ public class AprilFools : GameModification {
         OpenConfigAction = configAddon.Toggle;
 
         modules = [
-            new ScrollingFools{ Config = config },
+            new ScrollingFools { Config = config },
         ];
 
         foreach (var module in modules) {
