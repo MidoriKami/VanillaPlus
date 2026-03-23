@@ -42,18 +42,18 @@ public unsafe class IndecisiveFools : IFoolsModule {
         addon->AtkUnitBase.Size += new Vector2(0.0f, 65.0f);
 
         List<string> phrases = [
-            "Yes",
+            "Yas Queen",
             "Noooo",
             "はいはい",
-            "Monkey",
-            "Delete",
-            "Uninstall",
+            "Fo Sho",
+            "Hell Naw",
+            "Maybe?",
         ];
 
         foreach (var x in Enumerable.Range(0, 3))
         foreach (var y in Enumerable.Range(0, 2)) {
             var newButton = new TextButtonNode {
-                Position = new Vector2(x * 125.0f, y * 30.0f) + new Vector2(24.0f, 54.0f),
+                Position = new Vector2(x * 125.0f, y * 30.0f) + new Vector2(24.0f, addon->AtkUnitBase.Size.Y - 110.0f),
                 Size = new Vector2(100.0f, 28.0f),
                 String = phrases[x + y * 3],
             };
