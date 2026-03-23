@@ -37,12 +37,14 @@ public class AprilFools : GameModification {
 
         configAddon.AddCategory("Suffering Toggles")
             .AddCheckbox("Invert Scroll", nameof(config.InvertScroll))
-            .AddCheckbox("Insane Scroll", nameof(config.InsaneScrollMode));
+            .AddCheckbox("Insane Scroll", nameof(config.InsaneScrollMode))
+            .AddCheckbox("Indecisive Mode", nameof(config.Indecisive));
 
         OpenConfigAction = configAddon.Toggle;
 
         modules = [
             new ScrollingFools { Config = config },
+            new IndecisiveFools {  Config = config },
         ];
 
         foreach (var module in modules) {
