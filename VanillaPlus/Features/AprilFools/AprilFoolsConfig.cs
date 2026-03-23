@@ -8,4 +8,5 @@ public class AprilFoolsConfig : GameModificationConfig<AprilFoolsConfig> {
     public bool InvertScroll = true;
     public bool InsaneScrollMode = false;
     public bool Indecisive = true;
+    public bool EmotionalDamage = true;
 }
