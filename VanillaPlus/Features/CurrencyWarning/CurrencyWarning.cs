@@ -48,7 +48,6 @@ public unsafe class CurrencyWarning : GameModification {
             InternalName = "CurrencyWarningSearch",
             Title = Strings.CurrencyWarning_ItemSearchTitle,
             Size = new Vector2(350.0f, 500.0f),
-            SortingOptions = [ Strings.CurrencyWarning_SortOptionName, Strings.CurrencyWarning_SortOptionId ],
         };
 
         listConfigWindow = new ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode> {

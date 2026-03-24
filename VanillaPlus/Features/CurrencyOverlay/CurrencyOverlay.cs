@@ -43,7 +43,6 @@ public unsafe class CurrencyOverlay : GameModification {
             InternalName = "CurrencySearch",
             Title = "Currency Search",
             Size = new Vector2(350.0f, 500.0f),
-            SortingOptions = [ Strings.SortOptionAlphabetical, Strings.CurrencyOverlay_SortOptionId ],
         };
 
         configAddon = new ListConfigAddon<CurrencySetting, CurrencyOverlayListItemNode, CurrencyOverlayConfigNode> {
