@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Premade.SearchAddons;
+using KamiToolKit.Premade.Addon.Search;
 using VanillaPlus.NativeElements.ListItemNodes;
 
 namespace VanillaPlus.NativeElements.SearchAddons;

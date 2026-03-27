@@ -5,6 +5,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.ContextMenu;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
+using KamiToolKit.Premade.Node.Simple;
 using VanillaPlus.Features.DutyLootPreview.Data;
 using VanillaPlus.NativeElements.Nodes;
 using ContextMenu = KamiToolKit.ContextMenu.ContextMenu;

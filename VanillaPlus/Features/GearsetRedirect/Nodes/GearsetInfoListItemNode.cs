@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using Dalamud.Game.Text;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using KamiToolKit.Premade.GenericListItemNodes;
+using KamiToolKit.Premade.Node.ListItem;
 
 namespace VanillaPlus.Features.GearsetRedirect.Nodes;
 
@@ -25,7 +25,7 @@ public unsafe class GearsetInfo {
         => ref RaptureGearsetModule.Instance()->Entries[gearsetId];
 }
 
-public unsafe class GearsetInfoListItemNode : GenericListItemNode<GearsetInfo> {
+public unsafe class GearsetInfoListItemNode : IconListItemNode<GearsetInfo> {
     protected override uint GetIconId(GearsetInfo data)
         => data.GearsetId < 0 ? 60072 : GetGearsetData(data.GearsetId)->ClassJob + 62000u;
 

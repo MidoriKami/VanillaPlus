@@ -6,7 +6,8 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Nodes;
+using KamiToolKit.Premade.Node;
+using KamiToolKit.Premade.Node.Simple;
 using VanillaPlus.Features.GearsetRedirect.Nodes;
 using VanillaPlus.NativeElements.SearchAddons;
 

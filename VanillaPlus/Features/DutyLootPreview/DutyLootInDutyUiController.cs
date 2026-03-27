@@ -1,5 +1,5 @@
 using System.Numerics;
-using KamiToolKit.Overlay;
+using KamiToolKit.Overlay.UiOverlay;
 using VanillaPlus.Features.DutyLootPreview.Data;
 using VanillaPlus.Features.DutyLootPreview.Nodes;
 using Action = System.Action;

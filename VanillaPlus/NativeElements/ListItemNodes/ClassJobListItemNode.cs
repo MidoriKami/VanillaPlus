@@ -1,9 +1,9 @@
-﻿using KamiToolKit.Premade.GenericListItemNodes;
+﻿using KamiToolKit.Premade.Node.ListItem;
 using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.NativeElements.ListItemNodes;
 
-public class ClassJobListItemNode : GenericListItemNode<ClassJob> {
+public class ClassJobListItemNode : IconListItemNode<ClassJob> {
     protected override uint GetIconId(ClassJob data)
         => throw new System.NotImplementedException();
 

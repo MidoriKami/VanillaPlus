@@ -10,6 +10,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
+using KamiToolKit.Premade.Node.Simple;
 using KamiToolKit.Timelines;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;

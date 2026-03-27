@@ -4,7 +4,7 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Nodes;
+using KamiToolKit.Premade.Node;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.ActionHighlight.Nodes;
 

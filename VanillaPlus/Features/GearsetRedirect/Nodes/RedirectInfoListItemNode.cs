@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using KamiToolKit.Premade.GenericListItemNodes;
+using KamiToolKit.Premade.Node.ListItem;
 using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.GearsetRedirect.Nodes;
@@ -25,7 +25,7 @@ public unsafe class RedirectInfo {
 }
 
 
-public unsafe class RedirectInfoListItemNode : GenericListItemNode<RedirectInfo> {
+public unsafe class RedirectInfoListItemNode : IconListItemNode<RedirectInfo> {
     protected override uint GetIconId(RedirectInfo data)
         => GetGearsetData(data.AlternateGearsetId).ClassJob + 62000u;
 

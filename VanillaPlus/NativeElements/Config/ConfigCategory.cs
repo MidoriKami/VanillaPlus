@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using KamiToolKit.Nodes;
+using KamiToolKit.Premade.Node;
 using VanillaPlus.Classes;
 using VanillaPlus.NativeElements.Config.ConfigEntries;
 using VanillaPlus.NativeElements.Config.NodeEntries;

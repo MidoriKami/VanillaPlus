@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
-using KamiToolKit.Overlay;
+using KamiToolKit.Overlay.MapOverlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 

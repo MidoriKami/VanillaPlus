@@ -3,7 +3,7 @@ using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Nodes;
+using KamiToolKit.Premade.Node;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.CurrencyWarning.Nodes;

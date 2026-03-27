@@ -87,6 +87,10 @@ public sealed class VanillaPlus : IDalamudPlugin {
                 Services.ChatGui.Print($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled": "Disabled")}", "VanillaPlus");
                 Services.PluginLog.Info($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled": "Disabled")}");
                 PluginSystem.SystemConfig.Save();
+
+                if (!PluginSystem.AddonModificationBrowser.IsOpen) {
+                    PluginSystem.AddonModificationBrowser.Open();
+                }
                 break;
         }
     }

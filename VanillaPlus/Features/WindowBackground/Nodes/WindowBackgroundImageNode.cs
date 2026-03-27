@@ -1,7 +1,7 @@
 ﻿using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
-using KamiToolKit.Nodes;
-using KamiToolKit.Overlay;
+using KamiToolKit.Overlay.UiOverlay;
+using KamiToolKit.Premade.Node;
 
 namespace VanillaPlus.Features.WindowBackground.Nodes;
 
