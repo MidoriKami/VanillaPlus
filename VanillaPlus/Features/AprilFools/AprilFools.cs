@@ -42,7 +42,8 @@ public class AprilFools : GameModification {
             .AddCheckbox("Emotional Damage", nameof(config.EmotionalDamage))
             .AddCheckbox("Just Monika", nameof(config.JustMonika))
             .AddCheckbox("Duty Pop", nameof(config.DutyPop))
-            .AddCheckbox("Better Character Panel", nameof(config.BetterCharacterPanel));
+            .AddCheckbox("Better Character Panel", nameof(config.BetterCharacterPanel))
+            .AddCheckbox("Flipping Out", nameof(config.FlippingOut));
 
         OpenConfigAction = configAddon.Toggle;
 
@@ -53,6 +54,7 @@ public class AprilFools : GameModification {
             new JustMonikaFools { Config = config },
             new DutyReadyFools { Config = config },
             new BetterCharacterPanelFools { Config = config },
+            new FlippingOutFools { Config = config },
         ];
 
         foreach (var module in modules) {

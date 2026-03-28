@@ -3,6 +3,9 @@ using Dalamud.Game.Text.SeStringHandling;
 
 namespace VanillaPlus.Features.AprilFools;
 
+/// <summary>
+/// Adds emotional damage fly texts when any non-damage fly text appears.
+/// </summary>
 public class EmotionalDamageFools : IFoolsModule {
     public required AprilFoolsConfig Config { get; set; }
     

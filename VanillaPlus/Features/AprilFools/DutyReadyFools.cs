@@ -3,6 +3,10 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 
 namespace VanillaPlus.Features.AprilFools;
 
+/// <summary>
+/// When the players status changes to AFK, it will play the "Duty Pop" sound effect, and print a message to chat
+/// that indicates that it was a prank. The message is tagged with VanillaPlus so the source of the prank is clearly stated.
+/// </summary>
 public class DutyReadyFools : IFoolsModule {
     public required AprilFoolsConfig Config { get; set; }
 

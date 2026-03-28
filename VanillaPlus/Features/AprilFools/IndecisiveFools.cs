@@ -8,6 +8,10 @@ using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.AprilFools;
 
+/// <summary>
+/// Adds several dummy buttons to SelectYesno windows, with randomized words.
+/// When any button is click it will play a random chat sound effect, and then disable the button.
+/// </summary>
 public unsafe class IndecisiveFools : IFoolsModule {
     public required AprilFoolsConfig Config { get; set; }
 

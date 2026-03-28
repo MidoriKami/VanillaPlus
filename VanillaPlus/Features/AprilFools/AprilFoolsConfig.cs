@@ -12,4 +12,5 @@ public class AprilFoolsConfig : GameModificationConfig<AprilFoolsConfig> {
     public bool JustMonika = true;
     public bool DutyPop = true;
     public bool BetterCharacterPanel = true;
+    public bool FlippingOut = true;
 }

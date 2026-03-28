@@ -6,6 +6,10 @@ using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.AprilFools;
 
+/// <summary>
+/// Displays a window with a picture of Monika from Doki Doki Literature Club.
+/// The window will reappear on each login and can simply be dismissed at any time.
+/// </summary>
 public class JustMonikaFools : IFoolsModule {
     public required AprilFoolsConfig Config { get; set; }
 

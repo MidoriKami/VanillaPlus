@@ -4,6 +4,13 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace VanillaPlus.Features.AprilFools;
 
+/// <summary>
+/// With the default setting of Invert Scroll, will make mouse scrolls reverse direction for scrollbars in game.
+/// Clicking and dragging a scrollbar is uneffected.
+///
+/// When in Insane Scroll mode which the user has to explicitly opt in, reverses the scroll direction every other second,
+/// with even seconds scrolling backwards twice as fast as forwards.
+/// </summary>
 public unsafe class ScrollingFools : IFoolsModule {
     public required AprilFoolsConfig Config { get; set; }
 
