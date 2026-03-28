@@ -11,4 +11,5 @@ public class AprilFoolsConfig : GameModificationConfig<AprilFoolsConfig> {
     public bool EmotionalDamage = true;
     public bool JustMonika = true;
     public bool DutyPop = true;
+    public bool BetterCharacterPanel = true;
 }
