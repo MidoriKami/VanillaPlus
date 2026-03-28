@@ -39,7 +39,8 @@ public class AprilFools : GameModification {
             .AddCheckbox("Invert Scroll", nameof(config.InvertScroll))
             .AddCheckbox("Insane Scroll", nameof(config.InsaneScrollMode))
             .AddCheckbox("Indecisive", nameof(config.Indecisive))
-            .AddCheckbox("Emotional Damage", nameof(config.EmotionalDamage));
+            .AddCheckbox("Emotional Damage", nameof(config.EmotionalDamage))
+            .AddCheckbox("Just Monika", nameof(config.JustMonika));
 
         OpenConfigAction = configAddon.Toggle;
 
@@ -47,6 +48,7 @@ public class AprilFools : GameModification {
             new ScrollingFools { Config = config },
             new IndecisiveFools {  Config = config },
             new EmotionalDamageFools {  Config = config },
+            new JustMonikaFools { Config = config },
         ];
 
         foreach (var module in modules) {

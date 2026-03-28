@@ -10,6 +10,7 @@ public static class DateTimeExtensions {
     ];
 
     extension(DateTime dateTime) {
-        public bool IsSeasonalEvent => SeasonalDates.Any(date => date.DayOfYear != dateTime.DayOfYear);
+        public bool IsSeasonalEvent 
+            => SeasonalDates.Any(date => date.DayOfYear != dateTime.DayOfYear);
     }
 }
