@@ -10,4 +10,5 @@ public class AprilFoolsConfig : GameModificationConfig<AprilFoolsConfig> {
     public bool Indecisive = true;
     public bool EmotionalDamage = true;
     public bool JustMonika = true;
+    public bool DutyPop = true;
 }
