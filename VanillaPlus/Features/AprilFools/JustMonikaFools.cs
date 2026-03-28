@@ -23,7 +23,7 @@ public class JustMonikaFools : IFoolsModule {
     }
 
     private MonikaAddon? monikaAddon;
-    
+
     public void Enable() {
         monikaAddon = new MonikaAddon {
             InternalName = "JustMonika",
