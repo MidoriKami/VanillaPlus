@@ -1,4 +1,5 @@
-﻿using VanillaPlus.Classes;
+﻿// ReSharper disable RedundantUnsafeContext
+using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.DebugGameModification;
