@@ -8,13 +8,11 @@ public class DutyReadyFools : IFoolsModule {
 
     private bool lastAfkState;
     
-    public void Enable() {
-        Services.Framework.Update += OnFrameworkUpdate;
-    }
+    public void Enable()
+        => Services.Framework.Update += OnFrameworkUpdate;
 
-    public void Disable() {
-        Services.Framework.Update -= OnFrameworkUpdate;
-    }
+    public void Disable()
+        => Services.Framework.Update -= OnFrameworkUpdate;
 
     private void OnFrameworkUpdate(IFramework framework) {
         if (!Config.DutyPop) return;
