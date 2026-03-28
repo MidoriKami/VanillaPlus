@@ -66,6 +66,7 @@ public sealed class VanillaPlus : IDalamudPlugin {
         PluginSystem.ModificationManager.Dispose();
 
         Services.PluginInterface.UiBuilder.OpenConfigUi -= PluginSystem.AddonModificationBrowser.Open;
+        Services.ClientState.Login -= OnLogin;
 
         Services.CommandManager.RemoveHandler("/vanillaplus");
         Services.PluginInterface.LanguageChanged -= SetCultureInfo;
