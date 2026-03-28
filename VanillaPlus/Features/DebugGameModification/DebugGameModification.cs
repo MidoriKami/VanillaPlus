@@ -7,7 +7,7 @@ namespace VanillaPlus.Features.DebugGameModification;
 /// <summary>
 /// Debug Game Modification for use with playing around with ideas, DO NOT commit changes to this file
 /// </summary>
-public class DebugGameModification : GameModification {
+public unsafe class DebugGameModification : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_DebugGameModification,
         Description = Strings.ModificationDescription_DebugGameModification,
