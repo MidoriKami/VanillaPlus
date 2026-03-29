@@ -77,7 +77,9 @@ public class AprilFools : GameModification {
         OpenConfigAction = configAddon.Toggle;
 
         foreach (var module in modules) {
-            module.Enable();
+            if (module.IsEnabledByConfig) {
+                module.Enable();
+            }
         }
     }
 

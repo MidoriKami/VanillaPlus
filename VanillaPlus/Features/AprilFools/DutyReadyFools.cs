@@ -10,6 +10,9 @@ namespace VanillaPlus.Features.AprilFools;
 public class DutyReadyFools : FoolsModule {
     private bool lastAfkState;
     
+    public override bool IsEnabledByConfig 
+        => Config.DutyPop;
+    
     protected override void OnEnable()
         => Services.Framework.Update += OnFrameworkUpdate;
 
@@ -17,8 +20,6 @@ public class DutyReadyFools : FoolsModule {
         => Services.Framework.Update -= OnFrameworkUpdate;
 
     private void OnFrameworkUpdate(IFramework framework) {
-        if (!Config.DutyPop) return;
-
         if (lastAfkState != IsPlayerAfk) {
             if (IsPlayerAfk) {
                 UIGlobals.PlaySoundEffect(67); // hehe, six seven.

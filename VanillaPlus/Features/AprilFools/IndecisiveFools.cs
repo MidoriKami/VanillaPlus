@@ -14,9 +14,11 @@ namespace VanillaPlus.Features.AprilFools;
 /// </summary>
 public unsafe class IndecisiveFools : FoolsModule {
     private AddonController<AddonSelectYesno>? addonController;
-
     private List<TextButtonNode>? textButtons;
 
+    public override bool IsEnabledByConfig 
+        => Config.Indecisive;
+    
     protected override void OnEnable() {
         textButtons = [];
         
@@ -38,7 +40,6 @@ public unsafe class IndecisiveFools : FoolsModule {
     }
     
     private void OnAttach(AddonSelectYesno* addon) {
-        if (!Config.Indecisive) return;
         if (textButtons is null) return;
         
         addon->AtkUnitBase.Size += new Vector2(0.0f, 65.0f);

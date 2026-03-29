@@ -8,6 +8,9 @@ namespace VanillaPlus.Features.AprilFools;
 /// </summary>
 public unsafe class FlippingOutFools : FoolsModule {
     private AddonController? locationTitleController;
+
+    public override bool IsEnabledByConfig 
+        => Config.FlippingOut;
     
     protected override void OnEnable() {
         locationTitleController = new AddonController("_LocationTitle");

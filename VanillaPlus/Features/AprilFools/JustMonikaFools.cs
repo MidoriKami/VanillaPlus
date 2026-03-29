@@ -26,26 +26,29 @@ public class JustMonikaFools : FoolsModule {
 
     private MonikaAddon? monikaAddon;
 
+    public override bool IsEnabledByConfig 
+        => Config.JustMonika;
+    
     protected override void OnEnable() {
         monikaAddon = new MonikaAddon {
             InternalName = "JustMonika",
             Title = "Just Monika",
-            Size = new Vector2(1300.0f, 700.0f) / 2.0f,
+            Size = new Vector2(650.0f, 350.0f),
         };
-        
-        Services.ClientState.Login += OnLogin;
+
+        Services.ClientState.TerritoryChanged += OnTerritoryChanged;
     }
 
     protected override void OnDisable() {
-        Services.ClientState.Login -= OnLogin;
-        
+        Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
+
         monikaAddon?.Dispose();
         monikaAddon = null;
     }
 
-    private void OnLogin() {
-        if (!Config.JustMonika) return;
-        
-        monikaAddon?.Open();
-    }
+    private void OnTerritoryChanged(ushort obj)
+        => monikaAddon?.Open();
+
+    private void OnLogin()
+        => monikaAddon?.Open();
 }

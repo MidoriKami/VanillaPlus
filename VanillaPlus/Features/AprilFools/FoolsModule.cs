@@ -2,6 +2,7 @@
 
 public abstract class FoolsModule {
     public required AprilFoolsConfig Config { set; protected get; }
+    public abstract bool IsEnabledByConfig { get; }
 
     private bool isEnabled;
     

@@ -10,7 +10,10 @@ namespace VanillaPlus.Features.AprilFools;
 /// </summary>
 public unsafe class BetterCharacterPanelFools : FoolsModule {
     private AddonController<AddonCharacter>? characterController;
-    
+
+    public override bool IsEnabledByConfig 
+        => Config.BetterCharacterPanel;
+
     protected override void OnEnable() {
         characterController = new AddonController<AddonCharacter>("Character");
         characterController.OnAttach += OnCharacterAttach;
@@ -24,30 +27,22 @@ public unsafe class BetterCharacterPanelFools : FoolsModule {
         characterController = null;
     }
     
-    private void OnCharacterAttach(AddonCharacter* addonCharacter) {
-        if (!Config.BetterCharacterPanel) return;
-        
+    private static void OnCharacterAttach(AddonCharacter* addonCharacter) {
         var characterNode = addonCharacter->GetNodeById(10);
         if (characterNode is null) return;
 
         characterNode->Position -= new Vector2(375.0f, 0.0f);
     }
 
-    private void OnCharacterUpdate(AddonCharacter* addonCharacter) {
-        if (!Config.BetterCharacterPanel) return;
-        
-        var childAddons = addonCharacter->AddonControl.ChildAddons;
-
-        foreach (var child in childAddons) {
+    private static void OnCharacterUpdate(AddonCharacter* addonCharacter) {
+        foreach (var child in addonCharacter->AddonControl.ChildAddons) {
             if (child.Value is null) continue;
 
             child.Value->PositionX = (short) 356.0f;
         }
     }
 
-    private void OnCharacterDetach(AddonCharacter* addonCharacter) {
-        if (!Config.BetterCharacterPanel) return;
-
+    private static void OnCharacterDetach(AddonCharacter* addonCharacter) {
         var characterNode = addonCharacter->GetNodeById(10);
         if (characterNode is null) return;
 
