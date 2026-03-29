@@ -1,0 +1,24 @@
+name: Update Dalamud Plugin Repository
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-pr:
+    if: contains(github.event.head_commit.message, 'Version')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request to DalamudPluginsD17
+        uses: peter-evans/create-pull-request@v8.1.0
+        with:
+          token: ${{ secrets.PAT_FOR_PR }}
+          push-to-fork: MidoriKami/DalamudPluginsD17
+          title: "${{ github.event.head_commit.message }}"
+          body: "nofranz"
+          branch: "update-${{ github.sha }}"
+          base: master
+          repository: goatcorp/DalamudPluginsD17
