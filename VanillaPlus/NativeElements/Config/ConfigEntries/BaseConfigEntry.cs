@@ -10,6 +10,7 @@ public abstract class BaseConfigEntry : IConfigEntry {
     public required string Label { get; init; }
     public required MemberInfo MemberInfo { get; init; }
     public required ISavable Config { get; init; }
+    public string? Tooltip { get; set; }
 
     public abstract NodeBase BuildNode();
 

@@ -7,6 +7,7 @@ namespace VanillaPlus.NativeElements.Config.ConfigEntries;
 public class ButtonConfig : IConfigEntry {
     public required string Label { get; init; }
     public required Action OnClick { get; init; }
+    public string? Tooltip { get; set; }
 
     public NodeBase BuildNode() {
         return new TextButtonNode {

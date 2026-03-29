@@ -38,7 +38,13 @@ public class ConfigCategory : IDisposable {
                 continue;
             }
 
-            tabbedListNode.AddNode(entry.BuildNode());
+            var builtEntry = entry.BuildNode();
+
+            if (entry.Tooltip is not null) {
+                builtEntry.TextTooltip = entry.Tooltip;
+            }
+            
+            tabbedListNode.AddNode(builtEntry);
         }
 
         tabbedListNode.SubtractTab(1);
@@ -248,6 +254,14 @@ public class ConfigCategory : IDisposable {
         configEntries.Add(new NodeConfig<NodeStyle> {
             StyleObject = nodeStyle,
         });
+
+        return this;
+    }
+
+    public ConfigCategory AddTooltip(string label) {
+        if (configEntries.Count is 0) return this;
+        
+        configEntries[^1].Tooltip = label;
 
         return this;
     }
