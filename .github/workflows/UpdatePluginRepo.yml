@@ -19,6 +19,6 @@ jobs:
           push-to-fork: MidoriKami/DalamudPluginsD17
           title: "${{ github.event.head_commit.message }}"
           body: "nofranz"
-          branch: "update-${{ github.sha }}"
+          branch: "Plugin-Update-Branch"
           base: master
           repository: goatcorp/DalamudPluginsD17
