@@ -52,7 +52,7 @@ public class ConfigCategory : IDisposable {
         return tabbedListNode;
     }
 
-    public ConfigCategory AddCheckbox(string label, string memberName) {
+    public ConfigCategory AddCheckbox(string label, string memberName, Action<bool>? onToggle = null) {
         var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
         if (memberInfo is null) return this;
 
@@ -63,6 +63,7 @@ public class ConfigCategory : IDisposable {
             MemberInfo = memberInfo,
             Config = ConfigObject,
             InitialState = initialValue,
+            ToggleAction = onToggle,
         });
 
         return this;
@@ -262,6 +263,14 @@ public class ConfigCategory : IDisposable {
         if (configEntries.Count is 0) return this;
         
         configEntries[^1].Tooltip = label;
+
+        return this;
+    }
+
+    public ConfigCategory AddText(string label) {
+        configEntries.Add(new LabelEntry {
+            Text = label,
+        });
 
         return this;
     }
