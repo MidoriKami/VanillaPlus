@@ -8,12 +8,10 @@ namespace VanillaPlus.Features.AprilFools;
 /// Swaps the position of the panels in the Character window to have the player model on the left and the stats on the right.
 /// This one actually looks really nice so may become a permanent feature.
 /// </summary>
-public unsafe class BetterCharacterPanelFools : IFoolsModule {
-    public required AprilFoolsConfig Config { get; set; }
-
+public unsafe class BetterCharacterPanelFools : FoolsModule {
     private AddonController<AddonCharacter>? characterController;
     
-    public void Enable() {
+    protected override void OnEnable() {
         characterController = new AddonController<AddonCharacter>("Character");
         characterController.OnAttach += OnCharacterAttach;
         characterController.OnPreUpdate += OnCharacterUpdate;
@@ -21,7 +19,7 @@ public unsafe class BetterCharacterPanelFools : IFoolsModule {
         characterController.Enable();
     }
 
-    public void Disable() {
+    protected override void OnDisable() {
         characterController?.Dispose();
         characterController = null;
     }

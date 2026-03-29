@@ -6,12 +6,10 @@ namespace VanillaPlus.Features.AprilFools;
 /// <summary>
 /// Flips the loading screen text labels upside down.
 /// </summary>
-public unsafe class FlippingOutFools : IFoolsModule {
-    public required AprilFoolsConfig Config { get; set; }
-
+public unsafe class FlippingOutFools : FoolsModule {
     private AddonController? locationTitleController;
     
-    public void Enable() {
+    protected override void OnEnable() {
         locationTitleController = new AddonController("_LocationTitle");
 
         locationTitleController.OnAttach += addon => {
@@ -38,7 +36,7 @@ public unsafe class FlippingOutFools : IFoolsModule {
         locationTitleController.Enable();
     }
 
-    public void Disable() {
+    protected override void OnDisable() {
         locationTitleController?.Dispose();
         locationTitleController = null;
     }

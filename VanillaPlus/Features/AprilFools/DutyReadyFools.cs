@@ -7,15 +7,13 @@ namespace VanillaPlus.Features.AprilFools;
 /// When the players status changes to AFK, it will play the "Duty Pop" sound effect, and print a message to chat
 /// that indicates that it was a prank. The message is tagged with VanillaPlus so the source of the prank is clearly stated.
 /// </summary>
-public class DutyReadyFools : IFoolsModule {
-    public required AprilFoolsConfig Config { get; set; }
-
+public class DutyReadyFools : FoolsModule {
     private bool lastAfkState;
     
-    public void Enable()
+    protected override void OnEnable()
         => Services.Framework.Update += OnFrameworkUpdate;
 
-    public void Disable()
+    protected override void OnDisable()
         => Services.Framework.Update -= OnFrameworkUpdate;
 
     private void OnFrameworkUpdate(IFramework framework) {

@@ -12,14 +12,12 @@ namespace VanillaPlus.Features.AprilFools;
 /// Adds several dummy buttons to SelectYesno windows, with randomized words.
 /// When any button is click it will play a random chat sound effect, and then disable the button.
 /// </summary>
-public unsafe class IndecisiveFools : IFoolsModule {
-    public required AprilFoolsConfig Config { get; set; }
-
+public unsafe class IndecisiveFools : FoolsModule {
     private AddonController<AddonSelectYesno>? addonController;
 
     private List<TextButtonNode>? textButtons;
 
-    public void Enable() {
+    protected override void OnEnable() {
         textButtons = [];
         
         addonController = new AddonController<AddonSelectYesno>("SelectYesno");
@@ -28,7 +26,7 @@ public unsafe class IndecisiveFools : IFoolsModule {
         addonController.Enable();
     }
 
-    public void Disable() {
+    protected override void OnDisable() {
         foreach (var textButton in textButtons ?? []) {
             textButton.Dispose();
         }

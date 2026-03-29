@@ -10,9 +10,7 @@ namespace VanillaPlus.Features.AprilFools;
 /// Displays a window with a picture of Monika from Doki Doki Literature Club.
 /// The window will reappear on each login and can simply be dismissed at any time.
 /// </summary>
-public class JustMonikaFools : IFoolsModule {
-    public required AprilFoolsConfig Config { get; set; }
-
+public class JustMonikaFools : FoolsModule {
     private class MonikaAddon : NativeAddon {
         protected override unsafe void OnSetup(AtkUnitBase* addon) {
             base.OnSetup(addon);
@@ -28,7 +26,7 @@ public class JustMonikaFools : IFoolsModule {
 
     private MonikaAddon? monikaAddon;
 
-    public void Enable() {
+    protected override void OnEnable() {
         monikaAddon = new MonikaAddon {
             InternalName = "JustMonika",
             Title = "Just Monika",
@@ -38,7 +36,7 @@ public class JustMonikaFools : IFoolsModule {
         Services.ClientState.Login += OnLogin;
     }
 
-    public void Disable() {
+    protected override void OnDisable() {
         Services.ClientState.Login -= OnLogin;
         
         monikaAddon?.Dispose();

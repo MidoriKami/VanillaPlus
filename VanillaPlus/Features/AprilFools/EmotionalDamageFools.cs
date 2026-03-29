@@ -6,13 +6,11 @@ namespace VanillaPlus.Features.AprilFools;
 /// <summary>
 /// Adds emotional damage fly texts when any non-damage fly text appears.
 /// </summary>
-public class EmotionalDamageFools : IFoolsModule {
-    public required AprilFoolsConfig Config { get; set; }
-    
-    public void Enable()
+public class EmotionalDamageFools : FoolsModule {
+    protected override void OnEnable()
         => Services.FlyTextGui.FlyTextCreated += OnFlyText;
 
-    public void Disable()
+    protected override void OnDisable() 
         => Services.FlyTextGui.FlyTextCreated -= OnFlyText;
 
     private void OnFlyText(ref FlyTextKind kind, ref int val1, ref int val2, ref SeString text1, ref SeString text2, ref uint color, ref uint icon, ref uint damageTypeIcon, ref float yOffset, ref bool handled) {
