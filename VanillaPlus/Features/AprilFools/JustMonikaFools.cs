@@ -48,7 +48,4 @@ public class JustMonikaFools : FoolsModule {
 
     private void OnTerritoryChanged(ushort obj)
         => monikaAddon?.Open();
-
-    private void OnLogin()
-        => monikaAddon?.Open();
 }
