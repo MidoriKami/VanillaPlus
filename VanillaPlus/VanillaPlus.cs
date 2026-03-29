@@ -72,6 +72,7 @@ public sealed class VanillaPlus : IDalamudPlugin {
         Services.PluginInterface.LanguageChanged -= SetCultureInfo;
 
         PluginSystem.AddonModificationBrowser.Dispose();
+        PluginSystem.SeasonEventAddon.Dispose();
 
         KamiToolKitLibrary.Dispose();
     }
