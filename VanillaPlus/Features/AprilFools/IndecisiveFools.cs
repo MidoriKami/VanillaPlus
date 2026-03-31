@@ -22,9 +22,11 @@ public unsafe class IndecisiveFools : FoolsModule {
     protected override void OnEnable() {
         textButtons = [];
         
-        addonController = new AddonController<AddonSelectYesno>("SelectYesno");
-        addonController.OnAttach += OnAttach;
-        addonController.OnDetach += OnDetach;
+        addonController = new AddonController<AddonSelectYesno> {
+            AddonName = "SelectYesno",
+            OnSetup = SetupSelectYesNo,
+            OnFinalize = FinalizeSelectYesNo,
+        };
         addonController.Enable();
     }
 
@@ -39,7 +41,7 @@ public unsafe class IndecisiveFools : FoolsModule {
         addonController = null;
     }
     
-    private void OnAttach(AddonSelectYesno* addon) {
+    private void SetupSelectYesNo(AddonSelectYesno* addon) {
         if (textButtons is null) return;
         
         addon->AtkUnitBase.Size += new Vector2(0.0f, 65.0f);
@@ -78,7 +80,7 @@ public unsafe class IndecisiveFools : FoolsModule {
         }
     }
 
-    private void OnDetach(AddonSelectYesno* addon) {
+    private void FinalizeSelectYesNo(AddonSelectYesno* addon) {
         addon->AtkUnitBase.Size -= new Vector2(0.0f, 65.0f);
         
         foreach (var textButton in textButtons ?? []) {

@@ -44,10 +44,12 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         Task.Run(() => {
             perfectTails = new PerfectTails();
 
-            weeklyBingoController = new AddonController<AddonWeeklyBingo>("WeeklyBingo");
-            weeklyBingoController.OnAttach += AttachNodes;
-            weeklyBingoController.OnDetach += DetachNodes;
-            weeklyBingoController.OnRefresh += RefreshNodes;
+            weeklyBingoController = new AddonController<AddonWeeklyBingo> {
+                AddonName = "WeeklyBingo",
+                OnSetup = SetupWeeklyBingo,
+                OnFinalize = FinalizeWeeklyBingo,
+                OnRefresh = RefreshWeeklyBingo,
+            };
             weeklyBingoController.Enable();
         });
     }
@@ -59,7 +61,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         perfectTails = null;
     }
 
-    private void AttachNodes(AddonWeeklyBingo* addon) {
+    private void SetupWeeklyBingo(AddonWeeklyBingo* addon) {
         if (perfectTails is null) return;
         
         var existingTextNode = addon->GetTextNodeById(34);
@@ -117,7 +119,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         animationContainer.Timeline?.PlayAnimation(1);
     }
     
-    private void RefreshNodes(AddonWeeklyBingo* addon) {
+    private void RefreshWeeklyBingo(AddonWeeklyBingo* addon) {
         if (perfectTails is null) return;
         var existingTextNode = addon->GetTextNodeById(34);
         if (existingTextNode is not null) {
@@ -158,7 +160,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         AdjustCurrentDutyIndicator(addon);
     }
 
-    private void DetachNodes(AddonWeeklyBingo* addon) {
+    private void FinalizeWeeklyBingo(AddonWeeklyBingo* addon) {
         var existingTextNode = addon->GetTextNodeById(34);
         if (existingTextNode is not null) {
             existingTextNode->SetHeight((ushort)(existingTextNode->GetHeight() * 3.0f / 2.0f));

@@ -39,9 +39,11 @@ public unsafe class FadeStrategyBoard : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
         
-        notificationStrategyBoardController = new AddonController("_NotificationTestOver32");
-        notificationStrategyBoardController.OnUpdate += OnStrategyBoardRefresh;
-        notificationStrategyBoardController.OnDetach += OnStrategyBoardDisable;
+        notificationStrategyBoardController = new AddonController {
+            AddonName = "_NotificationTestOver32",
+            OnUpdate = UpdateNotificationTofu,
+            OnFinalize = FinalizeNotificationTofu,
+        };
         notificationStrategyBoardController.Enable();
     }
 
@@ -55,13 +57,13 @@ public unsafe class FadeStrategyBoard : GameModification {
         configWindow = null;
     }
     
-    private static void OnStrategyBoardDisable(AtkUnitBase* addon) {
+    private static void FinalizeNotificationTofu(AtkUnitBase* addon) {
         if (addon->RootNode is null) return;
 
         addon->RootNode->Color.A = 255;
     }
     
-    private void OnStrategyBoardRefresh(AtkUnitBase* addon) {
+    private void UpdateNotificationTofu(AtkUnitBase* addon) {
         if (config is null) return;
         if (addon->RootNode is null) return;
 

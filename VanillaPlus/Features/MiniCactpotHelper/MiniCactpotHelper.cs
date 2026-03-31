@@ -66,10 +66,12 @@ public unsafe class MiniCactpotHelper : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        lotteryDailyController = new AddonController<AddonLotteryDaily>("LotteryDaily");
-        lotteryDailyController.OnAttach += AttachNodes;
-        lotteryDailyController.OnDetach += DetachNodes;
-        lotteryDailyController.OnUpdate += UpdateNodes;
+        lotteryDailyController = new AddonController<AddonLotteryDaily> {
+            AddonName = "LotteryDaily",
+            OnSetup = SetupLotteryDaily,
+            OnFinalize = FinalizeLotteryDaily,
+            OnUpdate = UpdateLotteryDaily,
+        };
         lotteryDailyController.Enable();
     }
 
@@ -91,7 +93,7 @@ public unsafe class MiniCactpotHelper : GameModification {
         gameGrid?.UpdateButtonStyle(config);
     }
 
-    private void AttachNodes(AddonLotteryDaily* addon) {
+    private void SetupLotteryDaily(AddonLotteryDaily* addon) {
         if (config is null) return;
         if (configWindow is null) return;
 		if (addon is null) return;
@@ -114,7 +116,7 @@ public unsafe class MiniCactpotHelper : GameModification {
 		configButton.AttachNode(buttonContainerNode);
 	}
 	
-	private void UpdateNodes(AddonLotteryDaily* addon) {
+	private void UpdateLotteryDaily(AddonLotteryDaily* addon) {
         if (perfectCactpot is null) return;
 
         var newState = Enumerable.Range(0, 9).Select(i => addon->GameNumbers[i]).ToArray();
@@ -156,7 +158,7 @@ public unsafe class MiniCactpotHelper : GameModification {
 		boardState = newState;
 	}
 	
-	private void DetachNodes(AddonLotteryDaily* addon) {
+	private void FinalizeLotteryDaily(AddonLotteryDaily* addon) {
         gameGrid?.Dispose();
         gameGrid = null;
 

@@ -34,11 +34,13 @@ public unsafe class MissingJobStoneLockout : GameModification {
     public override string ImageName => "MissingJobStone.png";
 
     public override void OnEnable() {
-        contentsFinderController = new AddonController<AddonContentsFinder>("ContentsFinder");
-        contentsFinderController.OnAttach += AttachNodes;
-        contentsFinderController.OnUpdate += OnUpdate;
-        contentsFinderController.OnRefresh += OnUpdate;
-        contentsFinderController.OnDetach += DetachNodes;
+        contentsFinderController = new AddonController<AddonContentsFinder> {
+            AddonName = "ContentsFinder",
+            OnSetup = SetupContentsFinder,
+            OnUpdate = UpdateContentsFinder,
+            OnRefresh = UpdateContentsFinder,
+            OnFinalize = FinalizeContentsFinder,
+        };
         contentsFinderController.Enable();
     }
 
@@ -47,7 +49,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
         contentsFinderController = null;
     }
 
-    private void AttachNodes(AddonContentsFinder* addon) {
+    private void SetupContentsFinder(AddonContentsFinder* addon) {
         suppressed = false;
         clickCount = 0;
         
@@ -101,7 +103,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
         });
     }
 
-    private void OnUpdate(AddonContentsFinder* addon) {
+    private void UpdateContentsFinder(AddonContentsFinder* addon) {
         if (animationContainer is null) return;
         var showWarning = !HasJobStoneEquipped() && CouldHaveJobStoneEquipped();
         
@@ -109,7 +111,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
         addon->JoinButton->SetEnabledState(!showWarning || suppressed);
     }
 
-    private void DetachNodes(AddonContentsFinder* addon) {
+    private void FinalizeContentsFinder(AddonContentsFinder* addon) {
         warningTextNode?.Dispose();
         warningTextNode = null;
         

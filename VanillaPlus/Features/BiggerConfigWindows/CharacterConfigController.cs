@@ -11,7 +11,7 @@ public unsafe class CharacterConfigController : IDisposable {
     private readonly BiggerConfigWindowsConfig config;
 
     private readonly AddonController characterConfigController;
-    private readonly List<AddonController> childAddonControllers = [];
+    private readonly DynamicAddonController childAddonController;
 
     // Doesn't seem like there's a way around this, the parent addon doesn't appear to have a reference to its children.
     private readonly List<string> childAddons = [ "ConfigCharaOpeGeneral", "ConfigCharaOpeTarget", "ConfigCharaOpeCircle", "ConfigCharaOpeChara", 
@@ -22,30 +22,27 @@ public unsafe class CharacterConfigController : IDisposable {
     
     public CharacterConfigController(BiggerConfigWindowsConfig config) {
         this.config = config;
-        characterConfigController = new AddonController("ConfigCharacter");
-        characterConfigController.OnAttach += OnAttach;
-        characterConfigController.OnDetach += OnDetach;
+        characterConfigController = new AddonController {
+            AddonName = "ConfigCharacter",
+            OnSetup = SetupConfigCharacter,
+            OnFinalize = FinalizeConfigCharacter,
+        };
         characterConfigController.Enable();
 
-        foreach (var addonName in childAddons) {
-            var newAddonController = new AddonController(addonName);
-            newAddonController.OnAttach += OnChildAttach;
-            newAddonController.OnDetach += OnChildDetach;
-            newAddonController.Enable();
-            childAddonControllers.Add(newAddonController);
-        }
+        childAddonController = new DynamicAddonController {
+            AddonNames = childAddons,
+            OnSetup = SetupConfigCharacterChild,
+            OnFinalize = FinalizeConfigCharacterChild,
+        };
+        childAddonController.Enable();
     }
 
     public void Dispose() {
-        foreach (var addonController in childAddonControllers) {
-            addonController.Dispose();
-        }
-        childAddonControllers.Clear();
-        
+        childAddonController.Dispose();
         characterConfigController.Dispose();
     }
 
-    private void OnAttach(AtkUnitBase* addon) {
+    private void SetupConfigCharacter(AtkUnitBase* addon) {
         if (AtkStage.Instance()->ScreenSize.Height < addon->Size.Y + config.SystemConfigAdditionalHeight) {
             Services.ChatGui.PrintError("Unable to resize config window, height would be too big.", "[VanillaPlus] [BiggerConfigWindow]");
             Services.PluginLog.Warning("[BiggerConfigWindow] Unable to resize config window, height would be too big.");
@@ -61,7 +58,7 @@ public unsafe class CharacterConfigController : IDisposable {
         addon->GetNodeById(34)->Size += new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
     }
 
-    private void OnDetach(AtkUnitBase* addon) {
+    private void FinalizeConfigCharacter(AtkUnitBase* addon) {
         addon->Size -= new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
         
         // Adjust "Default" "Apply" "Close" container
@@ -71,7 +68,7 @@ public unsafe class CharacterConfigController : IDisposable {
         addon->GetNodeById(34)->Size -= new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
     }
     
-    private void OnChildAttach(AtkUnitBase* addon) {
+    private void SetupConfigCharacterChild(AtkUnitBase* addon) {
         var scrollBarComponent = GetScrollbarForChild(addon);
         if (scrollBarComponent is null) return;
         
@@ -81,7 +78,7 @@ public unsafe class CharacterConfigController : IDisposable {
         addon->GetNodeById(5)->Position += new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
     }
 
-    private void OnChildDetach(AtkUnitBase* addon) {
+    private void FinalizeConfigCharacterChild(AtkUnitBase* addon) {
         var scrollBarComponent = GetScrollbarForChild(addon);
         if (scrollBarComponent is null) return;
         

@@ -24,27 +24,25 @@ public unsafe class ClearFlag : GameModification {
     private IAddonEventHandle? minimapMouseClick;
     
     public override void OnEnable() {
-        minimapController = new AddonController("_NaviMap");
+        minimapController = new AddonController {
+            AddonName = "_NaviMap",
+            OnSetup = addon => {
+                var collisionNode = addon->GetNodeById<AtkCollisionNode>(19);
+                if (collisionNode is null) return;
 
-        minimapController.OnAttach += addon => {
-            var collisionNode = addon->GetNodeById<AtkCollisionNode>(19);
-            if (collisionNode is null) return;
+                collisionNode->DrawFlags |= (uint)DrawFlags.ClickableCursor;
 
-            collisionNode->DrawFlags |= (uint)DrawFlags.ClickableCursor;
-
-            minimapMouseClick = Services.AddonEventManager.AddEvent((nint)addon, (nint)collisionNode, AddonEventType.MouseClick, OnMiniMapMouseClick);
-        };
-
-        minimapController.OnDetach += addon => {
-            Services.AddonEventManager.RemoveEventNullable(minimapMouseClick);
+                minimapMouseClick = Services.AddonEventManager.AddEvent((nint)addon, (nint)collisionNode, AddonEventType.MouseClick, OnMiniMapMouseClick);
+            },
+            OnFinalize = addon => {
+                Services.AddonEventManager.RemoveEventNullable(minimapMouseClick);
             
-            var collisionNode = addon->GetNodeById<AtkCollisionNode>(19);
-            if (collisionNode is null) return;
+                var collisionNode = addon->GetNodeById<AtkCollisionNode>(19);
+                if (collisionNode is null) return;
 
-            collisionNode->DrawFlags &= ~(uint)DrawFlags.ClickableCursor;
-            
+                collisionNode->DrawFlags &= ~(uint)DrawFlags.ClickableCursor;
+            },
         };
-
         minimapController.Enable();
     }
 

@@ -42,114 +42,117 @@ public unsafe class HUDPresets : GameModification {
             DepthLayer = 6,
         };
 
-        hudLayoutController = new AddonController("_HudLayoutWindow");
-
-        hudLayoutController.OnAttach += addon => {
-            addon->Resize(addon->Size + new Vector2(0.0f, 95.0f));
-
-            labelNode = new CategoryTextNode {
-                Position = new Vector2(16.0f, 215.0f),
-                AlignmentType = AlignmentType.Left,
-                FontSize = 12,
-                FontType = FontType.Axis,
-                TextFlags = TextFlags.Emboss | TextFlags.AutoAdjustNodeSize,
-                TextColor = ColorHelper.GetColor(8),
-                String = Strings.HUDPresets_Label,
-            };
-            labelNode.AttachNode(addon);
-            
-            presetDropdownNode = new TextDropDownNode {
-                Position = new Vector2(16.0f, 235.0f),
-                Size = new Vector2(addon->Size.X - 32.0f, 24.0f),
-                MaxListOptions = 10,
-                Options = HUDPresetManager.GetPresetNames(),
-                TextTooltip = Strings.HUDPresets_DropdownTooltip,
-                OnOptionSelected = UpdateButtonLocks,
-            };
-            presetDropdownNode.AttachNode(addon);
-
-            loadButtonNode = new TextButtonNode {
-                Position = new Vector2(32.0f, 269.0f),
-                Size = new Vector2(100.0f, 28.0f),
-                String = Strings.HUDPresets_ButtonLoad,
-                TextTooltip = Strings.HUDPresets_ButtonLoadTooltip,
-                OnClick = LoadPreset,
-                IsEnabled = false,
-            };
-            loadButtonNode.AttachNode(addon);
-            
-            overwriteButtonNode = new TextButtonNode {
-                Position = new Vector2(144.0f, 269.0f),
-                Size = new Vector2(100.0f, 28.0f),
-                String = Strings.HUDPresets_ButtonOverwrite,
-                TextTooltip = Strings.HUDPresets_ButtonOverwriteTooltip,
-                IsEnabled = false,
-                OnClick = OverwriteSelectedPreset,
-            };
-            overwriteButtonNode.AttachNode(addon);
-            
-            deleteButtonNode = new TextButtonNode {
-                Position = new Vector2(256.0f, 269.0f),
-                Size = new Vector2(100.0f, 28.0f),
-                String = Strings.HUDPresets_ButtonDelete,
-                // TooltipString = "Delete selected preset",
-                IsEnabled = false,
-                // OnClick = DeleteSelectedPreset,
-            };
-            deleteButtonNode.CollisionNode.TextTooltip = Strings.HUDPresets_DeleteTooltip;
-            deleteButtonNode.AttachNode(addon);
-            
-            saveButtonNode = new TextButtonNode {
-                Position = new Vector2(368.0f, 269.0f),
-                Size = new Vector2(100.0f, 28.0f),
-                String = Strings.HUDPresets_ButtonSave,
-                OnClick = SaveCurrentLayout,
-            };
-            saveButtonNode.CollisionNode.TextTooltip = Strings.HUDPresets_SaveTooltipEnabled;
-            saveButtonNode.AttachNode(addon);
+        hudLayoutController = new AddonController {
+            AddonName = "_HudLayoutWindow",
+            OnSetup = SetupHudLayoutWindow,
+            OnUpdate = UpdateHudLayoutWindow,
+            OnFinalize = FinalizeHudLayoutWindow,
         };
+        hudLayoutController.Enable();
+    }
 
-        hudLayoutController.OnDetach += addon => {
-            addon->Resize(addon->Size - new Vector2(0.0f, 95.0f));
+    private void SetupHudLayoutWindow(AtkUnitBase* addon) {
+        addon->Resize(addon->Size + new Vector2(0.0f, 95.0f));
 
-            presetDropdownNode?.Dispose();
-            presetDropdownNode = null;
+        labelNode = new CategoryTextNode {
+            Position = new Vector2(16.0f, 215.0f),
+            AlignmentType = AlignmentType.Left,
+            FontSize = 12,
+            FontType = FontType.Axis,
+            TextFlags = TextFlags.Emboss | TextFlags.AutoAdjustNodeSize,
+            TextColor = ColorHelper.GetColor(8),
+            String = Strings.HUDPresets_Label, };
+        labelNode.AttachNode(addon);
 
-            loadButtonNode?.Dispose();
-            loadButtonNode = null;
-            
-            overwriteButtonNode?.Dispose();
-            overwriteButtonNode = null;
-            
-            deleteButtonNode?.Dispose();
-            deleteButtonNode = null;
-            
-            saveButtonNode?.Dispose();
-            saveButtonNode = null;
-            
-            labelNode?.Dispose();
-            labelNode = null;
+        presetDropdownNode = new TextDropDownNode {
+            Position = new Vector2(16.0f, 235.0f),
+            Size = new Vector2(addon->Size.X - 32.0f, 24.0f),
+            MaxListOptions = 10,
+            Options = HUDPresetManager.GetPresetNames(),
+            TextTooltip = Strings.HUDPresets_DropdownTooltip,
+            OnOptionSelected = UpdateButtonLocks,
         };
+        presetDropdownNode.AttachNode(addon);
 
-        hudLayoutController.OnUpdate += addon => {
-            if (saveButtonNode is not null) {
-                var mainSaveButton = addon->GetComponentButtonById(16);
-                if (mainSaveButton is not null) {
-                    if (saveButtonNode.IsEnabled == mainSaveButton->IsEnabled) {
-                        saveButtonNode.IsEnabled = !mainSaveButton->IsEnabled;
+        loadButtonNode = new TextButtonNode {
+            Position = new Vector2(32.0f, 269.0f),
+            Size = new Vector2(100.0f, 28.0f),
+            String = Strings.HUDPresets_ButtonLoad,
+            TextTooltip = Strings.HUDPresets_ButtonLoadTooltip,
+            OnClick = LoadPreset,
+            IsEnabled = false, 
+        };
+        loadButtonNode.AttachNode(addon);
 
-                        if (mainSaveButton->IsEnabled) {
-                            saveButtonNode.CollisionNode.TextTooltip = Strings.HUDPresets_SaveTooltipDisabled;
-                        }
-                        else {
-                            saveButtonNode.CollisionNode.TextTooltip = Strings.HUDPresets_SaveTooltipEnabled;
-                        }
+        overwriteButtonNode = new TextButtonNode {
+            Position = new Vector2(144.0f, 269.0f),
+            Size = new Vector2(100.0f, 28.0f),
+            String = Strings.HUDPresets_ButtonOverwrite,
+            TextTooltip = Strings.HUDPresets_ButtonOverwriteTooltip,
+            IsEnabled = false,
+            OnClick = OverwriteSelectedPreset,
+        };
+        overwriteButtonNode.AttachNode(addon);
+
+        deleteButtonNode = new TextButtonNode {
+            Position = new Vector2(256.0f, 269.0f),
+            Size = new Vector2(100.0f, 28.0f),
+            String = Strings.HUDPresets_ButtonDelete,
+            // TooltipString = "Delete selected preset",
+            IsEnabled = false,
+            // OnClick = DeleteSelectedPreset,
+        };
+        deleteButtonNode.CollisionNode.TextTooltip = Strings.HUDPresets_DeleteTooltip;
+        deleteButtonNode.AttachNode(addon);
+
+        saveButtonNode = new TextButtonNode {
+            Position = new Vector2(368.0f, 269.0f), 
+            Size = new Vector2(100.0f, 28.0f), 
+            String = Strings.HUDPresets_ButtonSave, 
+            OnClick = SaveCurrentLayout,
+        };
+        saveButtonNode.CollisionNode.TextTooltip = Strings.HUDPresets_SaveTooltipEnabled;
+        saveButtonNode.AttachNode(addon);
+    }
+
+    private void UpdateHudLayoutWindow(AtkUnitBase* addon) {
+        if (saveButtonNode is not null) {
+            var mainSaveButton = addon->GetComponentButtonById(16);
+            if (mainSaveButton is not null) {
+                if (saveButtonNode.IsEnabled == mainSaveButton->IsEnabled) {
+                    saveButtonNode.IsEnabled = !mainSaveButton->IsEnabled;
+
+                    if (mainSaveButton->IsEnabled) {
+                        saveButtonNode.CollisionNode.TextTooltip = Strings.HUDPresets_SaveTooltipDisabled;
+                    }
+                    else {
+                        saveButtonNode.CollisionNode.TextTooltip = Strings.HUDPresets_SaveTooltipEnabled;
                     }
                 }
             }
-        };
+        }
+    }
 
-        hudLayoutController.Enable();
+    private void FinalizeHudLayoutWindow(AtkUnitBase* addon) {
+        addon->Resize(addon->Size - new Vector2(0.0f, 95.0f));
+
+        presetDropdownNode?.Dispose();
+        presetDropdownNode = null;
+
+        loadButtonNode?.Dispose();
+        loadButtonNode = null;
+            
+        overwriteButtonNode?.Dispose();
+        overwriteButtonNode = null;
+            
+        deleteButtonNode?.Dispose();
+        deleteButtonNode = null;
+            
+        saveButtonNode?.Dispose();
+        saveButtonNode = null;
+            
+        labelNode?.Dispose();
+        labelNode = null;
     }
 
     public override void OnDisable() {

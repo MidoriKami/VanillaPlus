@@ -31,41 +31,40 @@ public unsafe class MacroLineNumbers : GameModification {
     public override void OnEnable() {
         textNodes = [];
         
-        macroAddonController = new AddonController("Macro");
+        macroAddonController = new AddonController {
+            AddonName = "Macro",
+            OnSetup = addon => {
+                var textInputNode = addon->GetNodeById<AtkComponentNode>(119);
+                if (textInputNode is null) return;
+            
+                RepositionNode(textInputNode, sizeOffset);
+            
+                foreach (var index in Enumerable.Range(0, 15)) {
+                    var newTextNode = new TextNode {
+                        Position = new Vector2(460.0f, 119.0f + index * 14f),
+                        Size = new Vector2(sizeOffset.X - 5.0f, 14.0f),
+                        String = $"{index + 1}",
+                        FontType = FontType.Axis,
+                        FontSize = 12,
+                        AlignmentType = AlignmentType.TopRight,
+                    };
+                    newTextNode.AttachNode(addon);
+                    textNodes.Add(newTextNode);
+                }
+            },
+            OnFinalize = addon => {
+                var textInputNode = addon->GetNodeById<AtkComponentNode>(119);
+                if (textInputNode is null) return;
 
-        macroAddonController.OnAttach += addon => {
-            var textInputNode = addon->GetNodeById<AtkComponentNode>(119);
-            if (textInputNode is null) return;
+                RepositionNode(textInputNode, -sizeOffset);
             
-            RepositionNode(textInputNode, sizeOffset);
-            
-            foreach (var index in Enumerable.Range(0, 15)) {
-                var newTextNode = new TextNode {
-                    Position = new Vector2(460.0f, 119.0f + index * 14f),
-                    Size = new Vector2(sizeOffset.X - 5.0f, 14.0f),
-                    String = $"{index + 1}",
-                    FontType = FontType.Axis,
-                    FontSize = 12,
-                    AlignmentType = AlignmentType.TopRight,
-                };
-                newTextNode.AttachNode(addon);
-                textNodes.Add(newTextNode);
-            }
+                foreach (var node in textNodes) {
+                    node.Dispose();
+                }
+
+                textNodes.Clear();
+            },
         };
-
-        macroAddonController.OnDetach += addon => {
-            var textInputNode = addon->GetNodeById<AtkComponentNode>(119);
-            if (textInputNode is null) return;
-
-            RepositionNode(textInputNode, -sizeOffset);
-            
-            foreach (var node in textNodes) {
-                node.Dispose();
-            }
-
-            textNodes.Clear();
-        };
-        
         macroAddonController.Enable();
     }
 

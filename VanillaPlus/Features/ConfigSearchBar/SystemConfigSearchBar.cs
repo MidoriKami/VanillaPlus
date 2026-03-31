@@ -45,12 +45,12 @@ public unsafe class SystemConfigSearchBar : GameModification {
             .AddColorEdit("Text Highlight", nameof(config.HighlightColor), KnownColor.Red.Vector());
 
         OpenConfigAction = configAddon.Toggle;
-        
-        systemConfigController = new AddonController("ConfigSystem");
 
-        systemConfigController.OnAttach += OnSystemConfigControllerAttach;
-        systemConfigController.OnDetach += OnSystemConfigControllerDetach;
-        
+        systemConfigController = new AddonController {
+            AddonName = "ConfigSystem",
+            OnSetup = SetupConfigSystem,
+            OnFinalize = FinalizeConfigSystem,
+        };
         systemConfigController.Enable();
     }
 
@@ -64,7 +64,7 @@ public unsafe class SystemConfigSearchBar : GameModification {
         systemConfigController = null;
     }
 
-    private void OnSystemConfigControllerAttach(AtkUnitBase* addon) {
+    private void SetupConfigSystem(AtkUnitBase* addon) {
         if (config is null) return;
         
         systemConfigTabs = [
@@ -95,7 +95,7 @@ public unsafe class SystemConfigSearchBar : GameModification {
         systemConfigInput.AttachNode(addon);
     }
 
-    private void OnSystemConfigControllerDetach(AtkUnitBase* _) {
+    private void FinalizeConfigSystem(AtkUnitBase* _) {
         foreach (var entry in systemConfigTabs ?? []) {
             entry.Dispose();
         }

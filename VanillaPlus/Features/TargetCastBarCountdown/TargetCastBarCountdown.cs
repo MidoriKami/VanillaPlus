@@ -51,10 +51,12 @@ public unsafe class TargetCastBarCountdown : GameModification {
         LoadStyles();
         LoadConfigWindow();
 
-        addonController = new MultiAddonController("_TargetInfoCastBar", "_TargetInfo", "_FocusTargetInfo", "CastBarEnemy");
-        addonController.OnAttach += AttachNode;
-        addonController.OnDetach += DetachNode;
-        addonController.OnUpdate += UpdateNode;
+        addonController = new MultiAddonController {
+            AddonNames = ["_TargetInfoCastBar", "_TargetInfo", "_FocusTargetInfo", "CastBarEnemy"],
+            OnSetup = SetupCastBar,
+            OnFinalize = FinalizeCastBar,
+            OnUpdate = UpdateCastBar,
+        };
         addonController.Enable();
     }
 
@@ -199,7 +201,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
         AlignmentType = AlignmentType.Center,
     };
 
-    private void AttachNode(AtkUnitBase* addon) {
+    private void SetupCastBar(AtkUnitBase* addon) {
         switch (addon->NameString) {
             case "_TargetInfoCastBar":
                 primaryTargetTextNode = BuildTextNode(new Vector2(0.0f, 16.0f));
@@ -242,7 +244,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
         }
     }
 
-    private void DetachNode(AtkUnitBase* addon) {
+    private void FinalizeCastBar(AtkUnitBase* addon) {
         switch (addon->NameString) {
             case "_TargetInfoCastBar":
                 primaryTargetTextNode?.Dispose();
@@ -268,7 +270,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
         }
     }
 
-    private void UpdateNode(AtkUnitBase* addon) {
+    private void UpdateCastBar(AtkUnitBase* addon) {
         if (config is null) return;
         
         if (Services.ClientState.IsPvP) {

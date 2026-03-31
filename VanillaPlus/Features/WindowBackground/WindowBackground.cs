@@ -45,11 +45,12 @@ public unsafe class WindowBackground : GameModification {
         config = WindowBackgroundConfig.Load();
 
         overlayController = new OverlayController();
-        dynamicAddonController = new DynamicAddonController(config.Settings.Select(setting => setting.AddonName).ToArray());
-
-        dynamicAddonController.OnAttach += AttachNode;
-        dynamicAddonController.OnDetach += DetachNode;
-        dynamicAddonController.OnUpdate += UpdateNode;
+        dynamicAddonController = new DynamicAddonController {
+            AddonNames = config.Settings.Select(setting => setting.AddonName).ToList(),
+            OnSetup = AttachNode,
+            OnFinalize = DetachNode,
+            OnUpdate = UpdateNode,
+        };
 
         dynamicAddonController.Enable();
 
