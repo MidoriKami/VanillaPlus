@@ -29,10 +29,12 @@ public class DutyLootDataLoader : IDisposable {
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
         Services.GameGui.AgentUpdate += OnAgentUpdate;
 
-        contentsFinder = new AddonController<AddonContentsFinder>("ContentsFinder");
-        contentsFinder.OnAttach += OnContentsFinderChanged;
-        contentsFinder.OnRefresh += OnContentsFinderChanged;
-        contentsFinder.OnDetach += OnContentsFinderChanged;
+        contentsFinder = new AddonController<AddonContentsFinder> {
+            AddonName = "ContentsFinder",
+            OnSetup = OnContentsFinderChanged,
+            OnRefresh = OnContentsFinderChanged,
+            OnFinalize = OnContentsFinderChanged,
+        };
         contentsFinder.Enable();
 
         dutyLootDataCache.OnChanged += OnCacheChanged;

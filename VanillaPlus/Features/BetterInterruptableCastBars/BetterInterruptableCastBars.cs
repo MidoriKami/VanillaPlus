@@ -36,40 +36,40 @@ public unsafe class BetterInterruptableCastBars : GameModification {
         antsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnAntsCheck);
         antsHook?.Enable();
         
-        targetInfoCastbarController = new AddonController("_TargetInfoCastBar");
-        targetInfoCastbarController.OnAttach += addon => {
-            var existingPulseNode = addon->GetImageNodeById(6);
-            if (existingPulseNode is null) return;
+        targetInfoCastbarController = new AddonController {
+            AddonName = "_TargetInfoCastBar",
+            OnSetup = addon => {
+                var existingPulseNode = addon->GetImageNodeById(6);
+                if (existingPulseNode is null) return;
 
-            existingPulseNode->ScaleX = 1.33f;
-            existingPulseNode->ScaleY = 1.33f;
-            existingPulseNode->DrawFlags |= 1;
+                existingPulseNode->ScaleX = 1.33f;
+                existingPulseNode->ScaleY = 1.33f;
+                existingPulseNode->DrawFlags |= 1;
 
-            targetInfoCastbarPulseNode = new ImageNode {
-                Size = new Vector2(232.0f, 32.0f),
-                Position = new Vector2(-12.0f, -6.0f),
-                Scale = new Vector2(1.33f, 1.33f),
-                Origin = new Vector2(116.0f, 16.0f),
-                AddColor = new Vector3(255.0f, -80.0f, 0.0f) / 255.0f,
-                IsVisible = false,
-            };
+                targetInfoCastbarPulseNode = new ImageNode {
+                    Size = new Vector2(232.0f, 32.0f),
+                    Position = new Vector2(-12.0f, -6.0f),
+                    Scale = new Vector2(1.33f, 1.33f),
+                    Origin = new Vector2(116.0f, 16.0f),
+                    AddColor = new Vector3(255.0f, -80.0f, 0.0f) / 255.0f,
+                    IsVisible = false,
+                };
 
-            LoadAssets(targetInfoCastbarPulseNode);
-            targetInfoCastbarPulseNode.AttachNode(existingPulseNode, NodePosition.BeforeTarget);
+                LoadAssets(targetInfoCastbarPulseNode);
+                targetInfoCastbarPulseNode.AttachNode(existingPulseNode, NodePosition.BeforeTarget);
+            },
+            OnFinalize = addon => {
+                targetInfoCastbarPulseNode?.Dispose();
+                targetInfoCastbarPulseNode = null;
+
+                var existingPulseNode = addon->GetImageNodeById(6);
+                if (existingPulseNode is null) return;
+
+                existingPulseNode->ScaleX = 1.0f;
+                existingPulseNode->ScaleY = 1.0f;
+                existingPulseNode->DrawFlags |= 1;
+            },
         };
-        
-        targetInfoCastbarController.OnDetach += addon => {
-            targetInfoCastbarPulseNode?.Dispose();
-            targetInfoCastbarPulseNode = null;
-
-            var existingPulseNode = addon->GetImageNodeById(6);
-            if (existingPulseNode is null) return;
-
-            existingPulseNode->ScaleX = 1.0f;
-            existingPulseNode->ScaleY = 1.0f;
-            existingPulseNode->DrawFlags |= 1;
-        };
-        
         targetInfoCastbarController.Enable();
     }
 

@@ -1,8 +1,8 @@
-﻿using KamiToolKit.Premade.GenericListItemNodes;
+﻿using KamiToolKit.Premade.Node.ListItem;
 
 namespace VanillaPlus.Features.ActionHighlight.Nodes;
 
-public class ActionCategoryListItemNode : GenericListItemNode<ActionCategory> {
+public class ActionCategoryListItemNode : IconListItemNode<ActionCategory> {
     protected override uint GetIconId(ActionCategory data) 
         => data.IconId;
     

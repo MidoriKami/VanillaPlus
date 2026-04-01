@@ -2,7 +2,7 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
-using KamiToolKit.Overlay;
+using KamiToolKit.Overlay.UiOverlay;
 using VanillaPlus.Features.DutyLootPreview.Data;
 using Action = System.Action;
 

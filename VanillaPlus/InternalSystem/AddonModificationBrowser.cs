@@ -8,6 +8,8 @@ using KamiToolKit;
 using KamiToolKit.Classes;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
+using KamiToolKit.Premade.Node;
+using KamiToolKit.Premade.Node.Simple;
 using Lumina.Text.ReadOnly;
 using VanillaPlus.Enums;
 using VanillaPlus.Utilities;

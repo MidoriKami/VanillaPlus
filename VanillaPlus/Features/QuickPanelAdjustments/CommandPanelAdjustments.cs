@@ -46,9 +46,11 @@ public unsafe class CommandPanelAdjustments : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        quickPanelController = new AddonController("QuickPanel");
-        quickPanelController.OnUpdate += UpdateQuickPanelStyle;
-        quickPanelController.OnRefresh += UpdateQuickPanelStyle;
+        quickPanelController = new AddonController {
+            AddonName = "QuickPanel",
+            OnUpdate = UpdateQuickPanel,
+            OnRefresh = UpdateQuickPanel,
+        };
         quickPanelController.Enable();
     }
 
@@ -62,7 +64,7 @@ public unsafe class CommandPanelAdjustments : GameModification {
         configWindow = null;
     }
 
-    private void UpdateQuickPanelStyle(AtkUnitBase* addon) {
+    private void UpdateQuickPanel(AtkUnitBase* addon) {
         if (config is null) return;
 
         var windowComponent = addon->GetComponentById<AtkComponentWindow>(45);

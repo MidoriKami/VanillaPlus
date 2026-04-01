@@ -4,6 +4,7 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
+using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.DutyLootPreview.Nodes;
 

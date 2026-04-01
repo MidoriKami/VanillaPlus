@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.InternalSystem;
@@ -9,6 +10,7 @@ public class SystemConfiguration {
     public HashSet<string> EnabledModifications = [];
     public bool IsDebugMode = false;
     public string CurrentSearch = string.Empty;
+    public DateTime LastSeasonalNotice = DateTime.MinValue;
 
     public static SystemConfiguration Load()
         => Config.LoadConfig<SystemConfiguration>("system.config.json");

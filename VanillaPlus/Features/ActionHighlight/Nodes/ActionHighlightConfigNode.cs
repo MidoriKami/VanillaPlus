@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Nodes;
+using KamiToolKit.Premade.Node;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Enums;
 

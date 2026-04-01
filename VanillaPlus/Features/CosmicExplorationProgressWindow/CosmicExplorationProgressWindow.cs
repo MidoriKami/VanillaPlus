@@ -34,27 +34,27 @@ public class CosmicExplorationProgressWindow : GameModification {
             DisableCloseTransition = true,
         };
 
-        wksHudController = new AddonController("WKSHud");
+        wksHudController = new AddonController {
+            AddonName = "WKSHud",
+            OnSetup = wksHud => {
+                hudShowNode = new CircleButtonNode {
+                    Icon = ButtonIcon.Eye,
+                    AddColor = new Vector3(0.0f, -0.125f, 128f / 255f),
+                    Size = new Vector2(28.0f),
+                    Position = new Vector2(26.0f, 26.0f),
+                    OnClick = addon.Toggle,
+                    TextTooltip = Strings.CosmicExplorationProgressWindow_HudButtonTooltip,
+                };
 
-        wksHudController.OnAttach += wksHud => {
-            hudShowNode = new CircleButtonNode {
-                Icon = ButtonIcon.Eye,
-                AddColor = new Vector3(0.0f, -0.125f, 128f / 255f),
-                Size = new Vector2(28.0f),
-                Position = new Vector2(26.0f, 26.0f),
-                OnClick = addon.Toggle,
-                TextTooltip = Strings.CosmicExplorationProgressWindow_HudButtonTooltip,
-            };
+                // override the texture to use the base theme, since that's what the gear button in WKSHud does
+                hudShowNode.ImageNode.LoadTexture("ui/uld/CircleButtons.tex", false);
 
-            // override the texture to use the base theme, since that's what the gear button in WKSHud does
-            hudShowNode.ImageNode.LoadTexture("ui/uld/CircleButtons.tex", false);
-
-            hudShowNode.AttachNode(wksHud);
-        };
-
-        wksHudController.OnDetach += _ => {
-            hudShowNode?.Dispose();
-            hudShowNode = null;
+                hudShowNode.AttachNode(wksHud);
+            },
+            OnFinalize = _ => {
+                hudShowNode?.Dispose();
+                hudShowNode = null;
+            },
         };
         wksHudController.Enable();
     }

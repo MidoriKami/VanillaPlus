@@ -40,13 +40,15 @@ public unsafe class FadeLootButton : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
         
-        notificationLootController = new AddonController("_NotificationLoot");
-        notificationLootController.OnUpdate += OnLootRefresh;
-        notificationLootController.OnDetach += OnLootDisable;
+        notificationLootController = new AddonController {
+            AddonName = "_NotificationLoot",
+            OnUpdate = UpdateNotificationLoot,
+            OnFinalize = FinalizeNotificationLoot,
+        };
         notificationLootController.Enable();
     }
 
-    private static void OnLootDisable(AtkUnitBase* addon) {
+    private static void FinalizeNotificationLoot(AtkUnitBase* addon) {
         if (addon->RootNode is null) return;
 
         addon->RootNode->Color.A = 255;
@@ -62,7 +64,7 @@ public unsafe class FadeLootButton : GameModification {
         configWindow = null;
     }
     
-    private void OnLootRefresh(AtkUnitBase* addon) {
+    private void UpdateNotificationLoot(AtkUnitBase* addon) {
         if (config is null) return;
         if (addon->RootNode is null) return;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using Dalamud.Game.ClientState.Keys;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -34,11 +35,13 @@ public unsafe class InventorySearchAddonController : IDisposable {
         };
 
         keybindListener.KeybindCallback += OnKeybindPressed;
-        
-        inventoryController = new MultiAddonController(addons);
-        inventoryController.OnAttach += OnInventoryAttach;
-        inventoryController.OnUpdate += OnInventoryUpdate;
-        inventoryController.OnDetach += OnInventoryDetach;
+
+        inventoryController = new MultiAddonController {
+            AddonNames = addons.ToList(),
+            OnSetup = SetupInventory,
+            OnUpdate = UpdateInventory,
+            OnFinalize = FinalizeInventory,
+        };
         inventoryController.Enable();
     }
 
@@ -81,7 +84,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
         }
     }
     
-    private void OnInventoryDetach(AtkUnitBase* addon) {
+    private void FinalizeInventory(AtkUnitBase* addon) {
         Services.PluginLog.Info($"OnInventoryDetach: {addon->NameString}");
         if (inputTextNodes?.TryGetValue(addon->NameString, out var node) ?? false) {
             node.Dispose();
@@ -89,7 +92,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
         }
     }
 
-    private void OnInventoryUpdate(AtkUnitBase* addon) {
+    private void UpdateInventory(AtkUnitBase* addon) {
         if (selectedTabs is null) return;
         if (inputTextNodes is null) return;
         if (!addon->IsReady) return;
@@ -104,7 +107,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
         selectedTabs[addon->NameString] = currentTab;
     }
 
-    private void OnInventoryAttach(AtkUnitBase* addon) {
+    private void SetupInventory(AtkUnitBase* addon) {
         Services.PluginLog.Info($"OnInventoryAttach: {addon->NameString}");
         if (inputTextNodes is null) return;
         var size = new Vector2(addon->Size.X / 2.0f, 28.0f);

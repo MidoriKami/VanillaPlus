@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using Dalamud.Game.Addon.Lifecycle;
-using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -30,15 +28,16 @@ public unsafe class EnhancedWardNavigation : GameModification {
     private int currentWard;
 
     public override void OnEnable() {
-        housingAddonController = new AddonController("HousingSelectBlock");
-        housingAddonController.OnAttach += AttachNodes;
-        housingAddonController.OnDetach += DetachNodes;
+        housingAddonController = new AddonController {
+            AddonName = "HousingSelectBlock",
+            OnSetup = SetupHousingSelectBlock,
+            OnFinalize = FinalizeHousingSelectBlock,
+            OnRefresh = RefreshHousingSelectBlock,
+        };
         housingAddonController.Enable();
-
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreRefresh, "HousingSelectBlock", OnHousingRefresh);
     }
 
-    private void AttachNodes(AtkUnitBase* addon) {
+    private void SetupHousingSelectBlock(AtkUnitBase* addon) {
         if (addon->RootNode is null) return;
 
         var selectButton = addon->GetNodeById(34);
@@ -68,7 +67,7 @@ public unsafe class EnhancedWardNavigation : GameModification {
         nextWardButtonNode.AttachNode(addon->RootNode);
     }
 
-    private void DetachNodes(AtkUnitBase* addon) {
+    private void FinalizeHousingSelectBlock(AtkUnitBase* addon) {
         if (addon is null) return;
         if (addon->RootNode is null) return;
         if (previousWardButtonNode is null) return;
@@ -81,12 +80,11 @@ public unsafe class EnhancedWardNavigation : GameModification {
         nextWardButtonNode = null;
     }
 
-    private void OnHousingRefresh(AddonEvent type, AddonArgs args) {
-        if (args is not AddonRefreshArgs refreshArgs) return;
-        if (refreshArgs.ValueSpan.Length < 2) return;
+    private void RefreshHousingSelectBlock(AtkUnitBase* addon) {
+        if (addon->AtkValuesSpan.Length < 2) return;
 
-        var eventKind = args.ValueSpan[0].UInt;
-        var newWard = args.ValueSpan[1].Int;
+        var eventKind = addon->AtkValuesSpan[0].UInt;
+        var newWard = addon->AtkValuesSpan[1].Int;
 
         currentWard = newWard;
         ToggleButtons(eventKind is 4);
@@ -110,7 +108,6 @@ public unsafe class EnhancedWardNavigation : GameModification {
     }
 
     public override void OnDisable() {
-        Services.AddonLifecycle.UnregisterListener(OnHousingRefresh);
         housingAddonController?.Dispose();
         housingAddonController = null;
     }

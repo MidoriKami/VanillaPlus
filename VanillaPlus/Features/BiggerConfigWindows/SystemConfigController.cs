@@ -15,9 +15,11 @@ public unsafe class SystemConfigController : IDisposable {
     public SystemConfigController(BiggerConfigWindowsConfig config) {
         this.config = config;
 
-        systemConfigController = new AddonController("ConfigSystem");
-        systemConfigController.OnAttach += OnAttach;
-        systemConfigController.OnDetach += OnDetach;
+        systemConfigController = new AddonController {
+            AddonName = "ConfigSystem",
+            OnSetup = SetupConfigSystem,
+            OnFinalize = FinalizeConfigSystem,
+        };
         systemConfigController.Enable();
     }
 
@@ -25,7 +27,7 @@ public unsafe class SystemConfigController : IDisposable {
         systemConfigController.Dispose();
     }
 
-    private void OnAttach(AtkUnitBase* addon) {
+    private void SetupConfigSystem(AtkUnitBase* addon) {
         if (AtkStage.Instance()->ScreenSize.Height < addon->Size.Y + config.SystemConfigAdditionalHeight) {
             Services.ChatGui.PrintError("Unable to resize config window, height would be too big.", "[VanillaPlus] [BiggerConfigWindow]");
             Services.PluginLog.Warning("[BiggerConfigWindow] Unable to resize config window, height would be too big.");
@@ -49,7 +51,7 @@ public unsafe class SystemConfigController : IDisposable {
         addon->GetNodeById(15)->Size += new Vector2(0.0f, config.SystemConfigAdditionalHeight);
     }
     
-    private void OnDetach(AtkUnitBase* addon) {
+    private void FinalizeConfigSystem(AtkUnitBase* addon) {
         addon->Size -= new Vector2(0.0f, config.SystemConfigAdditionalHeight);
 
         // Adjust containers and scroll

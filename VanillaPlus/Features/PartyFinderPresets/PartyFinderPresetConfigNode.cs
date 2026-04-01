@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Nodes;
+using KamiToolKit.Premade.Node;
 
 namespace VanillaPlus.Features.PartyFinderPresets;
 

@@ -8,8 +8,8 @@ using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Addons;
-using KamiToolKit.Premade.ListItemNodes;
+using KamiToolKit.Premade.Addon;
+using KamiToolKit.Premade.Node.ListItem;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Addons;
@@ -79,49 +79,48 @@ public unsafe class PartyFinderPresets : GameModification {
         
         Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "LookingForGroup", OnLookingForGroupEvent);
 
-        recruitmentCriteriaController = new AddonController<AtkUnitBase>("LookingForGroupCondition");
-        recruitmentCriteriaController.OnAttach += addon => {
-            savePresetButton = new TextButtonNode {
-                Position = new Vector2(406.0f, 605.0f),
-                Size = new Vector2(160.0f, 28.0f),
-                String = Strings.Button_SavePreset,
-                TextTooltip = Strings.Tooltip_SavePreset,
-                OnClick = savePresetWindow.Open,
-            };
-            savePresetButton.AttachNode(addon);
+        recruitmentCriteriaController = new AddonController<AtkUnitBase> {
+            AddonName = "LookingForGroupCondition",
+            OnSetup = addon => {
+                savePresetButton = new TextButtonNode {
+                    Position = new Vector2(406.0f, 605.0f),
+                    Size = new Vector2(160.0f, 28.0f),
+                    String = Strings.Button_SavePreset,
+                    TextTooltip = Strings.Tooltip_SavePreset,
+                    OnClick = savePresetWindow.Open,
+                };
+                savePresetButton.AttachNode(addon);
+            },
+            OnFinalize = _ => {
+                savePresetButton?.DetachNode();
+                savePresetButton = null;
+            },
         };
-
-        recruitmentCriteriaController.OnDetach += _ => {
-            savePresetButton?.DetachNode();
-            savePresetButton = null;
-        };
-
         recruitmentCriteriaController.Enable();
 
-        lookingForGroupController = new AddonController<AtkUnitBase>("LookingForGroup");
+        lookingForGroupController = new AddonController<AtkUnitBase> {
+            AddonName = "LookingForGroup",
+            OnSetup = addon => {
+                if (presetDropDown is not null) {
+                    presetDropDown?.Dispose();
+                    presetDropDown = null;
+                }
 
-        lookingForGroupController.OnAttach += addon => {
-            if (presetDropDown is not null) {
+                presetDropDown = new TextDropDownNode {
+                    Position = new Vector2(185.0f, 636.0f),
+                    Size = new Vector2(200.0f, 25.0f),
+                    MaxListOptions = 10,
+                    Options = PresetManager.GetPresetNames(),
+                };
+                UpdateDropDownOptions();
+
+                presetDropDown.AttachNode(addon);
+            },
+            OnFinalize = _ => {
                 presetDropDown?.Dispose();
                 presetDropDown = null;
-            }
-
-            presetDropDown = new TextDropDownNode {
-                Position = new Vector2(185.0f, 636.0f),
-                Size = new Vector2(200.0f, 25.0f),
-                MaxListOptions = 10,
-                Options = PresetManager.GetPresetNames(),
-            };
-            UpdateDropDownOptions();
-
-            presetDropDown.AttachNode(addon);
+            },
         };
-        
-        lookingForGroupController.OnDetach += _ => {
-            presetDropDown?.Dispose();
-            presetDropDown = null;
-        };
-        
         lookingForGroupController.Enable();
     }
 

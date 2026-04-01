@@ -3,9 +3,8 @@ using System.Numerics;
 using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Color;
-using KamiToolKit.Premade.Nodes;
-using KamiToolKit.Premade.Widgets;
+using KamiToolKit.Premade.Node;
+using KamiToolKit.Premade.Node.Color;
 
 namespace VanillaPlus.Features.WindowBackground.Nodes;
 

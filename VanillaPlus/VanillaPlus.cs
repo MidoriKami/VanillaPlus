@@ -7,6 +7,7 @@ using Dalamud.Plugin;
 using KamiToolKit;
 using VanillaPlus.Classes;
 using VanillaPlus.InternalSystem;
+using VanillaPlus.NativeElements.Addons;
 using static VanillaPlus.Utilities.Localization;
 
 namespace VanillaPlus;
@@ -29,38 +30,59 @@ public sealed class VanillaPlus : IDalamudPlugin {
             Size = new Vector2(836.0f, 650.0f),
         };
 
-        Services.CommandManager.AddHandler("/vanillaplus", new CommandInfo(Handler) {
+        PluginSystem.SeasonEventAddon = new SeasonEventAddon {
+            InternalName = "SeasonalEventNotice",
+            Title = "Seasonal Event Notice",
+            Size = new Vector2(500.0f, 275.0f),
+        };
+
+        Services.CommandManager.AddHandler("/vanillaplus", new CommandInfo(CommandHandler) {
             DisplayOrder = 1,
             ShowInHelp = true,
             HelpMessage = Strings.CommandHelpOpenBrowser,
         });
 
-        Services.CommandManager.AddHandler("/plus", new CommandInfo(Handler) {
+        Services.CommandManager.AddHandler("/plus", new CommandInfo(CommandHandler) {
             DisplayOrder = 2,
             ShowInHelp = true,
             HelpMessage = Strings.CommandHelpOpenBrowser,
         });
 
-        Services.PluginInterface.UiBuilder.OpenConfigUi += OpenModificationBrowser;
+        Services.PluginInterface.UiBuilder.OpenConfigUi += PluginSystem.AddonModificationBrowser.Open;
+        Services.ClientState.Login += OnLogin;
 
         PluginSystem.KeyListener = new KeyListener();
         PluginSystem.ModificationManager = new ModificationManager();
 
         AutoOpenBrowser(PluginSystem.SystemConfig.IsDebugMode);
+
+        if (Services.ClientState.IsLoggedIn) {
+            OnLogin();
+        }
     }
 
     public void Dispose() {
         PluginSystem.KeyListener.Dispose();
         PluginSystem.ModificationManager.Dispose();
 
-        Services.PluginInterface.UiBuilder.OpenConfigUi -= OpenModificationBrowser;
+        Services.PluginInterface.UiBuilder.OpenConfigUi -= PluginSystem.AddonModificationBrowser.Open;
+        Services.ClientState.Login -= OnLogin;
 
         Services.CommandManager.RemoveHandler("/vanillaplus");
         Services.PluginInterface.LanguageChanged -= SetCultureInfo;
 
         PluginSystem.AddonModificationBrowser.Dispose();
+        PluginSystem.SeasonEventAddon.Dispose();
 
         KamiToolKitLibrary.Dispose();
+    }
+    
+    private void OnLogin() {
+        if (DateTime.Now.IsSeasonalEvent && DateTime.Now.Date > PluginSystem.SystemConfig.LastSeasonalNotice.Date) {
+            PluginSystem.SeasonEventAddon.Open();
+            PluginSystem.SystemConfig.LastSeasonalNotice = DateTime.Now.Date;
+            PluginSystem.SystemConfig.Save();
+        }
     }
 
     [Conditional("DEBUG")]
@@ -74,7 +96,7 @@ public sealed class VanillaPlus : IDalamudPlugin {
     private static void DebugDelayStartup()
         => Thread.Sleep(TimeSpan.FromMilliseconds(500));
 
-    private static void Handler(string command, string arguments) {
+    private static void CommandHandler(string command, string arguments) {
         if (command is not ("/vanillaplus" or "/plus")) return;
         
         switch (arguments) {
@@ -87,10 +109,11 @@ public sealed class VanillaPlus : IDalamudPlugin {
                 Services.ChatGui.Print($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled": "Disabled")}", "VanillaPlus");
                 Services.PluginLog.Info($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled": "Disabled")}");
                 PluginSystem.SystemConfig.Save();
+
+                if (!PluginSystem.AddonModificationBrowser.IsOpen) {
+                    PluginSystem.AddonModificationBrowser.Open();
+                }
                 break;
         }
     }
-
-    private void OpenModificationBrowser()
-        => PluginSystem.AddonModificationBrowser.Open();
 }

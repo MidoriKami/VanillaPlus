@@ -4,9 +4,9 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
-using KamiToolKit.Overlay;
-using KamiToolKit.Premade.Addons;
-using KamiToolKit.Premade.SearchAddons;
+using KamiToolKit.Overlay.UiOverlay;
+using KamiToolKit.Premade.Addon;
+using KamiToolKit.Premade.Addon.Search;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.WindowBackground.Nodes;
@@ -45,11 +45,12 @@ public unsafe class WindowBackground : GameModification {
         config = WindowBackgroundConfig.Load();
 
         overlayController = new OverlayController();
-        dynamicAddonController = new DynamicAddonController(config.Settings.Select(setting => setting.AddonName).ToArray());
-
-        dynamicAddonController.OnAttach += AttachNode;
-        dynamicAddonController.OnDetach += DetachNode;
-        dynamicAddonController.OnUpdate += UpdateNode;
+        dynamicAddonController = new DynamicAddonController {
+            AddonNames = config.Settings.Select(setting => setting.AddonName).ToList(),
+            OnSetup = AttachNode,
+            OnFinalize = DetachNode,
+            OnUpdate = UpdateNode,
+        };
 
         dynamicAddonController.Enable();
 

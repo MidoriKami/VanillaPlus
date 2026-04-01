@@ -70,36 +70,34 @@ public unsafe class MSQProgressBar : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
         
-        scenarioTreeAddonController = new AddonController("ScenarioTree");
-
-        scenarioTreeAddonController.OnAttach += addon => {
-            var targetPositioningNode = addon->GetNodeById<AtkComponentNode>(13);
-            var msqTextNode = targetPositioningNode->SearchNodeById<AtkTextNode>(6);
+        scenarioTreeAddonController = new AddonController {
+            AddonName = "ScenarioTree",
+            OnSetup = addon => {
+                var targetPositioningNode = addon->GetNodeById<AtkComponentNode>(13);
+                var msqTextNode = targetPositioningNode->SearchNodeById<AtkTextNode>(6);
             
-            progressBarNode = new ProgressBarNode {
-                Size = new Vector2(msqTextNode->Width, 9.0f),
-                Position = new Vector2(0.0f, msqTextNode->Height - 3.0f),
-                TextTooltip = string.Format(Strings.MSQProgressBar_TooltipCurrentProgress, "000"),
-                Progress = 0.5f,
-            };
-            progressBarNode.AttachNode(msqTextNode, NodePosition.BeforeTarget);
+                progressBarNode = new ProgressBarNode {
+                    Size = new Vector2(msqTextNode->Width, 9.0f),
+                    Position = new Vector2(0.0f, msqTextNode->Height - 3.0f),
+                    TextTooltip = string.Format(Strings.MSQProgressBar_TooltipCurrentProgress, "000"),
+                    Progress = 0.5f,
+                };
+                progressBarNode.AttachNode(msqTextNode, NodePosition.BeforeTarget);
             
-            UpdateProgress(addon);
-        };
-
-        scenarioTreeAddonController.OnUpdate += addon => {
-            if (addon->AtkValuesCount < 7) return;
+                UpdateProgress(addon);
+            },
+            OnUpdate = addon => {
+                if (addon->AtkValuesCount < 7) return;
             
-            UpdateProgress(addon);
-            progressBarNode?.BarColor = config.BarColor with { W = 1.0f };
-            progressBarNode?.Alpha = config.BarColor.W;
+                UpdateProgress(addon);
+                progressBarNode?.BarColor = config.BarColor with { W = 1.0f };
+                progressBarNode?.Alpha = config.BarColor.W;
+            },
+            OnFinalize = _ => {
+                progressBarNode?.Dispose();
+                progressBarNode = null;
+            },
         };
-
-        scenarioTreeAddonController.OnDetach += _ => {
-            progressBarNode?.Dispose();
-            progressBarNode = null;
-        };
-
         scenarioTreeAddonController.Enable();
     }
 

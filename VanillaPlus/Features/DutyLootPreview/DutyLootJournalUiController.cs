@@ -20,10 +20,12 @@ public unsafe class DutyLootJournalUiController {
     public Action? OnButtonClicked { get; init; }
 
     public void OnEnable() {
-        journalDetail = new AddonController<AddonJournalDetail>("JournalDetail");
-        journalDetail.OnAttach += AttachNodes;
-        journalDetail.OnDetach += DetachNodes;
-        journalDetail.OnRefresh += RefreshNodes;
+        journalDetail = new AddonController<AddonJournalDetail> {
+            AddonName = "JournalDetail",
+            OnSetup = SetupJounralDetail,
+            OnFinalize = FinalizeJournalDetail,
+            OnRefresh = RefreshJournalDetail,
+        };
         journalDetail.Enable();
 
         DataLoader.OnChanged += OnDataChanged;
@@ -36,7 +38,7 @@ public unsafe class DutyLootJournalUiController {
         journalDetail = null;
     }
 
-    private void AttachNodes(AddonJournalDetail* addon) {
+    private void SetupJounralDetail(AddonJournalDetail* addon) {
         var dutyTitleNode = addon->GetNodeById(37);
         if (dutyTitleNode is null) return;
 
@@ -53,7 +55,7 @@ public unsafe class DutyLootJournalUiController {
         lootButtonNode.AttachNode(dutyTitleNode, NodePosition.AfterTarget);
     }
 
-    private void RefreshNodes(AddonJournalDetail* addon)
+    private void RefreshJournalDetail(AddonJournalDetail* addon)
         => lootButtonNode?.IsVisible = ShouldShow(addon);
 
     private void OnDataChanged() {
@@ -78,7 +80,7 @@ public unsafe class DutyLootJournalUiController {
         return lootData is not null || DataLoader.IsLoading;
     }
 
-    private void DetachNodes(AddonJournalDetail* addon) {
+    private void FinalizeJournalDetail(AddonJournalDetail* addon) {
         lootButtonNode?.Dispose();
         lootButtonNode = null;
     }

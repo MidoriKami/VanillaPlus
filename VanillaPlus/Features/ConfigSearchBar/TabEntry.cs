@@ -4,7 +4,7 @@ using System.Numerics;
 using System.Text.RegularExpressions;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
-using KamiToolKit.Nodes;
+using KamiToolKit.Premade.Node.Simple;
 
 namespace VanillaPlus.Features.ConfigSearchBar;
 

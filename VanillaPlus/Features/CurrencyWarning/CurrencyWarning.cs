@@ -1,8 +1,8 @@
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Overlay;
-using KamiToolKit.Premade.Addons;
-using KamiToolKit.Premade.SearchAddons;
+using KamiToolKit.Overlay.UiOverlay;
+using KamiToolKit.Premade.Addon;
+using KamiToolKit.Premade.Addon.Search;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.CurrencyWarning.Nodes;

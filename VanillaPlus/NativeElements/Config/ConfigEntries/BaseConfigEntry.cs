@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using KamiToolKit;
 using KamiToolKit.Nodes;
+using KamiToolKit.Premade.Node;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.NativeElements.Config.ConfigEntries;
@@ -9,6 +10,7 @@ public abstract class BaseConfigEntry : IConfigEntry {
     public required string Label { get; init; }
     public required MemberInfo MemberInfo { get; init; }
     public required ISavable Config { get; init; }
+    public string? Tooltip { get; set; }
 
     public abstract NodeBase BuildNode();
 

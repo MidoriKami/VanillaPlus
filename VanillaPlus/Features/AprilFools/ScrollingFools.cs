@@ -4,30 +4,32 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace VanillaPlus.Features.AprilFools;
 
-public unsafe class ScrollingFools : IFoolsModule {
-    public required AprilFoolsConfig Config { get; set; }
-
+/// <summary>
+/// With the default setting of Invert Scroll, will make mouse scrolls reverse direction for scrollbars in game.
+/// Clicking and dragging a scrollbar is uneffected.
+///
+/// When in Insane Scroll mode which the user has to explicitly opt in, reverses the scroll direction every other second,
+/// with even seconds scrolling backwards twice as fast as forwards.
+/// </summary>
+public unsafe class ScrollingFools : FoolsModule {
     private Hook<AtkComponentScrollBar.Delegates.ReceiveEvent>? scrollBarReceiveEventHook;
     
-    public void Enable() {
+    public override bool IsEnabledByConfig 
+        => Config.InvertScroll;
+    
+    protected override void OnEnable() {
         scrollBarReceiveEventHook = Services.Hooker.HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
         scrollBarReceiveEventHook?.Enable();
     }
 
-    public void Disable() {
+    protected override void OnDisable() {
         scrollBarReceiveEventHook?.Dispose();
         scrollBarReceiveEventHook = null;
     }
     
     private void AtkComponentScrollBarReceiveEvent(AtkComponentScrollBar* thisPtr, AtkEventType type, int param, AtkEvent* eventPointer, AtkEventData* dataPointer) {
         try {
-            if (Config.InsaneScrollMode) {
-                dataPointer->MouseData.WheelDirection *= (short) (DateTime.UtcNow.Second % 2 is 0 ? -2 : 1);
-            }
-            else if (Config.InvertScroll) {
-                dataPointer->MouseData.WheelDirection *= -1;
-            }
-        
+            dataPointer->MouseData.WheelDirection *= -1;
             scrollBarReceiveEventHook!.Original(thisPtr, type, param, eventPointer, dataPointer);
         }
         catch (Exception e) {

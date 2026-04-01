@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using KamiToolKit.Overlay;
+using KamiToolKit.Overlay.MapOverlay;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;

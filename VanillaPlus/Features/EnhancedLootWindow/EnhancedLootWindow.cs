@@ -10,6 +10,7 @@ using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
+using KamiToolKit.Premade.Node.Simple;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -53,10 +54,12 @@ public unsafe class EnhancedLootWindow : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        needGreedController = new AddonController<AddonNeedGreed>("NeedGreed");
-        needGreedController.OnAttach += AttachNodes;
-        needGreedController.OnDetach += DetachNodes;
-        needGreedController.OnRefresh += RefreshNodes;
+        needGreedController = new AddonController<AddonNeedGreed> {
+            AddonName = "NeedGreed",
+            OnSetup = SetupNeedGreed,
+            OnFinalize = FinalizeNeedGreed,
+            OnRefresh = RefreshNeedGreed,
+        };
         needGreedController.Enable();
     }
 
@@ -70,7 +73,7 @@ public unsafe class EnhancedLootWindow : GameModification {
         config = null;
     }
 
-    private void AttachNodes(AddonNeedGreed* addon) {
+    private void SetupNeedGreed(AddonNeedGreed* addon) {
         var listComponentNode = (AtkComponentNode*) addon->GetNodeById(6);
         if (listComponentNode is null) return;
         
@@ -113,7 +116,7 @@ public unsafe class EnhancedLootWindow : GameModification {
         }
     }
     
-    private void DetachNodes(AddonNeedGreed* addon) {
+    private void FinalizeNeedGreed(AddonNeedGreed* addon) {
         foreach (var node in crossNodes) {
             node.Dispose();
         }
@@ -129,7 +132,7 @@ public unsafe class EnhancedLootWindow : GameModification {
     private const int MountCategory = 63;
     private const int MountSubCategory = 175;
 
-    private void RefreshNodes(AddonNeedGreed* addon) {
+    private void RefreshNeedGreed(AddonNeedGreed* addon) {
         // For each possible item slot, get the item info
         for (var index = 0; index < addon->Items.Length; index++) {
             ref var itemInfo = ref addon->Items[index];

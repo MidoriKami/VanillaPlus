@@ -32,13 +32,10 @@ public class ModificationManager : IDisposable {
 
         Services.PluginInterface.ActivePluginsChanged += OnPluginsChanged;
 
-        // Only put season events tab at top if it is currently a seasonal event day, else put it alphabetically.
-        var seasonalEventActive = DateTime.UtcNow.ToLocalTime() is { Month: 4, Day: 1 };
-
         CategoryGroups = loadedModifications
             .Select(option => option)
             .GroupBy(option => option.Modification.ModificationInfo.Type)
-            .OrderByDescending(group => group.Key == ModificationType.Seasonal && seasonalEventActive)
+            .OrderByDescending(group => group.Key is ModificationType.Seasonal && DateTime.Now.IsSeasonalEvent)
             .ThenBy(group => group.Key)
             .ToList();
 

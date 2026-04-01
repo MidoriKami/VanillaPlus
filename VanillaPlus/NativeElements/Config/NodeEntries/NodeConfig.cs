@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using KamiToolKit;
 using KamiToolKit.Nodes;
+using KamiToolKit.Premade.Node;
 using VanillaPlus.NativeElements.Config.ConfigEntries;
 
 namespace VanillaPlus.NativeElements.Config.NodeEntries;
@@ -8,6 +9,7 @@ namespace VanillaPlus.NativeElements.Config.NodeEntries;
 public class NodeConfig<T> : IConfigEntry where T : NodeStyle, new() {
 
     public required T StyleObject { get; init; }
+    public string? Tooltip { get; set; }
 
     private const float ElementStartOffset = 100.0f;
 

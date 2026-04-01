@@ -28,50 +28,48 @@ public unsafe class HUDCoordinates : GameModification {
     public override void OnEnable() {
         textNodes = [];
         
-        hudLayoutScreenController = new AddonController("_HudLayoutScreen");
+        hudLayoutScreenController = new AddonController {
+            AddonName = "_HudLayoutScreen",
+            OnSetup = addon => {
+                foreach (var node in addon->UldManager.Nodes) {
+                    if (node.Value is null) continue;
+                    if (node.Value->GetNodeType() is not NodeType.Component) continue;
 
-        hudLayoutScreenController.OnAttach += addon => {
-            foreach (var node in addon->UldManager.Nodes) {
-                if (node.Value is null) continue;
-                if (node.Value->GetNodeType() is not NodeType.Component) continue;
-
-                var newTextNode = new TextNode {
-                    NodeId = 100,
-                    Size = new Vector2(90.0f, 22.0f),
-                    Position = new Vector2(node.Value->Width / 2.0f, node.Value->Height / 2.0f) - new Vector2(90.0f, 22.0f) / 2.0f,
-                    String = new Vector2(node.Value->X, node.Value->Y).ToString(),
-                };
+                    var newTextNode = new TextNode {
+                        NodeId = 100,
+                        Size = new Vector2(90.0f, 22.0f),
+                        Position = new Vector2(node.Value->Width / 2.0f, node.Value->Height / 2.0f) - new Vector2(90.0f, 22.0f) / 2.0f,
+                        String = new Vector2(node.Value->X, node.Value->Y).ToString(),
+                    };
                 
-                textNodes.Add(newTextNode);
-                newTextNode.AttachNode(node.Value);
-            }
-        };
-
-        hudLayoutScreenController.OnRefresh += addon => {
-            foreach (var node in addon->UldManager.Nodes) {
-                if (node.Value is null) continue;
-                if (node.Value->GetNodeType() is not NodeType.Component) continue;
-                var componentNode = (AtkComponentNode*)node.Value;
+                    textNodes.Add(newTextNode);
+                    newTextNode.AttachNode(node.Value);
+                }
+            },
+            OnRefresh = addon => {
+                foreach (var node in addon->UldManager.Nodes) {
+                    if (node.Value is null) continue;
+                    if (node.Value->GetNodeType() is not NodeType.Component) continue;
+                    var componentNode = (AtkComponentNode*)node.Value;
                 
-                var textNode = componentNode->Component->GetTextNodeById(100);
-                if (textNode is null) continue;
+                    var textNode = componentNode->Component->GetTextNodeById(100);
+                    if (textNode is null) continue;
                 
-                var textNodeSizeOffset = new Vector2(node.Value->Width, node.Value->Height) / 2.0f - new Vector2(90.0f, 22.0f) / 2.0f;
-                var textNodeCenter = new Vector2(node.Value->X, node.Value->Y) + new Vector2(node.Value->Width, node.Value->Height) / 2.0f;
+                    var textNodeSizeOffset = new Vector2(node.Value->Width, node.Value->Height) / 2.0f - new Vector2(90.0f, 22.0f) / 2.0f;
+                    var textNodeCenter = new Vector2(node.Value->X, node.Value->Y) + new Vector2(node.Value->Width, node.Value->Height) / 2.0f;
                 
-                textNode->SetPositionFloat(textNodeSizeOffset.X, textNodeSizeOffset.Y);
-                textNode->SetText(textNodeCenter.ToString());
-            }
-        };
-
-        hudLayoutScreenController.OnDetach += _ => {
-            foreach (var node in textNodes) {
-                node.Dispose();
-            }
+                    textNode->SetPositionFloat(textNodeSizeOffset.X, textNodeSizeOffset.Y);
+                    textNode->SetText(textNodeCenter.ToString());
+                }
+            },
+            OnFinalize = _ => {
+                foreach (var node in textNodes) {
+                    node.Dispose();
+                }
             
-            textNodes.Clear();
+                textNodes.Clear();
+            },
         };
-        
         hudLayoutScreenController.Enable();
     }
 

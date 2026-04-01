@@ -2,7 +2,7 @@
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using KamiToolKit.Premade.Nodes;
+using KamiToolKit.Overlay.MapOverlay;
 using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Features.ShowGatheringPoints;

@@ -1,4 +1,4 @@
-﻿using KamiToolKit.Nodes;
+﻿using KamiToolKit.Premade.Node.Simple;
 using VanillaPlus.Features.CosmicExplorationProgressWindow.Enums;
 
 namespace VanillaPlus.Features.CosmicExplorationProgressWindow.Nodes;

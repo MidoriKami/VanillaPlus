@@ -1,10 +1,10 @@
 ﻿using Dalamud.Game.Text;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using KamiToolKit.Premade.GenericListItemNodes;
+using KamiToolKit.Premade.Node.ListItem;
 
 namespace VanillaPlus.NativeElements.ListItemNodes;
 
-public class GearsetListItemNode : GenericListItemNode<RaptureGearsetModule.GearsetEntry> {
+public class GearsetListItemNode : IconListItemNode<RaptureGearsetModule.GearsetEntry> {
     protected override uint GetIconId(RaptureGearsetModule.GearsetEntry data)
         => data.ClassJob + 62000u;
     

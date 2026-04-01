@@ -2,6 +2,7 @@ using System.Linq;
 using System.Numerics;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
+using KamiToolKit.Premade.Node.Simple;
 using KamiToolKit.Timelines;
 using VanillaPlus.Features.DutyLootPreview.Data;
 using Action = System.Action;
