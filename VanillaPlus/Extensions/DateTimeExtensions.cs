@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace VanillaPlus.Extensions;
 
 public static class DateTimeExtensions {
-    private static readonly List<DateTime> SeasonalDates = [
-        new(2000, 4, 1), // April Fools
-    ];
-
     extension(DateTime dateTime) {
-        public bool IsSeasonalEvent 
-            => SeasonalDates.Any(date => date.DayOfYear == dateTime.DayOfYear);
+        public bool IsSeasonalEvent => dateTime switch {
+            { Month: 4, Day: 1 } => true, // April Fools
+            _ => false,
+        };
     }
 }
