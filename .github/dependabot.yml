@@ -8,6 +8,6 @@ updates:
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
-      day: wednesday
+      interval: "day wednesday"
     allow:
       - dependency-name: "LuminaSupplemental.Excel"
