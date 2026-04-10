@@ -1,20 +1,27 @@
 ﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using KamiToolKit.Controllers;
+using VanillaPlus.Classes;
+using VanillaPlus.Enums;
 
-namespace VanillaPlus.Features.AprilFools;
+namespace VanillaPlus.Features.ReverseCharacterPanel;
 
-/// <summary>
-/// Swaps the position of the panels in the Character window to have the player model on the left and the stats on the right.
-/// This one actually looks really nice so may become a permanent feature.
-/// </summary>
-public unsafe class BetterCharacterPanelFools : FoolsModule {
+public unsafe class ReverseCharacterPanel : GameModification {
+    public override ModificationInfo ModificationInfo => new() {
+        DisplayName = "Reverse Character Panel",
+        Description = "Switches where the character information and character portraits are in the Character window.",
+        Type = ModificationType.UserInterface,
+        Authors = [ "MidoriKami" ],
+        ChangeLog = [
+            new ChangeLogInfo(1, "Initial Implementation"),
+        ],
+    };
+
+    public override string ImageName => "ReverseCharacterPanel.png";
+
     private AddonController<AddonCharacter>? characterController;
 
-    public override bool IsEnabledByConfig 
-        => Config.BetterCharacterPanel;
-
-    protected override void OnEnable() {
+    public override void OnEnable() {
         characterController = new AddonController<AddonCharacter> {
             AddonName = "Character",
             OnSetup = SetupCharacter,
@@ -24,23 +31,23 @@ public unsafe class BetterCharacterPanelFools : FoolsModule {
         characterController.Enable();
     }
 
-    protected override void OnDisable() {
+    public override void OnDisable() {
         characterController?.Dispose();
         characterController = null;
     }
-    
+
     private static void SetupCharacter(AddonCharacter* addonCharacter) {
         var characterNode = addonCharacter->GetNodeById(10);
         if (characterNode is null) return;
 
-        characterNode->Position -= new Vector2(375.0f, 0.0f);
+        characterNode->Position -= new Vector2(380.0f, 0.0f);
     }
 
     private static void UpdateCharacter(AddonCharacter* addonCharacter) {
         foreach (var child in addonCharacter->AddonControl.ChildAddons) {
             if (child.Value is null) continue;
 
-            child.Value->PositionX = (short) 356.0f;
+            child.Value->PositionX = (short) (addonCharacter->AtkUnitBase.Size.X - 386.0f);
         }
     }
 
@@ -48,6 +55,6 @@ public unsafe class BetterCharacterPanelFools : FoolsModule {
         var characterNode = addonCharacter->GetNodeById(10);
         if (characterNode is null) return;
 
-        characterNode->Position += new Vector2(375.0f, 0.0f);
+        characterNode->Position += new Vector2(380.0f, 0.0f);
     }
 }

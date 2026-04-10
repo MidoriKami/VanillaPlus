@@ -35,7 +35,6 @@ public class AprilFools : GameModification {
             new EmotionalDamageFools {  Config = config },
             new JustMonikaFools { Config = config },
             new DutyReadyFools { Config = config },
-            new BetterCharacterPanelFools { Config = config },
             new FlippingOutFools { Config = config },
         ];
 
@@ -65,11 +64,7 @@ public class AprilFools : GameModification {
             .AddCheckbox("Duty Pop", nameof(config.DutyPop), 
                 enabled => modules[4].Toggle(enabled))
             .AddTooltip("Queuing for lots of duties? They seem to be poppin a lot.")
-            
-            .AddCheckbox("Better Character Panel", nameof(config.BetterCharacterPanel), 
-                enabled => modules[5].Toggle(enabled))
-            .AddTooltip("Honestly, this one isn't even a prank, its just the way it should have been.")
-            
+
             .AddCheckbox("Flipping Out", nameof(config.FlippingOut), 
                 enabled => modules[6].Toggle(enabled))
             .AddTooltip("Placeholder text, make CERTAIN to replace this before releasing or else you'll look really silly. \n    - MidoriKami");
