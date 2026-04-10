@@ -9,5 +9,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+        day: wednesday
     allow:
       - dependency-name: "LuminaSupplemental.Excel"
