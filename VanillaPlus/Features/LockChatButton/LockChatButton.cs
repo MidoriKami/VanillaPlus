@@ -57,6 +57,25 @@ public unsafe class LockChatButton : GameModification {
         };
         panelController.Enable();
     }
+    
+    public override void OnDisable() {
+        chatLogController?.Dispose();
+        chatLogController = null;
+
+        panelController?.Dispose();
+        panelController = null;
+
+        moveDeltaHook?.Dispose();
+        moveDeltaHook = null;
+
+        foreach (var (_, button) in panelButtons ?? []) {
+            button.Dispose();
+        }
+        panelButtons?.Clear();
+        panelButtons = null;
+
+        data = null;
+    }
 
     private void SetupChatLog(AddonChatLog* addon) {
         var addonControl = (AtkAddonControl*)((byte*)addon + 0x568);
@@ -176,24 +195,5 @@ public unsafe class LockChatButton : GameModification {
         }
 
         return moveDeltaHook!.Original(thisPtr, xDelta, yDelta);
-    }
-
-    public override void OnDisable() {
-        chatLogController?.Dispose();
-        chatLogController = null;
-
-        panelController?.Dispose();
-        panelController = null;
-
-        moveDeltaHook?.Dispose();
-        moveDeltaHook = null;
-
-        foreach (var (_, button) in panelButtons ?? []) {
-            button.Dispose();
-        }
-        panelButtons?.Clear();
-        panelButtons = null;
-
-        data = null;
     }
 }
