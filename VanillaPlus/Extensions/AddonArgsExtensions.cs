@@ -36,10 +36,14 @@ public static unsafe class AddonArgsExtensions {
         }
 
         private Vector2 GetMouseClickPosition() {
-            var mouseData = GetMouseData(args);
+            var mouseData = args.GetMouseData();
             if (mouseData is null) return Vector2.Zero;
 
             return new Vector2(mouseData->PosX, mouseData->PosY);
         }
+    }
+
+    extension(AddonReceiveEventArgs receiveEventArgs) {
+        public AtkEventType EventType => (AtkEventType)receiveEventArgs.AtkEventType;
     }
 }
