@@ -44,7 +44,7 @@ public unsafe class BetterSelectString : GameModification {
             UpdateElement = (_, item) => {
                 var textNode = item.GetNode<AtkTextNode>(0);
                 if (textNode is null) return;
-                if (item.ItemIndex > 10) return;
+                if (item.ItemIndex > 9) return;
                 
                 textNode->SetText($"{(item.ItemIndex + 1) % 10}. {textNode->GetText()}");
             },
