@@ -84,7 +84,7 @@ public unsafe class BetterSelectString : GameModification {
                 return;
             }
 
-            var numpadKey = VirtualKey.NUMPAD0 + (ushort)keyIndex;
+            var numpadKey = VirtualKey.NUMPAD0 + (ushort) keyIndex;
             var isNumpadKeyPressed = Services.KeyState.IsVirtualKeyValid(numpadKey) && Services.KeyState[(int)numpadKey];
 
             if (isNumpadKeyPressed) {
