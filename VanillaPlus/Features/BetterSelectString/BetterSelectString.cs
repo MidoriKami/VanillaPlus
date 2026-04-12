@@ -45,8 +45,14 @@ public unsafe class BetterSelectString : GameModification {
                 var textNode = item.GetNode<AtkTextNode>(0);
                 if (textNode is null) return;
                 if (item.ItemIndex > 9) return;
-                
-                textNode->SetText($"{(item.ItemIndex + 1) % 10}. {textNode->GetText()}");
+
+                using var stringBuilder = new RentedSeStringBuilder();
+                var builtString = stringBuilder
+                    .Builder.Append($"{(item.ItemIndex + 1) % 10}")
+                    .Append(textNode->GetText().AsReadOnlySeStringSpan())
+                    .GetViewAsSpan();
+
+                textNode->SetText(builtString);
             },
         };
         selectStringListController.Enable();
