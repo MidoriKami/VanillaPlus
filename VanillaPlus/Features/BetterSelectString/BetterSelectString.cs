@@ -44,8 +44,9 @@ public unsafe class BetterSelectString : GameModification {
             UpdateElement = (_, item) => {
                 var textNode = item.GetNode<AtkTextNode>(0);
                 if (textNode is null) return;
-
-                textNode->SetText($"{item.ItemIndex + 1}. {textNode->GetText()}");
+                if (item.ItemIndex > 10) return;
+                
+                textNode->SetText($"{(item.ItemIndex + 1) % 10}. {textNode->GetText()}");
             },
         };
         selectStringListController.Enable();
@@ -66,7 +67,9 @@ public unsafe class BetterSelectString : GameModification {
         if (listComponent is null) return;
 
         foreach (var index in Enumerable.Range(0, listComponent->ListLength)) {
-            var topRowKey = VirtualKey.KEY_1 + (ushort)index;
+            var keyIndex = (index + 1) % 10;
+            
+            var topRowKey = VirtualKey.KEY_0 + (ushort) keyIndex;
             var isTopRowKeyPressed = Services.KeyState.IsVirtualKeyValid(topRowKey) && Services.KeyState[(int)topRowKey];
 
             if (isTopRowKeyPressed) {
@@ -75,7 +78,7 @@ public unsafe class BetterSelectString : GameModification {
                 return;
             }
 
-            var numpadKey = VirtualKey.NUMPAD1 + (ushort)index;
+            var numpadKey = VirtualKey.NUMPAD0 + (ushort)keyIndex;
             var isNumpadKeyPressed = Services.KeyState.IsVirtualKeyValid(numpadKey) && Services.KeyState[(int)numpadKey];
 
             if (isNumpadKeyPressed) {
