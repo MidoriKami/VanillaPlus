@@ -72,6 +72,10 @@ public unsafe class BetterSelectString : GameModification {
         var listComponent = addon->GetComponentListById(3);
         if (listComponent is null) return;
 
+        // Doesn't need to have any actual data, just needs to exist so the game can set it as "handled"
+        var atkEvent = stackalloc AtkEvent[1];
+        var atkEventData = stackalloc AtkEventData[1];
+
         foreach (var index in Enumerable.Range(0, listComponent->ListLength)) {
             var keyIndex = (index + 1) % 10;
             
@@ -80,7 +84,9 @@ public unsafe class BetterSelectString : GameModification {
 
             if (isTopRowKeyPressed) {
                 Services.KeyState[(int)topRowKey] = false;
-                addon->FireCallbackInt(index);
+
+                atkEventData->ListItemData.SelectedIndex = index;
+                addon->PopupMenu.ReceiveEvent(AtkEventType.ListItemClick, 0, atkEvent, atkEventData);
                 return;
             }
 
@@ -89,7 +95,9 @@ public unsafe class BetterSelectString : GameModification {
 
             if (isNumpadKeyPressed) {
                 Services.KeyState[(int)numpadKey] = false;
-                addon->FireCallbackInt(index);
+                
+                atkEventData->ListItemData.SelectedIndex = index;
+                addon->PopupMenu.ReceiveEvent(AtkEventType.ListItemClick, 0, atkEvent, atkEventData);
                 return;
             }
         }
