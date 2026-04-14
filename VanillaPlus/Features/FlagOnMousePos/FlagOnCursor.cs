@@ -37,7 +37,10 @@ public unsafe class FlagOnCursor : GameModification {
 
             agentMap->FlagMarkerCount = 0;
             agentMap->SetFlagMapMarker(agentMap->CurrentTerritoryId, agentMap->CurrentMapId, mouseWorldPos);
-            AgentChatLog.Instance()->InsertTextCommandParam(1048, false);
+
+            Services.Framework.RunOnTick(() => {
+                AgentChatLog.Instance()->InsertTextCommandParam(1048, false);
+            });
         }
     }
 }
