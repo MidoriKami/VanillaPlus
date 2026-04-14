@@ -5,7 +5,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
-namespace VanillaPlus.Features.FlagOnMousePos;
+namespace VanillaPlus.Features.FlagOnCursor;
 
 public unsafe class FlagOnCursor : GameModification {
     public override ModificationInfo ModificationInfo => new() {
