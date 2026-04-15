@@ -89,8 +89,6 @@ public unsafe class ClearTextInputs : GameModification {
         if (eventType is not AtkEventType.MouseClick) return;
         if (atkEventData->MouseData.ButtonId is not 1) return;
         
-        Services.PluginLog.Debug("Right clicked!");
-
         var collisionNode = (AtkCollisionNode*)atkEvent->Target;
         if (collisionNode is null) return;
 
