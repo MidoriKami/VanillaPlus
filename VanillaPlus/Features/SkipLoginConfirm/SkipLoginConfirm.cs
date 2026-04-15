@@ -20,27 +20,19 @@ public unsafe class SkipLoginConfirm : GameModification {
     };
 
     public override void OnEnable()
-        => Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "_CharaSelectListMenu", OnCharacterListReceiveEvent);
+        => Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
 
     public override void OnDisable()
-        => Services.AddonLifecycle.UnregisterListener(OnCharacterListReceiveEvent);
-
-    private static void OnCharacterListReceiveEvent(AddonEvent type, AddonArgs args) {
-        if (args is not AddonReceiveEventArgs receiveEventArgs) return;
-        if ((AtkEventType)receiveEventArgs.AtkEventType is not AtkEventType.MouseClick) return;
-        if (receiveEventArgs.EventParam is < 5 or > 12) return;
-
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
-    }
+        => Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
 
     private static void SelectYesNoHandler(AddonEvent _, AddonArgs yesNoArgs) {
         var addon = yesNoArgs.GetAddon<AddonSelectYesno>();
 
         if (addon->AtkUnitBase.GetCallbackHandlerInfo() is { AgentId: AgentId.Lobby, EventKind: 3 }) {
-            addon->YesButton->SetEnabledState(false);
-            addon->AtkUnitBase.FireCallbackCommand([ 0 ]);
-        }
+            var atkEvent = stackalloc AtkEvent[1];
+            var atkEventData = stackalloc AtkEventData[1];
 
-        Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
+            addon->ReceiveEvent(AtkEventType.ButtonClick, 0, atkEvent, atkEventData);
+        }
     }
 }
