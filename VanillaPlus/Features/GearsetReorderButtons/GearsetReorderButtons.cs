@@ -1,14 +1,13 @@
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
-namespace VanillaPlus.Features.GearsetReorderButtons;
+namespace VanillaPlus.Features.GearSetReorderButtons;
 
-public class GearsetReorderButtons : GameModification {
+public class GearSetReorderButtons : GameModification {
 
     public override ModificationInfo ModificationInfo => new() {
-        // TODO: Add these to localization strings
-        DisplayName = "Gearset Reorder Buttons",
-        Description = "Adds buttons for easily reordering gearsets.",
+        DisplayName = Strings.GearsetReorderButtons_DisplayName,
+        Description = Strings.GearsetReorderButtons_Description,
         Type = ModificationType.UserInterface,
         Authors = ["zajrik"],
         ChangeLog = [
@@ -16,9 +15,7 @@ public class GearsetReorderButtons : GameModification {
         ],
     };
 
-    // public override string ImageName => "SampleGameModification.png";
-
-    // public override bool IsExperimental => true;
+    public override string ImageName => "GearSetReorderButtons.png";
 
     private GearSetListUiController? gearSetListUiController;
 

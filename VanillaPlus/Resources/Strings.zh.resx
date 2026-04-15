@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string"/>
-              <xsd:attribute name="type" type="xsd:string"/>
-              <xsd:attribute name="mimetype" type="xsd:string"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string"/>
-              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-              <xsd:attribute ref="xml:space"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -1219,228 +1219,234 @@ ID：{0}</value>
     <value>在技能冷却完毕或即将完毕时，使用蚂蚁线虚框效果进行高亮提示。</value>
   </data>
   <data name="PersistentRetainerGil_PersistentRetainerGil" xml:space="preserve">
-      <value>雇员金币金额记录</value>
+    <value>雇员金币金额记录</value>
   </data>
   <data name="PersistentRetainerGil_Description" xml:space="preserve">
-      <value>在存款和取款模式之间切换时，记录已输入的金币金额。</value>
+    <value>在存款和取款模式之间切换时，记录已输入的金币金额。</value>
   </data>
   <data name="ClockOverlay_Title" xml:space="preserve">
-      <value>时钟串流</value>
+    <value>时钟串流</value>
   </data>
   <data name="ClockOverlay_Description" xml:space="preserve">
-      <value>在游戏中添加一个可自定义的时钟（本地/服务器/艾欧泽亚时间）。</value>
+    <value>在游戏中添加一个可自定义的时钟（本地/服务器/艾欧泽亚时间）。</value>
   </data>
   <data name="ClockOverlay_ConfigurationTitle" xml:space="preserve">
-      <value>时钟设置</value>
+    <value>时钟设置</value>
   </data>
   <data name="ClockOverlay_ClockSettings" xml:space="preserve">
-      <value>时钟设置</value>
+    <value>时钟设置</value>
   </data>
   <data name="ClockOverlay_ShowSeconds" xml:space="preserve">
-      <value>显示秒</value>
+    <value>显示秒</value>
   </data>
   <data name="ClockOverlay_ShowSourcePrefix" xml:space="preserve">
-      <value>显示时间来源前缀</value>
+    <value>显示时间来源前缀</value>
   </data>
   <data name="ClockOverlay_EnableMoving" xml:space="preserve">
-      <value>启用移动</value>
+    <value>启用移动</value>
   </data>
   <data name="ClockOverlay_TimeSource" xml:space="preserve">
-      <value>时间来源</value>
+    <value>时间来源</value>
   </data>
   <data name="ClockOverlay_LocalTime" xml:space="preserve">
-      <value>本地时间</value>
+    <value>本地时间</value>
   </data>
   <data name="ClockOverlay_ServerTime" xml:space="preserve">
-      <value>服务器时间</value>
+    <value>服务器时间</value>
   </data>
   <data name="ClockOverlay_EorzeaTime" xml:space="preserve">
-      <value>艾欧泽亚时间</value>
+    <value>艾欧泽亚时间</value>
   </data>
   <data name="ClockOverlay_TextRendering" xml:space="preserve">
-      <value>文本渲染</value>
+    <value>文本渲染</value>
   </data>
   <data name="ClockOverlay_Edge" xml:space="preserve">
-      <value>描边</value>
+    <value>描边</value>
   </data>
   <data name="ClockOverlay_Glare" xml:space="preserve">
-      <value>光泽</value>
+    <value>光泽</value>
   </data>
   <data name="ClockOverlay_Emboss" xml:space="preserve">
-      <value>浮雕</value>
+    <value>浮雕</value>
   </data>
   <data name="ClockOverlay_Visual_Style" xml:space="preserve">
-      <value>视觉样式</value>
+    <value>视觉样式</value>
   </data>
   <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
-      <value>快捷面板调整</value>
+    <value>快捷面板调整</value>
   </data>
   <data name="QuickPanelAdjustments_Description" xml:space="preserve">
-      <value>为快捷面板界面提供视觉调整。</value>
+    <value>为快捷面板界面提供视觉调整。</value>
   </data>
   <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
-      <value>快捷面板设置</value>
+    <value>快捷面板设置</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
-      <value>隐藏额外的焦点边框</value>
+    <value>隐藏额外的焦点边框</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideHighlighting" xml:space="preserve">
-      <value>隐藏边框与背景高亮</value>
+    <value>隐藏边框与背景高亮</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHidePanelBackground" xml:space="preserve">
-      <value>隐藏指令面板背景</value>
+    <value>隐藏指令面板背景</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideEmptySlots" xml:space="preserve">
-      <value>隐藏指令面板空槽</value>
+    <value>隐藏指令面板空槽</value>
   </data>
   <data name="QuickPanelAdjustments_LabelMoveButtons" xml:space="preserve">
-      <value>将设置与关闭按钮拉近</value>
+    <value>将设置与关闭按钮拉近</value>
   </data>
   <data name="QuickPanelAdjustments_BackgroundColor" xml:space="preserve">
-      <value>背景颜色</value>
+    <value>背景颜色</value>
   </data>
   <data name="ChatPlayerTooltip_DisplayName" xml:space="preserve">
-      <value>聊天玩家信息提示</value>
-    </data>
+    <value>聊天玩家信息提示</value>
+  </data>
   <data name="ChatPlayerTooltip_Description" xml:space="preserve">
-      <value>当鼠标悬停在聊天栏中的玩家名上时，显示其完整姓名与所处服务器。</value>
-    </data>
+    <value>当鼠标悬停在聊天栏中的玩家名上时，显示其完整姓名与所处服务器。</value>
+  </data>
   <data name="EnhancedWardNavigation_DisplayName" xml:space="preserve">
-      <value>强化住宅区导航</value>
-    </data>
+    <value>强化住宅区导航</value>
+  </data>
   <data name="EnhancedWardNavigation_Description" xml:space="preserve">
-      <value>为住宅区选择列表添加上一页与下一页按钮。</value>
-    </data>
+    <value>为住宅区选择列表添加上一页与下一页按钮。</value>
+  </data>
   <data name="EnhancedWardNavigation_ButtonPrevious" xml:space="preserve">
-      <value>上一个</value>
-    </data>
+    <value>上一个</value>
+  </data>
   <data name="EnhancedWardNavigation_ButtonNext" xml:space="preserve">
-      <value>下一个</value>
-    </data>
+    <value>下一个</value>
+  </data>
   <data name="CurrencyWarning_DisplayName" xml:space="preserve">
-      <value>货币阈值提醒</value>
-    </data>
+    <value>货币阈值提醒</value>
+  </data>
   <data name="CurrencyWarning_Description" xml:space="preserve">
-      <value>当追踪的货币接近或超过设定阈值时显示动画提示图标。</value>
-    </data>
+    <value>当追踪的货币接近或超过设定阈值时显示动画提示图标。</value>
+  </data>
   <data name="CurrencyWarning_ItemSearchTitle" xml:space="preserve">
-      <value>货币搜索</value>
-    </data>
+    <value>货币搜索</value>
+  </data>
   <data name="CurrencyWarning_SortOptionName" xml:space="preserve">
-      <value>名称</value>
-    </data>
+    <value>名称</value>
+  </data>
   <data name="CurrencyWarning_SortOptionId" xml:space="preserve">
-      <value>ID</value>
-    </data>
+    <value>ID</value>
+  </data>
   <data name="CurrencyWarning_ListTitle" xml:space="preserve">
-      <value>已追踪的货币</value>
-    </data>
+    <value>已追踪的货币</value>
+  </data>
   <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
-      <value>货币提醒设置</value>
-    </data>
+    <value>货币提醒设置</value>
+  </data>
   <data name="CurrencyWarning_CategoryGeneral" xml:space="preserve">
-      <value>通用</value>
-    </data>
+    <value>通用</value>
+  </data>
   <data name="CurrencyWarning_EnableMoving" xml:space="preserve">
-      <value>允许移动</value>
-    </data>
+    <value>允许移动</value>
+  </data>
   <data name="CurrencyWarning_PlayAnimations" xml:space="preserve">
-      <value>播放动画</value>
-    </data>
+    <value>播放动画</value>
+  </data>
   <data name="CurrencyWarning_IconScale" xml:space="preserve">
-      <value>图标缩放</value>
-    </data>
+    <value>图标缩放</value>
+  </data>
   <data name="CurrencyWarning_BelowColor" xml:space="preserve">
-      <value>低于阈值颜色</value>
-    </data>
+    <value>低于阈值颜色</value>
+  </data>
   <data name="CurrencyWarning_AboveColor" xml:space="preserve">
-      <value>高于阈值颜色</value>
-    </data>
+    <value>高于阈值颜色</value>
+  </data>
   <data name="CurrencyWarning_CategoryBelowIcon" xml:space="preserve">
-      <value>低于目标图标</value>
-    </data>
+    <value>低于目标图标</value>
+  </data>
   <data name="CurrencyWarning_CategoryAboveIcon" xml:space="preserve">
-      <value>高于目标图标</value>
-    </data>
+    <value>高于目标图标</value>
+  </data>
   <data name="CurrencyWarning_CategorySelection" xml:space="preserve">
-      <value>货币筛选</value>
-    </data>
+    <value>货币筛选</value>
+  </data>
   <data name="CurrencyWarning_ConfigureButton" xml:space="preserve">
-      <value>配置追踪货币</value>
-    </data>
+    <value>配置追踪货币</value>
+  </data>
   <data name="CurrencyWarning_TooltipAboveLimit" xml:space="preserve">
-      <value>超过阈值</value>
-    </data>
+    <value>超过阈值</value>
+  </data>
   <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
-      <value>低于阈值</value>
-    </data>
+    <value>低于阈值</value>
+  </data>
   <data name="BiggerConfigWindows_DisplayName" xml:space="preserve">
-      <value>大尺度设置窗口</value>
-    </data>
+    <value>大尺度设置窗口</value>
+  </data>
   <data name="BiggerConfigWindows_Description" xml:space="preserve">
-      <value>增加角色设置窗口与系统设置窗口的高度。</value>
-    </data>
+    <value>增加角色设置窗口与系统设置窗口的高度。</value>
+  </data>
   <data name="BiggerConfigWindows_ConfigTitle" xml:space="preserve">
-      <value>大尺度设置窗口配置</value>
-    </data>
+    <value>大尺度设置窗口配置</value>
+  </data>
   <data name="BiggerConfigWindows_CategoryGeneral" xml:space="preserve">
-      <value>通用</value>
-    </data>
+    <value>通用</value>
+  </data>
   <data name="BiggerConfigWindows_SystemConfigAdditionalSize" xml:space="preserve">
-      <value>系统设置额外尺寸</value>
-    </data>
+    <value>系统设置额外尺寸</value>
+  </data>
   <data name="BiggerConfigWindows_CharacterConfigAdditionalSize" xml:space="preserve">
-      <value>角色设置额外尺寸</value>
-    </data>
+    <value>角色设置额外尺寸</value>
+  </data>
   <data name="MSQProgressBar_DisplayName" xml:space="preserve">
-      <value>主线任务进度百分比</value>
-    </data>
+    <value>主线任务进度百分比</value>
+  </data>
   <data name="MSQProgressBar_Description" xml:space="preserve">
-      <value>在主线引导窗口中显示当前主线任务的进度条。</value>
-    </data>
+    <value>在主线引导窗口中显示当前主线任务的进度条。</value>
+  </data>
   <data name="MSQProgressBar_ConfigTitle" xml:space="preserve">
-      <value>主线任务进度百分比配置</value>
-    </data>
+    <value>主线任务进度百分比配置</value>
+  </data>
   <data name="MSQProgressBar_CategoryGeneral" xml:space="preserve">
-      <value>通用</value>
-    </data>
+    <value>通用</value>
+  </data>
   <data name="MSQProgressBar_LabelMode" xml:space="preserve">
-      <value>模式</value>
-    </data>
+    <value>模式</value>
+  </data>
   <data name="MSQProgressBar_LabelBarColor" xml:space="preserve">
-      <value>进度条颜色</value>
-    </data>
+    <value>进度条颜色</value>
+  </data>
   <data name="MSQProgressBar_ModeEntireGame" xml:space="preserve">
-      <value>全部版本</value>
-    </data>
+    <value>全部版本</value>
+  </data>
   <data name="MSQProgressBar_ModeExpansion" xml:space="preserve">
-      <value>当前大版本</value>
-    </data>
+    <value>当前大版本</value>
+  </data>
   <data name="MSQProgressBar_TooltipCurrentProgress" xml:space="preserve">
-      <value>当前进度：{0}%</value>
-    </data>
+    <value>当前进度：{0}%</value>
+  </data>
   <data name="MSQProgressBar_TooltipGameComplete" xml:space="preserve">
-      <value>主线完成！真棒。</value>
-    </data>
+    <value>主线完成！真棒。</value>
+  </data>
   <data name="MSQProgressBar_TooltipGameProgress" xml:space="preserve">
-      <value>全局进度: {0:F}%</value>
-    </data>
+    <value>全局进度: {0:F}%</value>
+  </data>
   <data name="MSQProgressBar_TooltipExpansionProgress" xml:space="preserve">
-      <value>版本进度: {0:F}%</value>
-    </data>
+    <value>版本进度: {0:F}%</value>
+  </data>
   <data name="CommandPanelSync_DisplayName" xml:space="preserve">
-        <value>快捷面板同步</value>
-      </data>
+    <value>快捷面板同步</value>
+  </data>
   <data name="CommandPanelSync_Description" xml:space="preserve">
-        <value>在您所有角色之间同步快捷面板。</value>
-      </data>
+    <value>在您所有角色之间同步快捷面板。</value>
+  </data>
   <data name="ModificationDisplay_CosmicExplorationProgressWindow" xml:space="preserve">
-      <value>宇宙探索研究数据进度</value>
+    <value>宇宙探索研究数据进度</value>
   </data>
   <data name="ModificationDescription_CosmicExplorationProgressWindow" xml:space="preserve">
-      <value>显示当前生产/采集职业宇宙探索研究数据进度悬浮窗</value>
+    <value>显示当前生产/采集职业宇宙探索研究数据进度悬浮窗</value>
   </data>
   <data name="CosmicExplorationProgressWindow_HudButtonTooltip" xml:space="preserve">
-      <value>[VanillaPlus] 显示研究进度</value>
+    <value>[VanillaPlus] 显示研究进度</value>
+  </data>
+  <data name="GearsetReorderButtons_Description" xml:space="preserve">
+    <value>Adds buttons to the gearset list window for easily reordering gearsets.</value>
+  </data>
+  <data name="GearsetReorderButtons_DisplayName" xml:space="preserve">
+    <value>Gearset Reorder Buttons</value>
   </data>
 </root>

@@ -1221,228 +1221,234 @@ This game modification fixes it by always triggering the normal mouse click in a
     <value>Highlights abilities with the ants effect when they are off cooldown or shortly before they become available.</value>
   </data>
   <data name="PersistentRetainerGil_PersistentRetainerGil" xml:space="preserve">
-      <value>Persistent Retainer Gil</value>
+    <value>Persistent Retainer Gil</value>
   </data>
   <data name="PersistentRetainerGil_Description" xml:space="preserve">
-      <value>Remembers the entered gil amount when switching between deposit and withdraw modes.</value>
+    <value>Remembers the entered gil amount when switching between deposit and withdraw modes.</value>
   </data>
   <data name="ClockOverlay_Title" xml:space="preserve">
-      <value>Clock Overlay</value>
+    <value>Clock Overlay</value>
   </data>
   <data name="ClockOverlay_Description" xml:space="preserve">
-      <value>Adds a customizable clock overlay (LT/ST/ET) to the game</value>
+    <value>Adds a customizable clock overlay (LT/ST/ET) to the game</value>
   </data>
   <data name="ClockOverlay_ConfigurationTitle" xml:space="preserve">
-      <value>Clock Overlay Configuration</value>
+    <value>Clock Overlay Configuration</value>
   </data>
   <data name="ClockOverlay_ClockSettings" xml:space="preserve">
-      <value>Clock Settings</value>
+    <value>Clock Settings</value>
   </data>
   <data name="ClockOverlay_ShowSeconds" xml:space="preserve">
-      <value>Show Seconds</value>
+    <value>Show Seconds</value>
   </data>
   <data name="ClockOverlay_ShowSourcePrefix" xml:space="preserve">
-      <value>Show Source Prefix</value>
+    <value>Show Source Prefix</value>
   </data>
   <data name="ClockOverlay_EnableMoving" xml:space="preserve">
-      <value>Enable Moving</value>
+    <value>Enable Moving</value>
   </data>
   <data name="ClockOverlay_TimeSource" xml:space="preserve">
-      <value>Time Source</value>
+    <value>Time Source</value>
   </data>
   <data name="ClockOverlay_LocalTime" xml:space="preserve">
-      <value>Local Time</value>
+    <value>Local Time</value>
   </data>
   <data name="ClockOverlay_ServerTime" xml:space="preserve">
-      <value>Server Time</value>
+    <value>Server Time</value>
   </data>
   <data name="ClockOverlay_EorzeaTime" xml:space="preserve">
-      <value>Eorzea Time</value>
+    <value>Eorzea Time</value>
   </data>
   <data name="ClockOverlay_TextRendering" xml:space="preserve">
-      <value>Text Rendering</value>
+    <value>Text Rendering</value>
   </data>
   <data name="ClockOverlay_Edge" xml:space="preserve">
-      <value>Edge</value>
+    <value>Edge</value>
   </data>
   <data name="ClockOverlay_Glare" xml:space="preserve">
-      <value>Glare</value>
+    <value>Glare</value>
   </data>
   <data name="ClockOverlay_Emboss" xml:space="preserve">
-      <value>Emboss</value>
+    <value>Emboss</value>
   </data>
   <data name="ClockOverlay_Visual_Style" xml:space="preserve">
-      <value>Visual Style</value>
+    <value>Visual Style</value>
   </data>
   <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
-      <value>Command Panel Adjustments</value>
+    <value>Command Panel Adjustments</value>
   </data>
   <data name="QuickPanelAdjustments_Description" xml:space="preserve">
-      <value>Makes visual changes to the Quick Panel HUD</value>
+    <value>Makes visual changes to the Quick Panel HUD</value>
   </data>
   <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
-      <value>Command Panel Configuration</value>
+    <value>Command Panel Configuration</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
-      <value>Hide the additional focus border</value>
+    <value>Hide the additional focus border</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideHighlighting" xml:space="preserve">
-      <value>Hide the border and background highlighting</value>
+    <value>Hide the border and background highlighting</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHidePanelBackground" xml:space="preserve">
-      <value>Hide the background for the command panel</value>
+    <value>Hide the background for the command panel</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideEmptySlots" xml:space="preserve">
-      <value>Hide the empty slots in the command panel</value>
+    <value>Hide the empty slots in the command panel</value>
   </data>
   <data name="QuickPanelAdjustments_LabelMoveButtons" xml:space="preserve">
-      <value>Move settings and close buttons closer</value>
+    <value>Move settings and close buttons closer</value>
   </data>
   <data name="QuickPanelAdjustments_BackgroundColor" xml:space="preserve">
-      <value>Background color</value>
+    <value>Background color</value>
   </data>
-    <data name="ChatPlayerTooltip_DisplayName" xml:space="preserve">
-      <value>Chat Player Tooltip</value>
-    </data>
-    <data name="ChatPlayerTooltip_Description" xml:space="preserve">
-      <value>When mousing over player names in chat, shows their full name and world as a tooltip.</value>
-    </data>
-    <data name="EnhancedWardNavigation_DisplayName" xml:space="preserve">
-      <value>Enhanced Ward Navigation</value>
-    </data>
-    <data name="EnhancedWardNavigation_Description" xml:space="preserve">
-      <value>Adds previous and next buttons to the housing ward selection list.</value>
-    </data>
-    <data name="EnhancedWardNavigation_ButtonPrevious" xml:space="preserve">
-      <value>Prev</value>
-    </data>
-    <data name="EnhancedWardNavigation_ButtonNext" xml:space="preserve">
-      <value>Next</value>
-    </data>
-    <data name="CurrencyWarning_DisplayName" xml:space="preserve">
-      <value>Currency Warning</value>
-    </data>
-    <data name="CurrencyWarning_Description" xml:space="preserve">
-      <value>Shows an animated notification icon when tracked currencies approach or exceed set limits.</value>
-    </data>
-    <data name="CurrencyWarning_ItemSearchTitle" xml:space="preserve">
-      <value>Search Currencies</value>
-    </data>
-    <data name="CurrencyWarning_SortOptionName" xml:space="preserve">
-      <value>Name</value>
-    </data>
-    <data name="CurrencyWarning_SortOptionId" xml:space="preserve">
-      <value>ID</value>
-    </data>
-    <data name="CurrencyWarning_ListTitle" xml:space="preserve">
-      <value>Tracked Currencies</value>
-    </data>
-    <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
-      <value>Currency Warning Settings</value>
-    </data>
-    <data name="CurrencyWarning_CategoryGeneral" xml:space="preserve">
-      <value>General</value>
-    </data>
-    <data name="CurrencyWarning_EnableMoving" xml:space="preserve">
-      <value>Enable Moving</value>
-    </data>
-    <data name="CurrencyWarning_PlayAnimations" xml:space="preserve">
-      <value>Play Animations</value>
-    </data>
-    <data name="CurrencyWarning_IconScale" xml:space="preserve">
-      <value>Icon Scale</value>
-    </data>
-    <data name="CurrencyWarning_BelowColor" xml:space="preserve">
-      <value>Below Target Color</value>
-    </data>
-    <data name="CurrencyWarning_AboveColor" xml:space="preserve">
-      <value>Above Target Color</value>
-    </data>
-    <data name="CurrencyWarning_CategoryBelowIcon" xml:space="preserve">
-      <value>Below Target Icon</value>
-    </data>
-    <data name="CurrencyWarning_CategoryAboveIcon" xml:space="preserve">
-      <value>Above Target Icon</value>
-    </data>
-    <data name="CurrencyWarning_CategorySelection" xml:space="preserve">
-      <value>Currency Selection</value>
-    </data>
-    <data name="CurrencyWarning_ConfigureButton" xml:space="preserve">
-      <value>Configure Tracked Currencies</value>
-    </data>
-    <data name="CurrencyWarning_TooltipAboveLimit" xml:space="preserve">
-      <value>Above Limit</value>
-    </data>
-    <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
-      <value>Below Limit</value>
-    </data>
-    <data name="BiggerConfigWindows_DisplayName" xml:space="preserve">
-      <value>Bigger Config Windows</value>
-    </data>
-    <data name="BiggerConfigWindows_Description" xml:space="preserve">
-      <value>Increases the vertical height of the game's character and system config windows.</value>
-    </data>
-    <data name="BiggerConfigWindows_ConfigTitle" xml:space="preserve">
-      <value>Bigger Config Windows Config</value>
-    </data>
-    <data name="BiggerConfigWindows_CategoryGeneral" xml:space="preserve">
-      <value>General</value>
-    </data>
-    <data name="BiggerConfigWindows_SystemConfigAdditionalSize" xml:space="preserve">
-      <value>System Config Additional Size</value>
-    </data>
-    <data name="BiggerConfigWindows_CharacterConfigAdditionalSize" xml:space="preserve">
-      <value>Character Config Additional Size</value>
-    </data>
-    <data name="MSQProgressBar_DisplayName" xml:space="preserve">
-      <value>MSQ Progress Percent</value>
-    </data>
-    <data name="MSQProgressBar_Description" xml:space="preserve">
-      <value>Displays current MSQ Progress as a progress bar in the Main Scenario Guide.</value>
-    </data>
-    <data name="MSQProgressBar_ConfigTitle" xml:space="preserve">
-      <value>MSQ Progress Percent Config</value>
-    </data>
-    <data name="MSQProgressBar_CategoryGeneral" xml:space="preserve">
-      <value>General</value>
-    </data>
-    <data name="MSQProgressBar_LabelMode" xml:space="preserve">
-      <value>Mode</value>
-    </data>
-    <data name="MSQProgressBar_LabelBarColor" xml:space="preserve">
-      <value>Bar Color</value>
-    </data>
-    <data name="MSQProgressBar_ModeEntireGame" xml:space="preserve">
-      <value>Entire Game</value>
-    </data>
-    <data name="MSQProgressBar_ModeExpansion" xml:space="preserve">
-      <value>Expansion</value>
-    </data>
-    <data name="MSQProgressBar_TooltipCurrentProgress" xml:space="preserve">
-      <value>Current Progress: {0}%</value>
-    </data>
-    <data name="MSQProgressBar_TooltipGameComplete" xml:space="preserve">
-      <value>Game Complete! Good Job.</value>
-    </data>
-    <data name="MSQProgressBar_TooltipGameProgress" xml:space="preserve">
-      <value>Game Progress: {0:F}%</value>
-    </data>
-    <data name="MSQProgressBar_TooltipExpansionProgress" xml:space="preserve">
-      <value>Expansion Progress: {0:F}%</value>
-    </data>
-      <data name="CommandPanelSync_DisplayName" xml:space="preserve">
-        <value>Command Panel Sync</value>
-      </data>
-      <data name="CommandPanelSync_Description" xml:space="preserve">
-        <value>Synchronizes the command panel across all your characters.</value>
-      </data>
+  <data name="ChatPlayerTooltip_DisplayName" xml:space="preserve">
+    <value>Chat Player Tooltip</value>
+  </data>
+  <data name="ChatPlayerTooltip_Description" xml:space="preserve">
+    <value>When mousing over player names in chat, shows their full name and world as a tooltip.</value>
+  </data>
+  <data name="EnhancedWardNavigation_DisplayName" xml:space="preserve">
+    <value>Enhanced Ward Navigation</value>
+  </data>
+  <data name="EnhancedWardNavigation_Description" xml:space="preserve">
+    <value>Adds previous and next buttons to the housing ward selection list.</value>
+  </data>
+  <data name="EnhancedWardNavigation_ButtonPrevious" xml:space="preserve">
+    <value>Prev</value>
+  </data>
+  <data name="EnhancedWardNavigation_ButtonNext" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="CurrencyWarning_DisplayName" xml:space="preserve">
+    <value>Currency Warning</value>
+  </data>
+  <data name="CurrencyWarning_Description" xml:space="preserve">
+    <value>Shows an animated notification icon when tracked currencies approach or exceed set limits.</value>
+  </data>
+  <data name="CurrencyWarning_ItemSearchTitle" xml:space="preserve">
+    <value>Search Currencies</value>
+  </data>
+  <data name="CurrencyWarning_SortOptionName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="CurrencyWarning_SortOptionId" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="CurrencyWarning_ListTitle" xml:space="preserve">
+    <value>Tracked Currencies</value>
+  </data>
+  <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
+    <value>Currency Warning Settings</value>
+  </data>
+  <data name="CurrencyWarning_CategoryGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="CurrencyWarning_EnableMoving" xml:space="preserve">
+    <value>Enable Moving</value>
+  </data>
+  <data name="CurrencyWarning_PlayAnimations" xml:space="preserve">
+    <value>Play Animations</value>
+  </data>
+  <data name="CurrencyWarning_IconScale" xml:space="preserve">
+    <value>Icon Scale</value>
+  </data>
+  <data name="CurrencyWarning_BelowColor" xml:space="preserve">
+    <value>Below Target Color</value>
+  </data>
+  <data name="CurrencyWarning_AboveColor" xml:space="preserve">
+    <value>Above Target Color</value>
+  </data>
+  <data name="CurrencyWarning_CategoryBelowIcon" xml:space="preserve">
+    <value>Below Target Icon</value>
+  </data>
+  <data name="CurrencyWarning_CategoryAboveIcon" xml:space="preserve">
+    <value>Above Target Icon</value>
+  </data>
+  <data name="CurrencyWarning_CategorySelection" xml:space="preserve">
+    <value>Currency Selection</value>
+  </data>
+  <data name="CurrencyWarning_ConfigureButton" xml:space="preserve">
+    <value>Configure Tracked Currencies</value>
+  </data>
+  <data name="CurrencyWarning_TooltipAboveLimit" xml:space="preserve">
+    <value>Above Limit</value>
+  </data>
+  <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
+    <value>Below Limit</value>
+  </data>
+  <data name="BiggerConfigWindows_DisplayName" xml:space="preserve">
+    <value>Bigger Config Windows</value>
+  </data>
+  <data name="BiggerConfigWindows_Description" xml:space="preserve">
+    <value>Increases the vertical height of the game's character and system config windows.</value>
+  </data>
+  <data name="BiggerConfigWindows_ConfigTitle" xml:space="preserve">
+    <value>Bigger Config Windows Config</value>
+  </data>
+  <data name="BiggerConfigWindows_CategoryGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="BiggerConfigWindows_SystemConfigAdditionalSize" xml:space="preserve">
+    <value>System Config Additional Size</value>
+  </data>
+  <data name="BiggerConfigWindows_CharacterConfigAdditionalSize" xml:space="preserve">
+    <value>Character Config Additional Size</value>
+  </data>
+  <data name="MSQProgressBar_DisplayName" xml:space="preserve">
+    <value>MSQ Progress Percent</value>
+  </data>
+  <data name="MSQProgressBar_Description" xml:space="preserve">
+    <value>Displays current MSQ Progress as a progress bar in the Main Scenario Guide.</value>
+  </data>
+  <data name="MSQProgressBar_ConfigTitle" xml:space="preserve">
+    <value>MSQ Progress Percent Config</value>
+  </data>
+  <data name="MSQProgressBar_CategoryGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="MSQProgressBar_LabelMode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="MSQProgressBar_LabelBarColor" xml:space="preserve">
+    <value>Bar Color</value>
+  </data>
+  <data name="MSQProgressBar_ModeEntireGame" xml:space="preserve">
+    <value>Entire Game</value>
+  </data>
+  <data name="MSQProgressBar_ModeExpansion" xml:space="preserve">
+    <value>Expansion</value>
+  </data>
+  <data name="MSQProgressBar_TooltipCurrentProgress" xml:space="preserve">
+    <value>Current Progress: {0}%</value>
+  </data>
+  <data name="MSQProgressBar_TooltipGameComplete" xml:space="preserve">
+    <value>Game Complete! Good Job.</value>
+  </data>
+  <data name="MSQProgressBar_TooltipGameProgress" xml:space="preserve">
+    <value>Game Progress: {0:F}%</value>
+  </data>
+  <data name="MSQProgressBar_TooltipExpansionProgress" xml:space="preserve">
+    <value>Expansion Progress: {0:F}%</value>
+  </data>
+  <data name="CommandPanelSync_DisplayName" xml:space="preserve">
+    <value>Command Panel Sync</value>
+  </data>
+  <data name="CommandPanelSync_Description" xml:space="preserve">
+    <value>Synchronizes the command panel across all your characters.</value>
+  </data>
   <data name="ModificationDisplay_CosmicExplorationProgressWindow" xml:space="preserve">
-      <value>Cosmic Exploration Dataset Progress</value>
+    <value>Cosmic Exploration Dataset Progress</value>
   </data>
   <data name="ModificationDescription_CosmicExplorationProgressWindow" xml:space="preserve">
-      <value>A floating window that shows the Cosmic Exploration dataset progress for your current DoH/DoL job</value>
+    <value>A floating window that shows the Cosmic Exploration dataset progress for your current DoH/DoL job</value>
   </data>
   <data name="CosmicExplorationProgressWindow_HudButtonTooltip" xml:space="preserve">
-      <value>[VanillaPlus] Show Research Progress</value>
+    <value>[VanillaPlus] Show Research Progress</value>
+  </data>
+  <data name="GearsetReorderButtons_Description" xml:space="preserve">
+    <value>Adds buttons to the gearset list window for easily reordering gearsets.</value>
+  </data>
+  <data name="GearsetReorderButtons_DisplayName" xml:space="preserve">
+    <value>Gearset Reorder Buttons</value>
   </data>
 </root>
