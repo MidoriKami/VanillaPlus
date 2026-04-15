@@ -1401,18 +1401,36 @@ namespace VanillaPlus.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Adds buttons to the gearset list window for easily reordering gearsets..
         /// </summary>
-        internal static string GearsetReorderButtons_Description {
+        internal static string GearSetReorderButtons_Description {
             get {
-                return ResourceManager.GetString("GearsetReorderButtons_Description", resourceCulture);
+                return ResourceManager.GetString("GearSetReorderButtons_Description", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Gearset Reorder Buttons.
         /// </summary>
-        internal static string GearsetReorderButtons_DisplayName {
+        internal static string GearSetReorderButtons_DisplayName {
             get {
-                return ResourceManager.GetString("GearsetReorderButtons_DisplayName", resourceCulture);
+                return ResourceManager.GetString("GearSetReorderButtons_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move gear set down..
+        /// </summary>
+        internal static string GearSetReorderButtons_MoveGearSetDown {
+            get {
+                return ResourceManager.GetString("GearSetReorderButtons_MoveGearSetDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move gear set up..
+        /// </summary>
+        internal static string GearSetReorderButtons_MoveGearSetUp {
+            get {
+                return ResourceManager.GetString("GearSetReorderButtons_MoveGearSetUp", resourceCulture);
             }
         }
         

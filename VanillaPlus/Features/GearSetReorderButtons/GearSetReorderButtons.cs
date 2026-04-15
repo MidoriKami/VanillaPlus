@@ -6,8 +6,8 @@ namespace VanillaPlus.Features.GearSetReorderButtons;
 public class GearSetReorderButtons : GameModification {
 
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings.GearsetReorderButtons_DisplayName,
-        Description = Strings.GearsetReorderButtons_Description,
+        DisplayName = Strings.GearSetReorderButtons_DisplayName,
+        Description = Strings.GearSetReorderButtons_Description,
         Type = ModificationType.UserInterface,
         Authors = ["zajrik"],
         ChangeLog = [

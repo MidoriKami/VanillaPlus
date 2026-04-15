@@ -1445,10 +1445,16 @@ This game modification fixes it by always triggering the normal mouse click in a
   <data name="CosmicExplorationProgressWindow_HudButtonTooltip" xml:space="preserve">
     <value>[VanillaPlus] Show Research Progress</value>
   </data>
-  <data name="GearsetReorderButtons_Description" xml:space="preserve">
+  <data name="GearSetReorderButtons_Description" xml:space="preserve">
     <value>Adds buttons to the gearset list window for easily reordering gearsets.</value>
   </data>
-  <data name="GearsetReorderButtons_DisplayName" xml:space="preserve">
+  <data name="GearSetReorderButtons_DisplayName" xml:space="preserve">
     <value>Gearset Reorder Buttons</value>
+  </data>
+  <data name="GearSetReorderButtons_MoveGearSetUp" xml:space="preserve">
+    <value>Move gear set up.</value>
+  </data>
+  <data name="GearSetReorderButtons_MoveGearSetDown" xml:space="preserve">
+    <value>Move gear set down.</value>
   </data>
 </root>
