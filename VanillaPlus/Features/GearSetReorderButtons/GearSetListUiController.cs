@@ -14,7 +14,7 @@ public unsafe class GearSetListUiController {
 
     private readonly Dictionary<uint, GearSetListReorderButtonNode> reorderButtonNodes = [];
 
-    private const ushort ExtraAddonWidth = 58;
+    private const ushort ExtraAddonWidth = 56;
 
     public void OnEnable() {
         gearSetsAddonController = new() {
@@ -109,7 +109,7 @@ public unsafe class GearSetListUiController {
         var anchorNode = listItemData.ButtonAnchorNode;
 
         reorderButton = new GearSetListReorderButtonNode() {
-            Position = new Vector2(anchorNode->X + anchorNode->Width, 0)
+            Position = new Vector2(anchorNode->X + anchorNode->Width - 2, 0)
         };
 
         reorderButtonNodes.Add(listItemData.NodeId, reorderButton);
