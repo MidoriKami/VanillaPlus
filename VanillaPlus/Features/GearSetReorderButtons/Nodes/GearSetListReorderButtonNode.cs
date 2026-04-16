@@ -19,7 +19,7 @@ public unsafe class GearSetListReorderButtonNode : SimpleComponentNode {
             Icon = ButtonIcon.UpArrow,
             Size = new Vector2(32.0f, 32.0f),
             OnClick = () => AgentGearSet.Instance()->MoveSetUp(GearSetId),
-            TextTooltip = Strings.GearSetReorderButtons_MoveGearSetUp,
+            TextTooltip = "Move gear set up.",
             IsEnabled = false
         };
 
@@ -28,7 +28,7 @@ public unsafe class GearSetListReorderButtonNode : SimpleComponentNode {
             Size = new Vector2(32.0f, 32.0f),
             Position = new Vector2(28.0f, 0.0f),
             OnClick = () => AgentGearSet.Instance()->MoveSetDown(GearSetId),
-            TextTooltip = Strings.GearSetReorderButtons_MoveGearSetDown,
+            TextTooltip = "Move gear set down.",
             IsEnabled = false
         };
 

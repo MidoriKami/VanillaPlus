@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -1221,240 +1221,228 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Met en évidence les capacités avec l'effet "fourmis" lorsqu'elles sont prêtes ou peu de temps avant qu'elles ne le deviennent.</value>
   </data>
   <data name="PersistentRetainerGil_PersistentRetainerGil" xml:space="preserve">
-    <value>Gils de servant persistants</value>
+      <value>Gils de servant persistants</value>
   </data>
   <data name="PersistentRetainerGil_Description" xml:space="preserve">
-    <value>Mémorise le montant de gils saisi lors du passage entre les modes de dépôt et de retrait.</value>
+      <value>Mémorise le montant de gils saisi lors du passage entre les modes de dépôt et de retrait.</value>
   </data>
   <data name="ClockOverlay_Title" xml:space="preserve">
-    <value>Overlay d'horloge</value>
+      <value>Overlay d'horloge</value>
   </data>
   <data name="ClockOverlay_Description" xml:space="preserve">
-    <value>Ajoute une horloge personnalisable (LT/ST/ET) en jeu.</value>
+      <value>Ajoute une horloge personnalisable (LT/ST/ET) en jeu.</value>
   </data>
   <data name="ClockOverlay_ConfigurationTitle" xml:space="preserve">
-    <value>Configuration de l'horloge</value>
+      <value>Configuration de l'horloge</value>
   </data>
   <data name="ClockOverlay_ClockSettings" xml:space="preserve">
-    <value>Paramètres de l'horloge</value>
+      <value>Paramètres de l'horloge</value>
   </data>
   <data name="ClockOverlay_ShowSeconds" xml:space="preserve">
-    <value>Afficher les secondes</value>
+      <value>Afficher les secondes</value>
   </data>
   <data name="ClockOverlay_ShowSourcePrefix" xml:space="preserve">
-    <value>Afficher le préfixe de la source</value>
+      <value>Afficher le préfixe de la source</value>
   </data>
   <data name="ClockOverlay_EnableMoving" xml:space="preserve">
-    <value>Activer le déplacement</value>
+      <value>Activer le déplacement</value>
   </data>
   <data name="ClockOverlay_TimeSource" xml:space="preserve">
-    <value>Source de l'heure</value>
+      <value>Source de l'heure</value>
   </data>
   <data name="ClockOverlay_LocalTime" xml:space="preserve">
-    <value>Heure locale</value>
+      <value>Heure locale</value>
   </data>
   <data name="ClockOverlay_ServerTime" xml:space="preserve">
-    <value>Heure du serveur</value>
+      <value>Heure du serveur</value>
   </data>
   <data name="ClockOverlay_EorzeaTime" xml:space="preserve">
-    <value>Heure d'Éorzéa</value>
+      <value>Heure d'Éorzéa</value>
   </data>
   <data name="ClockOverlay_TextRendering" xml:space="preserve">
-    <value>Rendu du texte</value>
+      <value>Rendu du texte</value>
   </data>
   <data name="ClockOverlay_Edge" xml:space="preserve">
-    <value>Bordure</value>
+      <value>Bordure</value>
   </data>
   <data name="ClockOverlay_Glare" xml:space="preserve">
-    <value>Reflet</value>
+      <value>Reflet</value>
   </data>
   <data name="ClockOverlay_Emboss" xml:space="preserve">
-    <value>Relief</value>
+      <value>Relief</value>
   </data>
   <data name="ClockOverlay_Visual_Style" xml:space="preserve">
-    <value>Style visuel</value>
+      <value>Style visuel</value>
   </data>
   <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
-    <value>Fenêtre d'accès rapide</value>
+      <value>Fenêtre d'accès rapide</value>
   </data>
   <data name="QuickPanelAdjustments_Description" xml:space="preserve">
-    <value>Effectuer des changements visuels de la fenêtre d'accès rapide</value>
+      <value>Effectuer des changements visuels de la fenêtre d'accès rapide</value>
   </data>
   <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
-    <value>Configuration de la fenêtre d'accès rapide</value>
+      <value>Configuration de la fenêtre d'accès rapide</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
-    <value>Masquer la bordure additionnelle</value>
+      <value>Masquer la bordure additionnelle</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideHighlighting" xml:space="preserve">
-    <value>Masquer la bordure et l'arrière-plan</value>
+      <value>Masquer la bordure et l'arrière-plan</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHidePanelBackground" xml:space="preserve">
-    <value>Masquer l'arrière-plan</value>
+      <value>Masquer l'arrière-plan</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideEmptySlots" xml:space="preserve">
-    <value>Masquer les emplacements vides</value>
+      <value>Masquer les emplacements vides</value>
   </data>
   <data name="QuickPanelAdjustments_LabelMoveButtons" xml:space="preserve">
-    <value>Déplacer les boutons des paramètres et de fermeture de la fenêtre</value>
+      <value>Déplacer les boutons des paramètres et de fermeture de la fenêtre</value>
   </data>
   <data name="QuickPanelAdjustments_BackgroundColor" xml:space="preserve">
-    <value>Couleur d'arrière-plan</value>
+      <value>Couleur d'arrière-plan</value>
   </data>
   <data name="ChatPlayerTooltip_DisplayName" xml:space="preserve">
-    <value>Chat Player Tooltip</value>
-  </data>
+      <value>Chat Player Tooltip</value>
+    </data>
   <data name="ChatPlayerTooltip_Description" xml:space="preserve">
-    <value>When mousing over player names in chat, shows their full name and world as a tooltip.</value>
-  </data>
+      <value>When mousing over player names in chat, shows their full name and world as a tooltip.</value>
+    </data>
   <data name="EnhancedWardNavigation_DisplayName" xml:space="preserve">
-    <value>Navigation améliorée dans les quartiers</value>
-  </data>
+      <value>Navigation améliorée dans les quartiers</value>
+    </data>
   <data name="EnhancedWardNavigation_Description" xml:space="preserve">
-    <value>Ajoute les boutons précédent et suivant à la liste de sélection de la zone de logement.</value>
-  </data>
+      <value>Ajoute les boutons précédent et suivant à la liste de sélection de la zone de logement.</value>
+    </data>
   <data name="EnhancedWardNavigation_ButtonPrevious" xml:space="preserve">
-    <value>Préc.</value>
-  </data>
+      <value>Préc.</value>
+    </data>
   <data name="EnhancedWardNavigation_ButtonNext" xml:space="preserve">
-    <value>Suiv.</value>
-  </data>
+      <value>Suiv.</value>
+    </data>
   <data name="CurrencyWarning_DisplayName" xml:space="preserve">
-    <value>Avertissement des devises</value>
-  </data>
+      <value>Avertissement des devises</value>
+    </data>
   <data name="CurrencyWarning_Description" xml:space="preserve">
-    <value>Affiche une icône de notification animée lorsque les devises sont suivies ou dépassent les limites définies.</value>
-  </data>
+      <value>Affiche une icône de notification animée lorsque les devises sont suivies ou dépassent les limites définies.</value>
+    </data>
   <data name="CurrencyWarning_ItemSearchTitle" xml:space="preserve">
-    <value>Recherche des devises</value>
-  </data>
+      <value>Recherche des devises</value>
+    </data>
   <data name="CurrencyWarning_SortOptionName" xml:space="preserve">
-    <value>Nom</value>
-  </data>
+      <value>Nom</value>
+    </data>
   <data name="CurrencyWarning_SortOptionId" xml:space="preserve">
-    <value>ID</value>
-  </data>
+      <value>ID</value>
+    </data>
   <data name="CurrencyWarning_ListTitle" xml:space="preserve">
-    <value>Devises suivies</value>
-  </data>
+      <value>Devises suivies</value>
+    </data>
   <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
-    <value>Paramètres d'avertissement des devises</value>
-  </data>
+      <value>Paramètres d'avertissement des devises</value>
+    </data>
   <data name="CurrencyWarning_CategoryGeneral" xml:space="preserve">
-    <value>Général</value>
-  </data>
+      <value>Général</value>
+    </data>
   <data name="CurrencyWarning_EnableMoving" xml:space="preserve">
-    <value>Activer le déplacement</value>
-  </data>
+      <value>Activer le déplacement</value>
+    </data>
   <data name="CurrencyWarning_PlayAnimations" xml:space="preserve">
-    <value>Lire les animations</value>
-  </data>
+      <value>Lire les animations</value>
+    </data>
   <data name="CurrencyWarning_IconScale" xml:space="preserve">
-    <value>Taille de l'icône</value>
-  </data>
+      <value>Taille de l'icône</value>
+    </data>
   <data name="CurrencyWarning_BelowColor" xml:space="preserve">
-    <value>Couleur au-dessous de la cible</value>
-  </data>
+      <value>Couleur au-dessous de la cible</value>
+    </data>
   <data name="CurrencyWarning_AboveColor" xml:space="preserve">
-    <value>Couleur au-dessus de la cible</value>
-  </data>
+      <value>Couleur au-dessus de la cible</value>
+    </data>
   <data name="CurrencyWarning_CategoryBelowIcon" xml:space="preserve">
-    <value>En dessous de l'icône cible</value>
-  </data>
+      <value>En dessous de l'icône cible</value>
+    </data>
   <data name="CurrencyWarning_CategoryAboveIcon" xml:space="preserve">
-    <value>Au-dessus de l'icône cible</value>
-  </data>
+      <value>Au-dessus de l'icône cible</value>
+    </data>
   <data name="CurrencyWarning_CategorySelection" xml:space="preserve">
-    <value>Sélection des devises</value>
-  </data>
+      <value>Sélection des devises</value>
+    </data>
   <data name="CurrencyWarning_ConfigureButton" xml:space="preserve">
-    <value>Configurer les devises suivies</value>
-  </data>
+      <value>Configurer les devises suivies</value>
+    </data>
   <data name="CurrencyWarning_TooltipAboveLimit" xml:space="preserve">
-    <value>Limite haute</value>
-  </data>
+      <value>Limite haute</value>
+    </data>
   <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
-    <value>Limite basse</value>
-  </data>
+      <value>Limite basse</value>
+    </data>
   <data name="BiggerConfigWindows_DisplayName" xml:space="preserve">
-    <value>Fenêtres de configuration plus grande</value>
-  </data>
+      <value>Fenêtres de configuration plus grande</value>
+    </data>
   <data name="BiggerConfigWindows_Description" xml:space="preserve">
-    <value>Augmente la hauteur verticale des fenêtres de configuration personnage et système.</value>
-  </data>
+      <value>Augmente la hauteur verticale des fenêtres de configuration personnage et système.</value>
+    </data>
   <data name="BiggerConfigWindows_ConfigTitle" xml:space="preserve">
-    <value>Configuration de fenêtre plus grande</value>
-  </data>
+      <value>Configuration de fenêtre plus grande</value>
+    </data>
   <data name="BiggerConfigWindows_CategoryGeneral" xml:space="preserve">
-    <value>Général</value>
-  </data>
+      <value>Général</value>
+    </data>
   <data name="BiggerConfigWindows_SystemConfigAdditionalSize" xml:space="preserve">
-    <value>Taille supplémentaire de la configuration système</value>
-  </data>
+      <value>Taille supplémentaire de la configuration système</value>
+    </data>
   <data name="BiggerConfigWindows_CharacterConfigAdditionalSize" xml:space="preserve">
-    <value>Taille supplémentaire de la configuration personnage</value>
-  </data>
+      <value>Taille supplémentaire de la configuration personnage</value>
+    </data>
   <data name="MSQProgressBar_DisplayName" xml:space="preserve">
-    <value>Pourcentage de progression de la MSQ</value>
-  </data>
+      <value>Pourcentage de progression de la MSQ</value>
+    </data>
   <data name="MSQProgressBar_Description" xml:space="preserve">
-    <value>Affiche la progression actuelle de la MSQ sous la forme d'une barre de progression dans le guide de scénario principal.</value>
-  </data>
+      <value>Affiche la progression actuelle de la MSQ sous la forme d'une barre de progression dans le guide de scénario principal.</value>
+    </data>
   <data name="MSQProgressBar_ConfigTitle" xml:space="preserve">
-    <value>Configuration du pourcentage de progression de la MSQ</value>
-  </data>
+      <value>Configuration du pourcentage de progression de la MSQ</value>
+    </data>
   <data name="MSQProgressBar_CategoryGeneral" xml:space="preserve">
-    <value>Général</value>
-  </data>
+      <value>Général</value>
+    </data>
   <data name="MSQProgressBar_LabelMode" xml:space="preserve">
-    <value>Mode</value>
-  </data>
+      <value>Mode</value>
+    </data>
   <data name="MSQProgressBar_LabelBarColor" xml:space="preserve">
-    <value>Couleur de la barre</value>
-  </data>
+      <value>Couleur de la barre</value>
+    </data>
   <data name="MSQProgressBar_ModeEntireGame" xml:space="preserve">
-    <value>Jeu complet</value>
-  </data>
+      <value>Jeu complet</value>
+    </data>
   <data name="MSQProgressBar_ModeExpansion" xml:space="preserve">
-    <value>Extension</value>
-  </data>
+      <value>Extension</value>
+    </data>
   <data name="MSQProgressBar_TooltipCurrentProgress" xml:space="preserve">
-    <value>Progression actuelle : {0}%</value>
-  </data>
+      <value>Progression actuelle : {0}%</value>
+    </data>
   <data name="MSQProgressBar_TooltipGameComplete" xml:space="preserve">
-    <value>Jeu terminé ! Bon travail.</value>
-  </data>
+      <value>Jeu terminé ! Bon travail.</value>
+    </data>
   <data name="MSQProgressBar_TooltipGameProgress" xml:space="preserve">
-    <value>Progression générale du jeu : {0:F}%</value>
-  </data>
+      <value>Progression générale du jeu : {0:F}%</value>
+    </data>
   <data name="MSQProgressBar_TooltipExpansionProgress" xml:space="preserve">
-    <value>Progression de l'extension : {0:F}%</value>
-  </data>
+      <value>Progression de l'extension : {0:F}%</value>
+    </data>
   <data name="CommandPanelSync_DisplayName" xml:space="preserve">
-    <value>Command Panel Sync</value>
-  </data>
+        <value>Command Panel Sync</value>
+      </data>
   <data name="CommandPanelSync_Description" xml:space="preserve">
-    <value>Synchronizes the command panel across all your characters.</value>
-  </data>
+        <value>Synchronizes the command panel across all your characters.</value>
+      </data>
   <data name="ModificationDisplay_CosmicExplorationProgressWindow" xml:space="preserve">
-    <value>Progression des outils de l'exploration cosmique</value>
+      <value>Progression des outils de l'exploration cosmique</value>
   </data>
   <data name="ModificationDescription_CosmicExplorationProgressWindow" xml:space="preserve">
-    <value>Une bulle d'aide qui montre la progression des outils de l'exploration cosmique pour vos DoH/DoL actuel</value>
+      <value>Une bulle d'aide qui montre la progression des outils de l'exploration cosmique pour vos DoH/DoL actuel</value>
   </data>
   <data name="CosmicExplorationProgressWindow_HudButtonTooltip" xml:space="preserve">
-    <value>[VanillaPlus] Afficher la progression de la recherche</value>
-  </data>
-  <data name="GearSetReorderButtons_Description" xml:space="preserve">
-    <value>Adds buttons to the gearset list window for easily reordering gearsets.</value>
-  </data>
-  <data name="GearSetReorderButtons_DisplayName" xml:space="preserve">
-    <value>Gearset Reorder Buttons</value>
-  </data>
-  <data name="GearSetReorderButtons_MoveGearSetUp" xml:space="preserve">
-    <value>Move gear set up.</value>
-  </data>
-  <data name="GearSetReorderButtons_MoveGearSetDown" xml:space="preserve">
-    <value>Move gear set down.</value>
+      <value>[VanillaPlus] Afficher la progression de la recherche</value>
   </data>
 </root>
