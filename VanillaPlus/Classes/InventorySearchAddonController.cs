@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -7,6 +7,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using VanillaPlus.NativeElements.Nodes;
+using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Classes;
 
@@ -97,7 +98,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
         if (inputTextNodes is null) return;
         if (!addon->IsReady) return;
 
-        var currentTab = InventorySearchController.GetTabForInventory(addon);
+        var currentTab = Inventory.GetTabForInventory(addon);
 
         selectedTabs.TryAdd(addon->NameString, currentTab);
         if (selectedTabs[addon->NameString] != currentTab && inputTextNodes.TryGetValue(addon->NameString, out var inputTextNode)) {
