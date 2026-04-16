@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
-using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
@@ -20,27 +19,16 @@ public unsafe class SkipLoginConfirm : GameModification {
     };
 
     public override void OnEnable()
-        => Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "_CharaSelectListMenu", OnCharacterListReceiveEvent);
+        => Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
 
     public override void OnDisable()
-        => Services.AddonLifecycle.UnregisterListener(OnCharacterListReceiveEvent);
-
-    private static void OnCharacterListReceiveEvent(AddonEvent type, AddonArgs args) {
-        if (args is not AddonReceiveEventArgs receiveEventArgs) return;
-        if ((AtkEventType)receiveEventArgs.AtkEventType is not AtkEventType.MouseClick) return;
-        if (receiveEventArgs.EventParam is < 5 or > 12) return;
-
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
-    }
+        => Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
 
     private static void SelectYesNoHandler(AddonEvent _, AddonArgs yesNoArgs) {
-        var addon = yesNoArgs.GetAddon<AddonSelectYesno>();
+        var addon = yesNoArgs.GetAddon();
 
-        if (addon->AtkUnitBase.GetCallbackHandlerInfo() is { AgentId: AgentId.Lobby, EventKind: 3 }) {
-            addon->YesButton->SetEnabledState(false);
-            addon->AtkUnitBase.FireCallbackCommand([ 0 ]);
+        if (addon->GetCallbackHandlerInfo() is { AgentId: AgentId.Lobby, EventKind: 3 }) {
+            addon->SendEvent(AtkEventType.ButtonClick, 0);
         }
-
-        Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
     }
 }

@@ -13,6 +13,7 @@ public static unsafe class AddonArgsExtensions {
         public Vector2 ClickPosition => args.GetMouseClickPosition();
 
         public T* GetAddon<T>() where T : unmanaged => (T*)args.Addon.Address;
+        public AtkUnitBase* GetAddon()  => args.GetAddon<AtkUnitBase>();
 
         public void PrintAtkValues() {
             var atkValues = args switch {

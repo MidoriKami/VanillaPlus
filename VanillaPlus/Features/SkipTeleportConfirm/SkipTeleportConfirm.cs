@@ -1,14 +1,9 @@
-﻿using System;
-using Dalamud.Game.Addon.Lifecycle;
+﻿using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
-using Dalamud.Game.Agent;
-using Dalamud.Game.Agent.AgentArgTypes;
-using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using CsAgentId = FFXIVClientStructs.FFXIV.Client.UI.Agent.AgentId;
-using AgentId = Dalamud.Game.Agent.AgentId;
 
 namespace VanillaPlus.Features.SkipTeleportConfirm;
 
@@ -24,29 +19,16 @@ public unsafe class SkipTeleportConfirm : GameModification {
     };
 
     public override void OnEnable()
-        => Services.AgentLifecycle.RegisterListener(AgentEvent.PreReceiveEvent, AgentId.Map, OnAgentMapReceiveEvent);
+        => Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
 
     public override void OnDisable()
-        => Services.AgentLifecycle.UnregisterListener(OnAgentMapReceiveEvent);
-
-    private static void OnAgentMapReceiveEvent(AgentEvent type, AgentArgs args) {
-        if (args is not AgentReceiveEventArgs receiveEventArgs) return;
-
-        var valueCount = (int) receiveEventArgs.ValueCount;
-        var valueSpan = new Span<AtkValue>((AtkValue*)receiveEventArgs.AtkValues, valueCount);
-
-        if (receiveEventArgs.ValueCount is 2 && valueSpan[0].Int is 7) {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
-        }
-    }
+        => Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
 
     private static void SelectYesNoHandler(AddonEvent _, AddonArgs yesNoArgs) {
-        var addon = yesNoArgs.GetAddon<AddonSelectYesno>();
+        var addon = yesNoArgs.GetAddon();
 
-        if (addon->AtkUnitBase.GetCallbackHandlerInfo() is { AgentId: CsAgentId.Map, EventKind: 1 }) {
-            addon->AtkUnitBase.FireCallbackCommand(true, [ 0 ]);
+        if (addon->GetCallbackHandlerInfo() is { AgentId: CsAgentId.Map, EventKind: 1 }) {
+            addon->SendEvent(AtkEventType.ButtonClick, 0);
         }
-
-        Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
     }
 }
