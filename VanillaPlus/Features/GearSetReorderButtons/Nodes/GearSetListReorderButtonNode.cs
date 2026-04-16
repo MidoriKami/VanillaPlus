@@ -7,7 +7,7 @@ using KamiToolKit.Premade.Node.Simple;
 namespace VanillaPlus.Features.GearSetReorderButtons.Nodes;
 
 public unsafe class GearSetListReorderButtonNode : SimpleComponentNode {
-    public int GearSetId { get; set; }
+    private int GearSetId { get; set; }
 
     private readonly CircleButtonNode upButtonNode;
     private readonly CircleButtonNode downButtonNode;
@@ -43,12 +43,5 @@ public unsafe class GearSetListReorderButtonNode : SimpleComponentNode {
         downButtonNode.IsEnabled = listItemData.GearSetIndex < GearSetCount - 1;
 
         IsVisible = listItemData.IsChecked;
-    }
-
-    protected override void Dispose(bool disposing, bool isNativeDestructor) {
-        downButtonNode.Dispose();
-        upButtonNode.Dispose();
-
-        base.Dispose(disposing, isNativeDestructor);
     }
 }
