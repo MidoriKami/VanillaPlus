@@ -24,6 +24,21 @@ public static unsafe class AtkUnitBaseExtensions {
         public void SubscribeNumberArrayData(NumberArrayType arrayType) => addon.SubscribeAtkArrayData(1, (byte)arrayType);
         public void UnsubscribeNumberArrayData(NumberArrayType arrayType) => addon.UnsubscribeAtkArrayData(1, (byte)arrayType);
 
+        /// <summary>
+        /// Sends a generic event with no additional data.
+        /// </summary>
+        /// <remarks>
+        /// This is often sufficient for trigger basic callbacks.
+        /// </remarks>
+        /// <param name="eventType"></param>
+        /// <param name="param"></param>
+        public void SendEvent(AtkEventType eventType, int param) {
+            var atkEvent = stackalloc AtkEvent[1];
+            var atkEventData = stackalloc AtkEventData[1];
+
+            addon.ReceiveEvent(eventType, param, atkEvent, atkEventData);
+        }
+        
         public void FireCallbackCommand(ICollection<int> commands)
             => addon.FireCallbackCommand(false, commands);
 
