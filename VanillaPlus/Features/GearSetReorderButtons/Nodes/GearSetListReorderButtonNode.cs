@@ -33,14 +33,14 @@ public unsafe class GearSetListReorderButtonNode : SimpleComponentNode {
         };
 
         upButtonNode.AttachNode(this);
-        downButtonNode.AttachNode(upButtonNode);
+        downButtonNode.AttachNode(this);
     }
 
     public void Update(GearSetListListItem listItemData) {
         GearSetId = listItemData.GearSetId;
 
-        upButtonNode.IsEnabled = listItemData.GearSetIndex > 0;
-        downButtonNode.IsEnabled = listItemData.GearSetIndex < GearSetCount - 1;
+        upButtonNode.IsEnabled = listItemData.ItemIndex > 0;
+        downButtonNode.IsEnabled = listItemData.ItemIndex < GearSetCount - 1;
 
         IsVisible = listItemData.IsChecked;
     }
