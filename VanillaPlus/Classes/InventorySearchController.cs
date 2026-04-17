@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using FFXIVClientStructs.Interop;
-using Lumina.Extensions;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Classes;

@@ -30,7 +30,7 @@ public unsafe class InventoryCooldowns : GameModification {
     private MultiAddonController? controller;
 
     public override void OnEnable() {
-        controller = new MultiAddonController() {
+        controller = new MultiAddonController {
             AddonNames = ["InventoryExpansion", "InventoryLarge", "Inventory"],
             OnSetup = SetupInventory,
             OnUpdate = UpdateInventory,
@@ -55,8 +55,6 @@ public unsafe class InventoryCooldowns : GameModification {
     }
 
     private void SetupInventory(AtkUnitBase* addon) {
-        var inventorySorter = Inventory.GetSorterForInventory(addon);
-
         foreach (var childAddon in Inventory.GetInventoryAddons(addon)) {
             if (!IsAllowedChildAddon(childAddon))
                 continue;
@@ -71,7 +69,6 @@ public unsafe class InventoryCooldowns : GameModification {
                     addonNodeCache.Add(childAddon.Value->NameString, inventoryNodes = []);
 
                 var cooldownNode = new InventoryCooldownTextNode(this) {
-                    Index = index,
                     Slot = inventorySlot,
 
                     Position = new Vector2(2.0f, 8.0f),
@@ -116,13 +113,9 @@ public unsafe class InventoryCooldowns : GameModification {
     }
 
     private void FinalizeInventory(AtkUnitBase* addon) {
-        Services.PluginLog.Verbose($"[InventoryCooldowns] Finalizing {addon->NameString}...");
-
         foreach (var childAddon in Inventory.GetInventoryAddons(addon)) {
             if (!IsAllowedChildAddon(childAddon))
                 continue;
-
-            Services.PluginLog.Verbose($"[InventoryCooldowns] Disposing nodes for {childAddon.Value->NameString}...");
 
             if (addonNodeCache.TryGetValue(childAddon.Value->NameString, out var inventoryNodes)) {
                 foreach (var node in inventoryNodes.Values) {
@@ -134,7 +127,6 @@ public unsafe class InventoryCooldowns : GameModification {
         }
     }
 
-    private bool IsAllowedChildAddon(AtkUnitBase* addon) {
-        return !addon->Name.StartsWith("InventoryEvent"u8);
-    }
+    private static bool IsAllowedChildAddon(AtkUnitBase* addon)
+        => !addon->Name.StartsWith("InventoryEvent"u8);
 }

@@ -7,8 +7,7 @@ using KamiToolKit.Nodes;
 namespace VanillaPlus.Features.InventoryCooldowns;
 
 public unsafe class InventoryCooldownTextNode(InventoryCooldowns feature) : TextNode {
-    public int Index;
-    public AtkComponentDragDrop* Slot;
+    public required AtkComponentDragDrop* Slot;
 
     public void Update(InventoryItem* item) {
         if (Slot is null) return;
@@ -26,8 +25,6 @@ public unsafe class InventoryCooldownTextNode(InventoryCooldowns feature) : Text
             return;
         }
 
-        var containerType = item->GetInventoryType();
-        var containerSlot = item->GetSlot();
         var itemId = item->GetItemId();
 
         if (itemId is 0) {
@@ -55,7 +52,7 @@ public unsafe class InventoryCooldownTextNode(InventoryCooldowns feature) : Text
         SetImageMultiply(50);
     }
 
-    public void Hide() {
+    private void Hide() {
         if (!IsVisible) return;
         Node->SetText(""u8);
         SetImageMultiply(100);
@@ -79,6 +76,7 @@ public unsafe class InventoryCooldownTextNode(InventoryCooldowns feature) : Text
         SetImageMultiply(100);
         Slot = null;
         feature.RemoveNodeFromCache(this);
+
         base.Dispose(disposing, isNativeDestructor);
     }
 }
