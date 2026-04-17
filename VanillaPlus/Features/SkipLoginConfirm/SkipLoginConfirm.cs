@@ -9,8 +9,8 @@ namespace VanillaPlus.Features.SkipLoginConfirm;
 
 public unsafe class SkipLoginConfirm : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Skip Login Confirm",
-        Description = "Skips the confirmation window that appears when logging in.",
+        DisplayName = Strings.ModificationDisplay_SkipLoginConfirm,
+        Description = Strings.ModificationDescription_SkipLoginConfirm,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

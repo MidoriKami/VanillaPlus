@@ -12,8 +12,8 @@ namespace VanillaPlus.Features.GearSetReorderButtons;
 
 public unsafe class GearSetReorderButtons : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Gearset Reorder Buttons",
-        Description = "Adds buttons to the gearset list window for easily reordering gearsets.",
+        DisplayName = Strings.ModificationDisplay_GearSetReorderButtons,
+        Description = Strings.ModificationDescription_GearSetReorderButtons,
         Type = ModificationType.UserInterface,
         Authors = ["zajrik"],
         ChangeLog = [

@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.ShowPlayers;
 
 public unsafe class ShowPlayersOnMap : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Show Players",
-        Description = "Shows icons for other players on the map.",
+        DisplayName = Strings.ModificationDisplay_ShowPlayers,
+        Description = Strings.ModificationDescription_ShowPlayers,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Map,
         Authors = [ "MidoriKami" ],

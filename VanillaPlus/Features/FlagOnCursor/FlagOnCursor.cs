@@ -9,8 +9,8 @@ namespace VanillaPlus.Features.FlagOnCursor;
 
 public unsafe class FlagOnCursor : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Place Flag on Cursor",
-        Description = "Places a flag on the map for where your cursor is pointing in the world.",
+        DisplayName = Strings.ModificationDisplay_FlagOnCursor,
+        Description = Strings.ModificationDescription_FlagOnCursor,
         Type = ModificationType.UserInterface,
         Authors = [ "QLEDHDTV" ],
         ChangeLog = [
@@ -21,7 +21,7 @@ public unsafe class FlagOnCursor : GameModification {
     private const string CommandName = "/flagthere";
 
     public override void OnEnable() => Services.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
-        HelpMessage = "Place a flag at mouse position",
+        HelpMessage = Strings.FlagOnCursor_CommandHelpMessage,
         ShowInHelp = true,
     });
 

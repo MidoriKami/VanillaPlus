@@ -11,8 +11,8 @@ namespace VanillaPlus.Features.ShowAetherytesOnTop;
 
 public unsafe class ShowAetherytesOnTop : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Show Aetherytes on Top",
-        Description = "Forces aetherytes to always show on top of other map markers.",
+        DisplayName = Strings.ModificationDisplay_ShowAetherytesOnTop,
+        Description = Strings.ModificationDescription_ShowAetherytesOnTop,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Map,
         Authors = [ "MidoriKami" ],

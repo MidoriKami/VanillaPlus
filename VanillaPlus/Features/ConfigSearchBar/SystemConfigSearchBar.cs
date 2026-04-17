@@ -13,8 +13,8 @@ namespace VanillaPlus.Features.ConfigSearchBar;
 
 public unsafe class SystemConfigSearchBar : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "System Configuration Search Bar",
-        Description = "Adds a search bar to System Configuration Windows",
+        DisplayName = Strings.ModificationDisplay_SystemConfigSearchBar,
+        Description = Strings.ModificationDescription_SystemConfigSearchBar,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
@@ -35,14 +35,14 @@ public unsafe class SystemConfigSearchBar : GameModification {
         config = ConfigSearchBarConfig.Load();
 
         configAddon = new ConfigAddon {
-            Title = "System Config Search Bar Config",
+            Title = Strings.SystemConfigSearchBar_ConfigTitle,
             InternalName = "ConfigSearchBarConfig",
             Config = config,
         };
 
-        configAddon.AddCategory("General")
-            .AddColorEdit("Tab Highlight", nameof(config.TabColor), KnownColor.LimeGreen.Vector())
-            .AddColorEdit("Text Highlight", nameof(config.HighlightColor), KnownColor.Red.Vector());
+        configAddon.AddCategory(Strings.SystemConfigSearchBar_CategoryGeneral)
+            .AddColorEdit(Strings.SystemConfigSearchBar_LabelTabHighlight, nameof(config.TabColor), KnownColor.LimeGreen.Vector())
+            .AddColorEdit(Strings.SystemConfigSearchBar_LabelTextHighlight, nameof(config.HighlightColor), KnownColor.Red.Vector());
 
         OpenConfigAction = configAddon.Toggle;
 

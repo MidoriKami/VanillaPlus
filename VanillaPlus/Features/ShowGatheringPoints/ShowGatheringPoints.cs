@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.ShowGatheringPoints;
 
 public unsafe class ShowGatheringPoints : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Show Gathering Points",
-        Description = "Shows icons for gathering points on the map.",
+        DisplayName = Strings.ModificationDisplay_ShowGatheringPoints,
+        Description = Strings.ModificationDescription_ShowGatheringPoints,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Map,
         Authors = [ "MidoriKami" ],

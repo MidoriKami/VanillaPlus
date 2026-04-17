@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.ReverseCharacterPanel;
 
 public unsafe class ReverseCharacterPanel : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Reverse Character Panel",
-        Description = "Switches where the character information and character portraits are in the Character window.",
+        DisplayName = Strings.ModificationDisplay_ReverseCharacterPanel,
+        Description = Strings.ModificationDescription_ReverseCharacterPanel,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
         ChangeLog = [
