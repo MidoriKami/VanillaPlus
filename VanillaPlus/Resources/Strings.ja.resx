@@ -1443,4 +1443,10 @@ ID: {0}</value>
   <data name="CosmicExplorationProgressWindow_HudButtonTooltip" xml:space="preserve">
       <value>[VanillaPlus] Show Research Progress</value>
   </data>
+  <data name="ModificationDisplay_InventoryCooldowns" xml:space="preserve">
+    <value>Inventory Cooldowns</value>
+  </data>
+  <data name="ModificationDescription_InventoryCooldowns" xml:space="preserve">
+    <value>Shows the cooldown on items in the inventory.</value>
+  </data>
 </root>

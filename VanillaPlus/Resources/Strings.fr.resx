@@ -1445,4 +1445,10 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
   <data name="CosmicExplorationProgressWindow_HudButtonTooltip" xml:space="preserve">
       <value>[VanillaPlus] Afficher la progression de la recherche</value>
   </data>
+  <data name="ModificationDisplay_InventoryCooldowns" xml:space="preserve">
+    <value>Inventory Cooldowns</value>
+  </data>
+  <data name="ModificationDescription_InventoryCooldowns" xml:space="preserve">
+    <value>Shows the cooldown on items in the inventory.</value>
+  </data>
 </root>
