@@ -20,7 +20,7 @@ public unsafe class InventoryCooldowns : GameModification {
         Authors = [ "Haselnussbomber" ],
         ChangeLog = [
             new ChangeLogInfo(1, "Initial Implementation"),
-        ]
+        ],
     };
 
     public override string ImageName => "InventoryCooldowns.png";
