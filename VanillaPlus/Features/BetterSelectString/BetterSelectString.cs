@@ -11,8 +11,8 @@ namespace VanillaPlus.Features.BetterSelectString;
 
 public unsafe class BetterSelectString : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Better Select String",
-        Description = "Allows you to select one of multiple sentences via number.",
+        DisplayName = Strings.ModificationDisplay_BetterSelectString,
+        Description = Strings.ModificationDescription_BetterSelectString,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
         ChangeLog = [

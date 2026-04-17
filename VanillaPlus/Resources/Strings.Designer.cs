@@ -3991,5 +3991,356 @@ namespace VanillaPlus.Resources {
                 return ResourceManager.GetString("WondrousTailsProbabilities_ShuffleAverageLabel", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to System Configuration Search Bar.
+        /// </summary>
+        internal static string ModificationDisplay_SystemConfigSearchBar {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_SystemConfigSearchBar", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Adds a search bar to System Configuration Windows.
+        /// </summary>
+        internal static string ModificationDescription_SystemConfigSearchBar {
+            get {
+                return ResourceManager.GetString("ModificationDescription_SystemConfigSearchBar", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to System Config Search Bar Config.
+        /// </summary>
+        internal static string SystemConfigSearchBar_ConfigTitle {
+            get {
+                return ResourceManager.GetString("SystemConfigSearchBar_ConfigTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        internal static string SystemConfigSearchBar_CategoryGeneral {
+            get {
+                return ResourceManager.GetString("SystemConfigSearchBar_CategoryGeneral", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Tab Highlight.
+        /// </summary>
+        internal static string SystemConfigSearchBar_LabelTabHighlight {
+            get {
+                return ResourceManager.GetString("SystemConfigSearchBar_LabelTabHighlight", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Text Highlight.
+        /// </summary>
+        internal static string SystemConfigSearchBar_LabelTextHighlight {
+            get {
+                return ResourceManager.GetString("SystemConfigSearchBar_LabelTextHighlight", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Visual Style.
+        /// </summary>
+        internal static string ClockOverlay_CategoryVisualStyle {
+            get {
+                return ResourceManager.GetString("ClockOverlay_CategoryVisualStyle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Text Color.
+        /// </summary>
+        internal static string ClockOverlay_LabelTextColor {
+            get {
+                return ResourceManager.GetString("ClockOverlay_LabelTextColor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Text Outline.
+        /// </summary>
+        internal static string ClockOverlay_LabelTextOutline {
+            get {
+                return ResourceManager.GetString("ClockOverlay_LabelTextOutline", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Font Size.
+        /// </summary>
+        internal static string ClockOverlay_LabelFontSize {
+            get {
+                return ResourceManager.GetString("ClockOverlay_LabelFontSize", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Font.
+        /// </summary>
+        internal static string ClockOverlay_LabelFont {
+            get {
+                return ResourceManager.GetString("ClockOverlay_LabelFont", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Alignment.
+        /// </summary>
+        internal static string ClockOverlay_LabelAlignment {
+            get {
+                return ResourceManager.GetString("ClockOverlay_LabelAlignment", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Lock Chat Button.
+        /// </summary>
+        internal static string ModificationDisplay_LockChatButton {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_LockChatButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Adds a button to chatlogs to lock them from moving.
+        /// </summary>
+        internal static string ModificationDescription_LockChatButton {
+            get {
+                return ResourceManager.GetString("ModificationDescription_LockChatButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to [VanillaPlus] Unlock Chat Movement.
+        /// </summary>
+        internal static string LockChatButton_TooltipUnlock {
+            get {
+                return ResourceManager.GetString("LockChatButton_TooltipUnlock", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to [VanillaPlus] Lock Chat Movement.
+        /// </summary>
+        internal static string LockChatButton_TooltipLock {
+            get {
+                return ResourceManager.GetString("LockChatButton_TooltipLock", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Gearset Reorder Buttons.
+        /// </summary>
+        internal static string ModificationDisplay_GearSetReorderButtons {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_GearSetReorderButtons", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Adds buttons to the gearset list window for easily reordering gearsets.
+        /// </summary>
+        internal static string ModificationDescription_GearSetReorderButtons {
+            get {
+                return ResourceManager.GetString("ModificationDescription_GearSetReorderButtons", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Move gear set up..
+        /// </summary>
+        internal static string GearSetReorderButtons_TooltipMoveUp {
+            get {
+                return ResourceManager.GetString("GearSetReorderButtons_TooltipMoveUp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Move gear set down..
+        /// </summary>
+        internal static string GearSetReorderButtons_TooltipMoveDown {
+            get {
+                return ResourceManager.GetString("GearSetReorderButtons_TooltipMoveDown", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Better Select String.
+        /// </summary>
+        internal static string ModificationDisplay_BetterSelectString {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_BetterSelectString", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Allows you to select one of multiple sentences via number.
+        /// </summary>
+        internal static string ModificationDescription_BetterSelectString {
+            get {
+                return ResourceManager.GetString("ModificationDescription_BetterSelectString", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Place Flag on Cursor.
+        /// </summary>
+        internal static string ModificationDisplay_FlagOnCursor {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_FlagOnCursor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Places a flag on the map for where your cursor is pointing in the world.
+        /// </summary>
+        internal static string ModificationDescription_FlagOnCursor {
+            get {
+                return ResourceManager.GetString("ModificationDescription_FlagOnCursor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Place a flag at mouse position.
+        /// </summary>
+        internal static string FlagOnCursor_CommandHelpMessage {
+            get {
+                return ResourceManager.GetString("FlagOnCursor_CommandHelpMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reverse Character Panel.
+        /// </summary>
+        internal static string ModificationDisplay_ReverseCharacterPanel {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_ReverseCharacterPanel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Switches where the character information and character portraits are in the Character window.
+        /// </summary>
+        internal static string ModificationDescription_ReverseCharacterPanel {
+            get {
+                return ResourceManager.GetString("ModificationDescription_ReverseCharacterPanel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Show Aetherytes on Top.
+        /// </summary>
+        internal static string ModificationDisplay_ShowAetherytesOnTop {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_ShowAetherytesOnTop", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Forces aetherytes to always show on top of other map markers.
+        /// </summary>
+        internal static string ModificationDescription_ShowAetherytesOnTop {
+            get {
+                return ResourceManager.GetString("ModificationDescription_ShowAetherytesOnTop", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Show Enemies.
+        /// </summary>
+        internal static string ModificationDisplay_ShowEnemies {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_ShowEnemies", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Shows icons for enemies players on the map.
+        /// </summary>
+        internal static string ModificationDescription_ShowEnemies {
+            get {
+                return ResourceManager.GetString("ModificationDescription_ShowEnemies", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Show Gathering Points.
+        /// </summary>
+        internal static string ModificationDisplay_ShowGatheringPoints {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_ShowGatheringPoints", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Shows icons for gathering points on the map.
+        /// </summary>
+        internal static string ModificationDescription_ShowGatheringPoints {
+            get {
+                return ResourceManager.GetString("ModificationDescription_ShowGatheringPoints", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Show Players.
+        /// </summary>
+        internal static string ModificationDisplay_ShowPlayers {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_ShowPlayers", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Shows icons for other players on the map.
+        /// </summary>
+        internal static string ModificationDescription_ShowPlayers {
+            get {
+                return ResourceManager.GetString("ModificationDescription_ShowPlayers", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Show Treasure Chests.
+        /// </summary>
+        internal static string ModificationDisplay_ShowTreasureChests {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_ShowTreasureChests", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Shows icons for treasure chests on the map.
+        /// </summary>
+        internal static string ModificationDescription_ShowTreasureChests {
+            get {
+                return ResourceManager.GetString("ModificationDescription_ShowTreasureChests", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Skip Login Confirm.
+        /// </summary>
+        internal static string ModificationDisplay_SkipLoginConfirm {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_SkipLoginConfirm", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Skips the confirmation window that appears when logging in.
+        /// </summary>
+        internal static string ModificationDescription_SkipLoginConfirm {
+            get {
+                return ResourceManager.GetString("ModificationDescription_SkipLoginConfirm", resourceCulture);
+            }
+        }
     }
 }

@@ -42,12 +42,12 @@ public class ClockOverlay : GameModification {
             .AddCheckbox(Strings.ClockOverlay_EnableMoving, nameof(config.IsMoveable))
             .AddDropdown<ClockType>(Strings.ClockOverlay_TimeSource, nameof(config.Type));
 
-        configWindow.AddCategory("Visual Style")
-            .AddColorEdit("Text Color", nameof(config.TextColor))
-            .AddColorEdit("Text Outline", nameof(config.TextOutlineColor))
-            .AddIntSlider("Font Size", 8, 32, nameof(config.FontSize))
-            .AddDropdown<FontType>("Font", nameof(config.FontType))
-            .AddDropdown<AlignmentType>("Alignment", nameof(config.AlignmentType))
+        configWindow.AddCategory(Strings.ClockOverlay_CategoryVisualStyle)
+            .AddColorEdit(Strings.ClockOverlay_LabelTextColor, nameof(config.TextColor))
+            .AddColorEdit(Strings.ClockOverlay_LabelTextOutline, nameof(config.TextOutlineColor))
+            .AddIntSlider(Strings.ClockOverlay_LabelFontSize, 8, 32, nameof(config.FontSize))
+            .AddDropdown<FontType>(Strings.ClockOverlay_LabelFont, nameof(config.FontType))
+            .AddDropdown<AlignmentType>(Strings.ClockOverlay_LabelAlignment, nameof(config.AlignmentType))
             .AddDropdown<TextFlags>(Strings.ClockOverlay_TextRendering, nameof(config.TextFlags));
         
         OpenConfigAction = configWindow.Toggle;

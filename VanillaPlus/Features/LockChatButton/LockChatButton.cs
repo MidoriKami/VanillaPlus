@@ -12,8 +12,8 @@ namespace VanillaPlus.Features.LockChatButton;
 
 public unsafe class LockChatButton : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Lock Chat Button",
-        Description = "Adds a button to chatlogs to lock them from moving.",
+        DisplayName = Strings.ModificationDisplay_LockChatButton,
+        Description = Strings.ModificationDescription_LockChatButton,
         Type = ModificationType.UserInterface,
         Authors = ["MidoriKami"],
         ChangeLog = [
@@ -93,7 +93,7 @@ public unsafe class LockChatButton : GameModification {
         var newButton = new PadlockButtonNode {
             Size = new Vector2(20.0f, 24.0f),
             IsLocked = data.IsLocked,
-            TextTooltip = data.IsLocked ? "[VanillaPlus] Unlock Chat Movement" : "[VanillaPlus] Lock Chat Movement",
+            TextTooltip = data.IsLocked ? Strings.LockChatButton_TooltipUnlock : Strings.LockChatButton_TooltipLock,
         };
 
         newButton.OnClick = () => OnLockButtonClicked(newButton);
@@ -138,7 +138,7 @@ public unsafe class LockChatButton : GameModification {
             Size = new Vector2(20.0f, 24.0f), 
             IsLocked = data.IsLocked, 
             Position = positioningNode->Position + new Vector2(32.0f, 2.0f), 
-            TextTooltip = data.IsLocked ? "[VanillaPlus] Unlock Chat Movement" : "[VanillaPlus] Lock Chat Movement",
+            TextTooltip = data.IsLocked ? Strings.LockChatButton_TooltipUnlock : Strings.LockChatButton_TooltipLock,
         };
 
         newButton.OnClick = () => OnLockButtonClicked(newButton);
@@ -165,7 +165,7 @@ public unsafe class LockChatButton : GameModification {
             buttonNode.Value.IsLocked = data.IsLocked;
         }
 
-        thisButton.TextTooltip = data.IsLocked ? "[VanillaPlus] Unlock Chat Movement" : "[VanillaPlus] Lock Chat Movement";
+        thisButton.TextTooltip = data.IsLocked ? Strings.LockChatButton_TooltipUnlock : Strings.LockChatButton_TooltipLock;
         thisButton.ShowTooltip();
     }
 

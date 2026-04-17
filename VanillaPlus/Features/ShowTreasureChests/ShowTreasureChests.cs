@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.ShowTreasureChests;
 
 public unsafe class ShowTreasureChests : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Show Treasure Chests",
-        Description = "Shows icons for treasure chests on the map.",
+        DisplayName = Strings.ModificationDisplay_ShowTreasureChests,
+        Description = Strings.ModificationDescription_ShowTreasureChests,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Map,
         Authors = [ "MidoriKami" ],

@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.ShowEnemies;
 
 public unsafe class ShowEnemies : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Show Enemies",
-        Description = "Shows icons for enemies players on the map.",
+        DisplayName = Strings.ModificationDisplay_ShowEnemies,
+        Description = Strings.ModificationDescription_ShowEnemies,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Map,
         Authors = [ "MidoriKami" ],
