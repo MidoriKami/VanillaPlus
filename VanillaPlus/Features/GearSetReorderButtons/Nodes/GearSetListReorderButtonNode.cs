@@ -12,15 +12,13 @@ public unsafe class GearSetListReorderButtonNode : SimpleComponentNode {
     private readonly CircleButtonNode upButtonNode;
     private readonly CircleButtonNode downButtonNode;
 
-    private byte GearSetCount => RaptureGearsetModule.Instance()->NumGearsets;
-
     public GearSetListReorderButtonNode() {
         upButtonNode = new CircleButtonNode {
             Icon = ButtonIcon.UpArrow,
             Size = new Vector2(32.0f, 32.0f),
             OnClick = () => AgentGearSet.Instance()->MoveSetUp(GearSetId),
             TextTooltip = "Move gear set up.",
-            IsEnabled = false
+            IsEnabled = false,
         };
 
         downButtonNode = new CircleButtonNode {
@@ -29,18 +27,27 @@ public unsafe class GearSetListReorderButtonNode : SimpleComponentNode {
             Position = new Vector2(28.0f, 0.0f),
             OnClick = () => AgentGearSet.Instance()->MoveSetDown(GearSetId),
             TextTooltip = "Move gear set down.",
-            IsEnabled = false
+            IsEnabled = false,
         };
 
         upButtonNode.AttachNode(this);
         downButtonNode.AttachNode(this);
     }
 
+    protected override void OnSizeChanged() {
+        base.OnSizeChanged();
+
+        upButtonNode.Size = new Vector2(Height, Height);
+
+        downButtonNode.Size = new Vector2(Height, Height);
+        downButtonNode.Position = new Vector2(Width - Height, 0.0f);
+    }
+
     public void Update(GearSetListListItem listItemData) {
         GearSetId = listItemData.GearSetId;
 
         upButtonNode.IsEnabled = listItemData.ItemIndex > 0;
-        downButtonNode.IsEnabled = listItemData.ItemIndex < GearSetCount - 1;
+        downButtonNode.IsEnabled = listItemData.ItemIndex < RaptureGearsetModule.Instance()->NumGearsets - 1;
 
         IsVisible = listItemData.IsChecked;
     }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -27,17 +28,17 @@ public unsafe class GearSetReorderButtons : GameModification {
 
     private readonly Dictionary<uint, GearSetListReorderButtonNode> reorderButtonNodes = [];
 
-    private const ushort ExtraAddonWidth = 56;
+    private const float ExtraAddonWidth = 56.0f;
 
     public override void OnEnable() {
-        gearSetsAddonController = new() {
+        gearSetsAddonController = new AddonController<AddonGearSetList> {
             AddonName = "GearSetList",
             OnSetup = SetUpAddon,
             OnFinalize = FinalizeAddon,
         };
         gearSetsAddonController.Enable();
 
-        gearSetsListController = new() {
+        gearSetsListController = new NativeListController<AddonGearSetList, GearSetListListItem> {
             AddonName = "GearSetList",
             GetPopulatorNode = GetPopulatorNode,
             UpdateElement = UpdateElement,
@@ -53,84 +54,79 @@ public unsafe class GearSetReorderButtons : GameModification {
         gearSetsListController = null;
     }
 
-    private void SetUpAddon(AddonGearSetList* addon) {
-        // Tried to use AtkUnitBase.Resize() but it doesn't update the position/width
-        // of all of the nodes needed to make room for the reorder buttons so I'm still
-        // doing this manually. It's still gross and I still hate it.
+    private static void SetUpAddon(AddonGearSetList* addon) {
 
-        var windowNode = addon->GetComponentByNodeId(11);
-        var listNode = addon->GetComponentByNodeId(7);
-
-        if (windowNode is null || listNode is null) return;
-
-        // Get all the nodes that need widened
-        var nodesToWiden = new AtkResNode*[] {
-            addon->RootNode,
-
-            addon->GetNodeById(11),
-            addon->GetNodeById(8),
-            addon->GetNodeById(7),
-            addon->GetNodeById(5),
-
-            windowNode->GetNodeById(12),
-            windowNode->GetNodeById(11),
-            windowNode->GetNodeById(10),
-            windowNode->GetNodeById(9),
-            windowNode->GetNodeById(8),
-            windowNode->GetNodeById(2),
-
-            listNode->GetNodeById(6),
-        };
-
-        foreach (var node in nodesToWiden) {
-            if (node is null) continue;
-            node->Width += ExtraAddonWidth;
+        // Gearset Help Header Button
+        var gearsetHelpButton = addon->GetNodeById(2);
+        if (gearsetHelpButton is not null) {
+            gearsetHelpButton->Position += new Vector2(ExtraAddonWidth, 0.0f);
+        }
+        
+        // Gearset Count/Limit text node
+        var gearsetCountTextNode = addon->GetNodeById(10);
+        if (gearsetCountTextNode is not null) {
+            gearsetCountTextNode->Position += new Vector2(ExtraAddonWidth, 0.0f);
         }
 
-        // Get all the nodes that need repositioned
-        var nodesToReposition = new AtkResNode*[] {
-            addon->GetNodeById(10),
-            addon->GetNodeById(2),
-
-            windowNode->GetNodeById(7),
-
-            listNode->GetNodeById(4),
-        };
-
-        foreach (var node in nodesToReposition) {
-            if (node is null) continue;
-            node->X += ExtraAddonWidth;
+        // List Component Node
+        var listComponentNode = addon->GetNodeById(7);
+        if (listComponentNode is not null) {
+            listComponentNode->Size += new Vector2(ExtraAddonWidth, 0.0f);
         }
+
+        addon->AtkUnitBase.Size += new Vector2(ExtraAddonWidth, 0.0f);
     }
 
     private void FinalizeAddon(AddonGearSetList* addon) {
-        // Dispose of all reorder button nodes
+
+        // Gearset Help Header Button
+        var gearsetHelpButton = addon->GetNodeById(2);
+        if (gearsetHelpButton is not null) {
+            gearsetHelpButton->Position -= new Vector2(ExtraAddonWidth, 0.0f);
+        }
+
+        // List Component Node
+        var listComponentNode = addon->GetNodeById(7);
+        if (listComponentNode is not null) {
+            listComponentNode->Size -= new Vector2(ExtraAddonWidth, 0.0f);
+        }
+
+        // Gearset Count/Limit text node
+        var gearsetCountTextNode = addon->GetNodeById(10);
+        if (gearsetCountTextNode is not null) {
+            gearsetCountTextNode->Position -= new Vector2(ExtraAddonWidth, 0.0f);
+        }
+
+        addon->AtkUnitBase.Size -= new Vector2(ExtraAddonWidth, 0.0f);
+
         foreach (var (_, node) in reorderButtonNodes) {
             node.Dispose();
         }
         reorderButtonNodes.Clear();
     }
 
-    private AtkComponentListItemRenderer* GetPopulatorNode(AddonGearSetList* addon) {
-        return addon->GetComponentListById(7)->FirstAtkComponentListItemRenderer;
-    }
+    private static AtkComponentListItemRenderer* GetPopulatorNode(AddonGearSetList* addon)
+        => addon->GetComponentListById(7)->FirstAtkComponentListItemRenderer;
 
     private void UpdateElement(AddonGearSetList* addon, GearSetListListItem listItemData) {
-        // Update reorder button node if it already exists
-        if (reorderButtonNodes.TryGetValue(listItemData.NodeId, out var reorderButton)) {
-            reorderButton.Update(listItemData);
-            return;
+
+        // If the reorder button node does not exist, create and add it.
+        if (!reorderButtonNodes.TryGetValue(listItemData.NodeId, out var reorderButton)) {
+            var collisionNode = listItemData.CollisionNode;
+            var ownerNode = listItemData.ItemRenderer->OwnerNode;
+            
+            reorderButton = new GearSetListReorderButtonNode {
+                Size = new Vector2(ExtraAddonWidth - 4.0f, 28.0f),
+                Position = new Vector2(collisionNode->AtkResNode.Width - 2.0f - ExtraAddonWidth - 4.0f, 0.0f),
+            };
+            
+            // Resize the entire entry, so it's collision and events don't overlap with ours.
+            ownerNode->AtkResNode.Size -= new Vector2(ExtraAddonWidth + 4.0f, 0.0f);
+
+            reorderButtonNodes.Add(listItemData.NodeId, reorderButton);
+            reorderButton.AttachNode(ownerNode, NodePosition.AsLastChild);
         }
 
-        // Otherwise create and cache new reorder button node
-        var anchorNode = listItemData.ButtonAnchorNode;
-
-        reorderButton = new GearSetListReorderButtonNode() {
-            Position = new Vector2(anchorNode->X + anchorNode->Width - 2, 0)
-        };
-
-        reorderButtonNodes.Add(listItemData.NodeId, reorderButton);
         reorderButton.Update(listItemData);
-        reorderButton.AttachNode(anchorNode);
     }
 }
