@@ -15,8 +15,6 @@ public static unsafe class AtkUnitBaseExtensions {
 
         public T* GetComponentById<T>(uint nodeId) where T : unmanaged => (T*)addon.GetComponentByNodeId(nodeId);
         
-        public bool IsActuallyVisible => addon.GetIsActuallyVisible();
-
         public bool IsFocused => addon.GetIsFocused();
 
         public void SubscribeStringArrayData(StringArrayType arrayType) => addon.SubscribeAtkArrayData(0, (byte)arrayType);
@@ -70,15 +68,6 @@ public static unsafe class AtkUnitBaseExtensions {
             }
 
             return null;
-        }
-        
-        private bool GetIsActuallyVisible() {
-            if (!addon.IsVisible) return false;
-            if (addon.RootNode is null) return false;
-            if (!addon.RootNode->IsVisible()) return false;
-            if ((addon.VisibilityFlags & 5) is not 0) return false;
-
-            return true;
         }
 
         private bool GetIsFocused() {
