@@ -726,7 +726,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Chances de Ligne : </value>
   </data>
   <data name="WondrousTailsProbabilities_ShuffleAverageLabel" xml:space="preserve">
-    <value>Moyenne de Remélange : </value>
+    <value>Moy. de Recollage : </value>
   </data>
   <data name="AddonConfig_KeybindWindowTitle" xml:space="preserve">
     <value>Configuration des Raccourcis</value>
@@ -1446,9 +1446,126 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>[VanillaPlus] Afficher la progression de la recherche</value>
   </data>
   <data name="ModificationDisplay_InventoryCooldowns" xml:space="preserve">
-    <value>Inventory Cooldowns</value>
+    <value>Temps de Recharge Inventaire</value>
   </data>
   <data name="ModificationDescription_InventoryCooldowns" xml:space="preserve">
-    <value>Shows the cooldown on items in the inventory.</value>
+    <value>Affiche le temps de recharge sur les objets dans l'inventaire.</value>
+  </data>
+  <data name="ModificationDisplay_SystemConfigSearchBar" xml:space="preserve">
+    <value>Barre de Recherche Configuration Système</value>
+  </data>
+  <data name="ModificationDescription_SystemConfigSearchBar" xml:space="preserve">
+    <value>Ajoute une barre de recherche à la fenêtre de configuration système</value>
+  </data>
+  <data name="SystemConfigSearchBar_ConfigTitle" xml:space="preserve">
+    <value>Configuration de la barre de recherche pour la fenêtre configuration système</value>
+  </data>
+  <data name="SystemConfigSearchBar_CategoryGeneral" xml:space="preserve">
+    <value>Général</value>
+  </data>
+  <data name="SystemConfigSearchBar_LabelTabHighlight" xml:space="preserve">
+    <value>Surbrillance des onglets</value>
+  </data>
+  <data name="SystemConfigSearchBar_LabelTextHighlight" xml:space="preserve">
+    <value>Surbrillance du texte</value>
+  </data>
+  <data name="ClockOverlay_CategoryVisualStyle" xml:space="preserve">
+    <value>Style visuel</value>
+  </data>
+  <data name="ClockOverlay_LabelTextColor" xml:space="preserve">
+    <value>Couleur du texte</value>
+  </data>
+  <data name="ClockOverlay_LabelTextOutline" xml:space="preserve">
+    <value>Contour du texte</value>
+  </data>
+  <data name="ClockOverlay_LabelFontSize" xml:space="preserve">
+    <value>Taille de la police</value>
+  </data>
+  <data name="ClockOverlay_LabelFont" xml:space="preserve">
+    <value>Police</value>
+  </data>
+  <data name="ClockOverlay_LabelAlignment" xml:space="preserve">
+    <value>Alignement</value>
+  </data>
+  <data name="ModificationDisplay_LockChatButton" xml:space="preserve">
+    <value>Bouton Verrouillage Chat</value>
+  </data>
+  <data name="ModificationDescription_LockChatButton" xml:space="preserve">
+    <value>Ajoute un bouton de verrouillage à la fenêtre du chat pour l'empêcher de se déplacer.</value>
+  </data>
+  <data name="LockChatButton_TooltipUnlock" xml:space="preserve">
+    <value>[VanillaPlus] Débloque Position Chat</value>
+  </data>
+  <data name="LockChatButton_TooltipLock" xml:space="preserve">
+    <value>[VanillaPlus] Verrouillage Position Chat</value>
+  </data>
+  <data name="ModificationDisplay_GearSetReorderButtons" xml:space="preserve">
+    <value>Boutons de réorganisation des tenues</value>
+  </data>
+  <data name="ModificationDescription_GearSetReorderButtons" xml:space="preserve">
+    <value>Ajoute des boutons à la liste des tenues pour facilement les réorganiser.</value>
+  </data>
+  <data name="GearSetReorderButtons_TooltipMoveUp" xml:space="preserve">
+    <value>Déplacer la tenue vers le haut.</value>
+  </data>
+  <data name="GearSetReorderButtons_TooltipMoveDown" xml:space="preserve">
+    <value>Déplacer la tenue vers le bas.</value>
+  </data>
+  <data name="ModificationDisplay_BetterSelectString" xml:space="preserve">
+    <value>Better Select String</value>
+  </data>
+  <data name="ModificationDescription_BetterSelectString" xml:space="preserve">
+    <value>Permet de sélectionner une phrase via un numéro.</value>
+  </data>
+  <data name="ModificationDisplay_FlagOnCursor" xml:space="preserve">
+    <value>Ajout Lien Position sur Curseur</value>
+  </data>
+  <data name="ModificationDescription_FlagOnCursor" xml:space="preserve">
+    <value>Ajoute un lien de position sur la carte à la position de votre curseur dans le monde.</value>
+  </data>
+  <data name="FlagOnCursor_CommandHelpMessage" xml:space="preserve">
+    <value>Ajoute un lien de position à l'emplacement de la souris</value>
+  </data>
+  <data name="ModificationDisplay_ReverseCharacterPanel" xml:space="preserve">
+    <value>Inversion Fiche Personnage</value>
+  </data>
+  <data name="ModificationDescription_ReverseCharacterPanel" xml:space="preserve">
+    <value>Inverse les positions du portrait et des attributs sur la fiche du personnage.</value>
+  </data>
+  <data name="ModificationDisplay_ShowAetherytesOnTop" xml:space="preserve">
+    <value>Affiche les éthérites au-dessus</value>
+  </data>
+  <data name="ModificationDescription_ShowAetherytesOnTop" xml:space="preserve">
+    <value>Force les éthérites à toujours s'afficher au-dessus des autres marqueurs de la carte.</value>
+  </data>
+  <data name="ModificationDisplay_ShowEnemies" xml:space="preserve">
+    <value>Affiche les ennemis</value>
+  </data>
+  <data name="ModificationDescription_ShowEnemies" xml:space="preserve">
+    <value>Affiche la position des joueurs ennemis sur la carte.</value>
+  </data>
+  <data name="ModificationDisplay_ShowGatheringPoints" xml:space="preserve">
+    <value>Affiche les points de récolte</value>
+  </data>
+  <data name="ModificationDescription_ShowGatheringPoints" xml:space="preserve">
+    <value>Affiche la position des points de collecte sur la carte.</value>
+  </data>
+  <data name="ModificationDisplay_ShowPlayers" xml:space="preserve">
+    <value>Affiche les joueurs</value>
+  </data>
+  <data name="ModificationDescription_ShowPlayers" xml:space="preserve">
+    <value>Affiche la position des autres joueurs sur la carte.</value>
+  </data>
+  <data name="ModificationDisplay_ShowTreasureChests" xml:space="preserve">
+    <value>Affiche les coffres aux trésors</value>
+  </data>
+  <data name="ModificationDescription_ShowTreasureChests" xml:space="preserve">
+    <value>Affiche la position des coffres aux trésors sur la carte.</value>
+  </data>
+  <data name="ModificationDisplay_SkipLoginConfirm" xml:space="preserve">
+    <value>Valider Confirmation Connexion</value>
+  </data>
+  <data name="ModificationDescription_SkipLoginConfirm" xml:space="preserve">
+    <value>Valide la boîte de dialogue lors de la connexion.</value>
   </data>
 </root>
