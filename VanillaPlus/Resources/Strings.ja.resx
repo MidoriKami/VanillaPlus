@@ -1449,4 +1449,121 @@ ID: {0}</value>
   <data name="ModificationDescription_InventoryCooldowns" xml:space="preserve">
     <value>Shows the cooldown on items in the inventory.</value>
   </data>
+  <data name="ModificationDisplay_SystemConfigSearchBar" xml:space="preserve">
+    <value>System Configuration Search Bar</value>
+  </data>
+  <data name="ModificationDescription_SystemConfigSearchBar" xml:space="preserve">
+    <value>Adds a search bar to System Configuration Windows</value>
+  </data>
+  <data name="SystemConfigSearchBar_ConfigTitle" xml:space="preserve">
+    <value>System Config Search Bar Config</value>
+  </data>
+  <data name="SystemConfigSearchBar_CategoryGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="SystemConfigSearchBar_LabelTabHighlight" xml:space="preserve">
+    <value>Tab Highlight</value>
+  </data>
+  <data name="SystemConfigSearchBar_LabelTextHighlight" xml:space="preserve">
+    <value>Text Highlight</value>
+  </data>
+  <data name="ClockOverlay_CategoryVisualStyle" xml:space="preserve">
+    <value>Visual Style</value>
+  </data>
+  <data name="ClockOverlay_LabelTextColor" xml:space="preserve">
+    <value>Text Color</value>
+  </data>
+  <data name="ClockOverlay_LabelTextOutline" xml:space="preserve">
+    <value>Text Outline</value>
+  </data>
+  <data name="ClockOverlay_LabelFontSize" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
+  <data name="ClockOverlay_LabelFont" xml:space="preserve">
+    <value>Font</value>
+  </data>
+  <data name="ClockOverlay_LabelAlignment" xml:space="preserve">
+    <value>Alignment</value>
+  </data>
+  <data name="ModificationDisplay_LockChatButton" xml:space="preserve">
+    <value>Lock Chat Button</value>
+  </data>
+  <data name="ModificationDescription_LockChatButton" xml:space="preserve">
+    <value>Adds a button to chatlogs to lock them from moving.</value>
+  </data>
+  <data name="LockChatButton_TooltipUnlock" xml:space="preserve">
+    <value>[VanillaPlus] Unlock Chat Movement</value>
+  </data>
+  <data name="LockChatButton_TooltipLock" xml:space="preserve">
+    <value>[VanillaPlus] Lock Chat Movement</value>
+  </data>
+  <data name="ModificationDisplay_GearSetReorderButtons" xml:space="preserve">
+    <value>Gearset Reorder Buttons</value>
+  </data>
+  <data name="ModificationDescription_GearSetReorderButtons" xml:space="preserve">
+    <value>Adds buttons to the gearset list window for easily reordering gearsets.</value>
+  </data>
+  <data name="GearSetReorderButtons_TooltipMoveUp" xml:space="preserve">
+    <value>Move gear set up.</value>
+  </data>
+  <data name="GearSetReorderButtons_TooltipMoveDown" xml:space="preserve">
+    <value>Move gear set down.</value>
+  </data>
+  <data name="ModificationDisplay_BetterSelectString" xml:space="preserve">
+    <value>Better Select String</value>
+  </data>
+  <data name="ModificationDescription_BetterSelectString" xml:space="preserve">
+    <value>Allows you to select one of multiple sentences via number.</value>
+  </data>
+  <data name="ModificationDisplay_FlagOnCursor" xml:space="preserve">
+    <value>Place Flag on Cursor</value>
+  </data>
+  <data name="ModificationDescription_FlagOnCursor" xml:space="preserve">
+    <value>Places a flag on the map for where your cursor is pointing in the world.</value>
+  </data>
+  <data name="FlagOnCursor_CommandHelpMessage" xml:space="preserve">
+    <value>Place a flag at mouse position</value>
+  </data>
+  <data name="ModificationDisplay_ReverseCharacterPanel" xml:space="preserve">
+    <value>Reverse Character Panel</value>
+  </data>
+  <data name="ModificationDescription_ReverseCharacterPanel" xml:space="preserve">
+    <value>Switches where the character information and character portraits are in the Character window.</value>
+  </data>
+  <data name="ModificationDisplay_ShowAetherytesOnTop" xml:space="preserve">
+    <value>Show Aetherytes on Top</value>
+  </data>
+  <data name="ModificationDescription_ShowAetherytesOnTop" xml:space="preserve">
+    <value>Forces aetherytes to always show on top of other map markers.</value>
+  </data>
+  <data name="ModificationDisplay_ShowEnemies" xml:space="preserve">
+    <value>Show Enemies</value>
+  </data>
+  <data name="ModificationDescription_ShowEnemies" xml:space="preserve">
+    <value>Shows icons for enemies players on the map.</value>
+  </data>
+  <data name="ModificationDisplay_ShowGatheringPoints" xml:space="preserve">
+    <value>Show Gathering Points</value>
+  </data>
+  <data name="ModificationDescription_ShowGatheringPoints" xml:space="preserve">
+    <value>Shows icons for gathering points on the map.</value>
+  </data>
+  <data name="ModificationDisplay_ShowPlayers" xml:space="preserve">
+    <value>Show Players</value>
+  </data>
+  <data name="ModificationDescription_ShowPlayers" xml:space="preserve">
+    <value>Shows icons for other players on the map.</value>
+  </data>
+  <data name="ModificationDisplay_ShowTreasureChests" xml:space="preserve">
+    <value>Show Treasure Chests</value>
+  </data>
+  <data name="ModificationDescription_ShowTreasureChests" xml:space="preserve">
+    <value>Shows icons for treasure chests on the map.</value>
+  </data>
+  <data name="ModificationDisplay_SkipLoginConfirm" xml:space="preserve">
+    <value>Skip Login Confirm</value>
+  </data>
+  <data name="ModificationDescription_SkipLoginConfirm" xml:space="preserve">
+    <value>Skips the confirmation window that appears when logging in.</value>
+  </data>
 </root>
