@@ -24,10 +24,6 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         Description = Strings.ModificationDescription_WondrousTailsProbabilities,
         Authors = [ "MidoriKami" ],
         Type = ModificationType.UserInterface,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Add Current Duty Indicator"),
-        ],
         CompatibilityModule = new PluginCompatibilityModule("WondrousTailsSolver"),
     };
 

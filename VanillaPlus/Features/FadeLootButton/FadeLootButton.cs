@@ -14,9 +14,6 @@ public unsafe class FadeLootButton : GameModification {
         Description = Strings.ModificationDescription_FadeLootButton,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "FadeLootButton.png";

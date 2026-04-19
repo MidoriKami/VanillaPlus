@@ -10,12 +10,6 @@ public class FateListWindow : GameModification {
         Description = Strings.ModificationDescription_FateListWindow,
         Type = ModificationType.NewWindow,
         Authors = ["MidoriKami"],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Now sorts by time remaining"),
-            new ChangeLogInfo(3, "Added '/fatelist' command to open window"),
-            new ChangeLogInfo(4, "Updated to use new list display system"),
-        ],
     };
 
     public override string ImageName => "FateListWindow.png";

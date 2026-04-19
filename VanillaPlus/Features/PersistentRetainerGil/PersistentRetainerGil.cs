@@ -13,9 +13,6 @@ public unsafe class PersistentRetainerGil : GameModification {
         Description = Strings.PersistentRetainerGil_Description,
         Type = ModificationType.GameBehavior,
         Authors = [ "Zeffuro" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "PersistentRetainerGil.png";

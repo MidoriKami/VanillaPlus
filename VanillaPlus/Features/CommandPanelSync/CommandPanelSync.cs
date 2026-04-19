@@ -11,9 +11,6 @@ public unsafe class CommandPanelSync : GameModification {
         Description = Strings.CommandPanelSync_Description,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     private const int CurrentVersion = 2;

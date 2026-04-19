@@ -13,9 +13,6 @@ public unsafe class FadeStrategyBoard : GameModification {
         Description = Strings.ModificationDescription_FadeStrategyBoard,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "FadeStrategyBoard.png";

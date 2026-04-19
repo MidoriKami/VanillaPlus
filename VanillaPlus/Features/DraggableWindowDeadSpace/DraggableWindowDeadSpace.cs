@@ -18,10 +18,6 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         Description = Strings.ModificationDescription_DraggableWindowDeadSpace,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Reworked feature to only apply to ui elements with window frames, removed experimental status"),
-        ],
     };
 
     private ViewportEventListener? cursorEventListener;

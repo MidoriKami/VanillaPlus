@@ -10,9 +10,6 @@ public class DutyTimer : GameModification {
         Description = Strings.ModificationDescription_DutyTimer,
         Authors = [ "MidoriKami" ],
         Type = ModificationType.GameBehavior,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("DutyTimer"),
     };
 

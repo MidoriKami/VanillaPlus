@@ -13,9 +13,6 @@ public unsafe class StickyShopCategories : GameModification {
         Description = Strings.ModificationDescription_StickyShopCategories,
         Type = ModificationType.GameBehavior,
         Authors = ["Era"],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     private StickyShopCategoriesData? config;

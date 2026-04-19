@@ -19,9 +19,6 @@ public unsafe class FadeUnavailableActions : GameModification {
         Description = Strings.ModificationDescription_FadeUnavailableActions,
         Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@FadeUnavailableActions", "1.14.0.2"),
     };
 

@@ -13,9 +13,6 @@ public unsafe class SkipLoginConfirm : GameModification {
         Description = Strings.ModificationDescription_SkipLoginConfirm,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override void OnEnable()

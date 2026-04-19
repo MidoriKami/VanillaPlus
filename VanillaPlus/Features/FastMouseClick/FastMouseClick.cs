@@ -10,9 +10,6 @@ public class FastMouseClick : GameModification {
         Description = Strings.ModificationDescription_FastMouseClick,
         Type = ModificationType.GameBehavior,
         Authors = ["Haselnussbomber"],
-        ChangeLog = [
-            new ChangeLogInfo(1, "InitialVersion"),
-        ],
         CompatibilityModule = new HaselTweaksCompatibilityModule("FastMouseClickFix"),
     };
 

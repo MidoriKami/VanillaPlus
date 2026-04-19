@@ -13,9 +13,6 @@ public class ClockOverlay : GameModification {
         Description = Strings.ClockOverlay_Description,
         Type = ModificationType.NewOverlay,
         Authors = [ "Zeffuro" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "ClockOverlay.png";

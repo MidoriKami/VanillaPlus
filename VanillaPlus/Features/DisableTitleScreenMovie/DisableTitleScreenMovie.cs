@@ -13,9 +13,6 @@ public unsafe class SampleGameModification : GameModification {
         Description = Strings.ModificationDescription_DisableTitleScreenMovie,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("DisableTitleScreenMovie"),
     };
 

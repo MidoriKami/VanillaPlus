@@ -17,10 +17,6 @@ public unsafe class CurrencyOverlay : GameModification {
         Description = Strings.ModificationDescription_CurrencyOverlay,
         Type = ModificationType.NewOverlay,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Reimplemented configuration system, now allows for changing scale"),
-        ],
     };
 
     public override string ImageName => "CurrencyOverlay.png";

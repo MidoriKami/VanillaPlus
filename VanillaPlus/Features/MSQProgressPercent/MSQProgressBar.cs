@@ -23,9 +23,6 @@ public unsafe class MSQProgressBar : GameModification {
         Description = Strings.MSQProgressBar_Description,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "MSQProgressBar.png";

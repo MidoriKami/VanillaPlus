@@ -20,9 +20,6 @@ public unsafe class MiniCactpotHelper : GameModification {
         Description = Strings.ModificationDescription_MiniCactpotHelper,
         Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
         CompatibilityModule = new PluginCompatibilityModule("MiniCactpotSolver"),
     };
 

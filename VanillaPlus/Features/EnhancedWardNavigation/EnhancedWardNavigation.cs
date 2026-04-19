@@ -15,9 +15,6 @@ public unsafe class EnhancedWardNavigation : GameModification {
         Description = Strings.EnhancedWardNavigation_Description,
         Type = ModificationType.UserInterface,
         Authors = [ "Zeffuro" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "EnhancedWardNavigation.png";

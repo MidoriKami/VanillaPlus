@@ -16,13 +16,6 @@ public unsafe class HideUnwantedBanners : GameModification {
         Description = Strings.ModificationDescription_HideUnwantedBanners,
         Authors = ["MidoriKami"],
         Type = ModificationType.GameBehavior,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Configuration will now allow you to suppress new banners that you come across " +
-                                 "once you see a new banner, it will appear in the configuration window."),
-            new ChangeLogInfo(3, "Rebuilt feature to utilize new systems, however config system had to be reimplemented, " +
-                                 "configs have been reset."),
-        ],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@HideUnwantedBanner"),
     };
 

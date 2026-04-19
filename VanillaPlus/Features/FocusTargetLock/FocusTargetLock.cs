@@ -11,9 +11,6 @@ public class FocusTargetLock : GameModification {
         Description = Strings.ModificationDescription_FocusTargetLock,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     private uint? targetBaseId;

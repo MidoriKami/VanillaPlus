@@ -12,9 +12,6 @@ public class QuestListWindow : GameModification {
         Description = Strings.ModificationDescription_QuestListWindow,
         Type = ModificationType.NewWindow,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     private QuestListAddon? addonQuestList;

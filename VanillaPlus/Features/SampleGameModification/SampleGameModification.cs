@@ -10,9 +10,6 @@ public class SampleGameModification : GameModification {
         Description = Strings.ModificationDescription_SampleGameModification,
         Type = ModificationType.Hidden,
         Authors = [ "YourNameHere" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     // public override string ImageName => "SampleGameModification.png";

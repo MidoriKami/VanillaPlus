@@ -12,9 +12,6 @@ public unsafe class ReverseCharacterPanel : GameModification {
         Description = Strings.ModificationDescription_ReverseCharacterPanel,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "ReverseCharacterPanel.png";

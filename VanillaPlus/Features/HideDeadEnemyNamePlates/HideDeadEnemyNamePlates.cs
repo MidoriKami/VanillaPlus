@@ -11,9 +11,6 @@ public class HideDeadEnemyNamePlates : GameModification {
         Description = Strings.ModificationDescription_HideDeadEnemyNamePlates,
         Type = ModificationType.GameBehavior,
         Authors = [ "nebel" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override void OnEnable() {

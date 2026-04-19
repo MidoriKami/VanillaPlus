@@ -13,9 +13,6 @@ public unsafe class SkipTeleportConfirm : GameModification {
         Description = Strings.ModificationDescription_SkipTeleportConfirm,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override void OnEnable()

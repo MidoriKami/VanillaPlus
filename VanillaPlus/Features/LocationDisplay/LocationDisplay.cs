@@ -17,10 +17,6 @@ public unsafe class LocationDisplay : GameModification {
         Description = Strings.ModificationDescription_LocationDisplay,
         Authors = [ "MidoriKami" ],
         Type = ModificationType.UserInterface,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Fix instance id not updating when it should"),
-        ],
         CompatibilityModule = new PluginCompatibilityModule("WhereAmIAgain"),
     };
 

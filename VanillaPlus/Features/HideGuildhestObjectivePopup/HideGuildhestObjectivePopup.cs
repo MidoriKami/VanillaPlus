@@ -13,9 +13,6 @@ public class HideGuildhestObjectivePopup : GameModification {
         Description = Strings.ModificationDescription_HideGuildhestObjectivePopup,
         Authors = ["MidoriKami"],
         Type = ModificationType.GameBehavior,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@HideGuildhestObjectivePopup"),
     };
 

@@ -18,9 +18,6 @@ public unsafe class InventoryCooldowns : GameModification {
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Inventory,
         Authors = [ "Haselnussbomber" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "InventoryCooldowns.png";

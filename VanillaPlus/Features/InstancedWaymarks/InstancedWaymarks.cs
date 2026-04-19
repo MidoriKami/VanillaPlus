@@ -26,9 +26,6 @@ public unsafe class InstancedWaymarks : GameModification {
         Description = Strings.ModificationDescription_InstancedWaymarks,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
         CompatibilityModule = new PluginCompatibilityModule("WaymarkPresetPlugin", "MemoryMarker"),
     };
 

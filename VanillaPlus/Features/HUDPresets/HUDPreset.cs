@@ -16,9 +16,6 @@ public unsafe class HUDPresets : GameModification {
         Description = Strings.ModificationDescription_HUDPresets,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "HUDPresets.png";

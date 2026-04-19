@@ -15,9 +15,6 @@ public unsafe class ClearTextInputs : GameModification {
         Description = Strings.ModificationDescription_ClearTextInputs,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     private Hook<AtkComponentTextInput.Delegates.Setup>? onTextComponentSetupHook;

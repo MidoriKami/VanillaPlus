@@ -10,9 +10,6 @@ public class BiggerConfigWindows : GameModification {
         Description = Strings.BiggerConfigWindows_Description,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "BiggerConfigWindows.png";

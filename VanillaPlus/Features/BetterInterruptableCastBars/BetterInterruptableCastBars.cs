@@ -19,9 +19,6 @@ public unsafe class BetterInterruptableCastBars : GameModification {
         Description = Strings.ModificationDescription_BetterInterruptableCastBars,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@ImprovedInterruptableCastbars"),
     };
 

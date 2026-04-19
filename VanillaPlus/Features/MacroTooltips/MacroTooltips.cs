@@ -17,9 +17,6 @@ public unsafe class MacroTooltips : GameModification {
         Description = Strings.ModificationDescription_MacroTooltips,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     private Hook<AddonActionBarBase.Delegates.ShowTooltip>? showTooltipHook;

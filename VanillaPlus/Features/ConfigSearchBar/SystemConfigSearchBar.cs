@@ -17,9 +17,6 @@ public unsafe class SystemConfigSearchBar : GameModification {
         Description = Strings.ModificationDescription_SystemConfigSearchBar,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "SystemConfigSearchBar.png";

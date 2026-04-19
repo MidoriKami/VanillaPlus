@@ -17,11 +17,6 @@ public unsafe class ResourceBarPercentages : GameModification {
         Description = Strings.ModificationDescription_ResourceBarPercentages,
         Type = ModificationType.UserInterface,
         Authors = [ "Zeffuro" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Changelog"),
-            new ChangeLogInfo(2, "Added option to change resource on Party Members and added Trust support"),
-            new ChangeLogInfo(3, "Automatically disables when max hp is being manipulated via game mecahnics"),
-        ],
         Tags = [ "Party List", "Parameter Bars" ],
     };
 

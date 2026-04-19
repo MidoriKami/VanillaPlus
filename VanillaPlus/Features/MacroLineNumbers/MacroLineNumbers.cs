@@ -15,9 +15,6 @@ public unsafe class MacroLineNumbers : GameModification {
         Description = Strings.ModificationDescription_MacroLineNumbers,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "MacroLineNumbers.png";

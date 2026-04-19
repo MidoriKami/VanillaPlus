@@ -16,9 +16,6 @@ public unsafe class CastBarAetheryteNames : GameModification {
         Description = Strings.ModificationDescription_CastBarAetheryteNames,
         Authors = ["Haselnussbomber"],
         Type = ModificationType.GameBehavior,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
         CompatibilityModule = new HaselTweaksCompatibilityModule("CastBarAetheryteNames"),
     };
 

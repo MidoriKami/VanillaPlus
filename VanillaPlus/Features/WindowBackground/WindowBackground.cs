@@ -19,13 +19,6 @@ public unsafe class WindowBackground : GameModification {
         Description = Strings.ModificationDescription_WindowBackground,
         Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Added search bar to search 'All Windows' in config"),
-            new ChangeLogInfo(3, "Fixed incorrectly cleaning up removed backgrounds"),
-            new ChangeLogInfo(4, "Rewrote module to be more stable"),
-            new ChangeLogInfo(5, "Reimplemented system to allow configuring the color and size per window"),
-        ],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@DutyListBackground"),
     };
 

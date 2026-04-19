@@ -13,9 +13,6 @@ public class CosmicExplorationProgressWindow : GameModification {
         Description = Strings.ModificationDescription_CosmicExplorationProgressWindow,
         Type = ModificationType.NewWindow,
         Authors = [ "salanth357" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
     
     private CosmicExplorationProgressAddon? addon;

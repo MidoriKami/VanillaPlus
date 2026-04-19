@@ -11,9 +11,6 @@ public class AprilFools : GameModification {
         Description = "\nDo you dare? Let's see who the real fool is.\n\nYou've been warned.",
         Type = ModificationType.Seasonal,
         Authors = [ "Evil MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "April Fools 2026"),
-        ],
         CompatibilityModule = new AprilFoolsCompatabilityModule(),
     };
 

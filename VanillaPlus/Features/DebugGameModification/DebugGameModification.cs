@@ -14,9 +14,6 @@ public unsafe class DebugGameModification : GameModification {
         Description = Strings.ModificationDescription_DebugGameModification,
         Type = ModificationType.Debug,
         Authors = [ "YourNameHere" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override void OnEnable() {

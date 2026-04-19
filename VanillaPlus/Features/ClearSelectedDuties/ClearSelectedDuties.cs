@@ -16,9 +16,6 @@ public class ClearSelectedDuties : GameModification {
         Description = Strings.ModificationDescription_ClearSelectedDuties,
         Authors = [ "MidoriKami" ],
         Type = ModificationType.GameBehavior,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     private ClearSelectedDutiesConfig? config;

@@ -16,9 +16,6 @@ public unsafe class HideMpBars : GameModification {
         Description = Strings.ModificationDescription_HideMpBars,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
         Tags = [ "Party List" ],
     };
 

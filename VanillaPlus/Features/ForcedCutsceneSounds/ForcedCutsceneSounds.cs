@@ -17,10 +17,6 @@ public unsafe class ForcedCutsceneSounds : GameModification {
         Description = Strings.ModificationDescription_ForcedCutsceneSounds,
         Authors = ["Haselnussbomber"],
         Type = ModificationType.GameBehavior,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Added option to disable in MSQ Roulette"),
-        ],
         CompatibilityModule = new HaselTweaksCompatibilityModule("ForcedCutsceneMusic"),
     };
 

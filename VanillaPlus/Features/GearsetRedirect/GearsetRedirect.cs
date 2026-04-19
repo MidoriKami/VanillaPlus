@@ -14,10 +14,6 @@ public unsafe class GearsetRedirect : GameModification {
         Description = Strings.ModificationDescription_GearsetRedirect,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Completely new configuration system, old configurations are no longer valid"),
-        ],
     };
 
     private Hook<RaptureGearsetModule.Delegates.EquipGearset>? gearsetChangedHook;

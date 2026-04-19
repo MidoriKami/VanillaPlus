@@ -15,11 +15,6 @@ public unsafe class RecentlyLootedWindow : GameModification {
         Description = Strings.ModificationDescription_RecentlyLootedWindow,
         Type = ModificationType.NewWindow,
         Authors = ["MidoriKami"],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Limit tracking to standard inventories, and armory"),
-            new ChangeLogInfo(3, "Displays item quantity as text over icon instead of appended to the end of name"),
-        ],
     };
 
     private NodeListAddon<LootedItemInfo, LootedItemListItemNode>? addonRecentlyLooted;

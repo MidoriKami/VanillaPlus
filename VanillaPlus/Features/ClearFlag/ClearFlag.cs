@@ -15,9 +15,6 @@ public unsafe class ClearFlag : GameModification {
         Description = Strings.ModificationDescription_ClearFlag,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     private AddonController? minimapController;

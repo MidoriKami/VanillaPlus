@@ -17,10 +17,6 @@ public class ChatPlayerTooltip : GameModification {
         Description = Strings.ChatPlayerTooltip_Description,
         Type = ModificationType.UserInterface,
         Authors = [ "anqied" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Add additional features, change name"),
-        ],
     };
 
     private bool tooltipActive;

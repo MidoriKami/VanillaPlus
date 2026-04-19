@@ -13,11 +13,6 @@ public class BetterCursor : GameModification {
         Description = Strings.ModificationDescription_BetterCursor,
         Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Reduced Animation Speed to 1Hz"),
-            new ChangeLogInfo(3, "Added options to only show in duties and/or combat"),
-        ],
     };
 
     private OverlayController? overlayController;

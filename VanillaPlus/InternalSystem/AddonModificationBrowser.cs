@@ -29,18 +29,10 @@ public class AddonModificationBrowser : NativeAddon {
     private BorderNineGridNode borderNineGridNode = null!;
     private TextNode descriptionImageTextNode = null!;
     private TextNode descriptionTextNode = null!;
-    private TextNode descriptionVersionTextNode = null!;
-    private TextButtonNode changelogButtonNode = null!;
 
     private const float ItemPadding = 5.0f;
 
     private GameModificationOptionNode? selectedOption;
-    
-    private readonly AddonChangelogBrowser? changelogBrowser = new() {
-        InternalName = "VPChangelog",
-        Title = Strings.ChangelogBrowserTitle,
-        Size = new Vector2(450.0f, 400.0f),
-    };
 
     private bool isImageEnlarged;
     private bool isImageHovered;
@@ -150,19 +142,6 @@ public class AddonModificationBrowser : NativeAddon {
         };
         descriptionImageTextNode.AttachNode(descriptionContainerNode);
 
-        changelogButtonNode = new TextButtonNode {
-            String = Strings.ChangelogButtonLabel,
-            OnClick = OnChangelogButtonClicked,
-            IsVisible = false,
-        };
-        changelogButtonNode.AttachNode(descriptionContainerNode);
-        
-        descriptionVersionTextNode = new TextNode {
-            AlignmentType = AlignmentType.BottomRight,
-            TextColor = ColorHelper.GetColor(3),
-        };
-        descriptionVersionTextNode.AttachNode(descriptionContainerNode);
-
         descriptionImageFrame = new SimpleComponentNode();
         descriptionImageFrame.AttachNode(descriptionContainerNode);
 
@@ -269,11 +248,6 @@ public class AddonModificationBrowser : NativeAddon {
             descriptionTextNode.IsVisible = true;
             descriptionTextNode.String = selectedOption.Modification.Modification.ModificationInfo.Description;
         }
-
-        changelogButtonNode.IsVisible = true;
-        descriptionVersionTextNode.IsVisible = true;
-        descriptionVersionTextNode.String = Strings.VersionLabelFormat.Format(
-            selectedOption.Modification.Modification.ModificationInfo.Version);
     }
 
     private async void LoadModuleImage(string assetName) {
@@ -325,20 +299,6 @@ public class AddonModificationBrowser : NativeAddon {
         
         descriptionImageFrame.IsVisible = false;
         descriptionImageTextNode.IsVisible = false;
-        descriptionVersionTextNode.IsVisible = false;
-        changelogButtonNode.IsVisible = false;
-    }
-
-    private void OnChangelogButtonClicked() {
-        if (changelogBrowser is not null && selectedOption is not null) {
-            if (changelogBrowser.IsOpen) {
-                changelogBrowser.Close();
-            }
-
-            changelogBrowser.Modification = selectedOption.Modification.Modification;
-            changelogBrowser.Title = Strings.ChangelogTitleFormat.Format(selectedOption.ModificationInfo.DisplayName);
-            changelogBrowser.Open();
-        }
     }
 
     private void RecalculateScrollableAreaSize() {
@@ -365,16 +325,10 @@ public class AddonModificationBrowser : NativeAddon {
         descriptionImageFrame.Size = new Vector2(descriptionContainerNode.Width * 0.8f, descriptionContainerNode.Width * 0.8f);
         descriptionImageFrame.Position = new Vector2(descriptionContainerNode.Width * 0.2f / 2.0f, descriptionContainerNode.Width * 0.2f / 4.0f);
 
-        changelogButtonNode.Size = new Vector2(150.0f, 28.0f);
-        changelogButtonNode.Position = new Vector2(0.0f, descriptionContainerNode.Height - changelogButtonNode.Height - ItemPadding);
-        
-        descriptionVersionTextNode.Size = new Vector2(200.0f, 28.0f);
-        descriptionVersionTextNode.Position = descriptionContainerNode.Size - descriptionVersionTextNode.Size - new Vector2(8.0f, 8.0f);
-
-        descriptionImageTextNode.Size = new Vector2(descriptionContainerNode.Width - 16.0f, descriptionContainerNode.Height - descriptionImageFrame.Y - descriptionImageFrame.Height - descriptionVersionTextNode.Height - 22.0f);
+        descriptionImageTextNode.Size = new Vector2(descriptionContainerNode.Width - 16.0f, descriptionContainerNode.Height - descriptionImageFrame.Y - descriptionImageFrame.Height - 22.0f);
         descriptionImageTextNode.Position = new Vector2(8.0f, descriptionImageFrame.Position.Y + descriptionImageFrame.Height + 16.0f);
         
-        descriptionTextNode.Size = descriptionContainerNode.Size - new Vector2(16.0f, 16.0f) - new Vector2(0.0f, descriptionVersionTextNode.Height);
+        descriptionTextNode.Size = descriptionContainerNode.Size - new Vector2(16.0f, 16.0f);
         descriptionTextNode.Position = new Vector2(8.0f, 8.0f);
         
         foreach (var node in optionContainerNode.ContentNode.CategoryNodes) {

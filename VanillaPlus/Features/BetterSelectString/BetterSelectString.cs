@@ -15,9 +15,6 @@ public unsafe class BetterSelectString : GameModification {
         Description = Strings.ModificationDescription_BetterSelectString,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "BetterSelectString.png";

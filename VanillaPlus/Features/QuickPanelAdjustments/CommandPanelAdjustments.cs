@@ -14,10 +14,6 @@ public unsafe class CommandPanelAdjustments : GameModification {
         Description = Strings.QuickPanelAdjustments_Description,
         Type = ModificationType.UserInterface,
         Authors = ["Pixis Lepus"],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Renamed to Command Panel Adjustments"),
-        ],
     };
 
     public override string ImageName => "QuickPanelAdjustments.png";

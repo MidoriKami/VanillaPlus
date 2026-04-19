@@ -6,13 +6,11 @@ using VanillaPlus.Enums;
 namespace VanillaPlus.Classes;
 
 public class ModificationInfo {
-    public int Version => ChangeLog.Max(changelog => changelog.Version);
     public required string DisplayName { get; init; }
     public required string Description { get; init; }
     public required string[] Authors { get; init; }
     public required ModificationType Type { get; init; }
     public ModificationSubType? SubType { get; init; }
-    public required List<ChangeLogInfo> ChangeLog { get; init; } = [];
     public List<string> Tags { get; init; } = [];
     
     /// <summary>

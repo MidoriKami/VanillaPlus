@@ -16,10 +16,6 @@ public unsafe class CurrencyWarning : GameModification {
         Description = Strings.CurrencyWarning_Description,
         Type = ModificationType.NewOverlay,
         Authors = [ "Zeffuro" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Added Disable In Duties option"),
-        ],
     };
 
     private CurrencyWarningConfig? config;

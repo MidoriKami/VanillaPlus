@@ -14,9 +14,6 @@ public unsafe class FasterScroll : GameModification {
         Description = Strings.ModificationDescription_FasterScroll,
         Authors = ["MidoriKami"],
         Type = ModificationType.GameBehavior,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     private Hook<AtkComponentScrollBar.Delegates.ReceiveEvent>? scrollBarReceiveEventHook;

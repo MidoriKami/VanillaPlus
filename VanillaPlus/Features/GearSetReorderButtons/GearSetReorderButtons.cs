@@ -16,9 +16,6 @@ public unsafe class GearSetReorderButtons : GameModification {
         Description = Strings.ModificationDescription_GearSetReorderButtons,
         Type = ModificationType.UserInterface,
         Authors = ["zajrik"],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "GearSetReorderButtons.png";

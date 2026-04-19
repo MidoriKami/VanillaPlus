@@ -24,9 +24,6 @@ public unsafe class EnhancedLootWindow : GameModification {
         Description = Strings.ModificationDescription_EnhancedLootWindow,
         Type = ModificationType.UserInterface,
         Authors = ["MidoriKami"],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@LootWindowDuplicateUniqueItemIndicator"),
     };
 

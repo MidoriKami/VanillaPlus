@@ -14,9 +14,6 @@ public unsafe class BetterQuestMapLink : GameModification {
         Description = Strings.ModificationDescription_BetterQuestMapLink,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
         CompatibilityModule = new PluginCompatibilityModule("Mappy"),
     };
 

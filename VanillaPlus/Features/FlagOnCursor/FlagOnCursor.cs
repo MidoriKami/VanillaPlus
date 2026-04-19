@@ -13,9 +13,6 @@ public unsafe class FlagOnCursor : GameModification {
         Description = Strings.ModificationDescription_FlagOnCursor,
         Type = ModificationType.UserInterface,
         Authors = [ "QLEDHDTV" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     private const string CommandName = "/flagthere";

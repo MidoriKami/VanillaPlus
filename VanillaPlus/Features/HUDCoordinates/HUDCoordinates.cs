@@ -14,9 +14,6 @@ public unsafe class HUDCoordinates : GameModification {
         Description = Strings.ModificationDescription_HUDCoordinates,
         Type = ModificationType.UserInterface,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     public override string ImageName => "HUDCoordinates.png";

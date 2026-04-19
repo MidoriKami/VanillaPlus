@@ -15,9 +15,6 @@ public unsafe class ResetInventoryTab : GameModification {
         Description = Strings.ModificationDescription_ResetInventoryTab,
         Type = ModificationType.GameBehavior,
         Authors = ["Haselnussbomber"],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
         CompatibilityModule = new HaselTweaksCompatibilityModule("FixInventoryOpenTab"),
     };
 

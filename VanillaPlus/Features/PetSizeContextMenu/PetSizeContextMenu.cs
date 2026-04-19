@@ -12,9 +12,6 @@ public class PetSizeContextMenu : GameModification {
         Description = Strings.ModificationDescription_PetSizeContextMenu,
         Authors = [ "MidoriKami" ],
         Type = ModificationType.GameBehavior,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-        ],
     };
 
     private readonly UiConfigOption[] configEntries = [

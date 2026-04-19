@@ -12,14 +12,6 @@ public class ListInventory : GameModification {
         Description = Strings.ModificationDescription_ListInventory,
         Type = ModificationType.NewWindow,
         Authors = [ "MidoriKami" ],
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Added Sort by Quantity"),
-            new ChangeLogInfo(3, "Added '/listinventory' command to open window"),
-            new ChangeLogInfo(4, "Sort Dropdown is now on another line, added reverse sort direction button"),
-            new ChangeLogInfo(5, "Renamed to be consistent with other features"),
-            new ChangeLogInfo(6, "Using consumables or moving items now updates the list"),
-        ],
     };
     
     private AddonListInventory? addonListInventory;

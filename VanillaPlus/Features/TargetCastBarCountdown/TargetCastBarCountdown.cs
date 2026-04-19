@@ -20,10 +20,6 @@ public unsafe class TargetCastBarCountdown : GameModification {
         Description = Strings.ModificationDescription_TargetCastBarCountdown,
         Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
-        ChangeLog = [
-            new ChangeLogInfo(1, "Initial Implementation"),
-            new ChangeLogInfo(2, "Added support for 10 'CastBarEnemy' nodes"),
-        ],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@TargetCastbarCountdown"),
     };
 
