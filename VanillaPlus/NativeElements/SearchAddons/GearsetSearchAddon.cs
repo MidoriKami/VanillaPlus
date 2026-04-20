@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Enums;
 using KamiToolKit.Premade.Addon.Search;
 using VanillaPlus.NativeElements.ListItemNodes;
 
 namespace VanillaPlus.NativeElements.SearchAddons;
 
 public unsafe class GearsetSearchAddon : BaseSearchAddon<RaptureGearsetModule.GearsetEntry, GearsetListItemNode> {
-    protected override int Comparer(RaptureGearsetModule.GearsetEntry left, RaptureGearsetModule.GearsetEntry right, string sortingString, bool reversed) {
-        return sortingString switch {
-            "Alphabetical" => string.Compare(left.NameString, right.NameString, StringComparison.Ordinal),
-            "Id" => left.Id.CompareTo(right.Id),
+    protected override int Comparer(RaptureGearsetModule.GearsetEntry left, RaptureGearsetModule.GearsetEntry right, Enum sortingMode, bool reversed) {
+        return sortingMode switch {
+            DefaultSortOptions.Alphabetical => string.Compare(left.NameString, right.NameString, StringComparison.Ordinal),
+            DefaultSortOptions.Id => left.Id.CompareTo(right.Id),
             _ => 0,
         } * (reversed ? -1 : 1);
     }

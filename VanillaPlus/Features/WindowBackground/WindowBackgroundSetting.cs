@@ -18,6 +18,6 @@ public class WindowBackgroundSetting {
         return regex.IsMatch(itemData.AddonName);
     }
 
-    public static int Compare(WindowBackgroundSetting left, WindowBackgroundSetting right, string mode)
+    public static int Compare(WindowBackgroundSetting left, WindowBackgroundSetting right, Enum sortingMode)
         => string.Compare(left.AddonName, right.AddonName, StringComparison.OrdinalIgnoreCase);
 }

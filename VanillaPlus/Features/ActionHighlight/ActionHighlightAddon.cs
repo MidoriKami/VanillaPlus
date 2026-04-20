@@ -6,6 +6,7 @@ using KamiToolKit;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Node;
 using VanillaPlus.Enums;
+using VanillaPlus.Features.ActionHighlight.Enums;
 using VanillaPlus.Features.ActionHighlight.Nodes;
 
 namespace VanillaPlus.Features.ActionHighlight;
@@ -35,10 +36,10 @@ public class ActionHighlightAddon : NativeAddon {
             Position = ContentStartPosition,
             Size = ContentSize with { X = 250.0f },
             Options = allCategories,
-            SortOptions = [ "Role Priority", "Alphabetical" ],
+            SortOptions = [ ActionHighlightSortMode.RolePriority, ActionHighlightSortMode.Alphabetical ],
             SelectionChanged = OnSelectionChanged,
             ItemComparer = (left, right, mode) => mode switch {
-                "Alphabetical" => string.CompareOrdinal(left.Name, right.Name),
+                ActionHighlightSortMode.Alphabetical => string.CompareOrdinal(left.Name, right.Name),
                 _ => ActionCategory.Compare(left, right),
             },
             IsSearchMatch = (data, search) => data.Name.Contains(search, System.StringComparison.OrdinalIgnoreCase),

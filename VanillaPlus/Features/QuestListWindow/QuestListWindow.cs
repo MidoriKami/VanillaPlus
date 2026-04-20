@@ -23,7 +23,7 @@ public class QuestListWindow : GameModification {
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "QuestList",
             Title = Strings.QuestListWindow_Title,
-            DropDownOptions = Enum.GetValues<QuestFilterMode>().Select(value => value.Description).ToList(),
+            DropDownOptions = Enum.GetValues<QuestFilterMode>().Cast<Enum>().ToList(),
             OpenCommand = "/questlist",
             ListItems = [],
         };

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Enums;
@@ -28,10 +29,8 @@ public unsafe class QuestListAddon : SearchableNodeListAddon<MarkerInfo, QuestLi
         base.OnUpdate(addon);
     }
 
-    private void UpdateSorting(string newFilterString, bool reversed) {
-        var enumValue = newFilterString.ParseAsEnum(QuestFilterMode.Type);
-
-        lastSortingMode = enumValue;
+    private void UpdateSorting(Enum sortingMode, bool reversed) {
+        lastSortingMode = (QuestFilterMode) sortingMode;
         isReversed = reversed;
     }
 

@@ -16,7 +16,7 @@ public class CurrencyWarningSetting {
         return regex.IsMatch(itemData.Name.ToString());
     }
 
-    public static int ItemComparer(CurrencyWarningSetting left, CurrencyWarningSetting right, string _) {
+    public static int ItemComparer(CurrencyWarningSetting left, CurrencyWarningSetting right, Enum sortingMode) {
         var leftItem = Services.DataManager.GetItem(left.ItemId);
         var rightItem = Services.DataManager.GetItem(right.ItemId);
 

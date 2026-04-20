@@ -1,4 +1,5 @@
 using System.Globalization;
+using KamiToolKit;
 
 namespace VanillaPlus.Utilities;
 
@@ -13,5 +14,7 @@ public static class Localization {
             "fr" => CultureInfo.GetCultureInfo("fr-FR"),
             _ => CultureInfo.GetCultureInfo("en-US"),
         };
+
+        KamiToolKitLibrary.SetCurrentCulture(Strings.Culture);
     }
 }

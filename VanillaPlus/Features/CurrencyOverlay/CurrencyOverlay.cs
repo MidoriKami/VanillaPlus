@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Enums;
 using KamiToolKit.Overlay.UiOverlay;
 using KamiToolKit.Premade.Addon;
 using KamiToolKit.Premade.Addon.Search;
@@ -45,7 +46,7 @@ public unsafe class CurrencyOverlay : GameModification {
             Size = new Vector2(600.0f, 500.0f),
             InternalName = "CurrencyOverlayConfig",
             Title = Strings.CurrencyOverlay_ConfigTitle,
-            SortOptions = [ Strings.SortOptionAlphabetical ],
+            SortOptions = [ DefaultSortOptions.Alphabetical ],
             Options = config.Currencies,
             ItemComparer = CurrencySetting.Comparison,
             IsSearchMatch = CurrencySetting.IsMatch,

@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Dalamud.Game.Text;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using KamiToolKit.Enums;
 using KamiToolKit.Premade.Node.ListItem;
 
 namespace VanillaPlus.Features.GearsetRedirect.Nodes;
@@ -9,10 +10,12 @@ namespace VanillaPlus.Features.GearsetRedirect.Nodes;
 public unsafe class GearsetInfo {
     public required int GearsetId;
 
-    public static int Comparer(GearsetInfo left, GearsetInfo right, string mode) {
-        if (mode == Strings.GearsetRedirect_SortAlphabetical) return string.Compare(GetGearsetData(left.GearsetId).NameString, GetGearsetData(right.GearsetId).NameString, StringComparison.OrdinalIgnoreCase);
-        else if (mode == Strings.GearsetRedirect_SortId) return left.GearsetId.CompareTo(right.GearsetId);
-        return 0;
+    public static int Comparer(GearsetInfo left, GearsetInfo right, Enum mode) {
+        return mode switch {
+            DefaultSortOptions.Alphabetical => string.Compare(GetGearsetData(left.GearsetId).NameString, GetGearsetData(right.GearsetId).NameString, StringComparison.OrdinalIgnoreCase),
+            DefaultSortOptions.Id => left.GearsetId.CompareTo(right.GearsetId),
+            _ => 0,
+        };
     }
     
     public static bool IsMatch(GearsetInfo item, string searchString) {

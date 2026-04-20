@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -47,10 +48,8 @@ public class AddonListInventory : SearchableNodeListAddon<ItemStack, InventoryIt
         ListItems.Sort((left, right) => ItemStack.Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
     }
     
-    private void UpdateSorting(string newFilterString, bool reversed) {
-        var enumValue = newFilterString.ParseAsEnum(InventoryFilterMode.Alphabetical);
-
-        lastSortingMode = enumValue;
+    private void UpdateSorting(Enum sortingMode, bool reversed) {
+        lastSortingMode = (InventoryFilterMode) sortingMode;
         isReversed = reversed;
         
         UpdateInventoryItems();

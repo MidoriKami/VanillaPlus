@@ -19,10 +19,11 @@ public sealed class VanillaPlus : IDalamudPlugin {
         pluginInterface.Create<Services>();
         PluginSystem.SystemConfig = SystemConfiguration.Load();
 
+        KamiToolKitLibrary.Initialize(pluginInterface, "VanillaPlus");
+        KamiToolKitLibrary.SetResourceManager(Strings.ResourceManager);
+
         SetCultureInfo(pluginInterface.UiLanguage);
         pluginInterface.LanguageChanged += SetCultureInfo;
-
-        KamiToolKitLibrary.Initialize(pluginInterface, "VanillaPlus");
 
         PluginSystem.AddonModificationBrowser = new AddonModificationBrowser {
             InternalName = "VanillaPlusConfig",

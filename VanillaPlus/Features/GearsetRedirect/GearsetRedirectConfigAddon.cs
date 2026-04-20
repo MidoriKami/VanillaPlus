@@ -5,6 +5,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Node;
 using KamiToolKit.Premade.Node.Simple;
@@ -42,7 +43,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
             Position = ContentStartPosition,
             Options = GetConfigInfos(),
             ItemSpacing = 3.0f,
-            SortOptions = [ Strings.GearsetRedirect_SortAlphabetical, Strings.GearsetRedirect_SortId ],
+            SortOptions = [ DefaultSortOptions.Alphabetical, DefaultSortOptions.Id ],
             AddNewEntry = OnAddEntry,
             RemoveEntry = OnRemoveEntry,
             SelectionChanged = OnOptionChanged,

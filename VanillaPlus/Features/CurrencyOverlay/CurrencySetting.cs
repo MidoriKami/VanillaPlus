@@ -2,6 +2,7 @@ using System;
 using System.Numerics;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using KamiToolKit.Enums;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 
@@ -20,14 +21,14 @@ public class CurrencySetting {
 
     [JsonIgnore] public bool IsNodeMoveable;
 
-    public static int Comparison(CurrencySetting left, CurrencySetting right, string mode) {
+    public static int Comparison(CurrencySetting left, CurrencySetting right, Enum mode) {
         switch (mode) {
-            case "Alphabetical":
+            case DefaultSortOptions.Alphabetical:
                 var leftItem = Services.DataManager.GetItem(left.ItemId);
                 var rightItem = Services.DataManager.GetItem(right.ItemId);
                 return string.Compare(leftItem.Name.ToString(), rightItem.Name.ToString(), StringComparison.OrdinalIgnoreCase);
             
-            case "Id":
+            case DefaultSortOptions.Id:
                 return left.ItemId.CompareTo(right.ItemId);
         }
 

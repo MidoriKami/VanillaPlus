@@ -1,5 +1,6 @@
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Enums;
 using KamiToolKit.Overlay.UiOverlay;
 using KamiToolKit.Premade.Addon;
 using KamiToolKit.Premade.Addon.Search;
@@ -50,7 +51,7 @@ public unsafe class CurrencyWarning : GameModification {
             InternalName = "CurrencyWarningList",
             Title = Strings.CurrencyWarning_ListTitle,
             Size = new Vector2(700.0f, 500.0f),
-            SortOptions = [ Strings.SortOptionAlphabetical ],
+            SortOptions = [ DefaultSortOptions.Alphabetical ],
             Options = config.WarningSettings,
             ItemComparer = CurrencyWarningSetting.ItemComparer,
             IsSearchMatch = CurrencyWarningSetting.IsSearchMatch,

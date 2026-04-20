@@ -24,7 +24,7 @@ public class ListInventory : GameModification {
             Title = Strings.ListInventory_Title,
             Size = new Vector2(500.0f, 500.0f),
             OpenCommand = "/listinventory",
-            DropDownOptions = Enum.GetValues<InventoryFilterMode>().Select(value => value.Description).ToList(),
+            DropDownOptions = Enum.GetValues<InventoryFilterMode>().Cast<Enum>().ToList(),
             ItemSpacing = 2.25f,
         };
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -10,7 +11,7 @@ namespace VanillaPlus.NativeElements.Addons;
 public unsafe class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where TU : ListItemNode<T>, new() {
 
     private TextInputNode? textInputNode;
-    private TextDropDownNode? sortDropdownNode;
+    private EnumDropDownNode<Enum>? sortDropdownNode;
     
     private VerticalListNode? mainContainerNode;
     private HorizontalFlexNode? searchContainerNode;
@@ -19,9 +20,9 @@ public unsafe class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where 
     
     private bool reverseSort;
     private string searchText = string.Empty;
-    private string filterOption = string.Empty;
+    private Enum filterOption = DefaultSortOptions.Unset;
     
-    public required List<string> DropDownOptions { get; init; }
+    public required List<Enum> DropDownOptions { get; init; }
     
     protected override void OnSetup(AtkUnitBase* addon) {
         const float dropDownWidth = 175.0f;
@@ -41,7 +42,7 @@ public unsafe class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where 
             Alignment = HorizontalListAnchor.Right,
         };
 
-        sortDropdownNode = new TextDropDownNode {
+        sortDropdownNode = new EnumDropDownNode<Enum> {
             Size = new Vector2(dropDownWidth, 28.0f),
             MaxListOptions = DropDownOptions.Count,
             Options = DropDownOptions,
@@ -101,7 +102,7 @@ public unsafe class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where 
     }
 
     public delegate void SearchUpdated(string searchString);
-    public delegate void FilterUpdated(string filterString, bool reversed);
+    public delegate void FilterUpdated(Enum sortingMode, bool reversed);
 
     public SearchUpdated? OnSearchUpdated { get; set; }
     public FilterUpdated? OnSortingUpdated { get; set; }
