@@ -1444,124 +1444,124 @@ ID：{0}</value>
       <value>[VanillaPlus] 显示研究进度</value>
   </data>
   <data name="ModificationDisplay_InventoryCooldowns" xml:space="preserve">
-    <value>Inventory Cooldowns</value>
+    <value>背包物品冷却时间</value>
   </data>
   <data name="ModificationDescription_InventoryCooldowns" xml:space="preserve">
-    <value>Shows the cooldown on items in the inventory.</value>
+    <value>在背包中显示物品的冷却时间。</value>
   </data>
   <data name="ModificationDisplay_SystemConfigSearchBar" xml:space="preserve">
-    <value>System Configuration Search Bar</value>
+    <value>系统设置搜索栏</value>
   </data>
   <data name="ModificationDescription_SystemConfigSearchBar" xml:space="preserve">
-    <value>Adds a search bar to System Configuration Windows</value>
+    <value>为系统设置窗口添加搜索栏</value>
   </data>
   <data name="SystemConfigSearchBar_ConfigTitle" xml:space="preserve">
-    <value>System Config Search Bar Config</value>
+    <value>系统设置搜索栏配置</value>
   </data>
   <data name="SystemConfigSearchBar_CategoryGeneral" xml:space="preserve">
-    <value>General</value>
+    <value>通用</value>
   </data>
   <data name="SystemConfigSearchBar_LabelTabHighlight" xml:space="preserve">
-    <value>Tab Highlight</value>
+    <value>选项卡高亮显示</value>
   </data>
   <data name="SystemConfigSearchBar_LabelTextHighlight" xml:space="preserve">
-    <value>Text Highlight</value>
+    <value>文本高亮显示</value>
   </data>
   <data name="ClockOverlay_CategoryVisualStyle" xml:space="preserve">
-    <value>Visual Style</value>
+    <value>视觉样式</value>
   </data>
   <data name="ClockOverlay_LabelTextColor" xml:space="preserve">
-    <value>Text Color</value>
+    <value>文字颜色</value>
   </data>
   <data name="ClockOverlay_LabelTextOutline" xml:space="preserve">
-    <value>Text Outline</value>
+    <value>文字描边</value>
   </data>
   <data name="ClockOverlay_LabelFontSize" xml:space="preserve">
-    <value>Font Size</value>
+    <value>字体大小</value>
   </data>
   <data name="ClockOverlay_LabelFont" xml:space="preserve">
-    <value>Font</value>
+    <value>字体</value>
   </data>
   <data name="ClockOverlay_LabelAlignment" xml:space="preserve">
-    <value>Alignment</value>
+    <value>对齐方式</value>
   </data>
   <data name="ModificationDisplay_LockChatButton" xml:space="preserve">
-    <value>Lock Chat Button</value>
+    <value>聊天框锁定按钮</value>
   </data>
   <data name="ModificationDescription_LockChatButton" xml:space="preserve">
-    <value>Adds a button to chatlogs to lock them from moving.</value>
+    <value>在聊天框添加锁定按钮，防止其被移动。</value>
   </data>
   <data name="LockChatButton_TooltipUnlock" xml:space="preserve">
-    <value>[VanillaPlus] Unlock Chat Movement</value>
+    <value>[VanillaPlus] 解锁聊天框移动</value>
   </data>
   <data name="LockChatButton_TooltipLock" xml:space="preserve">
-    <value>[VanillaPlus] Lock Chat Movement</value>
+    <value>[VanillaPlus] 锁定聊天框移动</value>
   </data>
   <data name="ModificationDisplay_GearSetReorderButtons" xml:space="preserve">
-    <value>Gearset Reorder Buttons</value>
+    <value>套装排序按钮</value>
   </data>
   <data name="ModificationDescription_GearSetReorderButtons" xml:space="preserve">
-    <value>Adds buttons to the gearset list window for easily reordering gearsets.</value>
+    <value>为套装列表窗口添加排序按钮，便于快速调整套装顺序。</value>
   </data>
   <data name="GearSetReorderButtons_TooltipMoveUp" xml:space="preserve">
-    <value>Move gear set up.</value>
+    <value>上移套装。</value>
   </data>
   <data name="GearSetReorderButtons_TooltipMoveDown" xml:space="preserve">
-    <value>Move gear set down.</value>
+    <value>下移套装。</value>
   </data>
   <data name="ModificationDisplay_BetterSelectString" xml:space="preserve">
-    <value>Better Select String</value>
+    <value>文本选择增强</value>
   </data>
   <data name="ModificationDescription_BetterSelectString" xml:space="preserve">
-    <value>Allows you to select one of multiple sentences via number.</value>
+    <value>支持使用数字键快速选择多行文本。</value>
   </data>
   <data name="ModificationDisplay_FlagOnCursor" xml:space="preserve">
-    <value>Place Flag on Cursor</value>
+    <value>在光标位置放置标记</value>
   </data>
   <data name="ModificationDescription_FlagOnCursor" xml:space="preserve">
-    <value>Places a flag on the map for where your cursor is pointing in the world.</value>
+    <value>在光标所指位置放置地图标记。</value>
   </data>
   <data name="FlagOnCursor_CommandHelpMessage" xml:space="preserve">
-    <value>Place a flag at mouse position</value>
+    <value>在鼠标位置放置标记</value>
   </data>
   <data name="ModificationDisplay_ReverseCharacterPanel" xml:space="preserve">
-    <value>Reverse Character Panel</value>
+    <value>角色界面左右翻转</value>
   </data>
   <data name="ModificationDescription_ReverseCharacterPanel" xml:space="preserve">
-    <value>Switches where the character information and character portraits are in the Character window.</value>
+    <value>切换角色界面中角色信息与角色肖像的位置。</value>
   </data>
   <data name="ModificationDisplay_ShowAetherytesOnTop" xml:space="preserve">
-    <value>Show Aetherytes on Top</value>
+    <value>以太之光置顶显示</value>
   </data>
   <data name="ModificationDescription_ShowAetherytesOnTop" xml:space="preserve">
-    <value>Forces aetherytes to always show on top of other map markers.</value>
+    <value>强制以太之光始终显示在其他地图标记之上。</value>
   </data>
   <data name="ModificationDisplay_ShowEnemies" xml:space="preserve">
-    <value>Show Enemies</value>
+    <value>显示敌人</value>
   </data>
   <data name="ModificationDescription_ShowEnemies" xml:space="preserve">
-    <value>Shows icons for enemies players on the map.</value>
+    <value>在地图上显示敌对目标图标。</value>
   </data>
   <data name="ModificationDisplay_ShowGatheringPoints" xml:space="preserve">
-    <value>Show Gathering Points</value>
+    <value>显示采集点</value>
   </data>
   <data name="ModificationDescription_ShowGatheringPoints" xml:space="preserve">
-    <value>Shows icons for gathering points on the map.</value>
+    <value>在地图上显示采集点图标。</value>
   </data>
   <data name="ModificationDisplay_ShowPlayers" xml:space="preserve">
-    <value>Show Players</value>
+    <value>显示玩家</value>
   </data>
   <data name="ModificationDescription_ShowPlayers" xml:space="preserve">
-    <value>Shows icons for other players on the map.</value>
+    <value>在地图上显示其他玩家图标。</value>
   </data>
   <data name="ModificationDisplay_ShowTreasureChests" xml:space="preserve">
-    <value>Show Treasure Chests</value>
+    <value>显示寻宝宝箱</value>
   </data>
   <data name="ModificationDescription_ShowTreasureChests" xml:space="preserve">
-    <value>Shows icons for treasure chests on the map.</value>
+    <value>在地图上显示寻宝宝箱图标。</value>
   </data>
   <data name="ModificationDisplay_SkipLoginConfirm" xml:space="preserve">
-    <value>Skip Login Confirm</value>
+    <value>跳过登录确认</value>
   </data>
   <data name="ModificationDescription_SkipLoginConfirm" xml:space="preserve">
     <value>跳过登录时出现的确认窗口。</value>
