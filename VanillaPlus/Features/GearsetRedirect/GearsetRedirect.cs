@@ -20,8 +20,6 @@ public unsafe class GearsetRedirect : GameModification {
     private GearsetRedirectConfig? config;
     private GearsetRedirectConfigAddon? configWindow;
 
-    public override bool IsExperimental => true;
-
     public override void OnEnable() {
         config = GearsetRedirectConfig.Load();
 
