@@ -32,7 +32,6 @@ public unsafe class LockChatButton : GameModification {
 
     public override void OnEnable() {
         data = LockChatButtonData.Load();
-        data.IsLocked = false;
 
         panelButtons = [];
 
