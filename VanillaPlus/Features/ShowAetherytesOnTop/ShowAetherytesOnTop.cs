@@ -32,6 +32,8 @@ public unsafe class ShowAetherytesOnTop : GameModification {
     }
 
     private void OnMapPreUpdate(AgentEvent type, AgentArgs args) {
+        if (AgentMap.Instance()->SelectedTerritoryId is 0) return;
+
         controlPreState = ControlKeyState;
         ControlKeyState = KeyStateFlags.Down | KeyStateFlags.Held;
     }
