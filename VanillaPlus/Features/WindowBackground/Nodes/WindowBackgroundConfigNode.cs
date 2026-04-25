@@ -39,6 +39,12 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         colorEditNode = new ColorEditNode {
             Size = new Vector2(150.0f, 32.0f),
             String = Strings.Color,
+            OnColorConfirmed = newColor => {
+                if (ConfigurationOption is not null) {
+                    ConfigurationOption.Color = newColor;
+                    OnConfigChanged?.Invoke(ConfigurationOption);
+                }
+            },
         };
         verticalListNode.AddNode(1, colorEditNode);
 
