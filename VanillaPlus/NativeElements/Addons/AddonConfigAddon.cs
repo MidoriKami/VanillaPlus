@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
@@ -16,7 +17,7 @@ public class AddonConfigAddon : NativeAddon {
 
     public required AddonConfig AddonConfig { get; init; }
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon) {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         SetWindowSize(390.0f, 360.0f);
 
         keybindAddon = new KeybindConfigAddon {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.Game.WKS;
@@ -24,7 +25,7 @@ public class CosmicExplorationProgressAddon : NativeAddon {
         ContentPadding = Vector2.Zero;
     }
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon) {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         allOptions = GetInitialProgressList();
         
         listNode = new ListNode<Progress, WksProgressListItemNode> {

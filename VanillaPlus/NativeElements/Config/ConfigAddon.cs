@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
@@ -17,7 +18,7 @@ public unsafe class ConfigAddon : NativeAddon {
     private const float MaximumHeight = 400.0f;
     private const float Width = 400.0f;
 
-    protected override void OnSetup(AtkUnitBase* addon) {
+    protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         configurationListNode = new ScrollingListNode {
             AutoHideScrollBar = true,
             FitContents = true,

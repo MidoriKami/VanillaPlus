@@ -37,7 +37,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         Title = Strings.GearsetRedirect_AddRedirectionTitle,
     };
 
-    protected override void OnSetup(AtkUnitBase* addon) {
+    protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         gearsetListNode = new ModifyListNode<GearsetInfo, GearsetInfoListItemNode> {
             Size = new Vector2(225.0f, ContentSize.Y),
             Position = ContentStartPosition,

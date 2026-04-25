@@ -5,8 +5,8 @@ using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.RecentlyLootedWindow;
 
-public class LootedItemListItemNode : ListItemNode<LootedItemInfo> {
-    public override float ItemHeight => 32.0f;
+public class LootedItemListItemNode : ListItemNode<LootedItemInfo>, IListItemNode {
+    public static float ItemHeight => 32.0f;
     
     private readonly IconWithCountNode iconNode;
     private readonly TextNode itemNameTextNode;

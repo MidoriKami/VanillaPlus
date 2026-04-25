@@ -8,8 +8,8 @@ using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.ListInventory;
 
-public class InventoryItemNode : ListItemNode<ItemStack> {
-    public override float ItemHeight => 32.0f;
+public class InventoryItemNode : ListItemNode<ItemStack>, IListItemNode {
+    public static float ItemHeight => 32.0f;
     
     private readonly IconWithCountNode iconNode;
     private readonly TextNode itemNameTextNode;

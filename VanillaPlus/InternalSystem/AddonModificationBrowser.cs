@@ -37,7 +37,7 @@ public class AddonModificationBrowser : NativeAddon {
     private bool isImageEnlarged;
     private bool isImageHovered;
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon) {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         mainContainerNode = new SimpleComponentNode {
             Position = ContentStartPosition,
             Size = ContentSize,

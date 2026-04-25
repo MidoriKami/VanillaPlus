@@ -14,7 +14,7 @@ public class RenameAddon : NativeAddon {
 
     public Action<ReadOnlySeString>? OnRenameComplete { get; set; }
     
-    protected override unsafe void OnSetup(AtkUnitBase* addon) {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         SetWindowSize(250.0f, 125.0f);
 
         inputNode = new TextInputNode {

@@ -9,7 +9,7 @@ using VanillaPlus.Classes;
 
 namespace VanillaPlus.NativeElements.Addons;
 
-public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, new() {
+public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, IListItemNode, new() {
     protected ListNode<T, TU>? ListNode;
 
     private AddonConfig? config;
@@ -39,7 +39,7 @@ public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T
         };
     }
 
-    protected override void OnSetup(AtkUnitBase* addon) {
+    protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         ListNode = new ListNode<T, TU> {
             Position = ContentStartPosition,
             Size = ContentSize,

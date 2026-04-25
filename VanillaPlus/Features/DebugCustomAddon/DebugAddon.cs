@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Component.GUI;
+﻿using System;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 
 namespace VanillaPlus.Features.DebugCustomAddon;
@@ -9,7 +10,7 @@ namespace VanillaPlus.Features.DebugCustomAddon;
 /// </summary>
 public class DebugAddon : NativeAddon {
     
-    protected override unsafe void OnSetup(AtkUnitBase* addon) {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         
     }
 }

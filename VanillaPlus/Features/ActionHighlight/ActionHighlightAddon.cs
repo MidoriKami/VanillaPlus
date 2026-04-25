@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -20,7 +21,7 @@ public class ActionHighlightAddon : NativeAddon {
 
     public ActionHighlightConfig? Config { get; init; }
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon) {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         var combatJobs = Services.DataManager.GetExcelSheet<Lumina.Excel.Sheets.ClassJob>()
             .Where(classJob => classJob.JobIndex > 0 && classJob.Role != 0)
             .Select(classJob => new ActionCategory(ActionCategoryType.Job, classJob))
@@ -42,7 +43,7 @@ public class ActionHighlightAddon : NativeAddon {
                 ActionHighlightSortMode.Alphabetical => string.CompareOrdinal(left.Name, right.Name),
                 _ => ActionCategory.Compare(left, right),
             },
-            IsSearchMatch = (data, search) => data.Name.Contains(search, System.StringComparison.OrdinalIgnoreCase),
+            IsSearchMatch = (data, search) => data.Name.Contains(search, StringComparison.OrdinalIgnoreCase),
         };
         selectionListNode.AttachNode(this);
 

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -27,7 +28,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
     
     public required LocationDisplayConfig Config { get; init; }
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon) {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         SetWindowSize(560.0f, 335.0f);
         
         instructionTextNode = new TextNode {

@@ -20,8 +20,8 @@ public class AddonListInventory : SearchableNodeListAddon<ItemStack, InventoryIt
         OnSearchUpdated = UpdateSearch;
     }
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon) {
-        base.OnSetup(addon);
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
 
         addon->SubscribeNumberArrayData(NumberArrayType.Inventory);
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "Inventory", OnInventoryUpdate);

@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Enums;
@@ -32,7 +33,7 @@ public class NewRedirectionAddon : NativeAddon {
     public TerritoryType? SelectedTerritory { get; private set; }
     public Action? OnSelectionsConfirmed { get; set; }
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon) {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         SelectedGearset = null;
         SelectedTerritory = null;
 

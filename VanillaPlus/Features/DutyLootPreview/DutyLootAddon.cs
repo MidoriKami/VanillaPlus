@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Numerics;
 using VanillaPlus.Features.DutyLootPreview.Data;
@@ -31,7 +32,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     public required DutyLootPreviewConfig Config { get; init; }
     public required DutyLootDataLoader DataLoader { get; init; }
 
-    protected override void OnSetup(AtkUnitBase* addon) {
+    protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         DataLoader.OnChanged += OnDataLoaderStateChanged;
 
         filterBarNode = new DutyLootFilterBarNode {

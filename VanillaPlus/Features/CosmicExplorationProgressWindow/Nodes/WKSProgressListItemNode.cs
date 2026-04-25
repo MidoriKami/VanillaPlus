@@ -7,7 +7,7 @@ using VanillaPlus.Features.CosmicExplorationProgressWindow.Classes;
 
 namespace VanillaPlus.Features.CosmicExplorationProgressWindow.Nodes;
 
-public sealed class WksProgressListItemNode : ListItemNode<Progress> {
+public sealed class WksProgressListItemNode : ListItemNode<Progress>, IListItemNode {
     private readonly TextNode currentLabelNode;
     private readonly IconImageNode iconNode;
     private readonly TextNode maxLabelNode;
@@ -15,7 +15,7 @@ public sealed class WksProgressListItemNode : ListItemNode<Progress> {
 
     private readonly HorizontalListNode layoutNode; 
     
-    public override float ItemHeight => 26.0f;
+    public static float ItemHeight => 26.0f;
 
     public WksProgressListItemNode() {
         DisableInteractions();

@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Nodes;
@@ -12,8 +13,8 @@ namespace VanillaPlus.Features.AprilFools;
 /// </summary>
 public class JustMonikaFools : FoolsModule {
     private class MonikaAddon : NativeAddon {
-        protected override unsafe void OnSetup(AtkUnitBase* addon) {
-            base.OnSetup(addon);
+        protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+            base.OnSetup(addon, atkValueSpan);
 
             new ImGuiImageNode {
                 Position = ContentStartPosition,

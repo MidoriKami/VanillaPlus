@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Enums;
@@ -14,8 +15,8 @@ public class SeasonEventAddon : NativeAddon {
         RememberClosePosition = false;
     }
     
-    protected override unsafe void OnSetup(AtkUnitBase* addon) {
-        base.OnSetup(addon);
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
 
         var iconSize = new Vector2(320.0f, 320.0f);
 

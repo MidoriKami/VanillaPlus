@@ -8,8 +8,8 @@ using KamiToolKit.Timelines;
 
 namespace VanillaPlus.Features.FateListWindow;
 
-public class FateListItemNode : ListItemNode<IFate> {
-    public override float ItemHeight => 53.0f;
+public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
+    public static float ItemHeight => 53.0f;
     
     private readonly IconImageNode iconNode;
     private readonly IconImageNode expBonusIconNode;

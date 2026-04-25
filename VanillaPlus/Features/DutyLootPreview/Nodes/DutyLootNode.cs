@@ -12,8 +12,8 @@ using ContextMenu = KamiToolKit.ContextMenu.ContextMenu;
 
 namespace VanillaPlus.Features.DutyLootPreview.Nodes;
 
-public unsafe class DutyLootNode : ListItemNode<DutyLootItemView> {
-    public override float ItemHeight => 36.0f;
+public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode {
+    public static float ItemHeight => 36.0f;
 
     private readonly IconWithCountNode iconNode;
     private readonly TextNode itemNameTextNode;

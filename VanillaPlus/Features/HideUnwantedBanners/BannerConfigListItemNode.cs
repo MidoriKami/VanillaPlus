@@ -5,9 +5,9 @@ using KamiToolKit.Premade.Node.Simple;
 
 namespace VanillaPlus.Features.HideUnwantedBanners;
 
-public class BannerConfigListItemNode : ListItemNode<BannerConfig> {
+public class BannerConfigListItemNode : ListItemNode<BannerConfig>, IListItemNode {
 
-    public override float ItemHeight => 96.0f;
+    public static float ItemHeight => 96.0f;
     
     private readonly CheckboxNode checkboxNode;
     private readonly SimpleComponentNode imageContainerNode;

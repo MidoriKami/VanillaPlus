@@ -8,7 +8,7 @@ using KamiToolKit.Nodes;
 
 namespace VanillaPlus.NativeElements.Addons;
 
-public unsafe class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where TU : ListItemNode<T>, new() {
+public unsafe class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where TU : ListItemNode<T>, IListItemNode, new() {
 
     private TextInputNode? textInputNode;
     private EnumDropDownNode<Enum>? sortDropdownNode;
@@ -24,7 +24,7 @@ public unsafe class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where 
     
     public required List<Enum> DropDownOptions { get; init; }
     
-    protected override void OnSetup(AtkUnitBase* addon) {
+    protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         const float dropDownWidth = 175.0f;
 
         mainContainerNode = new VerticalListNode {

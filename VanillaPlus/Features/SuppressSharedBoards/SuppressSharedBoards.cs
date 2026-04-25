@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Dalamud.Hooking;
 using Dalamud.Utility.Signatures;
 using VanillaPlus.Classes;
@@ -10,7 +11,7 @@ public class SuppressSharedBoards : GameModification {
         DisplayName = "Suppress Shared Strategy Boards",
         Description = "Completely suppresses any shared Strategy Board.",
         Type = ModificationType.GameBehavior,
-        Authors = ["Treezy"]
+        Authors = ["Treezy"],
     };
 
     // TODO: Replace with CS in 7.5
@@ -37,7 +38,9 @@ public class SuppressSharedBoards : GameModification {
         saveBoardAndPlaySoundHook = null;
     }
 
-    private void ShowSharedNotificationDetour(nint thisPtr, bool isNotRealTimeSharing, bool openNotif) { }
+    [SuppressMessage("ReSharper", "UnusedParameter.Local", Justification = "Intended empty detour to prevent game from calling function.")]
+    private static void ShowSharedNotificationDetour(nint thisPtr, bool isNotRealTimeSharing, bool openNotif) { }
 
-    private void SaveBoardAndPlaySoundDetour(nint thisPtr, nint packetData, nint boardInfo, uint boardIndexInSharedFolder, uint totalBoardsInSharedFolder) { }
+    [SuppressMessage("ReSharper", "UnusedParameter.Local", Justification = "Intended empty detour to prevent game from calling function.")]
+    private static void SaveBoardAndPlaySoundDetour(nint thisPtr, nint packetData, nint boardInfo, uint boardIndexInSharedFolder, uint totalBoardsInSharedFolder) { }
 }

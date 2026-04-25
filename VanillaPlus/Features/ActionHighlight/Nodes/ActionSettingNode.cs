@@ -5,8 +5,8 @@ using Action = Lumina.Excel.Sheets.Action;
 
 namespace VanillaPlus.Features.ActionHighlight.Nodes;
 
-public class ActionSettingNode : ListItemNode<ActionHighlightSetting> {
-    public override float ItemHeight => 38.0f;
+public class ActionSettingNode : ListItemNode<ActionHighlightSetting>, IListItemNode {
+    public static float ItemHeight => 38.0f;
 
     private readonly CheckboxNode enabledCheckbox;
     private readonly IconImageNode iconNode;
