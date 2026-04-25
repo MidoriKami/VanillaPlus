@@ -11,10 +11,9 @@ public class SuppressSharedBoards : GameModification {
         DisplayName = "Suppress Shared Strategy Boards",
         Description = "Completely suppresses any shared Strategy Board.",
         Type = ModificationType.GameBehavior,
-        Authors = ["Treezy"],
+        Authors = [ "Treezy" ],
     };
 
-    // TODO: Replace with CS in 7.5
     // https://github.com/aers/FFXIVClientStructs/blob/main/FFXIVClientStructs/FFXIV/Client/UI/Misc/TofuHelper.cs#L58
     private delegate void ShowSharedNotificationDelegate(nint thisPtr, bool isNotRealTimeSharing, bool openNotif);
     [Signature("48 89 6C 24 ?? 56 41 56 41 57 48 83 EC ?? 4C 8B F9 0F B6 EA", DetourName = nameof(ShowSharedNotificationDetour))]
@@ -27,6 +26,7 @@ public class SuppressSharedBoards : GameModification {
 
     public override void OnEnable() {
         Services.GameInteropProvider.InitializeFromAttributes(this);
+
         showSharedNotificationHook?.Enable();
         saveBoardAndPlaySoundHook?.Enable();
     }
@@ -34,6 +34,7 @@ public class SuppressSharedBoards : GameModification {
     public override void OnDisable() {
         showSharedNotificationHook?.Dispose();
         showSharedNotificationHook = null;
+
         saveBoardAndPlaySoundHook?.Dispose();
         saveBoardAndPlaySoundHook = null;
     }
