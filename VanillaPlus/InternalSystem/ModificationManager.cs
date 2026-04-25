@@ -108,6 +108,15 @@ public class ModificationManager : IDisposable {
         try {
             Services.PluginLog.Info($"Enabling {modification.Name}");
 
+            if (modification.Modification.ModificationInfo is { DisabledReason: { } disabledReason }) {
+                modification.State = LoadedState.ForceDisabled;
+                modification.ErrorMessage = disabledReason;
+                
+                Services.PluginLog.Warning($"[{modification.Name}] Force Disabled. {disabledReason}");
+                Services.PluginLog.Warning($"Aborted enabling {modification.Name}");
+                return;
+            }
+            
             if (modification.Modification.ModificationInfo.CompatibilityModule is { } compatibilityModule) {
                 if (!compatibilityModule.ShouldLoadGameModification()) {
                     modification.State = LoadedState.CompatError;

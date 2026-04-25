@@ -142,7 +142,7 @@ public class GameModificationOptionNode : SelectableNode {
     }
 
     public void UpdateDisabledState() {
-        if (Modification.State is LoadedState.Errored or LoadedState.CompatError) {
+        if (Modification.State.IsTrouble) {
             checkboxNode.IsEnabled = false;
             erroringImageNode.IsVisible = true;
             erroringImageNode.TextTooltip = Modification.ErrorMessage;

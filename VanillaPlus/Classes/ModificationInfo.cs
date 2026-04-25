@@ -12,6 +12,7 @@ public class ModificationInfo {
     public required ModificationType Type { get; init; }
     public ModificationSubType? SubType { get; init; }
     public List<string> Tags { get; init; } = [];
+    public string? DisabledReason { get; init; }
     
     /// <summary>
     /// Compatibility Module prevents loading this GameModification if the
