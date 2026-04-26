@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Dalamud.Game.Addon.Lifecycle;
+using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
@@ -27,9 +29,10 @@ public unsafe class InventoryCooldowns : GameModification {
     private MultiAddonController? controller;
 
     public override void OnEnable() {
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, ["InventoryExpansion", "InventoryLarge", "Inventory"], OnPostReceiveEvent);
+
         controller = new MultiAddonController {
             AddonNames = ["InventoryExpansion", "InventoryLarge", "Inventory"],
-            OnSetup = SetupInventory,
             OnUpdate = UpdateInventory,
             OnFinalize = FinalizeInventory,
         };
@@ -37,6 +40,7 @@ public unsafe class InventoryCooldowns : GameModification {
     }
 
     public override void OnDisable() {
+        Services.AddonLifecycle.UnregisterListener(OnPostReceiveEvent);
         controller?.Dispose();
         controller = null;
     }
@@ -51,7 +55,12 @@ public unsafe class InventoryCooldowns : GameModification {
         }
     }
 
-    private void SetupInventory(AtkUnitBase* addon) {
+    private void OnPostReceiveEvent(AddonEvent type, AddonArgs args) {
+        if (args is not AddonReceiveEventArgs { EventType: AtkEventType.ChildAddonAttached } receiveEventArgs)
+            return;
+
+        var addon = receiveEventArgs.GetAddon();
+
         foreach (var childAddon in Inventory.GetInventoryAddons(addon)) {
             if (!IsAllowedChildAddon(childAddon))
                 continue;
@@ -60,10 +69,14 @@ public unsafe class InventoryCooldowns : GameModification {
 
             foreach (var index in Enumerable.Range(0, inventorySlots.Length)) {
                 var inventorySlot = inventorySlots[index].Value;
-                if (inventorySlot is null) continue;
+                if (inventorySlot is null)
+                    continue;
 
                 if (!addonNodeCache.TryGetValue(childAddon.Value->NameString, out var inventoryNodes))
                     addonNodeCache.Add(childAddon.Value->NameString, inventoryNodes = []);
+
+                if (inventoryNodes.ContainsKey(index))
+                    continue;
 
                 var cooldownNode = new InventoryCooldownTextNode(this) {
                     Slot = inventorySlot,
