@@ -16,9 +16,9 @@
       },
       "LuminaSupplemental.Excel": {
         "type": "Direct",
-        "requested": "[4.2.3, )",
-        "resolved": "4.2.3",
-        "contentHash": "HrlKBwitpY87wj9FfYJLo+xMxY7O9KFAKr4aOcJ2+sdjIT0KtMpur+Y7TFwKu6b4BSjbzt2nbEVRrb46MMLadQ==",
+        "requested": "[4.2.4, )",
+        "resolved": "4.2.4",
+        "contentHash": "eF9vRWo6R+XFh8C01HOW95WKxd0Es3pcOmWcg5YcT+oQb6fpmRFzg/3Z4XcMxuZdNhFJmVzOjPd8CT2pVwNC+A==",
         "dependencies": {
           "CSVFile": "3.2.1",
           "CsvHelper": "30.0.1",
