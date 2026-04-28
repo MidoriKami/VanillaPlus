@@ -2,6 +2,7 @@
 using KamiToolKit;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
+using VanillaPlus.Features.BetterTeleportWindow;
 
 namespace VanillaPlus.Features.DebugCustomAddon;
 
@@ -20,7 +21,7 @@ public class DebugCustomAddon : GameModification {
     private NativeAddon? debugAddon;
 
     public override void OnEnable() {
-        debugAddon = new DebugAddon {
+        debugAddon = new TeleportAddon(new BetterTeleportWindowConfig()) {
             InternalName = "DebugAddon",
             Title = Strings.DebugCustomAddon_Title,
             Size = new Vector2(500.0f, 500.0f),

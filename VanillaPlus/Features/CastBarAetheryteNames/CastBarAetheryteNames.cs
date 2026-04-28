@@ -44,7 +44,7 @@ public unsafe class CastBarAetheryteNames : GameModification {
         teleportInfo = null;
     }
     
-    private void OnTerritoryChanged(ushort obj)
+    private void OnTerritoryChanged(uint u)
         => teleportInfo = null;
 
     private void OnCastBarRefresh(AddonEvent type, AddonArgs args) {

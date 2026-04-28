@@ -56,7 +56,7 @@ public class DutyLootDataLoader : IDisposable {
     private static unsafe uint? GetActiveContentId() {
         // Priority 1: Currently in a duty
         var currentDutyId = GameMain.Instance()->CurrentContentFinderConditionId;
-        if (currentDutyId != 0 && IsSupportedContent(new ContentsId { ContentType = ContentsId.ContentsType.Regular, Id = currentDutyId })) {
+        if (currentDutyId != 0 && IsSupportedContent(new ContentsId { ContentType = ContentsType.Regular, Id = currentDutyId })) {
             return currentDutyId;
         }
 
@@ -71,7 +71,7 @@ public class DutyLootDataLoader : IDisposable {
 
     private static bool IsSupportedContent(ContentsId content) {
         // Not for Content Roulette
-        if (content.ContentType != ContentsId.ContentsType.Regular)
+        if (content.ContentType != ContentsType.Regular)
             return false;
 
         if (!Services.DataManager.GetExcelSheet<ContentFinderCondition>().TryGetRow(content.Id, out var cfc))
@@ -100,7 +100,7 @@ public class DutyLootDataLoader : IDisposable {
 
     private unsafe void OnContentsFinderChanged(AddonContentsFinder* addon) => RefreshActiveDuty();
 
-    private void OnTerritoryChanged(ushort territory) => RefreshActiveDuty();
+    private void OnTerritoryChanged(uint u) => RefreshActiveDuty();
 
     private void OnAgentUpdate(AgentUpdateFlag flag) {
         if (flag.HasFlag(AgentUpdateFlag.UnlocksUpdate)) {

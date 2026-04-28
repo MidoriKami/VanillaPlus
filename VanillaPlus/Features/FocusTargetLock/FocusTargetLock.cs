@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.DutyState;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -28,7 +29,7 @@ public class FocusTargetLock : GameModification {
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
     }
 
-    private void OnDutyRecommenced(object? sender, ushort e) {
+    private void OnDutyRecommenced(IDutyStateEventArgs args) {
         if (targetBaseId is null || targetEntityId is null) return;
 
         IGameObject? targetObject;
@@ -46,12 +47,12 @@ public class FocusTargetLock : GameModification {
         Services.TargetManager.FocusTarget = targetObject;
     }
 
-    private void OnDutyWiped(object? sender, ushort e) {
+    private void OnDutyWiped(IDutyStateEventArgs args) {
         targetBaseId = Services.TargetManager.FocusTarget?.BaseId;
         targetEntityId = Services.TargetManager.FocusTarget?.EntityId;
     }
 
-    private void OnTerritoryChanged(ushort obj) {
+    private void OnTerritoryChanged(uint u) {
         targetBaseId = null;
         targetEntityId = null;
     }

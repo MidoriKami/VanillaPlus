@@ -100,7 +100,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
         
         try {
             if (config is null) return result;
-            if (config.DisableInMsqRoulette && AgentContentsFinder.Instance()->SelectedDuty is { ContentType: ContentsId.ContentsType.Roulette, Id: 3 }) return result;
+            if (config.DisableInMsqRoulette && AgentContentsFinder.Instance()->SelectedDuty is { ContentType: ContentsType.Roulette, Id: 3 }) return result;
             if (wasMuted is null || id is 0) return result;
 
             foreach (var optionName in ConfigOptions) {

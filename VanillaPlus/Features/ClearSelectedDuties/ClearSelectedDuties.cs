@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using FFXIVClientStructs.FFXIV.Client.Enums;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -54,7 +55,7 @@ public class ClearSelectedDuties : GameModification {
         var agent = AgentContentsFinder.Instance();
         var addon = args.GetAddon<AddonContentsFinder>();
 
-        if (contentsFinder->QueueInfo.QueueState is not ContentsFinderQueueInfo.QueueStates.None)
+        if (contentsFinder->QueueInfo.QueueState is not ContentsFinderQueueState.None)
             return;
 
         if (!IsRouletteTab(addon) && config.DisableWhenUnrestricted && contentsFinder->IsUnrestrictedParty) return;
