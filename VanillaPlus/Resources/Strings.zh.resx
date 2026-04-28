@@ -1462,10 +1462,10 @@ ID：{0}</value>
     <value>通用</value>
   </data>
   <data name="SystemConfigSearchBar_LabelTabHighlight" xml:space="preserve">
-    <value>选项卡高亮显示</value>
+    <value>选项卡高亮</value>
   </data>
   <data name="SystemConfigSearchBar_LabelTextHighlight" xml:space="preserve">
-    <value>文本高亮显示</value>
+    <value>文本高亮</value>
   </data>
   <data name="ClockOverlay_CategoryVisualStyle" xml:space="preserve">
     <value>视觉样式</value>
@@ -1525,10 +1525,10 @@ ID：{0}</value>
     <value>在鼠标位置放置标记</value>
   </data>
   <data name="ModificationDisplay_ReverseCharacterPanel" xml:space="preserve">
-    <value>角色界面左右翻转</value>
+    <value>角色面板左右翻转</value>
   </data>
   <data name="ModificationDescription_ReverseCharacterPanel" xml:space="preserve">
-    <value>切换角色界面中角色信息与角色肖像的位置。</value>
+    <value>交换角色面板中信息与角色的位置。</value>
   </data>
   <data name="ModificationDisplay_ShowAetherytesOnTop" xml:space="preserve">
     <value>以太之光置顶显示</value>
