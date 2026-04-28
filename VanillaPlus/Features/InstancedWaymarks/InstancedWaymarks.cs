@@ -72,7 +72,7 @@ public unsafe class InstancedWaymarks : GameModification {
         config = null;
     }
 
-    private void OnTerritoryChanged(ushort obj) {
+    private void OnTerritoryChanged(uint u) {
         var currentCfc = GameMain.Instance()->CurrentContentFinderConditionId;
 
         SaveWaymarks(previousCfc);

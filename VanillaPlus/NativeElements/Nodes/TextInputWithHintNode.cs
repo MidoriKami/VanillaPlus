@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using KamiToolKit;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Node.Simple;
 using Lumina.Text.ReadOnly;
@@ -10,7 +11,7 @@ public class TextInputWithHintNode : SimpleComponentNode {
     private readonly TextInputNode textInputNode;
     private readonly ImageNode helpNode;
 
-    public CollisionNode FocusNode => textInputNode.CollisionNode;
+    public override NodeBase FocusNode => textInputNode.CollisionNode;
 
     public TextInputWithHintNode() {
         textInputNode = new TextInputNode {
