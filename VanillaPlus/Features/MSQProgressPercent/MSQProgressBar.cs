@@ -13,6 +13,7 @@ using Lumina.Extensions;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
+using ValueType = FFXIVClientStructs.FFXIV.Component.GUI.ValueType;
 
 namespace VanillaPlus.Features.MSQProgressPercent;
 
@@ -114,13 +115,13 @@ public unsafe class MSQProgressBar : GameModification {
         if (addon->AtkValuesCount < 7) return;
         if (expansionRanges is null) return;
 
-        if (addon->AtkValuesSpan[6].Type is not AtkValueType.String) {
+        if (addon->AtkValuesSpan[6].Type is not ValueType.String) {
             progressBarNode?.Progress = 1.0f;
             progressBarNode?.TextTooltip = Strings.MSQProgressBar_TooltipGameComplete;
             return;
         }
 
-        var currentQuest = int.Parse(addon->AtkValuesSpan[6].String.ToString());
+        var currentQuest = int.Parse(addon->AtkValuesSpan[6].String);
         var expansionRange = expansionRanges.FirstOrNull(pair => pair.Value.Contains(currentQuest));
         if (expansionRange is not { Value: var range }) return;
 

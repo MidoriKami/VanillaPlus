@@ -1,5 +1,4 @@
 ﻿using System;
-using Dalamud.Game.DutyState;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -28,15 +27,15 @@ public class DutyTimer : GameModification {
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
     }
 
-    private void OnDutyStarted(IDutyStateEventArgs args)
+    private void OnDutyStarted(object? sender, ushort e)
         => startTimestamp = DateTime.UtcNow;
 
-    private void OnDutyCompleted(IDutyStateEventArgs args) {
+    private void OnDutyCompleted(object? sender, ushort e) {
         var duration = DateTime.UtcNow - startTimestamp;
         var formattedDuration = duration.ToString(@"hh\:mm\:ss\.ffff");
         Services.ChatGui.Print(Strings.DutyTimer_CompletedMessage.Format(formattedDuration));
     }
 
-    private void OnTerritoryChanged(uint _)
+    private void OnTerritoryChanged(ushort obj)
         => startTimestamp = DateTime.UtcNow;
 }

@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using Dalamud.Game.Addon.Events.EventDataTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using ModifierFlag = FFXIVClientStructs.FFXIV.Component.GUI.AtkEventData.AtkMouseData.ModifierFlag;
 
 namespace VanillaPlus.Extensions;
 

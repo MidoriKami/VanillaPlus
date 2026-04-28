@@ -6,7 +6,6 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
-using VanillaPlus.Features.DutyLootPreview.Enums;
 using VanillaPlus.Features.DutyLootPreview.Nodes;
 
 namespace VanillaPlus.Features.DutyLootPreview;

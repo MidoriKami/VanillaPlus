@@ -5,6 +5,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
+using ValueType = FFXIVClientStructs.FFXIV.Component.GUI.ValueType;
 
 namespace VanillaPlus.Features.ResetInventoryTab;
 
@@ -35,7 +36,7 @@ public unsafe class ResetInventoryTab : GameModification {
             return; // Skipping: TabIndex already 0 (nothing to do)
 
         var values = new Span<AtkValue>((void*)refreshArgs.AtkValues, (int)refreshArgs.AtkValueCount);
-        if (values[0].Type is not AtkValueType.Int)
+        if (values[0].Type is not ValueType.Int)
             return; // Skipping: value[0] is not int (invalid)
 
         if (values[0].Int is 6)

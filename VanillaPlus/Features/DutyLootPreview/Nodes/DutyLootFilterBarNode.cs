@@ -4,12 +4,18 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
-using VanillaPlus.Features.DutyLootPreview.Enums;
 using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.DutyLootPreview.Nodes;
 
-public unsafe class DutyLootFilterBarNode : HorizontalListNode {
+public enum LootFilter {
+    All,
+    Favorites,
+    Equipment,
+    Misc,
+}
+
+public class DutyLootFilterBarNode : HorizontalListNode {
     private readonly Dictionary<LootFilter, IconToggleNode> filterButtons = new();
 
     public Action<LootFilter>? OnFilterChanged { get; set; }

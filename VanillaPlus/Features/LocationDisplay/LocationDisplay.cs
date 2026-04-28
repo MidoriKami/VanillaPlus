@@ -79,7 +79,7 @@ public unsafe class LocationDisplay : GameModification {
         config = null;
     }
 
-    private void OnZoneChange(uint u)		
+    private void OnZoneChange(ushort obj)		
         => locationChanged = true;
 
     private void OnFrameworkUpdate(IFramework framework) {
