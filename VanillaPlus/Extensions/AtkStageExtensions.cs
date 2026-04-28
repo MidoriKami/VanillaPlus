@@ -11,7 +11,7 @@ public static unsafe class AtkStageExtensions {
         public void ShowActionTooltip(AtkResNode* node, uint actionId, string? textLabel = null) {
             using var stringBuffer = new Utf8String();
 
-            var tooltipType = AtkTooltipManager.AtkTooltipType.Action;
+            var tooltipType = AtkTooltipType.Action;
         
             var tooltipArgs = stackalloc AtkTooltipManager.AtkTooltipArgs[1];
             tooltipArgs->Ctor();
@@ -20,7 +20,7 @@ public static unsafe class AtkStageExtensions {
             tooltipArgs->ActionArgs.Flags = 1;
 
             if (textLabel is not null) {
-                tooltipType |= AtkTooltipManager.AtkTooltipType.Text;
+                tooltipType |= AtkTooltipType.Text;
                 stringBuffer.SetString(textLabel);
                 tooltipArgs->TextArgs.Text = stringBuffer.StringPtr;
             }
@@ -46,7 +46,7 @@ public static unsafe class AtkStageExtensions {
             if (addon is null) return;
 
             stage.TooltipManager.ShowTooltip(
-                AtkTooltipManager.AtkTooltipType.Item,
+                AtkTooltipType.Item,
                 addon->Id,
                 node,
                 tooltipArgs
@@ -66,7 +66,7 @@ public static unsafe class AtkStageExtensions {
             if (addon is null) return;
 
             stage.TooltipManager.ShowTooltip(
-                AtkTooltipManager.AtkTooltipType.Item,
+                AtkTooltipType.Item,
                 addon->Id,
                 node,
                 tooltipArgs

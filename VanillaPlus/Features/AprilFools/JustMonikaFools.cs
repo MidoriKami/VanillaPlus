@@ -47,6 +47,6 @@ public class JustMonikaFools : FoolsModule {
         monikaAddon = null;
     }
 
-    private void OnTerritoryChanged(ushort obj)
+    private void OnTerritoryChanged(uint u)
         => monikaAddon?.Open();
 }

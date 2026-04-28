@@ -4,12 +4,12 @@ using System.Numerics;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
+using FFXIVClientStructs.FFXIV.Client.UI.Arrays.Common;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
 using Action = Lumina.Excel.Sheets.Action;
-using ActionBarSlotNumberArray = FFXIVClientStructs.FFXIV.Client.UI.Arrays.ActionBarNumberArray.ActionBarBarNumberArray.ActionBarSlotNumberArray;
 
 namespace VanillaPlus.Features.FadeUnavailableActions;
 
