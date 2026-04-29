@@ -49,7 +49,7 @@ public unsafe class MacroTooltips : GameModification {
             var hotbarSlot = RaptureHotbarModule.Instance()->Hotbars[realHotbarId].Slots[realSlotId];
 
             if (hotbarSlot is { CommandType: RaptureHotbarModule.HotbarSlotType.Macro, ApparentSlotType: RaptureHotbarModule.HotbarSlotType.Action }) {
-                macroResNode->ShowActionTooltip(hotbarSlot.ApparentActionId, originalTooltip);
+                macroResNode->ShowActionTooltip(hotbarSlot.ApparentActionId, originalTooltip.ToString());
                 return;
             }
         }

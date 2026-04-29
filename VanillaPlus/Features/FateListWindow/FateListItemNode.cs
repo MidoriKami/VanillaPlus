@@ -114,7 +114,7 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
         expBonusIconNode.IsVisible = itemData.HasBonus;
 
         switch (itemData.State) {
-            case FateState.Preparation:
+            case FateState.Preparing:
             case FateState.Running when itemData.TimeRemainingSpan <= TimeSpan.Zero:
                 timeRemainingNode.String = "Pending";
                 Timeline?.PlayAnimation(1);
