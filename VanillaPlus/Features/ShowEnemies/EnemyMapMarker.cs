@@ -26,7 +26,7 @@ public sealed unsafe class EnemyMapMarker : MapMarkerNode {
         if (localChara is null) return;
 
         if (battleChara->ObjectKind is not ObjectKind.BattleNpc) return;
-        if (battleChara->SubKind != (byte)BattleNpcSubKind.Enemy) return;
+        if (battleChara->SubKind != (byte)BattleNpcSubKind.Combatant) return;
         if (!battleChara->GetIsTargetable()) return;
         if (Vector3.Distance(battleChara->Position, localChara.Position) > 150.0f) return;
         

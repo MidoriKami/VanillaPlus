@@ -10,7 +10,7 @@ public class FateListAddon : NodeListAddon<IFate, FateListItemNode> {
         base.OnUpdate(addon);
 
         ListNode?.OptionsList = Services.FateTable
-            .Where(fate => fate is { State: FateState.Running or FateState.Preparation })
+            .Where(fate => fate is { State: FateState.Running or FateState.Preparing })
             .OrderBy(fate => fate.TimeRemaining)
             .ToList();
     }
