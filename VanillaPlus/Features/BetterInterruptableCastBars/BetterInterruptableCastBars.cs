@@ -48,7 +48,7 @@ public unsafe class BetterInterruptableCastBars : GameModification {
                     Scale = new Vector2(1.33f, 1.33f),
                     Origin = new Vector2(116.0f, 16.0f),
                     AddColor = new Vector3(255.0f, -80.0f, 0.0f) / 255.0f,
-                    IsVisible = false,
+                    Alpha = 0,
                 };
 
                 LoadAssets(targetInfoCastbarPulseNode);
@@ -105,8 +105,8 @@ public unsafe class BetterInterruptableCastBars : GameModification {
         
         node.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(21, 45)
-            .AddFrame(21, partId: 13)
-            .AddFrame(45, partId: 0)
+            .AddFrame(21, partId: 13, alpha: 0)
+            .AddFrame(45, partId: 0, alpha: 255)
             .EndFrameSet()
             .Build()
         );
