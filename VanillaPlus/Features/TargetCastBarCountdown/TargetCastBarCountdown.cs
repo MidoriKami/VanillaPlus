@@ -281,15 +281,15 @@ public unsafe class TargetCastBarCountdown : GameModification {
         
         switch (addon->NameString) {
             case "_TargetInfoCastBar" when primaryTargetTextNode is not null:
-                primaryTargetTextNode.String = GetCastTime(GetTarget(), config.PrimaryTarget);
+                primaryTargetTextNode.String = GetCastTime(Services.TargetManager.GetTarget(), config.PrimaryTarget);
                 break;
 
             case "_TargetInfo" when primaryTargetAltTextNode is not null:
-                primaryTargetAltTextNode.String = GetCastTime(GetTarget(), config.PrimaryTarget);
+                primaryTargetAltTextNode.String = GetCastTime(Services.TargetManager.GetTarget(), config.PrimaryTarget);
                 break;
             
             case "_FocusTargetInfo" when focusTargetTextNode is not null:
-                focusTargetTextNode.String = GetCastTime(GetFocusTarget(), config.FocusTarget);
+                focusTargetTextNode.String = GetCastTime(Services.TargetManager.GetFocusTarget(), config.FocusTarget);
                 break;
             
             case "CastBarEnemy" when castBarEnemyTextNode is not null:
@@ -314,12 +314,6 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
         return (target.TotalCastTime - target.CurrentCastTime).ToString("00.00", CultureInfo.InvariantCulture);
     }
-    
-    private static IBattleChara? GetTarget()
-        => Services.TargetManager.Target as IBattleChara ?? Services.TargetManager.SoftTarget as IBattleChara;
-
-    private static IBattleChara? GetFocusTarget()
-        => Services.TargetManager.FocusTarget as IBattleChara;
 
     private static IBattleChara? GetEntity(uint entityId)
         => Services.ObjectTable.CharacterManagerObjects.FirstOrDefault(obj => obj.EntityId == entityId) as IBattleChara;

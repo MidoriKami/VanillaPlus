@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
-using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using KamiToolKit.Classes;
@@ -80,7 +79,7 @@ public unsafe class BetterInterruptableCastBars : GameModification {
 
     private bool OnAntsCheck(ActionManager* thisPtr, ActionType actionType, uint actionId) {
         try {
-            if (Services.TargetManager.Target is IBattleChara target) {
+            if (Services.TargetManager.GetTarget() is { } target) {
                 if (actionId is 7538 or 7551 && target is { IsCasting: true, IsCastInterruptible: true }) {
                     return true;
                 }
