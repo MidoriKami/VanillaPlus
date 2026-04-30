@@ -45,7 +45,7 @@ public unsafe class SystemConfigController : IDisposable {
         }
 
         // Adjust "Default" "Apply" "Close" container
-        addon->GetNodeById(585)->Position += new Vector2(0.0f, config.SystemConfigAdditionalHeight);
+        addon->GetNodeById(588)->Position += new Vector2(0.0f, config.SystemConfigAdditionalHeight);
 
         // Adjust vertical line ninegridnode
         addon->GetNodeById(15)->Size += new Vector2(0.0f, config.SystemConfigAdditionalHeight);
@@ -63,7 +63,7 @@ public unsafe class SystemConfigController : IDisposable {
         }
 
         // Adjust "Default" "Apply" "Close" container
-        addon->GetNodeById(585)->Position -= new Vector2(0.0f, config.SystemConfigAdditionalHeight);
+        addon->GetNodeById(588)->Position -= new Vector2(0.0f, config.SystemConfigAdditionalHeight);
 
         // Adjust vertical line ninegridnode
         addon->GetNodeById(15)->Size -= new Vector2(0.0f, config.SystemConfigAdditionalHeight);
