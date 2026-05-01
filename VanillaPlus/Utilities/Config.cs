@@ -25,14 +25,14 @@ public static class Config {
     /// <summary>
     /// Saves a configuration file to PluginConfigs\VanillaPlus\Configs\{FileName}
     /// </summary>
-    public static void SaveConfig<T>(T modificationConfig, string fileName)
-        => FileHelpers.SaveFile(modificationConfig, FileHelpers.GetFileInfo("Configs", fileName).FullName);
+    public static void SaveConfig<T>(T configObject, string fileName)
+        => FileHelpers.SaveFile(configObject, FileHelpers.GetFileInfo("Configs", fileName).FullName);
     
     /// <summary>
     /// Saves a character specific config file to PluginConfigs\VanillaPlus\Configs\{ContentId}\{FileName}
     /// </summary>
     /// <remarks>Requires the character to be logged in</remarks>
-    public static void SaveCharacterConfig<T>(T modificationConfig, string fileName)
-        => FileHelpers.SaveFile(modificationConfig, FileHelpers.GetFileInfo("Configs", FileHelpers.GetCharacterPath(), fileName).FullName);
+    public static void SaveCharacterConfig<T>(T configObject, string fileName)
+        => FileHelpers.SaveFile(configObject, FileHelpers.GetFileInfo("Configs", FileHelpers.GetCharacterPath(), fileName).FullName);
 }
 
