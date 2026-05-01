@@ -1,12 +1,11 @@
-using System.Diagnostics.CodeAnalysis;
 using Dalamud.Hooking;
-using Dalamud.Utility.Signatures;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.SuppressSharedBoards;
 
-public class SuppressSharedBoards : GameModification {
+public unsafe class SuppressSharedBoards : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Suppress Shared Strategy Boards",
         Description = "Completely suppresses any shared Strategy Board.",
@@ -14,19 +13,20 @@ public class SuppressSharedBoards : GameModification {
         Authors = [ "Treezy" ],
     };
 
-    // https://github.com/aers/FFXIVClientStructs/blob/main/FFXIVClientStructs/FFXIV/Client/UI/Misc/TofuHelper.cs#L58
-    private delegate void ShowSharedNotificationDelegate(nint thisPtr, bool isNotRealTimeSharing, bool openNotif);
-    [Signature("48 89 6C 24 ?? 56 41 56 41 57 48 83 EC ?? 4C 8B F9 0F B6 EA", DetourName = nameof(ShowSharedNotificationDetour))]
-    private Hook<ShowSharedNotificationDelegate>? showSharedNotificationHook;
-
-    // https://github.com/aers/FFXIVClientStructs/blob/main/FFXIVClientStructs/FFXIV/Client/UI/Misc/TofuHelper.cs#L50
-    private delegate void SaveBoardAndPlaySoundDelegate(nint thisPtr, nint packetData, nint boardInfo, uint boardIndexInSharedFolder, uint totalBoardsInSharedFolder);
-    [Signature("E8 ?? ?? ?? ?? 40 80 F5", DetourName = nameof(SaveBoardAndPlaySoundDetour))]
-    private Hook<SaveBoardAndPlaySoundDelegate>? saveBoardAndPlaySoundHook;
+    private Hook<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>? showSharedNotificationHook;
+    private Hook<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>? saveBoardAndPlaySoundHook;
 
     public override void OnEnable() {
-        Services.GameInteropProvider.InitializeFromAttributes(this);
-
+        showSharedNotificationHook = Services.Hooker.HookFromAddress<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>(
+            TofuHelper.TofuHelperData.MemberFunctionPointers.ShowSharedNotification,
+            (_, _, _) => { }
+        );
+        
+        saveBoardAndPlaySoundHook = Services.Hooker.HookFromAddress<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>(
+            TofuHelper.TofuHelperData.MemberFunctionPointers.SaveBoardAndPlaySound,
+            (_, _, _, _, _) => { }
+        );
+        
         showSharedNotificationHook?.Enable();
         saveBoardAndPlaySoundHook?.Enable();
     }
@@ -38,10 +38,4 @@ public class SuppressSharedBoards : GameModification {
         saveBoardAndPlaySoundHook?.Dispose();
         saveBoardAndPlaySoundHook = null;
     }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local", Justification = "Intended empty detour to prevent game from calling function.")]
-    private static void ShowSharedNotificationDetour(nint thisPtr, bool isNotRealTimeSharing, bool openNotif) { }
-
-    [SuppressMessage("ReSharper", "UnusedParameter.Local", Justification = "Intended empty detour to prevent game from calling function.")]
-    private static void SaveBoardAndPlaySoundDetour(nint thisPtr, nint packetData, nint boardInfo, uint boardIndexInSharedFolder, uint totalBoardsInSharedFolder) { }
 }
