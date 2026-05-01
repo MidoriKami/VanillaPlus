@@ -753,7 +753,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Hauteur</value>
   </data>
   <data name="AddonConfig_ReloadHint" xml:space="preserve">
-    <value>Les changements ne prendront effet qu'après réouverture de la fenêtre</value>
+    <value>Changements pris en compte après réouverture de la fenêtre</value>
   </data>
   <data name="KeybindConfig_InputPrompt" xml:space="preserve">
     <value>Entrez la combinaison désirée</value>
@@ -1458,7 +1458,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Ajoute une barre de recherche à la fenêtre de configuration système</value>
   </data>
   <data name="SystemConfigSearchBar_ConfigTitle" xml:space="preserve">
-    <value>Configuration de la barre de recherche pour la fenêtre configuration système</value>
+    <value>Config de la recherche pour la configuration système</value>
   </data>
   <data name="SystemConfigSearchBar_CategoryGeneral" xml:space="preserve">
     <value>Général</value>
