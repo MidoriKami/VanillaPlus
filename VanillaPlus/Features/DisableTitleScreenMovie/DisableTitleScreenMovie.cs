@@ -7,7 +7,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.DisableTitleScreenMovie;
 
-public unsafe class SampleGameModification : GameModification {
+public unsafe class DisableTitleScreenMovie : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_DisableTitleScreenMovie,
         Description = Strings.ModificationDescription_DisableTitleScreenMovie,
@@ -31,7 +31,7 @@ public unsafe class SampleGameModification : GameModification {
     private void OnTitleScreenUpdate(AgentLobby* thisPtr) {
         try {
             if (thisPtr->LobbyUIStage is 9) {
-                var flagValue = Marshal.ReadInt64((nint)thisPtr, 0x1318) & 0xFF;
+                var flagValue = Marshal.ReadInt64((nint)thisPtr, 0x1378) & 0xFF;
                 if (flagValue is 0) {
                     return;
                 }
