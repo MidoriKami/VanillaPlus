@@ -77,11 +77,10 @@ public unsafe class HideMpBars : GameModification {
     private void UpdateParamWidget(AddonParameterWidget* addon) {
         if (manaUsingClassJobs is null) return;
         if (Services.ObjectTable.LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob } }) return;
-        if (classJob.IsCrafter || classJob.IsGatherer) return;
-        
+
         var paramElement = addon->GetNodeById(4);
         if (paramElement is null) return;
         
-        paramElement->ToggleVisibility(manaUsingClassJobs.Contains(classJob.RowId));
+        paramElement->ToggleVisibility(manaUsingClassJobs.Contains(classJob.RowId) || classJob.IsCrafter || classJob.IsGatherer);
     }
 }
