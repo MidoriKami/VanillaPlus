@@ -19,6 +19,8 @@ public class DutyLootItem : IComparable {
     public required byte OrderMinor { get; init; }
     public required bool IsUnlockable { get; init; }
     public required bool IsUnlocked { get; init; }
+    public required bool IsStorableInCabinet { get; init; }
+    public required bool IsStoredInCabinet { get; init; }
     public required bool CanTryOn { get; init; }
     public required List<ReadOnlySeString> Sources { get; init; }
 
@@ -31,6 +33,9 @@ public class DutyLootItem : IComparable {
         var item = Services.DataManager.GetItem(itemId);
         if (item.Icon is 0 || item.Name.IsEmpty) return null;
 
+        var isUnlockable = Services.UnlockState.IsItemUnlockable(item);
+        var isStorableInCabinet = CabinetLookup.Value.ContainsKey(item.RowId);
+
         return new DutyLootItem {
             ItemId = item.RowId,
             IconId = item.Icon,
@@ -38,8 +43,10 @@ public class DutyLootItem : IComparable {
             FilterGroup = item.FilterGroup,
             OrderMajor = item.ItemUICategory.ValueNullable?.OrderMajor ?? 0,
             OrderMinor = item.ItemUICategory.ValueNullable?.OrderMinor ?? 0,
-            IsUnlockable = IsItemUnlockable(item),
-            IsUnlocked = IsItemUnlocked(item),
+            IsUnlockable = isUnlockable,
+            IsUnlocked = isUnlockable && Services.UnlockState.IsItemUnlocked(item),
+            IsStorableInCabinet = isStorableInCabinet,
+            IsStoredInCabinet = isStorableInCabinet && IsInCabinet(item),
             CanTryOn = CheckCanTryOn(item),
             Sources = [],
         };
@@ -48,29 +55,19 @@ public class DutyLootItem : IComparable {
     public bool IsEquipment 
         => FilterGroup is 1 or 2 or 3 or 4 or 45;
 
-    private static bool IsItemUnlockable(Item item) {
-        if (Services.UnlockState.IsItemUnlockable(item))
-            return true;
+    private static unsafe bool IsInCabinet(Item item) {
+        if (!CabinetLookup.Value.TryGetValue(item.RowId, out var cabinetRowId))
+            return false;
 
-        return CabinetLookup.Value.ContainsKey(item.RowId);
-    }
+        // use live data if available
+        if (UIState.Instance()->Cabinet.IsCabinetLoaded())
+            return UIState.Instance()->Cabinet.IsItemInCabinet(cabinetRowId);
 
-    private static unsafe bool IsItemUnlocked(Item item) {
-        if (Services.UnlockState.IsItemUnlockable(item))
-            return Services.UnlockState.IsItemUnlocked(item);
-
-        // Cabinet items
-        if (CabinetLookup.Value.TryGetValue(item.RowId, out var cabinetRowId)) {
-            // use live data if available
-            if (UIState.Instance()->Cabinet.IsCabinetLoaded())
-                return UIState.Instance()->Cabinet.IsItemInCabinet(cabinetRowId);
-
-            // use cached data
-            var itemFinderModule = ItemFinderModule.Instance();
-            (var byteIndex, var bitOffset) = Math.DivRem(cabinetRowId - 1048, 32);
-            if (itemFinderModule->CabinetItemUnlockBits.Length >= byteIndex)
-                return (itemFinderModule->CabinetItemUnlockBits[(int)byteIndex] & (1 << (int)bitOffset)) != 0;
-        }
+        // use cached data
+        var itemFinderModule = ItemFinderModule.Instance();
+        (var byteIndex, var bitOffset) = Math.DivRem(cabinetRowId - 1048, 32);
+        if (itemFinderModule->CabinetItemUnlockBits.Length >= byteIndex)
+            return (itemFinderModule->CabinetItemUnlockBits[(int)byteIndex] & (1 << (int)bitOffset)) != 0;
 
         return false;
     }

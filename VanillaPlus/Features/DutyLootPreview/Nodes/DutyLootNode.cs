@@ -22,6 +22,7 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
     private readonly SimpleImageNode infoIconNode;
     private readonly SimpleImageNode checkmarkIconNode;
     private readonly ContextMenu contextMenu;
+    private readonly SimpleImageNode armoireIconNode;
 
     public DutyLootNode() {
         contextMenu = new ContextMenu();
@@ -64,6 +65,14 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
             IsVisible = false,
         };
         checkmarkIconNode.AttachNode(this);
+
+        armoireIconNode = new SimpleImageNode {
+            TextureCoordinates = new Vector2(36, 18),
+            TextureSize = new Vector2(18, 18),
+            TexturePath = "ui/uld/ItemDetailPutIn.tex",
+            IsVisible = false,
+        };
+        armoireIconNode.AttachNode(this);
 
         AtkEventListener.Delegates.ReceiveEvent mouseClickCallback = (_, _, _, _, atkEventData) => {
             if (ItemData is null) return;
@@ -151,6 +160,9 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
         checkmarkIconNode.Size = new Vector2(28, 24);
         checkmarkIconNode.Position = iconEndPos - checkmarkIconNode.Size * 0.8f;
 
+        armoireIconNode.Size = new Vector2(18, 18);
+        armoireIconNode.Position = iconEndPos - armoireIconNode.Size - Vector2.One;
+
         itemNameTextNode.Size = new Vector2(Width - iconNode.Width - infoSize - 12.0f, Height);
         itemNameTextNode.Position = new Vector2(iconEndPos.X + 2.0f, 0.0f);
     }
@@ -161,7 +173,18 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
         iconNode.IconId = item.IconId;
         itemNameTextNode.String = item.Name;
         infoIconNode.TextTooltip = string.Join("\n", item.Sources.Distinct());
-        checkmarkIconNode.IsVisible = item.IsUnlocked;
+
+        if (item.IsStorableInCabinet) {
+            checkmarkIconNode.IsVisible = false;
+            armoireIconNode.IsVisible = true;
+            armoireIconNode.TextureCoordinates = new Vector2(36, item.IsStoredInCabinet ? 18 : 0);
+            // armoireIconNode.MultiplyColor = item.IsStoredInCabinet ? Vector3.One : new Vector3(0.8f, 0, 0);
+        }
+        else {
+            checkmarkIconNode.IsVisible = item.IsUnlocked;
+            armoireIconNode.IsVisible = false;
+        }
+
         CollisionNode.ItemTooltip = item.ItemId;
         favoriteStarNode.IsVisible = view.IsFavorite;
     }
