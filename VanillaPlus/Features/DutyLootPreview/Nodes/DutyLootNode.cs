@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
@@ -158,7 +159,7 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
 
         iconNode.IconId = item.IconId;
         itemNameTextNode.String = item.Name;
-        infoIconNode.TextTooltip = string.Join("\n", item.Sources);
+        infoIconNode.TextTooltip = string.Join("\n", item.Sources.Distinct());
         checkmarkIconNode.IsVisible = item.IsUnlocked;
         CollisionNode.ItemTooltip = item.ItemId;
         favoriteStarNode.IsVisible = view.IsFavorite;
