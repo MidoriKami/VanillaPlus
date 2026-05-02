@@ -599,7 +599,7 @@ Ne peut afficher que les objets obtenus après l'activation de cette fonctionnal
 Cette fonction n'est pas recommandée si c'est votre première fois.</value>
   </data>
   <data name="ModificationDescription_HideMpBars" xml:space="preserve">
-    <value>Masque les barres de PM dans la liste d'équipe pour les jobs n'utilisant pas de PM.</value>
+    <value>Hides MP Bars for jobs that don't use MP.</value>
   </data>
   <data name="ModificationDescription_HideUnwantedBanners" xml:space="preserve">
     <value>Empêche les grandes bannières de texte d'apparaître et de jouer leur effet sonore.</value>
@@ -1512,7 +1512,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Déplacer la tenue vers le bas.</value>
   </data>
   <data name="ModificationDisplay_BetterSelectString" xml:space="preserve">
-    <value>Better Select String</value>
+    <value>Meilleure Sélection Réponse</value>
   </data>
   <data name="ModificationDescription_BetterSelectString" xml:space="preserve">
     <value>Permet de sélectionner une phrase via un numéro.</value>
