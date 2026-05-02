@@ -7,7 +7,6 @@ using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Node.Simple;
 using VanillaPlus.Features.DutyLootPreview.Data;
-using VanillaPlus.NativeElements.Nodes;
 using ContextMenu = KamiToolKit.ContextMenu.ContextMenu;
 
 namespace VanillaPlus.Features.DutyLootPreview.Nodes;
@@ -15,7 +14,7 @@ namespace VanillaPlus.Features.DutyLootPreview.Nodes;
 public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode {
     public static float ItemHeight => 36.0f;
 
-    private readonly IconWithCountNode iconNode;
+    private readonly IconImageNode iconNode;
     private readonly TextNode itemNameTextNode;
     private readonly SimpleImageNode favoriteStarNode;
     private readonly SimpleImageNode infoIconNode;
@@ -25,9 +24,11 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
     public DutyLootNode() {
         contextMenu = new ContextMenu();
 
-        iconNode = new IconWithCountNode();
+        iconNode = new IconImageNode() {
+            TextureSize = new Vector2(32),
+            ImageNodeFlags = ImageNodeFlags.AutoFit,
+        };
         iconNode.AttachNode(this);
-        iconNode.CollisionNode.ShowClickableCursor = true;
 
         favoriteStarNode = new SimpleImageNode {
             TextureCoordinates = new Vector2(96, 0),
@@ -73,7 +74,6 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
         };
 
         CollisionNode.AddEvent(AtkEventType.MouseClick, mouseClickCallback);
-        iconNode.CollisionNode.AddEvent(AtkEventType.MouseClick, mouseClickCallback);
     }
 
     private void OnLeftClick() {
@@ -130,25 +130,27 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
 
-        iconNode.Size = new Vector2(Height, Height);
-        iconNode.Position = Vector2.Zero;
+        var iconPadding = new Vector2(4);
+        iconNode.Size = new Vector2(Height, Height) - iconPadding * 2;
+        iconNode.Position = new Vector2(iconPadding.X, iconPadding.Y / 2f);
+        var iconEndPos = iconNode.Position + iconNode.Size + iconPadding;
 
         // Scale star proportionally (original: 20x20 star on 44x44 icon)
         var starSize = iconNode.Height * (20f / 44f);
         favoriteStarNode.Size = new Vector2(starSize, starSize);
 
         // Position in top-right corner, slightly above icon edge
-        favoriteStarNode.Position = new Vector2(iconNode.Width - favoriteStarNode.Width, -2);
+        favoriteStarNode.Position = new Vector2(iconEndPos.X - favoriteStarNode.Width, -2);
 
         var infoSize = Size.Y * 0.6f;
         infoIconNode.Size = new Vector2(infoSize, infoSize);
         infoIconNode.Position = new Vector2(Width - infoSize, Height / 2 - infoSize / 2);
 
         checkmarkIconNode.Size = new Vector2(28, 24);
-        checkmarkIconNode.Position = iconNode.Size - checkmarkIconNode.Size * 0.8f;
+        checkmarkIconNode.Position = iconEndPos - checkmarkIconNode.Size * 0.8f;
 
         itemNameTextNode.Size = new Vector2(Width - iconNode.Width - infoSize - 12.0f, Height);
-        itemNameTextNode.Position = new Vector2(iconNode.Width + 4.0f, 0.0f);
+        itemNameTextNode.Position = new Vector2(iconEndPos.X + 4.0f, 0.0f);
     }
 
     protected override void SetNodeData(DutyLootItemView view) {
@@ -156,10 +158,9 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
 
         iconNode.IconId = item.IconId;
         itemNameTextNode.String = item.Name;
-        iconNode.Count = 1;
         infoIconNode.TextTooltip = string.Join("\n", item.Sources);
         checkmarkIconNode.IsVisible = item.IsUnlocked;
-        iconNode.CollisionNode.ItemTooltip = item.ItemId;
+        CollisionNode.ItemTooltip = item.ItemId;
         favoriteStarNode.IsVisible = view.IsFavorite;
     }
 }
