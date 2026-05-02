@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Dalamud.Game.Addon.Lifecycle;
-using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.Game.Group;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using KamiToolKit.Controllers;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -23,25 +22,39 @@ public unsafe class HideMpBars : GameModification {
 
     public override string ImageName => "HideMpBars.png";
 
+    private AddonController<AddonPartyList>? partyListController;
+    private AddonController<AddonParameterWidget>? paramController;
+
     public override void OnEnable() {
         manaUsingClassJobs = Services.DataManager.GetManaUsingClassJobs().ToList();
-        
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_PartyList", OnPartyListDraw);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
+
+        partyListController = new AddonController<AddonPartyList> {
+            AddonName = "_PartyList",
+            OnPreUpdate = UpdatePartyList,
+        };
+        partyListController?.Enable();
+
+        paramController = new AddonController<AddonParameterWidget> {
+            AddonName = "_ParameterWidget",
+            OnPreUpdate = UpdateParamWidget,
+        };
+        paramController?.Enable();
     }
 
     public override void OnDisable() {
-        Services.AddonLifecycle.UnregisterListener(OnPartyListDraw);
+        partyListController?.Dispose();
+        partyListController = null;
+        
+        paramController?.Dispose();
+        paramController = null;
         
         manaUsingClassJobs = null;
     }
-    
-    private void OnPartyListDraw(AddonEvent type, AddonArgs args) {
+
+    private void UpdatePartyList(AddonPartyList* addon) {
         if (Services.ClientState.IsPvP) return;
         if (manaUsingClassJobs is null) return;
         if (Services.ObjectTable.LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob }, EntityId: var playerId } localPlayer) return;
-
-        var addon = args.GetAddon<AddonPartyList>();
 
         if (GroupManager.Instance()->MainGroup.MemberCount is 0) {
             if (classJob.IsCrafter || classJob.IsGatherer) return;
@@ -59,5 +72,16 @@ public unsafe class HideMpBars : GameModification {
                 mpGaugeNode->ToggleVisibility(manaUsingClassJobs.Contains(hudMember.Value->Object->ClassJob));
             }
         }
+    }
+
+    private void UpdateParamWidget(AddonParameterWidget* addon) {
+        if (manaUsingClassJobs is null) return;
+        if (Services.ObjectTable.LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob } }) return;
+        if (classJob.IsCrafter || classJob.IsGatherer) return;
+        
+        var paramElement = addon->GetNodeById(4);
+        if (paramElement is null) return;
+        
+        paramElement->ToggleVisibility(manaUsingClassJobs.Contains(classJob.RowId));
     }
 }
