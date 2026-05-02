@@ -13,7 +13,8 @@ using ContextMenu = KamiToolKit.ContextMenu.ContextMenu;
 namespace VanillaPlus.Features.DutyLootPreview.Nodes;
 
 public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode {
-    public static float ItemHeight => 36.0f;
+    public static float ItemHeight => 32.0f;
+    public static float IconPadding => 2.0f;
 
     private readonly IconImageNode iconNode;
     private readonly TextNode itemNameTextNode;
@@ -26,7 +27,8 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
         contextMenu = new ContextMenu();
 
         iconNode = new IconImageNode() {
-            TextureSize = new Vector2(32),
+            TextureSize = new Vector2(ItemHeight),
+            WrapMode = WrapMode.Stretch,
             ImageNodeFlags = ImageNodeFlags.AutoFit,
         };
         iconNode.AttachNode(this);
@@ -131,10 +133,9 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
 
-        var iconPadding = new Vector2(4);
-        iconNode.Size = new Vector2(Height, Height) - iconPadding * 2;
-        iconNode.Position = new Vector2(iconPadding.X, iconPadding.Y / 2f);
-        var iconEndPos = iconNode.Position + iconNode.Size + iconPadding;
+        iconNode.Size = new Vector2(ItemHeight) - new Vector2(IconPadding * 2);
+        iconNode.Position = new Vector2(IconPadding);
+        var iconEndPos = iconNode.Position + iconNode.Size + new Vector2(IconPadding);
 
         // Scale star proportionally (original: 20x20 star on 44x44 icon)
         var starSize = iconNode.Height * (20f / 44f);
@@ -151,7 +152,7 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
         checkmarkIconNode.Position = iconEndPos - checkmarkIconNode.Size * 0.8f;
 
         itemNameTextNode.Size = new Vector2(Width - iconNode.Width - infoSize - 12.0f, Height);
-        itemNameTextNode.Position = new Vector2(iconEndPos.X + 4.0f, 0.0f);
+        itemNameTextNode.Position = new Vector2(iconEndPos.X + 2.0f, 0.0f);
     }
 
     protected override void SetNodeData(DutyLootItemView view) {
