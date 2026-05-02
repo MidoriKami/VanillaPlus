@@ -6,6 +6,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using KamiToolKit.Controllers;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
+using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.HideMpBars;
 
@@ -25,7 +26,24 @@ public unsafe class HideMpBars : GameModification {
     private AddonController<AddonPartyList>? partyListController;
     private AddonController<AddonParameterWidget>? paramController;
 
+    private HideMpBarsConfig? config;
+    private ConfigAddon? configAddon;
+
     public override void OnEnable() {
+        config = HideMpBarsConfig.Load();
+
+        configAddon = new ConfigAddon {
+            Config = config,
+            InternalName = "HideMpBarsConfig",
+            Title = "Hide MP Bars Config",
+        };
+
+        configAddon.AddCategory("General")
+            .AddCheckbox("Hide in Party List", nameof(config.HidePartyList))
+            .AddCheckbox("Hide in Parameter Widget", nameof(config.HideParamWidget));
+
+        OpenConfigAction = configAddon.Toggle;
+
         manaUsingClassJobs = Services.DataManager.GetManaUsingClassJobs().ToList();
 
         partyListController = new AddonController<AddonPartyList> {
@@ -49,9 +67,15 @@ public unsafe class HideMpBars : GameModification {
         paramController = null;
         
         manaUsingClassJobs = null;
+
+        configAddon?.Dispose();
+        configAddon = null;
+        
+        config = null;
     }
 
     private void UpdatePartyList(AddonPartyList* addon) {
+        if (config is not { HidePartyList: true }) return;
         if (Services.ClientState.IsPvP) return;
         if (manaUsingClassJobs is null) return;
         if (Services.ObjectTable.LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob }, EntityId: var playerId } localPlayer) return;
@@ -75,6 +99,8 @@ public unsafe class HideMpBars : GameModification {
     }
 
     private void UpdateParamWidget(AddonParameterWidget* addon) {
+        if (config is not { HideParamWidget: true }) return;
+        if (Services.ClientState.IsPvP) return;
         if (manaUsingClassJobs is null) return;
         if (Services.ObjectTable.LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob } }) return;
 

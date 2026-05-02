@@ -599,7 +599,7 @@ Can only show items looted after this feature is enabled.</value>
 This feature is not recommended if this is your first time doing Guildhests.</value>
   </data>
   <data name="ModificationDescription_HideMpBars" xml:space="preserve">
-    <value>Hides MP Bars in party list for jobs that don't use MP.</value>
+    <value>Hides MP Bars for jobs that don't use MP.</value>
   </data>
   <data name="ModificationDescription_HideUnwantedBanners" xml:space="preserve">
     <value>Prevents large text banners from appearing and playing their sound effect.</value>
