@@ -2,7 +2,7 @@ using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
+using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.Sheets;
 using Lumina.Text.ReadOnly;
@@ -59,11 +59,14 @@ public class DutyLootItem : IComparable {
         if (Services.UnlockState.IsItemUnlockable(item))
             return Services.UnlockState.IsItemUnlocked(item);
 
-        var itemFinderModule = ItemFinderModule.Instance();
+        // Cabinet items
+        if (CabinetLookup.Value.TryGetValue(item.RowId, out var cabinetRowId)) {
+            // use live data if available
+            if (UIState.Instance()->Cabinet.IsCabinetLoaded())
+                return UIState.Instance()->Cabinet.IsItemInCabinet(cabinetRowId);
 
-        // check against Cabinet cache
-        var cabinetCacheState = Marshal.ReadByte((nint)itemFinderModule + 0xA9);
-        if (cabinetCacheState == 2  && CabinetLookup.Value.TryGetValue(item.RowId, out var cabinetRowId)) {
+            // use cached data
+            var itemFinderModule = ItemFinderModule.Instance();
             (var byteIndex, var bitOffset) = Math.DivRem(cabinetRowId - 1048, 32);
             if (itemFinderModule->CabinetItemUnlockBits.Length >= byteIndex)
                 return (itemFinderModule->CabinetItemUnlockBits[(int)byteIndex] & (1 << (int)bitOffset)) != 0;
