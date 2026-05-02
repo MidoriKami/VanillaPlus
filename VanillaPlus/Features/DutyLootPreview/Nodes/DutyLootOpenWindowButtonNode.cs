@@ -81,8 +81,8 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
             return;
         }
 
-        var unlockableItems = lootData.Items.Where(item => item.IsUnlockable);
-        var allUnlockableItemsUnlocked = unlockableItems.All(item => item.IsUnlocked);
+        var unlockableItems = lootData.Items.Where(item => item.IsUnlockable || item.IsStorableInCabinet);
+        var allUnlockableItemsUnlocked = unlockableItems.All(item => item.IsUnlocked || item.IsStoredInCabinet);
         CheckmarkVisible = allUnlockableItemsUnlocked;
     }
 }
