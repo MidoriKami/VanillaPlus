@@ -49,12 +49,23 @@ public unsafe class HideMpBars : GameModification {
         partyListController = new AddonController<AddonPartyList> {
             AddonName = "_PartyList",
             OnPreUpdate = UpdatePartyList,
+            OnFinalize = addon => {
+                foreach (var member in addon->PartyMembers) {
+                    member.MPGaugeBar->OwnerNode->ToggleVisibility(true);
+                }
+            },
         };
         partyListController?.Enable();
 
         paramController = new AddonController<AddonParameterWidget> {
             AddonName = "_ParameterWidget",
             OnPreUpdate = UpdateParamWidget,
+            OnFinalize = addon => {
+                var paramElement = addon->GetNodeById(4);
+                if (paramElement is null) return;
+
+                paramElement->ToggleVisibility(true);
+            },
         };
         paramController?.Enable();
     }
