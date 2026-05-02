@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
@@ -7,27 +8,31 @@ using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Node.Simple;
 using VanillaPlus.Features.DutyLootPreview.Data;
-using VanillaPlus.NativeElements.Nodes;
 using ContextMenu = KamiToolKit.ContextMenu.ContextMenu;
 
 namespace VanillaPlus.Features.DutyLootPreview.Nodes;
 
 public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode {
-    public static float ItemHeight => 36.0f;
+    public static float ItemHeight => DutyLootPreviewAddon.ItemHeight;
+    public static float IconPadding => 2.0f;
 
-    private readonly IconWithCountNode iconNode;
+    private readonly IconImageNode iconNode;
     private readonly TextNode itemNameTextNode;
     private readonly SimpleImageNode favoriteStarNode;
     private readonly SimpleImageNode infoIconNode;
     private readonly SimpleImageNode checkmarkIconNode;
     private readonly ContextMenu contextMenu;
+    private readonly SimpleImageNode armoireIconNode;
 
     public DutyLootNode() {
         contextMenu = new ContextMenu();
 
-        iconNode = new IconWithCountNode();
+        iconNode = new IconImageNode() {
+            TextureSize = new Vector2(ItemHeight),
+            WrapMode = WrapMode.Stretch,
+            ImageNodeFlags = ImageNodeFlags.AutoFit,
+        };
         iconNode.AttachNode(this);
-        iconNode.CollisionNode.ShowClickableCursor = true;
 
         favoriteStarNode = new SimpleImageNode {
             TextureCoordinates = new Vector2(96, 0),
@@ -61,6 +66,14 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
         };
         checkmarkIconNode.AttachNode(this);
 
+        armoireIconNode = new SimpleImageNode {
+            TextureCoordinates = new Vector2(36, 18),
+            TextureSize = new Vector2(18, 18),
+            TexturePath = "ui/uld/ItemDetailPutIn.tex",
+            IsVisible = false,
+        };
+        armoireIconNode.AttachNode(this);
+
         AtkEventListener.Delegates.ReceiveEvent mouseClickCallback = (_, _, _, _, atkEventData) => {
             if (ItemData is null) return;
 
@@ -73,7 +86,6 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
         };
 
         CollisionNode.AddEvent(AtkEventType.MouseClick, mouseClickCallback);
-        iconNode.CollisionNode.AddEvent(AtkEventType.MouseClick, mouseClickCallback);
     }
 
     private void OnLeftClick() {
@@ -130,25 +142,29 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
 
-        iconNode.Size = new Vector2(Height, Height);
-        iconNode.Position = Vector2.Zero;
+        iconNode.Size = new Vector2(ItemHeight) - new Vector2(IconPadding * 2);
+        iconNode.Position = new Vector2(IconPadding);
+        var iconEndPos = iconNode.Position + iconNode.Size + new Vector2(IconPadding);
 
         // Scale star proportionally (original: 20x20 star on 44x44 icon)
         var starSize = iconNode.Height * (20f / 44f);
         favoriteStarNode.Size = new Vector2(starSize, starSize);
 
         // Position in top-right corner, slightly above icon edge
-        favoriteStarNode.Position = new Vector2(iconNode.Width - favoriteStarNode.Width, -2);
+        favoriteStarNode.Position = new Vector2(iconEndPos.X - favoriteStarNode.Width, -2);
 
         var infoSize = Size.Y * 0.6f;
         infoIconNode.Size = new Vector2(infoSize, infoSize);
         infoIconNode.Position = new Vector2(Width - infoSize, Height / 2 - infoSize / 2);
 
         checkmarkIconNode.Size = new Vector2(28, 24);
-        checkmarkIconNode.Position = iconNode.Size - checkmarkIconNode.Size * 0.8f;
+        checkmarkIconNode.Position = iconEndPos - checkmarkIconNode.Size * 0.8f;
+
+        armoireIconNode.Size = new Vector2(18, 18);
+        armoireIconNode.Position = iconEndPos - armoireIconNode.Size - Vector2.One;
 
         itemNameTextNode.Size = new Vector2(Width - iconNode.Width - infoSize - 12.0f, Height);
-        itemNameTextNode.Position = new Vector2(iconNode.Width + 4.0f, 0.0f);
+        itemNameTextNode.Position = new Vector2(iconEndPos.X + 2.0f, 0.0f);
     }
 
     protected override void SetNodeData(DutyLootItemView view) {
@@ -156,10 +172,20 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
 
         iconNode.IconId = item.IconId;
         itemNameTextNode.String = item.Name;
-        iconNode.Count = 1;
-        infoIconNode.TextTooltip = string.Join("\n", item.Sources);
-        checkmarkIconNode.IsVisible = item.IsUnlocked;
-        iconNode.CollisionNode.ItemTooltip = item.ItemId;
+        infoIconNode.TextTooltip = string.Join("\n", item.Sources.Distinct());
+
+        if (item.IsStorableInCabinet) {
+            checkmarkIconNode.IsVisible = false;
+            armoireIconNode.IsVisible = true;
+            armoireIconNode.TextureCoordinates = new Vector2(36, item.IsStoredInCabinet ? 18 : 0);
+            // armoireIconNode.MultiplyColor = item.IsStoredInCabinet ? Vector3.One : new Vector3(0.8f, 0, 0);
+        }
+        else {
+            checkmarkIconNode.IsVisible = item.IsUnlocked;
+            armoireIconNode.IsVisible = false;
+        }
+
+        CollisionNode.ItemTooltip = item.ItemId;
         favoriteStarNode.IsVisible = view.IsFavorite;
     }
 }
