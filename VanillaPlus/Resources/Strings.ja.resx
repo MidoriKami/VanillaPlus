@@ -597,7 +597,7 @@ ID: {0}</value>
 初めてのギルドオーダーの場合は無効化を推奨します。</value>
   </data>
   <data name="ModificationDescription_HideMpBars" xml:space="preserve">
-    <value>MPを使用しないジョブのパーティリストからMPバーを隠します。</value>
+    <value>Hides MP Bars for jobs that don't use MP.</value>
   </data>
   <data name="ModificationDescription_HideUnwantedBanners" xml:space="preserve">
     <value>大型テキストバナーとそのSEを非表示にします。</value>
