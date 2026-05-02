@@ -1,7 +1,12 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.Sheets;
 using Lumina.Text.ReadOnly;
+using CabinetSheet = Lumina.Excel.Sheets.Cabinet;
 
 namespace VanillaPlus.Features.DutyLootPreview.Data;
 
@@ -17,6 +22,11 @@ public class DutyLootItem : IComparable {
     public required bool CanTryOn { get; init; }
     public required List<ReadOnlySeString> Sources { get; init; }
 
+    private static readonly Lazy<FrozenDictionary<uint, uint>> CabinetLookup = new(()
+        => Services.DataManager.Excel.GetSheet<CabinetSheet>()
+            .Where(row => row.RowId >= 1048 && row.Item.RowId != 0)
+            .ToFrozenDictionary(row => row.Item.RowId, row => row.RowId));
+
     public static DutyLootItem? FromItemId(uint itemId) {
         var item = Services.DataManager.GetItem(itemId);
         if (item.Icon is 0 || item.Name.IsEmpty) return null;
@@ -28,8 +38,8 @@ public class DutyLootItem : IComparable {
             FilterGroup = item.FilterGroup,
             OrderMajor = item.ItemUICategory.ValueNullable?.OrderMajor ?? 0,
             OrderMinor = item.ItemUICategory.ValueNullable?.OrderMinor ?? 0,
-            IsUnlockable = Services.UnlockState.IsItemUnlockable(item),
-            IsUnlocked = Services.UnlockState.IsItemUnlockable(item) && Services.UnlockState.IsItemUnlocked(item),
+            IsUnlockable = IsItemUnlockable(item),
+            IsUnlocked = IsItemUnlocked(item),
             CanTryOn = CheckCanTryOn(item),
             Sources = [],
         };
@@ -37,6 +47,30 @@ public class DutyLootItem : IComparable {
 
     public bool IsEquipment 
         => FilterGroup is 1 or 2 or 3 or 4 or 45;
+
+    private static bool IsItemUnlockable(Item item) {
+        if (Services.UnlockState.IsItemUnlockable(item))
+            return true;
+
+        return CabinetLookup.Value.ContainsKey(item.RowId);
+    }
+
+    private static unsafe bool IsItemUnlocked(Item item) {
+        if (Services.UnlockState.IsItemUnlockable(item))
+            return Services.UnlockState.IsItemUnlocked(item);
+
+        var itemFinderModule = ItemFinderModule.Instance();
+
+        // check against Cabinet cache
+        var cabinetCacheState = Marshal.ReadByte((nint)itemFinderModule + 0xA9);
+        if (cabinetCacheState == 2  && CabinetLookup.Value.TryGetValue(item.RowId, out var cabinetRowId)) {
+            (var byteIndex, var bitOffset) = Math.DivRem(cabinetRowId - 1048, 32);
+            if (itemFinderModule->CabinetItemUnlockBits.Length >= byteIndex)
+                return (itemFinderModule->CabinetItemUnlockBits[(int)byteIndex] & (1 << (int)bitOffset)) != 0;
+        }
+
+        return false;
+    }
 
     // See: https://github.com/Haselnussbomber/HaselCommon/blob/30c023516c0f9771183bbb5c01eb8122765e8bd0/HaselCommon/Services/ItemService.cs#L298-L327
     private static bool CheckCanTryOn(Item item) {
