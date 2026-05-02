@@ -13,7 +13,7 @@ using ContextMenu = KamiToolKit.ContextMenu.ContextMenu;
 namespace VanillaPlus.Features.DutyLootPreview.Nodes;
 
 public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode {
-    public static float ItemHeight => 32.0f;
+    public static float ItemHeight => DutyLootPreviewAddon.ItemHeight;
     public static float IconPadding => 2.0f;
 
     private readonly IconImageNode iconNode;

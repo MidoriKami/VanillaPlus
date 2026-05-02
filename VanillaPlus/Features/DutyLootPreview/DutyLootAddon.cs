@@ -15,8 +15,8 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// The window that shows loot for a duty.
 /// </summary>
 public unsafe class DutyLootPreviewAddon : NativeAddon {
-    private const int VisibleItemCount = 10;
-    private const float ItemHeight = 36.0f;
+    private const int VisibleItemCount = 12;
+    internal const float ItemHeight = 32.0f;
     private const float ItemSpacing = 2.25f;
     private const float FilterBarHeight = 36.0f;
     private const float SeparatorHeight = 4.0f;
