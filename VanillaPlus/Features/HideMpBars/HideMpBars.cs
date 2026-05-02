@@ -39,8 +39,8 @@ public unsafe class HideMpBars : GameModification {
         };
 
         configAddon.AddCategory("General")
-            .AddCheckbox("Hide in Party List", nameof(config.HidePartyList))
-            .AddCheckbox("Hide in Parameter Widget", nameof(config.HideParamWidget));
+            .AddCheckbox("Hide in Party List", nameof(config.HidePartyList), _ => ResetPartyList())
+            .AddCheckbox("Hide in Parameter Widget", nameof(config.HideParamWidget), _ => ResetParamWidget());
 
         OpenConfigAction = configAddon.Toggle;
 
@@ -49,23 +49,14 @@ public unsafe class HideMpBars : GameModification {
         partyListController = new AddonController<AddonPartyList> {
             AddonName = "_PartyList",
             OnPreUpdate = UpdatePartyList,
-            OnFinalize = addon => {
-                foreach (var member in addon->PartyMembers) {
-                    member.MPGaugeBar->OwnerNode->ToggleVisibility(true);
-                }
-            },
+            OnFinalize = ResetPartyList,
         };
         partyListController?.Enable();
 
         paramController = new AddonController<AddonParameterWidget> {
             AddonName = "_ParameterWidget",
             OnPreUpdate = UpdateParamWidget,
-            OnFinalize = addon => {
-                var paramElement = addon->GetNodeById(4);
-                if (paramElement is null) return;
-
-                paramElement->ToggleVisibility(true);
-            },
+            OnFinalize = ResetParamWidget,
         };
         paramController?.Enable();
     }
@@ -73,29 +64,28 @@ public unsafe class HideMpBars : GameModification {
     public override void OnDisable() {
         partyListController?.Dispose();
         partyListController = null;
-        
+
         paramController?.Dispose();
         paramController = null;
-        
+
         manaUsingClassJobs = null;
 
         configAddon?.Dispose();
         configAddon = null;
-        
+
         config = null;
     }
 
     private void UpdatePartyList(AddonPartyList* addon) {
-        if (config is not { HidePartyList: true }) return;
         if (Services.ClientState.IsPvP) return;
         if (manaUsingClassJobs is null) return;
         if (Services.ObjectTable.LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob }, EntityId: var playerId } localPlayer) return;
 
+        var isEnabled = config is { HidePartyList: true };
+        
         if (GroupManager.Instance()->MainGroup.MemberCount is 0) {
-            if (classJob.IsCrafter || classJob.IsGatherer) return;
-
             var mpGaugeNode = addon->PartyMembers[0].MPGaugeBar->OwnerNode;
-            mpGaugeNode->ToggleVisibility(manaUsingClassJobs.Contains(localPlayer.ClassJob.RowId));
+            mpGaugeNode->ToggleVisibility(!isEnabled || manaUsingClassJobs.Contains(localPlayer.ClassJob.RowId) || classJob.IsNonCombatant);
         }
         else {
             foreach (var hudMember in AgentHUD.Instance()->PartyMemberSpan) {
@@ -104,20 +94,44 @@ public unsafe class HideMpBars : GameModification {
                 if (hudMember.Value->Object is null) continue;
 
                 var mpGaugeNode = addon->PartyMembers[hudMember.Value->Index].MPGaugeBar->OwnerNode;
-                mpGaugeNode->ToggleVisibility(manaUsingClassJobs.Contains(hudMember.Value->Object->ClassJob));
+                mpGaugeNode->ToggleVisibility(!isEnabled || manaUsingClassJobs.Contains(hudMember.Value->Object->ClassJob));
             }
         }
     }
 
     private void UpdateParamWidget(AddonParameterWidget* addon) {
-        if (config is not { HideParamWidget: true }) return;
         if (Services.ClientState.IsPvP) return;
         if (manaUsingClassJobs is null) return;
         if (Services.ObjectTable.LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob } }) return;
 
+        var isEnabled = config is { HideParamWidget: true };
+        
         var paramElement = addon->GetNodeById(4);
         if (paramElement is null) return;
+
+        paramElement->ToggleVisibility(!isEnabled || manaUsingClassJobs.Contains(classJob.RowId) || classJob.IsNonCombatant);
+    }
+
+    private static void ResetPartyList(AddonPartyList* addon = null) {
+        if (addon is null) {
+            addon = Services.GameGui.GetAddonByName<AddonPartyList>("_PartyList");
+        }
+        if (addon is null) return;
         
-        paramElement->ToggleVisibility(manaUsingClassJobs.Contains(classJob.RowId) || classJob.IsCrafter || classJob.IsGatherer);
+        foreach (var member in addon->PartyMembers) {
+            member.MPGaugeBar->OwnerNode->ToggleVisibility(true);
+        }
+    }
+
+    private static void ResetParamWidget(AddonParameterWidget* addon = null) {
+        if (addon is null) {
+            addon = Services.GameGui.GetAddonByName<AddonParameterWidget>("_ParameterWidget");
+        }
+        if (addon is null) return;
+        
+        var paramElement = addon->GetNodeById(4);
+        if (paramElement is null) return;
+
+        paramElement->ToggleVisibility(true);
     }
 }
