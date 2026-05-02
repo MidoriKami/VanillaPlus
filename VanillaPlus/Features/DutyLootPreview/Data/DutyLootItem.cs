@@ -106,7 +106,7 @@ public class DutyLootItem : IComparable {
 
     private int GetCategoryPriority() {
         if (!IsEquipment && IsUnlockable) return 0; // Misc + Unlockable (highest)
-        if (!IsEquipment) return 1;                  // Misc
-        return 2;                                     // Equipment (lowest)
+        if (!IsEquipment) return 1;                 // Misc
+        return 2;                                   // Equipment (lowest)
     }
 }

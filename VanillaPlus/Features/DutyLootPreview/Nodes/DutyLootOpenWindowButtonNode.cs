@@ -76,7 +76,7 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
 
     private void OnDataLoaderStateChanged() {
         var lootData = dataLoader.ActiveDutyLootData;
-        if (dataLoader.IsLoading || lootData == null) {
+        if (dataLoader.IsLoading || lootData == null || lootData.Items.Count == 0) {
             CheckmarkVisible = false;
             return;
         }
