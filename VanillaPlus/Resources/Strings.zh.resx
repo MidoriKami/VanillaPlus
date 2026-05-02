@@ -597,7 +597,7 @@ ID：{0}</value>
 若是第一次进行行会令，建议关闭此功能。</value>
   </data>
   <data name="ModificationDescription_HideMpBars" xml:space="preserve">
-    <value>为不使用 MP 的职业隐藏队伍列表中的 MP 条。</value>
+    <value>Hides MP Bars for jobs that don't use MP.</value>
   </data>
   <data name="ModificationDescription_HideUnwantedBanners" xml:space="preserve">
     <value>阻止大型文字横幅及其音效。</value>
