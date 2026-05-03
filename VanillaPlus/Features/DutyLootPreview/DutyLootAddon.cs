@@ -27,7 +27,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
 
     private DutyLootFilterBarNode? filterBarNode;
     private HorizontalLineNode? separatorNode;
-    private ListNode<DutyLootItemView, DutyLootNode>? scrollingAreaNode;
+    private ListNode<DutyLootItemView, DutyLootNode>? listNode;
     private TextNode? hintTextNode;
 
     public required DutyLootPreviewConfig Config { get; init; }
@@ -52,13 +52,13 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         var listAreaPosition = ContentStartPosition + new Vector2(0, FilterBarHeight + SeparatorHeight + ItemSpacing);
         var listAreaSize = ContentSize - new Vector2(0, FilterBarHeight + SeparatorHeight + ItemSpacing);
 
-        scrollingAreaNode = new ListNode<DutyLootItemView, DutyLootNode> {
+        listNode = new ListNode<DutyLootItemView, DutyLootNode> {
             Position = listAreaPosition,
             Size = listAreaSize,
             OptionsList = [],
             ItemSpacing = ItemSpacing,
         };
-        scrollingAreaNode.AttachNode(this);
+        listNode.AttachNode(this);
 
         hintTextNode = new TextNode {
             Position = ContentStartPosition,
@@ -82,7 +82,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         => DataLoader.OnChanged -= OnDataLoaderStateChanged;
 
     private void UpdateList() {
-        if (scrollingAreaNode is null || hintTextNode is null || filterBarNode is null || separatorNode is null) return;
+        if (listNode is null || hintTextNode is null || filterBarNode is null || separatorNode is null) return;
 
         var dutyLootData = DataLoader.ActiveDutyLootData;
         if (dutyLootData is null && !DataLoader.IsLoading) {
@@ -108,14 +108,15 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
             ))
             .ToList();
 
-        scrollingAreaNode.OptionsList = viewModels;
+        listNode.OptionsList = viewModels;
+        listNode.ResetScroll();
 
-        var hasData = items.Any();
+        var hasData = items.Count != 0;
         filterBarNode.IsVisible = hasData;
         separatorNode.IsVisible = hasData;
 
         var hasResults = viewModels.Count > 0;
-        scrollingAreaNode.IsVisible = hasResults;
+        listNode.IsVisible = hasResults;
         hintTextNode.IsVisible = !hasResults;
 
         if (!hasResults) {
