@@ -10,6 +10,7 @@ public class BorderlessCutscenes : GameModification {
         Description = "Removes the letterboxing in cutscenes when using ultrawide displays.",
         Type = ModificationType.GameBehavior,
         Authors = [ "goat", "Maple", "MidoriKami" ],
+        CompatibilityModule = new PluginCompatibilityModule("Dalamud.FullscreenCutscenes"),
     };
 
     [Signature("01 0F 84 83 01 00 00 48 8B 0D A7 A1 6A 02")]
