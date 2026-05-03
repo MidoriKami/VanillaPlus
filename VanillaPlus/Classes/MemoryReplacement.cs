@@ -7,20 +7,20 @@ public class MemoryReplacement(nint address, byte[] replacementBytes) : IDisposa
 
     private byte[]? originalBytes;
 
-    public void Enable() {
+    public void Enable() => Services.Framework.RunOnFrameworkThread(() => {
         if (originalBytes != null)
             return;
 
         originalBytes = ReplaceRaw(address, replacementBytes);
-    }
+    });
 
-    public void Disable() {
+    public void Disable() => Services.Framework.RunOnFrameworkThread(() => {
         if (originalBytes == null)
             return;
 
         ReplaceRaw(address, originalBytes);
         originalBytes = null;
-    }
+    });
 
     public void Dispose()
         => Disable();
