@@ -11,7 +11,7 @@ public class MultiSelectIconConfig : SelectIconConfig {
 
     public override NodeBase BuildNode() {
         var iconSelectNode = base.BuildNode();
-        
+
         var verticalLayoutNode = new VerticalListNode {
             Height = AllowManualInput ? iconSelectNode.Height + 48.0f : 48.0f,
         };
@@ -33,7 +33,7 @@ public class MultiSelectIconConfig : SelectIconConfig {
         if (AllowManualInput) {
             verticalLayoutNode.AddNode(iconSelectNode);
         }
-        
+
         return verticalLayoutNode;
     }
 }

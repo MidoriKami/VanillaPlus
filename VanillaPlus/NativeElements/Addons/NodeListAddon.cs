@@ -54,23 +54,23 @@ public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T
 
     protected override void OnFinalize(AtkUnitBase* addon) {
         base.OnFinalize(addon);
-        
+
         OnClose?.Invoke();
     }
 
     public override void Dispose() {
         config = null;
-        
+
         addonConfigWindow?.Dispose();
         addonConfigWindow = null;
-        
+
         keybindListener?.Dispose();
         keybindListener = null;
-        
+
         if (OpenCommand is not null) {
             Services.CommandManager.RemoveHandler(OpenCommand);
         }
-        
+
         base.Dispose();
     }
 
@@ -82,7 +82,7 @@ public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T
                     DisplayOrder = 3,
                     HelpMessage = Strings.NodeList_OpenCommandHelp.Format(Title.ToString()),
                 });
-                
+
                 field = value;
             }
         }
@@ -116,9 +116,9 @@ public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T
             ListNode?.ItemSpacing = value;
         }
     }
-    
-    public void RefreshList() 
+
+    public void RefreshList()
         => ListNode?.FullRebuild();
-    
+
     public Action? OnClose { get; set; }
 }

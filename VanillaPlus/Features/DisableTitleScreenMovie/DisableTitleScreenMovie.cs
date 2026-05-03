@@ -12,12 +12,12 @@ public unsafe class DisableTitleScreenMovie : GameModification {
         DisplayName = Strings.ModificationDisplay_DisableTitleScreenMovie,
         Description = Strings.ModificationDescription_DisableTitleScreenMovie,
         Type = ModificationType.GameBehavior,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("DisableTitleScreenMovie"),
     };
 
     private Hook<AgentLobby.Delegates.UpdateLobbyUIStage>? updateTitleScreenHook;
-    
+
     public override void OnEnable() {
         updateTitleScreenHook = Services.Hooker.HookFromAddress<AgentLobby.Delegates.UpdateLobbyUIStage>(AgentLobby.MemberFunctionPointers.UpdateLobbyUIStage, OnTitleScreenUpdate);
         updateTitleScreenHook?.Enable();
@@ -36,7 +36,7 @@ public unsafe class DisableTitleScreenMovie : GameModification {
                     return;
                 }
             }
-            
+
             updateTitleScreenHook!.Original(thisPtr);
         }
         catch (Exception e) {

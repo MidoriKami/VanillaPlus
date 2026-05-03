@@ -13,14 +13,14 @@ namespace VanillaPlus.NativeElements.Config.NodeEntries;
 [Flags]
 public enum TextNodeConfigOptions {
     None = 0,
-    
+
     Base = 1,
     TextColor = 1 << 1,
     OutlineColor = 1 << 2,
     TextSize = 1 << 3,
     TextFont = 1 << 4,
     TextAlignment = 1 << 5,
-    
+
     All = 0xFF,
 }
 
@@ -29,7 +29,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
     private ColorPickerAddon? colorPickerAddon;
 
     public TextNodeConfigOptions Options { get; set; } = TextNodeConfigOptions.All;
-    
+
     private void InitializeColorPicker() {
         if (colorPickerAddon is not null) return;
 
@@ -41,7 +41,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
 
     public override void Dispose() {
         base.Dispose();
-        
+
         colorPickerAddon?.Dispose();
         colorPickerAddon = null;
     }
@@ -66,7 +66,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
             Size = new Vector2(100.0f, 28.0f),
         };
         labelNode.AttachNode(container);
-        
+
         InitializeColorPicker();
         if (colorPickerAddon is null) return null;
 
@@ -93,7 +93,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
             colorPickerAddon.Toggle();
         });
         colorPreviewNode.AttachNode(container);
-        
+
         return container;
     }
 
@@ -107,10 +107,10 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
             Size = new Vector2(100.0f, 28.0f),
         };
         labelNode.AttachNode(container);
-        
+
         InitializeColorPicker();
         if (colorPickerAddon is null) return null;
-        
+
         var colorPreviewNode = new ColorPreviewWithInput {
             Size = new Vector2(150.0f, 28.0f),
             Position = new Vector2(100.0f + 2.0f, 0.0f),
@@ -134,7 +134,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
             colorPickerAddon.Toggle();
         });
         colorPreviewNode.AttachNode(container);
-        
+
         return container;
     }
 
@@ -153,14 +153,14 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
         var fontSlider = new SliderNode {
             Height = 28.0f,
             Range = 8..32,
-            Value = (int) StyleObject.FontSize,
+            Value = (int)StyleObject.FontSize,
             OnValueChanged = newValue => {
-                StyleObject.FontSize = (uint) newValue;
+                StyleObject.FontSize = (uint)newValue;
                 SaveStyleObject();
             },
         };
         container.AddNode(fontSlider);
-        
+
         return container;
     }
 
@@ -169,7 +169,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
             Height = 28.0f,
             FillWidth = true,
         };
-        
+
         var labelNode = new LabelTextNode {
             String = Strings.TextNodeConfig_Font,
             Size = new Vector2(100.0f, 28.0f),
@@ -197,7 +197,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
             Height = 28.0f,
             FillWidth = true,
         };
-        
+
         var labelNode = new LabelTextNode {
             String = Strings.TextNodeConfig_Alignment,
             Size = new Vector2(100.0f, 28.0f),

@@ -9,10 +9,10 @@ namespace VanillaPlus.Features.AprilFools;
 /// </summary>
 public unsafe class DutyReadyFools : FoolsModule {
     private bool lastAfkState;
-    
-    public override bool IsEnabledByConfig 
+
+    public override bool IsEnabledByConfig
         => Config.DutyPop;
-    
+
     protected override void OnEnable()
         => Services.Framework.Update += OnFrameworkUpdate;
 
@@ -29,7 +29,7 @@ public unsafe class DutyReadyFools : FoolsModule {
             lastAfkState = IsPlayerAfk;
         }
     }
-    
-    private static bool IsPlayerAfk 
+
+    private static bool IsPlayerAfk
         => Services.ObjectTable.LocalPlayer?.OnlineStatus.RowId is 17;
 }

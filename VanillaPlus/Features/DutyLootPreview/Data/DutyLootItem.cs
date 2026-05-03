@@ -52,7 +52,7 @@ public class DutyLootItem : IComparable {
         };
     }
 
-    public bool IsEquipment 
+    public bool IsEquipment
         => FilterGroup is 1 or 2 or 3 or 4 or 45;
 
     private static unsafe bool IsInCabinet(Item item) {

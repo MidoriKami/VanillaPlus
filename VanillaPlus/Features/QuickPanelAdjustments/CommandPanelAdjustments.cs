@@ -82,7 +82,7 @@ public unsafe class CommandPanelAdjustments : GameModification {
             backgroundNode->AddColor = Vector3.Zero;
             backgroundNode->ColorVector = config.BackgroundColor;
         }
-        
+
         var panelBackgroundNode = addon->GetNodeById(44);
         if (panelBackgroundNode is not null) {
             panelBackgroundNode->ToggleVisibility(!config.HidePanelBackground);
@@ -97,7 +97,7 @@ public unsafe class CommandPanelAdjustments : GameModification {
 
             var slotFrameNode = componentDragDrop->GetNodeById(3);
             if (slotFrameNode is null) continue;
-        
+
             slotFrameNode->ToggleVisibility(!config.HideEmptySlots && !iconComponentNode->IsVisible());
         }
 

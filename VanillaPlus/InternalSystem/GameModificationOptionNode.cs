@@ -45,7 +45,7 @@ public class GameModificationOptionNode : SelectableNode {
             TextTooltip = Strings.Tooltip_ExperimentalFeature,
         };
         experimentalImageNode.AttachNode(this);
-        
+
         authorNamesNode = new TextNode {
             FontType = FontType.Axis,
             TextFlags = TextFlags.AutoAdjustNodeSize | TextFlags.Ellipsis,
@@ -63,7 +63,7 @@ public class GameModificationOptionNode : SelectableNode {
             },
         };
         reloadButtonNode.AttachNode(this);
-        
+
         configButtonNode = new CircleButtonNode {
             Icon = ButtonIcon.GearCog,
             TextTooltip = Strings.Tooltip_OpenConfiguration,
@@ -76,7 +76,7 @@ public class GameModificationOptionNode : SelectableNode {
     }
 
     public ModificationInfo ModificationInfo => Modification.Modification.ModificationInfo;
-    
+
     public required LoadedModification Modification {
         get;
         set {
@@ -94,7 +94,7 @@ public class GameModificationOptionNode : SelectableNode {
             UpdateDisabledState();
         }
     }
-    
+
     private void ToggleModification(bool shouldEnableModification) {
         if (shouldEnableModification && Modification.State is LoadedState.Disabled) {
             ModificationManager.TryEnableModification(Modification);
@@ -104,7 +104,7 @@ public class GameModificationOptionNode : SelectableNode {
         }
 
         UpdateDisabledState();
-        
+
         OnClick?.Invoke(this);
         RefreshConfigWindowButton();
     }
@@ -124,16 +124,16 @@ public class GameModificationOptionNode : SelectableNode {
 
         modificationNameNode.Height = Height / 2.0f;
         modificationNameNode.Position = new Vector2(Height + Height / 3.0f, 0.0f);
-        
+
         experimentalImageNode.Size = new Vector2(16.0f, 16.0f);
         experimentalImageNode.Position = new Vector2(modificationNameNode.X, modificationNameNode.Height);
-        
+
         authorNamesNode.Height = Height / 2.0f;
         authorNamesNode.Position = new Vector2(Height * 2.0f, Height / 2.0f);
 
         configButtonNode.Size = new Vector2(Height * 2.0f / 3.0f, Height * 2.0f / 3.0f);
         configButtonNode.Position = new Vector2(Width - Height, Height / 2.0f - configButtonNode.Height / 2.0f);
-        
+
         reloadButtonNode.Size = new Vector2(Height * 2.0f / 3.0f, Height * 2.0f / 3.0f);
         reloadButtonNode.Position = new Vector2(Width - Height * 1.75f - 2.0f, Height / 2.0f - configButtonNode.Height / 2.0f);
 

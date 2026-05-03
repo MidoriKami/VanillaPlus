@@ -32,8 +32,8 @@ public abstract class GameModificationConfig<T> : ISavable where T : GameModific
         }
 
         return loadedConfig;
-    } 
-    
+    }
+
     public void Save() {
         Services.PluginLog.Debug($"Saving Config {FileName}.config.json");
         Config.SaveConfig(this, $"{FileName}.config.json");

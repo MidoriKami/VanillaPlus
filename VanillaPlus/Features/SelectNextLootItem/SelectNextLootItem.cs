@@ -13,15 +13,15 @@ public unsafe class SelectNextLootItem : GameModification {
         DisplayName = Strings.ModificationDisplay_SelectNextLootItem,
         Description = Strings.ModificationDescription_SelectNextLootItem,
         Type = ModificationType.GameBehavior,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@LootWindowSelectNext", "1.14.0.2"),
     };
-    
+
     public override void OnEnable() {
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "NeedGreed", OnNeedGreedSetup);
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, "NeedGreed", OnNeedGreedEvent);
     }
-    
+
     public override void OnDisable()
         => Services.AddonLifecycle.UnregisterListener(OnNeedGreedSetup, OnNeedGreedEvent);
 
@@ -36,23 +36,23 @@ public unsafe class SelectNextLootItem : GameModification {
             }
         }
     }
-    
+
     private static void OnNeedGreedEvent(AddonEvent type, AddonArgs args) {
         if (args is not AddonReceiveEventArgs eventArgs) return;
-        
-        var eventType = (AtkEventType) eventArgs.AtkEventType;
-        var buttonType = (ButtonType) eventArgs.EventParam;
+
+        var eventType = (AtkEventType)eventArgs.AtkEventType;
+        var buttonType = (ButtonType)eventArgs.EventParam;
         var addon = eventArgs.GetAddon<AddonNeedGreed>();
-        
+
         if (eventType is not AtkEventType.ButtonClick) return;
-        
+
         switch (buttonType) {
             // Fall through unconditionally
             case ButtonType.Need:
             case ButtonType.Greed:
-            
+
             // Don't select next item if we are passing on an item that we already rolled on
-            case ButtonType.Pass when addon->Items[addon->SelectedItemIndex] is { Roll: 0, ItemId: not 0 }: 
+            case ButtonType.Pass when addon->Items[addon->SelectedItemIndex] is { Roll: 0, ItemId: not 0 }:
                 var currentItemCount = addon->NumItems;
                 var nextIndex = addon->SelectedItemIndex + 1;
 
@@ -62,13 +62,13 @@ public unsafe class SelectNextLootItem : GameModification {
                 break;
         }
     }
-    
+
     private static void SelectItem(AddonNeedGreed* addon, int index) {
         var eventData = new AtkEventData();
         eventData.ListItemData.SelectedIndex = index;
         addon->ReceiveEvent(AtkEventType.ListItemClick, 0, null, &eventData);
     }
-    
+
     // There are other button types such as "Greed Only" and "Loot Recipient"
     private enum ButtonType : uint {
         Need = 0,

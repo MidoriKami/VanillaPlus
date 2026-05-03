@@ -8,7 +8,7 @@ public class HaselTweaksCompatibilityModule(string moduleName) : CompatibilityMo
     public override bool ShouldLoadGameModification() {
         // If HaselTweaks is not loaded, we can load our module
         if (!IsHaselTweaksLoaded()) return true;
-        
+
         // If HaselTweaks is loaded, but doesn't contain our module, then we can load our module
         return !GetTargetPluginLoadedModules().Contains(moduleName);
     }
@@ -22,7 +22,7 @@ public class HaselTweaksCompatibilityModule(string moduleName) : CompatibilityMo
             var fileText = File.ReadAllText(configFileInfo.FullName);
 
             if (fileText.IsNullOrEmpty()) return [];
-            
+
             var jObject = JObject.Parse(fileText);
             if (!jObject.HasValues) return [];
 
@@ -31,20 +31,20 @@ public class HaselTweaksCompatibilityModule(string moduleName) : CompatibilityMo
 
             if (enabledTweaksToken.Type is JTokenType.Array) {
                 var enabledTweaksList = enabledTweaksToken.ToObject<List<string>>();
-                
+
                 return enabledTweaksList ?? [];
             }
         }
 
         return [];
     }
-    
+
     private bool IsHaselTweaksLoaded()
         => IsPluginLoaded("HaselTweaks");
-    
+
     private static string GetConfigFilePath()
         => Path.Combine(Services.PluginInterface.GetPluginConfigDirectory().Replace("VanillaPlus", "HaselTweaks.json"));
-    
+
     private static FileInfo GetConfigFileInfo()
         => new(GetConfigFilePath());
 }

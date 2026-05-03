@@ -14,7 +14,7 @@ public unsafe class BetterSelectString : GameModification {
         DisplayName = Strings.ModificationDisplay_BetterSelectString,
         Description = Strings.ModificationDescription_BetterSelectString,
         Type = ModificationType.UserInterface,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     public override string ImageName => "BetterSelectString.png";
@@ -34,7 +34,7 @@ public unsafe class BetterSelectString : GameModification {
             },
         };
         selectStringController.Enable();
-        
+
         selectStringListController = new NativeListController<AddonSelectString> {
             AddonName = "SelectString",
             GetPopulatorNode = addon => addon->GetComponentListById(3)->GetComponentItemRendererById(5),
@@ -58,14 +58,14 @@ public unsafe class BetterSelectString : GameModification {
     public override void OnDisable() {
         selectStringController?.Dispose();
         selectStringController = null;
-        
+
         selectStringListController?.Dispose();
         selectStringListController = null;
     }
 
     private static void UpdateSelectString(AddonSelectString* addon) {
         if (RaptureAtkModule.Instance()->IsTextInputActive()) return;
-        
+
         var listComponent = addon->GetComponentListById(3);
         if (listComponent is null) return;
 
@@ -75,8 +75,8 @@ public unsafe class BetterSelectString : GameModification {
 
         foreach (var index in Enumerable.Range(0, listComponent->ListLength)) {
             var keyIndex = (index + 1) % 10;
-            
-            var topRowKey = VirtualKey.KEY_0 + (ushort) keyIndex;
+
+            var topRowKey = VirtualKey.KEY_0 + (ushort)keyIndex;
             var isTopRowKeyPressed = Services.KeyState.IsVirtualKeyValid(topRowKey) && Services.KeyState[(int)topRowKey];
 
             if (isTopRowKeyPressed) {
@@ -87,12 +87,12 @@ public unsafe class BetterSelectString : GameModification {
                 return;
             }
 
-            var numpadKey = VirtualKey.NUMPAD0 + (ushort) keyIndex;
+            var numpadKey = VirtualKey.NUMPAD0 + (ushort)keyIndex;
             var isNumpadKeyPressed = Services.KeyState.IsVirtualKeyValid(numpadKey) && Services.KeyState[(int)numpadKey];
 
             if (isNumpadKeyPressed) {
                 Services.KeyState[(int)numpadKey] = false;
-                
+
                 atkEventData->ListItemData.SelectedIndex = index;
                 addon->PopupMenu.ReceiveEvent(AtkEventType.ListItemClick, 0, atkEvent, atkEventData);
                 return;

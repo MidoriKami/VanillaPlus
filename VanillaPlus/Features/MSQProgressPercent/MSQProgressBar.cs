@@ -21,7 +21,7 @@ public unsafe class MSQProgressBar : GameModification {
         DisplayName = Strings.MSQProgressBar_DisplayName,
         Description = Strings.MSQProgressBar_Description,
         Type = ModificationType.UserInterface,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     public override string ImageName => "MSQProgressBar.png";
@@ -32,10 +32,10 @@ public unsafe class MSQProgressBar : GameModification {
     private Dictionary<ExVersion, Range>? expansionRanges;
     private MSQProgressBarConfig? config;
     private ConfigAddon? configAddon;
-    
+
     public override void OnEnable() {
         config = MSQProgressBarConfig.Load();
-        
+
         expansionRanges = [];
 
         foreach (var expansion in Services.DataManager.GetExcelSheet<ExVersion>()) {
@@ -45,9 +45,9 @@ public unsafe class MSQProgressBar : GameModification {
 
             var min = scenarioTreesForExpansion.Min(entry => entry.Unknown2);
             var max = scenarioTreesForExpansion.Max(entry => entry.Unknown2);
-            
+
             expansionRanges.TryAdd(expansion, min..max);
-            
+
             Services.PluginLog.Debug($"Range for {expansion.Name}: {min}..{max}");
         }
 
@@ -65,13 +65,13 @@ public unsafe class MSQProgressBar : GameModification {
             .AddColorEdit(Strings.MSQProgressBar_LabelBarColor, nameof(config.BarColor), KnownColor.White.Vector());
 
         OpenConfigAction = configAddon.Toggle;
-        
+
         scenarioTreeAddonController = new AddonController {
             AddonName = "ScenarioTree",
             OnSetup = addon => {
                 var targetPositioningNode = addon->GetNodeById<AtkComponentNode>(13);
                 var msqTextNode = targetPositioningNode->SearchNodeById<AtkTextNode>(6);
-            
+
                 progressBarNode = new ProgressBarNode {
                     Size = new Vector2(msqTextNode->Width, 9.0f),
                     Position = new Vector2(0.0f, msqTextNode->Height - 3.0f),
@@ -79,12 +79,12 @@ public unsafe class MSQProgressBar : GameModification {
                     Progress = 0.5f,
                 };
                 progressBarNode.AttachNode(msqTextNode, NodePosition.BeforeTarget);
-            
+
                 UpdateProgress(addon);
             },
             OnUpdate = addon => {
                 if (addon->AtkValuesCount < 7) return;
-            
+
                 UpdateProgress(addon);
                 progressBarNode?.BarColor = config.BarColor with { W = 1.0f };
                 progressBarNode?.Alpha = config.BarColor.W;
@@ -103,10 +103,10 @@ public unsafe class MSQProgressBar : GameModification {
 
         expansionRanges?.Clear();
         expansionRanges = null;
-        
+
         configAddon?.Dispose();
         configAddon = null;
-        
+
         config = null;
     }
 
@@ -129,11 +129,11 @@ public unsafe class MSQProgressBar : GameModification {
                 var minTreeEntry = expansionRanges.Values.Min(expansion => expansion.Start.Value);
                 var maxTreeEntry = expansionRanges.Values.Max(expansion => expansion.End.Value);
                 var length = maxTreeEntry - minTreeEntry;
-                
+
                 progressBarNode?.Progress = (float)(currentQuest - minTreeEntry) / length;
                 progressBarNode?.TextTooltip = string.Format(Strings.MSQProgressBar_TooltipGameProgress, progressBarNode.Progress * 100.0f);
                 break;
-            
+
             case MSQProgressBarMode.Expansion:
                 progressBarNode?.Progress = (float)(currentQuest - range.Start.Value) / range.Length;
                 progressBarNode?.TextTooltip = string.Format(Strings.MSQProgressBar_TooltipExpansionProgress, progressBarNode.Progress * 100.0f);

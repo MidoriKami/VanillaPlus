@@ -111,12 +111,12 @@ public class ModificationManager : IDisposable {
             if (modification.Modification.ModificationInfo is { DisabledReason: { } disabledReason }) {
                 modification.State = LoadedState.ForceDisabled;
                 modification.ErrorMessage = disabledReason;
-                
+
                 Services.PluginLog.Warning($"[{modification.Name}] Force Disabled. {disabledReason}");
                 Services.PluginLog.Warning($"Aborted enabling {modification.Name}");
                 return;
             }
-            
+
             if (modification.Modification.ModificationInfo.CompatibilityModule is { } compatibilityModule) {
                 if (!compatibilityModule.ShouldLoadGameModification()) {
                     modification.State = LoadedState.CompatError;
@@ -138,7 +138,7 @@ public class ModificationManager : IDisposable {
             modification.State = LoadedState.Errored;
             modification.ErrorMessage = "Failed to load, this module has been disabled.";
             Services.PluginLog.Error(e, $"Error while enabling {modification.Name}, attempting to disable");
-            
+
             try {
                 modification.Modification.OnDisable();
                 Services.PluginLog.Information($"Successfully disabled erroring modification {modification.Name}");
@@ -175,12 +175,12 @@ public class ModificationManager : IDisposable {
     });
 
     private static List<GameModification> GetGameModifications() => Assembly
-       .GetCallingAssembly()
-       .GetTypes()
-       .Where(type => type.IsSubclassOf(typeof(GameModification)))
-       .Where(type => !type.IsAbstract)
-       .Select(type => (GameModification?) Activator.CreateInstance(type))
-       .Where(modification => modification?.ModificationInfo.Type is not ModificationType.Hidden)
-       .OfType<GameModification>()
-       .ToList();
+        .GetCallingAssembly()
+        .GetTypes()
+        .Where(type => type.IsSubclassOf(typeof(GameModification)))
+        .Where(type => !type.IsAbstract)
+        .Select(type => (GameModification?)Activator.CreateInstance(type))
+        .Where(modification => modification?.ModificationInfo.Type is not ModificationType.Hidden)
+        .OfType<GameModification>()
+        .ToList();
 }

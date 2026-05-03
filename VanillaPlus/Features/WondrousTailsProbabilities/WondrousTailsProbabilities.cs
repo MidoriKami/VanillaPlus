@@ -22,7 +22,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_WondrousTailsProbabilities,
         Description = Strings.ModificationDescription_WondrousTailsProbabilities,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
         CompatibilityModule = new PluginCompatibilityModule("WondrousTailsSolver"),
     };
@@ -53,13 +53,13 @@ public unsafe class WondrousTailsProbabilities : GameModification {
     public override void OnDisable() {
         weeklyBingoController?.Dispose();
         weeklyBingoController = null;
-        
+
         perfectTails = null;
     }
 
     private void SetupWeeklyBingo(AddonWeeklyBingo* addon) {
         if (perfectTails is null) return;
-        
+
         var existingTextNode = addon->GetTextNodeById(34);
         if (existingTextNode is null) return;
 
@@ -80,16 +80,16 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         animationContainer = new ResNode {
             Size = new Vector2(72.0f, 48.0f),
         };
-        
+
         animationContainer.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 60)
             .AddLabel(1, 1, AtkTimelineJumpBehavior.Start, 0)
             .AddLabel(60, 0, AtkTimelineJumpBehavior.LoopForever, 1)
             .EndFrameSet()
             .Build());
-        
+
         animationContainer.AttachNode(addon->DutySlotList.DutyContainer);
-        
+
         currentDutyNode = new SimpleNineGridNode {
             Size = new Vector2(72.0f, 48.0f),
             Origin = new Vector2(72.0f, 48.0f) / 2.0f,
@@ -100,21 +100,21 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             RightOffset = 10,
             Color = Vector4.Zero with { W = 0.66f },
             AddColor = KnownColor.OrangeRed.Vector().AsVector3(),
-        }; 
-        
+        };
+
         currentDutyNode.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 60)
-            .AddFrame(1, alpha: 155, scale: new Vector2(1.0f, 1.0f) )
-            .AddFrame(30, alpha: 255, scale: new Vector2(1.05f, 1.05f) )
-            .AddFrame(60, alpha: 155, scale: new Vector2(1.0f, 1.0f) )
+            .AddFrame(1, alpha: 155, scale: new Vector2(1.0f, 1.0f))
+            .AddFrame(30, alpha: 255, scale: new Vector2(1.05f, 1.05f))
+            .AddFrame(60, alpha: 155, scale: new Vector2(1.0f, 1.0f))
             .EndFrameSet()
             .Build());
-        
+
         currentDutyNode.AttachNode(animationContainer);
-        
+
         animationContainer.Timeline?.PlayAnimation(1);
     }
-    
+
     private void RefreshWeeklyBingo(AddonWeeklyBingo* addon) {
         if (perfectTails is null) return;
         var existingTextNode = addon->GetTextNodeById(34);
@@ -139,14 +139,14 @@ public unsafe class WondrousTailsProbabilities : GameModification {
             if (lineBreakIndex is not -1) {
                 var newString = new SeStringBuilder();
 
-                for(var index = 0; index < lineBreakIndex; index++) {
+                for (var index = 0; index < lineBreakIndex; index++) {
                     newString.Add(nodeText.Payloads[index]);
                 }
 
                 existingTextNode->SetText(newString.Encode());
             }
         }
-        
+
         foreach (var index in Enumerable.Range(0, 16)) {
             perfectTails.GameState[index] = PlayerState.Instance()->IsWeeklyBingoStickerPlaced(index);
         }
@@ -164,11 +164,11 @@ public unsafe class WondrousTailsProbabilities : GameModification {
 
         probabilityTextNode?.Dispose();
         probabilityTextNode = null;
-        
+
         currentDutyNode?.Dispose();
         currentDutyNode = null;
     }
-    
+
     private void AdjustCurrentDutyIndicator(AddonWeeklyBingo* addon) {
         if (animationContainer is null || currentDutyNode is null) return;
         if (GetTaskForCurrentTerritory(Services.ClientState.TerritoryType) is { } dutySlot) {

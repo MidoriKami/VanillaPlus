@@ -8,7 +8,7 @@ namespace VanillaPlus.Features.HideUnwantedBanners;
 public class BannerConfigListItemNode : ListItemNode<BannerConfig>, IListItemNode {
 
     public static float ItemHeight => 96.0f;
-    
+
     private readonly CheckboxNode checkboxNode;
     private readonly SimpleComponentNode imageContainerNode;
     private readonly IconImageNode iconImageNode;
@@ -16,7 +16,7 @@ public class BannerConfigListItemNode : ListItemNode<BannerConfig>, IListItemNod
     public BannerConfigListItemNode() {
         EnableHighlight = false;
         EnableSelection = false;
-        
+
         checkboxNode = new CheckboxNode {
             OnClick = OnCheckboxClicked,
         };
@@ -54,29 +54,29 @@ public class BannerConfigListItemNode : ListItemNode<BannerConfig>, IListItemNod
         var resultingWidth = actualTextureSize.X / widthRatio;
         var remainingArea = imageContainerNode.Width - resultingWidth;
         var remainingHalf = remainingArea / 2.0f;
-        
+
         iconImageNode.Size = new Vector2(resultingWidth, Height);
         iconImageNode.Position = new Vector2(remainingHalf, 0.0f);
     }
 
     private bool textureResized;
-    
+
     protected override void SetNodeData(BannerConfig itemData) {
-        iconImageNode.IconId = (uint) itemData.BannerId;
+        iconImageNode.IconId = (uint)itemData.BannerId;
         checkboxNode.IsChecked = itemData.IsSuppressed;
 
         textureResized = false;
     }
-    
+
     private void OnCheckboxClicked(bool newValue) {
         if (IsSettingNodeData) return;
-        
+
         ItemData?.IsSuppressed = newValue;
     }
-    
+
     public override void Update() {
         base.Update();
-    
+
         if (textureResized) return;
         if (iconImageNode.IsTextureReady) {
             RecalculateLayout();

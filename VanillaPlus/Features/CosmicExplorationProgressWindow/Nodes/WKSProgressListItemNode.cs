@@ -13,13 +13,13 @@ public sealed class WksProgressListItemNode : ListItemNode<Progress>, IListItemN
     private readonly TextNode maxLabelNode;
     private readonly WksCompositeProgressBarNode progressBarNode;
 
-    private readonly HorizontalListNode layoutNode; 
-    
+    private readonly HorizontalListNode layoutNode;
+
     public static float ItemHeight => 26.0f;
 
     public WksProgressListItemNode() {
         DisableInteractions();
-        
+
         layoutNode = new HorizontalListNode {
             ItemSpacing = 5.0f,
             InitialNodes = [
@@ -85,7 +85,7 @@ public sealed class WksProgressListItemNode : ListItemNode<Progress>, IListItemN
 
     public override void Update() {
         if (ItemData is null) return;
-        
+
         progressBarNode.Progress = ItemData.Percentage;
         progressBarNode.MaxProgress = ItemData.MaxPercentage;
         progressBarNode.IsComplete = ItemData.Complete;
@@ -108,7 +108,7 @@ public sealed class WksProgressListItemNode : ListItemNode<Progress>, IListItemN
     protected override void SetNodeData(Progress progressData) {
         IconId = progressData.IconId;
         iconNode.TextTooltip = progressData.IconTooltip;
-        
+
         Update();
     }
 }

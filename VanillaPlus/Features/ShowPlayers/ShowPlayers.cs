@@ -12,7 +12,7 @@ public unsafe class ShowPlayersOnMap : GameModification {
         Description = Strings.ModificationDescription_ShowPlayers,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Map,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new QuestAwayCompatabilityModule(),
     };
 

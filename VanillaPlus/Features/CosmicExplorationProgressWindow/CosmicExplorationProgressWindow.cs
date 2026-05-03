@@ -12,9 +12,9 @@ public class CosmicExplorationProgressWindow : GameModification {
         DisplayName = Strings.ModificationDisplay_CosmicExplorationProgressWindow,
         Description = Strings.ModificationDescription_CosmicExplorationProgressWindow,
         Type = ModificationType.NewWindow,
-        Authors = [ "salanth357" ],
+        Authors = ["salanth357"],
     };
-    
+
     private CosmicExplorationProgressAddon? addon;
     private CircleButtonNode? hudShowNode;
 
@@ -59,10 +59,10 @@ public class CosmicExplorationProgressWindow : GameModification {
     public override void OnDisable() {
         wksHudController?.Disable();
         wksHudController = null;
-        
+
         addon?.Dispose();
         addon = null;
-        
+
         hudShowNode?.Dispose();
         hudShowNode = null;
     }

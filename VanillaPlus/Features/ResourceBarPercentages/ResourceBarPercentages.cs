@@ -16,8 +16,8 @@ public unsafe class ResourceBarPercentages : GameModification {
         DisplayName = Strings.ModificationDisplay_ResourceBarPercentages,
         Description = Strings.ModificationDescription_ResourceBarPercentages,
         Type = ModificationType.UserInterface,
-        Authors = [ "Zeffuro" ],
-        Tags = [ "Party List", "Parameter Bars" ],
+        Authors = ["Zeffuro"],
+        Tags = ["Party List", "Parameter Bars"],
     };
 
     private ResourceBarPercentagesConfig? config;
@@ -231,7 +231,7 @@ public unsafe class ResourceBarPercentages : GameModification {
 
         if (max == 0) return "0" + (config.PercentageSignEnabled ? "%" : "");
 
-        var percentage = current / (float) max * 100f;
+        var percentage = current / (float)max * 100f;
 
         var percentSign = config.PercentageSignEnabled ? "%" : "";
 
@@ -258,10 +258,10 @@ public unsafe class ResourceBarPercentages : GameModification {
             return new ActiveResource(player.CurrentMp, player.MaxMp, config.ParameterMpEnabled);
 
         if (player.MaxGp > 0)
-            return new ActiveResource (player.CurrentGp, player.MaxGp, config.ParameterGpEnabled);
+            return new ActiveResource(player.CurrentGp, player.MaxGp, config.ParameterGpEnabled);
 
         if (player.MaxCp > 0)
-            return new ActiveResource (player.CurrentCp, player.MaxCp, config.ParameterCpEnabled);
+            return new ActiveResource(player.CurrentCp, player.MaxCp, config.ParameterCpEnabled);
 
         return defaultResource;
     }

@@ -18,7 +18,7 @@ public class FloatInputConfig : BaseConfigEntry {
 
         var numericInput = new NumericInputNode {
             Size = new Vector2(100.0f, 24.0f),
-            Value = (int) InitialValue,
+            Value = (int)InitialValue,
             Step = Step,
             Min = Range.Start.Value,
             Max = Range.End.Value,
@@ -31,7 +31,7 @@ public class FloatInputConfig : BaseConfigEntry {
 
         layoutNode.AddNode(numericInput);
         layoutNode.AddNode(GetLabelNode());
-        
+
         return layoutNode;
     }
 }

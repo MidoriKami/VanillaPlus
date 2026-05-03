@@ -21,7 +21,7 @@ public unsafe class PartyFinderPresets : GameModification {
         DisplayName = Strings.ModificationDisplay_PartyFinderPresets,
         Description = Strings.ModificationDescription_PartyFinderPresets,
         Type = ModificationType.GameBehavior,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     private AddonController<AtkUnitBase>? recruitmentCriteriaController;
@@ -29,7 +29,7 @@ public unsafe class PartyFinderPresets : GameModification {
 
     private TextButtonNode? savePresetButton;
     private TextDropDownNode? presetDropDown;
-    
+
     private RenameAddon? savePresetWindow;
 
     private ListConfigAddon<string, StringListItemNode, PartyFinderPresetConfigNode>? presetEditorAddon;
@@ -72,7 +72,7 @@ public unsafe class PartyFinderPresets : GameModification {
         };
 
         OpenConfigAction = presetEditorAddon.Toggle;
-        
+
         Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "LookingForGroup", OnLookingForGroupEvent);
 
         recruitmentCriteriaController = new AddonController<AtkUnitBase> {
@@ -125,13 +125,13 @@ public unsafe class PartyFinderPresets : GameModification {
 
         recruitmentCriteriaController?.Dispose();
         recruitmentCriteriaController = null;
-        
+
         lookingForGroupController?.Dispose();
         lookingForGroupController = null;
-        
+
         savePresetWindow?.Dispose();
         savePresetWindow = null;
-        
+
         presetEditorAddon?.Dispose();
         presetEditorAddon = null;
 
@@ -146,7 +146,7 @@ public unsafe class PartyFinderPresets : GameModification {
         if (presetDropDown?.SelectedOption is not { } selectedOption) return;
         if (selectedOption == PresetManager.DefaultString) return;
         if (selectedOption == PresetManager.DontUseString) return;
-        
+
         PresetManager.LoadPreset(selectedOption);
     }
 

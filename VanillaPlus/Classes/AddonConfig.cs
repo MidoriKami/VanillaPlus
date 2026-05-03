@@ -5,7 +5,7 @@ namespace VanillaPlus.Classes;
 
 public class AddonConfig {
     private string fileName = null!;
-   
+
     public static AddonConfig Load(string fileName) {
         var loadedConfig = Config.LoadConfig<AddonConfig>(fileName);
         loadedConfig.fileName = fileName;

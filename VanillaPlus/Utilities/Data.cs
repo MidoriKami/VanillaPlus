@@ -6,19 +6,19 @@ namespace VanillaPlus.Utilities;
 public static class Data {
     public static string DataPath => FileHelpers.GetFileInfo("Data").FullName;
     public static string CharacterDataPath => FileHelpers.GetFileInfo("Data", FileHelpers.GetCharacterPath()).FullName;
-    
+
     /// <summary>
     /// Loads a data file from PluginConfigs\VanillaPlus\Data\{FileName}
     /// </summary>
     public static T LoadData<T>(string fileName) where T : class, new()
         => FileHelpers.LoadFile<T>(FileHelpers.GetFileInfo("Data", fileName).FullName);
-    
+
     /// <summary>
     /// Loads a data file from PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName}
     /// </summary>
     public static T LoadData<T>(string folderName, string fileName) where T : class, new()
         => FileHelpers.LoadFile<T>(FileHelpers.GetFileInfo("Data", folderName, fileName).FullName);
-    
+
     /// <summary>
     /// Loads a character specific data file from PluginConfigs\VanillaPlus\Data\{ContentId}\{FileName}
     /// Creates a `new T` if the file can't be loaded
@@ -32,13 +32,13 @@ public static class Data {
     /// </summary>
     public static void SaveData<T>(T data, string fileName)
         => FileHelpers.SaveFile(data, FileHelpers.GetFileInfo("Data", fileName).FullName);
-    
+
     /// <summary>
     /// Saves a data file to PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName}
     /// </summary>
     public static void SaveData<T>(T data, string folderName, string fileName)
         => FileHelpers.SaveFile(data, FileHelpers.GetFileInfo("Data", folderName, fileName).FullName);
-    
+
     /// <summary>
     /// Saves a character specific data file to PluginConfigs\VanillaPlus\Data\{ContentId}\{FileName}
     /// </summary>
@@ -59,7 +59,7 @@ public static class Data {
         var result = LoadBinaryData(memorySize, folderName, fileName);
         Marshal.Copy(result, 0, (nint)targetMemoryAddress, memorySize);
     }
-    
+
     /// <summary>
     /// Loads a binary file from PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName} directly into game memory.
     /// </summary>
@@ -79,7 +79,7 @@ public static class Data {
     /// </summary>
     public static unsafe void SaveBinaryData<T>(T* dataPointer, int dataSize, string folderName, string fileName) where T : unmanaged
         => FileHelpers.SaveBinaryFile(new Span<byte>(dataPointer, dataSize).ToArray(), FileHelpers.GetFileInfo("Data", folderName, fileName).FullName);
-    
+
     /// <summary>
     /// Saves a memory block to PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName}
     /// </summary>

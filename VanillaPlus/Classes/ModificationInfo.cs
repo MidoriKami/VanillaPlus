@@ -13,7 +13,7 @@ public class ModificationInfo {
     public ModificationSubType? SubType { get; init; }
     public List<string> Tags { get; init; } = [];
     public string? DisabledReason { get; init; }
-    
+
     /// <summary>
     /// Compatibility Module prevents loading this GameModification if the
     /// associated plugin has the equivalent module enabled.
@@ -27,7 +27,7 @@ public class ModificationInfo {
         if (Type.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) return true;
         if (SubType is not null && SubType.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) return true;
         if (Tags.Any(tag => tag.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))) return true;
-        
+
         return false;
     }
 }

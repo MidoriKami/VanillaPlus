@@ -42,7 +42,7 @@ public unsafe class CurrencyOverlayNode : OverlayNode {
             .AddLabel(120, 0, AtkTimelineJumpBehavior.LoopForever, 2)
             .EndFrameSet()
             .Build());
-        
+
         countNode.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 60)
             .AddFrame(1, scale: new Vector2(1.0f, 1.0f), addColor: new Vector3(0.0f, 0.0f, 0.0f))
@@ -96,10 +96,10 @@ public unsafe class CurrencyOverlayNode : OverlayNode {
         iconImageNode.Alpha = alpha;
         countNode.Alpha = alpha;
 
-        if (hasWarning) { 
+        if (hasWarning) {
             Timeline?.PlayAnimation(1);
         }
-        else { 
+        else {
             Timeline?.PlayAnimation(2);
         }
     }

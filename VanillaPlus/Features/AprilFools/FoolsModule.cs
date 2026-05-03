@@ -5,7 +5,7 @@ public abstract class FoolsModule {
     public abstract bool IsEnabledByConfig { get; }
 
     private bool isEnabled;
-    
+
     public void Toggle(bool newState) {
         if (isEnabled && !newState) {
             Disable();

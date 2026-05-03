@@ -17,12 +17,12 @@ public class NodeStyle {
 public class NodeStyle<T> : NodeStyle where T : NodeBase {
     public void ApplyStyle(params T?[]? nodes) {
         if (nodes is null) return;
-        
+
         foreach (var node in nodes) {
             ApplyStyle(node);
         }
     }
-    
+
     public virtual void ApplyStyle(T? node) {
         node?.Position = Position;
     }

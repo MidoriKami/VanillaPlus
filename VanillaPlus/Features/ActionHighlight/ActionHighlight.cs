@@ -14,7 +14,7 @@ public unsafe class ActionHighlight : GameModification {
         DisplayName = Strings.ActionHighlight_DisplayName,
         Description = Strings.ActionHighlight_Description,
         Type = ModificationType.UserInterface,
-        Authors = [ "attickdoor", "Zeffuro" ],
+        Authors = ["attickdoor", "Zeffuro"],
         CompatibilityModule = new PluginCompatibilityModule("AbilityAnts"),
     };
 
@@ -62,7 +62,7 @@ public unsafe class ActionHighlight : GameModification {
     }
 
     private bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {
-        if (Services.ObjectTable.LocalPlayer is not { Level: var playerLevel, GameObjectId: var playerId } ) return false;
+        if (Services.ObjectTable.LocalPlayer is not { Level: var playerLevel, GameObjectId: var playerId }) return false;
         if (config is null) return false;
         if (cachedActions is null) return false;
 
@@ -137,5 +137,5 @@ public unsafe class ActionHighlight : GameModification {
     }
 
     private static bool IsValidAction(Action action)
-        => action is { IsPvP: false, ClassJob.ValueNullable.Unknown6: > 0, IsPlayerAction: true } and ( { ActionCategory.RowId: 4 } or { Recast100ms: > 100 } );
+        => action is { IsPvP: false, ClassJob.ValueNullable.Unknown6: > 0, IsPlayerAction: true } and ({ ActionCategory.RowId: 4 } or { Recast100ms: > 100 });
 }

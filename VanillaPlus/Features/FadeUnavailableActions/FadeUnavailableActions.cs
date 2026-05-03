@@ -51,7 +51,7 @@ public unsafe class FadeUnavailableActions : GameModification {
             .AddCheckbox(Strings.FadeUnavailableActions_LabelApplyToFrame, nameof(config.ApplyToFrame))
             .AddCheckbox(Strings.FadeUnavailableActions_LabelApplyToSync, nameof(config.ApplyToSyncActions))
             .AddCheckbox(Strings.FadeUnavailableActions_LabelReddenOutOfRange, nameof(config.ReddenOutOfRange));
-        
+
         OpenConfigAction = configWindow.Toggle;
 
         onHotBarSlotUpdateHook = Services.Hooker.HookFromAddress<AddonActionBarBase.Delegates.UpdateHotbarSlot>(AddonActionBarBase.MemberFunctionPointers.UpdateHotbarSlot, OnHotBarSlotUpdate);
@@ -61,15 +61,15 @@ public unsafe class FadeUnavailableActions : GameModification {
     public override void OnDisable() {
         onHotBarSlotUpdateHook?.Dispose();
         onHotBarSlotUpdateHook = null;
-        
+
         configWindow?.Dispose();
         configWindow = null;
 
         actionCache = null;
-        
+
         ResetAllHotbars();
     }
-    
+
     private void OnHotBarSlotUpdate(AddonActionBarBase* addon, ActionBarSlot* hotBarSlotData, NumberArrayData* numberArray, StringArrayData* stringArray, int numberArrayIndex, int stringArrayIndex) {
         try {
             ProcessHotBarSlot(hotBarSlotData, numberArray, numberArrayIndex);
@@ -80,12 +80,12 @@ public unsafe class FadeUnavailableActions : GameModification {
             onHotBarSlotUpdateHook!.Original(addon, hotBarSlotData, numberArray, stringArray, numberArrayIndex, stringArrayIndex);
         }
     }
-    
+
     private void ProcessHotBarSlot(ActionBarSlot* hotBarSlotData, NumberArrayData* numberArray, int numberArrayIndex) {
         if (config is null) return;
-        if (Services.ObjectTable.LocalPlayer is { IsCasting: true } ) return;
+        if (Services.ObjectTable.LocalPlayer is { IsCasting: true }) return;
 
-        var numberArrayData = (ActionBarSlotNumberArray*) (&numberArray->IntArray[numberArrayIndex]);
+        var numberArrayData = (ActionBarSlotNumberArray*)(&numberArray->IntArray[numberArrayIndex]);
 
         if ((NumberArrayActionType)numberArrayData->ActionType is not (NumberArrayActionType.Action or NumberArrayActionType.CraftAction)) {
             ApplyColoring(hotBarSlotData, false, false);
@@ -102,11 +102,11 @@ public unsafe class FadeUnavailableActions : GameModification {
                 case null:
                     ApplyColoring(hotBarSlotData, false, false);
                     break;
-                
+
                 case { IsRoleAction: false } when actionLevel > playerLevel:
                     ApplyColoring(hotBarSlotData, false, true);
                     break;
-                
+
                 default:
                     ApplyColoring(hotBarSlotData, false, false);
                     break;
@@ -127,7 +127,7 @@ public unsafe class FadeUnavailableActions : GameModification {
         return action;
     }
 
-    private bool ShouldFadeAction(ActionBarSlotNumberArray* numberArrayData) 
+    private bool ShouldFadeAction(ActionBarSlotNumberArray* numberArrayData)
         => !(numberArrayData->Executable && numberArrayData->Executable2);
 
     private void ApplyColoring(ActionBarSlot* hotBarSlotData, bool redden, bool fade) {
@@ -136,7 +136,7 @@ public unsafe class FadeUnavailableActions : GameModification {
 
         var icon = hotBarSlotData->ImageNode;
         var frame = hotBarSlotData->FrameNode;
-        
+
         if (icon is null || frame is null) return;
 
         icon->Color.R = 0xFF;
@@ -144,7 +144,7 @@ public unsafe class FadeUnavailableActions : GameModification {
         icon->Color.B = config.ReddenOutOfRange && redden ? (byte)(0xFF * ((100 - config.ReddenPercentage) / 100.0f)) : (byte)0xFF;
         icon->Color.A = fade ? (byte)(0xFF * ((100 - config.FadePercentage) / 100.0f)) : (byte)0xFF;
 
-        frame->Color.A = fade ? config.ApplyToFrame ? (byte)(0xFF * ((100 - config.FadePercentage) / 100.0f)) : (byte) 0xFF : (byte)0xFF;
+        frame->Color.A = fade ? config.ApplyToFrame ? (byte)(0xFF * ((100 - config.FadePercentage) / 100.0f)) : (byte)0xFF : (byte)0xFF;
     }
 
     private static void ResetAllHotbars() {
@@ -157,7 +157,7 @@ public unsafe class FadeUnavailableActions : GameModification {
 
                 foreach (var slot in actionBar->ActionBarSlotVector) {
                     if (slot.Icon is not null) {
-                        var iconComponent = (AtkComponentIcon*) slot.Icon->Component;
+                        var iconComponent = (AtkComponentIcon*)slot.Icon->Component;
                         if (iconComponent is null) continue;
 
                         iconComponent->IconImage->Color = Vector4.One.ToByteColor();

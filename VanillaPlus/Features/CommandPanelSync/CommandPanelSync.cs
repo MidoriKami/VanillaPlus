@@ -10,7 +10,7 @@ public unsafe class CommandPanelSync : GameModification {
         DisplayName = Strings.CommandPanelSync_DisplayName,
         Description = Strings.CommandPanelSync_Description,
         Type = ModificationType.GameBehavior,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     private const int CurrentVersion = 2;
@@ -18,7 +18,7 @@ public unsafe class CommandPanelSync : GameModification {
     public override void OnEnable() {
         Services.ClientState.Login += OnLogin;
         Services.ClientState.Logout += OnLogout;
-        
+
         if (Services.ClientState.IsLoggedIn) {
             ApplySharedQuickPanel();
         }
@@ -27,7 +27,7 @@ public unsafe class CommandPanelSync : GameModification {
     public override void OnDisable() {
         Services.ClientState.Login -= OnLogin;
         Services.ClientState.Logout -= OnLogout;
-        
+
         if (Services.ClientState.IsLoggedIn) {
             RestoreOriginalQuickPanel();
         }
@@ -38,7 +38,7 @@ public unsafe class CommandPanelSync : GameModification {
 
     private static void OnLogout(int type, int code)
         => RestoreOriginalQuickPanel();
-    
+
     private static void ApplySharedQuickPanel() {
         SaveOriginal();
 
@@ -52,7 +52,7 @@ public unsafe class CommandPanelSync : GameModification {
 
     private static void RestoreOriginalQuickPanel() {
         SaveShared();
-        
+
         if (OriginalExists) {
             LoadOriginal();
         }
@@ -60,14 +60,14 @@ public unsafe class CommandPanelSync : GameModification {
 
     private static bool OriginalExists
         => FileHelpers.GetFileInfo("Data", "CommandPanelSync", $"Original.v{CurrentVersion}.qpnl.dat").Exists;
-    
+
     private static bool SharedExists
         => FileHelpers.GetFileInfo("Data", "CommandPanelSync", $"Shared.v{CurrentVersion}.qpnl.dat").Exists;
 
     private static nint QuickPanelAddress => (nint)QuickPanelModule.Instance() + sizeof(UserFileManager.UserFileEvent);
 
     private static int QuickPanelSize => sizeof(QuickPanelModule) - sizeof(UserFileManager.UserFileEvent);
-    
+
     private static void SaveOriginal()
         => Data.SaveBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Original.v{CurrentVersion}.qpnl.dat");
 

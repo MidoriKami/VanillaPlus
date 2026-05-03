@@ -12,7 +12,7 @@ public unsafe class ConfigAddon : NativeAddon {
     private ScrollingListNode? configurationListNode;
 
     private readonly List<ConfigCategory> configCategories = [];
-    
+
     public required ISavable Config { get; init; }
 
     private const float MaximumHeight = 400.0f;
@@ -42,9 +42,9 @@ public unsafe class ConfigAddon : NativeAddon {
         else {
             Size = new Vector2(Width, MaximumHeight + ContentStartPosition.Y + 24.0f);
         }
-        
+
         SetWindowSize(Size);
-        
+
         configurationListNode.Size = ContentSize + new Vector2(0.0f, ContentPadding.Y);
         configurationListNode.Position = ContentStartPosition - new Vector2(0.0f, ContentPadding.Y);
         configurationListNode.RecalculateLayout();
@@ -60,7 +60,7 @@ public unsafe class ConfigAddon : NativeAddon {
             CategoryLabel = label,
             ConfigObject = Config,
         };
-        
+
         configCategories.Add(newCategory);
         return newCategory;
     }

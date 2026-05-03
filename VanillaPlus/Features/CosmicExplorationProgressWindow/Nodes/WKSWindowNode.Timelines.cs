@@ -45,7 +45,7 @@ public partial class WksWindowNode {
             .EndFrameSet()
             .Build()
         );
-        
+
         starshipImageNode.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 9)
             .AddFrame(1, addColor: new Vector3(100, 100, 100), multiplyColor: new Vector3(90, 90, 90))
@@ -59,7 +59,7 @@ public partial class WksWindowNode {
             .EndFrameSet()
             .Build()
         );
-        
+
         scanlineNode.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 9)
             .AddFrame(1, alpha: 25)
@@ -73,7 +73,7 @@ public partial class WksWindowNode {
             .EndFrameSet()
             .Build()
         );
-        
+
         bottomTextureNode.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 9)
             .AddFrame(1, addColor: new Vector3(0, 0, 0), multiplyColor: new Vector3(90, 90, 90))
@@ -87,7 +87,7 @@ public partial class WksWindowNode {
             .EndFrameSet()
             .Build()
         );
-        
+
         topTextureNode.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 9)
             .AddFrame(1, addColor: new Vector3(0, 0, 0), multiplyColor: new Vector3(90, 90, 90))
@@ -101,7 +101,7 @@ public partial class WksWindowNode {
             .EndFrameSet()
             .Build()
         );
-        
+
         borderNode.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 9)
             .AddFrame(1, addColor: new Vector3(0, 0, 0), multiplyColor: new Vector3(80, 80, 80))

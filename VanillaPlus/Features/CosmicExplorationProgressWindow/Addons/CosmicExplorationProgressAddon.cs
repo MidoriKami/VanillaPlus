@@ -19,7 +19,7 @@ public class CosmicExplorationProgressAddon : NativeAddon {
     private uint? lastClassJob;
 
     private List<Progress>? allOptions;
-    
+
     public CosmicExplorationProgressAddon() {
         CreateWindowNode = () => new WksWindowNode();
         ContentPadding = Vector2.Zero;
@@ -27,7 +27,7 @@ public class CosmicExplorationProgressAddon : NativeAddon {
 
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         allOptions = GetInitialProgressList();
-        
+
         listNode = new ListNode<Progress, WksProgressListItemNode> {
             Position = ContentStartPosition,
             Size = ContentSize,
@@ -53,8 +53,8 @@ public class CosmicExplorationProgressAddon : NativeAddon {
     protected override unsafe void OnUpdate(AtkUnitBase* addon) {
         if (listNode is null) return;
         if (allOptions is null) return;
-        if (!watchHud) return; 
-        
+        if (!watchHud) return;
+
         // We want to hide with the normal WKS HUD,
         // Hiding custom addons is generally disallowed unless special care is taken to ensure the addon is not too long-lived.
         var hud = RaptureAtkUnitManager.Instance()->GetAddonByName("WKSHud");
@@ -90,7 +90,7 @@ public class CosmicExplorationProgressAddon : NativeAddon {
         var toolSheet = Services.DataManager.Excel.GetSheet<WKSCosmoToolClass>();
         foreach (var toolClassRow in toolSheet.Where(row => row.RowId is not 0)) {
             var jobId = (byte)toolClassRow.RowId;
-            
+
             foreach (var index in Enumerable.Range(0, toolClassRow.Types.Count)) {
                 researchProgress.Add(new Progress(jobId, (byte)(index + 1)) {
                     IconId = toolClassRow.Types[index].Icon,

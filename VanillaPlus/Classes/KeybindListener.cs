@@ -11,7 +11,7 @@ public unsafe class KeybindListener : IDisposable {
     public required AddonConfig AddonConfig { get; set; }
 
     public delegate void KeybindCallbackDelegate(ref bool isHandled);
-    
+
     public KeybindCallbackDelegate? KeybindCallback { get; set; }
 
     public KeybindListener()

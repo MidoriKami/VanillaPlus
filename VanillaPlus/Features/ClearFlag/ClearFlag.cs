@@ -14,12 +14,12 @@ public unsafe class ClearFlag : GameModification {
         DisplayName = Strings.ModificationDisplay_ClearFlag,
         Description = Strings.ModificationDescription_ClearFlag,
         Type = ModificationType.GameBehavior,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     private AddonController? minimapController;
     private IAddonEventHandle? minimapMouseClick;
-    
+
     public override void OnEnable() {
         minimapController = new AddonController {
             AddonName = "_NaviMap",
@@ -33,7 +33,7 @@ public unsafe class ClearFlag : GameModification {
             },
             OnFinalize = addon => {
                 Services.AddonEventManager.RemoveEventNullable(minimapMouseClick);
-            
+
                 var collisionNode = addon->GetNodeById<AtkCollisionNode>(19);
                 if (collisionNode is null) return;
 

@@ -24,13 +24,13 @@ public unsafe class TargetCastBarCountdown : GameModification {
     };
 
     private MultiAddonController? addonController;
-    
+
     private TextNode? primaryTargetTextNode;
     private TextNode? primaryTargetAltTextNode;
     private TextNode? focusTargetTextNode;
 
     private TextNode?[]? castBarEnemyTextNode;
-    
+
     private TextNodeStyle? primaryTargetStyle;
     private TextNodeStyle? primaryTargetAltStyle;
     private TextNodeStyle? focusTargetStyle;
@@ -107,7 +107,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
             FontType = FontType.Miedinger,
             AlignmentType = AlignmentType.BottomRight,
         };
-        
+
         primaryTargetStyle = Config.LoadConfig(primaryTargetPath, defaultPrimaryTargetStyle);
         if (primaryTargetStyle.TextColor == Vector4.Zero) {
             primaryTargetStyle = defaultPrimaryTargetStyle;
@@ -119,34 +119,34 @@ public unsafe class TargetCastBarCountdown : GameModification {
             primaryTargetAltStyle = defaultPrimaryTargetAltStyle;
             primaryTargetAltStyle.Save(primaryTargetAltPath);
         }
-        
+
         focusTargetStyle = Config.LoadConfig(focusTargetPath, defaultFocusTargetStyle);
         if (focusTargetStyle.TextColor == Vector4.Zero) {
             focusTargetStyle = defaultFocusTargetStyle;
             focusTargetStyle.Save(focusTargetPath);
         }
-        
+
         castBarEnemyStyle = Config.LoadConfig(castBarEnemyPath, defaultCastBarEnemyStyle);
         if (castBarEnemyStyle.TextColor == Vector4.Zero) {
             castBarEnemyStyle = defaultCastBarEnemyStyle;
             castBarEnemyStyle.Save(castBarEnemyPath);
         }
-        
+
         primaryTargetStyle.StyleChanged += styleObj => {
             styleObj.Save(primaryTargetPath);
             primaryTargetStyle.ApplyStyle(primaryTargetTextNode);
         };
-        
+
         primaryTargetAltStyle.StyleChanged += styleObj => {
             styleObj.Save(primaryTargetAltPath);
             primaryTargetAltStyle.ApplyStyle(primaryTargetAltTextNode);
         };
-        
+
         focusTargetStyle.StyleChanged += styleObj => {
             styleObj.Save(focusTargetPath);
             focusTargetStyle.ApplyStyle(focusTargetTextNode);
         };
-        
+
         castBarEnemyStyle.StyleChanged += styleObj => {
             styleObj.Save(castBarEnemyPath);
             castBarEnemyStyle.ApplyStyle(castBarEnemyTextNode);
@@ -176,13 +176,13 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
         configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryPrimaryAltStyle)
             .AddNodeConfig(primaryTargetAltStyle, TextNodeConfigOptions.TextAlignment);
-        
+
         configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryFocusStyle)
             .AddNodeConfig(focusTargetStyle, TextNodeConfigOptions.TextAlignment);
-        
+
         configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryNameplateStyle)
             .AddNodeConfig(castBarEnemyStyle, TextNodeConfigOptions.TextAlignment);
-        
+
         OpenConfigAction = configWindow.Toggle;
     }
 
@@ -224,12 +224,12 @@ public unsafe class TargetCastBarCountdown : GameModification {
                 foreach (var index in Enumerable.Range(0, 10)) {
                     ref var info = ref castBarAddon->CastBarNodes[index];
 
-                    var newNode = BuildTextNode(new Vector2(0.0f, -12.0f)); 
+                    var newNode = BuildTextNode(new Vector2(0.0f, -12.0f));
 
                     newNode.Size = new Vector2(82.0f, 24.0f);
                     newNode.AlignmentType = AlignmentType.BottomRight;
                     newNode.FontSize = 12;
-                    
+
                     castBarEnemyTextNode[index] = newNode;
                     castBarEnemyStyle?.ApplyStyle(newNode);
 
@@ -246,17 +246,17 @@ public unsafe class TargetCastBarCountdown : GameModification {
                 primaryTargetTextNode?.Dispose();
                 primaryTargetTextNode = null;
                 break;
-            
+
             case "_TargetInfo":
                 primaryTargetAltTextNode?.Dispose();
                 primaryTargetAltTextNode = null;
                 break;
-            
+
             case "_FocusTargetInfo":
                 focusTargetTextNode?.Dispose();
                 focusTargetTextNode = null;
                 break;
-            
+
             case "CastBarEnemy":
                 foreach (var node in castBarEnemyTextNode ?? []) {
                     node?.Dispose();
@@ -268,7 +268,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
     private void UpdateCastBar(AtkUnitBase* addon) {
         if (config is null) return;
-        
+
         if (Services.ClientState.IsPvP) {
             primaryTargetTextNode?.String = string.Empty;
             primaryTargetAltTextNode?.String = string.Empty;
@@ -278,7 +278,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
             }
             return;
         }
-        
+
         switch (addon->NameString) {
             case "_TargetInfoCastBar" when primaryTargetTextNode is not null:
                 primaryTargetTextNode.String = GetCastTime(Services.TargetManager.GetTarget(), config.PrimaryTarget);
@@ -287,14 +287,14 @@ public unsafe class TargetCastBarCountdown : GameModification {
             case "_TargetInfo" when primaryTargetAltTextNode is not null:
                 primaryTargetAltTextNode.String = GetCastTime(Services.TargetManager.GetTarget(), config.PrimaryTarget);
                 break;
-            
+
             case "_FocusTargetInfo" when focusTargetTextNode is not null:
                 focusTargetTextNode.String = GetCastTime(Services.TargetManager.GetFocusTarget(), config.FocusTarget);
                 break;
-            
+
             case "CastBarEnemy" when castBarEnemyTextNode is not null:
                 var castBarAddon = (AddonCastBarEnemy*)addon;
-                
+
                 foreach (var index in Enumerable.Range(0, 10)) {
                     var info = castBarAddon->CastBarInfo[index];
                     var node = castBarEnemyTextNode[index];

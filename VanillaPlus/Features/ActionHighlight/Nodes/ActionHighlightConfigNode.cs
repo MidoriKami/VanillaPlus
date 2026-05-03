@@ -21,13 +21,13 @@ public class ActionHighlightConfigNode : ConfigNode<ActionCategory> {
         actionsList.AttachNode(this);
 
         generalSettingsArea = new VerticalListNode {
-            IsVisible = false, 
+            IsVisible = false,
             FitContents = true,
         };
         generalSettingsArea.AttachNode(this);
     }
 
-    public void SetConfig(ActionHighlightConfig highlightConfig) 
+    public void SetConfig(ActionHighlightConfig highlightConfig)
         => config = highlightConfig;
 
     protected override void OnSizeChanged() {
@@ -66,7 +66,7 @@ public class ActionHighlightConfigNode : ConfigNode<ActionCategory> {
 
         var actions = option.Type switch {
             ActionCategoryType.Role => Services.DataManager.RoleActions.ToList(),
-            ActionCategoryType.Job  => ActionHighlight.GetClassActions().Where(action => IsValidAction(job, action)).OrderBy(a => a.ClassJobLevel).ToList(),
+            ActionCategoryType.Job => ActionHighlight.GetClassActions().Where(action => IsValidAction(job, action)).OrderBy(a => a.ClassJobLevel).ToList(),
             _ => [],
         };
 
@@ -76,16 +76,16 @@ public class ActionHighlightConfigNode : ConfigNode<ActionCategory> {
             config.ActionSettings.TryAdd(action.RowId, new ActionHighlightSetting {
                 ActionId = action.RowId,
             });
-            
+
             var actionSettings = config.ActionSettings[action.RowId];
-            
+
             actionSettings.ParentConfig = config;
             configList.Add(actionSettings);
         }
-        
+
         actionsList.OptionsList = configList;
     }
-    
+
     private static bool IsValidAction(ClassJob job, Action action) {
         if (action.IsUsableByJob(job)) return true;
 

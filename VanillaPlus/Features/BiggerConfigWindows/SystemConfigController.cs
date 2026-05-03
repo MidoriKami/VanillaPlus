@@ -8,9 +8,9 @@ namespace VanillaPlus.Features.BiggerConfigWindows;
 
 public unsafe class SystemConfigController : IDisposable {
     private readonly BiggerConfigWindowsConfig config;
-    
+
     private readonly AddonController systemConfigController;
-    private readonly List<uint> scrollBarIdList = [ 17, 89, 286, 507 ];
+    private readonly List<uint> scrollBarIdList = [17, 89, 286, 507];
 
     public SystemConfigController(BiggerConfigWindowsConfig config) {
         this.config = config;
@@ -33,14 +33,14 @@ public unsafe class SystemConfigController : IDisposable {
             Services.PluginLog.Warning("[BiggerConfigWindow] Unable to resize config window, height would be too big.");
             return;
         }
-        
+
         addon->Size += new Vector2(0.0f, config.SystemConfigAdditionalHeight);
 
         // Adjust scrollable containers
         foreach (var scrollBarId in scrollBarIdList) {
             var scrollBarComponent = addon->GetComponentById<AtkComponentScrollBar>(scrollBarId);
             if (scrollBarComponent is null) continue;
-            
+
             ResizeHelpers.ResizeScrollBarNode(scrollBarComponent, config.SystemConfigAdditionalHeight);
         }
 
@@ -50,7 +50,7 @@ public unsafe class SystemConfigController : IDisposable {
         // Adjust vertical line ninegridnode
         addon->GetNodeById(15)->Size += new Vector2(0.0f, config.SystemConfigAdditionalHeight);
     }
-    
+
     private void FinalizeConfigSystem(AtkUnitBase* addon) {
         addon->Size -= new Vector2(0.0f, config.SystemConfigAdditionalHeight);
 

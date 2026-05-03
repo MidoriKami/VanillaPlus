@@ -11,7 +11,7 @@ public unsafe class ReverseCharacterPanel : GameModification {
         DisplayName = Strings.ModificationDisplay_ReverseCharacterPanel,
         Description = Strings.ModificationDescription_ReverseCharacterPanel,
         Type = ModificationType.UserInterface,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     public override string ImageName => "ReverseCharacterPanel.png";
@@ -44,7 +44,7 @@ public unsafe class ReverseCharacterPanel : GameModification {
         foreach (var child in addonCharacter->AddonControl.ChildAddons) {
             if (child.Value is null) continue;
 
-            child.Value->PositionX = (short) (addonCharacter->AtkUnitBase.Size.X - 386.0f);
+            child.Value->PositionX = (short)(addonCharacter->AtkUnitBase.Size.X - 386.0f);
         }
     }
 

@@ -13,13 +13,13 @@ public static unsafe class AgentHudExtensions {
 
         private List<Pointer<HudPartyMember>> GetSizedHudMemberSpan() {
             List<Pointer<HudPartyMember>> members = [];
-            
+
             foreach (var member in instance.PartyMembers.PointerEnumerator()) {
                 if (member->EntityId is not 0xE0000000) {
                     members.Add(member);
                 }
             }
-            
+
             return members;
         }
     }

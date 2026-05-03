@@ -14,7 +14,7 @@ public sealed unsafe class PlayerMapMarker : MapMarkerNode {
         IconId = 60575;
         Size = new Vector2(16.0f, 16.0f);
     }
-    
+
     protected override void OnUpdate() {
         IsVisible = false;
 
@@ -29,7 +29,7 @@ public sealed unsafe class PlayerMapMarker : MapMarkerNode {
         if (battleChara->ObjectKind is not ObjectKind.Pc) return;
         if (battleChara->IsPartyMember) return;
         if (!battleChara->GetIsTargetable()) return;
-        
+
         var objectPosition = new Vector2(battleChara->Position.X, battleChara->Position.Z);
         var objectName = battleChara->NameString;
         var objectLevel = battleChara->Level.ToString();
@@ -42,7 +42,7 @@ public sealed unsafe class PlayerMapMarker : MapMarkerNode {
         else {
             MultiplyColor = KnownColor.White.Vector3();
         }
-        
+
         IsVisible = true;
         Position = new Vector2(objectPosition.X, objectPosition.Y);
         TextTooltip = $"Lv. {objectLevel} {objectName}";

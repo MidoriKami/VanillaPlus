@@ -42,7 +42,7 @@ public static unsafe class AddonPartyListExtensions {
                     });
                 }
             }
-        
+
             return hudMembers;
         }
     }
@@ -54,8 +54,8 @@ public unsafe class PartyListHudData {
     public required PartyListNumberArray.PartyListMemberNumberArray* NumberArrayData { get; init; }
 
     public bool IsSelf() {
-        if (Services.ObjectTable.LocalPlayer is not { EntityId: var playerId } ) return false;
-        
+        if (Services.ObjectTable.LocalPlayer is not { EntityId: var playerId }) return false;
+
         return HudMember->EntityId == playerId;
     }
 }

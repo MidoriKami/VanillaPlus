@@ -11,7 +11,7 @@ public class FloatSliderConfig : BaseConfigEntry {
     public required float InitialValue { get; set; }
     public required int DecimalPlaces { get; init; }
     public required float StepSpeed { get; init; }
-    
+
     public override NodeBase BuildNode() {
         var layoutNode = new HorizontalListNode {
             Height = 24.0f,

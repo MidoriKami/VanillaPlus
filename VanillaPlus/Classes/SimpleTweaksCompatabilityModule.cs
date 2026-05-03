@@ -9,7 +9,7 @@ public class SimpleTweaksCompatibilityModule(string targetModuleName, string? al
     public override bool ShouldLoadGameModification() {
         // If SimpleTweaks is not loaded, we can load our module
         if (!IsSimpleTweaksLoaded()) return true;
-        
+
         // If SimpleTweaks is loaded, but doesn't contain our module, then we can load our module
         return !GetTargetPluginLoadedModules().Contains(targetModuleName);
     }
@@ -26,7 +26,7 @@ public class SimpleTweaksCompatibilityModule(string targetModuleName, string? al
             var fileText = File.ReadAllText(configFileInfo.FullName);
 
             if (fileText.IsNullOrEmpty()) return [];
-            
+
             var jObject = JObject.Parse(fileText);
             if (!jObject.HasValues) return [];
 
@@ -35,7 +35,7 @@ public class SimpleTweaksCompatibilityModule(string targetModuleName, string? al
 
             if (enabledTweaksToken.Type is JTokenType.Array) {
                 var enabledTweaksList = enabledTweaksToken.ToObject<List<string>>();
-                
+
                 return enabledTweaksList ?? [];
             }
         }
@@ -45,7 +45,7 @@ public class SimpleTweaksCompatibilityModule(string targetModuleName, string? al
 
     private static string GetConfigFilePath()
         => Path.Combine(Services.PluginInterface.GetPluginConfigDirectory().Replace("VanillaPlus", "SimpleTweaksPlugin.json"));
-    
+
     private static FileInfo GetConfigFileInfo()
         => new(GetConfigFilePath());
 }

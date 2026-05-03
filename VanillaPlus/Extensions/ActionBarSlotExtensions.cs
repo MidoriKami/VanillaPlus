@@ -25,7 +25,7 @@ public static unsafe class ActionBarSlotExtensions {
 
         private AtkComponentIcon* GetIconComponent() {
             if (slot.Icon is null) return null;
-            return (AtkComponentIcon*) slot.Icon->Component;
+            return (AtkComponentIcon*)slot.Icon->Component;
         }
     }
 }

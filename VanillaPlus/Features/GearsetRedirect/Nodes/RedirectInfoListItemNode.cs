@@ -13,7 +13,7 @@ public unsafe class RedirectInfo {
         var regex = new Regex(searchString, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
         if (regex.IsMatch(GetGearsetData(item.AlternateGearsetId).NameString)) return true;
-        
+
         var territoryInfo = Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(item.TerritoryType);
         if (regex.IsMatch(territoryInfo.PlaceName.ValueNullable?.Name.ToString() ?? string.Empty)) return true;
 
@@ -23,7 +23,6 @@ public unsafe class RedirectInfo {
     private static ref RaptureGearsetModule.GearsetEntry GetGearsetData(int gearsetId)
         => ref RaptureGearsetModule.Instance()->Entries[gearsetId];
 }
-
 
 public unsafe class RedirectInfoListItemNode : IconListItemNode<RedirectInfo> {
     protected override uint GetIconId(RedirectInfo data)
@@ -36,8 +35,8 @@ public unsafe class RedirectInfoListItemNode : IconListItemNode<RedirectInfo> {
         => $"When in {Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(data.TerritoryType).PlaceName.Value.Name}";
 
     protected override uint? GetId(RedirectInfo data)
-        => (uint) data.AlternateGearsetId;
-    
+        => (uint)data.AlternateGearsetId;
+
     private static ref RaptureGearsetModule.GearsetEntry GetGearsetData(int gearsetId)
         => ref RaptureGearsetModule.Instance()->Entries[gearsetId];
 }

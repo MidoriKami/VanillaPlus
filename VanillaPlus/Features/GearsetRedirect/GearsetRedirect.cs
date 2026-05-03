@@ -13,7 +13,7 @@ public unsafe class GearsetRedirect : GameModification {
         DisplayName = Strings.ModificationDisplay_GearsetRedirect,
         Description = Strings.ModificationDescription_GearsetRedirect,
         Type = ModificationType.GameBehavior,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     private Hook<RaptureGearsetModule.Delegates.EquipGearset>? gearsetChangedHook;
@@ -35,15 +35,15 @@ public unsafe class GearsetRedirect : GameModification {
                 configWindow.Toggle();
             }
         };
-        
+
         gearsetChangedHook = Services.Hooker.HookFromAddress<RaptureGearsetModule.Delegates.EquipGearset>(RaptureGearsetModule.Addresses.EquipGearset.Value, OnGearsetChanged);
         gearsetChangedHook?.Enable();
     }
-    
+
     public override void OnDisable() {
         gearsetChangedHook?.Dispose();
         gearsetChangedHook = null;
-        
+
         configWindow?.Dispose();
         configWindow = null;
 

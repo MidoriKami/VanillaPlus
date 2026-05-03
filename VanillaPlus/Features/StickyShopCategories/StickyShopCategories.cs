@@ -65,13 +65,13 @@ public unsafe class StickyShopCategories : GameModification {
         }
 
         Services.PluginLog.Debug($"Saving Values: {dropDownCategoryIndex}, {dropDownSubCategoryIndex}");
-        
+
         config.Save();
     }
 
-    private static AtkComponentDropDownList* GetCategoryDropDown(AddonArgs args) 
-        => (AtkComponentDropDownList*) args.GetAddon<AtkUnitBase>()->GetComponentByNodeId(7);
+    private static AtkComponentDropDownList* GetCategoryDropDown(AddonArgs args)
+        => (AtkComponentDropDownList*)args.GetAddon<AtkUnitBase>()->GetComponentByNodeId(7);
 
-    private static AtkComponentDropDownList* GetSubCategoryDropDown(AddonArgs args) 
-        => (AtkComponentDropDownList*) args.GetAddon<AtkUnitBase>()->GetComponentByNodeId(9);
+    private static AtkComponentDropDownList* GetSubCategoryDropDown(AddonArgs args)
+        => (AtkComponentDropDownList*)args.GetAddon<AtkUnitBase>()->GetComponentByNodeId(9);
 }

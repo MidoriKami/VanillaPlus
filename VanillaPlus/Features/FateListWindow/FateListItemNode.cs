@@ -10,7 +10,7 @@ namespace VanillaPlus.Features.FateListWindow;
 
 public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
     public static float ItemHeight => 53.0f;
-    
+
     private readonly IconImageNode iconNode;
     private readonly IconImageNode expBonusIconNode;
     private readonly TextNode nameNode;
@@ -18,7 +18,7 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
     private readonly TextNode levelNode;
     private readonly ProgressBarNode progressNode;
     private readonly TextNode progressTextNode;
-    
+
     public FateListItemNode() {
         iconNode = new IconImageNode {
             FitTexture = true,
@@ -58,7 +58,7 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
         progressTextNode.AttachNode(this);
 
         CollisionNode.AddEvent(AtkEventType.MouseClick, () => ItemData?.FocusMarker());
-        
+
         AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 120)
             .AddLabel(1, 1, AtkTimelineJumpBehavior.Start, 0)
@@ -79,7 +79,7 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
             .AddFrame(120, multiplyColor: new Vector3(100.0f, 100.0f, 100.0f))
             .EndFrameSet()
             .Build());
-        
+
         Timeline?.PlayAnimation(1);
     }
 
@@ -93,13 +93,13 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
 
         progressTextNode.Size = new Vector2(50.0f, Height / 2.0f);
         progressTextNode.Position = new Vector2(Width - progressTextNode.Width, Height / 2.0f);
-        
+
         timeRemainingNode.Size = new Vector2(50.0f, Height / 2.0f);
         timeRemainingNode.Position = new Vector2(Width - timeRemainingNode.Width, 0.0f);
 
         levelNode.Size = new Vector2(75.0f, Height / 2.0f);
         levelNode.Position = new Vector2(iconNode.Width + 4.0f, Height / 2.0f);
-        
+
         progressNode.Size = new Vector2(Width - iconNode.Width - 4.0f - timeRemainingNode.Width - levelNode.Width - 4.0f, Height / 3.0f);
         progressNode.Position = new Vector2(iconNode.Width + levelNode.Width + 4.0f, Height / 2.0f + (Height / 3.0f) / 4.0f);
 
@@ -119,7 +119,7 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
                 timeRemainingNode.String = "Pending";
                 Timeline?.PlayAnimation(1);
                 break;
-            
+
             case FateState.Running:
                 timeRemainingNode.String = $"{SeIconChar.Clock.ToIconChar()} {itemData.TimeRemainingString}";
                 Timeline?.PlayAnimation(itemData.TimeRemaining < 300 ? 2 : 1);
@@ -132,7 +132,7 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
         else {
             levelNode.String = Strings.FateEntry_LevelUnknown;
         }
-           
+
         progressTextNode.String = $"{itemData.Progress}%";
         progressNode.Progress = itemData.Progress / 100.0f;
     }

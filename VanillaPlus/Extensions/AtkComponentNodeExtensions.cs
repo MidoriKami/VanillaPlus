@@ -8,9 +8,9 @@ public static unsafe class AtkComponentNodeExtensions {
             => node.Component->UldManager.SearchNodeById<T>(id);
 
         public void FadeNode(float fadePercentage) {
-            node.MultiplyRed = (byte) ((1 - fadePercentage) * 100);
-            node.MultiplyGreen = (byte) ((1 - fadePercentage) * 100);
-            node.MultiplyBlue = (byte) ((1 - fadePercentage) * 100);
+            node.MultiplyRed = (byte)((1 - fadePercentage) * 100);
+            node.MultiplyGreen = (byte)((1 - fadePercentage) * 100);
+            node.MultiplyBlue = (byte)((1 - fadePercentage) * 100);
         }
     }
 }

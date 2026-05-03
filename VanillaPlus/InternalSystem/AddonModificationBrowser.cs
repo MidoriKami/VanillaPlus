@@ -19,7 +19,7 @@ namespace VanillaPlus.InternalSystem;
 public class AddonModificationBrowser : NativeAddon {
 
     private SimpleComponentNode mainContainerNode = null!;
-    
+
     private HorizontalFlexNode searchContainerNode = null!;
     private TextInputNode searchBoxNode = null!;
     private ScrollingAreaNode<TreeListNode> optionContainerNode = null!;
@@ -62,10 +62,10 @@ public class AddonModificationBrowser : NativeAddon {
             foreach (var subCategory in PluginSystem.ModificationManager.SubCategoryGroups[category.Key]) {
                 if (subCategory.Key is not null) {
                     var newHeaderNode = new TreeListHeaderNode {
-                        Size = new Vector2(0.0f, 24.0f), 
-                        String = subCategory.Key.Description, 
+                        Size = new Vector2(0.0f, 24.0f),
+                        String = subCategory.Key.Description,
                     };
-                    
+
                     newCategoryNode.AddNode(newHeaderNode);
                 }
 
@@ -75,21 +75,21 @@ public class AddonModificationBrowser : NativeAddon {
                         Height = 38.0f,
                         Modification = mod,
                         IsVisible = true,
-                        OnClick = thisNode => OnOptionClicked((GameModificationOptionNode) thisNode),
+                        OnClick = thisNode => OnOptionClicked((GameModificationOptionNode)thisNode),
                     });
                 }
             }
-            
+
             optionContainerNode.ContentNode.AddCategoryNode(newCategoryNode);
         }
 
         RecalculateScrollableAreaSize();
         UpdateSizes();
-        
+
         OnSearchBoxInputReceived(PluginSystem.SystemConfig.CurrentSearch);
         searchBoxNode.String = PluginSystem.SystemConfig.CurrentSearch;
     }
-    
+
     private void BuildOptionsContainer() {
         optionContainerNode = new ScrollingAreaNode<TreeListNode> {
             ContentHeight = 1000.0f,
@@ -104,7 +104,7 @@ public class AddonModificationBrowser : NativeAddon {
             AlignmentFlags = FlexFlags.FitHeight | FlexFlags.FitWidth,
         };
         searchContainerNode.AttachNode(mainContainerNode);
-        
+
         searchBoxNode = new TextInputNode {
             PlaceholderString = Strings.SearchPlaceholder,
             AutoSelectAll = true,
@@ -120,7 +120,7 @@ public class AddonModificationBrowser : NativeAddon {
     private void BuildDescriptionContainer() {
         descriptionContainerNode = new SimpleComponentNode();
         descriptionContainerNode.AttachNode(mainContainerNode);
-        
+
         descriptionTextNode = new TextNode {
             AlignmentType = AlignmentType.Center,
             TextFlags = TextFlags.WordWrap | TextFlags.MultiLine,
@@ -131,7 +131,7 @@ public class AddonModificationBrowser : NativeAddon {
             TextColor = ColorHelper.GetColor(1),
         };
         descriptionTextNode.AttachNode(descriptionContainerNode);
-        
+
         descriptionImageTextNode = new TextNode {
             AlignmentType = AlignmentType.TopLeft,
             TextFlags = TextFlags.WordWrap | TextFlags.MultiLine,
@@ -172,15 +172,15 @@ public class AddonModificationBrowser : NativeAddon {
             descriptionImageNode.Scale = new Vector2(1.05f, 1.05f);
             isImageHovered = true;
         });
-        
+
         descriptionImageNode.AddEvent(AtkEventType.MouseOut, () => {
             if (isImageEnlarged) return;
-            
+
             descriptionImageNode.Scale = Vector2.One;
             isImageHovered = false;
         });
         descriptionImageNode.AttachNode(descriptionImageFrame);
-        
+
         borderNineGridNode = new BorderNineGridNode {
             Alpha = 125,
             Offsets = new Vector4(40.0f),
@@ -198,10 +198,10 @@ public class AddonModificationBrowser : NativeAddon {
 
         RecalculateScrollableAreaSize();
     }
-    
+
     private void OnSearchBoxInputReceived(ReadOnlySeString searchTerm) {
         List<GameModificationOptionNode> validOptions = [];
-        
+
         foreach (var option in optionContainerNode.ContentNode.CategoryNodes.SelectMany(category => category.GetNodes<GameModificationOptionNode>())) {
             var isTarget = option.ModificationInfo.IsMatch(searchTerm.ToString());
             option.IsVisible = isTarget;
@@ -223,20 +223,20 @@ public class AddonModificationBrowser : NativeAddon {
         if (validOptions.All(option => option != selectedOption)) {
             ClearSelection();
         }
-        
+
         optionContainerNode.ContentNode.RefreshLayout();
         RecalculateScrollableAreaSize();
     }
 
     private void OnOptionClicked(GameModificationOptionNode option) {
         ClearSelection();
-        
+
         selectedOption = option;
         selectedOption.IsSelected = true;
 
         if (selectedOption.Modification.Modification.ImageName is { } assetName) {
             Task.Run(() => LoadModuleImage(assetName));
-            
+
             descriptionImageFrame.IsVisible = true;
             descriptionImageTextNode.IsVisible = true;
             descriptionTextNode.IsVisible = false;
@@ -276,7 +276,7 @@ public class AddonModificationBrowser : NativeAddon {
             }
 
             descriptionImageNode.Origin = descriptionImageNode.Size / 2.0f;
-            
+
             borderNineGridNode.Position = new Vector2(-16.0f, -16.0f);
             borderNineGridNode.Size = descriptionImageNode.Size + new Vector2(32.0f, 32.0f);
         }
@@ -296,7 +296,7 @@ public class AddonModificationBrowser : NativeAddon {
         descriptionTextNode.String = Strings.SelectionPrompt;
 
         descriptionImageFrame.Scale = Vector2.One;
-        
+
         descriptionImageFrame.IsVisible = false;
         descriptionImageTextNode.IsVisible = false;
     }
@@ -327,10 +327,10 @@ public class AddonModificationBrowser : NativeAddon {
 
         descriptionImageTextNode.Size = new Vector2(descriptionContainerNode.Width - 16.0f, descriptionContainerNode.Height - descriptionImageFrame.Y - descriptionImageFrame.Height - 22.0f);
         descriptionImageTextNode.Position = new Vector2(8.0f, descriptionImageFrame.Position.Y + descriptionImageFrame.Height + 16.0f);
-        
+
         descriptionTextNode.Size = descriptionContainerNode.Size - new Vector2(16.0f, 16.0f);
         descriptionTextNode.Position = new Vector2(8.0f, 8.0f);
-        
+
         foreach (var node in optionContainerNode.ContentNode.CategoryNodes) {
             node.Width = optionContainerNode.ContentNode.Width;
         }

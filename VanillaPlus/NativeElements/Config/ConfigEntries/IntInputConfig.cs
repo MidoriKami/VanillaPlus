@@ -31,7 +31,7 @@ public class IntInputConfig : BaseConfigEntry {
 
         layoutNode.AddNode(numericInput);
         layoutNode.AddNode(GetLabelNode());
-        
+
         return layoutNode;
     }
 }

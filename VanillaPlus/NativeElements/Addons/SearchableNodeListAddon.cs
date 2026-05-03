@@ -12,18 +12,18 @@ public unsafe class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where 
 
     private TextInputNode? textInputNode;
     private EnumDropDownNode<Enum>? sortDropdownNode;
-    
+
     private VerticalListNode? mainContainerNode;
     private HorizontalFlexNode? searchContainerNode;
     private HorizontalListNode? widgetsContainerNode;
     private CircleButtonNode? reverseButtonNode;
-    
+
     private bool reverseSort;
     private string searchText = string.Empty;
     private Enum filterOption = DefaultSortOptions.Unset;
-    
+
     public required List<Enum> DropDownOptions { get; init; }
-    
+
     protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         const float dropDownWidth = 175.0f;
 
@@ -72,16 +72,16 @@ public unsafe class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where 
             searchText = newSearchString.ToString();
             OnSearchUpdated?.Invoke(searchText);
         };
-        
+
         const float listPadding = 4.0f;
-        
+
         ListNode = new ListNode<T, TU> {
             Size = ContentSize - new Vector2(0.0f, searchContainerNode.Height + widgetsContainerNode.Height + listPadding),
             Position = new Vector2(0.0f, listPadding),
             OptionsList = ListItems,
             ItemSpacing = ItemSpacing,
         };
-        
+
         mainContainerNode.AttachNode(this);
         mainContainerNode.AddNode(searchContainerNode);
         searchContainerNode.AddNode(textInputNode);
@@ -102,6 +102,7 @@ public unsafe class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where 
     }
 
     public delegate void SearchUpdated(string searchString);
+
     public delegate void FilterUpdated(Enum sortingMode, bool reversed);
 
     public SearchUpdated? OnSearchUpdated { get; set; }

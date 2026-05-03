@@ -14,7 +14,7 @@ public class DebugCustomAddon : GameModification {
         DisplayName = Strings.ModificationDisplay_DebugCustomAddon,
         Description = Strings.ModificationDescription_DebugCustomAddon,
         Type = ModificationType.Debug,
-        Authors = [ "YourNameHere" ],
+        Authors = ["YourNameHere"],
     };
 
     private NativeAddon? debugAddon;

@@ -13,10 +13,10 @@ namespace VanillaPlus.Features.AprilFools;
 /// </summary>
 public unsafe class ScrollingFools : FoolsModule {
     private Hook<AtkComponentScrollBar.Delegates.ReceiveEvent>? scrollBarReceiveEventHook;
-    
-    public override bool IsEnabledByConfig 
+
+    public override bool IsEnabledByConfig
         => Config.InvertScroll;
-    
+
     protected override void OnEnable() {
         scrollBarReceiveEventHook = Services.Hooker.HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
         scrollBarReceiveEventHook?.Enable();
@@ -26,7 +26,7 @@ public unsafe class ScrollingFools : FoolsModule {
         scrollBarReceiveEventHook?.Dispose();
         scrollBarReceiveEventHook = null;
     }
-    
+
     private void AtkComponentScrollBarReceiveEvent(AtkComponentScrollBar* thisPtr, AtkEventType type, int param, AtkEvent* eventPointer, AtkEventData* dataPointer) {
         try {
             dataPointer->MouseData.WheelDirection *= -1;

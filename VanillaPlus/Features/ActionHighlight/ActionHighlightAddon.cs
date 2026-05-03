@@ -37,7 +37,7 @@ public class ActionHighlightAddon : NativeAddon {
             Position = ContentStartPosition,
             Size = ContentSize with { X = 250.0f },
             Options = allCategories,
-            SortOptions = [ ActionHighlightSortMode.RolePriority, ActionHighlightSortMode.Alphabetical ],
+            SortOptions = [ActionHighlightSortMode.RolePriority, ActionHighlightSortMode.Alphabetical],
             SelectionChanged = OnSelectionChanged,
             ItemComparer = (left, right, mode) => mode switch {
                 ActionHighlightSortMode.Alphabetical => string.CompareOrdinal(left.Name, right.Name),

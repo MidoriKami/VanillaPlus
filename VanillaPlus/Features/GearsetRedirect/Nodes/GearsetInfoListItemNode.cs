@@ -17,13 +17,13 @@ public unsafe class GearsetInfo {
             _ => 0,
         };
     }
-    
+
     public static bool IsMatch(GearsetInfo item, string searchString) {
         var regex = new Regex(searchString, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-        
+
         return regex.IsMatch(GetGearsetData(item.GearsetId).NameString);
     }
-    
+
     private static ref RaptureGearsetModule.GearsetEntry GetGearsetData(int gearsetId)
         => ref RaptureGearsetModule.Instance()->Entries[gearsetId];
 }
@@ -39,7 +39,7 @@ public unsafe class GearsetInfoListItemNode : IconListItemNode<GearsetInfo> {
         => data.GearsetId < 0 ? string.Empty : $"{SeIconChar.ItemLevel.ToIconString()} {GetGearsetData(data.GearsetId)->ItemLevel}";
 
     protected override uint? GetId(GearsetInfo data)
-        => data.GearsetId < 0 ? null : (uint) data.GearsetId;
+        => data.GearsetId < 0 ? null : (uint)data.GearsetId;
 
     private static RaptureGearsetModule.GearsetEntry* GetGearsetData(int gearsetId)
         => RaptureGearsetModule.Instance()->GetGearset(gearsetId);

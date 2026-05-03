@@ -12,7 +12,7 @@ public static class InventoryManagerExtensions {
             if (inventoryTypes.Length is 0) {
                 inventoryTypes = Inventory.StandardInventories.ToArray();
             }
-        
+
             foreach (var inventory in inventoryTypes) {
                 if (inventoryManager.GetItemCountInContainer(itemId, inventory) is not 0) {
                     return true;

@@ -72,17 +72,17 @@ public class NewRedirectionAddon : NativeAddon {
                                             SelectedGearset = new GearsetInfo {
                                                 GearsetId = result.Id,
                                             };
-        
+
                                             gearsetInfoNode?.ItemData = SelectedGearset;
                                         };
-        
+
                                         gearsetSearchAddon.Open();
                                     },
                                 },
                             ],
                         },
                         new ResNode { Width = 8.0f },
-                        new VerticalLineNode{ Width = 2.0f },
+                        new VerticalLineNode { Width = 2.0f },
                         new VerticalListNode {
                             Width = ContentSize.X * 4.0f / 7.0f,
                             FitWidth = true,
@@ -106,10 +106,10 @@ public class NewRedirectionAddon : NativeAddon {
                                     OnClick = () => {
                                         territorySearchAddon?.SelectionResult = result => {
                                             SelectedTerritory = result;
-        
+
                                             zoneInfoNode?.ItemData = result;
                                         };
-        
+
                                         territorySearchAddon?.Open();
                                     },
                                 },
@@ -130,7 +130,7 @@ public class NewRedirectionAddon : NativeAddon {
                             OnClick = () => {
                                 if (SelectedGearset is not null && SelectedTerritory is not null) {
                                     OnSelectionsConfirmed?.Invoke();
-                                } 
+                                }
 
                                 Close();
                             },

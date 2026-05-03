@@ -1,4 +1,5 @@
 ﻿// ReSharper disable RedundantUnsafeContext
+
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -13,13 +14,15 @@ public unsafe class DebugGameModification : GameModification {
         DisplayName = Strings.ModificationDisplay_DebugGameModification,
         Description = Strings.ModificationDescription_DebugGameModification,
         Type = ModificationType.Debug,
-        Authors = [ "YourNameHere" ],
+        Authors = ["YourNameHere"],
     };
 
     public override void OnEnable() {
+
     }
 
     public override void OnDisable() {
+
     }
 }
 #endif

@@ -9,7 +9,7 @@ public class BiggerConfigWindows : GameModification {
         DisplayName = Strings.BiggerConfigWindows_DisplayName,
         Description = Strings.BiggerConfigWindows_Description,
         Type = ModificationType.UserInterface,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     public override string ImageName => "BiggerConfigWindows.png";
@@ -34,7 +34,7 @@ public class BiggerConfigWindows : GameModification {
             .AddInputFloat(Strings.BiggerConfigWindows_CharacterConfigAdditionalSize, 5, ..4000, nameof(config.CharacterConfigAdditionalHeight));
 
         OpenConfigAction = configAddon.Toggle;
-        
+
         systemConfigController = new SystemConfigController(config);
         characterConfigController = new CharacterConfigController(config);
     }
@@ -42,13 +42,13 @@ public class BiggerConfigWindows : GameModification {
     public override void OnDisable() {
         systemConfigController?.Dispose();
         systemConfigController = null;
-        
+
         characterConfigController?.Dispose();
         characterConfigController = null;
-        
+
         configAddon?.Dispose();
         configAddon = null;
-        
+
         config = null;
     }
 }

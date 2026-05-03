@@ -16,12 +16,12 @@ public unsafe class IndecisiveFools : FoolsModule {
     private AddonController<AddonSelectYesno>? addonController;
     private List<TextButtonNode>? textButtons;
 
-    public override bool IsEnabledByConfig 
+    public override bool IsEnabledByConfig
         => Config.Indecisive;
-    
+
     protected override void OnEnable() {
         textButtons = [];
-        
+
         addonController = new AddonController<AddonSelectYesno> {
             AddonName = "SelectYesno",
             OnSetup = SetupSelectYesNo,
@@ -40,10 +40,10 @@ public unsafe class IndecisiveFools : FoolsModule {
         addonController?.Dispose();
         addonController = null;
     }
-    
+
     private void SetupSelectYesNo(AddonSelectYesno* addon) {
         if (textButtons is null) return;
-        
+
         addon->AtkUnitBase.Size += new Vector2(0.0f, 65.0f);
 
         List<string> phrases = [
@@ -72,9 +72,9 @@ public unsafe class IndecisiveFools : FoolsModule {
 
             newButton.OnClick = () => {
                 newButton.IsEnabled = false;
-                UIGlobals.PlayChatSoundEffect((uint) Random.Shared.Next(1, 17));
+                UIGlobals.PlayChatSoundEffect((uint)Random.Shared.Next(1, 17));
             };
-            
+
             newButton.AttachNode(&addon->AtkUnitBase);
             textButtons.Add(newButton);
         }
@@ -82,7 +82,7 @@ public unsafe class IndecisiveFools : FoolsModule {
 
     private void FinalizeSelectYesNo(AddonSelectYesno* addon) {
         addon->AtkUnitBase.Size -= new Vector2(0.0f, 65.0f);
-        
+
         foreach (var textButton in textButtons ?? []) {
             textButton.Dispose();
         }

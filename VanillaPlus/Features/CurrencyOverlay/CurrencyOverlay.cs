@@ -17,7 +17,7 @@ public unsafe class CurrencyOverlay : GameModification {
         DisplayName = Strings.ModificationDisplay_CurrencyOverlay,
         Description = Strings.ModificationDescription_CurrencyOverlay,
         Type = ModificationType.NewOverlay,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     public override string ImageName => "CurrencyOverlay.png";
@@ -35,7 +35,7 @@ public unsafe class CurrencyOverlay : GameModification {
         config = CurrencyOverlayConfig.Load();
 
         overlayController = new OverlayController();
-        
+
         itemSearchAddon = new CurrencySearchAddon {
             InternalName = "CurrencySearch",
             Title = "Currency Search",
@@ -46,7 +46,7 @@ public unsafe class CurrencyOverlay : GameModification {
             Size = new Vector2(600.0f, 500.0f),
             InternalName = "CurrencyOverlayConfig",
             Title = Strings.CurrencyOverlay_ConfigTitle,
-            SortOptions = [ DefaultSortOptions.Alphabetical ],
+            SortOptions = [DefaultSortOptions.Alphabetical],
             Options = config.Currencies,
             ItemComparer = CurrencySetting.Comparison,
             IsSearchMatch = CurrencySetting.IsMatch,
@@ -58,19 +58,19 @@ public unsafe class CurrencyOverlay : GameModification {
                     var newCurrencyOption = new CurrencySetting {
                         ItemId = searchResult.RowId,
                     };
-            
+
                     config.Currencies.Add(newCurrencyOption);
                     config.Save();
                     listNode.RefreshList();
                     listNode.SelectItem(newCurrencyOption);
-                    
+
                     var newCurrencyNode = BuildCurrencyNode(newCurrencyOption);
                     currencyNodes.Add(newCurrencyNode);
                     overlayController.AddNode(newCurrencyNode);
                 };
                 itemSearchAddon.Toggle();
             },
-            
+
             RemoveClicked = (_, setting) => {
                 var targetNode = currencyNodes.FirstOrDefault(node => node.Currency == setting);
                 if (targetNode is not null) {
@@ -103,10 +103,10 @@ public unsafe class CurrencyOverlay : GameModification {
     public override void OnDisable() {
         overlayController?.Dispose();
         overlayController = null;
-        
+
         itemSearchAddon?.Dispose();
         itemSearchAddon = null;
-        
+
         configAddon?.Dispose();
         configAddon = null;
 

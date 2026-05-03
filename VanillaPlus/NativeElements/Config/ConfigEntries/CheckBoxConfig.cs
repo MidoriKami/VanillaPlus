@@ -6,7 +6,7 @@ namespace VanillaPlus.NativeElements.Config.ConfigEntries;
 
 public class CheckBoxConfig : BaseConfigEntry {
     public required bool InitialState { get; set; }
-    public Action<bool>? ToggleAction { get; init; } 
+    public Action<bool>? ToggleAction { get; init; }
 
     public override NodeBase BuildNode() {
         return new CheckboxNode {

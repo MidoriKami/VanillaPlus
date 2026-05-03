@@ -34,7 +34,7 @@ public class ClockOverlayNode : OverlayNode {
         timeNode.FontSize = (uint)config.FontSize;
         timeNode.FontType = config.FontType;
         timeNode.AlignmentType = config.AlignmentType;
-        
+
         EnableMoving = config.IsMoveable;
 
         var format = config.ShowSeconds ? "HH:mm:ss" : "HH:mm";
@@ -58,7 +58,7 @@ public class ClockOverlayNode : OverlayNode {
         var hour = (int)(eorzeaTotalSeconds / 3600 % 24);
         var minute = (int)(eorzeaTotalSeconds / 60 % 60);
         var seconds = (int)(eorzeaTotalSeconds % 60);
-        
+
         return new DateTime(1, 1, 1, hour, minute, seconds);
     }
 

@@ -13,7 +13,7 @@ public class AddonConfigAddon : NativeAddon {
     private TextButtonNode? keybindEnableButtonNode;
     private TextNode? keybindTextNode;
 
-    private KeybindConfigAddon? keybindAddon; 
+    private KeybindConfigAddon? keybindAddon;
 
     public required AddonConfig AddonConfig { get; init; }
 
@@ -26,7 +26,7 @@ public class AddonConfigAddon : NativeAddon {
             InitialKeybind = AddonConfig.Keybind,
             OnKeybindChanged = OnKeybindChanged,
         };
-        
+
         var keybindLabelNode = new UnderlinedTextNode {
             Position = ContentStartPosition + new Vector2(0.0f, 10.0f),
             Size = new Vector2(ContentSize.X, 24.0f),
@@ -47,7 +47,7 @@ public class AddonConfigAddon : NativeAddon {
             MultiplyColor = AddonConfig.KeybindEnabled ? new Vector3(1.0f, 1.0f, 1.0f) : new Vector3(0.5f, 0.5f, 0.5f),
         };
         keybindTextNode.AttachNode(this);
-        
+
         keybindEnableButtonNode = new TextButtonNode {
             Position = new Vector2(ContentStartPosition.X, keybindTextNode.Bounds.Bottom + 10.0f),
             Size = new Vector2(150.0f, 24.0f),
@@ -103,22 +103,22 @@ public class AddonConfigAddon : NativeAddon {
             String = Strings.AddonConfig_WindowHeightLabel,
         };
         windowHeightTextNode.AttachNode(windowSizeGridNode[1, 0]);
-        
+
         var widthInputNode = new NumericInputNode {
             Size = windowSizeGridNode[0, 1].Size - new Vector2(4.0f, 4.0f),
             Position = new Vector2(2.0f, 2.0f),
-            Value = (int) AddonConfig.WindowSize.X,
+            Value = (int)AddonConfig.WindowSize.X,
             OnValueUpdate = newValue => {
                 AddonConfig.WindowSize = new Vector2(newValue, AddonConfig.WindowSize.Y);
                 AddonConfig.Save();
             },
         };
         widthInputNode.AttachNode(windowSizeGridNode[0, 1]);
-        
+
         var heightInputNode = new NumericInputNode {
             Size = windowSizeGridNode[1, 1].Size - new Vector2(4.0f, 4.0f),
             Position = new Vector2(2.0f, 2.0f),
-            Value = (int) AddonConfig.WindowSize.Y,
+            Value = (int)AddonConfig.WindowSize.Y,
             OnValueUpdate = newValue => {
                 AddonConfig.WindowSize = new Vector2(AddonConfig.WindowSize.X, newValue);
                 AddonConfig.Save();
@@ -162,7 +162,7 @@ public class AddonConfigAddon : NativeAddon {
         keybindAddon?.Dispose();
         keybindAddon = null;
     }
-    
+
     private void OnKeybindToggleClicked() {
         if (keybindEnableButtonNode is null) return;
         if (keybindTextNode is null) return;
@@ -170,7 +170,7 @@ public class AddonConfigAddon : NativeAddon {
         AddonConfig.KeybindEnabled = !AddonConfig.KeybindEnabled;
         keybindEnableButtonNode.String = AddonConfig.KeybindEnabled ? Strings.Common_Disable : Strings.Common_Enable;
         keybindTextNode.MultiplyColor = AddonConfig.KeybindEnabled ? new Vector3(1.0f, 1.0f, 1.0f) : new Vector3(0.5f, 0.5f, 0.5f);
-        
+
         AddonConfig.Save();
     }
 

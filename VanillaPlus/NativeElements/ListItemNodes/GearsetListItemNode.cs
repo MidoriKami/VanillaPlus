@@ -7,7 +7,7 @@ namespace VanillaPlus.NativeElements.ListItemNodes;
 public class GearsetListItemNode : IconListItemNode<RaptureGearsetModule.GearsetEntry> {
     protected override uint GetIconId(RaptureGearsetModule.GearsetEntry data)
         => data.ClassJob + 62000u;
-    
+
     protected override string GetLabelText(RaptureGearsetModule.GearsetEntry data)
         => data.NameString;
 

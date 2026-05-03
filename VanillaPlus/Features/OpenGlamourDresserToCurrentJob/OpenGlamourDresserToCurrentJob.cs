@@ -14,7 +14,7 @@ public class OpenGlamourDresserToCurrentJob : GameModification {
         Authors = ["MidoriKami"],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@OpenGlamourDresserToCurrentJob"),
     };
-    
+
     public override void OnEnable()
         => Services.AddonLifecycle.RegisterListener(AddonEvent.PreSetup, "MiragePrismPrismBox", OnGlamourDresserSetup);
 

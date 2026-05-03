@@ -9,7 +9,7 @@ public class SaddlebagSearchBar : GameModification {
         Description = Strings.ModificationDescription_SaddlebagSearchBar,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Inventory,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new PluginCompatibilityModule("InventorySearchBar"),
     };
 

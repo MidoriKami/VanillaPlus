@@ -12,7 +12,7 @@ public static unsafe class AtkStageExtensions {
             using var stringBuffer = new Utf8String();
 
             var tooltipType = AtkTooltipType.Action;
-        
+
             var tooltipArgs = stackalloc AtkTooltipManager.AtkTooltipArgs[1];
             tooltipArgs->Ctor();
             tooltipArgs->ActionArgs.Kind = DetailKind.Action;
@@ -27,7 +27,7 @@ public static unsafe class AtkStageExtensions {
 
             var addon = RaptureAtkUnitManager.Instance()->GetAddonByNode(node);
             if (addon is null) return;
-        
+
             stage.TooltipManager.ShowTooltip(
                 tooltipType,
                 addon->Id,
@@ -35,7 +35,7 @@ public static unsafe class AtkStageExtensions {
                 tooltipArgs
             );
         }
-        
+
         public void ShowItemTooltip(AtkResNode* node, uint itemId) {
             var tooltipArgs = stackalloc AtkTooltipManager.AtkTooltipArgs[1];
             tooltipArgs->Ctor();
@@ -52,7 +52,7 @@ public static unsafe class AtkStageExtensions {
                 tooltipArgs
             );
         }
-        
+
         public void ShowInventoryItemTooltip(AtkResNode* node, InventoryType container, short slot) {
             var tooltipArgs = stackalloc AtkTooltipManager.AtkTooltipArgs[1];
             tooltipArgs->Ctor();

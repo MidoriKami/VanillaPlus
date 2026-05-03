@@ -15,7 +15,7 @@ public class ClearSelectedDuties : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_ClearSelectedDuties,
         Description = Strings.ModificationDescription_ClearSelectedDuties,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         Type = ModificationType.GameBehavior,
     };
 
@@ -33,24 +33,24 @@ public class ClearSelectedDuties : GameModification {
 
         configWindow.AddCategory(Strings.Settings)
             .AddCheckbox(Strings.ClearSelectedDuties_DisableWhenUnrestricted, nameof(config.DisableWhenUnrestricted));
-        
+
         OpenConfigAction = configWindow.Toggle;
-        
+
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "ContentsFinder", OnContentsFinderSetup);
     }
 
     public override void OnDisable() {
         Services.AddonLifecycle.UnregisterListener(OnContentsFinderSetup);
-       
+
         configWindow?.Dispose();
         configWindow = null;
-        
+
         config = null;
     }
 
     private unsafe void OnContentsFinderSetup(AddonEvent type, AddonArgs args) {
         if (config is null) return;
-        
+
         var contentsFinder = ContentsFinder.Instance();
         var agent = AgentContentsFinder.Instance();
         var addon = args.GetAddon<AddonContentsFinder>();
@@ -60,7 +60,7 @@ public class ClearSelectedDuties : GameModification {
 
         if (!IsRouletteTab(addon) && config.DisableWhenUnrestricted && contentsFinder->IsUnrestrictedParty) return;
 
-        agent->AgentInterface.SendCommand(0, [ 12, 1 ]);
+        agent->AgentInterface.SendCommand(0, [12, 1]);
     }
 
     private static unsafe bool IsRouletteTab(AddonContentsFinder* addon)

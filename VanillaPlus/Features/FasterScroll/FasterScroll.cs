@@ -33,7 +33,7 @@ public unsafe class FasterScroll : GameModification {
 
         configWindow.AddCategory(Strings.Settings)
             .AddFloatSlider(Strings.FasterScroll_LabelSpeedMultiplier, 0.5f, 4.0f, 2, 0.05f, nameof(config.SpeedMultiplier));
-        
+
         OpenConfigAction = configWindow.Toggle;
 
         scrollBarReceiveEventHook = Services.Hooker.HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
@@ -43,7 +43,7 @@ public unsafe class FasterScroll : GameModification {
     public override void OnDisable() {
         scrollBarReceiveEventHook?.Dispose();
         scrollBarReceiveEventHook = null;
-        
+
         configWindow?.Dispose();
         configWindow = null;
 
@@ -56,10 +56,10 @@ public unsafe class FasterScroll : GameModification {
                 scrollBarReceiveEventHook!.Original(thisPtr, type, param, eventPointer, dataPointer);
                 return;
             }
-        
-            thisPtr->MouseWheelSpeed = (short) ( config.SpeedMultiplier * thisPtr->MouseWheelSpeed );
+
+            thisPtr->MouseWheelSpeed = (short)(config.SpeedMultiplier * thisPtr->MouseWheelSpeed);
             scrollBarReceiveEventHook!.Original(thisPtr, type, param, eventPointer, dataPointer);
-            thisPtr->MouseWheelSpeed = (short) ( thisPtr->MouseWheelSpeed / config.SpeedMultiplier );
+            thisPtr->MouseWheelSpeed = (short)(thisPtr->MouseWheelSpeed / config.SpeedMultiplier);
         }
         catch (Exception e) {
             Services.PluginLog.Error(e, "Error in AtkComponentScrollBarReceiveEvent");

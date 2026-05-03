@@ -12,7 +12,7 @@ public unsafe class ShowGatheringPoints : GameModification {
         Description = Strings.ModificationDescription_ShowGatheringPoints,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Map,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new QuestAwayCompatabilityModule(),
     };
 

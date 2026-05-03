@@ -16,11 +16,11 @@ public unsafe class MacroTooltips : GameModification {
         DisplayName = Strings.ModificationDisplay_MacroTooltips,
         Description = Strings.ModificationDescription_MacroTooltips,
         Type = ModificationType.UserInterface,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     private Hook<AddonActionBarBase.Delegates.ShowTooltip>? showTooltipHook;
-    
+
     public override string ImageName => "MacroTooltips.png";
 
     public override void OnEnable() {

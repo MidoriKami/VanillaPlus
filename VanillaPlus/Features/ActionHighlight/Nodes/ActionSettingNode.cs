@@ -56,13 +56,13 @@ public class ActionSettingNode : ListItemNode<ActionHighlightSetting>, IListItem
         nameNode.Size = new Vector2(Width - iconNode.Bounds.Right - thresholdInput.Width - 16.0f, Height);
         nameNode.Position = new Vector2(iconNode.Bounds.Right + 8.0f, 0.0f);
     }
-    
+
     private bool isReloading;
 
     private void OnCheckboxClicked(bool isChecked) {
         if (isReloading) return;
         if (ItemData is null) return;
-        
+
         ItemData.IsEnabled = isChecked;
         ItemData.ParentConfig?.Save();
     }
@@ -70,26 +70,26 @@ public class ActionSettingNode : ListItemNode<ActionHighlightSetting>, IListItem
     private void OnThresholdChanged(int newValue) {
         if (isReloading) return;
         if (ItemData is null) return;
-        
+
         ItemData.ThresholdMs = newValue;
         ItemData.ParentConfig?.Save();
     }
 
     protected override void SetNodeData(ActionHighlightSetting itemData) {
         isReloading = true;
-        
+
         var actionData = Services.DataManager.GetExcelSheet<Action>().GetRow(itemData.ActionId);
-        
+
         enabledCheckbox.IsChecked = itemData.IsEnabled;
-        
+
         iconNode.HideTooltip();
         iconNode.IconId = actionData.Icon;
         iconNode.ActionTooltip = itemData.ActionId;
 
         nameNode.String = actionData.Name.ToString();
-        
+
         thresholdInput.Value = itemData.ThresholdMs;
-        
+
         isReloading = false;
     }
 }

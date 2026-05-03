@@ -110,8 +110,8 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
         var isFavorite = config.FavoriteItems.Contains(item.ItemId);
         contextMenu.AddItem(new ContextMenuItem {
             Name = isFavorite
-                ? Services.DataManager.GetAddonText(8324) // Remove from Favorites
-                : Services.DataManager.GetAddonText(8323), // Add to Favorites
+                       ? Services.DataManager.GetAddonText(8324)  // Remove from Favorites
+                       : Services.DataManager.GetAddonText(8323), // Add to Favorites
             OnClick = () => {
                 if (isFavorite) {
                     config.FavoriteItems.Remove(item.ItemId);

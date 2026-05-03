@@ -4,7 +4,7 @@ using VanillaPlus.Classes;
 namespace VanillaPlus.Features.HideUnwantedBanners;
 
 public class HideUnwantedBannersConfig : GameModificationConfig<HideUnwantedBannersConfig> {
-    protected override string FileName =>  "HideUnwantedBanners";
+    protected override string FileName => "HideUnwantedBanners";
 
     public List<BannerConfig> BannerSettings = [
         new() { BannerId = 120031, IsSuppressed = true },

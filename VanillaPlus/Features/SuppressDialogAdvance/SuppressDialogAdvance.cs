@@ -13,7 +13,7 @@ public unsafe class SuppressDialogueAdvance : GameModification {
         DisplayName = Strings.ModificationDisplay_SuppressDialogAdvance,
         Description = Strings.ModificationDescription_SuppressDialogAdvance,
         Type = ModificationType.GameBehavior,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     private SuppressDialogAdvanceConfig? config;
@@ -27,12 +27,12 @@ public unsafe class SuppressDialogueAdvance : GameModification {
             Title = Strings.SuppressDialogAdvance_ConfigTitle,
             Config = config,
         };
-        
+
         configWindow.AddCategory(Strings.SuppressDialogAdvance_CategoryGeneral)
             .AddCheckbox(Strings.SuppressDialogAdvance_ApplyOnlyInCutscenes, nameof(config.ApplyOnlyInCutscenes));
 
         OpenConfigAction = configWindow.Toggle;
-        
+
         Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "Talk", OnTalkReceiveEvent);
     }
 
@@ -41,7 +41,7 @@ public unsafe class SuppressDialogueAdvance : GameModification {
 
         configWindow?.Dispose();
         configWindow = null;
-        
+
         config = null;
     }
 

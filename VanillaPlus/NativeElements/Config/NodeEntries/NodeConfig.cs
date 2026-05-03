@@ -20,12 +20,12 @@ public class NodeConfig<T> : IConfigEntry where T : NodeStyle, new() {
             FitWidth = true,
             ItemSpacing = 4.0f,
         };
-    
+
         BuildOptions(layoutNode);
-    
+
         return layoutNode;
     }
-    
+
     protected virtual void BuildOptions(VerticalListNode container) {
         container.AddNode(BuildPositionEdit());
     }
@@ -44,7 +44,7 @@ public class NodeConfig<T> : IConfigEntry where T : NodeStyle, new() {
 
         var xPosition = new NumericInputNode {
             Height = 28.0f,
-            Value = (int) StyleObject.Position.X,
+            Value = (int)StyleObject.Position.X,
             Min = int.MinValue,
             OnValueUpdate = newValue => {
                 StyleObject.Position = StyleObject.Position with { X = newValue };
@@ -56,7 +56,7 @@ public class NodeConfig<T> : IConfigEntry where T : NodeStyle, new() {
         var yPosition = new NumericInputNode {
             Height = 28.0f,
             Min = int.MinValue,
-            Value = (int) StyleObject.Position.Y,
+            Value = (int)StyleObject.Position.Y,
             OnValueUpdate = newValue => {
                 StyleObject.Position = StyleObject.Position with { Y = newValue };
                 SaveStyleObject();
@@ -66,7 +66,7 @@ public class NodeConfig<T> : IConfigEntry where T : NodeStyle, new() {
 
         return container;
     }
-    
+
     protected void SaveStyleObject() {
         StyleObject.StyleChanged?.Invoke(StyleObject);
     }

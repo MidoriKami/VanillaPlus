@@ -64,10 +64,10 @@ public unsafe class RecentlyLootedWindow : GameModification {
     private void OnRawItemAdded(IReadOnlyCollection<InventoryEventArgs> events) {
         if (!enableTracking) return;
         if (addonRecentlyLooted is null) return;
-        
+
         foreach (var eventData in events) {
             if (!Inventory.StandardInventories.Contains(eventData.Item.ContainerType)) continue;
-            
+
             if (!Services.ClientState.IsLoggedIn) break;
             if (eventData is not (InventoryItemAddedArgs or InventoryItemChangedArgs)) break;
             if (eventData is InventoryItemChangedArgs changedArgs && changedArgs.OldItemState.Quantity >= changedArgs.Item.Quantity) break;
@@ -75,7 +75,7 @@ public unsafe class RecentlyLootedWindow : GameModification {
             var inventoryItem = (InventoryItem*)eventData.Item.Address;
             var changeAmount = eventData is InventoryItemChangedArgs changed ? changed.Item.Quantity - changed.OldItemState.Quantity : eventData.Item.Quantity;
 
-            addonRecentlyLooted.ListItems = [ 
+            addonRecentlyLooted.ListItems = [
                 new LootedItemInfo(inventoryItem->GetItemId(),
                     inventoryItem->IconId,
                     inventoryItem->Name,

@@ -38,7 +38,7 @@ public class BetterCursor : GameModification {
         configWindow.AddCategory(Strings.BetterCursor_CategoryFunctions)
             .AddCheckbox(Strings.BetterCursor_EnableAnimation, nameof(config.Animations))
             .AddCheckbox(Strings.BetterCursor_HideOnCameraMove, nameof(config.HideOnCameraMove));
-        
+
         configWindow.AddCategory(Strings.Visibility)
             .AddCheckbox(Strings.BetterCursor_OnlyShowInCombat, nameof(config.OnlyShowInCombat))
             .AddCheckbox(Strings.BetterCursor_OnlyShowInDuties, nameof(config.OnlyShowInDuties));
@@ -57,10 +57,10 @@ public class BetterCursor : GameModification {
     public override void OnDisable() {
         overlayController?.Dispose();
         overlayController = null;
-        
+
         configWindow?.Dispose();
         configWindow = null;
-        
+
         config = null;
     }
 }

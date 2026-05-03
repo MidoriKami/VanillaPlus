@@ -6,12 +6,12 @@ using Dalamud.Game.ClientState.Objects.Enums;
 using Lumina.Text.ReadOnly;
 using LuminaSupplemental.Excel.Model;
 using LuminaSupplemental.Excel.Services;
+using VanillaPlus.Features.DutyLootPreview.Enums;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.DutyLootPreview.Data;
 
 public class DutyLootDataCache : IDisposable {
-    public enum CacheState { Empty, Loading, Loaded }
 
     public event Action? OnChanged;
     public CacheState State { get; private set; } = CacheState.Empty;
@@ -25,14 +25,14 @@ public class DutyLootDataCache : IDisposable {
     private static readonly ReadOnlySeString DungeonChestSource = "Dungeon Chest";
 
     public void Dispose() => loadDebouncer.Dispose();
-    
+
     public DutyLootData ReadDutyLootData(uint contentId) {
         if (State != CacheState.Loaded) return DutyLootData.Empty(contentId);
         if (dutyLootByContentId.TryGetValue(contentId, out var data)) return data;
 
         return DutyLootData.Empty(contentId);
     }
-    
+
     public void LoadCacheAsync(bool forceReload = false, uint? onlyContentId = null) {
         if (!forceReload && State is CacheState.Loaded) return;
 
@@ -78,8 +78,7 @@ public class DutyLootDataCache : IDisposable {
         catch (Exception ex) {
             Services.PluginLog.Error(ex, "Failed to load duty loot");
             State = CacheState.Empty;
-        }
-        finally {
+        } finally {
             OnChanged?.Invoke();
         }
     }

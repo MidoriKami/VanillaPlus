@@ -10,7 +10,7 @@ namespace VanillaPlus.Features.ListInventory;
 
 public class InventoryItemNode : ListItemNode<ItemStack>, IListItemNode {
     public static float ItemHeight => 32.0f;
-    
+
     private readonly IconWithCountNode iconNode;
     private readonly TextNode itemNameTextNode;
     private readonly TextNode levelTextNode;
@@ -18,7 +18,7 @@ public class InventoryItemNode : ListItemNode<ItemStack>, IListItemNode {
 
     public InventoryItemNode() {
         EnableSelection = false;
-        
+
         iconNode = new IconWithCountNode();
         iconNode.AttachNode(this);
 
@@ -59,7 +59,7 @@ public class InventoryItemNode : ListItemNode<ItemStack>, IListItemNode {
 
     protected override void SetNodeData(ItemStack itemData) {
         if (!Services.DataManager.GetExcelSheet<Item>().TryGetRow(itemData.Item.ItemId, out var luminaData)) return;
-        
+
         iconNode.IconId = luminaData.Icon;
         itemNameTextNode.String = luminaData.Name;
         iconNode.Count = itemData.Quantity;

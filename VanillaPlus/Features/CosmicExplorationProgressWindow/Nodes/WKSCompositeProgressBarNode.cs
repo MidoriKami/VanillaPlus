@@ -41,7 +41,7 @@ public class WksCompositeProgressBarNode : SimpleComponentNode {
         get => maxedProgressBarNode.Progress;
         set => maxedProgressBarNode.Progress = value;
     }
-    
+
     public bool IsComplete {
         get;
         set {

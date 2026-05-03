@@ -12,7 +12,7 @@ public unsafe class ShowEnemies : GameModification {
         Description = Strings.ModificationDescription_ShowEnemies,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Map,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new QuestAwayCompatabilityModule(),
     };
 

@@ -12,7 +12,7 @@ public unsafe class SkipLoginConfirm : GameModification {
         DisplayName = Strings.ModificationDisplay_SkipLoginConfirm,
         Description = Strings.ModificationDescription_SkipLoginConfirm,
         Type = ModificationType.GameBehavior,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     public override void OnEnable()

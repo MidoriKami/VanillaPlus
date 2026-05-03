@@ -12,7 +12,7 @@ public class ShowAetherCurrents : GameModification {
         Description = Strings.ModificationDescription_ShowAetherCurrents,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Map,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new QuestAwayCompatabilityModule(),
     };
 

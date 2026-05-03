@@ -8,12 +8,12 @@ namespace VanillaPlus.Classes;
 public class KeyListener : IDisposable {
 
     private readonly Dictionary<VirtualKey, bool> virtualKeyMap = [];
-    
+
     public KeyListener() {
         foreach (var value in Services.KeyState.GetValidVirtualKeys()) {
             virtualKeyMap.TryAdd(value, false);
         }
-        
+
         Services.Framework.Update += OnFrameworkUpdate;
     }
 
@@ -27,10 +27,10 @@ public class KeyListener : IDisposable {
             if (virtualKeyMap[pair.Key] != newState) {
                 OnKeyPressed?.Invoke(pair.Key, newState);
             }
-            
+
             virtualKeyMap[pair.Key] = newState;
         }
     }
-    
+
     public Action<VirtualKey, bool>? OnKeyPressed { get; set; }
 }

@@ -16,7 +16,7 @@ public unsafe class SystemConfigSearchBar : GameModification {
         DisplayName = Strings.ModificationDisplay_SystemConfigSearchBar,
         Description = Strings.ModificationDescription_SystemConfigSearchBar,
         Type = ModificationType.UserInterface,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     public override string ImageName => "SystemConfigSearchBar.png";
@@ -54,16 +54,16 @@ public unsafe class SystemConfigSearchBar : GameModification {
     public override void OnDisable() {
         configAddon?.Dispose();
         configAddon = null;
-        
+
         config = null;
-        
+
         systemConfigController?.Dispose();
         systemConfigController = null;
     }
 
     private void SetupConfigSystem(AtkUnitBase* addon) {
         if (config is null) return;
-        
+
         systemConfigTabs = [
             new TabEntry(addon, 7, 16, config),
             new TabEntry(addon, 8, 88, config),
@@ -79,13 +79,13 @@ public unsafe class SystemConfigSearchBar : GameModification {
 
         var headerSize = new Vector2(addon->WindowHeaderCollisionNode->Width, addon->WindowHeaderCollisionNode->Height);
         systemConfigInput = new TextInputNode {
-            Position = headerSize / 2.0f - size / 2.0f + new Vector2(25.0f, 5.0f), 
-            Size = size, 
+            Position = headerSize / 2.0f - size / 2.0f + new Vector2(25.0f, 5.0f),
+            Size = size,
             OnInputReceived = searchString => {
                 foreach (var entry in systemConfigTabs) {
                     entry.TryMatchString(searchString.ToString());
                 }
-            }, 
+            },
             PlaceholderString = Strings.SearchPlaceholder,
         };
 
@@ -98,7 +98,7 @@ public unsafe class SystemConfigSearchBar : GameModification {
         }
         systemConfigTabs?.Clear();
         systemConfigTabs = null;
-        
+
         systemConfigInput?.Dispose();
         systemConfigInput = null;
     }

@@ -27,9 +27,9 @@ public class JustMonikaFools : FoolsModule {
 
     private MonikaAddon? monikaAddon;
 
-    public override bool IsEnabledByConfig 
+    public override bool IsEnabledByConfig
         => Config.JustMonika;
-    
+
     protected override void OnEnable() {
         monikaAddon = new MonikaAddon {
             InternalName = "JustMonika",

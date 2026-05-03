@@ -9,7 +9,7 @@ public static class HudPartyMemberExtensions {
     extension(HudPartyMember hudMember) {
         public HealthValues? HealthValues => hudMember.GetHealth();
         public ClassJob? ClassJob => hudMember.GetClassJob();
-        
+
         private unsafe HealthValues? GetHealth() {
             if (hudMember.Object is null) return null;
 

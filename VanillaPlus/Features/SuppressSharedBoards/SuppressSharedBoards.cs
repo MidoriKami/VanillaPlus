@@ -10,7 +10,7 @@ public unsafe class SuppressSharedBoards : GameModification {
         DisplayName = "Suppress Shared Strategy Boards",
         Description = "Completely suppresses any shared Strategy Board.",
         Type = ModificationType.GameBehavior,
-        Authors = [ "Treezy" ],
+        Authors = ["Treezy"],
     };
 
     private Hook<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>? showSharedNotificationHook;
@@ -21,12 +21,12 @@ public unsafe class SuppressSharedBoards : GameModification {
             TofuHelper.TofuHelperData.MemberFunctionPointers.ShowSharedNotification,
             (_, _, _) => { }
         );
-        
+
         saveBoardAndPlaySoundHook = Services.Hooker.HookFromAddress<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>(
             TofuHelper.TofuHelperData.MemberFunctionPointers.SaveBoardAndPlaySound,
             (_, _, _, _, _) => { }
         );
-        
+
         showSharedNotificationHook?.Enable();
         saveBoardAndPlaySoundHook?.Enable();
     }

@@ -11,7 +11,7 @@ namespace VanillaPlus.Features.WindowBackground.Nodes;
 public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
 
     private readonly TabbedVerticalListNode verticalListNode;
-    
+
     private readonly TextNode windowNameTextNode;
 
     private readonly ColorEditNode colorEditNode;
@@ -25,7 +25,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
             FontSize = 18,
         };
         windowNameTextNode.AttachNode(this);
-        
+
         verticalListNode = new TabbedVerticalListNode {
             ItemVerticalSpacing = 20.0f,
         };
@@ -67,7 +67,7 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
 
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
-        
+
         windowNameTextNode.Size = new Vector2(Width, 24.0f);
         windowNameTextNode.Position = new Vector2(0.0f, 50.0f);
 
@@ -80,9 +80,9 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
 
     protected override void OptionChanged(WindowBackgroundSetting? option) {
         if (option is null) return;
-        
+
         windowNameTextNode.String = option.AddonName;
-        
+
         colorEditNode.CurrentColor = option.Color;
         colorEditNode.DefaultColor = KnownColor.Black.Vector() with { W = 50.0f };
 

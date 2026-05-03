@@ -8,7 +8,7 @@ namespace VanillaPlus.Features.QuestListWindow;
 
 public class QuestListItemNode : ListItemNode<MarkerInfo>, IListItemNode {
     public static float ItemHeight => 48.0f;
-    
+
     private readonly IconImageNode questIconNode;
     private readonly TextNode questNameTextNode;
     private readonly TextNode questLevelTextNode;
@@ -35,7 +35,7 @@ public class QuestListItemNode : ListItemNode<MarkerInfo>, IListItemNode {
             FontSize = 12,
         };
         issuerNameTextNode.AttachNode(this);
-        
+
         questLevelTextNode = new TextNode {
             AlignmentType = AlignmentType.BottomLeft,
             FontSize = 13,
@@ -47,19 +47,19 @@ public class QuestListItemNode : ListItemNode<MarkerInfo>, IListItemNode {
             TextColor = ColorHelper.GetColor(2),
         };
         distanceTextNode.AttachNode(this);
-        
+
         CollisionNode.AddEvent(AtkEventType.MouseClick, () => ItemData.FocusMarker());
     }
 
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
-        
+
         questIconNode.Size = new Vector2(Height, Height);
         questIconNode.Position = Vector2.Zero;
 
         questLevelTextNode.Size = new Vector2(45.0f, Height / 2.0f);
         questLevelTextNode.Position = new Vector2(Width - questLevelTextNode.Width - 4.0f, 0.0f);
-        
+
         questNameTextNode.Size = new Vector2(Width - questIconNode.Width - questLevelTextNode.Width - 8.0f, Height / 2.0f);
         questNameTextNode.Position = new Vector2(questIconNode.Width + 4.0f, 0.0f);
 
@@ -77,7 +77,7 @@ public class QuestListItemNode : ListItemNode<MarkerInfo>, IListItemNode {
         else {
             questNameTextNode.Width = Width - questIconNode.Width - 4.0f;
         }
-        
+
         questIconNode.IconId = itemData.IconId;
         questNameTextNode.String = itemData.Name;
         issuerNameTextNode.String = itemData.IssuerName;

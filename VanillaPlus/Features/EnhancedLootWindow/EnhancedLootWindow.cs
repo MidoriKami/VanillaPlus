@@ -63,30 +63,30 @@ public unsafe class EnhancedLootWindow : GameModification {
     public override void OnDisable() {
         needGreedController?.Dispose();
         needGreedController = null;
-        
+
         configWindow?.Dispose();
         configWindow = null;
-        
+
         config = null;
     }
 
     private void SetupNeedGreed(AddonNeedGreed* addon) {
-        var listComponentNode = (AtkComponentNode*) addon->GetNodeById(6);
+        var listComponentNode = (AtkComponentNode*)addon->GetNodeById(6);
         if (listComponentNode is null) return;
-        
-        var listComponent = (AtkComponentList*) listComponentNode->Component;
+
+        var listComponent = (AtkComponentList*)listComponentNode->Component;
         if (listComponent is null) return;
 
-        foreach(uint nodeId in Enumerable.Range(21001, 31).Prepend(2)) {
+        foreach (uint nodeId in Enumerable.Range(21001, 31).Prepend(2)) {
             var listItemRenderer = listComponent->UldManager.SearchNodeById<AtkComponentNode>(nodeId);
             if (listItemRenderer is null) continue;
-            
-            var listItemRendererComponent =  (AtkComponentListItemRenderer*) listItemRenderer->Component;
+
+            var listItemRendererComponent = (AtkComponentListItemRenderer*)listItemRenderer->Component;
             if (listItemRendererComponent is null) continue;
 
             var targetPart = listItemRendererComponent->UldManager.SearchNodeById(12);
             if (targetPart is null) continue;
-            
+
             var newCrossNode = new IconImageNode {
                 Size = new Vector2(40.0f, 40.0f),
                 Origin = new Vector2(20.0f, 20.0f),
@@ -95,7 +95,7 @@ public unsafe class EnhancedLootWindow : GameModification {
                 IconId = 61502,
                 FitTexture = true,
             };
-            
+
             crossNodes.Add(newCrossNode);
             newCrossNode.AttachNode(targetPart, NodePosition.AfterTarget);
 
@@ -107,24 +107,24 @@ public unsafe class EnhancedLootWindow : GameModification {
                 Position = new Vector2(22.0f, 20.0f),
                 WrapMode = WrapMode.Tile,
             };
-            
+
             padlockNodes.Add(newPadlockNode);
             newPadlockNode.AttachNode(targetPart, NodePosition.AfterTarget);
         }
     }
-    
+
     private void FinalizeNeedGreed(AddonNeedGreed* addon) {
         foreach (var node in crossNodes) {
             node.Dispose();
         }
         crossNodes.Clear();
-        
+
         foreach (var node in padlockNodes) {
             node.Dispose();
         }
         padlockNodes.Clear();
     }
-    
+
     private const int MinionCategory = 81;
     private const int MountCategory = 63;
     private const int MountSubCategory = 175;
@@ -134,20 +134,20 @@ public unsafe class EnhancedLootWindow : GameModification {
         for (var index = 0; index < addon->Items.Length; index++) {
             ref var itemInfo = ref addon->Items[index];
             if (itemInfo.ItemId is 0) continue;
-            
+
             var adjustedItemId = itemInfo.ItemId > 1_000_000 ? itemInfo.ItemId - 1_000_000 : itemInfo.ItemId;
-            
+
             // If we can't match the item in lumina, skip.
             var itemData = Services.DataManager.GetExcelSheet<Item>().GetRowOrDefault(adjustedItemId);
             if (itemData is null) continue;
 
             var crossNode = crossNodes[index];
             var padlockNode = padlockNodes[index];
-                
+
             switch (itemData) {
                 // Item is unique, and has no unlock action, and is unobtainable if we have any in our inventory
                 case { IsUnique: true, ItemAction.RowId: 0 } when InventoryManager.Instance()->PlayerHasItem(itemInfo.ItemId):
-                        
+
                 // Item is unobtainable if it's a minion/mount and already unlocked
                 case { ItemUICategory.RowId: MinionCategory } when IsItemAlreadyUnlocked(itemInfo.ItemId):
                 case { ItemUICategory.RowId: MountCategory, ItemSortCategory.RowId: MountSubCategory } when IsItemAlreadyUnlocked(itemInfo.ItemId):
@@ -160,7 +160,7 @@ public unsafe class EnhancedLootWindow : GameModification {
                     padlockNode.IsVisible = config?.MarkAlreadyObtainedItems ?? false;
                     crossNode.IsVisible = false;
                     break;
-                    
+
                 // Item can be obtained normally
                 default:
                     crossNode.IsVisible = false;

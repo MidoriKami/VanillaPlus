@@ -25,7 +25,7 @@ public unsafe class InstancedWaymarks : GameModification {
         DisplayName = Strings.ModificationDisplay_InstancedWaymarks,
         Description = Strings.ModificationDescription_InstancedWaymarks,
         Type = ModificationType.GameBehavior,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new PluginCompatibilityModule("WaymarkPresetPlugin", "MemoryMarker"),
     };
 
@@ -38,20 +38,20 @@ public unsafe class InstancedWaymarks : GameModification {
 
     public override void OnEnable() {
         config = InstancedWaymarksConfig.Load();
-        
+
         renameWindow ??= new RenameAddon {
             Size = new Vector2(250.0f, 150.0f),
             InternalName = "WaymarkRename",
             Title = Strings.InstancedWaymarks_RenameWindowTitle,
             AutoSelectAll = true,
         };
-        
+
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
         Services.ContextMenu.OnMenuOpened += OnMenuOpened;
         Services.AddonLifecycle.RegisterListener(AddonEvent.PreDraw, "FieldMarker", OnFieldMarkerDraw);
-        
+
         SaveWaymarks(0);
-        
+
         var currentCfc = GameMain.Instance()->CurrentContentFinderConditionId;
         if (currentCfc is not 0) {
             LoadWaymarks(currentCfc);
@@ -59,16 +59,16 @@ public unsafe class InstancedWaymarks : GameModification {
         }
     }
 
-    public override void OnDisable() {    
+    public override void OnDisable() {
         Services.AddonLifecycle.UnregisterListener(OnFieldMarkerDraw);
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
         Services.ContextMenu.OnMenuOpened -= OnMenuOpened;
-        
+
         LoadWaymarks(0);
 
         renameWindow?.Dispose();
         renameWindow = null;
-        
+
         config = null;
     }
 
@@ -80,7 +80,7 @@ public unsafe class InstancedWaymarks : GameModification {
 
         previousCfc = currentCfc;
     }
-    
+
     private void OnMenuOpened(IMenuOpenedArgs args) {
         if (args.AddonName is not "FieldMarker") return;
 
@@ -119,7 +119,7 @@ public unsafe class InstancedWaymarks : GameModification {
             }
         }
     }
-    
+
     private void RenameContextMenuAction(IMenuItemClickedArgs menuItemClickedArgs) {
         if (slotClicked is -1) return;
         if (config is null) return;
@@ -145,7 +145,7 @@ public unsafe class InstancedWaymarks : GameModification {
         renameWindow.DefaultString = defaultName;
         renameWindow.Toggle();
     }
-    
+
     private static void SaveWaymarks(uint contentFinderCondition) {
         Services.PluginLog.Debug($"Saving Waymarks for Duty: {contentFinderCondition}");
 

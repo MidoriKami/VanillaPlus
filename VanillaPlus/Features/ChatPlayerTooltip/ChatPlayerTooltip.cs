@@ -16,11 +16,12 @@ public class ChatPlayerTooltip : GameModification {
         DisplayName = Strings.ChatPlayerTooltip_DisplayName,
         Description = Strings.ChatPlayerTooltip_Description,
         Type = ModificationType.UserInterface,
-        Authors = [ "anqied" ],
+        Authors = ["anqied"],
     };
 
     private bool tooltipActive;
     private ushort activeTooltipAddonId;
+
     private readonly string[] addonNames = [
         "ChatLogPanel_0",
         "ChatLogPanel_1",
@@ -33,7 +34,7 @@ public class ChatPlayerTooltip : GameModification {
 
     public override void OnDisable() {
         Services.AddonLifecycle.UnregisterListener(PreReceiveEvent);
-        HideTooltip(); 
+        HideTooltip();
     }
 
     private unsafe void PreReceiveEvent(AddonEvent type, AddonArgs args) {
@@ -64,17 +65,17 @@ public class ChatPlayerTooltip : GameModification {
 
                 var addon = args.GetAddon<AtkUnitBase>();
                 using var rentedStringBuilder = new RentedSeStringBuilder();
-                
+
                 var tooltipString = rentedStringBuilder.Builder
                     .Append(playerName)
                     .AppendIcon((uint)BitmapFontIcon.CrossWorld)
                     .Append(worldData.Name)
                     .ToReadOnlySeString();
-                
+
                 ShowTooltip(addon->Id, null, tooltipString);
                 break;
             }
-            
+
             case AtkEventType.LinkMouseOut:
                 HideTooltip();
                 break;

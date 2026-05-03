@@ -12,8 +12,8 @@ public static unsafe class AgentInterfaceExtensions {
             for (var index = 0; index < commandValues.Length; index++) {
                 command[index].SetInt(commandValues[index]);
             }
-        
-            agent.ReceiveEvent(returnValue, command, (uint) commandValues.Length, eventKind);
+
+            agent.ReceiveEvent(returnValue, command, (uint)commandValues.Length, eventKind);
         }
     }
 }

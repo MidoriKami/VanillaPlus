@@ -30,7 +30,7 @@ public unsafe class QuestListAddon : SearchableNodeListAddon<MarkerInfo, QuestLi
     }
 
     private void UpdateSorting(Enum sortingMode, bool reversed) {
-        lastSortingMode = (QuestFilterMode) sortingMode;
+        lastSortingMode = (QuestFilterMode)sortingMode;
         isReversed = reversed;
     }
 

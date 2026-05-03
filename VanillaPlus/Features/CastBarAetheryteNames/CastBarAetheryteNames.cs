@@ -27,23 +27,23 @@ public unsafe class CastBarAetheryteNames : GameModification {
     public override void OnEnable() {
         teleportHook = Services.GameInteropProvider.HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
         teleportHook?.Enable();
-        
+
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
-        
+
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "_CastBar", OnCastBarRefresh);
     }
 
     public override void OnDisable() {
         Services.AddonLifecycle.UnregisterListener(OnCastBarRefresh);
-        
+
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
-        
+
         teleportHook?.Dispose();
         teleportHook = null;
-        
+
         teleportInfo = null;
     }
-    
+
     private void OnTerritoryChanged(uint u)
         => teleportInfo = null;
 
@@ -53,18 +53,18 @@ public unsafe class CastBarAetheryteNames : GameModification {
 
         var textNode = args.GetAddon<AddonCastBar>()->GetTextNodeById(4);
         if (textNode == null) return;
-        
+
         var aetheryte = Services.DataManager.GetExcelSheet<Aetheryte>().GetRow(info.AetheryteId);
 
         switch (info) {
             case { IsApartment: true }:
                 textNode->SetText(Services.DataManager.GetAddonText(8518));
                 break;
-            
+
             case { IsSharedHouse: true }:
                 textNode->SetText(Services.SeStringEvaluator.EvaluateFromAddon(8519, [(uint)info.Ward, (uint)info.Plot]));
                 break;
-            
+
             case { } when aetheryte.PlaceName.IsValid:
                 textNode->SetText(aetheryte.PlaceName.Value.Name.ToString());
                 break;
@@ -89,7 +89,7 @@ public unsafe class CastBarAetheryteNames : GameModification {
         catch (Exception e) {
             Services.PluginLog.Error(e, "Exception in OnTeleport");
         }
-        
+
         return teleportHook!.Original(thisPtr, aetheryteId, subIndex);
     }
 }

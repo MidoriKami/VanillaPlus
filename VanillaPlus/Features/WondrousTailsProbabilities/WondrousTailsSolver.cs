@@ -16,7 +16,7 @@ public sealed partial class PerfectTails {
     private readonly Dictionary<int, double[]> sampleProbabilities = [];
 
     public readonly bool[] GameState = new bool[16];
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="PerfectTails"/> class.
     /// </summary>
@@ -77,8 +77,7 @@ public sealed partial class PerfectTails {
                 var nDiag2 = MaskHasDiag2(nMask) && r == 3 - c ? 1 : 0;
                 var nResult = CalculateBoards(nMask, numStickers + 1, numRows + nRows, numCols + nCols, numDiags + nDiag1 + nDiag2);
 
-                for (var i = 0; i < 4; i++)
-                {
+                for (var i = 0; i < 4; i++) {
                     result[i] += nResult[i];
                 }
             }
@@ -209,7 +208,7 @@ public sealed unsafe partial class PerfectTails {
         else {
             seString.AddText(string.Join(" ", valuePayloads));
         }
-        
+
         return seString.Build().EncodeWithNullTerminator();
     }
 

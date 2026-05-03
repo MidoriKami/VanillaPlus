@@ -27,7 +27,7 @@ public unsafe class LockChatButton : GameModification {
     private Hook<AtkEventListener.Delegates.ReceiveEvent>? addonControlHook;
 
     private Dictionary<string, PadlockButtonNode>? panelButtons;
-    
+
     private LockChatButtonData? data;
 
     public override void OnEnable() {
@@ -47,13 +47,13 @@ public unsafe class LockChatButton : GameModification {
         chatLogController.Enable();
 
         panelController = new MultiAddonController<AddonChatLogPanel> {
-            AddonNames = [ "ChatLogPanel_1", "ChatLogPanel_2", "ChatLogPanel_3" ],
+            AddonNames = ["ChatLogPanel_1", "ChatLogPanel_2", "ChatLogPanel_3"],
             OnSetup = SetupChatLogPanel,
             OnFinalize = FinalizeChatLogPanel,
         };
         panelController.Enable();
     }
-    
+
     public override void OnDisable() {
         chatLogController?.Dispose();
         chatLogController = null;
@@ -77,7 +77,7 @@ public unsafe class LockChatButton : GameModification {
         var addonControl = (AtkAddonControl*)((byte*)addon + 0x568);
 
         addonControlHook = Services.Hooker.HookFromAddress<AtkEventListener.Delegates.ReceiveEvent>(
-            addonControl->AtkEventListener.VirtualTable->ReceiveEvent, 
+            addonControl->AtkEventListener.VirtualTable->ReceiveEvent,
             OnAddonControl
         );
         addonControlHook.Enable();
@@ -131,9 +131,9 @@ public unsafe class LockChatButton : GameModification {
         if (containerNode is null) return;
 
         var newButton = new PadlockButtonNode {
-            Size = new Vector2(20.0f, 24.0f), 
-            IsLocked = data.IsLocked, 
-            Position = positioningNode->Position + new Vector2(32.0f, 2.0f), 
+            Size = new Vector2(20.0f, 24.0f),
+            IsLocked = data.IsLocked,
+            Position = positioningNode->Position + new Vector2(32.0f, 2.0f),
             TextTooltip = data.IsLocked ? Strings.LockChatButton_TooltipUnlock : Strings.LockChatButton_TooltipLock,
         };
 

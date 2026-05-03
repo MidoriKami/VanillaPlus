@@ -13,14 +13,14 @@ public class QuestAwayCompatabilityModule : CompatibilityModule {
 
     public override string GetErrorMessage()
         => "Not compatible with QuestAWAYS's 'Aetherytes always in front' feature";
-    
+
     private static bool IsAetheryteFeatureEnabled() {
         var configFileInfo = GetConfigFileInfo();
         if (configFileInfo.Exists) {
             var fileText = File.ReadAllText(configFileInfo.FullName);
 
             if (fileText.IsNullOrEmpty()) return false;
-            
+
             var jObject = JObject.Parse(fileText);
             if (!jObject.HasValues) return false;
 
@@ -34,13 +34,13 @@ public class QuestAwayCompatabilityModule : CompatibilityModule {
 
         return false;
     }
-    
+
     private static string GetConfigFilePath()
         => Path.Combine(Services.PluginInterface.GetPluginConfigDirectory().Replace("VanillaPlus", "QuestAWAY.json"));
-    
+
     private static FileInfo GetConfigFileInfo()
         => new(GetConfigFilePath());
-    
+
     private bool IsQuestAwayLoaded()
         => IsPluginLoaded("QuestAWAY");
 }

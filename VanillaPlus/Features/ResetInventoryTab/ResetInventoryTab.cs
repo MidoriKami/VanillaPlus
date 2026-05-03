@@ -43,7 +43,7 @@ public unsafe class ResetInventoryTab : GameModification {
 
         ResetTabIndex(addon);
     }
-    
+
     private int GetTabIndex(AtkUnitBase* addon)
         => addon->NameString switch {
             "Inventory" => ((AddonInventory*)addon)->TabIndex,

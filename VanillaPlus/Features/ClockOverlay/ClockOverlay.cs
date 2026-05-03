@@ -12,7 +12,7 @@ public class ClockOverlay : GameModification {
         DisplayName = Strings.ClockOverlay_Title,
         Description = Strings.ClockOverlay_Description,
         Type = ModificationType.NewOverlay,
-        Authors = [ "Zeffuro" ],
+        Authors = ["Zeffuro"],
     };
 
     public override string ImageName => "ClockOverlay.png";
@@ -46,7 +46,7 @@ public class ClockOverlay : GameModification {
             .AddDropdown<FontType>(Strings.ClockOverlay_LabelFont, nameof(config.FontType))
             .AddDropdown<AlignmentType>(Strings.ClockOverlay_LabelAlignment, nameof(config.AlignmentType))
             .AddDropdown<TextFlags>(Strings.ClockOverlay_TextRendering, nameof(config.TextFlags));
-        
+
         OpenConfigAction = configWindow.Toggle;
 
         overlayController.CreateNode(() => {
@@ -58,7 +58,7 @@ public class ClockOverlay : GameModification {
                     config.Save();
                 },
             };
-            
+
             return clockNode;
         });
     }
@@ -66,7 +66,7 @@ public class ClockOverlay : GameModification {
     public override void OnDisable() {
         configWindow?.Dispose();
         configWindow = null;
-        
+
         overlayController?.Dispose();
         overlayController = null;
 

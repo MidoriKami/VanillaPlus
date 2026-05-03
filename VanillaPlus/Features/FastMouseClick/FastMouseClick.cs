@@ -20,7 +20,7 @@ public class FastMouseClick : GameModification {
 
     public override void OnEnable() {
         Services.GameInteropProvider.InitializeFromAttributes(this);
-        
+
         if (memoryAddress is { } address && memoryAddress != nint.Zero) {
             memoryPatch = new MemoryReplacement(address, [0x90, 0x90]);
             memoryPatch.Enable();

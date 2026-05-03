@@ -19,14 +19,14 @@ public static unsafe class HUDPresetManager {
         foreach (var file in directory.EnumerateFiles()) {
             var fileName = file.Name;
             if (!fileName.EndsWith(".layout.data")) continue;
-            
+
             var rawName = fileName[..fileName.IndexOf(".layout.data", StringComparison.OrdinalIgnoreCase)];
             fileList.Add(rawName);
         }
 
         return fileList.Prepend(DefaultOption).ToList();
     }
-    
+
     private static DirectoryInfo GetPresetDirectory() {
         var directoryInfo = new DirectoryInfo(Path.Combine(Data.DataPath, "HUDPresets"));
         if (!directoryInfo.Exists) {
@@ -56,8 +56,8 @@ public static unsafe class HUDPresetManager {
         var layoutEntryCount = dataSet->HudLayoutConfigEntries.Length / 4;
         var layoutOffset = layoutEntryCount * currentHudLayout;
         var layoutAddress = Unsafe.AsPointer(ref dataSet->HudLayoutConfigEntries[layoutOffset]);
-        var layoutSize =  sizeof(AddonConfigEntry) * layoutEntryCount;
-        
+        var layoutSize = sizeof(AddonConfigEntry) * layoutEntryCount;
+
         var layoutData = Data.LoadBinaryData(layoutSize, "HUDPresets", $"{fileName}.layout.data");
         Marshal.Copy(layoutData, 0, (nint)layoutAddress, layoutSize);
 

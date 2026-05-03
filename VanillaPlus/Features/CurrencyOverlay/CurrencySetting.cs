@@ -27,7 +27,7 @@ public class CurrencySetting {
                 var leftItem = Services.DataManager.GetItem(left.ItemId);
                 var rightItem = Services.DataManager.GetItem(right.ItemId);
                 return string.Compare(leftItem.Name.ToString(), rightItem.Name.ToString(), StringComparison.OrdinalIgnoreCase);
-            
+
             case DefaultSortOptions.Id:
                 return left.ItemId.CompareTo(right.ItemId);
         }
@@ -39,7 +39,7 @@ public class CurrencySetting {
         var regex = new Regex(searchString, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         var itemData = Services.DataManager.GetItem(item.ItemId);
-        
+
         return regex.IsMatch(itemData.Name.ToString());
     }
 }

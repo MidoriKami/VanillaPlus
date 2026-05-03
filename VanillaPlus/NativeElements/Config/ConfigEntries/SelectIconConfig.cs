@@ -36,13 +36,13 @@ public class SelectIconConfig : BaseConfigEntry {
         inputIntNode = new NumericInputNode {
             Size = new Vector2(125.0f, 24.0f),
             Height = 24.0f,
-            Value = (int) InitialIcon,
+            Value = (int)InitialIcon,
             OnValueUpdate = SetIconId,
         };
-        
+
         verticalLayout.AddNode(inputIntNode);
         layoutNode.AddNode(verticalLayout);
-        
+
         return layoutNode;
     }
 

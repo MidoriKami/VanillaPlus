@@ -15,8 +15,8 @@ public unsafe class HideMpBars : GameModification {
         DisplayName = Strings.ModificationDisplay_HideMpBars,
         Description = Strings.ModificationDescription_HideMpBars,
         Type = ModificationType.UserInterface,
-        Authors = [ "MidoriKami" ],
-        Tags = [ "Party List" ],
+        Authors = ["MidoriKami"],
+        Tags = ["Party List"],
     };
 
     private List<uint>? manaUsingClassJobs;
@@ -82,7 +82,7 @@ public unsafe class HideMpBars : GameModification {
         if (Services.ObjectTable.LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob }, EntityId: var playerId } localPlayer) return;
 
         var isEnabled = config is { HidePartyList: true };
-        
+
         if (GroupManager.Instance()->MainGroup.MemberCount is 0) {
             var mpGaugeNode = addon->PartyMembers[0].MPGaugeBar->OwnerNode;
             mpGaugeNode->ToggleVisibility(!isEnabled || manaUsingClassJobs.Contains(localPlayer.ClassJob.RowId) || classJob.IsNonCombatant);
@@ -90,7 +90,7 @@ public unsafe class HideMpBars : GameModification {
         else {
             foreach (var hudMember in AgentHUD.Instance()->PartyMemberSpan) {
                 if (hudMember.Value->EntityId is 0) continue;
-                if (hudMember.Value->EntityId == playerId && ( classJob.IsCrafter || classJob.IsGatherer )) continue;
+                if (hudMember.Value->EntityId == playerId && (classJob.IsCrafter || classJob.IsGatherer)) continue;
                 if (hudMember.Value->Object is null) continue;
 
                 var mpGaugeNode = addon->PartyMembers[hudMember.Value->Index].MPGaugeBar->OwnerNode;
@@ -105,7 +105,7 @@ public unsafe class HideMpBars : GameModification {
         if (Services.ObjectTable.LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob } }) return;
 
         var isEnabled = config is { HideParamWidget: true };
-        
+
         var paramElement = addon->GetNodeById(4);
         if (paramElement is null) return;
 
@@ -117,7 +117,7 @@ public unsafe class HideMpBars : GameModification {
             addon = Services.GameGui.GetAddonByName<AddonPartyList>("_PartyList");
         }
         if (addon is null) return;
-        
+
         foreach (var member in addon->PartyMembers) {
             member.MPGaugeBar->OwnerNode->ToggleVisibility(true);
         }
@@ -128,7 +128,7 @@ public unsafe class HideMpBars : GameModification {
             addon = Services.GameGui.GetAddonByName<AddonParameterWidget>("_ParameterWidget");
         }
         if (addon is null) return;
-        
+
         var paramElement = addon->GetNodeById(4);
         if (paramElement is null) return;
 

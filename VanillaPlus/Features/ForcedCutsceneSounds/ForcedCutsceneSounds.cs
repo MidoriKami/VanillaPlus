@@ -29,11 +29,11 @@ public unsafe class ForcedCutsceneSounds : GameModification {
         "IsSndSystem",
         "IsSndPerform",
     ];
-    
+
     private Dictionary<string, bool>? wasMuted;
 
     private delegate CutSceneController* CutSceneControllerDtorDelegate(CutSceneController* self, byte freeFlags);
-    
+
     private Hook<ScheduleManagement.Delegates.CreateCutSceneController>? createCutSceneControllerHook;
     private Hook<CutSceneControllerDtorDelegate>? cutSceneControllerDtorHook;
 
@@ -42,7 +42,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
 
     public override void OnEnable() {
         wasMuted = [];
-        
+
         config = ForcedCutsceneSoundsConfig.Load();
 
         configWindow = new ConfigAddon {
@@ -68,7 +68,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
             .AddCheckbox(Strings.ForcedCutsceneSounds_DisableMsq, nameof(config.DisableInMsqRoulette));
 
         OpenConfigAction = configWindow.Toggle;
-        
+
         createCutSceneControllerHook = Services.GameInteropProvider.HookFromAddress<ScheduleManagement.Delegates.CreateCutSceneController>(
             ScheduleManagement.MemberFunctionPointers.CreateCutSceneController,
             CreateCutSceneControllerDetour);
@@ -83,21 +83,21 @@ public unsafe class ForcedCutsceneSounds : GameModification {
     public override void OnDisable() {
         createCutSceneControllerHook?.Dispose();
         createCutSceneControllerHook = null;
-        
+
         cutSceneControllerDtorHook?.Dispose();
         cutSceneControllerDtorHook = null;
-        
+
         configWindow?.Dispose();
         configWindow = null;
-        
+
         config = null;
 
         wasMuted = null;
     }
-    
+
     private CutSceneController* CreateCutSceneControllerDetour(ScheduleManagement* thisPtr, byte* path, uint id, byte a4) {
         var result = createCutSceneControllerHook!.Original(thisPtr, path, id, a4);
-        
+
         try {
             if (config is null) return result;
             if (config.DisableInMsqRoulette && AgentContentsFinder.Instance()->SelectedDuty is { ContentType: ContentsType.Roulette, Id: 3 }) return result;
@@ -112,23 +112,23 @@ public unsafe class ForcedCutsceneSounds : GameModification {
                     Services.GameConfig.System.Set(optionName, false);
                 }
             }
-            
+
         }
         catch (Exception e) {
             Services.PluginLog.Error(e, "Error in CreateCutSceneControllerDetour");
         }
-        
+
         return result;
     }
-    
+
     private CutSceneController* CutSceneControllerDtorDetour(CutSceneController* self, byte freeFlags) {
         try {
             if (config is null) {
                 return cutSceneControllerDtorHook!.Original(self, freeFlags);
             }
-            
+
             var cutsceneId = self->CutsceneId;
-            
+
             if (config.Restore && cutsceneId is not 0) { // ignore title screen cutscene
                 foreach (var optionName in ConfigOptions) {
                     if (ShouldHandle(optionName) && (wasMuted?.TryGetValue(optionName, out var value) ?? false) && value) {
@@ -140,13 +140,13 @@ public unsafe class ForcedCutsceneSounds : GameModification {
         catch (Exception e) {
             Services.PluginLog.Error(e, "Error in CutSceneControllerDtorDetour");
         }
-        
+
         return cutSceneControllerDtorHook!.Original(self, freeFlags);
     }
 
     private bool ShouldHandle(string optionName) {
         if (config is null) return false;
-        
+
         return optionName switch {
             "IsSndMaster" => config.HandleMaster,
             "IsSndBgm" => config.HandleBgm,

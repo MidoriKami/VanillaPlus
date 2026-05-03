@@ -14,7 +14,7 @@ public unsafe class MacroLineNumbers : GameModification {
         DisplayName = Strings.ModificationDisplay_MacroLineNumbers,
         Description = Strings.ModificationDescription_MacroLineNumbers,
         Type = ModificationType.UserInterface,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     public override string ImageName => "MacroLineNumbers.png";
@@ -27,15 +27,15 @@ public unsafe class MacroLineNumbers : GameModification {
 
     public override void OnEnable() {
         textNodes = [];
-        
+
         macroAddonController = new AddonController {
             AddonName = "Macro",
             OnSetup = addon => {
                 var textInputNode = addon->GetNodeById<AtkComponentNode>(119);
                 if (textInputNode is null) return;
-            
+
                 RepositionNode(textInputNode, sizeOffset);
-            
+
                 foreach (var index in Enumerable.Range(0, 15)) {
                     var newTextNode = new TextNode {
                         Position = new Vector2(460.0f, 119.0f + index * 14f),
@@ -54,7 +54,7 @@ public unsafe class MacroLineNumbers : GameModification {
                 if (textInputNode is null) return;
 
                 RepositionNode(textInputNode, -sizeOffset);
-            
+
                 foreach (var node in textNodes) {
                     node.Dispose();
                 }
@@ -68,7 +68,7 @@ public unsafe class MacroLineNumbers : GameModification {
     public override void OnDisable() {
         macroAddonController?.Dispose();
         macroAddonController = null;
-        
+
         textNodes?.Clear();
         textNodes = null;
     }
@@ -78,8 +78,8 @@ public unsafe class MacroLineNumbers : GameModification {
         var backgroundNode = inputComponentNode->SearchNodeById<AtkNineGridNode>(19);
         var borderNode = inputComponentNode->SearchNodeById<AtkNineGridNode>(18);
         var remainingLineNode = inputComponentNode->SearchNodeById<AtkTextNode>(17);
-        var textInputNode =  inputComponentNode->SearchNodeById<AtkTextNode>(16);
-        
+        var textInputNode = inputComponentNode->SearchNodeById<AtkTextNode>(16);
+
         if (collisionNode is null || backgroundNode is null || borderNode is null || textInputNode is null || remainingLineNode is null) return;
         var position = Vector2.Zero;
 
@@ -88,19 +88,19 @@ public unsafe class MacroLineNumbers : GameModification {
 
         inputComponentNode->SetWidth((ushort)(inputComponentNode->GetWidth() - offset.X));
         inputComponentNode->SetHeight((ushort)(inputComponentNode->GetHeight() - offset.Y));
-        
+
         collisionNode->SetWidth((ushort)(collisionNode->GetWidth() - offset.X));
         collisionNode->SetHeight((ushort)(collisionNode->GetHeight() - offset.Y));
-        
+
         backgroundNode->SetWidth((ushort)(backgroundNode->GetWidth() - offset.X));
         backgroundNode->SetHeight((ushort)(backgroundNode->GetHeight() - offset.Y));
-        
+
         borderNode->SetWidth((ushort)(borderNode->GetWidth() - offset.X));
         borderNode->SetHeight((ushort)(borderNode->GetHeight() - offset.Y));
-        
+
         textInputNode->SetWidth((ushort)(textInputNode->GetWidth() - offset.X));
         textInputNode->SetHeight((ushort)(textInputNode->GetHeight() - offset.Y));
-        
+
         remainingLineNode->GetPositionFloat(&position.X, &position.Y);
         remainingLineNode->SetPositionFloat(position.X, position.Y - offset.Y);
         remainingLineNode->SetWidth((ushort)(remainingLineNode->GetWidth() - offset.X));

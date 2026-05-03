@@ -8,7 +8,7 @@ namespace VanillaPlus.Utilities;
 
 public static class FileHelpers {
     private static readonly Dictionary<string, Task> FileSavingTasks = [];
-    
+
     private static readonly JsonSerializerOptions SerializerOptions = new() {
         WriteIndented = true,
         IncludeFields = true,
@@ -26,20 +26,20 @@ public static class FileHelpers {
                     dataObject = defaultObject ?? new T();
                     SaveFile(dataObject, filePath);
                 }
-            
+
                 return dataObject;
             }
             catch (Exception e) {
                 // If there is any kind of error loading the file, generate a new one instead and save it.
                 Services.PluginLog.Error(e, $"Error trying to load file {filePath}, creating a new one instead.");
-            
+
                 SaveFile(defaultObject ?? new T(), filePath);
             }
         }
 
         var newFile = defaultObject ?? new T();
         SaveFile(newFile, filePath);
-    
+
         return newFile;
     }
 
@@ -49,7 +49,7 @@ public static class FileHelpers {
                 Services.PluginLog.Error("Null file provided.");
                 return;
             }
-            
+
             var fileText = JsonSerializer.Serialize(file, file.GetType(), SerializerOptions);
 
             if (FileSavingTasks.TryGetValue(filePath, out var task)) {
@@ -86,20 +86,20 @@ public static class FileHelpers {
                     dataObject = new byte[length];
                     SaveFile(dataObject, filePath);
                 }
-            
+
                 return dataObject;
             }
             catch (Exception e) {
                 // If there is any kind of error loading the file, generate a new one instead and save it.
                 Services.PluginLog.Error(e, $"Error trying to load file {filePath}, creating a new one instead.");
-            
+
                 SaveFile(new byte[length], filePath);
             }
         }
 
         var newFile = new byte[length];
         SaveFile(newFile, filePath);
-    
+
         return newFile;
     }
 
@@ -145,7 +145,7 @@ public static class FileHelpers {
         if (!Services.ClientState.IsLoggedIn) {
             throw new Exception("Character is not logged in.");
         }
-        
+
         return Services.PlayerState.ContentId.ToString("X");
     }
 }

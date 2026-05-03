@@ -3,7 +3,7 @@
 namespace VanillaPlus.Enums;
 
 public enum ModificationType {
-    
+
     /// <summary>
     /// Not intended for actual use, only used to prevent loading SampleGameModification
     /// </summary>
@@ -14,19 +14,19 @@ public enum ModificationType {
     /// </summary>
     [Description(nameof(Strings.ModificationType_Debug))]
     Debug,
-    
+
     /// <summary>
     /// Adds a new native window to the game
     /// </summary>
     [Description(nameof(Strings.ModificationType_NewWindow))]
     NewWindow,
-    
+
     /// <summary>
     /// Modifies some aspect of the base games user interface
     /// </summary>
     [Description(nameof(Strings.ModificationType_UserInterface))]
     UserInterface,
-    
+
     /// <summary>
     /// Modifies some type of base game functionality to make it behave differently
     /// </summary>
@@ -38,7 +38,7 @@ public enum ModificationType {
     /// </summary>
     [Description(nameof(Strings.ModificationType_NewOverlay))]
     NewOverlay,
-    
+
     /// <summary>
     /// Seasonal modules that may be available only for a limited time
     /// </summary>

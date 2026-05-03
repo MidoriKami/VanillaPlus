@@ -5,6 +5,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using KamiToolKit.Controllers;
 using Lumina.Excel.Sheets;
+using VanillaPlus.Features.DutyLootPreview.Enums;
 using Action = System.Action;
 
 namespace VanillaPlus.Features.DutyLootPreview.Data;
@@ -16,7 +17,7 @@ namespace VanillaPlus.Features.DutyLootPreview.Data;
 public class DutyLootDataLoader : IDisposable {
     public event Action? OnChanged;
 
-    public bool IsLoading => dutyLootDataCache.State == DutyLootDataCache.CacheState.Loading;
+    public bool IsLoading => dutyLootDataCache.State == CacheState.Loading;
 
     public uint? ActiveDutyContentFinderConditionId { get; private set; }
 
@@ -90,7 +91,8 @@ public class DutyLootDataLoader : IDisposable {
             // Load only the current duty when in-duty, all duties when browsing duty finder
             var inDuty = GameMain.Instance()->CurrentContentFinderConditionId != 0;
             dutyLootDataCache.LoadCacheAsync(onlyContentId: inDuty ? newContentId : null);
-        } else {
+        }
+        else {
             dutyLootDataCache.ClearCache();
         }
         OnChanged?.Invoke();

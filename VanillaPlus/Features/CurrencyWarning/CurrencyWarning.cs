@@ -16,7 +16,7 @@ public unsafe class CurrencyWarning : GameModification {
         DisplayName = Strings.CurrencyWarning_DisplayName,
         Description = Strings.CurrencyWarning_Description,
         Type = ModificationType.NewOverlay,
-        Authors = [ "Zeffuro" ],
+        Authors = ["Zeffuro"],
     };
 
     private CurrencyWarningConfig? config;
@@ -38,7 +38,7 @@ public unsafe class CurrencyWarning : GameModification {
             config.IsConfigured = true;
             config.Save();
         }
-        
+
         overlayController = new OverlayController();
 
         itemSearchAddon = new CurrencySearchAddon {
@@ -51,7 +51,7 @@ public unsafe class CurrencyWarning : GameModification {
             InternalName = "CurrencyWarningList",
             Title = Strings.CurrencyWarning_ListTitle,
             Size = new Vector2(700.0f, 500.0f),
-            SortOptions = [ DefaultSortOptions.Alphabetical ],
+            SortOptions = [DefaultSortOptions.Alphabetical],
             Options = config.WarningSettings,
             ItemComparer = CurrencyWarningSetting.ItemComparer,
             IsSearchMatch = CurrencyWarningSetting.IsSearchMatch,
@@ -90,13 +90,13 @@ public unsafe class CurrencyWarning : GameModification {
 
     private void LoadNodes() {
         if (config is null) return;
-        
+
         tooltipNode = new CurrencyTooltipNode {
             Config = config,
             IsVisible = false,
         };
         overlayController?.AddNode(tooltipNode);
-        
+
         warningNode = new CurrencyWarningOverlayNode {
             Config = config,
             Size = new Vector2(48.0f, 48.0f),
@@ -109,26 +109,26 @@ public unsafe class CurrencyWarning : GameModification {
 
         var screenCenter = (Vector2)AtkStage.Instance()->ScreenSize / 2.0f;
         warningNode.Position = config.Position != Vector2.Zero ? config.Position : screenCenter;
-        
+
         overlayController?.AddNode(warningNode);
     }
-    
+
     public override void OnDisable() {
         overlayController?.Dispose();
         overlayController = null;
-        
+
         configWindow?.Dispose();
         configWindow = null;
-        
+
         listConfigWindow?.Dispose();
         listConfigWindow = null;
-        
+
         itemSearchAddon?.Dispose();
         itemSearchAddon = null;
-        
+
         tooltipNode?.Dispose();
         tooltipNode = null;
-        
+
         warningNode?.Dispose();
         warningNode = null;
 

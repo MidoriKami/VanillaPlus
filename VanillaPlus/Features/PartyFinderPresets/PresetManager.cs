@@ -19,12 +19,12 @@ public static unsafe class PresetManager {
         foreach (var file in directory.EnumerateFiles()) {
             var fileName = file.Name;
             if (!fileName.EndsWith(".preset.data")) continue;
-            
+
             var rawName = fileName[..fileName.IndexOf(".preset.data", StringComparison.OrdinalIgnoreCase)];
             fileList.Add(rawName);
         }
 
-        return fileList.Count is 0 ? [ DefaultString ] : fileList.Prepend(DontUseString).ToList();
+        return fileList.Count is 0 ? [DefaultString] : fileList.Prepend(DontUseString).ToList();
     }
 
     public static void LoadPreset(string fileName) {
@@ -42,9 +42,9 @@ public static unsafe class PresetManager {
 
         Data.SaveBinaryData(&agent->StoredRecruitmentInfo, sizeof(AgentLookingForGroup.RecruitmentSub), "PartyFinderPresets", $"{fileName}.preset.data");
         Data.SaveData(new PresetExtras {
-            ItemLevel = agent->AvgItemLv,
-            ItemLevelEnabled = agent->AvgItemLvEnabled,
-        }, "PartyFinderPresets", $"{fileName}.extras.data");
+                ItemLevel = agent->AvgItemLv,
+                ItemLevelEnabled = agent->AvgItemLvEnabled,
+            }, "PartyFinderPresets", $"{fileName}.extras.data");
     }
 
     public static void RenamePreset(string oldName, string newName) {

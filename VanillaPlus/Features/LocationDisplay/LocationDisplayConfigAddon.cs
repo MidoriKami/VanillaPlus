@@ -25,12 +25,12 @@ public class LocationDisplayConfigAddon : NativeAddon {
 
     private CheckboxNode? showInstanceNumberNode;
     private CheckboxNode? showPreciseHousingLocationNode;
-    
+
     public required LocationDisplayConfig Config { get; init; }
 
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         SetWindowSize(560.0f, 335.0f);
-        
+
         instructionTextNode = new TextNode {
             Position = ContentStartPosition,
             Size = new Vector2(ContentSize.X, 150.0f),

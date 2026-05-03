@@ -9,7 +9,7 @@ public class SampleGameModification : GameModification {
         DisplayName = Strings.ModificationDisplay_SampleGameModification,
         Description = Strings.ModificationDescription_SampleGameModification,
         Type = ModificationType.Hidden,
-        Authors = [ "YourNameHere" ],
+        Authors = ["YourNameHere"],
     };
 
     // public override string ImageName => "SampleGameModification.png";

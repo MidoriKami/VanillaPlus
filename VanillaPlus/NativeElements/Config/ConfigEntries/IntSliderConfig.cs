@@ -29,7 +29,7 @@ public class IntSliderConfig : BaseConfigEntry {
             String = Label,
             AlignmentType = AlignmentType.TopLeft,
         };
-            
+
         layoutNode.AddNode(sliderNode);
         layoutNode.AddNode(labelNode);
 

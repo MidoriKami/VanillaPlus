@@ -13,7 +13,7 @@ public class RenameAddon : NativeAddon {
     private TextButtonNode? cancelButton;
 
     public Action<ReadOnlySeString>? OnRenameComplete { get; set; }
-    
+
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         SetWindowSize(250.0f, 125.0f);
 
@@ -33,7 +33,7 @@ public class RenameAddon : NativeAddon {
 
         var buttonSize = new Vector2(100.0f, 24.0f);
         var targetYPos = ContentSize.Y - buttonSize.Y + ContentStartPosition.Y;
-        
+
         confirmButton = new TextButtonNode {
             Position = new Vector2(ContentStartPosition.X, targetYPos),
             Size = buttonSize,

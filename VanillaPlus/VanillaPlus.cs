@@ -77,7 +77,7 @@ public sealed class VanillaPlus : IDalamudPlugin {
 
         KamiToolKitLibrary.Dispose();
     }
-    
+
     private void OnLogin() {
         if (DateTime.Now.IsSeasonalEvent && DateTime.Now.Date > PluginSystem.SystemConfig.LastSeasonalNotice.Date) {
             PluginSystem.SeasonEventAddon.Open();
@@ -99,16 +99,16 @@ public sealed class VanillaPlus : IDalamudPlugin {
 
     private static void CommandHandler(string command, string arguments) {
         if (command is not ("/vanillaplus" or "/plus")) return;
-        
+
         switch (arguments) {
             case "" or null:
                 PluginSystem.AddonModificationBrowser.Open();
                 break;
-            
+
             case "debug":
                 PluginSystem.SystemConfig.IsDebugMode = !PluginSystem.SystemConfig.IsDebugMode;
-                Services.ChatGui.Print($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled": "Disabled")}", "VanillaPlus");
-                Services.PluginLog.Info($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled": "Disabled")}");
+                Services.ChatGui.Print($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}", "VanillaPlus");
+                Services.PluginLog.Info($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}");
                 PluginSystem.SystemConfig.Save();
 
                 if (!PluginSystem.AddonModificationBrowser.IsOpen) {

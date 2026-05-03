@@ -15,11 +15,11 @@ public unsafe class HUDPresets : GameModification {
         DisplayName = Strings.ModificationDisplay_HUDPresets,
         Description = Strings.ModificationDescription_HUDPresets,
         Type = ModificationType.UserInterface,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     public override string ImageName => "HUDPresets.png";
-    
+
     private AddonController? hudLayoutController;
     private TextDropDownNode? presetDropdownNode;
 
@@ -28,7 +28,7 @@ public unsafe class HUDPresets : GameModification {
     private TextButtonNode? overwriteButtonNode;
     private TextButtonNode? deleteButtonNode;
     private TextButtonNode? saveButtonNode;
-    
+
     private RenameAddon? renameAddon;
 
     public override void OnEnable() {
@@ -58,7 +58,8 @@ public unsafe class HUDPresets : GameModification {
             FontType = FontType.Axis,
             TextFlags = TextFlags.Emboss | TextFlags.AutoAdjustNodeSize,
             TextColor = ColorHelper.GetColor(8),
-            String = Strings.HUDPresets_Label, };
+            String = Strings.HUDPresets_Label,
+        };
         labelNode.AttachNode(addon);
 
         presetDropdownNode = new TextDropDownNode {
@@ -77,7 +78,7 @@ public unsafe class HUDPresets : GameModification {
             String = Strings.HUDPresets_ButtonLoad,
             TextTooltip = Strings.HUDPresets_ButtonLoadTooltip,
             OnClick = LoadPreset,
-            IsEnabled = false, 
+            IsEnabled = false,
         };
         loadButtonNode.AttachNode(addon);
 
@@ -103,9 +104,9 @@ public unsafe class HUDPresets : GameModification {
         deleteButtonNode.AttachNode(addon);
 
         saveButtonNode = new TextButtonNode {
-            Position = new Vector2(368.0f, 269.0f), 
-            Size = new Vector2(100.0f, 28.0f), 
-            String = Strings.HUDPresets_ButtonSave, 
+            Position = new Vector2(368.0f, 269.0f),
+            Size = new Vector2(100.0f, 28.0f),
+            String = Strings.HUDPresets_ButtonSave,
             OnClick = SaveCurrentLayout,
         };
         saveButtonNode.CollisionNode.TextTooltip = Strings.HUDPresets_SaveTooltipEnabled;
@@ -138,16 +139,16 @@ public unsafe class HUDPresets : GameModification {
 
         loadButtonNode?.Dispose();
         loadButtonNode = null;
-            
+
         overwriteButtonNode?.Dispose();
         overwriteButtonNode = null;
-            
+
         deleteButtonNode?.Dispose();
         deleteButtonNode = null;
-            
+
         saveButtonNode?.Dispose();
         saveButtonNode = null;
-            
+
         labelNode?.Dispose();
         labelNode = null;
     }
@@ -155,7 +156,7 @@ public unsafe class HUDPresets : GameModification {
     public override void OnDisable() {
         renameAddon?.Dispose();
         renameAddon = null;
-        
+
         hudLayoutController?.Dispose();
         hudLayoutController = null;
     }
@@ -184,10 +185,10 @@ public unsafe class HUDPresets : GameModification {
                 presetDropdownNode.RecalculateScrollParams();
             }
         };
-        
+
         renameAddon.Toggle();
     }
-    
+
     private void OverwriteSelectedPreset() {
         if (presetDropdownNode?.SelectedOption is null) return;
         if (presetDropdownNode.SelectedOption == HUDPresetManager.DefaultOption) return;
@@ -218,7 +219,7 @@ public unsafe class HUDPresets : GameModification {
 
         loadButtonNode.IsEnabled = selection != HUDPresetManager.DefaultOption;
         overwriteButtonNode.IsEnabled = selection != HUDPresetManager.DefaultOption;
-        
+
         // Work in Progress. There are issues with dropdowns that make the user experience poor for now.
         // deleteButtonNode.IsEnabled = selection != HUDPresetManager.DefaultOption;
     }

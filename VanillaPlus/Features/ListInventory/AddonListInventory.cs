@@ -14,7 +14,7 @@ public class AddonListInventory : SearchableNodeListAddon<ItemStack, InventoryIt
     private InventoryFilterMode lastSortingMode = InventoryFilterMode.Alphabetical;
     private bool isReversed;
     private string lastSearchString = string.Empty;
-    
+
     public AddonListInventory() {
         OnSortingUpdated = UpdateSorting;
         OnSearchUpdated = UpdateSearch;
@@ -33,7 +33,7 @@ public class AddonListInventory : SearchableNodeListAddon<ItemStack, InventoryIt
 
     protected override unsafe void OnFinalize(AtkUnitBase* addon) {
         base.OnFinalize(addon);
-        
+
         addon->UnsubscribeNumberArrayData(NumberArrayType.Inventory);
         Services.AddonLifecycle.UnregisterListener(OnInventoryUpdate);
     }
@@ -47,17 +47,17 @@ public class AddonListInventory : SearchableNodeListAddon<ItemStack, InventoryIt
         ListItems = Inventory.GetInventoryStacks().Where(item => ItemStack.IsMatch(item, lastSearchString)).ToList();
         ListItems.Sort((left, right) => ItemStack.Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
     }
-    
+
     private void UpdateSorting(Enum sortingMode, bool reversed) {
-        lastSortingMode = (InventoryFilterMode) sortingMode;
+        lastSortingMode = (InventoryFilterMode)sortingMode;
         isReversed = reversed;
-        
+
         UpdateInventoryItems();
     }
-    
+
     private void UpdateSearch(string searchString) {
         lastSearchString = searchString;
-        
+
         UpdateInventoryItems();
     }
 }

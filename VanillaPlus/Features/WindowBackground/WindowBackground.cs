@@ -101,7 +101,7 @@ public unsafe class WindowBackground : GameModification {
             Position = -new Vector2(15.0f, 15.0f),
             Settings = config.GetSettings(addon->NameString),
         };
-        
+
         if (addon->WindowNode is not null) {
             var targetNode = GetWindowNineGridNode(addon->WindowNode);
             if (targetNode is null) return;
@@ -112,7 +112,7 @@ public unsafe class WindowBackground : GameModification {
             newNode.IsOverlayNode = true;
             overlayController.AddNode(newNode);
         }
-        
+
         backgroundImageNodes.Add(newNode);
     }
 

@@ -44,7 +44,7 @@ public unsafe class HideUnwantedBanners : GameModification {
     public override void OnDisable() {
         configWindow?.Dispose();
         configWindow = null;
-        
+
         setImageTextureHook?.Dispose();
         setImageTextureHook = null;
 
@@ -68,7 +68,8 @@ public unsafe class HideUnwantedBanners : GameModification {
                     }
                 }
             }
-        } catch (Exception e) { 
+        }
+        catch (Exception e) {
             Services.PluginLog.Error(e, "Exception in OnSetImageTexture");
         }
 

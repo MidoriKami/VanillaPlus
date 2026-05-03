@@ -15,7 +15,7 @@ public unsafe class LocationDisplay : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_LocationDisplay,
         Description = Strings.ModificationDescription_LocationDisplay,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         Type = ModificationType.UserInterface,
         CompatibilityModule = new PluginCompatibilityModule("WhereAmIAgain"),
     };
@@ -56,36 +56,36 @@ public unsafe class LocationDisplay : GameModification {
         config.OnSave += UpdateDtrText;
 
         OpenConfigAction = configWindow.Toggle;
-        
+
         dtrBarEntry = Services.DtrBar.Get(Strings.LocationDisplay_DtrEntryName);
         dtrBarEntry.OnClick = _ => configWindow.Toggle();
 
         locationChanged = true;
-        
+
         Services.Framework.Update += OnFrameworkUpdate;
-		Services.ClientState.TerritoryChanged += OnZoneChange;
+        Services.ClientState.TerritoryChanged += OnZoneChange;
     }
 
     public override void OnDisable() {
         configWindow?.Dispose();
         configWindow = null;
-        
+
         Services.Framework.Update -= OnFrameworkUpdate;
-		Services.ClientState.TerritoryChanged -= OnZoneChange;
-        
+        Services.ClientState.TerritoryChanged -= OnZoneChange;
+
         dtrBarEntry?.Remove();
         dtrBarEntry = null;
-        
+
         config = null;
     }
 
-    private void OnZoneChange(uint u)		
+    private void OnZoneChange(uint u)
         => locationChanged = true;
 
     private void OnFrameworkUpdate(IFramework framework) {
         if (config is null) return;
-		if (Services.ObjectTable.LocalPlayer is null) return;
-        
+        if (Services.ObjectTable.LocalPlayer is null) return;
+
         UpdateRegion();
         UpdateSubArea();
         UpdateTerritory();
@@ -105,184 +105,184 @@ public unsafe class LocationDisplay : GameModification {
 
     private void UpdateDtrText() {
         if (config is null || dtrBarEntry is null) return;
-		
+
         var dtrString = FormatString(config.FormatString);
-		var tooltipString = FormatString(config.TooltipFormatString);
+        var tooltipString = FormatString(config.TooltipFormatString);
 
         dtrBarEntry.Text = dtrString;
         dtrBarEntry.Tooltip = tooltipString.Replace(@"\n", "\n");
-		locationChanged = false;
-	}
+        locationChanged = false;
+    }
 
-	private string GetStringForIndex(int index) => index switch {
-		0 => currentContinent?.Name.ToString() ?? string.Empty,
-		1 => currentTerritory?.Name.ToString() ?? string.Empty,
-		2 => currentRegion?.Name.ToString() ?? string.Empty,
-		3 => currentSubArea?.Name.ToString() ?? string.Empty,
-		4 => currentWard ?? string.Empty,
-		_ => string.Empty,
-	};
+    private string GetStringForIndex(int index) => index switch {
+        0 => currentContinent?.Name.ToString() ?? string.Empty,
+        1 => currentTerritory?.Name.ToString() ?? string.Empty,
+        2 => currentRegion?.Name.ToString() ?? string.Empty,
+        3 => currentSubArea?.Name.ToString() ?? string.Empty,
+        4 => currentWard ?? string.Empty,
+        _ => string.Empty,
+    };
 
-	private string FormatString(string inputFormat) {
+    private string FormatString(string inputFormat) {
         if (config is null) return string.Empty;
-		
+
         try {
-			var preTextEnd = inputFormat.IndexOf('{');
-			var postTextStart = inputFormat.LastIndexOf('}') + 1;
-			var workingSegment = inputFormat[preTextEnd..postTextStart];
+            var preTextEnd = inputFormat.IndexOf('{');
+            var postTextStart = inputFormat.LastIndexOf('}') + 1;
+            var workingSegment = inputFormat[preTextEnd..postTextStart];
 
-			// Get all the segments and the text before them
-			// If the segment itself resolves to an empty modifier, we omit the preceding text.
-			var splits = workingSegment.Split('}');
-			var internalString = string.Empty;
-			foreach (var segment in splits) {
-				if (segment.IsNullOrEmpty()) continue;
+            // Get all the segments and the text before them
+            // If the segment itself resolves to an empty modifier, we omit the preceding text.
+            var splits = workingSegment.Split('}');
+            var internalString = string.Empty;
+            foreach (var segment in splits) {
+                if (segment.IsNullOrEmpty()) continue;
 
-				var separator = segment[..^2];
-				var location = GetStringForIndex(int.Parse(segment[^1..]));
+                var separator = segment[..^2];
+                var location = GetStringForIndex(int.Parse(segment[^1..]));
 
-				if (location.IsNullOrEmpty()) continue;
-				internalString += internalString == string.Empty ? $"{location}" : $"{separator}{location}";
-			}
+                if (location.IsNullOrEmpty()) continue;
+                internalString += internalString == string.Empty ? $"{location}" : $"{separator}{location}";
+            }
 
-			if (config.ShowInstanceNumber) {
-				internalString += GetCharacterForInstanceNumber(UIState.Instance()->PublicInstance.InstanceId);
-			}
+            if (config.ShowInstanceNumber) {
+                internalString += GetCharacterForInstanceNumber(UIState.Instance()->PublicInstance.InstanceId);
+            }
 
-			return inputFormat[..preTextEnd] + internalString + inputFormat[postTextStart..];
-		}
-		catch (Exception) {
-			// If the format is empty, it'll throw an exception, but some people might still want instance numbers.
-			if (config.ShowInstanceNumber) {
-				return GetCharacterForInstanceNumber(UIState.Instance()->PublicInstance.InstanceId);
-			}
+            return inputFormat[..preTextEnd] + internalString + inputFormat[postTextStart..];
+        }
+        catch (Exception) {
+            // If the format is empty, it'll throw an exception, but some people might still want instance numbers.
+            if (config.ShowInstanceNumber) {
+                return GetCharacterForInstanceNumber(UIState.Instance()->PublicInstance.InstanceId);
+            }
 
-			// Ignore all other exceptions and return empty.
-		}
+            // Ignore all other exceptions and return empty.
+        }
 
-		return string.Empty;
-	}
+        return string.Empty;
+    }
 
-	private static string GetCharacterForInstanceNumber(uint instance) {
-		if (instance == 0) return string.Empty;
+    private static string GetCharacterForInstanceNumber(uint instance) {
+        if (instance == 0) return string.Empty;
 
-		return $" {((SeIconChar) ((int) SeIconChar.Instance1 + (instance - 1))).ToIconChar()}";
-	}
+        return $" {((SeIconChar)((int)SeIconChar.Instance1 + (instance - 1))).ToIconChar()}";
+    }
 
-	private void UpdateTerritory() {
-		if (lastTerritory != Services.ClientState.TerritoryType) {
-			lastTerritory = Services.ClientState.TerritoryType;
-			var territory = GetCurrentTerritory();
+    private void UpdateTerritory() {
+        if (lastTerritory != Services.ClientState.TerritoryType) {
+            lastTerritory = Services.ClientState.TerritoryType;
+            var territory = GetCurrentTerritory();
 
-			currentTerritory = territory.PlaceName.Value;
-			currentContinent = territory.PlaceNameRegion.Value;
-			locationChanged = true;
-		}
-	}
-    
-    private void UpdateInstanceId() {
-        if (lastInstanceId != UIState.Instance()->PublicInstance.InstanceId) {
-            lastInstanceId = UIState.Instance()->PublicInstance.InstanceId;
-            
+            currentTerritory = territory.PlaceName.Value;
+            currentContinent = territory.PlaceNameRegion.Value;
             locationChanged = true;
         }
     }
 
-	private void UpdateSubArea() {
-		if (lastSubArea != AreaInfo->SubAreaPlaceNameId) {
-			lastSubArea = AreaInfo->SubAreaPlaceNameId;
-			currentSubArea = GetPlaceName(AreaInfo->SubAreaPlaceNameId);
-			locationChanged = true;
-		}
-	}
+    private void UpdateInstanceId() {
+        if (lastInstanceId != UIState.Instance()->PublicInstance.InstanceId) {
+            lastInstanceId = UIState.Instance()->PublicInstance.InstanceId;
 
-	private void UpdateRegion() {
-		if (lastRegion != AreaInfo->AreaPlaceNameId) {
-			lastRegion = AreaInfo->AreaPlaceNameId;
-			currentRegion = GetPlaceName(AreaInfo->AreaPlaceNameId);
-			locationChanged = true;
-		}
-	}
+            locationChanged = true;
+        }
+    }
 
-	private void UpdateHousing() {
-		if (HousingInfo is null || HousingInfo->CurrentTerritory is null) {
-			currentWard = null;
-			return;
-		}
+    private void UpdateSubArea() {
+        if (lastSubArea != AreaInfo->SubAreaPlaceNameId) {
+            lastSubArea = AreaInfo->SubAreaPlaceNameId;
+            currentSubArea = GetPlaceName(AreaInfo->SubAreaPlaceNameId);
+            locationChanged = true;
+        }
+    }
 
-		var ward = (sbyte) (HousingInfo->GetCurrentWard() + 1);
+    private void UpdateRegion() {
+        if (lastRegion != AreaInfo->AreaPlaceNameId) {
+            lastRegion = AreaInfo->AreaPlaceNameId;
+            currentRegion = GetPlaceName(AreaInfo->AreaPlaceNameId);
+            locationChanged = true;
+        }
+    }
 
-		if (lastHousingWard != ward) {
-			lastHousingWard = ward;
-			currentWard = Strings.LocationDisplay_WardFormat.Format(ward);
-			locationChanged = true;
-		}
-	}
+    private void UpdateHousing() {
+        if (HousingInfo is null || HousingInfo->CurrentTerritory is null) {
+            currentWard = null;
+            return;
+        }
 
-	private void UpdatePreciseHousing() {
-		if (HousingInfo is null) {
-			currentWard = null;
-			return;
-		}
+        var ward = (sbyte)(HousingInfo->GetCurrentWard() + 1);
 
-		var ward = HousingInfo->GetCurrentWard();
-		var room = HousingInfo->GetCurrentRoom();
-		var plot = HousingInfo->GetCurrentPlot();
-		var division = HousingInfo->GetCurrentDivision();
+        if (lastHousingWard != ward) {
+            lastHousingWard = ward;
+            currentWard = Strings.LocationDisplay_WardFormat.Format(ward);
+            locationChanged = true;
+        }
+    }
 
-		if (ward != lastHousingWard || room != lastHousingRoom || plot != lastHousingPlot || division != lastHousingDivision) {
-			lastHousingWard = ward;
-			lastHousingRoom = room;
-			lastHousingPlot = plot;
-			lastHousingDivision = division;
-			currentWard = GetCurrentHouseAddress();
-			locationChanged = true;
-		}
-	}
+    private void UpdatePreciseHousing() {
+        if (HousingInfo is null) {
+            currentWard = null;
+            return;
+        }
 
-	private string GetCurrentHouseAddress() {
-		var housingManager = HousingManager.Instance();
-		if (housingManager == null) return string.Empty;
-		var strings = new List<string>();
+        var ward = HousingInfo->GetCurrentWard();
+        var room = HousingInfo->GetCurrentRoom();
+        var plot = HousingInfo->GetCurrentPlot();
+        var division = HousingInfo->GetCurrentDivision();
 
-		var ward = housingManager->GetCurrentWard() + 1;
-		if (ward == 0) return string.Empty;
+        if (ward != lastHousingWard || room != lastHousingRoom || plot != lastHousingPlot || division != lastHousingDivision) {
+            lastHousingWard = ward;
+            lastHousingRoom = room;
+            lastHousingPlot = plot;
+            lastHousingDivision = division;
+            currentWard = GetCurrentHouseAddress();
+            locationChanged = true;
+        }
+    }
 
-		var plot = housingManager->GetCurrentPlot();
-		var room = housingManager->GetCurrentRoom();
-		var division = housingManager->GetCurrentDivision();
+    private string GetCurrentHouseAddress() {
+        var housingManager = HousingManager.Instance();
+        if (housingManager == null) return string.Empty;
+        var strings = new List<string>();
 
-		strings.Add(Strings.LocationDisplay_WardFormat.Format(ward));
-		if (division == 2 || plot is >= 30 or -127) strings.Add(Strings.LocationDisplay_SubdivisionLabel);
+        var ward = housingManager->GetCurrentWard() + 1;
+        if (ward == 0) return string.Empty;
 
-		switch (plot) {
-			case < -1:
-				var apartmentValue = room == 0
-					? Strings.LocationDisplay_ApartmentFormat.Format(Strings.LocationDisplay_ApartmentLobby)
-					: Strings.LocationDisplay_ApartmentFormat.Format(room);
-				strings.Add(apartmentValue);
-				break;
+        var plot = housingManager->GetCurrentPlot();
+        var room = housingManager->GetCurrentRoom();
+        var division = housingManager->GetCurrentDivision();
 
-			case > -1:
-				strings.Add(Strings.LocationDisplay_PlotFormat.Format(plot + 1));
-				if (room > 0) {
-					strings.Add(Strings.LocationDisplay_RoomFormat.Format(room));
-				}
-				break;
-		}
+        strings.Add(Strings.LocationDisplay_WardFormat.Format(ward));
+        if (division == 2 || plot is >= 30 or -127) strings.Add(Strings.LocationDisplay_SubdivisionLabel);
 
-		return string.Join(" ", strings);
-	}
+        switch (plot) {
+            case < -1:
+                var apartmentValue = room == 0
+                                         ? Strings.LocationDisplay_ApartmentFormat.Format(Strings.LocationDisplay_ApartmentLobby)
+                                         : Strings.LocationDisplay_ApartmentFormat.Format(room);
+                strings.Add(apartmentValue);
+                break;
 
-	private static PlaceName GetPlaceName(uint row)
-		=> Services.DataManager.GetExcelSheet<PlaceName>().GetRow(row);
+            case > -1:
+                strings.Add(Strings.LocationDisplay_PlotFormat.Format(plot + 1));
+                if (room > 0) {
+                    strings.Add(Strings.LocationDisplay_RoomFormat.Format(room));
+                }
+                break;
+        }
 
-	private static TerritoryType GetCurrentTerritory() {
-		if (HousingInfo is not null && HousingInfo->IsInside()) {
-			return Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(HousingManager.GetOriginalHouseTerritoryTypeId());
-		}
-		else {
-			return Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(Services.ClientState.TerritoryType);
-		}
-	}
+        return string.Join(" ", strings);
+    }
+
+    private static PlaceName GetPlaceName(uint row)
+        => Services.DataManager.GetExcelSheet<PlaceName>().GetRow(row);
+
+    private static TerritoryType GetCurrentTerritory() {
+        if (HousingInfo is not null && HousingInfo->IsInside()) {
+            return Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(HousingManager.GetOriginalHouseTerritoryTypeId());
+        }
+        else {
+            return Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(Services.ClientState.TerritoryType);
+        }
+    }
 }

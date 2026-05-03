@@ -9,7 +9,7 @@ public class InventorySearchBar : GameModification {
         Description = Strings.ModificationDescription_InventorySearchBar,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Inventory,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new PluginCompatibilityModule("InventorySearchBar"),
     };
 

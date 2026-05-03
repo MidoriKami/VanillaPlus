@@ -15,7 +15,7 @@ public unsafe class ShowAetherytesOnTop : GameModification {
         Description = Strings.ModificationDescription_ShowAetherytesOnTop,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Map,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new QuestAwayCompatabilityModule(),
     };
 
@@ -40,7 +40,7 @@ public unsafe class ShowAetherytesOnTop : GameModification {
 
     private void OnMapPostUpdate(AgentEvent type, AgentArgs args) {
         if (AgentMap.Instance()->SelectedTerritoryId is 0) return;
-        
+
         if (!controlPreState.HasFlag(KeyStateFlags.Down) && !controlPreState.HasFlag(KeyStateFlags.Held)) {
             ControlKeyState = KeyStateFlags.None;
             args.GetAgentPointer<AgentMap>()->IsControlKeyPressed = false;

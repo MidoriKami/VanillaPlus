@@ -11,9 +11,9 @@ public class ListInventory : GameModification {
         DisplayName = Strings.ModificationDisplay_ListInventory,
         Description = Strings.ModificationDescription_ListInventory,
         Type = ModificationType.NewWindow,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
-    
+
     private AddonListInventory? addonListInventory;
 
     public override string ImageName => "ListInventory.png";

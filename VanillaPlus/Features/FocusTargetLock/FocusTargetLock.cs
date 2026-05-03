@@ -11,7 +11,7 @@ public class FocusTargetLock : GameModification {
         DisplayName = Strings.ModificationDisplay_FocusTargetLock,
         Description = Strings.ModificationDescription_FocusTargetLock,
         Type = ModificationType.GameBehavior,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     private uint? targetBaseId;
@@ -35,10 +35,10 @@ public class FocusTargetLock : GameModification {
         IGameObject? targetObject;
 
         // BaseId works well for reacquiring bosses, but doesn't work for other players.
-        if (targetBaseId is not 0) { 
+        if (targetBaseId is not 0) {
             targetObject = Services.ObjectTable.CharacterManagerObjects.FirstOrDefault(obj => obj.BaseId == targetBaseId);
         }
-        
+
         // Player EntityId's never change once in an instance, but enemies do, so this works to reacquire players.
         else {
             targetObject = Services.ObjectTable.CharacterManagerObjects.FirstOrDefault(obj => obj.EntityId == targetEntityId);

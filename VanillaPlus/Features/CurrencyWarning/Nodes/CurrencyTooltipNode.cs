@@ -50,7 +50,7 @@ public class CurrencyTooltipNode : OverlayNode {
         foreach (var (iconId, name, count, isHigh, limit) in warnings) {
             var limitStatus = isHigh ? Strings.CurrencyWarning_TooltipAboveLimit : Strings.CurrencyWarning_TooltipBelowLimit;
             var row = new HorizontalListNode {
-                ItemSpacing = 8.0f, 
+                ItemSpacing = 8.0f,
                 Height = 24.0f,
                 InitialNodes = [
                     new IconImageNode {

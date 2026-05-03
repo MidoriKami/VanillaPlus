@@ -10,7 +10,7 @@ public class PetSizeContextMenu : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_PetSizeContextMenu,
         Description = Strings.ModificationDescription_PetSizeContextMenu,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         Type = ModificationType.GameBehavior,
     };
 
@@ -30,10 +30,10 @@ public class PetSizeContextMenu : GameModification {
     private void OnMenuOpened(IMenuOpenedArgs args) {
         if (args is not { MenuType: ContextMenuType.Default }) return;
         if (args.Target is not MenuTargetDefault targetInfo) return;
-        if (targetInfo.TargetObject is not ( { IsPetOwner: true } or { IsPet: true } )) return;
+        if (targetInfo.TargetObject is not ({ IsPetOwner: true } or { IsPet: true })) return;
 
         var currentPetSize = GetPetSize();
-        
+
         args.AddMenuItem(new MenuItem {
             IsSubmenu = true,
             UseDefaultPrefix = true,
@@ -42,20 +42,20 @@ public class PetSizeContextMenu : GameModification {
                 clickedArgs.OpenSubmenu([
                     new MenuItem {
                         IsEnabled = currentPetSize is not 0,
-                        UseDefaultPrefix = true, 
-                        Name = Strings.PetSize_OptionSmall, 
+                        UseDefaultPrefix = true,
+                        Name = Strings.PetSize_OptionSmall,
                         OnClicked = _ => SetPetSize(0),
                     },
                     new MenuItem {
                         IsEnabled = currentPetSize is not 1,
-                        UseDefaultPrefix = true, 
-                        Name = Strings.PetSize_OptionMedium, 
+                        UseDefaultPrefix = true,
+                        Name = Strings.PetSize_OptionMedium,
                         OnClicked = _ => SetPetSize(1),
                     },
                     new MenuItem {
                         IsEnabled = currentPetSize is not 2,
-                        UseDefaultPrefix = true, 
-                        Name = Strings.PetSize_OptionLarge, 
+                        UseDefaultPrefix = true,
+                        Name = Strings.PetSize_OptionLarge,
                         OnClicked = _ => SetPetSize(2),
                     },
                 ]);
@@ -64,15 +64,15 @@ public class PetSizeContextMenu : GameModification {
     }
 
     private void SetPetSize(uint size) {
-        foreach(var configEntry in configEntries) {
+        foreach (var configEntry in configEntries) {
             Services.GameConfig.Set(configEntry, size);
         }
     }
 
     private uint? GetPetSize()
         => configEntries
-           .Select(configKey => Services.GameConfig.TryGet(configKey, out uint value) ? value : 0)
-           .GroupBy(configValue => configValue)
-           .MaxBy(group => group.Count())?
-           .Key;
+            .Select(configKey => Services.GameConfig.TryGet(configKey, out uint value) ? value : 0)
+            .GroupBy(configValue => configValue)
+            .MaxBy(group => group.Count())?
+            .Key;
 }

@@ -17,7 +17,7 @@ public static unsafe class AgentLifecycleExtensions {
                     AgentEvent.PreHide,
                     AgentEvent.PreShow,
                     AgentEvent.PreLevelChange,
-                    AgentEvent.PreReceiveEvent, 
+                    AgentEvent.PreReceiveEvent,
                     AgentEvent.PreReceiveEventWithResult,
                 ];
             }
@@ -38,7 +38,7 @@ public static unsafe class AgentLifecycleExtensions {
     }
 
     private static readonly Dictionary<AgentId, List<AgentEvent>> ActiveLoggers = [];
-    
+
     private static void LogEventMessage(AgentEvent type, AgentArgs args) {
         var logString = $"[{args.AgentId}] [{type}] ";
 
@@ -72,7 +72,7 @@ public static unsafe class AgentLifecycleExtensions {
             case AgentEvent.PreUpdate:
                 break;
         }
-        
+
         Services.PluginLog.Information(logString);
     }
 }

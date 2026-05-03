@@ -9,10 +9,10 @@ public static class InventoryItemExtensions {
     extension(ref InventoryItem item) {
         public uint IconId => item.GetIconId();
         public ReadOnlySeString Name => item.GetItemName();
-        
+
         private uint GetIconId() {
             uint iconId = 0;
-        
+
             if (item.GetEventItem() is { } eventItem) {
                 iconId = eventItem.Icon;
             }
@@ -30,7 +30,7 @@ public static class InventoryItemExtensions {
         private ReadOnlySeString GetItemName() {
             var itemId = item.GetItemId();
             var itemName = ItemUtil.GetItemName(itemId);
-        
+
             return new Lumina.Text.SeStringBuilder()
                 .PushColorType(ItemUtil.GetItemRarityColorType(itemId))
                 .Append(itemName)
@@ -71,7 +71,7 @@ public static class InventoryItemExtensions {
             }
 
             try {
-                var regex = new Regex(searchString,RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+                var regex = new Regex(searchString, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
                 if (ItemUtil.IsEventItem(item.GetBaseItemId())) {
                     if (!Services.DataManager.GetExcelSheet<EventItem>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;

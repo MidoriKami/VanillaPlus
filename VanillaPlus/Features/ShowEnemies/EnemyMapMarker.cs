@@ -29,11 +29,11 @@ public sealed unsafe class EnemyMapMarker : MapMarkerNode {
         if (battleChara->SubKind != (byte)BattleNpcSubKind.Combatant) return;
         if (!battleChara->GetIsTargetable()) return;
         if (Vector3.Distance(battleChara->Position, localChara.Position) > 150.0f) return;
-        
+
         var objectPosition = new Vector2(battleChara->Position.X, battleChara->Position.Z);
         var objectLevel = battleChara->Level;
         var objectName = battleChara->NameString;
-        
+
         IsVisible = true;
         Position = objectPosition;
         MapId = AgentMap.Instance()->CurrentMapId;

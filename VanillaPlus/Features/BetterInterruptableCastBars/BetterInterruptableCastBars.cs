@@ -17,7 +17,7 @@ public unsafe class BetterInterruptableCastBars : GameModification {
         DisplayName = Strings.ModificationDisplay_BetterInterruptableCastBars,
         Description = Strings.ModificationDescription_BetterInterruptableCastBars,
         Type = ModificationType.UserInterface,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@ImprovedInterruptableCastbars"),
     };
 
@@ -31,7 +31,7 @@ public unsafe class BetterInterruptableCastBars : GameModification {
     public override void OnEnable() {
         antsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnAntsCheck);
         antsHook?.Enable();
-        
+
         targetInfoCastbarController = new AddonController {
             AddonName = "_TargetInfoCastBar",
             OnSetup = addon => {
@@ -102,7 +102,7 @@ public unsafe class BetterInterruptableCastBars : GameModification {
                 TextureCoordinates = new Vector2(232.0f * column, 32.0f * row),
             });
         }
-        
+
         node.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(21, 45)
             .AddFrame(21, partId: 13, alpha: 0)

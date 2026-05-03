@@ -3,7 +3,7 @@
 public class PluginCompatibilityModule(params string[] pluginNames) : CompatibilityModule {
 
     private string erroringPluginName = string.Empty;
-    
+
     public override bool ShouldLoadGameModification() {
         foreach (var pluginName in pluginNames) {
             if (IsPluginLoaded(pluginName)) {

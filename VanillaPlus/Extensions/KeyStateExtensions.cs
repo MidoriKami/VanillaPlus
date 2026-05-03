@@ -17,10 +17,10 @@ public static class KeyStateExtensions {
         }
 
         public void ResetKeyCombo(IEnumerable<VirtualKey> keys) {
-            foreach(var key in keys) {
+            foreach (var key in keys) {
                 if (!keyState.IsVirtualKeyValid(key)) continue;
                 if (key is VirtualKey.CONTROL or VirtualKey.MENU or VirtualKey.SHIFT) continue;
-            
+
                 keyState[(int)key] = false;
             }
         }

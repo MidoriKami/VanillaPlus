@@ -16,7 +16,7 @@ public sealed class GeneralSettingsNode : SimpleComponentNode {
                 new CheckboxNode {
                     IsChecked = config.ShowOnlyInCombat,
                     OnClick = value => {
-                        config.ShowOnlyInCombat = value; 
+                        config.ShowOnlyInCombat = value;
                         config.Save();
                     },
                     Size = new Vector2(300.0f, 24.0f),
@@ -25,7 +25,7 @@ public sealed class GeneralSettingsNode : SimpleComponentNode {
                 new CheckboxNode {
                     IsChecked = config.AntOnlyOnFinalStack,
                     OnClick = value => {
-                        config.AntOnlyOnFinalStack = value; 
+                        config.AntOnlyOnFinalStack = value;
                         config.Save();
                     },
                     Size = new Vector2(300.0f, 24.0f),
@@ -34,7 +34,7 @@ public sealed class GeneralSettingsNode : SimpleComponentNode {
                 new CheckboxNode {
                     IsChecked = config.ShowOnlyUsableActions,
                     OnClick = value => {
-                        config.ShowOnlyUsableActions = value; 
+                        config.ShowOnlyUsableActions = value;
                         config.Save();
                     },
                     Size = new Vector2(300.0f, 24.0f),
@@ -43,7 +43,7 @@ public sealed class GeneralSettingsNode : SimpleComponentNode {
                 new CheckboxNode {
                     IsChecked = config.UseGlocalPreAntMs,
                     OnClick = value => {
-                        config.UseGlocalPreAntMs = value; 
+                        config.UseGlocalPreAntMs = value;
                         config.Save();
                     },
                     Size = new Vector2(300.0f, 24.0f),

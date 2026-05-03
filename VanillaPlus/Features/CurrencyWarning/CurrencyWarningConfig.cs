@@ -24,13 +24,13 @@ public class CurrencyWarningConfig : GameModificationConfig<CurrencyWarningConfi
     public bool PlayAnimations = true;
 
     public List<CurrencyWarningSetting> WarningSettings = [];
-    
+
     [JsonIgnore] public bool IsMoveable = false;
 
     protected override bool TryMigrateConfig(int? fileVersion, JObject jObject) {
         switch (fileVersion) {
             case null:
-                WarningSettings = jObject["WarningSettings"]?.Select(ParseOldWarningSetting).ToList() ?? []; 
+                WarningSettings = jObject["WarningSettings"]?.Select(ParseOldWarningSetting).ToList() ?? [];
                 return true;
         }
 

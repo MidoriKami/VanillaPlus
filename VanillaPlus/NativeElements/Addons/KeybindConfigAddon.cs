@@ -26,12 +26,12 @@ public unsafe class KeybindConfigAddon : NativeAddon {
     private HorizontalLineNode? buttonsLineNode;
     private TextButtonNode? confirmButtonNode;
     private TextButtonNode? cancelButtonNode;
-    
+
     private readonly HashSet<VirtualKey> combo = [VirtualKey.NO_KEY];
     private readonly List<InputId> conflicts = [];
-    
+
     public required Keybind InitialKeybind { get; init; }
-    
+
     protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         SetWindowSize(500.0f, 333.0f);
 
@@ -76,7 +76,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             AutoHideScrollBar = true,
         };
         conflictsScrollableAreaNode.AttachNode(this);
-        
+
         conflictsScrollableAreaNode.AddNode(new CategoryTextNode {
             String = Strings.KeybindConfig_NoConflicts,
         });
@@ -97,7 +97,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
                     Key = combo.FirstOrNull(key => key.IsKey) ?? VirtualKey.NO_KEY,
                     Modifiers = combo.Where(key => key.IsModifier).ToHashSet(),
                 };
-                OnKeybindChanged(newKeybind); 
+                OnKeybindChanged(newKeybind);
                 Close();
             },
         };
@@ -137,7 +137,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
                 conflicts.Add((InputId)index);
             }
         }
-        
+
         conflictsScrollableAreaNode.Clear();
 
         if (conflicts.Count == 0) {

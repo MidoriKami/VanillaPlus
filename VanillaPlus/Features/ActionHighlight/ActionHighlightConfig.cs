@@ -20,7 +20,7 @@ public class ActionHighlightConfig : GameModificationConfig<ActionHighlightConfi
 
     protected override bool TryMigrateConfig(int? fileVersion, JObject jObject) {
         switch (fileVersion) {
-            case 1: 
+            case 1:
                 var oldActions = jObject["ActiveActions"]?.ToObject<Dictionary<uint, int>>();
                 if (oldActions is null) return true;
 

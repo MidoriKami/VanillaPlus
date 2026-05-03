@@ -44,7 +44,7 @@ public class WksProgressBarNode : SimpleComponentNode {
     }
 
     public bool IsTopLayerNode { get; set; }
-    
+
     public float Progress {
         get => progressNode.Width / Width;
         set {

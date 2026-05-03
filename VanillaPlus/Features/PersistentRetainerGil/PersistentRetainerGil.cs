@@ -12,7 +12,7 @@ public unsafe class PersistentRetainerGil : GameModification {
         DisplayName = Strings.PersistentRetainerGil_PersistentRetainerGil,
         Description = Strings.PersistentRetainerGil_Description,
         Type = ModificationType.GameBehavior,
-        Authors = [ "Zeffuro" ],
+        Authors = ["Zeffuro"],
     };
 
     public override string ImageName => "PersistentRetainerGil.png";
@@ -28,7 +28,7 @@ public unsafe class PersistentRetainerGil : GameModification {
 
     public override void OnDisable() {
         Services.AddonLifecycle.UnregisterListener(OnBankEvent, OnBankRefreshEvent);
-        
+
         previousGil = 0;
         needsUpdate = false;
         isProcessing = false;
@@ -48,11 +48,10 @@ public unsafe class PersistentRetainerGil : GameModification {
 
             var component = componentNode->GetAsAtkComponentNumericInput();
             if (component is null) return;
-            
+
             component->SetValue(previousGil);
             needsUpdate = false;
-        }
-        finally {
+        } finally {
             isProcessing = false;
         }
     }

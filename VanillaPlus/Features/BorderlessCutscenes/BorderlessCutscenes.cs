@@ -9,7 +9,7 @@ public class BorderlessCutscenes : GameModification {
         DisplayName = "Borderless Cutscenes",
         Description = "Removes the letterboxing in cutscenes when using ultrawide displays.",
         Type = ModificationType.GameBehavior,
-        Authors = [ "goat", "Maple", "MidoriKami" ],
+        Authors = ["goat", "Maple", "MidoriKami"],
         CompatibilityModule = new PluginCompatibilityModule("Dalamud.FullscreenCutscenes"),
     };
 
@@ -20,7 +20,7 @@ public class BorderlessCutscenes : GameModification {
 
     public override void OnEnable() {
         Services.GameInteropProvider.InitializeFromAttributes(this);
-        
+
         if (memoryAddress is { } address && memoryAddress != nint.Zero) {
             jumpPatch = new MemoryReplacement(address, [0x00]);
             jumpPatch.Enable();
@@ -30,7 +30,7 @@ public class BorderlessCutscenes : GameModification {
     public override void OnDisable() {
         jumpPatch?.Dispose();
         jumpPatch = null;
-        
+
         memoryAddress = null;
     }
 }

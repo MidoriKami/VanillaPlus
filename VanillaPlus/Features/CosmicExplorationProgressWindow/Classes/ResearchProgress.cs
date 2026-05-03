@@ -16,7 +16,7 @@ public class Progress(byte jobId, byte researchType) {
 
     // Explicitly check Current >= Max since sometimes Current == Max == Needed and our calculation would return NaN
     public float MaxPercentage => Current >= Max ? 1f : float.Clamp(((float)Current - Needed) / (Max - Needed), 0f, 1f);
-    
+
     public bool Complete => Current >= Needed;
 
     public bool Capped => Current >= Max;

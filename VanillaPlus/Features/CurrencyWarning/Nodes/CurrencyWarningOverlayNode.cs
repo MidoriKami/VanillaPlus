@@ -60,11 +60,12 @@ public unsafe class CurrencyWarningOverlayNode : OverlayNode {
         var shouldDisableInDuty = Config.HideInDuties && Services.Condition.IsBoundByDuty;
 
         IsVisible = shouldShow && !(shouldDisableInDuty || Services.Condition.IsInCutsceneOrQuestEvent);
-        
+
         if (ActiveWarnings.Count > 0) {
             iconNode.IconId = hasHigh ? Config.HighIcon : Config.LowIcon;
             Timeline?.PlayAnimation(Config.PlayAnimations ? 1 : 2);
-        } else {
+        }
+        else {
             iconNode.IconId = Config.LowIcon;
             Timeline?.StopAnimation();
         }
@@ -89,10 +90,11 @@ public unsafe class CurrencyWarningOverlayNode : OverlayNode {
             }
 
             UpdateTooltipPosition();
-        } else {
+        }
+        else {
             TooltipNode.IsVisible = false;
         }
-        
+
         lastIsHovered = IsHovered;
     }
 
@@ -117,7 +119,7 @@ public unsafe class CurrencyWarningOverlayNode : OverlayNode {
 
         TooltipNode.Position = new Vector2(targetX, targetY);
     }
-    
+
     private void BuildPulseAnimation() {
         AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 60)
@@ -127,7 +129,7 @@ public unsafe class CurrencyWarningOverlayNode : OverlayNode {
             .AddLabel(60, 0, AtkTimelineJumpBehavior.LoopForever, 2)
             .EndFrameSet()
             .Build());
-        
+
         iconNode.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 30)
             .AddFrame(1, rotationDegrees: 0.0f)
@@ -136,13 +138,11 @@ public unsafe class CurrencyWarningOverlayNode : OverlayNode {
             .AddFrame(15, rotationDegrees: 25.0f)
             .AddFrame(20, rotationDegrees: 0.0f)
             .AddFrame(30, rotationDegrees: 0.0f)
-
             .AddFrame(1, scale: new Vector2(0.95f, 0.95f), alpha: 175)
             .AddFrame(10, scale: new Vector2(0.95f, 0.95f), alpha: 175)
             .AddFrame(15, scale: new Vector2(1.0f, 1.0f), alpha: 255)
             .AddFrame(25, scale: new Vector2(0.95f, 0.95f), alpha: 175)
             .AddFrame(30, scale: new Vector2(0.95f, 0.95f), alpha: 175)
-
             .EndFrameSet()
             .BeginFrameSet(31, 60)
             .AddFrame(31, alpha: 255, scale: new Vector2(1.0f, 1.0f), rotation: MathF.PI * 2.0f)

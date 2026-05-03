@@ -9,7 +9,7 @@ namespace VanillaPlus.Features.ShowGatheringPoints;
 
 public unsafe class GatheringPointMapMarker : MapMarkerNode {
     public required int ObjectIndex { get; set; }
-    
+
     public GatheringPointMapMarker() {
         Size = new Vector2(32.0f, 32.0f);
     }
@@ -22,7 +22,7 @@ public unsafe class GatheringPointMapMarker : MapMarkerNode {
 
         if (gatheringPoint->ObjectKind is not ObjectKind.GatheringPoint) return;
         if (!gatheringPoint->GetIsTargetable()) return;
-        
+
         var objectPosition = new Vector2(gatheringPoint->Position.X, gatheringPoint->Position.Z);
         var objectName = gatheringPoint->NameString;
 
@@ -37,8 +37,7 @@ public unsafe class GatheringPointMapMarker : MapMarkerNode {
         var gatheringPoint = Services.DataManager.GetExcelSheet<GatheringPoint>().GetRow(gatheringPointId);
         var gatheringPointBase = Services.DataManager.GetExcelSheet<GatheringPointBase>().GetRow(gatheringPoint.GatheringPointBase.RowId);
 
-        return gatheringPointBase.GatheringType.RowId switch
-        {
+        return gatheringPointBase.GatheringType.RowId switch {
             0 => 60438,
             1 => 60437,
             2 => 60433,

@@ -9,7 +9,7 @@ public class RetainerSearchBar : GameModification {
         Description = Strings.ModificationDescription_RetainerSearchBar,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Inventory,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new PluginCompatibilityModule("InventorySearchBar"),
     };
 

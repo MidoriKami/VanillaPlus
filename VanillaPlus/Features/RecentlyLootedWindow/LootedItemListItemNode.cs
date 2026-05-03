@@ -7,15 +7,15 @@ namespace VanillaPlus.Features.RecentlyLootedWindow;
 
 public class LootedItemListItemNode : ListItemNode<LootedItemInfo>, IListItemNode {
     public static float ItemHeight => 32.0f;
-    
+
     private readonly IconWithCountNode iconNode;
     private readonly TextNode itemNameTextNode;
-    
+
     public LootedItemListItemNode() {
         EnableHighlight = false;
         EnableSelection = false;
         DisableCollisionNode = true;
-        
+
         iconNode = new IconWithCountNode {
             ShowClickableCursor = true,
         };
@@ -27,7 +27,7 @@ public class LootedItemListItemNode : ListItemNode<LootedItemInfo>, IListItemNod
         };
         itemNameTextNode.AttachNode(this);
     }
-    
+
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
 

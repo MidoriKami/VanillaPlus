@@ -13,7 +13,7 @@ public unsafe class FadeLootButton : GameModification {
         DisplayName = Strings.ModificationDisplay_FadeLootButton,
         Description = Strings.ModificationDescription_FadeLootButton,
         Type = ModificationType.UserInterface,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     public override string ImageName => "FadeLootButton.png";
@@ -21,7 +21,7 @@ public unsafe class FadeLootButton : GameModification {
     private AddonController? notificationLootController;
     private FadeLootButtonConfig? config;
     private ConfigAddon? configWindow;
-    
+
     public override void OnEnable() {
         config = FadeLootButtonConfig.Load();
 
@@ -36,7 +36,7 @@ public unsafe class FadeLootButton : GameModification {
             .AddFloatSlider(Strings.FadeLootButton_LabelFadePercentage, 0.0f, 1.0f, 2, 0.05f, nameof(config.FadePercent));
 
         OpenConfigAction = configWindow.Toggle;
-        
+
         notificationLootController = new AddonController {
             AddonName = "_NotificationLoot",
             OnUpdate = UpdateNotificationLoot,
@@ -56,11 +56,11 @@ public unsafe class FadeLootButton : GameModification {
         notificationLootController = null;
 
         config = null;
-        
+
         configWindow?.Dispose();
         configWindow = null;
     }
-    
+
     private void UpdateNotificationLoot(AtkUnitBase* addon) {
         if (config is null) return;
         if (addon->RootNode is null) return;

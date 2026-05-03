@@ -17,7 +17,7 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         DisplayName = Strings.ModificationDisplay_DraggableWindowDeadSpace,
         Description = Strings.ModificationDescription_DraggableWindowDeadSpace,
         Type = ModificationType.GameBehavior,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     private ViewportEventListener? cursorEventListener;
@@ -28,9 +28,9 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
 
     public override void OnEnable() {
         windowInteractionNodes = [];
-        
+
         cursorEventListener = new ViewportEventListener(OnViewportEvent);
-        
+
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, string.Empty, OnAddonSetup);
         Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, string.Empty, OnAddonFinalize);
     }
@@ -42,15 +42,15 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         foreach (var (_, node) in windowInteractionNodes ?? []) {
             node.Dispose();
         }
-        
+
         windowInteractionNodes?.Clear();
         windowInteractionNodes = null;
     }
-    
+
     private void OnAddonSetup(AddonEvent type, AddonArgs args) {
         if (!Services.ClientState.IsLoggedIn) return;
         if (windowInteractionNodes is null) return;
-        
+
         var addon = (AtkUnitBase*)args.Addon.Address;
 
         if (addon->WindowNode is not null) {
@@ -113,12 +113,12 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         var targetAddon = RaptureAtkUnitManager.Instance()->GetAddonByNode(targetNode);
 
         if (targetAddon is null) return;
-        
+
         var addonHeaderNode = targetAddon->WindowHeaderCollisionNode;
         if (addonHeaderNode is null) return;
-        
+
         var mousePosition = atkEventData->MousePosition;
-        
+
         if (addonHeaderNode->CheckCollisionAtCoords((short)mousePosition.X, (short)mousePosition.Y, true)) {
             return;
         }
@@ -126,31 +126,31 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         if (!isDragging) {
             dragStart = atkEventData->MousePosition;
             Services.AddonEventManager.SetCursor(AddonCursorType.Grab);
-            cursorEventListener?.AddEvent(AtkEventType.MouseMove, (AtkResNode*) atkEvent->Target);
-            cursorEventListener?.AddEvent(AtkEventType.MouseUp, (AtkResNode*) atkEvent->Target);
+            cursorEventListener?.AddEvent(AtkEventType.MouseMove, (AtkResNode*)atkEvent->Target);
+            cursorEventListener?.AddEvent(AtkEventType.MouseUp, (AtkResNode*)atkEvent->Target);
             isDragging = true;
         }
     }
 
     private void OnViewportEvent(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
         if (eventType is not (AtkEventType.MouseMove or AtkEventType.MouseUp)) return;
-        
+
         var targetAddon = RaptureAtkUnitManager.Instance()->GetAddonByNode(atkEvent->Node);
         if (targetAddon is null) return;
 
         ref var mouseData = ref atkEventData->MouseData;
         var mousePosition = new Vector2(mouseData.PosX, mouseData.PosY);
-        
+
         switch (eventType) {
             case AtkEventType.MouseMove:
                 var position = new Vector2(targetAddon->X, targetAddon->Y);
                 var dragDelta = dragStart - mousePosition;
                 dragStart = mousePosition;
-                
+
                 var newPosition = position - dragDelta;
                 targetAddon->SetPosition((short)newPosition.X, (short)newPosition.Y);
                 break;
-            
+
             case AtkEventType.MouseUp:
                 cursorEventListener?.RemoveEvent(AtkEventType.MouseMove);
                 cursorEventListener?.RemoveEvent(AtkEventType.MouseUp);

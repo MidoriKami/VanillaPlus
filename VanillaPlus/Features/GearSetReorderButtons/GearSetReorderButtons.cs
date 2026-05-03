@@ -58,7 +58,7 @@ public unsafe class GearSetReorderButtons : GameModification {
         if (gearsetHelpButton is not null) {
             gearsetHelpButton->Position += new Vector2(ExtraAddonWidth, 0.0f);
         }
-        
+
         // Gearset Count/Limit text node
         var gearsetCountTextNode = addon->GetNodeById(10);
         if (gearsetCountTextNode is not null) {
@@ -111,12 +111,12 @@ public unsafe class GearSetReorderButtons : GameModification {
         if (!reorderButtonNodes.TryGetValue(listItemData.NodeId, out var reorderButton)) {
             var collisionNode = listItemData.CollisionNode;
             var ownerNode = listItemData.ItemRenderer->OwnerNode;
-            
+
             reorderButton = new GearSetListReorderButtonNode {
                 Size = new Vector2(ExtraAddonWidth - 4.0f, 28.0f),
                 Position = new Vector2(collisionNode->AtkResNode.Width - 2.0f - ExtraAddonWidth - 4.0f, 0.0f),
             };
-            
+
             // Resize the entire entry, so it's collision and events don't overlap with ours.
             ownerNode->AtkResNode.Size -= new Vector2(ExtraAddonWidth + 4.0f, 0.0f);
 

@@ -12,12 +12,12 @@ public unsafe class TabEntry : IDisposable {
     private readonly ConfigSearchBarConfig config;
     private readonly SimpleImageNode? highlightNode;
     private readonly List<TextEntry> textEntries = [];
-    
+
     public TabEntry(AtkUnitBase* addon, uint tabNodeId, uint settingsContainerNodeId, ConfigSearchBarConfig config) {
         this.config = config;
 
         if (addon is null) return;
-        
+
         var dropDownComponentNode = addon->GetNodeById<AtkComponentNode>(tabNodeId);
         if (dropDownComponentNode is null) return;
 
@@ -29,7 +29,7 @@ public unsafe class TabEntry : IDisposable {
             Size = new Vector2(72.0f, 72.0f),
             IsVisible = false,
         };
-        
+
         highlightNode.AttachNode(dropDownComponentNode, NodePosition.AfterTarget);
 
         var settingsContainerNode = addon->GetNodeById(settingsContainerNodeId);
@@ -43,7 +43,7 @@ public unsafe class TabEntry : IDisposable {
             textEntry.ClearHighlight();
         }
         textEntries.Clear();
-        
+
         highlightNode?.Dispose();
     }
 
@@ -54,7 +54,7 @@ public unsafe class TabEntry : IDisposable {
             foreach (var textEntry in textEntries) {
                 textEntry.ClearHighlight();
             }
-            
+
             return;
         }
 
@@ -70,7 +70,7 @@ public unsafe class TabEntry : IDisposable {
                 entry.ClearHighlight();
             }
         }
-        
+
         highlightNode?.IsVisible = anyEntries;
         highlightNode?.MultiplyColor = config.TabColor.AsVector3();
     }
@@ -79,7 +79,7 @@ public unsafe class TabEntry : IDisposable {
         strings ??= [];
 
         if (node is null) return strings;
-        
+
         var currentNode = node;
         while (currentNode is not null) {
 
@@ -113,7 +113,7 @@ public unsafe class TabEntry : IDisposable {
 
             currentNode = currentNode->PrevSiblingNode;
         }
-        
+
         return strings;
     }
 }

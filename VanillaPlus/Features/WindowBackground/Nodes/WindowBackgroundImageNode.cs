@@ -8,11 +8,11 @@ namespace VanillaPlus.Features.WindowBackground.Nodes;
 public unsafe class WindowBackgroundImageNode : OverlayNode {
 
     public override OverlayLayer OverlayLayer => OverlayLayer.Background;
-    
+
     public required WindowBackgroundSetting Settings { get; init; }
 
     public bool IsOverlayNode;
-    
+
     private readonly BackgroundImageNode backgroundImageNode;
 
     public WindowBackgroundImageNode() {

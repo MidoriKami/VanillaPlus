@@ -38,9 +38,9 @@ public unsafe class MiniCactpotHelper : GameModification {
 
     public override void OnEnable() {
         boardState = [];
-        
+
         perfectCactpot = new PerfectCactpot();
-        
+
         config = MiniCactpotHelperConfig.Load();
 
         configWindow = new ConfigAddon {
@@ -78,10 +78,10 @@ public unsafe class MiniCactpotHelper : GameModification {
 
         configWindow?.Dispose();
         configWindow = null;
-        
+
         lotteryDailyController?.Dispose();
         lotteryDailyController = null;
-        
+
         config = null;
     }
 
@@ -93,73 +93,73 @@ public unsafe class MiniCactpotHelper : GameModification {
     private void SetupLotteryDaily(AddonLotteryDaily* addon) {
         if (config is null) return;
         if (configWindow is null) return;
-		if (addon is null) return;
+        if (addon is null) return;
 
-		var buttonContainerNode = addon->GetNodeById(8);
-		if (buttonContainerNode is null) return;
+        var buttonContainerNode = addon->GetNodeById(8);
+        if (buttonContainerNode is null) return;
 
-		gameGrid = new GameGrid(config) {
-			Size = new Vector2(542.0f, 320.0f),
-		};
-		gameGrid.AttachNode(buttonContainerNode);
+        gameGrid = new GameGrid(config) {
+            Size = new Vector2(542.0f, 320.0f),
+        };
+        gameGrid.AttachNode(buttonContainerNode);
 
         configButton = new CircleButtonNode {
-			Position = new Vector2(8.0f, 8.0f),
-			Size = new Vector2(32.0f, 32.0f),
-			Icon = ButtonIcon.GearCog,
+            Position = new Vector2(8.0f, 8.0f),
+            Size = new Vector2(32.0f, 32.0f),
+            Icon = ButtonIcon.GearCog,
             TextTooltip = Strings.Tooltip_ConfigEzMiniCactpot,
-			OnClick = () => configWindow.Toggle(),
-		};
-		configButton.AttachNode(buttonContainerNode);
-	}
-	
-	private void UpdateLotteryDaily(AddonLotteryDaily* addon) {
+            OnClick = () => configWindow.Toggle(),
+        };
+        configButton.AttachNode(buttonContainerNode);
+    }
+
+    private void UpdateLotteryDaily(AddonLotteryDaily* addon) {
         if (perfectCactpot is null) return;
 
         var newState = Enumerable.Range(0, 9).Select(i => addon->GameNumbers[i]).ToArray();
-		if (!boardState?.SequenceEqual(newState) ?? true) {
-			try {
-				if (gameTask is null or { Status: TaskStatus.RanToCompletion or TaskStatus.Faulted or TaskStatus.Canceled }) {
-					gameTask = Task.Run(() => {
-			    
-						if (!newState.Contains(0)) {
-							gameGrid?.SetActiveButtons(null);
-							gameGrid?.SetActiveLanes(null);
-						}
-						else {
-							var solution = perfectCactpot.Solve(newState);
-							var activeIndexes = solution
-								.Select((value, index) => new { value, index })
-								.Where(item => item.value)
-								.Select(item => item.index)
-								.ToArray();
-					
-							if (solution.Length is 8) {
-								gameGrid?.SetActiveButtons(null);
-								gameGrid?.SetActiveLanes(activeIndexes);
-							}
-							else {
-								gameGrid?.SetActiveButtons(activeIndexes);
-								gameGrid?.SetActiveLanes(null);
-							}
-						}
-					});
-				}
-			}
-			catch (OperationCanceledException) { }
-			catch (Exception ex) {
-				Services.PluginLog.Error(ex, "Updater has crashed");
-			}
-		}
-		
-		boardState = newState;
-	}
-	
-	private void FinalizeLotteryDaily(AddonLotteryDaily* addon) {
+        if (!boardState?.SequenceEqual(newState) ?? true) {
+            try {
+                if (gameTask is null or { Status: TaskStatus.RanToCompletion or TaskStatus.Faulted or TaskStatus.Canceled }) {
+                    gameTask = Task.Run(() => {
+
+                        if (!newState.Contains(0)) {
+                            gameGrid?.SetActiveButtons(null);
+                            gameGrid?.SetActiveLanes(null);
+                        }
+                        else {
+                            var solution = perfectCactpot.Solve(newState);
+                            var activeIndexes = solution
+                                .Select((value, index) => new { value, index })
+                                .Where(item => item.value)
+                                .Select(item => item.index)
+                                .ToArray();
+
+                            if (solution.Length is 8) {
+                                gameGrid?.SetActiveButtons(null);
+                                gameGrid?.SetActiveLanes(activeIndexes);
+                            }
+                            else {
+                                gameGrid?.SetActiveButtons(activeIndexes);
+                                gameGrid?.SetActiveLanes(null);
+                            }
+                        }
+                    });
+                }
+            }
+            catch (OperationCanceledException) { }
+            catch (Exception ex) {
+                Services.PluginLog.Error(ex, "Updater has crashed");
+            }
+        }
+
+        boardState = newState;
+    }
+
+    private void FinalizeLotteryDaily(AddonLotteryDaily* addon) {
         gameGrid?.Dispose();
         gameGrid = null;
 
         configButton?.Dispose();
         configButton = null;
-	}
+    }
 }

@@ -43,7 +43,7 @@ public class ConfigCategory : IDisposable {
             if (entry.Tooltip is not null) {
                 builtEntry.TextTooltip = entry.Tooltip;
             }
-            
+
             tabbedListNode.AddNode(builtEntry);
         }
 
@@ -261,7 +261,7 @@ public class ConfigCategory : IDisposable {
 
     public ConfigCategory AddTooltip(string label) {
         if (configEntries.Count is 0) return this;
-        
+
         configEntries[^1].Tooltip = label;
 
         return this;

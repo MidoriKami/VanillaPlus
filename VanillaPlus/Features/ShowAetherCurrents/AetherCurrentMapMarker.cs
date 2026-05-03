@@ -12,7 +12,7 @@ public unsafe class AetherCurrentMapMarker : MapMarkerNode {
         get;
         init {
             field = value;
-            
+
             if (!Services.DataManager.GetExcelSheet<EObj>().TryGetFirst(rowObject => rowObject.Data.RowId == value.RowId, out var eventObject)) return;
             if (!Services.DataManager.GetExcelSheet<Level>().TryGetFirst(rowObject => rowObject.Object.RowId == eventObject.RowId, out var level)) return;
 

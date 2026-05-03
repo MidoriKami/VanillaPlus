@@ -27,7 +27,7 @@ public static class Config {
     /// </summary>
     public static void SaveConfig<T>(T configObject, string fileName)
         => FileHelpers.SaveFile(configObject, FileHelpers.GetFileInfo("Configs", fileName).FullName);
-    
+
     /// <summary>
     /// Saves a character specific config file to PluginConfigs\VanillaPlus\Configs\{ContentId}\{FileName}
     /// </summary>
@@ -35,4 +35,3 @@ public static class Config {
     public static void SaveCharacterConfig<T>(T configObject, string fileName)
         => FileHelpers.SaveFile(configObject, FileHelpers.GetFileInfo("Configs", FileHelpers.GetCharacterPath(), fileName).FullName);
 }
-

@@ -43,7 +43,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
             Position = ContentStartPosition,
             Options = GetConfigInfos(),
             ItemSpacing = 3.0f,
-            SortOptions = [ DefaultSortOptions.Alphabetical, DefaultSortOptions.Id ],
+            SortOptions = [DefaultSortOptions.Alphabetical, DefaultSortOptions.Id],
             AddNewEntry = OnAddEntry,
             RemoveEntry = OnRemoveEntry,
             SelectionChanged = OnOptionChanged,
@@ -67,7 +67,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         var backgroundImageSize = optionsContainerNode.Size * 3.0f / 4.0f;
         var minSize = MathF.Min(backgroundImageSize.X, backgroundImageSize.Y);
         var adjustedSize = new Vector2(minSize, minSize);
-        
+
         jobImageNode = new IconImageNode {
             Size = adjustedSize,
             Position = optionsContainerNode.Size / 2.0f - adjustedSize / 2.0f,
@@ -98,7 +98,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
                     if (newRedirectionAddon.SelectedGearset is null) return;
                     if (newRedirectionAddon.SelectedTerritory is null) return;
                     if (gearsetListNode?.SelectedOption is null) return;
-                
+
                     var redirectInfo = new RedirectInfo {
                         AlternateGearsetId = newRedirectionAddon.SelectedGearset.GearsetId,
                         TerritoryType = newRedirectionAddon.SelectedTerritory.Value.RowId,
@@ -107,16 +107,16 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
                     if (!Config.Redirections.TryAdd(gearsetListNode.SelectedOption.GearsetId, [redirectInfo])) {
                         Config.Redirections[gearsetListNode.SelectedOption.GearsetId].Add(redirectInfo);
                     }
-                    
+
                     Config.Save();
                     redirectListNode?.RefreshList();
                 };
-                
+
                 newRedirectionAddon.Open();
             },
             RemoveEntry = entry => {
                 if (gearsetListNode?.SelectedOption is null) return;
-                
+
                 Config.Redirections[gearsetListNode.SelectedOption.GearsetId].Remove(entry);
                 Config.Save();
             },
@@ -124,7 +124,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         };
         redirectListNode.AttachNode(optionsContainerNode);
     }
-    
+
     public override void Dispose() {
         base.Dispose();
 
@@ -139,13 +139,13 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
 
         if (gearsetInfo is not null) {
             var gearsetData = RaptureGearsetModule.Instance()->GetGearset(gearsetInfo.GearsetId);
-        
+
             jobImageNode.IconId = gearsetData->ClassJob + 62000u;
             jobImageNode.IsVisible = true;
-        
+
             gearsetLabelNode.IsVisible = true;
             gearsetLabelNode.String = gearsetData->NameString;
-            
+
             redirectListNode.Options = Config.Redirections[gearsetInfo.GearsetId];
             redirectListNode.IsVisible = true;
         }
@@ -166,14 +166,14 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
                 Config.Save();
             }
         };
-        
+
         gearsetSearchAddon.Open();
     }
 
     private List<GearsetInfo> GetConfigInfos() {
         List<GearsetInfo> gearsets = [];
         List<int> invalidGearsets = [];
-        
+
         foreach (var redirection in Config.Redirections.Keys) {
             var gearset = RaptureGearsetModule.Instance()->GetGearset(redirection);
             if (gearset is null) continue;
@@ -181,7 +181,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
                 invalidGearsets.Add(redirection);
                 continue;
             }
-            
+
             gearsets.Add(new GearsetInfo {
                 GearsetId = redirection,
             });
@@ -194,7 +194,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         if (invalidGearsets.Count is not 0) {
             Config.Save();
         }
-        
+
         return gearsets;
     }
 }

@@ -14,7 +14,7 @@ public static unsafe class AtkUnitBaseExtensions {
         public T* GetNodeById<T>(uint nodeId) where T : unmanaged => addon.UldManager.SearchNodeById<T>(nodeId);
 
         public T* GetComponentById<T>(uint nodeId) where T : unmanaged => (T*)addon.GetComponentByNodeId(nodeId);
-        
+
         public bool IsFocused => addon.GetIsFocused();
 
         public void SubscribeStringArrayData(StringArrayType arrayType) => addon.SubscribeAtkArrayData(0, (byte)arrayType);
@@ -36,7 +36,7 @@ public static unsafe class AtkUnitBaseExtensions {
 
             addon.ReceiveEvent(eventType, param, atkEvent, atkEventData);
         }
-        
+
         public void FireCallbackCommand(ICollection<int> commands)
             => addon.FireCallbackCommand(false, commands);
 
@@ -46,13 +46,13 @@ public static unsafe class AtkUnitBaseExtensions {
                 atkValues[index].SetInt(command);
             }
 
-            addon.FireCallback((uint) commands.Count, atkValues, triggerClose);
+            addon.FireCallback((uint)commands.Count, atkValues, triggerClose);
         }
-        
+
         public CallbackHandlerInfo? GetCallbackHandlerInfo() {
             var agentModule = AgentModule.Instance();
             if (agentModule is null) return null;
-            
+
             var atkModule = RaptureAtkModule.Instance();
             if (atkModule is null) return null;
 

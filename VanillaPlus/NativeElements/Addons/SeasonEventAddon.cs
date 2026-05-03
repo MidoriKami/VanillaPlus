@@ -14,7 +14,7 @@ public class SeasonEventAddon : NativeAddon {
         // Always appear in the center of the screen
         RememberClosePosition = false;
     }
-    
+
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         base.OnSetup(addon, atkValueSpan);
 
@@ -26,7 +26,7 @@ public class SeasonEventAddon : NativeAddon {
             NodeFlags = NodeFlags.Clip | NodeFlags.Visible,
         };
         containerNode.AttachNode(this);
-        
+
         new IconImageNode {
             Size = iconSize,
             Origin = iconSize / 2.0f,
@@ -35,7 +35,7 @@ public class SeasonEventAddon : NativeAddon {
             Position = new Vector2(ContentSize.X - iconSize.X, ContentStartPosition.Y - 64.0f),
             Alpha = 0.10f,
         }.AttachNode(containerNode);
-        
+
         new IconImageNode {
             Size = iconSize,
             Origin = iconSize / 2.0f,
@@ -45,7 +45,7 @@ public class SeasonEventAddon : NativeAddon {
             RotationDegrees = -45.0f,
             Alpha = 0.10f,
         }.AttachNode(containerNode);
-        
+
         new VerticalListNode {
             Size = new Vector2(ContentSize.X, 256.0f),
             Position = ContentStartPosition,

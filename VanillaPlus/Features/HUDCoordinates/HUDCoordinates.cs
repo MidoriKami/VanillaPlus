@@ -13,7 +13,7 @@ public unsafe class HUDCoordinates : GameModification {
         DisplayName = Strings.ModificationDisplay_HUDCoordinates,
         Description = Strings.ModificationDescription_HUDCoordinates,
         Type = ModificationType.UserInterface,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
     };
 
     public override string ImageName => "HUDCoordinates.png";
@@ -24,7 +24,7 @@ public unsafe class HUDCoordinates : GameModification {
 
     public override void OnEnable() {
         textNodes = [];
-        
+
         hudLayoutScreenController = new AddonController {
             AddonName = "_HudLayoutScreen",
             OnSetup = addon => {
@@ -38,7 +38,7 @@ public unsafe class HUDCoordinates : GameModification {
                         Position = new Vector2(node.Value->Width / 2.0f, node.Value->Height / 2.0f) - new Vector2(90.0f, 22.0f) / 2.0f,
                         String = new Vector2(node.Value->X, node.Value->Y).ToString(),
                     };
-                
+
                     textNodes.Add(newTextNode);
                     newTextNode.AttachNode(node.Value);
                 }
@@ -48,13 +48,13 @@ public unsafe class HUDCoordinates : GameModification {
                     if (node.Value is null) continue;
                     if (node.Value->GetNodeType() is not NodeType.Component) continue;
                     var componentNode = (AtkComponentNode*)node.Value;
-                
+
                     var textNode = componentNode->Component->GetTextNodeById(100);
                     if (textNode is null) continue;
-                
+
                     var textNodeSizeOffset = new Vector2(node.Value->Width, node.Value->Height) / 2.0f - new Vector2(90.0f, 22.0f) / 2.0f;
                     var textNodeCenter = new Vector2(node.Value->X, node.Value->Y) + new Vector2(node.Value->Width, node.Value->Height) / 2.0f;
-                
+
                     textNode->SetPositionFloat(textNodeSizeOffset.X, textNodeSizeOffset.Y);
                     textNode->SetText(textNodeCenter.ToString());
                 }
@@ -63,7 +63,7 @@ public unsafe class HUDCoordinates : GameModification {
                 foreach (var node in textNodes) {
                     node.Dispose();
                 }
-            
+
                 textNodes.Clear();
             },
         };
@@ -73,7 +73,7 @@ public unsafe class HUDCoordinates : GameModification {
     public override void OnDisable() {
         hudLayoutScreenController?.Dispose();
         hudLayoutScreenController = null;
-        
+
         textNodes?.Clear();
         textNodes = null;
     }

@@ -12,7 +12,7 @@ public unsafe class ShowTreasureChests : GameModification {
         Description = Strings.ModificationDescription_ShowTreasureChests,
         Type = ModificationType.UserInterface,
         SubType = ModificationSubType.Map,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new QuestAwayCompatabilityModule(),
     };
 

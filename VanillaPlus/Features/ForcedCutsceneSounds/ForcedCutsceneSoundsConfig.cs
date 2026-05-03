@@ -4,7 +4,7 @@ namespace VanillaPlus.Features.ForcedCutsceneSounds;
 
 public class ForcedCutsceneSoundsConfig : GameModificationConfig<ForcedCutsceneSoundsConfig> {
     protected override string FileName => "ForcedCutsceneSounds";
-    
+
     public bool Restore = true;
     public bool HandleMaster = true;
     public bool HandleBgm = true;

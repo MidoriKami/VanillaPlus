@@ -18,8 +18,8 @@ public unsafe class MissingJobStoneLockout : GameModification {
         DisplayName = Strings.ModificationDisplay_MissingJobStoneLockout,
         Description = Strings.ModificationDescription_MissingJobStoneLockout,
         Type = ModificationType.UserInterface,
-        Authors = [ "MidoriKami", "KazWolfe" ],
-        Tags = [ "Duty Finder" ],
+        Authors = ["MidoriKami", "KazWolfe"],
+        Tags = ["Duty Finder"],
     };
 
     private AddonController<AddonContentsFinder>? contentsFinderController;
@@ -49,9 +49,9 @@ public unsafe class MissingJobStoneLockout : GameModification {
     private void SetupContentsFinder(AddonContentsFinder* addon) {
         suppressed = false;
         clickCount = 0;
-        
+
         var joinButtonNode = addon->JoinButton->OwnerNode;
-        var buttonCoordinate = new Vector2(joinButtonNode->X,  joinButtonNode->Y);
+        var buttonCoordinate = new Vector2(joinButtonNode->X, joinButtonNode->Y);
 
         var newNodeSize = new Vector2(joinButtonNode->Width + 50.0f, 30.0f);
 
@@ -60,7 +60,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
             Size = newNodeSize,
         };
         animationContainer.AttachNode((AtkUnitBase*)addon);
-        
+
         warningTextNode = new TextNode {
             Size = newNodeSize,
             Origin = newNodeSize / 2.0f,
@@ -71,24 +71,24 @@ public unsafe class MissingJobStoneLockout : GameModification {
             ShowClickableCursor = true,
         };
         warningTextNode.AttachNode(animationContainer);
-        
+
         animationContainer.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 30)
             .AddLabel(1, 1, AtkTimelineJumpBehavior.Start, 0)
             .AddLabel(30, 0, AtkTimelineJumpBehavior.LoopForever, 1)
             .EndFrameSet()
             .Build());
-        
+
         warningTextNode.AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 30)
             .AddFrame(1, alpha: 155)
-            .AddFrame(15, alpha: 255) 
+            .AddFrame(15, alpha: 255)
             .AddFrame(30, alpha: 155)
             .EndFrameSet()
             .Build());
-        
+
         animationContainer.Timeline?.PlayAnimation(1);
-        
+
         warningTextNode.AddEvent(AtkEventType.MouseClick, () => {
             if (clickCount++ >= 5) {
                 suppressed = true;
@@ -103,7 +103,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
     private void UpdateContentsFinder(AddonContentsFinder* addon) {
         if (animationContainer is null) return;
         var showWarning = !HasJobStoneEquipped() && CouldHaveJobStoneEquipped();
-        
+
         animationContainer.IsVisible = showWarning && !suppressed;
         addon->JoinButton->SetEnabledState(!showWarning || suppressed);
     }
@@ -111,7 +111,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
     private void FinalizeContentsFinder(AddonContentsFinder* addon) {
         warningTextNode?.Dispose();
         warningTextNode = null;
-        
+
         animationContainer?.Dispose();
         animationContainer = null;
     }
@@ -123,16 +123,16 @@ public unsafe class MissingJobStoneLockout : GameModification {
         var currentJob = PlayerState.Instance()->CurrentClassJobId;
         var currentLevel = PlayerState.Instance()->CurrentLevel;
         if (currentJob is 0) return false;
-        
-        var job = Services.DataManager.GetExcelSheet<ClassJob>()
+
+        var job = Services.DataManager
+            .GetExcelSheet<ClassJob>()
             .Where(classJob => classJob.ClassJobParent.RowId != classJob.RowId)
-            .Where(classJob => classJob.ClassJobParent.RowId == currentJob)
-            .FirstOrDefault();
+            .FirstOrDefault(classJob => classJob.ClassJobParent.RowId == currentJob);
 
         if (job.RowId is 0) return false;
         if (!job.UnlockQuest.IsValid) return false;
         if (job.UnlockQuest.Value.ClassJobLevel.First() > currentLevel) return false;
-        
+
         return QuestManager.IsQuestComplete(job.UnlockQuest.RowId);
     }
 }

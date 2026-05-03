@@ -20,7 +20,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
     private readonly CheckboxNode fadeIfNoWarningsCheckbox;
     private readonly SliderNode fadeSliderNode;
     private readonly TabbedVerticalListNode layoutNode;
-    
+
     public CurrencyOverlayConfigNode() {
         iconImageNode = new IconImageNode {
             FitTexture = true,
@@ -38,7 +38,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
             ItemVerticalSpacing = 6.0f,
             FitWidth = true,
         };
-        
+
         layoutNode.AddNode(0, enableLowLimitCheckbox = new CheckboxNode {
             Height = 24.0f,
             String = "Warn when below limit",
@@ -49,7 +49,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 }
             },
         });
-        
+
         layoutNode.AddNode(1, lowLimitInputNode = new NumericInputNode {
             Height = 24.0f,
             OnValueUpdate = newValue => {
@@ -59,7 +59,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 }
             },
         });
-        
+
         layoutNode.AddNode(0, enableHighLimitCheckbox = new CheckboxNode {
             Height = 24.0f,
             String = "Warn when above limit",
@@ -70,7 +70,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 }
             },
         });
-        
+
         layoutNode.AddNode(1, highLimitInputNode = new NumericInputNode {
             Height = 24.0f,
             OnValueUpdate = newValue => {
@@ -80,7 +80,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 }
             },
         });
-        
+
         layoutNode.AddNode(0, [
             reverseIconCheckbox = new CheckboxNode {
                 Height = 24.0f,
@@ -153,7 +153,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 },
             },
         ]);
-        
+
         layoutNode.AttachNode(this);
     }
 
@@ -161,22 +161,22 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         if (option is null) return;
 
         var itemInfo = Services.DataManager.GetItem(option.ItemId);
-        
+
         itemNameTextNode.String = itemInfo.Name.ToString();
-        
+
         iconImageNode.IconId = itemInfo.Icon;
         iconImageNode.IsVisible = iconImageNode.IconId is not 0;
-        
+
         lowLimitInputNode.Value = option.LowLimit;
         highLimitInputNode.Value = option.HighLimit;
-        
+
         enableLowLimitCheckbox.IsChecked = option.EnableLowLimit;
         enableHighLimitCheckbox.IsChecked = option.EnableHighLimit;
         reverseIconCheckbox.IsChecked = option.IconReversed;
         reverseTextCheckbox.IsChecked = option.TextReversed;
         allowMovingCheckbox.IsChecked = option.IsNodeMoveable;
         fadeIfNoWarningsCheckbox.IsChecked = option.FadeIfNoWarnings;
-        
+
         scaleSliderNode.Value = (int)(option.Scale * 100.0f);
         fadeSliderNode.Value = (int)(option.FadePercent * 100.0f);
     }
@@ -186,9 +186,9 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
 
         itemNameTextNode.Size = new Vector2(Width, 24.0f);
         itemNameTextNode.Position = new Vector2(0.0f, 20.0f);
-        
+
         var smallerDimension = Math.Min(Width, Height);
-        
+
         iconImageNode.Size = new Vector2(smallerDimension - 40.0f, smallerDimension - 40.0f);
         iconImageNode.Position = new Vector2(20.0f, Height / 2.0f - iconImageNode.Height / 2.0f);
 

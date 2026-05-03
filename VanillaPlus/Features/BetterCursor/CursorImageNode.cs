@@ -24,7 +24,7 @@ public unsafe class CursorImageNode : OverlayNode {
             FitTexture = true,
         };
         imageNode.AttachNode(this);
-        
+
         AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 120)
             .AddLabel(1, 1, AtkTimelineJumpBehavior.Start, 0)
@@ -58,9 +58,9 @@ public unsafe class CursorImageNode : OverlayNode {
 
         imageNode.Color = Config.Color;
         imageNode.IconId = Config.IconId;
-        
+
         Timeline?.PlayAnimation(Config.Animations ? 1 : 2);
-        
+
         ref var cursorData = ref UIInputData.Instance()->CursorInputs;
         Position = new Vector2(cursorData.PositionX, cursorData.PositionY) - imageNode.Size / 2.0f;
 

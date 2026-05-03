@@ -24,7 +24,7 @@ public unsafe class GearsetSearchAddon : BaseSearchAddon<RaptureGearsetModule.Ge
     }
 
     private int lastGearsetCount;
-    
+
     protected override void OnUpdate(AtkUnitBase* addon) {
         base.OnUpdate(addon);
 

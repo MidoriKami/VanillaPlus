@@ -27,7 +27,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
             AddonConfig = new AddonConfig {
                 DisableInCombat = true,
                 Keybind = new Keybind {
-                    Modifiers = [ VirtualKey.CONTROL ],
+                    Modifiers = [VirtualKey.CONTROL],
                     Key = VirtualKey.F,
                 },
                 KeybindEnabled = true,
@@ -58,21 +58,21 @@ public unsafe class InventorySearchAddonController : IDisposable {
 
         inputTextNodes?.Clear();
         inputTextNodes = null;
-                
+
         selectedTabs?.Clear();
         selectedTabs = null;
 
         keybindListener?.KeybindCallback -= OnKeybindPressed;
     }
-    
+
     private void OnKeybindPressed(ref bool isHandled) {
         var focusedAddonCount = RaptureAtkUnitManager.Instance()->FocusedUnitsList.Count;
-        if (focusedAddonCount < 1)  return;
+        if (focusedAddonCount < 1) return;
 
         var focusedAddon = RaptureAtkUnitManager.Instance()->FocusedUnitsList.Entries[focusedAddonCount - 1];
         if (focusedAddon.Value is null) return;
         if (focusedAddon.Value->Id is 0) return;
-        
+
         foreach (var (addonName, searchBarNode) in inputTextNodes ?? []) {
             var addonPointer = RaptureAtkUnitManager.Instance()->GetAddonByName(addonName);
             if (addonPointer is null) continue;
@@ -84,7 +84,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
             }
         }
     }
-    
+
     private void FinalizeInventory(AtkUnitBase* addon) {
         Services.PluginLog.Info($"OnInventoryDetach: {addon->NameString}");
         if (inputTextNodes?.TryGetValue(addon->NameString, out var node) ?? false) {
@@ -115,8 +115,8 @@ public unsafe class InventorySearchAddonController : IDisposable {
 
         var headerSize = new Vector2(addon->WindowHeaderCollisionNode->Width, addon->WindowHeaderCollisionNode->Height);
         var newInputNode = new TextInputWithHintNode {
-            Position = headerSize / 2.0f - size / 2.0f + new Vector2(25.0f, 10.0f), 
-            Size = size, 
+            Position = headerSize / 2.0f - size / 2.0f + new Vector2(25.0f, 10.0f),
+            Size = size,
             OnInputReceived = searchString => PerformSearch(addon, searchString.ToString()),
         };
 

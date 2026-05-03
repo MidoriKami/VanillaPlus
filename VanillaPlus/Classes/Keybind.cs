@@ -12,7 +12,7 @@ public class Keybind {
         => Key is not VirtualKey.NO_KEY && Services.KeyState.IsKeybindPressed(Modifiers.Append(Key));
 
     public void Reset()
-        => Services.KeyState.ResetKeyCombo([ Key ] );
+        => Services.KeyState.ResetKeyCombo([Key]);
 
     public override string ToString()
         => string.Join(" + ", Modifiers.Append(Key));

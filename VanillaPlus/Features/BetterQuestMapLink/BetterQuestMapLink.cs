@@ -13,12 +13,12 @@ public unsafe class BetterQuestMapLink : GameModification {
         DisplayName = Strings.ModificationDisplay_BetterQuestMapLink,
         Description = Strings.ModificationDescription_BetterQuestMapLink,
         Type = ModificationType.GameBehavior,
-        Authors = [ "MidoriKami" ],
+        Authors = ["MidoriKami"],
         CompatibilityModule = new PluginCompatibilityModule("Mappy"),
     };
 
     private Hook<AgentMap.Delegates.OpenMap>? openMapHook;
-    
+
     public override void OnEnable() {
         openMapHook = Services.Hooker.HookFromAddress<AgentMap.Delegates.OpenMap>(AgentMap.MemberFunctionPointers.OpenMap, OnOpenMap);
         openMapHook?.Enable();
@@ -31,12 +31,12 @@ public unsafe class BetterQuestMapLink : GameModification {
 
     private void OnOpenMap(AgentMap* agent, OpenMapInfo* data) {
         openMapHook!.Original(agent, data);
-        
+
         try {
             if (!Services.DataManager.GetExcelSheet<Map>().TryGetRow(data->MapId, out var mapData)) return;
 
             // Disable in Cosmic Zones
-            if (mapData.TerritoryType.ValueNullable?.TerritoryIntendedUse.RowId is 60) return; 
+            if (mapData.TerritoryType.ValueNullable?.TerritoryIntendedUse.RowId is 60) return;
 
             if (data->Type is MapType.QuestLog && agent->CurrentMapId != data->MapId) {
                 data->Type = MapType.Centered;

@@ -10,7 +10,7 @@ public class DutyLootPreview : GameModification {
         DisplayName = Strings.ModificationDisplay_DutyLootPreview,
         Description = Strings.ModificationDescription_DutyLootPreview,
         Type = ModificationType.NewWindow,
-        Authors = [ "GrittyFrog" ],
+        Authors = ["GrittyFrog"],
     };
 
     public override string ImageName => "DutyLootPreview.png";

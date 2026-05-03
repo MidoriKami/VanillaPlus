@@ -36,18 +36,18 @@ public static unsafe class Inventory {
         InventoryType.ArmorySoulCrystal,
     ];
 
-    public static bool Contains(this List<InventoryType> inventoryTypes, GameInventoryType type) 
+    public static bool Contains(this List<InventoryType> inventoryTypes, GameInventoryType type)
         => inventoryTypes.Contains((InventoryType)type);
 
     public static IEnumerable<ItemStack> GetInventoryStacks()
-        => from itemGroup in GetInventoryItems().GroupBy(item => item.ItemId) 
+        => from itemGroup in GetInventoryItems().GroupBy(item => item.ItemId)
            where itemGroup.Key is not 0
-           let totalCount = itemGroup.Sum(item => item.Quantity) 
-           let item = itemGroup.First() 
+           let totalCount = itemGroup.Sum(item => item.Quantity)
+           let item = itemGroup.First()
            select new ItemStack(item, totalCount);
 
     public static List<InventoryItem> GetInventoryItems() {
-        List<InventoryType> inventories = [ InventoryType.Inventory1, InventoryType.Inventory2, InventoryType.Inventory3, InventoryType.Inventory4 ];
+        List<InventoryType> inventories = [InventoryType.Inventory1, InventoryType.Inventory2, InventoryType.Inventory3, InventoryType.Inventory4];
         List<InventoryItem> items = [];
 
         foreach (var inventory in inventories) {
@@ -56,15 +56,15 @@ public static unsafe class Inventory {
             for (var index = 0; index < container->Size; ++index) {
                 ref var item = ref container->Items[index];
                 if (item.ItemId is 0) continue;
-                
+
                 items.Add(item);
             }
         }
 
         return items;
     }
-    
-    public static List<InventoryItem> GetInventoryItems(string filterString, bool invert = false) 
+
+    public static List<InventoryItem> GetInventoryItems(string filterString, bool invert = false)
         => GetInventoryItems().Where(item => item.IsRegexMatch(filterString) != invert).ToList();
 
     public static InventoryItem* GetItemForSorter(ItemOrderModuleSorter* sorter, int page, int slot) {
