@@ -18,6 +18,12 @@ public abstract class GameModificationConfig<T> : ISavable where T : GameModific
 
         try {
             var fileInfo = new FileInfo(Path.Combine(Config.ConfigPath, $"{configFileName}.config.json"));
+
+            // Means we didn't have a file until now, and therefore nothing needs to be migrated.
+            if (fileInfo is { Exists: false }) {
+                return loadedConfig;
+            }
+
             var fileText = File.ReadAllText(fileInfo.FullName);
             var jObject = JObject.Parse(fileText);
             var version = jObject[nameof(Version)]?.ToObject<int>();
