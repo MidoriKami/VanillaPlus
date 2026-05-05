@@ -27,7 +27,7 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
     public DutyLootNode() {
         contextMenu = new ContextMenu();
 
-        iconNode = new IconImageNode() {
+        iconNode = new IconImageNode {
             TextureSize = new Vector2(ItemHeight),
             WrapMode = WrapMode.Stretch,
             ImageNodeFlags = ImageNodeFlags.AutoFit,
@@ -74,18 +74,18 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
         };
         armoireIconNode.AttachNode(this);
 
-        AtkEventListener.Delegates.ReceiveEvent mouseClickCallback = (_, _, _, _, atkEventData) => {
-            if (ItemData is null) return;
+        CollisionNode.AddEvent(AtkEventType.MouseClick, MouseClickCallback);
+    }
 
-            if (atkEventData->IsLeftClick) {
-                OnLeftClick();
-            }
-            else if (atkEventData->IsRightClick) {
-                OnRightClick();
-            }
-        };
+    private void MouseClickCallback(AtkEventListener* atkEventListener, AtkEventType atkEventType, int i, AtkEvent* atkEvent, AtkEventData* atkEventData) {
+        if (ItemData is null) return;
 
-        CollisionNode.AddEvent(AtkEventType.MouseClick, mouseClickCallback);
+        if (atkEventData->IsLeftClick) {
+            OnLeftClick();
+        }
+        else if (atkEventData->IsRightClick) {
+            OnRightClick();
+        }
     }
 
     private void OnLeftClick() {
