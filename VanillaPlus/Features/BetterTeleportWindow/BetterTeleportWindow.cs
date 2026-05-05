@@ -13,7 +13,8 @@ namespace VanillaPlus.Features.BetterTeleportWindow;
 public unsafe class BetterTeleportWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Better Teleport Window",
-        Description = "Replaces the games Teleport window with a better custom made version.",
+        Description = "Replaces the games Teleport window with a better custom made version.\n\n" +
+                      "Note: Configuration such as using Teleport Tickets must be done from the original teleport window.",
         Type = ModificationType.NewWindow,
         Authors = [ "MidoriKami" ],
     };
