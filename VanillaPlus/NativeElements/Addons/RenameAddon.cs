@@ -15,7 +15,7 @@ public class RenameAddon : NativeAddon {
     public Action<ReadOnlySeString>? OnRenameComplete { get; set; }
 
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
-        SetWindowSize(250.0f, 125.0f);
+        SetWindowSize(325.0f, 115.0f);
 
         inputNode = new TextInputNode {
             Position = ContentStartPosition + new Vector2(0.0f, ContentPadding.Y),
@@ -28,6 +28,7 @@ public class RenameAddon : NativeAddon {
                     inputNode!.IsError = !IsInputValid(s.ToString());
                 }
             },
+            OnInputComplete = _ => OnConfirm(),
         };
         inputNode.AttachNode(this);
 
@@ -38,10 +39,7 @@ public class RenameAddon : NativeAddon {
             Position = new Vector2(ContentStartPosition.X, targetYPos),
             Size = buttonSize,
             String = Strings.Common_Confirm,
-            OnClick = () => {
-                OnRenameComplete?.Invoke(inputNode.String);
-                Close();
-            },
+            OnClick = OnConfirm,
         };
         confirmButton.AttachNode(this);
 
@@ -52,6 +50,15 @@ public class RenameAddon : NativeAddon {
             OnClick = Close,
         };
         cancelButton.AttachNode(this);
+
+        inputNode.SetFocus();
+    }
+
+    private void OnConfirm() {
+        if (inputNode is null) return;
+
+        OnRenameComplete?.Invoke(inputNode.String);
+        Close();
     }
 
     public string PlaceholderString { get; set; } = string.Empty;
