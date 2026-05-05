@@ -18,7 +18,7 @@ public unsafe class BetterTeleportWindow : GameModification {
         Authors = [ "MidoriKami" ],
     };
 
-    // public override string ImageName => "SampleGameModification.png";
+    public override string ImageName => "BetterTeleportWindow.png";
 
     // Hyper Experimental lol. Game go boom, probably.
     public override bool IsExperimental => true;
@@ -26,14 +26,13 @@ public unsafe class BetterTeleportWindow : GameModification {
     private nint? originalFactoryCreateAddress;
 
     private RaptureAtkModule.AddonFactoryInfo.CreateDelegate? pinnedFactoryCreateMethod;
-    
-    internal static TeleportAddon? CustomTeleportAddon;
 
-    private BetterTeleportWindowConfig? config;
-    
+    internal static TeleportAddon? CustomTeleportAddon;
+    internal static BetterTeleportWindowConfig? Config;
+
     public override void OnEnable() {
-        config = BetterTeleportWindowConfig.Load();
-        
+        Config = BetterTeleportWindowConfig.Load();
+
         Services.Framework.RunOnFrameworkThread(() => {
             var factoryInfo = RaptureAtkModule.Instance()->GetAddonFactoryInfo("Teleport");
             if (factoryInfo is null) return;
@@ -47,10 +46,10 @@ public unsafe class BetterTeleportWindow : GameModification {
     public override void OnDisable() {
         // Immediately Dispose Instance or game go boom.
         AgentTeleport.Instance()->Hide();
-        
+
         CustomTeleportAddon?.Dispose();
         CustomTeleportAddon = null;
-        
+
         Services.Framework.RunOnFrameworkThread(() => {
             var factoryInfo = RaptureAtkModule.Instance()->GetAddonFactoryInfo("Teleport");
             if (factoryInfo is null) return;
@@ -68,15 +67,15 @@ public unsafe class BetterTeleportWindow : GameModification {
         });
     }
 
-    private AtkUnitBase* CreateCustomAddon(RaptureAtkModule* raptureAtkModule, CStringPointer addonName, uint valueCount, AtkValue* values) {
+    private static AtkUnitBase* CreateCustomAddon(RaptureAtkModule* raptureAtkModule, CStringPointer addonName, uint valueCount, AtkValue* values) {
         try {
-            if (config is null) return null;
-            
+            if (Config is null) return null;
+
             // As we currently have no way to recycle the previous addon instance, dispose it
             CustomTeleportAddon?.Dispose();
 
             // Then allocate a new addon instance.
-            CustomTeleportAddon = new TeleportAddon(config) {
+            CustomTeleportAddon = new TeleportAddon(Config) {
                 InternalName = "Teleport",
                 Title = "Teleport",
                 Size = new Vector2(700.0f, 600.0f),

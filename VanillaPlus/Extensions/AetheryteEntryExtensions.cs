@@ -9,9 +9,9 @@ namespace VanillaPlus.Extensions;
 
 public static unsafe class AetheryteEntryExtensions {
     extension(IAetheryteEntry entry) {
-        public ReadOnlySeString AetheryteName 
+        public ReadOnlySeString AetheryteName
             => entry.AetheryteData.ValueNullable?.PlaceName.ValueNullable?.Name ?? "Unable to read Name";
-        
+
         public ReadOnlySeString PlaceName
             => entry.AetheryteData.ValueNullable?.Map.ValueNullable?.PlaceName.ValueNullable?.Name ?? "Unable to read PlaceName";
 
@@ -28,7 +28,8 @@ public static unsafe class AetheryteEntryExtensions {
             => entry.AetheryteData.ValueNullable?.Territory.ValueNullable?.Name.ToString() ?? "f1f1";
 
         public string MapTexturePath
-            => $"ui/map/{entry.TerritoryIdString}/00/{entry.TerritoryIdString}00_m.tex";
+            => entry.AetheryteData.ValueNullable is { Map.ValueNullable.Id: var mapId }
+                   ? $"ui/map/{mapId}/{mapId.ToString().Replace("/", string.Empty)}_m.tex" : string.Empty;
 
         /// <summary>
         /// Performs teleport then closes any active "Teleport" window.

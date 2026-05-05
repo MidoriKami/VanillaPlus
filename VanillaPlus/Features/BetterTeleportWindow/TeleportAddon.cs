@@ -14,22 +14,37 @@ using Lumina.Text.ReadOnly;
 
 namespace VanillaPlus.Features.BetterTeleportWindow;
 
-public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
+public class TeleportAddon : NativeAddon {
 
     private TextInputNode? textInputNode;
+
+    private SimpleImageNode? mapBackgroundNode;
     private SimpleImageNode? mapPreviewNode;
+    private TextNineGridNode? mapLabelNode;
 
     private ListMode currentMode = ListMode.All;
     private uint currentRegionId;
-    
+
     private ListNode<IAetheryteEntry, TeleportListItemNode>? listNode;
     private readonly List<SelectableNode> selectableNodes = [];
-    
+    private readonly BetterTeleportWindowConfig config;
+
+    public TeleportAddon(BetterTeleportWindowConfig config) {
+        this.config = config;
+        this.config.OnSave += OnConfigSaved;
+    }
+
+    public override void Dispose() {
+        base.Dispose();
+
+        config.OnSave -= OnConfigSaved;
+    }
+
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         base.OnSetup(addon, atkValueSpan);
 
         const float itemSpacing = 5.0f;
-        
+
         SetWindowSize(new Vector2(600.0f, 689.0f));
 
         AddNode(new HorizontalListNode { // Main Container
@@ -84,6 +99,15 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
             ],
         });
 
+        mapBackgroundNode = new BackgroundImageNode {
+            Size = new Vector2(350.0f, 350.0f),
+            Position = new Vector2(Size.X + 24.0f, 0.0f),
+            FitTexture = true,
+            IsVisible = false,
+            Color = new Vector4(231.0f, 219.0f, 181.0f, 255.0f) / 255.0f,
+        };
+        mapBackgroundNode.AttachNode(this);
+
         mapPreviewNode = new SimpleImageNode {
             Size = new Vector2(350.0f, 350.0f),
             Position = new Vector2(Size.X + 24.0f, 0.0f),
@@ -94,6 +118,15 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
         };
         mapPreviewNode.AttachNode(this);
 
+        mapLabelNode = new TextNineGridNode {
+            Size = new Vector2(350.0f, 32.0f),
+            Position = mapPreviewNode.Position,
+            IsVisible = false,
+            AlignmentType = AlignmentType.Center,
+            FontSize = 24,
+        };
+        mapLabelNode.AttachNode(this);
+
         textInputNode.SetFocus();
     }
 
@@ -101,18 +134,19 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
         if (entry is null) return;
         if (mapPreviewNode is null) return;
 
-        // todo, investigate why setting the path normally to load doesn't work.
+        mapBackgroundNode?.IsVisible = true;
+
+        // This doesn't like having the old texture unloaded, or the path themed, so we will load it directly.
         mapPreviewNode.PartsList[0]->UldAsset->AtkTexture.LoadTexture(entry.MapTexturePath);
         mapPreviewNode.IsVisible = true;
-    }
 
-    public void ClearPreviewImage() {
-        mapPreviewNode?.IsVisible = false;
+        mapLabelNode?.String = entry.RegionName;
+        mapLabelNode?.IsVisible = true;
     }
 
     private List<NodeBase> GetPremadeNodes() {
         List<NodeBase> nodeList = [];
-        
+
         foreach (var premadeOption in (List<ListMode>) [ ListMode.All, ListMode.Cities, ListMode.Favorites ]) {
             var newSelectableOption = new SelectableTextNode {
                 Height = 24.0f,
@@ -148,7 +182,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
                 OnClick = thisNode => OnRegionEntryClicked(thisNode, entry.RegionId),
             })
             .ToList();
-        
+
         selectableNodes.AddRange(regionNodes);
 
         return regionNodes.Cast<NodeBase>().ToList();
@@ -156,7 +190,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
 
     private void OnRegionEntryClicked(SelectableNode targetNode, uint regionId) {
         if (regionId is 0) return;
-        
+
         foreach (var node in selectableNodes) {
             node.IsSelected = false;
         }
@@ -166,6 +200,14 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
         currentMode = ListMode.Region;
         currentRegionId = regionId;
 
+        listNode?.ResetScroll();
+
+        textInputNode?.String = string.Empty;
+        OnSearchBoxInputReceived(string.Empty);
+    }
+
+    private void OnConfigSaved() {
+        listNode?.ResetScroll();
         textInputNode?.String = string.Empty;
         OnSearchBoxInputReceived(string.Empty);
     }

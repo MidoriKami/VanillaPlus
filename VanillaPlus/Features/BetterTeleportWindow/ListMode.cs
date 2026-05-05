@@ -3,10 +3,11 @@
 namespace VanillaPlus.Features.BetterTeleportWindow;
 
 public enum ListMode {
-    
+
     [Description("All")]
     All,
 
+    // Not implemented currently, but maybe planned in the future.
     [Description("History")]
     History,
 
