@@ -152,7 +152,7 @@ public class TeleportAddon : NativeAddon {
         mapPreviewNode.PartsList[0]->UldAsset->AtkTexture.LoadTexture(entry.MapTexturePath);
         mapPreviewNode.IsVisible = true;
 
-        mapLabelNode?.String = entry.RegionName;
+        mapLabelNode?.String = entry.PlaceName;
         mapLabelNode?.IsVisible = true;
     }
 
