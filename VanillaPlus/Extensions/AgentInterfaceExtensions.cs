@@ -1,11 +1,12 @@
-﻿using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+﻿using System;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.Interop;
 
 namespace VanillaPlus.Extensions;
 
 public static unsafe class AgentInterfaceExtensions {
     extension(ref AgentInterface agent) {
-        public void SendCommand(uint eventKind, int[] commandValues) {
+        public void SendCommand(uint eventKind, Span<int> commandValues) {
             using var returnValue = new RentedAtkValues(1);
             using var command = new RentedAtkValues(commandValues.Length);
 
