@@ -32,10 +32,8 @@ public unsafe class TeleportListItemNode : ListItemNode<IAetheryteEntry>, IListI
         CollisionNode.AddEvent(AtkEventType.MouseClick, OnClicked);
     }
 
-    private void OnMouseOver() {
-        Services.PluginLog.Debug(ItemData?.MapTexturePath ?? string.Empty);
-        BetterTeleportWindow.CustomTeleportAddon?.SetPreviewImage(ItemData);
-    }
+    private void OnMouseOver()
+        => BetterTeleportWindow.CustomTeleportAddon?.SetPreviewImage(ItemData);
 
     protected override void OnSizeChanged() {
         base.OnSizeChanged();

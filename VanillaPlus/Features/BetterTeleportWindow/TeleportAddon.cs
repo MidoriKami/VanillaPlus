@@ -21,6 +21,7 @@ public class TeleportAddon : NativeAddon {
     private SimpleImageNode? mapBackgroundNode;
     private SimpleImageNode? mapPreviewNode;
     private TextNineGridNode? mapLabelNode;
+    private CircleButtonNode? ticketConfigButton;
 
     private ListMode currentMode = ListMode.All;
     private uint currentRegionId;
@@ -93,6 +94,7 @@ public class TeleportAddon : NativeAddon {
                             Height = ContentSize.Y - 28.0f - itemSpacing * 2.0f,
                             ItemSpacing = itemSpacing * 1.5f,
                             OptionsList = Services.AetheryteList.ToList(),
+                            NoResultsString = "No Aetherytes Match Search",
                         },
                     ],
                 },
@@ -127,6 +129,16 @@ public class TeleportAddon : NativeAddon {
         };
         mapLabelNode.AttachNode(this);
 
+        ticketConfigButton = new CircleButtonNode {
+            Size = new Vector2(28.0f, 28.0f),
+            Position = new Vector2(ContentSize.X - 36.0f, 6.0f),
+            Icon = ButtonIcon.GearCog,
+            TextTooltip = Services.DataManager.GetAddonText(8515), // "Open Teleport Settings"
+            OnClick = () => AgentTeleport.Instance()->AgentInterface.SendCommand(2, [3, 0, 0]),
+        };
+        ticketConfigButton.AttachNode(this);
+
+        OnSearchBoxInputReceived(string.Empty);
         textInputNode.SetFocus();
     }
 
@@ -142,6 +154,12 @@ public class TeleportAddon : NativeAddon {
 
         mapLabelNode?.String = entry.RegionName;
         mapLabelNode?.IsVisible = true;
+    }
+
+    public void ClearPreviewImage() {
+        mapBackgroundNode?.IsVisible = false;
+        mapPreviewNode?.IsVisible = false;
+        mapLabelNode?.IsVisible = false;
     }
 
     private List<NodeBase> GetPremadeNodes() {
@@ -220,6 +238,13 @@ public class TeleportAddon : NativeAddon {
             ListMode.Favorites => Services.AetheryteList.Where(entry => config.FavoriteAetherytes.Contains(entry.AetheryteId) && entry.IsMatch(searchString)).ToList(),
             _ => Services.AetheryteList.Where(entry => entry.IsMatch(searchString)).ToList(),
         };
+
+        if (listNode?.OptionsList.Count > 0) {
+            SetPreviewImage(listNode?.OptionsList.FirstOrDefault());
+        }
+        else {
+            ClearPreviewImage();
+        }
     }
 
     protected override unsafe void OnHide(AtkUnitBase* addon) {
