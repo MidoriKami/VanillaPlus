@@ -7,4 +7,6 @@ public class BetterTeleportWindowConfig : GameModificationConfig<BetterTeleportW
     protected override string FileName => "BetterTeleportWindow";
 
     public List<uint> FavoriteAetherytes = [];
+    public Dictionary<uint, string> CustomNames = [];
+    public bool AutoFocusSearch = true;
 }

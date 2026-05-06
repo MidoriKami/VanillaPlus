@@ -6,7 +6,6 @@ using Dalamud.Game.ClientState.Aetherytes;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
-using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Node;
 using KamiToolKit.Premade.Node.Simple;
@@ -79,14 +78,24 @@ public class TeleportAddon : NativeAddon {
                     ItemSpacing = itemSpacing,
                     FitWidth = true,
                     InitialNodes = [
-                        new HorizontalFlexNode { // Search Container
+                        new HorizontalListNode { // Search Container
                             Height = 28.0f,
-                            AlignmentFlags = FlexFlags.FitHeight | FlexFlags.FitWidth,
+                            FitHeight = true,
                             InitialNodes = [
                                 textInputNode = new TextInputNode { // Search
+                                    Width = 317.0f,
                                     PlaceholderString = Strings.SearchPlaceholder,
                                     AutoSelectAll = true,
                                     OnInputReceived = OnSearchBoxInputReceived,
+                                },
+                                new CheckboxNode {
+                                    Size = new Vector2(28.0f, 28.0f),
+                                    IsChecked = config.AutoFocusSearch,
+                                    TextTooltip = "Toggle Auto Focus Searchbar",
+                                    OnClick = newValue => {
+                                        config.AutoFocusSearch = newValue;
+                                        config.Save();
+                                    },
                                 },
                             ],
                         },
@@ -139,7 +148,10 @@ public class TeleportAddon : NativeAddon {
         ticketConfigButton.AttachNode(this);
 
         OnSearchBoxInputReceived(string.Empty);
-        textInputNode.SetFocus();
+
+        if (config.AutoFocusSearch) {
+            textInputNode.SetFocus();
+        }
     }
 
     public unsafe void SetPreviewImage(IAetheryteEntry? entry) {
