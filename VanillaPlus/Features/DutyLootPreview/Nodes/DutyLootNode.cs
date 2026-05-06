@@ -185,7 +185,7 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
             armoireIconNode.IsVisible = false;
         }
 
-        CollisionNode.ItemTooltip = item.ItemId;
+        iconNode.ItemTooltip = item.ItemId;
         favoriteStarNode.IsVisible = view.IsFavorite;
     }
 }
