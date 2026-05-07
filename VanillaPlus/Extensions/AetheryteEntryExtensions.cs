@@ -10,19 +10,15 @@ namespace VanillaPlus.Extensions;
 
 public static unsafe class AetheryteEntryExtensions {
     extension(IAetheryteEntry entry) {
-        public ReadOnlySeString AetheryteName {
-            get {
-                if (entry.IsSharedHouse) {
-                    return Services.SeStringEvaluator.EvaluateFromAddon(6724, [
-                        entry.AetheryteData.Value.PlaceName.RowId,
-                        (uint)entry.Ward,
-                        (uint)entry.Plot,
-                    ]);
-                }
-
-                return entry.AetheryteData.ValueNullable?.PlaceName.ValueNullable?.Name ?? "Unable to read Name";
-            }
-        }
+        public ReadOnlySeString AetheryteName => entry switch {
+            { IsSharedHouse: true } => Services.SeStringEvaluator.EvaluateFromAddon(6724, [
+                entry.AetheryteData.Value.PlaceName.RowId,
+                (uint)entry.Ward,
+                (uint)entry.Plot,
+            ]),
+            { IsApartment: true } => Services.DataManager.GetAddonText(6710),
+            _ => entry.AetheryteData.ValueNullable?.PlaceName.ValueNullable?.Name ?? "Unable to read Name",
+        };
 
         public ReadOnlySeString PlaceName
             => entry.AetheryteData.ValueNullable?.Map.ValueNullable?.PlaceName.ValueNullable?.Name ?? "Unable to read PlaceName";
