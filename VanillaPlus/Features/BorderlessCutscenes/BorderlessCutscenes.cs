@@ -13,7 +13,7 @@ public class BorderlessCutscenes : GameModification {
         CompatibilityModule = new PluginCompatibilityModule("Dalamud.FullscreenCutscenes"),
     };
 
-    [Signature("01 0F 84 83 01 00 00 48 8B 0D A7 A1 6A 02")]
+    [Signature("01 0F 84 ?? ?? ?? ?? 48 8B 0D ?? ?? ?? ?? 0F 57 D2 F3 0F 10 1D ?? ?? ?? ?? 0F 57 C9 48 89 B4 24")]
     private nint? memoryAddress;
 
     private MemoryReplacement? jumpPatch;
