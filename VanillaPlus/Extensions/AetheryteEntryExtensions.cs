@@ -47,7 +47,7 @@ public static unsafe class AetheryteEntryExtensions {
         /// Performs teleport then closes any active "Teleport" window.
         /// </summary>
         public void Teleport() {
-            Telepo.Instance()->Teleport(entry.AetheryteId, 0);
+            Telepo.Instance()->Teleport(entry.AetheryteId, entry.SubIndex);
             AgentTeleport.Instance()->Hide();
         }
 
