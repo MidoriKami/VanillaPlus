@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Text.RegularExpressions;
 using Dalamud.Game.ClientState.Aetherytes;
 using Dalamud.Game.Text;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
@@ -45,15 +44,6 @@ public static unsafe class AetheryteEntryExtensions {
         public void Teleport() {
             Telepo.Instance()->Teleport(entry.AetheryteId, entry.SubIndex);
             AgentTeleport.Instance()->Hide();
-        }
-
-        public bool IsMatch(ReadOnlySeString searchString) {
-            var regex = new Regex(searchString.ToString(), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-
-            if (regex.IsMatch(entry.AetheryteName.ToString())) return true;
-            if (regex.IsMatch(entry.PlaceName.ToString())) return true;
-
-            return false;
         }
     }
 }

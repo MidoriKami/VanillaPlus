@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Text.RegularExpressions;
 using Dalamud.Game.ClientState.Aetherytes;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -244,11 +245,11 @@ public class TeleportAddon : NativeAddon {
 
     private void OnSearchBoxInputReceived(ReadOnlySeString searchString) {
         listNode?.OptionsList = currentMode switch {
-            ListMode.All => Services.AetheryteList.Where(entry => entry.IsMatch(searchString)).ToList(),
-            ListMode.Region => Services.AetheryteList.Where(entry => entry.RegionId == currentRegionId && entry.IsMatch(searchString)).ToList(),
-            ListMode.Cities => Services.AetheryteList.Where(entry => entry.AetheryteData.ValueNullable?.AethernetGroup is not 0 && entry.IsMatch(searchString)).ToList(),
-            ListMode.Favorites => Services.AetheryteList.Where(entry => config.FavoriteAetherytes.Contains(entry.AetheryteId) && entry.IsMatch(searchString)).ToList(),
-            _ => Services.AetheryteList.Where(entry => entry.IsMatch(searchString)).ToList(),
+            ListMode.All => Services.AetheryteList.Where(entry => IsMatch(entry, searchString)).ToList(),
+            ListMode.Region => Services.AetheryteList.Where(entry => entry.RegionId == currentRegionId && IsMatch(entry, searchString)).ToList(),
+            ListMode.Cities => Services.AetheryteList.Where(entry => entry.AetheryteData.ValueNullable?.AethernetGroup is not 0 && IsMatch(entry, searchString)).ToList(),
+            ListMode.Favorites => Services.AetheryteList.Where(entry => config.FavoriteAetherytes.Contains(entry.AetheryteId) && IsMatch(entry, searchString)).ToList(),
+            _ => Services.AetheryteList.Where(entry => IsMatch(entry, searchString)).ToList(),
         };
 
         if (listNode?.OptionsList.Count > 0) {
@@ -263,5 +264,16 @@ public class TeleportAddon : NativeAddon {
         base.OnHide(addon);
 
         AgentTeleport.Instance()->Hide();
+    }
+
+    private bool IsMatch(IAetheryteEntry entry, ReadOnlySeString searchString) {
+        var regex = new Regex(searchString.ToString(), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+        if (regex.IsMatch(entry.AetheryteName.ToString())) return true;
+        if (regex.IsMatch(entry.PlaceName.ToString())) return true;
+
+        if (config.CustomNames.TryGetValue(entry.AetheryteId, out var customName) && regex.IsMatch(customName)) return true;
+
+        return false;
     }
 }
