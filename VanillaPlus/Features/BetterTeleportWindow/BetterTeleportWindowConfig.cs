@@ -9,4 +9,5 @@ public class BetterTeleportWindowConfig : GameModificationConfig<BetterTeleportW
     public List<uint> FavoriteAetherytes = [];
     public Dictionary<uint, string> CustomNames = [];
     public bool AutoFocusSearch = true;
+    public ListMode LastListMode = ListMode.All;
 }

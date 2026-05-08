@@ -27,6 +27,7 @@ public class TeleportAddon : NativeAddon {
     private uint currentRegionId;
 
     private ListNode<IAetheryteEntry, TeleportListItemNode>? listNode;
+    private readonly Dictionary<ListMode, SelectableNode> premadeNodes = [];
     private readonly List<SelectableNode> selectableNodes = [];
     private readonly BetterTeleportWindowConfig config;
 
@@ -148,7 +149,10 @@ public class TeleportAddon : NativeAddon {
         };
         ticketConfigButton.AttachNode(this);
 
-        OnSearchBoxInputReceived(string.Empty);
+        // Remember the last used category, and select it.
+        if (premadeNodes.TryGetValue(config.LastListMode, out var selectableNode)) {
+            OnPremadeOptionClicked(selectableNode, config.LastListMode);
+        }
 
         if (config.AutoFocusSearch) {
             textInputNode.SetFocus();
@@ -185,6 +189,7 @@ public class TeleportAddon : NativeAddon {
                 String = premadeOption.Description,
                 OnClick = node => OnPremadeOptionClicked(node, premadeOption),
             };
+            premadeNodes.Add(premadeOption, newSelectableOption);
             selectableNodes.Add(newSelectableOption);
             nodeList.Add(newSelectableOption);
         }
@@ -199,6 +204,8 @@ public class TeleportAddon : NativeAddon {
 
         targetNode.IsSelected = true;
         currentMode = premadeOption;
+        config.LastListMode = currentMode;
+        config.Save();
 
         textInputNode?.String = string.Empty;
         OnSearchBoxInputReceived(string.Empty);
