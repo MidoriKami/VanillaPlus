@@ -49,15 +49,14 @@ public unsafe class InventorySearchAddonController : IDisposable {
     public void Dispose() {
         Services.PluginLog.Info("InventorySearchAddonController.Dispose");
 
-        inventoryController?.Dispose();
-        inventoryController = null;
-
         foreach (var (_, node) in inputTextNodes ?? []) {
             node.Dispose();
         }
-
         inputTextNodes?.Clear();
         inputTextNodes = null;
+
+        inventoryController?.Dispose();
+        inventoryController = null;
 
         selectedTabs?.Clear();
         selectedTabs = null;
@@ -85,12 +84,20 @@ public unsafe class InventorySearchAddonController : IDisposable {
         }
     }
 
-    private void FinalizeInventory(AtkUnitBase* addon) {
-        Services.PluginLog.Info($"OnInventoryDetach: {addon->NameString}");
-        if (inputTextNodes?.TryGetValue(addon->NameString, out var node) ?? false) {
-            node.Dispose();
-            inputTextNodes.Remove(addon->NameString);
-        }
+    private void SetupInventory(AtkUnitBase* addon) {
+        Services.PluginLog.Info($"OnInventoryAttach: {addon->NameString}");
+        if (inputTextNodes is null) return;
+        var size = new Vector2(addon->Size.X / 2.0f, 28.0f);
+
+        var headerSize = new Vector2(addon->WindowHeaderCollisionNode->Width, addon->WindowHeaderCollisionNode->Height);
+        var newInputNode = new TextInputWithHintNode {
+            Position = headerSize / 2.0f - size / 2.0f + new Vector2(25.0f, 10.0f),
+            Size = size,
+            OnInputReceived = searchString => PerformSearch(addon, searchString.ToString()),
+        };
+
+        newInputNode.AttachNode(addon);
+        inputTextNodes.TryAdd(addon->NameString, newInputNode);
     }
 
     private void UpdateInventory(AtkUnitBase* addon) {
@@ -108,20 +115,15 @@ public unsafe class InventorySearchAddonController : IDisposable {
         selectedTabs[addon->NameString] = currentTab;
     }
 
-    private void SetupInventory(AtkUnitBase* addon) {
-        Services.PluginLog.Info($"OnInventoryAttach: {addon->NameString}");
-        if (inputTextNodes is null) return;
-        var size = new Vector2(addon->Size.X / 2.0f, 28.0f);
+    private void FinalizeInventory(AtkUnitBase* addon) {
+        Services.PluginLog.Info($"OnInventoryDetach: {addon->NameString}");
+        if (inputTextNodes?.TryGetValue(addon->NameString, out _) ?? false) {
+            // Intentionally leak node for now, the memory should still be automatically cleaned up by the game.
+            // Node will still get manually disposed on plugin unload correctly.
+            // node.Dispose();
 
-        var headerSize = new Vector2(addon->WindowHeaderCollisionNode->Width, addon->WindowHeaderCollisionNode->Height);
-        var newInputNode = new TextInputWithHintNode {
-            Position = headerSize / 2.0f - size / 2.0f + new Vector2(25.0f, 10.0f),
-            Size = size,
-            OnInputReceived = searchString => PerformSearch(addon, searchString.ToString()),
-        };
-
-        newInputNode.AttachNode(addon);
-        inputTextNodes.TryAdd(addon->NameString, newInputNode);
+            inputTextNodes.Remove(addon->NameString);
+        }
     }
 
     public Action<string>? PreSearch { get; set; }
