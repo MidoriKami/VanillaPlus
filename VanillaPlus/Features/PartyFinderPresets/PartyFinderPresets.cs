@@ -9,6 +9,9 @@ public class PartyFinderPresets : GameModification {
         Description = Strings.ModificationDescription_PartyFinderPresets,
         Type = ModificationType.GameBehavior,
         Authors = ["MidoriKami"],
+        DisabledReason = "Currently Unavailable\n\n" +
+                         "Temporarily disabled this feature due to bugs.\n" +
+                         "Fix is planned, but will take time. Sorry for the trouble.",
     };
 
     public override string ImageName => "PartyFinderPresets.png";
