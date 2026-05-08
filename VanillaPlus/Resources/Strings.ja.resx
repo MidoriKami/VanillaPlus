@@ -362,7 +362,7 @@
     <value>互換性チェックを再試行</value>
   </data>
   <data name="CompatibilityModule_ActivePluginMessage" xml:space="preserve">
-    <value>An incompatible version of this feature is active from plugin '{0}'</value>
+    <value>互換性のないバージョンのこの機能は、プラグイン '{0}' から有効にされています</value>
   </data>
   <data name="CompatibilityModule_SimpleTweaksActive" xml:space="preserve">
     <value>この機能の元となる Simple Tweaks プラグインの機能が既に有効です。
@@ -597,7 +597,7 @@ ID: {0}</value>
 初めてのギルドオーダーの場合は無効化を推奨します。</value>
   </data>
   <data name="ModificationDescription_HideMpBars" xml:space="preserve">
-    <value>Hides MP Bars for jobs that don't use MP.</value>
+    <value>MPを使用しないジョブではMPバーを非表示にします。</value>
   </data>
   <data name="ModificationDescription_HideUnwantedBanners" xml:space="preserve">
     <value>大型テキストバナーとそのSEを非表示にします。</value>
@@ -1273,37 +1273,37 @@ ID: {0}</value>
       <value>ビジュアルスタイル</value>
   </data>
   <data name="QuickPanelAdjustments_DisplayName" xml:space="preserve">
-      <value>Command Panel Adjustments</value>
+      <value>クイックパネルの調整</value>
   </data>
   <data name="QuickPanelAdjustments_Description" xml:space="preserve">
       <value>クイックパネルHUDに視覚的な変更を加えます</value>
   </data>
   <data name="QuickPanelAdjustments_ConfigTitle" xml:space="preserve">
-      <value>Command Panel Configuration</value>
+      <value>クイックパネルの設定</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideFocusBorder" xml:space="preserve">
-      <value>Hide the additional focus border</value>
+      <value>外枠を非表示</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideHighlighting" xml:space="preserve">
-      <value>Hide the border and background highlighting</value>
+      <value>外枠と背景のハイライトを非表示</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHidePanelBackground" xml:space="preserve">
-      <value>Hide the background for the command panel</value>
+      <value>クイックパネルの背景を非表示</value>
   </data>
   <data name="QuickPanelAdjustments_LabelHideEmptySlots" xml:space="preserve">
-      <value>Hide the empty slots in the command panel</value>
+      <value>クイックパネルの空スロットを非表示</value>
   </data>
   <data name="QuickPanelAdjustments_LabelMoveButtons" xml:space="preserve">
-      <value>Move settings and close buttons closer</value>
+      <value>設定と閉じるのボタンを寄せる</value>
   </data>
   <data name="QuickPanelAdjustments_BackgroundColor" xml:space="preserve">
-      <value>Background color</value>
+      <value>背景色設定</value>
   </data>
   <data name="ChatPlayerTooltip_DisplayName" xml:space="preserve">
       <value>Chat Player Tooltip</value>
     </data>
   <data name="ChatPlayerTooltip_Description" xml:space="preserve">
-      <value>When mousing over player names in chat, shows their full name and world as a tooltip.</value>
+      <value>チャットのプレイヤー名の上にマウスカーソルを合わせると、ツールチップとしてフルネームと所属ワールドが表示されます。</value>
     </data>
   <data name="EnhancedWardNavigation_DisplayName" xml:space="preserve">
       <value>Enhanced Ward Navigation</value>
@@ -1312,58 +1312,58 @@ ID: {0}</value>
       <value>Adds previous and next buttons to the housing ward selection list.</value>
     </data>
   <data name="EnhancedWardNavigation_ButtonPrevious" xml:space="preserve">
-      <value>Prev</value>
+      <value>戻る</value>
     </data>
   <data name="EnhancedWardNavigation_ButtonNext" xml:space="preserve">
-      <value>Next</value>
+      <value>次へ</value>
     </data>
   <data name="CurrencyWarning_DisplayName" xml:space="preserve">
-      <value>Currency Warning</value>
+      <value>通貨の警告</value>
     </data>
   <data name="CurrencyWarning_Description" xml:space="preserve">
       <value>Shows an animated notification icon when tracked currencies approach or exceed set limits.</value>
     </data>
   <data name="CurrencyWarning_ItemSearchTitle" xml:space="preserve">
-      <value>Search Currencies</value>
+      <value>通貨を検索</value>
     </data>
   <data name="CurrencyWarning_SortOptionName" xml:space="preserve">
-      <value>Name</value>
+      <value>名称</value>
     </data>
   <data name="CurrencyWarning_SortOptionId" xml:space="preserve">
       <value>ID</value>
     </data>
   <data name="CurrencyWarning_ListTitle" xml:space="preserve">
-      <value>Tracked Currencies</value>
+      <value>警告設定中の通貨</value>
     </data>
   <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
-      <value>Currency Warning Settings</value>
+      <value>通貨の警告設定</value>
     </data>
   <data name="CurrencyWarning_CategoryGeneral" xml:space="preserve">
-      <value>General</value>
+      <value>全般</value>
     </data>
   <data name="CurrencyWarning_EnableMoving" xml:space="preserve">
-      <value>Enable Moving</value>
+      <value>移動を有効化</value>
     </data>
   <data name="CurrencyWarning_PlayAnimations" xml:space="preserve">
-      <value>Play Animations</value>
+      <value>アニメーションを有効化</value>
     </data>
   <data name="CurrencyWarning_IconScale" xml:space="preserve">
-      <value>Icon Scale</value>
+      <value>アイコンの大きさ</value>
     </data>
   <data name="CurrencyWarning_BelowColor" xml:space="preserve">
-      <value>Below Target Color</value>
+      <value>下限設定色</value>
     </data>
   <data name="CurrencyWarning_AboveColor" xml:space="preserve">
-      <value>Above Target Color</value>
+      <value>上限設定色</value>
     </data>
   <data name="CurrencyWarning_CategoryBelowIcon" xml:space="preserve">
-      <value>Below Target Icon</value>
+      <value>下限設定のアイコン</value>
     </data>
   <data name="CurrencyWarning_CategoryAboveIcon" xml:space="preserve">
-      <value>Above Target Icon</value>
+      <value>上限設定のアイコン</value>
     </data>
   <data name="CurrencyWarning_CategorySelection" xml:space="preserve">
-      <value>Currency Selection</value>
+      <value>通貨の選択</value>
     </data>
   <data name="CurrencyWarning_ConfigureButton" xml:space="preserve">
       <value>Configure Tracked Currencies</value>
@@ -1393,22 +1393,22 @@ ID: {0}</value>
       <value>Character Config Additional Size</value>
     </data>
   <data name="MSQProgressBar_DisplayName" xml:space="preserve">
-      <value>MSQ Progress Percent</value>
+      <value>メインクエスト進捗率</value>
     </data>
   <data name="MSQProgressBar_Description" xml:space="preserve">
-      <value>Displays current MSQ Progress as a progress bar in the Main Scenario Guide.</value>
+      <value>メインシナリオガイドに、現在のメインストーリークエストの進行状況を進捗バーとして表示します。</value>
     </data>
   <data name="MSQProgressBar_ConfigTitle" xml:space="preserve">
-      <value>MSQ Progress Percent Config</value>
+      <value>メインクエスト進捗率設定</value>
     </data>
   <data name="MSQProgressBar_CategoryGeneral" xml:space="preserve">
-      <value>General</value>
+      <value>全般</value>
     </data>
   <data name="MSQProgressBar_LabelMode" xml:space="preserve">
-      <value>Mode</value>
+      <value>モード</value>
     </data>
   <data name="MSQProgressBar_LabelBarColor" xml:space="preserve">
-      <value>Bar Color</value>
+      <value>バーの色</value>
     </data>
   <data name="MSQProgressBar_ModeEntireGame" xml:space="preserve">
       <value>Entire Game</value>
@@ -1447,7 +1447,7 @@ ID: {0}</value>
     <value>Inventory Cooldowns</value>
   </data>
   <data name="ModificationDescription_InventoryCooldowns" xml:space="preserve">
-    <value>Shows the cooldown on items in the inventory.</value>
+    <value>インベントリ内のアイテムにクールダウンを表示します。</value>
   </data>
   <data name="ModificationDisplay_SystemConfigSearchBar" xml:space="preserve">
     <value>System Configuration Search Bar</value>
@@ -1459,7 +1459,7 @@ ID: {0}</value>
     <value>System Config Search Bar Config</value>
   </data>
   <data name="SystemConfigSearchBar_CategoryGeneral" xml:space="preserve">
-    <value>General</value>
+    <value>全般</value>
   </data>
   <data name="SystemConfigSearchBar_LabelTabHighlight" xml:space="preserve">
     <value>Tab Highlight</value>
@@ -1471,16 +1471,16 @@ ID: {0}</value>
     <value>Visual Style</value>
   </data>
   <data name="ClockOverlay_LabelTextColor" xml:space="preserve">
-    <value>Text Color</value>
+    <value>文字色</value>
   </data>
   <data name="ClockOverlay_LabelTextOutline" xml:space="preserve">
     <value>Text Outline</value>
   </data>
   <data name="ClockOverlay_LabelFontSize" xml:space="preserve">
-    <value>Font Size</value>
+    <value>フォントサイズ</value>
   </data>
   <data name="ClockOverlay_LabelFont" xml:space="preserve">
-    <value>Font</value>
+    <value>フォント</value>
   </data>
   <data name="ClockOverlay_LabelAlignment" xml:space="preserve">
     <value>Alignment</value>
@@ -1498,16 +1498,16 @@ ID: {0}</value>
     <value>[VanillaPlus] Lock Chat Movement</value>
   </data>
   <data name="ModificationDisplay_GearSetReorderButtons" xml:space="preserve">
-    <value>Gearset Reorder Buttons</value>
+    <value>ギアセットの並べ替えボタン</value>
   </data>
   <data name="ModificationDescription_GearSetReorderButtons" xml:space="preserve">
-    <value>Adds buttons to the gearset list window for easily reordering gearsets.</value>
+    <value>ギアセットの順序を変更するためのボタンをギアセットリストウィンドウに追加します。</value>
   </data>
   <data name="GearSetReorderButtons_TooltipMoveUp" xml:space="preserve">
-    <value>Move gear set up.</value>
+    <value>ギアセットを上に移動。</value>
   </data>
   <data name="GearSetReorderButtons_TooltipMoveDown" xml:space="preserve">
-    <value>Move gear set down.</value>
+    <value>ギアセットを下に移動。</value>
   </data>
   <data name="ModificationDisplay_BetterSelectString" xml:space="preserve">
     <value>Better Select String</value>
