@@ -77,6 +77,8 @@ public unsafe class CharacterConfigController : IDisposable {
 
         // Adjust list area stop, only visible in certain themes
         addon->GetNodeById(5)->Position += new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
+
+        ApplyStupidFixes(addon);
     }
 
     private void FinalizeConfigCharacterChild(AtkUnitBase* addon) {
@@ -87,8 +89,25 @@ public unsafe class CharacterConfigController : IDisposable {
 
         // Adjust list area stop, only visible in certain themes
         addon->GetNodeById(5)->Position -= new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
+
+        ApplyStupidFixes(addon);
     }
 
     private AtkComponentScrollBar* GetScrollbarForChild(AtkUnitBase* addon)
         => (AtkComponentScrollBar*)Marshal.ReadIntPtr((nint)addon, sizeof(AtkUnitBase));
+
+    /// <summary>
+    /// Applies manual adjustments to certain nodes because square has
+    /// to be extra and do shit in a weird way.
+    /// </summary>
+    private static void ApplyStupidFixes(AtkUnitBase* addon) {
+        switch (addon->NameString) {
+            case "ConfigCharaChatLogRing":
+                var realContentsNode = addon->GetNodeById(5);
+                if (realContentsNode is not null) {
+                    realContentsNode->Position = Vector2.Zero;
+                }
+                return;
+        }
+    }
 }
