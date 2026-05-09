@@ -105,7 +105,11 @@ public unsafe class LockChatButton : GameModification {
         var containerNode = addon->GetNodeById(11);
         if (containerNode is null) return;
 
-        button.Position = new Vector2(containerNode->Position.X + 24.0f * 2.0f + 6.0f, containerNode->Position.Y + 2.0f);
+        var addonGlobalScale = AtkUnitBase.GetGlobalUIScale();
+        var positionX = containerNode->Position.X + (24.0f * 2.0f + 6.0f) * addonGlobalScale;
+
+        button.Position = new Vector2(positionX, containerNode->Position.Y + 2.0f);
+        button.Scale = new Vector2(addonGlobalScale, addonGlobalScale);
     }
 
     private void FinalizeChatLog(AddonChatLog* addon) {
@@ -130,10 +134,13 @@ public unsafe class LockChatButton : GameModification {
         var containerNode = addon->ContainerNode;
         if (containerNode is null) return;
 
+        var addonGlobalScale = AtkUnitBase.GetGlobalUIScale();
+        var positionX = positioningNode->Position.X + 32.0f * addonGlobalScale;
+
         var newButton = new PadlockButtonNode {
-            Size = new Vector2(20.0f, 24.0f),
+            Size = new Vector2(20.0f, 24.0f) * AtkUnitBase.GetGlobalUIScale(),
             IsLocked = data.IsLocked,
-            Position = positioningNode->Position + new Vector2(32.0f, 2.0f),
+            Position = new Vector2(positionX, positioningNode->Y + 2.0f * addonGlobalScale),
             TextTooltip = data.IsLocked ? Strings.LockChatButton_TooltipUnlock : Strings.LockChatButton_TooltipLock,
         };
 
