@@ -3,7 +3,7 @@ using KamiToolKit;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
-namespace VanillaPlus.Features.DebugCustomAddon;
+namespace VanillaPlus.DevFeatures.DebugCustomAddon;
 
 #if DEBUG
 /// <summary>

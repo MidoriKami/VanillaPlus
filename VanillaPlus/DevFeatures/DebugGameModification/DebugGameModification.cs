@@ -3,7 +3,7 @@
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
-namespace VanillaPlus.Features.DebugGameModification;
+namespace VanillaPlus.DevFeatures.DebugGameModification;
 
 #if DEBUG
 /// <summary>

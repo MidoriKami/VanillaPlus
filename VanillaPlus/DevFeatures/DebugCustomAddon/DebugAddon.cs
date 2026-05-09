@@ -2,7 +2,7 @@
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 
-namespace VanillaPlus.Features.DebugCustomAddon;
+namespace VanillaPlus.DevFeatures.DebugCustomAddon;
 
 #if DEBUG
 /// <summary>
