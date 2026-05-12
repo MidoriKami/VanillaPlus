@@ -89,6 +89,7 @@ public class TeleportAddon : NativeAddon {
                                     PlaceholderString = Strings.SearchPlaceholder,
                                     AutoSelectAll = true,
                                     OnInputReceived = OnSearchBoxInputReceived,
+                                    OnInputComplete = OnSearchBoxReturnPressed,
                                 },
                                 new CheckboxNode {
                                     Size = new Vector2(28.0f, 28.0f),
@@ -158,6 +159,9 @@ public class TeleportAddon : NativeAddon {
             textInputNode.SetFocus();
         }
     }
+
+    private void OnSearchBoxReturnPressed(ReadOnlySeString obj)
+        => listNode?.OptionsList.FirstOrDefault()?.Teleport();
 
     public unsafe void SetPreviewImage(IAetheryteEntry? entry) {
         if (entry is null) return;
