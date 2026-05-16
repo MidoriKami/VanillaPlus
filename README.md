@@ -10,7 +10,7 @@ This plugin uses the term "GameModification" to describe a singular purposed mod
 > 
 > No automating server interactions
 >
-> No modifications that would give clear unfair advantages to other players
+> No modifications that would give clear unfair advantages to players
 > 
 > No modifications that specifically target PvP parts or components of any form
 
