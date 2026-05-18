@@ -25,6 +25,7 @@ public class DutyLootDataLoader : IDisposable {
 
     private readonly DutyLootDataCache dutyLootDataCache = new();
     private AddonController<AddonContentsFinder>? contentsFinder;
+    private AddonController<AddonRaidFinder>? raidFinder;
 
     public unsafe void Enable() {
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
@@ -38,6 +39,14 @@ public class DutyLootDataLoader : IDisposable {
         };
         contentsFinder.Enable();
 
+        raidFinder = new AddonController<AddonRaidFinder> {
+            AddonName = "RaidFinder",
+            OnSetup = OnRaidFinderChanged,
+            OnRefresh = OnRaidFinderChanged,
+            OnFinalize = OnRaidFinderChanged,
+        };
+        raidFinder.Enable();
+
         dutyLootDataCache.OnChanged += OnCacheChanged;
 
         RefreshActiveDuty();
@@ -46,6 +55,9 @@ public class DutyLootDataLoader : IDisposable {
     public void Dispose() {
         contentsFinder?.Dispose();
         contentsFinder = null;
+
+        raidFinder?.Dispose();
+        raidFinder = null;
 
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
         Services.GameGui.AgentUpdate -= OnAgentUpdate;
@@ -61,10 +73,21 @@ public class DutyLootDataLoader : IDisposable {
             return currentDutyId;
         }
 
-        // Priority 2: Viewing a specific duty in ContentsFinder
-        var agent = AgentContentsFinder.Instance();
-        if (agent->IsAddonShown() && IsSupportedContent(agent->SelectedDuty)) {
-            return agent->SelectedDuty.Id;
+        // Priority 2: Viewing a specific duty in ContentsFinder or RaidFinder
+        var agentContentsFinder = AgentContentsFinder.Instance();
+        if (agentContentsFinder->IsAddonShown() && IsSupportedContent(agentContentsFinder->SelectedDuty)) {
+            return agentContentsFinder->SelectedDuty.Id;
+        }
+
+        var agentRaidFinder = AgentRaidFinder.Instance();
+        if (agentRaidFinder->IsAddonShown()) {
+            var selectedTab = (int)agentRaidFinder->SelectedTab;
+            var selectedEntry = (int)agentRaidFinder->SelectedEntry;
+            var raidId = agentRaidFinder->Tabs[selectedTab].Entries[selectedEntry].ContentFinderConditionId;
+
+            if (IsSupportedContent(new ContentsId { ContentType = ContentsType.Regular, Id = raidId })) {
+                return raidId;
+            }
         }
 
         return null;
@@ -101,6 +124,7 @@ public class DutyLootDataLoader : IDisposable {
     private void OnCacheChanged() => OnChanged?.Invoke();
 
     private unsafe void OnContentsFinderChanged(AddonContentsFinder* addon) => RefreshActiveDuty();
+    private unsafe void OnRaidFinderChanged(AddonRaidFinder* addon) => RefreshActiveDuty();
 
     private void OnTerritoryChanged(uint u) => RefreshActiveDuty();
 

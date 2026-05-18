@@ -49,7 +49,7 @@ public unsafe class DutyLootJournalUiController {
         // Only attach if parent is the Duty Finder
         if (addon->ParentId is not 0) {
             var parentAddon = RaptureAtkUnitManager.Instance()->GetAddonById(addon->ParentId);
-            if (parentAddon is null || parentAddon->NameString != "ContentsFinder") {
+            if (parentAddon is null || (parentAddon->NameString != "ContentsFinder" && parentAddon->NameString != "RaidFinder")) {
                 return;
             }
         }
