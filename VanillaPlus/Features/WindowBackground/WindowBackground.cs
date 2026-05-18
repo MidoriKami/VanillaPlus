@@ -59,7 +59,7 @@ public unsafe class WindowBackground : GameModification {
             Size = new Vector2(600.0f, 500.0f),
             Options = config.Settings,
 
-            // OnConfigChanged = _ => config.Save(),
+            EditCompleted = _ => config.Save(),
 
             AddClicked = listNode => {
                 addonSearchAddon.SelectionResult = searchResult => {
