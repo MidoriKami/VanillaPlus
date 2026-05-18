@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
-using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Node;
 using KamiToolKit.Premade.Node.Simple;
@@ -16,11 +15,11 @@ using VanillaPlus.Utilities;
 
 namespace VanillaPlus.InternalSystem;
 
-public class AddonModificationBrowser : NativeAddon {
+public class ModificationBrowserAddon : NativeAddon {
 
     private SimpleComponentNode mainContainerNode = null!;
 
-    private HorizontalFlexNode searchContainerNode = null!;
+    private HorizontalListNode searchContainerNode = null!;
     private TextInputNode searchBoxNode = null!;
     private ScrollingAreaNode<TreeListNode> optionContainerNode = null!;
     private SimpleComponentNode descriptionContainerNode = null!;
@@ -86,8 +85,10 @@ public class AddonModificationBrowser : NativeAddon {
         RecalculateScrollableAreaSize();
         UpdateSizes();
 
-        OnSearchBoxInputReceived(PluginSystem.SystemConfig.CurrentSearch);
-        searchBoxNode.String = PluginSystem.SystemConfig.CurrentSearch;
+        if (PluginSystem.SystemConfig.PersistSearch) {
+            OnSearchBoxInputReceived(PluginSystem.SystemConfig.CurrentSearch);
+            searchBoxNode.String = PluginSystem.SystemConfig.CurrentSearch;
+        }
     }
 
     private void BuildOptionsContainer() {
@@ -99,22 +100,32 @@ public class AddonModificationBrowser : NativeAddon {
     }
 
     private void BuildSearchContainer() {
-        searchContainerNode = new HorizontalFlexNode {
+        searchContainerNode = new HorizontalListNode {
             Size = new Vector2(ContentSize.X, 28.0f),
-            AlignmentFlags = FlexFlags.FitHeight | FlexFlags.FitWidth,
+            FitHeight = true,
+            InitialNodes = [
+                searchBoxNode = new TextInputNode {
+                    Width = ContentSize.X - 32.0f,
+                    PlaceholderString = Strings.SearchPlaceholder,
+                    AutoSelectAll = true,
+                    OnInputReceived = OnSearchBoxInputReceived,
+                    OnFocusLost = () => {
+                        PluginSystem.SystemConfig.CurrentSearch = searchBoxNode.String.ToString();
+                        PluginSystem.SystemConfig.Save();
+                    },
+                },
+                new CheckboxNode {
+                    Width = 24.0f,
+                    TextTooltip = "Persist Search Between Sessions",
+                    IsChecked = PluginSystem.SystemConfig.PersistSearch,
+                    OnClick = value => {
+                        PluginSystem.SystemConfig.PersistSearch = value;
+                        PluginSystem.SystemConfig.Save();
+                    },
+                },
+            ],
         };
         searchContainerNode.AttachNode(mainContainerNode);
-
-        searchBoxNode = new TextInputNode {
-            PlaceholderString = Strings.SearchPlaceholder,
-            AutoSelectAll = true,
-            OnInputReceived = OnSearchBoxInputReceived,
-            OnFocusLost = () => {
-                PluginSystem.SystemConfig.CurrentSearch = searchBoxNode.String.ToString();
-                PluginSystem.SystemConfig.Save();
-            },
-        };
-        searchContainerNode.AddNode(searchBoxNode);
     }
 
     private void BuildDescriptionContainer() {

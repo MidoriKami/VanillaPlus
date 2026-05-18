@@ -25,7 +25,7 @@ public sealed class VanillaPlus : IDalamudPlugin {
         SetCultureInfo(pluginInterface.UiLanguage);
         pluginInterface.LanguageChanged += SetCultureInfo;
 
-        PluginSystem.AddonModificationBrowser = new AddonModificationBrowser {
+        PluginSystem.ModificationBrowserAddon = new ModificationBrowserAddon {
             InternalName = "VanillaPlusConfig",
             Title = Strings.ModificationBrowserTitle,
             Size = new Vector2(836.0f, 650.0f),
@@ -49,7 +49,7 @@ public sealed class VanillaPlus : IDalamudPlugin {
             HelpMessage = Strings.CommandHelpOpenBrowser,
         });
 
-        Services.PluginInterface.UiBuilder.OpenConfigUi += PluginSystem.AddonModificationBrowser.Open;
+        Services.PluginInterface.UiBuilder.OpenConfigUi += PluginSystem.ModificationBrowserAddon.Open;
         Services.ClientState.Login += OnLogin;
 
         PluginSystem.KeyListener = new KeyListener();
@@ -66,13 +66,13 @@ public sealed class VanillaPlus : IDalamudPlugin {
         PluginSystem.KeyListener.Dispose();
         PluginSystem.ModificationManager.Dispose();
 
-        Services.PluginInterface.UiBuilder.OpenConfigUi -= PluginSystem.AddonModificationBrowser.Open;
+        Services.PluginInterface.UiBuilder.OpenConfigUi -= PluginSystem.ModificationBrowserAddon.Open;
         Services.ClientState.Login -= OnLogin;
 
         Services.CommandManager.RemoveHandler("/vanillaplus");
         Services.PluginInterface.LanguageChanged -= SetCultureInfo;
 
-        PluginSystem.AddonModificationBrowser.Dispose();
+        PluginSystem.ModificationBrowserAddon.Dispose();
         PluginSystem.SeasonEventAddon.Dispose();
 
         KamiToolKitLibrary.Dispose();
@@ -90,7 +90,7 @@ public sealed class VanillaPlus : IDalamudPlugin {
     private static void AutoOpenBrowser(bool enabled) {
         if (!enabled) return;
 
-        PluginSystem.AddonModificationBrowser.Open();
+        PluginSystem.ModificationBrowserAddon.Open();
     }
 
     [Conditional("DEBUG")]
@@ -102,7 +102,7 @@ public sealed class VanillaPlus : IDalamudPlugin {
 
         switch (arguments) {
             case "" or null:
-                PluginSystem.AddonModificationBrowser.Open();
+                PluginSystem.ModificationBrowserAddon.Open();
                 break;
 
             case "debug":
@@ -111,8 +111,8 @@ public sealed class VanillaPlus : IDalamudPlugin {
                 Services.PluginLog.Info($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}");
                 PluginSystem.SystemConfig.Save();
 
-                if (!PluginSystem.AddonModificationBrowser.IsOpen) {
-                    PluginSystem.AddonModificationBrowser.Open();
+                if (!PluginSystem.ModificationBrowserAddon.IsOpen) {
+                    PluginSystem.ModificationBrowserAddon.Open();
                 }
                 break;
         }

@@ -96,7 +96,7 @@ public class ModificationManager : IDisposable {
             }
         }
 
-        PluginSystem.AddonModificationBrowser.UpdateDisabledState();
+        PluginSystem.ModificationBrowserAddon.UpdateDisabledState();
     }
 
     public static void TryEnableModification(LoadedModification modification) {
