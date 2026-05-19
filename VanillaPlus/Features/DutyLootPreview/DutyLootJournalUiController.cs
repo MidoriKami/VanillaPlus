@@ -14,6 +14,7 @@ namespace VanillaPlus.Features.DutyLootPreview;
 public unsafe class DutyLootJournalUiController {
     private AddonController<AddonJournalDetail>? journalDetail;
     private DutyLootOpenWindowButtonNode? lootButtonNode;
+    private ushort attachedAddonId;
 
     public required DutyLootDataLoader DataLoader;
 
@@ -22,7 +23,7 @@ public unsafe class DutyLootJournalUiController {
     public void OnEnable() {
         journalDetail = new AddonController<AddonJournalDetail> {
             AddonName = "JournalDetail",
-            OnSetup = SetupJounralDetail,
+            OnSetup = SetupJournalDetail,
             OnFinalize = FinalizeJournalDetail,
             OnRefresh = RefreshJournalDetail,
         };
@@ -38,25 +39,38 @@ public unsafe class DutyLootJournalUiController {
         journalDetail = null;
     }
 
-    private void SetupJounralDetail(AddonJournalDetail* addon) {
+    private void SetupJournalDetail(AddonJournalDetail* addon) {
         var dutyTitleNode = addon->GetNodeById(37);
         if (dutyTitleNode is null) return;
 
         var existing = addon->DutyNameTextNode; // ID: 38
         if (existing is null) return;
 
+        // Only attach if parent is the Duty Finder
+        if (addon->ParentId is not 0) {
+            var parentAddon = RaptureAtkUnitManager.Instance()->GetAddonById(addon->ParentId);
+            if (parentAddon is null || (parentAddon->NameString != "ContentsFinder" && parentAddon->NameString != "RaidFinder")) {
+                return;
+            }
+        }
+
+        if (journalDetail is not null) {
+            CleanupAttached();
+        }
+
         lootButtonNode = new DutyLootOpenWindowButtonNode(DataLoader) {
             Position = new Vector2(420.0f, 68.0f),
             Size = new Vector2(32.0f, 32.0f),
             TextTooltip = Strings.DutyLoot_Tooltip_JournalButton,
             OnClick = () => OnButtonClicked?.Invoke(),
-            IsVisible = ShouldShow(addon),
+            IsVisible = ShouldShow(),
         };
         lootButtonNode.AttachNode(dutyTitleNode, NodePosition.AfterTarget);
+        attachedAddonId = addon->Id;
     }
 
     private void RefreshJournalDetail(AddonJournalDetail* addon)
-        => lootButtonNode?.IsVisible = ShouldShow(addon);
+        => lootButtonNode?.IsVisible = ShouldShow();
 
     private void OnDataChanged() {
         if (lootButtonNode == null) return;
@@ -64,24 +78,23 @@ public unsafe class DutyLootJournalUiController {
         var addon = Services.GameGui.GetAddonByName<AddonJournalDetail>("JournalDetail");
         if (addon == null) return;
 
-        lootButtonNode.IsVisible = ShouldShow(addon);
+        lootButtonNode.IsVisible = ShouldShow();
     }
 
-    private bool ShouldShow(AddonJournalDetail* addon) {
-        // Only show if parent is the Duty Finder
-        if (addon->ParentId is not 0) {
-            var parentAddon = RaptureAtkUnitManager.Instance()->GetAddonById(addon->ParentId);
-            if (parentAddon is null || parentAddon->NameString != "ContentsFinder") {
-                return false;
-            }
-        }
-
+    private bool ShouldShow() {
         var lootData = DataLoader.ActiveDutyLootData;
         return lootData is not null || DataLoader.IsLoading;
     }
 
     private void FinalizeJournalDetail(AddonJournalDetail* addon) {
+        if (addon->Id != attachedAddonId) return;
+
+        CleanupAttached();
+    }
+
+    private void CleanupAttached() {
         lootButtonNode?.Dispose();
         lootButtonNode = null;
+        attachedAddonId = 0;
     }
 }
