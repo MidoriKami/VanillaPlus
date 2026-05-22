@@ -21,7 +21,7 @@ public unsafe class DebugHook : GameModification {
 
     private delegate void HookDelegate();
 
-    [Signature("", DetourName = nameof(HookDetour))]
+    [Signature("AA BB CC DD EE FF", DetourName = nameof(HookDetour))]
     private Hook<HookDelegate>? hook;
 
     public override void OnEnable() {

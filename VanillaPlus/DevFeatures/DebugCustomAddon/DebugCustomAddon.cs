@@ -11,8 +11,8 @@ namespace VanillaPlus.DevFeatures.DebugCustomAddon;
 /// </summary>
 public class DebugCustomAddon : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings.ModificationDisplay_DebugCustomAddon,
-        Description = Strings.ModificationDescription_DebugCustomAddon,
+        DisplayName = "Debug Custom Addon",
+        Description = "A module for playing around and testing VanillaPlus features",
         Type = ModificationType.Debug,
         Authors = ["YourNameHere"],
     };

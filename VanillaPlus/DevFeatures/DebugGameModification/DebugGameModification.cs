@@ -11,8 +11,8 @@ namespace VanillaPlus.DevFeatures.DebugGameModification;
 /// </summary>
 public unsafe class DebugGameModification : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings.ModificationDisplay_DebugGameModification,
-        Description = Strings.ModificationDescription_DebugGameModification,
+        DisplayName = "Debug Game Modification",
+        Description = "A module for playing around and testing VanillaPlus features",
         Type = ModificationType.Debug,
         Authors = ["YourNameHere"],
     };
