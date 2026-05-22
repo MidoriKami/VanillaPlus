@@ -31,7 +31,7 @@ public unsafe class DebugHook : GameModification {
     }
 
     public override void OnDisable() {
-        hook?.Disable();
+        hook?.Dispose();
         hook = null;
     }
 
