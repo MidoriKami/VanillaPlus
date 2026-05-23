@@ -61,7 +61,7 @@ public class GameModificationOptionNode : SelectableNode {
             OnClick = () => {
                 reloadButtonNode?.IsEnabled = false;
                 Task.Run(() => {
-                    PluginSystem.ModificationManager.ReloadConflictedModules();
+                    System.ModificationManager.ReloadConflictedModules();
                     reloadButtonNode?.IsEnabled = true;
                 });
                 reloadButtonNode?.HideTooltip();

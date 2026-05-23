@@ -20,7 +20,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
     public Task LoadAsync(CancellationToken cancellationToken) {
         PluginInterface.Create<Services>();
 
-        PluginSystem.SystemConfig = SystemConfiguration.Load();
+        System.SystemConfig = SystemConfiguration.Load();
 
         KamiToolKitLibrary.Initialize(Services.PluginInterface, "VanillaPlus");
         KamiToolKitLibrary.SetResourceManager(Strings.ResourceManager);
@@ -28,13 +28,13 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
         SetCultureInfo(Services.PluginInterface.UiLanguage);
         Services.PluginInterface.LanguageChanged += SetCultureInfo;
 
-        PluginSystem.ModificationBrowserAddon = new ModificationBrowserAddon {
+        System.ModificationBrowserAddon = new ModificationBrowserAddon {
             InternalName = "VanillaPlusConfig",
             Title = Strings.ModificationBrowserTitle,
             Size = new Vector2(836.0f, 650.0f),
         };
 
-        PluginSystem.SeasonEventAddon = new SeasonEventAddon {
+        System.SeasonEventAddon = new SeasonEventAddon {
             InternalName = "SeasonalEventNotice",
             Title = "Seasonal Event Notice",
             Size = new Vector2(500.0f, 275.0f),
@@ -52,13 +52,13 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
             HelpMessage = Strings.CommandHelpOpenBrowser,
         });
 
-        Services.PluginInterface.UiBuilder.OpenConfigUi += PluginSystem.ModificationBrowserAddon.Open;
+        Services.PluginInterface.UiBuilder.OpenConfigUi += System.ModificationBrowserAddon.Open;
         Services.ClientState.Login += OnLogin;
 
-        PluginSystem.KeyListener = new KeyListener();
-        PluginSystem.ModificationManager = new ModificationManager();
+        System.KeyListener = new KeyListener();
+        System.ModificationManager = new ModificationManager();
 
-        AutoOpenBrowser(PluginSystem.SystemConfig.IsDebugMode);
+        AutoOpenBrowser(System.SystemConfig.IsDebugMode);
 
         if (Services.ClientState.IsLoggedIn) {
             OnLogin();
@@ -68,26 +68,26 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
     }
 
     public async ValueTask DisposeAsync() {
-        PluginSystem.KeyListener.Dispose();
+        System.KeyListener.Dispose();
 
-        Services.PluginInterface.UiBuilder.OpenConfigUi -= PluginSystem.ModificationBrowserAddon.Open;
+        Services.PluginInterface.UiBuilder.OpenConfigUi -= System.ModificationBrowserAddon.Open;
         Services.ClientState.Login -= OnLogin;
 
         Services.CommandManager.RemoveHandler("/vanillaplus");
         Services.PluginInterface.LanguageChanged -= SetCultureInfo;
 
-        PluginSystem.ModificationBrowserAddon.Dispose();
-        PluginSystem.SeasonEventAddon.Dispose();
+        System.ModificationBrowserAddon.Dispose();
+        System.SeasonEventAddon.Dispose();
 
-        await PluginSystem.ModificationManager.DisposeAsync();
+        await System.ModificationManager.DisposeAsync();
         await Services.Framework.RunOnFrameworkThread(KamiToolKitLibrary.Dispose);
     }
 
     private void OnLogin() {
-        if (DateTime.Now.IsSeasonalEvent && DateTime.Now.Date > PluginSystem.SystemConfig.LastSeasonalNotice.Date) {
-            PluginSystem.SeasonEventAddon.Open();
-            PluginSystem.SystemConfig.LastSeasonalNotice = DateTime.Now.Date;
-            PluginSystem.SystemConfig.Save();
+        if (DateTime.Now.IsSeasonalEvent && DateTime.Now.Date > System.SystemConfig.LastSeasonalNotice.Date) {
+            System.SeasonEventAddon.Open();
+            System.SystemConfig.LastSeasonalNotice = DateTime.Now.Date;
+            System.SystemConfig.Save();
         }
     }
 
@@ -95,7 +95,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
     private static void AutoOpenBrowser(bool enabled) {
         if (!enabled) return;
 
-        PluginSystem.ModificationBrowserAddon.Open();
+        System.ModificationBrowserAddon.Open();
     }
 
     private static void CommandHandler(string command, string arguments) {
@@ -103,25 +103,25 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
 
         switch (arguments.Split('/')) {
             case [""] or [] or null:
-                PluginSystem.ModificationBrowserAddon.Open();
+                System.ModificationBrowserAddon.Open();
                 break;
 
             case ["debug"]:
-                PluginSystem.SystemConfig.IsDebugMode = !PluginSystem.SystemConfig.IsDebugMode;
-                Services.ChatGui.Print($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}", "VanillaPlus");
-                Services.PluginLog.Info($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}");
-                PluginSystem.SystemConfig.Save();
+                System.SystemConfig.IsDebugMode = !System.SystemConfig.IsDebugMode;
+                Services.ChatGui.Print($"Debug mode is now {(System.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}", "VanillaPlus");
+                Services.PluginLog.Info($"Debug mode is now {(System.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}");
+                System.SystemConfig.Save();
 
-                if (!PluginSystem.ModificationBrowserAddon.IsOpen) {
-                    PluginSystem.ModificationBrowserAddon.Open();
+                if (!System.ModificationBrowserAddon.IsOpen) {
+                    System.ModificationBrowserAddon.Open();
                 }
                 break;
 
             case ["safemode"]:
-                PluginSystem.SystemConfig.SafeMode = !PluginSystem.SystemConfig.SafeMode;
-                Services.ChatGui.Print($"Safemode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}", "VanillaPlus");
-                Services.PluginLog.Info($"Safemode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}");
-                PluginSystem.SystemConfig.Save();
+                System.SystemConfig.SafeMode = !System.SystemConfig.SafeMode;
+                Services.ChatGui.Print($"Safemode is now {(System.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}", "VanillaPlus");
+                Services.PluginLog.Info($"Safemode is now {(System.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}");
+                System.SystemConfig.Save();
                 break;
         }
     }

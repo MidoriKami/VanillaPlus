@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VanillaPlus.Resources {
+namespace Resources {
     using System;
     
     

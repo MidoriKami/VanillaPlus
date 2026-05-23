@@ -111,7 +111,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         };
         cancelButtonNode.AttachNode(this);
 
-        PluginSystem.KeyListener.OnKeyPressed += KeyPressed;
+        System.KeyListener.OnKeyPressed += KeyPressed;
     }
 
     private void KeyPressed(VirtualKey pressedKey, bool isPressed) {
@@ -158,7 +158,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
     }
 
     protected override void OnFinalize(AtkUnitBase* addon)
-        => PluginSystem.KeyListener.OnKeyPressed -= KeyPressed;
+        => System.KeyListener.OnKeyPressed -= KeyPressed;
 
     public required Action<Keybind> OnKeybindChanged { get; init; }
 }

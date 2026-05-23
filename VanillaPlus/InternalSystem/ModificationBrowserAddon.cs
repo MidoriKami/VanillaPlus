@@ -51,14 +51,14 @@ public class ModificationBrowserAddon : NativeAddon {
 
         uint optionIndex = 0;
 
-        foreach (var category in PluginSystem.ModificationManager.CategoryGroups) {
+        foreach (var category in System.ModificationManager.CategoryGroups) {
             var newCategoryNode = new TreeListCategoryNode {
                 String = category.Key.Description,
                 OnToggle = isVisible => OnCategoryToggled(isVisible, category.Key),
                 VerticalPadding = 0.0f,
             };
 
-            foreach (var subCategory in PluginSystem.ModificationManager.SubCategoryGroups[category.Key]) {
+            foreach (var subCategory in System.ModificationManager.SubCategoryGroups[category.Key]) {
                 if (subCategory.Key is not null) {
                     var newHeaderNode = new TreeListHeaderNode {
                         Size = new Vector2(0.0f, 24.0f),
@@ -85,9 +85,9 @@ public class ModificationBrowserAddon : NativeAddon {
         RecalculateScrollableAreaSize();
         UpdateSizes();
 
-        if (PluginSystem.SystemConfig.PersistSearch) {
-            OnSearchBoxInputReceived(PluginSystem.SystemConfig.CurrentSearch);
-            searchBoxNode.String = PluginSystem.SystemConfig.CurrentSearch;
+        if (System.SystemConfig.PersistSearch) {
+            OnSearchBoxInputReceived(System.SystemConfig.CurrentSearch);
+            searchBoxNode.String = System.SystemConfig.CurrentSearch;
         }
     }
 
@@ -110,17 +110,17 @@ public class ModificationBrowserAddon : NativeAddon {
                     AutoSelectAll = true,
                     OnInputReceived = OnSearchBoxInputReceived,
                     OnFocusLost = () => {
-                        PluginSystem.SystemConfig.CurrentSearch = searchBoxNode.String.ToString();
-                        PluginSystem.SystemConfig.Save();
+                        System.SystemConfig.CurrentSearch = searchBoxNode.String.ToString();
+                        System.SystemConfig.Save();
                     },
                 },
                 new CheckboxNode {
                     Width = 24.0f,
                     TextTooltip = "Persist Search Between Sessions",
-                    IsChecked = PluginSystem.SystemConfig.PersistSearch,
+                    IsChecked = System.SystemConfig.PersistSearch,
                     OnClick = value => {
-                        PluginSystem.SystemConfig.PersistSearch = value;
-                        PluginSystem.SystemConfig.Save();
+                        System.SystemConfig.PersistSearch = value;
+                        System.SystemConfig.Save();
                     },
                 },
             ],
