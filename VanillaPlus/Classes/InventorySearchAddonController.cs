@@ -47,7 +47,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
     }
 
     public void Dispose() {
-        Services.PluginLog.Info("InventorySearchAddonController.Dispose");
+        Services.PluginLog.Info("Disposing", "InventorySearchAddonController");
 
         foreach (var (_, node) in inputTextNodes ?? []) {
             node.Dispose();
@@ -85,7 +85,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
     }
 
     private void SetupInventory(AtkUnitBase* addon) {
-        Services.PluginLog.Info($"OnInventoryAttach: {addon->NameString}");
+        Services.PluginLog.Info($"OnInventoryAttach: {addon->NameString}", "InventorySearchAddonController");
         if (inputTextNodes is null) return;
         var size = new Vector2(addon->Size.X / 2.0f, 28.0f);
 
@@ -116,7 +116,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
     }
 
     private void FinalizeInventory(AtkUnitBase* addon) {
-        Services.PluginLog.Info($"OnInventoryDetach: {addon->NameString}");
+        Services.PluginLog.Info($"OnInventoryDetach: {addon->NameString}", "InventorySearchAddonController");
         if (inputTextNodes?.TryGetValue(addon->NameString, out _) ?? false) {
             // Intentionally leak node for now, the memory should still be automatically cleaned up by the game.
             // Node will still get manually disposed on plugin unload correctly.

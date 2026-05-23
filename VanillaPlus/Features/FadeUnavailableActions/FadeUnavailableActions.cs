@@ -75,7 +75,7 @@ public unsafe class FadeUnavailableActions : GameModification {
             ProcessHotBarSlot(hotBarSlotData, numberArray, numberArrayIndex);
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Something went wrong in FadeUnavailableActions, let MidoriKami know!");
+            Services.PluginLog.Exception(e);
         } finally {
             onHotBarSlotUpdateHook!.Original(addon, hotBarSlotData, numberArray, stringArray, numberArrayIndex, stringArrayIndex);
         }

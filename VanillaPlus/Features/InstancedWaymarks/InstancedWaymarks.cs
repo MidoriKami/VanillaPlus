@@ -147,7 +147,7 @@ public unsafe class InstancedWaymarks : GameModification {
     }
 
     private static void SaveWaymarks(uint contentFinderCondition) {
-        Services.PluginLog.Debug($"Saving Waymarks for Duty: {contentFinderCondition}");
+        Services.PluginLog.Debug($"Saving Waymarks for Duty: {contentFinderCondition}", "InstancedWaymarks");
 
         var address = Unsafe.AsPointer(ref FieldMarkerModule.Instance()->Presets[0]);
         var size = sizeof(FieldMarkerPreset) * FieldMarkerModule.Instance()->Presets.Length;
@@ -159,7 +159,7 @@ public unsafe class InstancedWaymarks : GameModification {
     }
 
     private static void LoadWaymarks(uint contentFinderCondition) {
-        Services.PluginLog.Debug($"Loading Waymarks for Duty: {contentFinderCondition}");
+        Services.PluginLog.Debug($"Loading Waymarks for Duty: {contentFinderCondition}", "InstancedWaymarks");
 
         var address = Unsafe.AsPointer(ref FieldMarkerModule.Instance()->Presets[0]);
         var size = sizeof(FieldMarkerPreset) * FieldMarkerModule.Instance()->Presets.Length;
@@ -168,7 +168,7 @@ public unsafe class InstancedWaymarks : GameModification {
         var result = File.ReadAllBytes(dataFilePath);
 
         if (result.Length < size) {
-            Services.PluginLog.Debug("No data to load, creating new file.");
+            Services.PluginLog.Debug("No data to load, creating new file.", "InstancedWaymarks");
             result = new byte[size];
             FilesystemUtil.WriteAllBytesSafe(dataFilePath, result);
         }

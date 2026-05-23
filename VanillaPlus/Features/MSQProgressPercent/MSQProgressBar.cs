@@ -48,7 +48,7 @@ public unsafe class MSQProgressBar : GameModification {
 
             expansionRanges.TryAdd(expansion, min..max);
 
-            Services.PluginLog.Debug($"Range for {expansion.Name}: {min}..{max}");
+            Services.PluginLog.Debug($"Range for {expansion.Name}: {min}..{max}", "MSQProgressBar");
         }
 
         configAddon = new ConfigAddon {

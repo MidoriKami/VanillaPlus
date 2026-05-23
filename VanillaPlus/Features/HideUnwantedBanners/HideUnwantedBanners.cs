@@ -70,7 +70,7 @@ public unsafe class HideUnwantedBanners : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception in OnSetImageTexture");
+            Services.PluginLog.Exception(e);
         }
 
         setImageTextureHook!.Original(addon, bannerId, language, soundEffectId);

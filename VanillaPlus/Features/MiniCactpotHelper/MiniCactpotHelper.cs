@@ -148,7 +148,7 @@ public unsafe class MiniCactpotHelper : GameModification {
             }
             catch (OperationCanceledException) { }
             catch (Exception ex) {
-                Services.PluginLog.Error(ex, "Updater has crashed");
+                Services.PluginLog.Exception(ex);
             }
         }
 

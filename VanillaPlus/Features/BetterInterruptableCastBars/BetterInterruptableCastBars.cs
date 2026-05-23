@@ -86,7 +86,7 @@ public unsafe class BetterInterruptableCastBars : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception in BetterInterruptableCastBars.OnAntsCheck");
+            Services.PluginLog.Exception(e);
         }
 
         return antsHook!.Original(thisPtr, actionType, actionId);

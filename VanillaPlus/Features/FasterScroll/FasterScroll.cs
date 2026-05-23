@@ -62,7 +62,7 @@ public unsafe class FasterScroll : GameModification {
             thisPtr->MouseWheelSpeed = (short)(thisPtr->MouseWheelSpeed / config.SpeedMultiplier);
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Error in AtkComponentScrollBarReceiveEvent");
+            Services.PluginLog.Exception(e);
         }
     }
 }

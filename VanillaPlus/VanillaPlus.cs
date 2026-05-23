@@ -22,7 +22,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
 
         System.SystemConfig = SystemConfiguration.Load();
         if (System.SystemConfig.SafeMode) {
-            Services.PluginLog.Warning("VanillaPlus is in safe mode. Modules will not be loaded/unloaded in parallel.");
+            Services.PluginLog.InternalWarning("VanillaPlus is in safe mode. Modules will not be loaded/unloaded in parallel.");
         }
 
         KamiToolKitLibrary.Initialize(Services.PluginInterface, "VanillaPlus");
@@ -112,7 +112,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
             case ["debug"]:
                 System.SystemConfig.IsDebugMode = !System.SystemConfig.IsDebugMode;
                 Services.ChatGui.Print($"Debug mode is now {(System.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}", "VanillaPlus");
-                Services.PluginLog.Info($"Debug mode is now {(System.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}");
+                Services.PluginLog.InternalInfo($"Debug mode is now {(System.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}");
                 System.SystemConfig.Save();
 
                 if (!System.ModificationBrowserAddon.IsOpen) {
@@ -123,7 +123,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
             case ["safemode"]:
                 System.SystemConfig.SafeMode = !System.SystemConfig.SafeMode;
                 Services.ChatGui.Print($"Safemode is now {(System.SystemConfig.SafeMode ? "Enabled" : "Disabled")}", "VanillaPlus");
-                Services.PluginLog.Info($"Safemode is now {(System.SystemConfig.SafeMode ? "Enabled" : "Disabled")}");
+                Services.PluginLog.InternalInfo($"Safemode is now {(System.SystemConfig.SafeMode ? "Enabled" : "Disabled")}");
                 System.SystemConfig.Save();
                 break;
         }

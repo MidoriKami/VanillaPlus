@@ -40,7 +40,7 @@ public unsafe class DisableTitleScreenMovie : GameModification {
             updateTitleScreenHook!.Original(thisPtr);
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception in OnTitleScreenUpdate");
+            Services.PluginLog.Exception(e);
         }
     }
 }

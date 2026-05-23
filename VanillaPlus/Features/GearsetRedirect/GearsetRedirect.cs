@@ -60,7 +60,7 @@ public unsafe class GearsetRedirect : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception while handling Gearset Redirect.");
+            Services.PluginLog.Exception(e);
         }
 
         return gearsetChangedHook!.Original(thisPtr, gearsetId, glamourPlateId);

@@ -33,7 +33,7 @@ public unsafe class ScrollingFools : FoolsModule {
             scrollBarReceiveEventHook!.Original(thisPtr, type, param, eventPointer, dataPointer);
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Error in AtkComponentScrollBarReceiveEvent");
+            Services.PluginLog.Exception(e);
         }
     }
 }
