@@ -22,7 +22,7 @@ public unsafe class BetterSelectString : GameModification {
     private AddonController<AddonSelectString>? selectStringController;
     private NativeListController<AddonSelectString>? selectStringListController;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         selectStringController = new AddonController<AddonSelectString> {
             AddonName = "SelectString",
             OnSetup = addon => {
@@ -55,7 +55,7 @@ public unsafe class BetterSelectString : GameModification {
         selectStringListController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         selectStringController?.Dispose();
         selectStringController = null;
 

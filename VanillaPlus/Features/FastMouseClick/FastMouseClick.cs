@@ -18,7 +18,7 @@ public class FastMouseClick : GameModification {
 
     private MemoryReplacement? memoryPatch;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         Services.GameInteropProvider.InitializeFromAttributes(this);
 
         if (memoryAddress is { } address && memoryAddress != nint.Zero) {
@@ -27,7 +27,7 @@ public class FastMouseClick : GameModification {
         }
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         memoryPatch?.Dispose();
         memoryPatch = null;
 

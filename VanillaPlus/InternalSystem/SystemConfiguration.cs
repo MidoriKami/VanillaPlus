@@ -12,6 +12,7 @@ public class SystemConfiguration {
     public string CurrentSearch = string.Empty;
     public DateTime LastSeasonalNotice = DateTime.MinValue;
     public bool PersistSearch = false;
+    public bool SafeMode = false;
 
     public static SystemConfiguration Load()
         => Config.LoadConfig<SystemConfiguration>("system.config.json");

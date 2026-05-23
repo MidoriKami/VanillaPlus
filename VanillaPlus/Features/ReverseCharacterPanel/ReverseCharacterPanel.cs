@@ -18,7 +18,7 @@ public unsafe class ReverseCharacterPanel : GameModification {
 
     private AddonController<AddonCharacter>? characterController;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         characterController = new AddonController<AddonCharacter> {
             AddonName = "Character",
             OnSetup = SetupCharacter,
@@ -28,7 +28,7 @@ public unsafe class ReverseCharacterPanel : GameModification {
         characterController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         characterController?.Dispose();
         characterController = null;
     }

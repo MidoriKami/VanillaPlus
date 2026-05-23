@@ -17,13 +17,13 @@ public class FocusTargetLock : GameModification {
     private uint? targetBaseId;
     private uint? targetEntityId;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         Services.DutyState.DutyWiped += OnDutyWiped;
         Services.DutyState.DutyRecommenced += OnDutyRecommenced;
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.DutyState.DutyWiped -= OnDutyWiped;
         Services.DutyState.DutyRecommenced -= OnDutyRecommenced;
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;

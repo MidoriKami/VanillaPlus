@@ -30,7 +30,7 @@ public unsafe class LockChatButton : GameModification {
 
     private LockChatButtonData? data;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         data = LockChatButtonData.Load();
 
         panelButtons = [];
@@ -54,7 +54,7 @@ public unsafe class LockChatButton : GameModification {
         panelController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         chatLogController?.Dispose();
         chatLogController = null;
 

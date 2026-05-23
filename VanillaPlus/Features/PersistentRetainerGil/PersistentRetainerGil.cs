@@ -21,12 +21,12 @@ public unsafe class PersistentRetainerGil : GameModification {
     private bool needsUpdate;
     private bool isProcessing;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "Bank", OnBankEvent);
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "Bank", OnBankRefreshEvent);
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(OnBankEvent, OnBankRefreshEvent);
 
         previousGil = 0;

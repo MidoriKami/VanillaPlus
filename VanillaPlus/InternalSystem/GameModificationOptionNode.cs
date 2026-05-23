@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
@@ -58,7 +59,11 @@ public class GameModificationOptionNode : SelectableNode {
             Icon = ButtonIcon.Refresh,
             TextTooltip = Strings.Tooltip_RetryCompatibility,
             OnClick = () => {
-                PluginSystem.ModificationManager.ReloadConflictedModules();
+                reloadButtonNode?.IsEnabled = false;
+                Task.Run(() => {
+                    PluginSystem.ModificationManager.ReloadConflictedModules();
+                    reloadButtonNode?.IsEnabled = true;
+                });
                 reloadButtonNode?.HideTooltip();
             },
         };
@@ -96,17 +101,21 @@ public class GameModificationOptionNode : SelectableNode {
     }
 
     private void ToggleModification(bool shouldEnableModification) {
-        if (shouldEnableModification && Modification.State is LoadedState.Disabled) {
-            ModificationManager.TryEnableModification(Modification);
-        }
-        else if (!shouldEnableModification && Modification.State is LoadedState.Enabled) {
-            ModificationManager.TryDisableModification(Modification);
-        }
+        checkboxNode.IsEnabled = false;
 
-        UpdateDisabledState();
+        Task.Run(() => {
+            if (shouldEnableModification && Modification.State is LoadedState.Disabled) {
+                ModificationManager.TryEnableModification(Modification);
+            }
+            else if (!shouldEnableModification && Modification.State is LoadedState.Enabled) {
+                ModificationManager.TryDisableModification(Modification);
+            }
 
-        OnClick?.Invoke(this);
-        RefreshConfigWindowButton();
+            UpdateDisabledState();
+
+            OnClick?.Invoke(this);
+            RefreshConfigWindowButton();
+        });
     }
 
     private void RefreshConfigWindowButton() {

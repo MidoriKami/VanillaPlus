@@ -19,11 +19,9 @@ public class DutyLootInDutyUiController {
     public void OnEnable() {
         overlayController = new OverlayController();
 
-        overlayController?.CreateNode(() => {
-            return new DutyLootInDutyButtonNode(DataLoader) {
-                OnClick = () => OnButtonClicked?.Invoke(),
-                Size = new Vector2(20.0f, 20.0f),
-            };
+        overlayController?.CreateNode(() => new DutyLootInDutyButtonNode(DataLoader) {
+            OnClick = () => OnButtonClicked?.Invoke(),
+            Size = new Vector2(20.0f, 20.0f),
         });
     }
 

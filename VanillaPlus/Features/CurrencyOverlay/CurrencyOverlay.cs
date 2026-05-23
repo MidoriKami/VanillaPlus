@@ -29,7 +29,7 @@ public unsafe class CurrencyOverlay : GameModification {
     private OverlayController? overlayController;
     private List<CurrencyOverlayNode>? currencyNodes;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         currencyNodes = [];
 
         config = CurrencyOverlayConfig.Load();
@@ -100,7 +100,7 @@ public unsafe class CurrencyOverlay : GameModification {
         }
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         overlayController?.Dispose();
         overlayController = null;
 

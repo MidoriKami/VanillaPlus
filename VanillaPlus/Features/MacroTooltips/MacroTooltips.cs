@@ -23,12 +23,12 @@ public unsafe class MacroTooltips : GameModification {
 
     public override string ImageName => "MacroTooltips.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         showTooltipHook = Services.Hooker.HookFromAddress<AddonActionBarBase.Delegates.ShowTooltip>(AddonActionBarBase.MemberFunctionPointers.ShowTooltip, OnShowMacroTooltip);
         showTooltipHook?.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         showTooltipHook?.Dispose();
         showTooltipHook = null;
     }

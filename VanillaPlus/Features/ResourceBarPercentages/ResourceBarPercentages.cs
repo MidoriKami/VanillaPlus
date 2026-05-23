@@ -28,7 +28,7 @@ public unsafe class ResourceBarPercentages : GameModification {
 
     public override string ImageName => "ResourcePercentages.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = ResourceBarPercentagesConfig.Load();
         config.OnSave += OnConfigChanged;
 
@@ -76,7 +76,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(OnParameterDraw, OnPartyListDraw);
 
         OnParameterDisable();

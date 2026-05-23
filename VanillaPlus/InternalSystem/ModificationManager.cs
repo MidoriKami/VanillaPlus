@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,11 +10,13 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.InternalSystem;
 
-public class ModificationManager : IDisposable {
+public class ModificationManager : IAsyncDisposable {
 
     private readonly List<LoadedModification> loadedModifications = [];
     public readonly List<IGrouping<ModificationType, LoadedModification>> CategoryGroups;
     public readonly Dictionary<ModificationType, List<IGrouping<ModificationSubType?, LoadedModification>>> SubCategoryGroups = [];
+
+    private static readonly ConcurrentBag<Task> FrameworkUnloadTasks = [];
 
     public ModificationManager() {
         var allGameModifications = GetGameModifications();
@@ -26,7 +29,12 @@ public class ModificationManager : IDisposable {
             loadedModifications.Add(newLoadedModification);
 
             if (PluginSystem.SystemConfig.EnabledModifications.Contains(gameMod.Name)) {
-                TryEnableModification(newLoadedModification);
+                if (PluginSystem.SystemConfig.SafeMode) {
+                    TryEnableModification(newLoadedModification);
+                }
+                else {
+                    Task.Run(() => TryEnableModification(newLoadedModification));
+                }
             }
         }
 
@@ -49,21 +57,24 @@ public class ModificationManager : IDisposable {
         }
     }
 
-    public void Dispose() {
+    public async ValueTask DisposeAsync() {
         Services.PluginInterface.ActivePluginsChanged -= OnPluginsChanged;
 
         Services.PluginLog.Debug("Disposing Modification Manager, now disabling all GameModifications");
 
-        foreach (var loadedMod in loadedModifications) {
-            if (loadedMod.State is LoadedState.Enabled) {
-                TryDisableModification(loadedMod, false);
-            }
-        }
+        var disableTasks = loadedModifications
+            .Where(loadedMod => loadedMod.State is LoadedState.Enabled)
+            .Select(async module => {
+                await Task.Run(() => TryDisableModification(module, false));
+            });
+
+        await Task.WhenAll(disableTasks);
+        await Task.WhenAll(FrameworkUnloadTasks);
     }
 
     // When loaded plugins change, re-evaluate any compat modules
     private void OnPluginsChanged(IActivePluginsChangedEventArgs args)
-        => Task.Run(ReloadConflictedModules);
+        => ReloadConflictedModules();
 
     public void ReloadConflictedModules() {
         foreach (var gameModification in loadedModifications) {
@@ -128,7 +139,9 @@ public class ModificationManager : IDisposable {
                 }
             }
 
-            modification.Modification.OnEnable();
+            modification.Modification.OnEnableAsync();
+            Services.Framework.RunOnFrameworkThread(modification.Modification.OnEnableMainThreaded);
+
             modification.State = LoadedState.Enabled;
             Services.PluginLog.Info($"Successfully Enabled {modification.Name}");
             PluginSystem.SystemConfig.EnabledModifications.Add(modification.Name);
@@ -140,7 +153,10 @@ public class ModificationManager : IDisposable {
             Services.PluginLog.Error(e, $"Error while enabling {modification.Name}, attempting to disable");
 
             try {
-                modification.Modification.OnDisable();
+
+                modification.Modification.OnDisableAsync();
+                Services.Framework.RunOnFrameworkThread(() => modification.Modification.OnDisableMainThreaded());
+
                 Services.PluginLog.Information($"Successfully disabled erroring modification {modification.Name}");
             }
             catch (Exception fatal) {
@@ -150,7 +166,7 @@ public class ModificationManager : IDisposable {
         }
     }
 
-    public static void TryDisableModification(LoadedModification modification, bool removeFromList = true) => Services.Framework.RunOnFrameworkThread(() => {
+    public static void TryDisableModification(LoadedModification modification, bool removeFromList = true) {
         if (modification.State is LoadedState.Errored) {
             Services.PluginLog.Error($"[{modification.Name}] Attempted to disable errored modification");
             return;
@@ -158,7 +174,10 @@ public class ModificationManager : IDisposable {
 
         try {
             Services.PluginLog.Info($"Disabling {modification.Name}");
-            modification.Modification.OnDisable();
+
+            modification.Modification.OnDisableAsync();
+            FrameworkUnloadTasks.Add(Services.Framework.RunOnFrameworkThread(() => modification.Modification.OnDisableMainThreaded()));
+
             modification.Modification.OpenConfigAction = null;
             modification.State = LoadedState.Disabled;
             Services.PluginLog.Debug($"Successfully Disabled {modification.Name}");
@@ -172,7 +191,7 @@ public class ModificationManager : IDisposable {
             PluginSystem.SystemConfig.EnabledModifications.Remove(modification.Name);
             PluginSystem.SystemConfig.Save();
         }
-    });
+    }
 
     private static List<GameModification> GetGameModifications() => Assembly
         .GetCallingAssembly()

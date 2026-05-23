@@ -21,7 +21,7 @@ public class ArmourySearchBar : GameModification {
 
     public override string ImageName => "ArmourySearchBar.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         armouryInventoryController = new InventorySearchAddonController("ArmouryBoard");
 
         armouryInventoryController.PreSearch += searchString => {
@@ -42,7 +42,7 @@ public class ArmourySearchBar : GameModification {
         };
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         armouryInventoryController?.Dispose();
         armouryInventoryController = null;
     }

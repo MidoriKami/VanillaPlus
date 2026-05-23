@@ -31,7 +31,7 @@ public unsafe class FadeUnavailableActions : GameModification {
 
     public override string ImageName => "FadeUnavailableActions.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         actionCache = [];
 
         config = FadeUnavailableActionsConfig.Load();
@@ -58,7 +58,7 @@ public unsafe class FadeUnavailableActions : GameModification {
         onHotBarSlotUpdateHook?.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         onHotBarSlotUpdateHook?.Dispose();
         onHotBarSlotUpdateHook = null;
 

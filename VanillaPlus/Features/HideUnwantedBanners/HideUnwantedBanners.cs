@@ -24,7 +24,7 @@ public unsafe class HideUnwantedBanners : GameModification {
     private HideUnwantedBannersConfig? config;
     private NodeListAddon<BannerConfig, BannerConfigListItemNode>? configWindow;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = HideUnwantedBannersConfig.Load();
 
         configWindow = new NodeListAddon<BannerConfig, BannerConfigListItemNode> {
@@ -41,7 +41,7 @@ public unsafe class HideUnwantedBanners : GameModification {
         setImageTextureHook?.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         configWindow?.Dispose();
         configWindow = null;
 

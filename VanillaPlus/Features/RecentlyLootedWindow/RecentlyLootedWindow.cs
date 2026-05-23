@@ -23,7 +23,7 @@ public unsafe class RecentlyLootedWindow : GameModification {
 
     public override string ImageName => "RecentlyLootedWindow.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         addonRecentlyLooted = new NodeListAddon<LootedItemInfo, LootedItemListItemNode> {
             Size = new Vector2(250.0f, 350.0f),
             InternalName = "RecentlyLooted",
@@ -44,7 +44,7 @@ public unsafe class RecentlyLootedWindow : GameModification {
         Services.ClientState.Logout += OnLogout;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         addonRecentlyLooted?.Dispose();
         addonRecentlyLooted = null;
 

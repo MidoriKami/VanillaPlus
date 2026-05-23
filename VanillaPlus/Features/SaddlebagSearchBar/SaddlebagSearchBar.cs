@@ -17,11 +17,11 @@ public class SaddlebagSearchBar : GameModification {
 
     public override string ImageName => "SaddlebagSearchBar.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         saddlebagInventoryController = new InventorySearchAddonController("InventoryBuddy");
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         saddlebagInventoryController?.Dispose();
         saddlebagInventoryController = null;
     }

@@ -31,7 +31,7 @@ public unsafe class ActionHighlight : GameModification {
         [33] = [7444, 7445, 37018, 37023, 37024, 37025, 37026, 37027, 37028],
     };
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         cachedActions = [];
 
         config = ActionHighlightConfig.Load();
@@ -51,7 +51,7 @@ public unsafe class ActionHighlight : GameModification {
         CacheActions();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         onAntsHook?.Dispose();
         onAntsHook = null;
 

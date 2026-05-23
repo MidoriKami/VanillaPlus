@@ -21,12 +21,12 @@ public unsafe class ShowAetherytesOnTop : GameModification {
 
     private KeyStateFlags controlPreState;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         Services.AgentLifecycle.RegisterListener(AgentEvent.PreUpdate, AgentId.Map, OnMapPreUpdate);
         Services.AgentLifecycle.RegisterListener(AgentEvent.PostUpdate, AgentId.Map, OnMapPostUpdate);
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.AgentLifecycle.UnregisterListener(OnMapPreUpdate, OnMapPostUpdate);
         AgentMap.Instance()->IsControlKeyPressed = true;
     }

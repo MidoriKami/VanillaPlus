@@ -35,7 +35,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
 
     public override string ImageName => "WondrousTailsProbabilities.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         // Initial load of PerfectTails takes approx 100ms
         Task.Run(() => {
             perfectTails = new PerfectTails();
@@ -50,7 +50,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         });
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         weeklyBingoController?.Dispose();
         weeklyBingoController = null;
 

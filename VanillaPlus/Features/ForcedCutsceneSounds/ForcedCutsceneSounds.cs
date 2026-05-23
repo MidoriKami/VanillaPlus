@@ -40,7 +40,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
     private ForcedCutsceneSoundsConfig? config;
     private ConfigAddon? configWindow;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         wasMuted = [];
 
         config = ForcedCutsceneSoundsConfig.Load();
@@ -80,7 +80,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
         cutSceneControllerDtorHook.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         createCutSceneControllerHook?.Dispose();
         createCutSceneControllerHook = null;
 

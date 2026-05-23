@@ -30,7 +30,7 @@ public unsafe class CurrencyWarning : GameModification {
 
     public override string ImageName => "CurrencyWarning.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = CurrencyWarningConfig.Load();
 
         if (!config.IsConfigured) {
@@ -84,11 +84,9 @@ public unsafe class CurrencyWarning : GameModification {
             .AddButton(Strings.CurrencyWarning_ConfigureButton, () => listConfigWindow.Toggle());
 
         OpenConfigAction = configWindow.Toggle;
-
-        Services.Framework.RunOnFrameworkThread(LoadNodes);
     }
 
-    private void LoadNodes() {
+    public override void OnEnableMainThreaded() {
         if (config is null) return;
 
         tooltipNode = new CurrencyTooltipNode {
@@ -113,7 +111,7 @@ public unsafe class CurrencyWarning : GameModification {
         overlayController?.AddNode(warningNode);
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         overlayController?.Dispose();
         overlayController = null;
 
@@ -126,13 +124,15 @@ public unsafe class CurrencyWarning : GameModification {
         itemSearchAddon?.Dispose();
         itemSearchAddon = null;
 
+        config = null;
+    }
+
+    public override void OnDisableMainThreaded() {
         tooltipNode?.Dispose();
         tooltipNode = null;
 
         warningNode?.Dispose();
         warningNode = null;
-
-        config = null;
     }
 
     private void OnAddClicked(ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode> listNode) {

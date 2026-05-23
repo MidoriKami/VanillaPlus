@@ -22,7 +22,7 @@ public class BetterCursor : GameModification {
 
     public override string ImageName => "BetterCursor.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = BetterCursorConfig.Load();
 
         configWindow = new ConfigAddon {
@@ -54,7 +54,7 @@ public class BetterCursor : GameModification {
         });
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         overlayController?.Dispose();
         overlayController = null;
 

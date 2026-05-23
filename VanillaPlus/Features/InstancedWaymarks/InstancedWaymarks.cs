@@ -36,7 +36,7 @@ public unsafe class InstancedWaymarks : GameModification {
 
     public override string ImageName => "InstanceWaymarks.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = InstancedWaymarksConfig.Load();
 
         renameWindow ??= new RenameAddon {
@@ -59,7 +59,7 @@ public unsafe class InstancedWaymarks : GameModification {
         }
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(OnFieldMarkerDraw);
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
         Services.ContextMenu.OnMenuOpened -= OnMenuOpened;

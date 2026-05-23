@@ -16,7 +16,7 @@ public unsafe class SuppressSharedBoards : GameModification {
     private Hook<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>? showSharedNotificationHook;
     private Hook<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>? saveBoardAndPlaySoundHook;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         showSharedNotificationHook = Services.Hooker.HookFromAddress<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>(
             TofuHelper.TofuHelperData.MemberFunctionPointers.ShowSharedNotification,
             (_, _, _) => { }
@@ -31,7 +31,7 @@ public unsafe class SuppressSharedBoards : GameModification {
         saveBoardAndPlaySoundHook?.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         showSharedNotificationHook?.Dispose();
         showSharedNotificationHook = null;
 

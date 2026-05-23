@@ -22,7 +22,7 @@ public unsafe class HUDCoordinates : GameModification {
 
     private List<TextNode>? textNodes;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         textNodes = [];
 
         hudLayoutScreenController = new AddonController {
@@ -70,7 +70,7 @@ public unsafe class HUDCoordinates : GameModification {
         hudLayoutScreenController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         hudLayoutScreenController?.Dispose();
         hudLayoutScreenController = null;
 

@@ -19,7 +19,7 @@ public class DebugCustomAddon : GameModification {
 
     private NativeAddon? debugAddon;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         debugAddon = new DebugAddon {
             InternalName = "DebugAddon",
             Title = Strings.DebugCustomAddon_Title,
@@ -31,7 +31,7 @@ public class DebugCustomAddon : GameModification {
         OpenConfigAction = debugAddon.Toggle;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         debugAddon?.Dispose();
         debugAddon = null;
     }

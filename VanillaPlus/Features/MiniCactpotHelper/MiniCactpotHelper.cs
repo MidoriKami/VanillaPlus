@@ -36,7 +36,7 @@ public unsafe class MiniCactpotHelper : GameModification {
 
     public override string ImageName => "MiniCactpotHelper.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         boardState = [];
 
         perfectCactpot = new PerfectCactpot();
@@ -72,7 +72,7 @@ public unsafe class MiniCactpotHelper : GameModification {
         lotteryDailyController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         gameTask?.Dispose();
         gameTask = null;
 

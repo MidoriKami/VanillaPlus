@@ -18,7 +18,7 @@ public class ListInventory : GameModification {
 
     public override string ImageName => "ListInventory.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         addonListInventory = new AddonListInventory {
             InternalName = "ListInventory",
             Title = Strings.ListInventory_Title,
@@ -33,7 +33,7 @@ public class ListInventory : GameModification {
         OpenConfigAction = addonListInventory.OpenAddonConfig;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         addonListInventory?.Dispose();
         addonListInventory = null;
     }

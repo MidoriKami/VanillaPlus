@@ -25,7 +25,7 @@ public unsafe class MacroLineNumbers : GameModification {
 
     private List<TextNode>? textNodes;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         textNodes = [];
 
         macroAddonController = new AddonController {
@@ -65,7 +65,7 @@ public unsafe class MacroLineNumbers : GameModification {
         macroAddonController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         macroAddonController?.Dispose();
         macroAddonController = null;
 

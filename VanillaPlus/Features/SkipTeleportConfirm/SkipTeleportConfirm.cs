@@ -15,10 +15,10 @@ public unsafe class SkipTeleportConfirm : GameModification {
         Authors = ["MidoriKami"],
     };
 
-    public override void OnEnable()
+    public override void OnEnableAsync()
         => Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
 
-    public override void OnDisable()
+    public override void OnDisableAsync()
         => Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
 
     private static void SelectYesNoHandler(AddonEvent _, AddonArgs yesNoArgs) {

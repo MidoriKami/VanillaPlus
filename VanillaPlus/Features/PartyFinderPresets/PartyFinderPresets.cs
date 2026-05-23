@@ -21,14 +21,14 @@ public class PartyFinderPresets : GameModification {
 
     private PartyFinderPresetConfig? config;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = PartyFinderPresetConfig.Load();
 
         mainWindowController = new MainWindowController(config);
         recruitmentWindowController = new RecruitmentWindowController(config);
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         mainWindowController?.Dispose();
         mainWindowController = null;
 

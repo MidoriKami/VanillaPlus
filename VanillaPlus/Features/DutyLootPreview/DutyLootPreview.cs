@@ -21,7 +21,7 @@ public class DutyLootPreview : GameModification {
     private DutyLootInDutyUiController? inDutyUiController;
     private DutyLootPreviewAddon? addonDutyLoot;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = DutyLootPreviewConfig.Load();
 
         dataLoader = new DutyLootDataLoader();
@@ -48,7 +48,7 @@ public class DutyLootPreview : GameModification {
         inDutyUiController.OnEnable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         journalUiController?.OnDisable();
         journalUiController = null;
 

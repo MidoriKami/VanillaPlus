@@ -13,11 +13,11 @@ public class HideDeadEnemyNamePlates : GameModification {
         Authors = ["nebel"],
     };
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         Services.NamePlateGui.OnDataUpdate += OnNamePlateUpdate;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.NamePlateGui.OnDataUpdate -= OnNamePlateUpdate;
     }
 

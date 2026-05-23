@@ -21,10 +21,10 @@ public class PetSizeContextMenu : GameModification {
 
     public override string ImageName => "PetSizeContextMenu.png";
 
-    public override void OnEnable()
+    public override void OnEnableAsync()
         => Services.ContextMenu.OnMenuOpened += OnMenuOpened;
 
-    public override void OnDisable()
+    public override void OnDisableAsync()
         => Services.ContextMenu.OnMenuOpened -= OnMenuOpened;
 
     private void OnMenuOpened(IMenuOpenedArgs args) {

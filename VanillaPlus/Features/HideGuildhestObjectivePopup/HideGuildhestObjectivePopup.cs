@@ -18,10 +18,10 @@ public class HideGuildhestObjectivePopup : GameModification {
 
     public override string ImageName => "HideGuildhestObjective.png";
 
-    public override void OnEnable()
+    public override void OnEnableAsync()
         => Services.AddonLifecycle.RegisterListener(AddonEvent.PreSetup, "JournalAccept", OnJournalAcceptOpen);
 
-    public override void OnDisable()
+    public override void OnDisableAsync()
         => Services.AddonLifecycle.UnregisterListener(OnJournalAcceptOpen);
 
     private unsafe void OnJournalAcceptOpen(AddonEvent type, AddonArgs args) {

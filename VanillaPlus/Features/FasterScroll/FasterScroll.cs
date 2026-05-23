@@ -21,7 +21,7 @@ public unsafe class FasterScroll : GameModification {
     private FasterScrollConfig? config;
     private ConfigAddon? configWindow;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = FasterScrollConfig.Load();
 
         configWindow = new ConfigAddon {
@@ -40,7 +40,7 @@ public unsafe class FasterScroll : GameModification {
         scrollBarReceiveEventHook?.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         scrollBarReceiveEventHook?.Dispose();
         scrollBarReceiveEventHook = null;
 

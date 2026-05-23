@@ -24,13 +24,13 @@ public unsafe class DebugHook : GameModification {
     [Signature("AA BB CC DD EE FF", DetourName = nameof(HookDetour))]
     private Hook<HookDelegate>? hook;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         Services.GameInteropProvider.InitializeFromAttributes(this);
 
         hook?.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         hook?.Dispose();
         hook = null;
     }

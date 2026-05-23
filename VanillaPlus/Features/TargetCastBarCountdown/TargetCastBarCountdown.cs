@@ -41,7 +41,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
 
     public override string ImageName => "TargetCastBarCountdown.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = TargetCastBarCountdownConfig.Load();
 
         LoadStyles();
@@ -56,7 +56,7 @@ public unsafe class TargetCastBarCountdown : GameModification {
         addonController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         configWindow?.Dispose();
         configWindow = null;
 

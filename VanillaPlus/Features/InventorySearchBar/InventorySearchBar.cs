@@ -17,11 +17,11 @@ public class InventorySearchBar : GameModification {
 
     private InventorySearchAddonController? inventoryController;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         inventoryController = new InventorySearchAddonController("InventoryExpansion", "InventoryLarge", "Inventory");
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         inventoryController?.Dispose();
         inventoryController = null;
     }

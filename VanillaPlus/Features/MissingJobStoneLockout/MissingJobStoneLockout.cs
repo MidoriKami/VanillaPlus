@@ -30,7 +30,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
 
     public override string ImageName => "MissingJobStone.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         contentsFinderController = new AddonController<AddonContentsFinder> {
             AddonName = "ContentsFinder",
             OnSetup = SetupContentsFinder,
@@ -41,7 +41,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
         contentsFinderController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         contentsFinderController?.Dispose();
         contentsFinderController = null;
     }

@@ -23,7 +23,7 @@ public class ClockOverlay : GameModification {
 
     private ConfigAddon? configWindow;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = ClockOverlayConfig.Load();
         overlayController = new OverlayController();
 
@@ -63,7 +63,7 @@ public class ClockOverlay : GameModification {
         });
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         configWindow?.Dispose();
         configWindow = null;
 

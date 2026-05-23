@@ -29,10 +29,10 @@ public class ChatPlayerTooltip : GameModification {
         "ChatLogPanel_3",
     ];
 
-    public override void OnEnable()
+    public override void OnEnableAsync()
         => Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, addonNames, PreReceiveEvent);
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(PreReceiveEvent);
         HideTooltip();
     }
