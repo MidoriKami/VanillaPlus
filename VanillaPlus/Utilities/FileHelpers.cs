@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace VanillaPlus.Utilities;
 
 public static class FileHelpers {
-    private static readonly Dictionary<string, Task> FileSavingTasks = [];
+    private static readonly ConcurrentDictionary<string, Task> FileSavingTasks = [];
 
     private static readonly JsonSerializerOptions SerializerOptions = new() {
         WriteIndented = true,
