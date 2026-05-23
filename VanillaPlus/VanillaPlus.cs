@@ -21,6 +21,9 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
         PluginInterface.Create<Services>();
 
         System.SystemConfig = SystemConfiguration.Load();
+        if (System.SystemConfig.SafeMode) {
+            Services.PluginLog.Warning("VanillaPlus is in safe mode. Modules will not be loaded/unloaded in parallel.");
+        }
 
         KamiToolKitLibrary.Initialize(Services.PluginInterface, "VanillaPlus");
         KamiToolKitLibrary.SetResourceManager(Strings.ResourceManager);
@@ -119,8 +122,8 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
 
             case ["safemode"]:
                 System.SystemConfig.SafeMode = !System.SystemConfig.SafeMode;
-                Services.ChatGui.Print($"Safemode is now {(System.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}", "VanillaPlus");
-                Services.PluginLog.Info($"Safemode is now {(System.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}");
+                Services.ChatGui.Print($"Safemode is now {(System.SystemConfig.SafeMode ? "Enabled" : "Disabled")}", "VanillaPlus");
+                Services.PluginLog.Info($"Safemode is now {(System.SystemConfig.SafeMode ? "Enabled" : "Disabled")}");
                 System.SystemConfig.Save();
                 break;
         }
