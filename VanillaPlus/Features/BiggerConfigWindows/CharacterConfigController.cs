@@ -45,8 +45,8 @@ public unsafe class CharacterConfigController : IDisposable {
 
     private void SetupConfigCharacter(AtkUnitBase* addon) {
         if (AtkStage.Instance()->ScreenSize.Height < addon->Size.Y + config.SystemConfigAdditionalHeight) {
-            Services.ChatGui.PrintError("Unable to resize config window, height would be too big.", "[VanillaPlus] [BiggerConfigWindow]");
-            Services.PluginLog.Warning("[BiggerConfigWindow] Unable to resize config window, height would be too big.");
+            Services.ChatGui.PrintError("[BiggerConfigWindow] Unable to resize config window, height would be too big.", "VanillaPlus");
+            Services.PluginLog.Warning("Unable to resize config window, height would be too big.", "BiggerConfigWindow");
             return;
         }
 

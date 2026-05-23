@@ -54,7 +54,7 @@ public unsafe class MacroTooltips : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception in OnShowMacroTooltip");
+            Services.PluginLog.Exception(e);
         }
 
         showTooltipHook!.Original(a1, macroResNode, numberArray, stringArray, numberArrayIndex, stringArrayIndex);

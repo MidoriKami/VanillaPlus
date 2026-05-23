@@ -45,7 +45,7 @@ public unsafe class BetterQuestMapLink : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception while opening map");
+            Services.PluginLog.Exception(e);
         }
     }
 }

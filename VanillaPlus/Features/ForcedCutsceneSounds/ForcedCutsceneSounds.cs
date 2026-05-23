@@ -115,7 +115,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
 
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Error in CreateCutSceneControllerDetour");
+            Services.PluginLog.Exception(e);
         }
 
         return result;
@@ -138,7 +138,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Error in CutSceneControllerDtorDetour");
+            Services.PluginLog.Exception(e);
         }
 
         return cutSceneControllerDtorHook!.Original(self, freeFlags);

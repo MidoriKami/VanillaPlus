@@ -292,7 +292,7 @@ public class ModificationBrowserAddon : NativeAddon {
             borderNineGridNode.Size = descriptionImageNode.Size + new Vector2(32.0f, 32.0f);
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception while loading Module Image");
+            Services.PluginLog.Exception(e);
         }
     }
 

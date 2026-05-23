@@ -11,13 +11,13 @@ public abstract class GameModificationCharacterConfig<T> where T : GameModificat
 
     public static T Load() {
         var fileName = new T().FileName;
-        Services.PluginLog.Debug($"Loading Character Config {fileName}");
+        Services.PluginLog.InternalDebug($"Loading Character Config {fileName}");
 
         return Config.LoadCharacterConfig<T>(fileName);
     }
 
     public void Save() {
-        Services.PluginLog.Debug($"Saving Character Config {FileName}");
+        Services.PluginLog.InternalDebug($"Saving Character Config {FileName}");
         Config.SaveCharacterConfig(this, FileName);
     }
 }

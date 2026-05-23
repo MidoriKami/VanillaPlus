@@ -87,7 +87,7 @@ public unsafe class CastBarAetheryteNames : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception in OnTeleport");
+            Services.PluginLog.Exception(e);
         }
 
         return teleportHook!.Original(thisPtr, aetheryteId, subIndex);

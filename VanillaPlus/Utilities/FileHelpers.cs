@@ -31,7 +31,7 @@ public static class FileHelpers {
             }
             catch (Exception e) {
                 // If there is any kind of error loading the file, generate a new one instead and save it.
-                Services.PluginLog.Error(e, $"Error trying to load file {filePath}, creating a new one instead.");
+                Services.PluginLog.InternalError(e, $"Error trying to load file {filePath}, creating a new one instead.");
 
                 SaveFile(defaultObject ?? new T(), filePath);
             }
@@ -46,7 +46,7 @@ public static class FileHelpers {
     public static void SaveFile<T>(T? file, string filePath) {
         try {
             if (file is null) {
-                Services.PluginLog.Error("Null file provided.");
+                Services.PluginLog.InternalError("Null file provided.");
                 return;
             }
 
@@ -60,7 +60,7 @@ public static class FileHelpers {
                     throw task.Exception;
                 }
                 else if (task.Status is TaskStatus.Running) {
-                    Services.PluginLog.Debug($"File save for {filePath} in progress, trying again.");
+                    Services.PluginLog.InternalDebug($"File save for {filePath} in progress, trying again.");
                     Services.Framework.RunOnTick(() => {
                         SaveFile(file, filePath); // try again
                     });
@@ -71,7 +71,7 @@ public static class FileHelpers {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, $"Error trying to save file {filePath}");
+            Services.PluginLog.InternalError(e, $"Error trying to save file {filePath}");
         }
     }
 
@@ -91,7 +91,7 @@ public static class FileHelpers {
             }
             catch (Exception e) {
                 // If there is any kind of error loading the file, generate a new one instead and save it.
-                Services.PluginLog.Error(e, $"Error trying to load file {filePath}, creating a new one instead.");
+                Services.PluginLog.InternalError(e, $"Error trying to load file {filePath}, creating a new one instead.");
 
                 SaveFile(new byte[length], filePath);
             }
@@ -113,7 +113,7 @@ public static class FileHelpers {
                     throw task.Exception;
                 }
                 else if (task.Status is TaskStatus.Running) {
-                    Services.PluginLog.Debug($"File save for {filePath} in progress, trying again.");
+                    Services.PluginLog.InternalDebug($"File save for {filePath} in progress, trying again.");
                     Services.Framework.RunOnTick(() => {
                         SaveBinaryFile(data, filePath); // try again
                     });
@@ -124,7 +124,7 @@ public static class FileHelpers {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, $"Error trying to save binary data {filePath}");
+            Services.PluginLog.InternalError(e, $"Error trying to save binary data {filePath}");
         }
     }
 

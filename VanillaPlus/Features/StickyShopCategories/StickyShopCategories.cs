@@ -64,7 +64,7 @@ public unsafe class StickyShopCategories : GameModification {
             });
         }
 
-        Services.PluginLog.Debug($"Saving Values: {dropDownCategoryIndex}, {dropDownSubCategoryIndex}");
+        Services.PluginLog.Debug($"Saving Values: {dropDownCategoryIndex}, {dropDownSubCategoryIndex}", "StickyShopCategories");
 
         config.Save();
     }

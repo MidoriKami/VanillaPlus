@@ -13,7 +13,7 @@ public abstract class GameModificationConfig<T> : ISavable where T : GameModific
     public static T Load() {
         var configFileName = new T().FileName;
 
-        Services.PluginLog.Debug($"Loading Config {configFileName}.config.json");
+        Services.PluginLog.InternalDebug($"Loading Config {configFileName}.config.json");
         var loadedConfig = Config.LoadConfig<T>($"{configFileName}.config.json");
 
         try {
@@ -29,19 +29,19 @@ public abstract class GameModificationConfig<T> : ISavable where T : GameModific
             var version = jObject[nameof(Version)]?.ToObject<int>();
 
             if (loadedConfig.TryMigrateConfig(version, jObject)) {
-                Services.PluginLog.Debug($"Successfully migrated $\"{configFileName}.config.json\" to {loadedConfig.Version}");
+                Services.PluginLog.InternalDebug($"Successfully migrated $\"{configFileName}.config.json\" to {loadedConfig.Version}");
                 Config.SaveConfig(loadedConfig, $"{configFileName}.config.json");
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, $"Failed to migrate config file for {configFileName}, loading default config.");
+            Services.PluginLog.InternalError(e, $"Failed to migrate config file for {configFileName}, loading default config.");
         }
 
         return loadedConfig;
     }
 
     public void Save() {
-        Services.PluginLog.Debug($"Saving Config {FileName}.config.json");
+        Services.PluginLog.InternalDebug($"Saving Config {FileName}.config.json");
         Config.SaveConfig(this, $"{FileName}.config.json");
         OnSave?.Invoke();
     }
