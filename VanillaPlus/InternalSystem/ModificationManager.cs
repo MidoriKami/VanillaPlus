@@ -28,8 +28,8 @@ public class ModificationManager : IAsyncDisposable {
 
             loadedModifications.Add(newLoadedModification);
 
-            if (PluginSystem.SystemConfig.EnabledModifications.Contains(gameMod.Name)) {
-                if (PluginSystem.SystemConfig.SafeMode) {
+            if (System.SystemConfig.EnabledModifications.Contains(gameMod.Name)) {
+                if (System.SystemConfig.SafeMode) {
                     TryEnableModification(newLoadedModification);
                 }
                 else {
@@ -107,7 +107,7 @@ public class ModificationManager : IAsyncDisposable {
             }
         }
 
-        PluginSystem.ModificationBrowserAddon.UpdateDisabledState();
+        System.ModificationBrowserAddon.UpdateDisabledState();
     }
 
     public static void TryEnableModification(LoadedModification modification) {
@@ -144,8 +144,8 @@ public class ModificationManager : IAsyncDisposable {
 
             modification.State = LoadedState.Enabled;
             Services.PluginLog.Info($"Successfully Enabled {modification.Name}");
-            PluginSystem.SystemConfig.EnabledModifications.Add(modification.Name);
-            PluginSystem.SystemConfig.Save();
+            System.SystemConfig.EnabledModifications.Add(modification.Name);
+            System.SystemConfig.Save();
         }
         catch (Exception e) {
             modification.State = LoadedState.Errored;
@@ -188,8 +188,8 @@ public class ModificationManager : IAsyncDisposable {
         }
 
         if (removeFromList) {
-            PluginSystem.SystemConfig.EnabledModifications.Remove(modification.Name);
-            PluginSystem.SystemConfig.Save();
+            System.SystemConfig.EnabledModifications.Remove(modification.Name);
+            System.SystemConfig.Save();
         }
     }
 

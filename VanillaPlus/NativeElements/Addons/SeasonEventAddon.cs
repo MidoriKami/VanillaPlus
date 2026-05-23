@@ -85,7 +85,7 @@ public class SeasonEventAddon : NativeAddon {
                         new TextButtonNode {
                             Width = 200.0f,
                             String = "Open VanillaPlus",
-                            OnClick = PluginSystem.ModificationBrowserAddon.Toggle,
+                            OnClick = System.ModificationBrowserAddon.Toggle,
                         },
                     ],
                 },
