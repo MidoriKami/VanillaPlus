@@ -44,7 +44,7 @@ public unsafe class LocationDisplay : GameModification {
 
     public override string ImageName => "LocationDisplay.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = LocationDisplayConfig.Load();
 
         configWindow = new LocationDisplayConfigAddon {
@@ -66,7 +66,7 @@ public unsafe class LocationDisplay : GameModification {
         Services.ClientState.TerritoryChanged += OnZoneChange;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         configWindow?.Dispose();
         configWindow = null;
 

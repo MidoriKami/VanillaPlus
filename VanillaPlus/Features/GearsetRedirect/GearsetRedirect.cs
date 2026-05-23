@@ -20,7 +20,7 @@ public unsafe class GearsetRedirect : GameModification {
     private GearsetRedirectConfig? config;
     private GearsetRedirectConfigAddon? configWindow;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = GearsetRedirectConfig.Load();
 
         configWindow = new GearsetRedirectConfigAddon {
@@ -40,7 +40,7 @@ public unsafe class GearsetRedirect : GameModification {
         gearsetChangedHook?.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         gearsetChangedHook?.Dispose();
         gearsetChangedHook = null;
 

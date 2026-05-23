@@ -20,18 +20,11 @@ public class ShowAetherCurrents : GameModification {
 
     private MapOverlayController? mapOverlayController;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         mapOverlayController = new MapOverlayController();
-
-        Services.Framework.RunOnFrameworkThread(AddAetherCurrents);
     }
 
-    public override void OnDisable() {
-        mapOverlayController?.Dispose();
-        mapOverlayController = null;
-    }
-
-    private void AddAetherCurrents() {
+    public override void OnEnableMainThreaded() {
         if (mapOverlayController is null) return;
 
         var aetherCurrents = Services.DataManager
@@ -48,5 +41,12 @@ public class ShowAetherCurrents : GameModification {
                 AetherCurrent = aetherCurrent,
             });
         }
+    }
+
+    public override void OnDisableAsync() { }
+
+    public override void OnDisableMainThreaded() {
+        mapOverlayController?.Dispose();
+        mapOverlayController = null;
     }
 }

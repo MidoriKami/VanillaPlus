@@ -33,7 +33,7 @@ public unsafe class MSQProgressBar : GameModification {
     private MSQProgressBarConfig? config;
     private ConfigAddon? configAddon;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = MSQProgressBarConfig.Load();
 
         expansionRanges = [];
@@ -97,7 +97,7 @@ public unsafe class MSQProgressBar : GameModification {
         scenarioTreeAddonController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         scenarioTreeAddonController?.Dispose();
         scenarioTreeAddonController = null;
 

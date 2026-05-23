@@ -19,7 +19,7 @@ public class DebugImGuiWindow : GameModification {
     private WindowSystem? windowSystem;
     private DebugWindow? debugWindow;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         windowSystem = new WindowSystem("VanillaPlus - Debug");
         debugWindow = new DebugWindow {
             IsOpen = true,
@@ -32,7 +32,7 @@ public class DebugImGuiWindow : GameModification {
         Services.PluginInterface.UiBuilder.Draw += DrawImGui;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.PluginInterface.UiBuilder.Draw -= DrawImGui;
 
         windowSystem?.RemoveAllWindows();

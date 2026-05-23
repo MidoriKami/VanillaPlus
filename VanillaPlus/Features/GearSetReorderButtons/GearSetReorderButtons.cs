@@ -27,7 +27,7 @@ public unsafe class GearSetReorderButtons : GameModification {
 
     private const float ExtraAddonWidth = 56.0f;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         gearSetsAddonController = new AddonController<AddonGearSetList> {
             AddonName = "GearSetList",
             OnSetup = SetUpAddon,
@@ -43,7 +43,7 @@ public unsafe class GearSetReorderButtons : GameModification {
         gearSetsListController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         gearSetsAddonController?.Dispose();
         gearSetsListController?.Dispose();
 

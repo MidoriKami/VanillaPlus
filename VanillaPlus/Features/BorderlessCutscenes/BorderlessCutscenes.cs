@@ -18,7 +18,7 @@ public class BorderlessCutscenes : GameModification {
 
     private MemoryReplacement? jumpPatch;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         Services.GameInteropProvider.InitializeFromAttributes(this);
 
         if (memoryAddress is { } address && memoryAddress != nint.Zero) {
@@ -27,7 +27,7 @@ public class BorderlessCutscenes : GameModification {
         }
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         jumpPatch?.Dispose();
         jumpPatch = null;
 

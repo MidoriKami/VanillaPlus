@@ -20,19 +20,23 @@ public unsafe class ShowGatheringPoints : GameModification {
 
     private MapOverlayController? mapOverlayController;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         mapOverlayController = new MapOverlayController();
-
-        Services.Framework.RunOnFrameworkThread(() => {
-            foreach (var index in Enumerable.Range(0, EventObjectManager.Instance()->EventObjects.Length)) {
-                mapOverlayController.AddMarker(new GatheringPointMapMarker {
-                    ObjectIndex = index,
-                });
-            }
-        });
     }
 
-    public override void OnDisable() {
+    public override void OnEnableMainThreaded() {
+        if (mapOverlayController is null) return;
+
+        foreach (var index in Enumerable.Range(0, EventObjectManager.Instance()->EventObjects.Length)) {
+            mapOverlayController.AddMarker(new GatheringPointMapMarker {
+                ObjectIndex = index,
+            });
+        }
+    }
+
+    public override void OnDisableAsync() { }
+
+    public override void OnDisableMainThreaded() {
         mapOverlayController?.Dispose();
         mapOverlayController = null;
     }

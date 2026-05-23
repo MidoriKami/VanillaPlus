@@ -18,7 +18,7 @@ public class QuestListWindow : GameModification {
 
     public override string ImageName => "QuestList.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         addonQuestList = new QuestListAddon {
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "QuestList",
@@ -32,7 +32,7 @@ public class QuestListWindow : GameModification {
         OpenConfigAction = addonQuestList.OpenAddonConfig;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         addonQuestList?.Dispose();
         addonQuestList = null;
     }

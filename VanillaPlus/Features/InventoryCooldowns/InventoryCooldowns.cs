@@ -28,7 +28,7 @@ public unsafe class InventoryCooldowns : GameModification {
 
     private MultiAddonController? controller;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, ["InventoryExpansion", "InventoryLarge", "Inventory"], OnPostReceiveEvent);
 
         controller = new MultiAddonController {
@@ -39,7 +39,7 @@ public unsafe class InventoryCooldowns : GameModification {
         controller.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(OnPostReceiveEvent);
         controller?.Dispose();
         controller = null;

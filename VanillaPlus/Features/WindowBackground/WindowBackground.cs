@@ -32,7 +32,7 @@ public unsafe class WindowBackground : GameModification {
     private OverlayController? overlayController;
     private List<WindowBackgroundImageNode>? backgroundImageNodes;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         backgroundImageNodes = [];
 
         config = WindowBackgroundConfig.Load();
@@ -155,7 +155,7 @@ public unsafe class WindowBackground : GameModification {
         return null;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         dynamicAddonController?.Dispose();
         dynamicAddonController = null;
 

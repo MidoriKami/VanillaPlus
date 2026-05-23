@@ -24,7 +24,7 @@ public unsafe class EnhancedWardNavigation : GameModification {
     private TextButtonNode? nextWardButtonNode;
     private int currentWard;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         housingAddonController = new AddonController {
             AddonName = "HousingSelectBlock",
             OnSetup = SetupHousingSelectBlock,
@@ -104,7 +104,7 @@ public unsafe class EnhancedWardNavigation : GameModification {
         nextWardButtonNode?.IsEnabled = nextEnabled;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         housingAddonController?.Dispose();
         housingAddonController = null;
     }

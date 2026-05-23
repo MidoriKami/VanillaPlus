@@ -22,7 +22,7 @@ public class ClearSelectedDuties : GameModification {
     private ClearSelectedDutiesConfig? config;
     private ConfigAddon? configWindow;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = ClearSelectedDutiesConfig.Load();
         configWindow = new ConfigAddon {
             Size = new Vector2(300.0f, 135.0f),
@@ -39,7 +39,7 @@ public class ClearSelectedDuties : GameModification {
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "ContentsFinder", OnContentsFinderSetup);
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(OnContentsFinderSetup);
 
         configWindow?.Dispose();

@@ -26,7 +26,7 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
     private Vector2 dragStart = Vector2.Zero;
     private bool isDragging;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         windowInteractionNodes = [];
 
         cursorEventListener = new ViewportEventListener(OnViewportEvent);
@@ -35,7 +35,7 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, string.Empty, OnAddonFinalize);
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         cursorEventListener?.Dispose();
         cursorEventListener = null;
 

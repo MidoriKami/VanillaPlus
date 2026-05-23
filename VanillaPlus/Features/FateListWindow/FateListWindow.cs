@@ -16,7 +16,7 @@ public class FateListWindow : GameModification {
 
     private FateListAddon? addonFateList;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         addonFateList = new FateListAddon {
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "FateList",
@@ -30,7 +30,7 @@ public class FateListWindow : GameModification {
         OpenConfigAction = addonFateList.OpenAddonConfig;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         addonFateList?.Dispose();
         addonFateList = null;
     }

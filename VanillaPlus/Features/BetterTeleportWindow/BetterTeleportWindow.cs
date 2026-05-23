@@ -24,7 +24,7 @@ public class BetterTeleportWindow : GameModification {
 
     private AddonFactoryController? teleportFactoryController;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         Config = BetterTeleportWindowConfig.Load();
 
         teleportFactoryController = new AddonFactoryController {
@@ -38,7 +38,7 @@ public class BetterTeleportWindow : GameModification {
         teleportFactoryController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         teleportFactoryController?.Dispose();
         teleportFactoryController = null;
     }

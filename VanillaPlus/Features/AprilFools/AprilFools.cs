@@ -23,7 +23,7 @@ public class AprilFools : GameModification {
 
     private List<FoolsModule>? modules;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = AprilFoolsConfig.Load();
 
         modules = [
@@ -75,7 +75,7 @@ public class AprilFools : GameModification {
         }
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         foreach (var module in modules ?? []) {
             module.Disable();
         }

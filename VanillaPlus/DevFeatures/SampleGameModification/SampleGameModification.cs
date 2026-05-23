@@ -16,9 +16,9 @@ public class SampleGameModification : GameModification {
 
     // public override bool IsExperimental => true;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
     }
 }

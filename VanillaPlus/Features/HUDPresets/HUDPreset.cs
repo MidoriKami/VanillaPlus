@@ -31,7 +31,7 @@ public unsafe class HUDPresets : GameModification {
 
     private RenameAddon? renameAddon;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         renameAddon = new RenameAddon {
             Size = new Vector2(250.0f, 150.0f),
             InternalName = "PresetNameWindow",
@@ -153,7 +153,7 @@ public unsafe class HUDPresets : GameModification {
         labelNode = null;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         renameAddon?.Dispose();
         renameAddon = null;
 

@@ -17,11 +17,11 @@ public class RetainerSearchBar : GameModification {
 
     public override string ImageName => "RetainerSearchBar.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         retainerInventoryController = new InventorySearchAddonController("InventoryRetainerLarge", "InventoryRetainer");
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         retainerInventoryController?.Dispose();
         retainerInventoryController = null;
     }

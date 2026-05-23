@@ -20,7 +20,7 @@ public class BiggerConfigWindows : GameModification {
     private BiggerConfigWindowsConfig? config;
     private ConfigAddon? configAddon;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = BiggerConfigWindowsConfig.Load();
 
         configAddon = new ConfigAddon {
@@ -39,7 +39,7 @@ public class BiggerConfigWindows : GameModification {
         characterConfigController = new CharacterConfigController(config);
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         systemConfigController?.Dispose();
         systemConfigController = null;
 

@@ -17,11 +17,11 @@ public unsafe class DebugGameModification : GameModification {
         Authors = ["YourNameHere"],
     };
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
 
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
 
     }
 }

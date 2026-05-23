@@ -29,7 +29,7 @@ public unsafe class HideMpBars : GameModification {
     private HideMpBarsConfig? config;
     private ConfigAddon? configAddon;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = HideMpBarsConfig.Load();
 
         configAddon = new ConfigAddon {
@@ -61,7 +61,7 @@ public unsafe class HideMpBars : GameModification {
         paramController?.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         partyListController?.Dispose();
         partyListController = null;
 

@@ -17,12 +17,12 @@ public unsafe class FlagOnCursor : GameModification {
 
     private const string CommandName = "/flagthere";
 
-    public override void OnEnable() => Services.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
+    public override void OnEnableAsync() => Services.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
         HelpMessage = Strings.FlagOnCursor_CommandHelpMessage,
         ShowInHelp = true,
     });
 
-    public override void OnDisable()
+    public override void OnDisableAsync()
         => Services.CommandManager.RemoveHandler(CommandName);
 
     private static void OnCommand(string command, string args) {

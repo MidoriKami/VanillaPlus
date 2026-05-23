@@ -20,7 +20,7 @@ public unsafe class ClearFlag : GameModification {
     private AddonController? minimapController;
     private IAddonEventHandle? minimapMouseClick;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         minimapController = new AddonController {
             AddonName = "_NaviMap",
             OnSetup = addon => {
@@ -43,7 +43,7 @@ public unsafe class ClearFlag : GameModification {
         minimapController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         minimapController?.Dispose();
         minimapController = null;
     }

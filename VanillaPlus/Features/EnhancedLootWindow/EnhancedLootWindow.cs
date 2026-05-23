@@ -36,7 +36,7 @@ public unsafe class EnhancedLootWindow : GameModification {
 
     public override string ImageName => "EnhancedLootWindow.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = EnhancedLootWindowConfig.Load();
 
         configWindow = new ConfigAddon {
@@ -60,7 +60,7 @@ public unsafe class EnhancedLootWindow : GameModification {
         needGreedController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         needGreedController?.Dispose();
         needGreedController = null;
 

@@ -15,10 +15,10 @@ public class OpenGlamourDresserToCurrentJob : GameModification {
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@OpenGlamourDresserToCurrentJob"),
     };
 
-    public override void OnEnable()
+    public override void OnEnableAsync()
         => Services.AddonLifecycle.RegisterListener(AddonEvent.PreSetup, "MiragePrismPrismBox", OnGlamourDresserSetup);
 
-    public override void OnDisable()
+    public override void OnDisableAsync()
         => Services.AddonLifecycle.UnregisterListener(OnGlamourDresserSetup);
 
     private void OnGlamourDresserSetup(AddonEvent type, AddonArgs args) {

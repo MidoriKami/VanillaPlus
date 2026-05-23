@@ -19,7 +19,7 @@ public unsafe class SuppressDialogueAdvance : GameModification {
     private SuppressDialogAdvanceConfig? config;
     private ConfigAddon? configWindow;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = SuppressDialogAdvanceConfig.Load();
 
         configWindow = new ConfigAddon {
@@ -36,7 +36,7 @@ public unsafe class SuppressDialogueAdvance : GameModification {
         Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "Talk", OnTalkReceiveEvent);
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(OnTalkReceiveEvent);
 
         configWindow?.Dispose();

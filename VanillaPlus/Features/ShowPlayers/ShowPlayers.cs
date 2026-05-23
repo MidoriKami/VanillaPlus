@@ -20,7 +20,7 @@ public unsafe class ShowPlayersOnMap : GameModification {
 
     private MapOverlayController? mapOverlayController;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         mapOverlayController = new MapOverlayController();
 
         Services.Framework.RunOnFrameworkThread(() => {
@@ -32,7 +32,7 @@ public unsafe class ShowPlayersOnMap : GameModification {
         });
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         mapOverlayController?.Dispose();
         mapOverlayController = null;
     }

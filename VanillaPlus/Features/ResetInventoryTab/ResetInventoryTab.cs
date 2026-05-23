@@ -17,10 +17,10 @@ public unsafe class ResetInventoryTab : GameModification {
         CompatibilityModule = new HaselTweaksCompatibilityModule("FixInventoryOpenTab"),
     };
 
-    public override void OnEnable()
+    public override void OnEnableAsync()
         => Services.AddonLifecycle.RegisterListener(AddonEvent.PreRefresh, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnPreRefresh);
 
-    public override void OnDisable()
+    public override void OnDisableAsync()
         => Services.AddonLifecycle.UnregisterListener(OnPreRefresh);
 
     private void OnPreRefresh(AddonEvent type, AddonArgs args) {

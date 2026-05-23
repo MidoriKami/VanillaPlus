@@ -16,13 +16,13 @@ public class DutyTimer : GameModification {
 
     private DateTime startTimestamp;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         Services.DutyState.DutyStarted += OnDutyStarted;
         Services.DutyState.DutyCompleted += OnDutyCompleted;
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.DutyState.DutyStarted -= OnDutyStarted;
         Services.DutyState.DutyCompleted -= OnDutyCompleted;
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;

@@ -24,7 +24,7 @@ public unsafe class CastBarAetheryteNames : GameModification {
 
     public override string ImageName => "CastBarAetheryteNames.png";
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         teleportHook = Services.GameInteropProvider.HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
         teleportHook?.Enable();
 
@@ -33,7 +33,7 @@ public unsafe class CastBarAetheryteNames : GameModification {
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "_CastBar", OnCastBarRefresh);
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(OnCastBarRefresh);
 
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;

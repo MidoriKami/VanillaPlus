@@ -17,12 +17,12 @@ public unsafe class SelectNextLootItem : GameModification {
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@LootWindowSelectNext", "1.14.0.2"),
     };
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "NeedGreed", OnNeedGreedSetup);
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, "NeedGreed", OnNeedGreedEvent);
     }
 
-    public override void OnDisable()
+    public override void OnDisableAsync()
         => Services.AddonLifecycle.UnregisterListener(OnNeedGreedSetup, OnNeedGreedEvent);
 
     private static void OnNeedGreedSetup(AddonEvent type, AddonArgs args) {

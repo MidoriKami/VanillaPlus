@@ -2,7 +2,9 @@
 using System.Diagnostics;
 using System.Numerics;
 using System.Threading;
+using System.Threading.Tasks;
 using Dalamud.Game.Command;
+using Dalamud.IoC;
 using Dalamud.Plugin;
 using KamiToolKit;
 using VanillaPlus.Classes;
@@ -12,18 +14,19 @@ using static VanillaPlus.Utilities.Localization;
 
 namespace VanillaPlus;
 
-public sealed class VanillaPlus : IDalamudPlugin {
-    public VanillaPlus(IDalamudPluginInterface pluginInterface) {
-        DebugDelayStartup();
+public sealed class VanillaPlus : IAsyncDalamudPlugin {
+    [PluginService] private static IDalamudPluginInterface PluginInterface { get; set; } = null!;
 
-        pluginInterface.Create<Services>();
+    public Task LoadAsync(CancellationToken cancellationToken) {
+        PluginInterface.Create<Services>();
+
         PluginSystem.SystemConfig = SystemConfiguration.Load();
 
-        KamiToolKitLibrary.Initialize(pluginInterface, "VanillaPlus");
+        KamiToolKitLibrary.Initialize(Services.PluginInterface, "VanillaPlus");
         KamiToolKitLibrary.SetResourceManager(Strings.ResourceManager);
 
-        SetCultureInfo(pluginInterface.UiLanguage);
-        pluginInterface.LanguageChanged += SetCultureInfo;
+        SetCultureInfo(Services.PluginInterface.UiLanguage);
+        Services.PluginInterface.LanguageChanged += SetCultureInfo;
 
         PluginSystem.ModificationBrowserAddon = new ModificationBrowserAddon {
             InternalName = "VanillaPlusConfig",
@@ -60,11 +63,12 @@ public sealed class VanillaPlus : IDalamudPlugin {
         if (Services.ClientState.IsLoggedIn) {
             OnLogin();
         }
+
+        return Task.CompletedTask;
     }
 
-    public void Dispose() {
+    public async ValueTask DisposeAsync() {
         PluginSystem.KeyListener.Dispose();
-        PluginSystem.ModificationManager.Dispose();
 
         Services.PluginInterface.UiBuilder.OpenConfigUi -= PluginSystem.ModificationBrowserAddon.Open;
         Services.ClientState.Login -= OnLogin;
@@ -75,7 +79,8 @@ public sealed class VanillaPlus : IDalamudPlugin {
         PluginSystem.ModificationBrowserAddon.Dispose();
         PluginSystem.SeasonEventAddon.Dispose();
 
-        KamiToolKitLibrary.Dispose();
+        await PluginSystem.ModificationManager.DisposeAsync();
+        await Services.Framework.RunOnFrameworkThread(KamiToolKitLibrary.Dispose);
     }
 
     private void OnLogin() {
@@ -93,19 +98,15 @@ public sealed class VanillaPlus : IDalamudPlugin {
         PluginSystem.ModificationBrowserAddon.Open();
     }
 
-    [Conditional("DEBUG")]
-    private static void DebugDelayStartup()
-        => Thread.Sleep(TimeSpan.FromMilliseconds(500));
-
     private static void CommandHandler(string command, string arguments) {
         if (command is not ("/vanillaplus" or "/plus")) return;
 
-        switch (arguments) {
-            case "" or null:
+        switch (arguments.Split('/')) {
+            case [""] or [] or null:
                 PluginSystem.ModificationBrowserAddon.Open();
                 break;
 
-            case "debug":
+            case ["debug"]:
                 PluginSystem.SystemConfig.IsDebugMode = !PluginSystem.SystemConfig.IsDebugMode;
                 Services.ChatGui.Print($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}", "VanillaPlus");
                 Services.PluginLog.Info($"Debug mode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}");
@@ -114,6 +115,13 @@ public sealed class VanillaPlus : IDalamudPlugin {
                 if (!PluginSystem.ModificationBrowserAddon.IsOpen) {
                     PluginSystem.ModificationBrowserAddon.Open();
                 }
+                break;
+
+            case ["safemode"]:
+                PluginSystem.SystemConfig.SafeMode = !PluginSystem.SystemConfig.SafeMode;
+                Services.ChatGui.Print($"Safemode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}", "VanillaPlus");
+                Services.PluginLog.Info($"Safemode is now {(PluginSystem.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}");
+                PluginSystem.SystemConfig.Save();
                 break;
         }
     }

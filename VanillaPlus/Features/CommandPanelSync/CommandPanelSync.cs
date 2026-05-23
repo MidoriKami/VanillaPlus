@@ -15,7 +15,7 @@ public unsafe class CommandPanelSync : GameModification {
 
     private const int CurrentVersion = 2;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         Services.ClientState.Login += OnLogin;
         Services.ClientState.Logout += OnLogout;
 
@@ -24,7 +24,7 @@ public unsafe class CommandPanelSync : GameModification {
         }
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.ClientState.Login -= OnLogin;
         Services.ClientState.Logout -= OnLogout;
 

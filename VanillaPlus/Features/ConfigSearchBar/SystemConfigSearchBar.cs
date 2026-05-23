@@ -28,7 +28,7 @@ public unsafe class SystemConfigSearchBar : GameModification {
     private ConfigSearchBarConfig? config;
     private ConfigAddon? configAddon;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = ConfigSearchBarConfig.Load();
 
         configAddon = new ConfigAddon {
@@ -51,7 +51,7 @@ public unsafe class SystemConfigSearchBar : GameModification {
         systemConfigController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         configAddon?.Dispose();
         configAddon = null;
 

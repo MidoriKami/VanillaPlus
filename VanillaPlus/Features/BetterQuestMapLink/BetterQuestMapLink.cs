@@ -19,12 +19,12 @@ public unsafe class BetterQuestMapLink : GameModification {
 
     private Hook<AgentMap.Delegates.OpenMap>? openMapHook;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         openMapHook = Services.Hooker.HookFromAddress<AgentMap.Delegates.OpenMap>(AgentMap.MemberFunctionPointers.OpenMap, OnOpenMap);
         openMapHook?.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         openMapHook?.Dispose();
         openMapHook = null;
     }

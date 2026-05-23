@@ -22,7 +22,7 @@ public unsafe class CommandPanelAdjustments : GameModification {
     private QuickPanelAdjustmentsConfig? config;
     private ConfigAddon? configWindow;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = QuickPanelAdjustmentsConfig.Load();
 
         configWindow = new ConfigAddon {
@@ -50,7 +50,7 @@ public unsafe class CommandPanelAdjustments : GameModification {
         quickPanelController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         quickPanelController?.Dispose();
         quickPanelController = null;
 

@@ -22,7 +22,7 @@ public unsafe class FadeLootButton : GameModification {
     private FadeLootButtonConfig? config;
     private ConfigAddon? configWindow;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = FadeLootButtonConfig.Load();
 
         configWindow = new ConfigAddon {
@@ -51,7 +51,7 @@ public unsafe class FadeLootButton : GameModification {
         addon->RootNode->Color.A = 255;
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         notificationLootController?.Dispose();
         notificationLootController = null;
 

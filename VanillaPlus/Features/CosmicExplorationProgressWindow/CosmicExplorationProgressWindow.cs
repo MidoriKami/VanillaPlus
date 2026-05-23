@@ -22,7 +22,7 @@ public class CosmicExplorationProgressWindow : GameModification {
 
     public override string ImageName => "CosmicExplorationProgressWindow.png";
 
-    public override unsafe void OnEnable() {
+    public override unsafe void OnEnableAsync() {
         addon = new CosmicExplorationProgressAddon {
             Size = new Vector2(320.0f, 290.0f),
             InternalName = "CosmicExplorationProgress",
@@ -56,7 +56,7 @@ public class CosmicExplorationProgressWindow : GameModification {
         wksHudController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         wksHudController?.Disable();
         wksHudController = null;
 

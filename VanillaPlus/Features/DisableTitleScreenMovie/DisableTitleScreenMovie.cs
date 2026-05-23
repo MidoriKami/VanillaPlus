@@ -18,12 +18,12 @@ public unsafe class DisableTitleScreenMovie : GameModification {
 
     private Hook<AgentLobby.Delegates.UpdateLobbyUIStage>? updateTitleScreenHook;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         updateTitleScreenHook = Services.Hooker.HookFromAddress<AgentLobby.Delegates.UpdateLobbyUIStage>(AgentLobby.MemberFunctionPointers.UpdateLobbyUIStage, OnTitleScreenUpdate);
         updateTitleScreenHook?.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         updateTitleScreenHook?.Dispose();
         updateTitleScreenHook = null;
     }

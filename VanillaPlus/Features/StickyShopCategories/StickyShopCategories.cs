@@ -17,14 +17,14 @@ public unsafe class StickyShopCategories : GameModification {
 
     private StickyShopCategoriesData? config;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         config = StickyShopCategoriesData.Load();
 
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "InclusionShop", OnInclusionShopSetup);
         Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, "InclusionShop", OnInclusionShopFinalize);
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(OnInclusionShopFinalize, OnInclusionShopSetup);
 
         config?.Save();

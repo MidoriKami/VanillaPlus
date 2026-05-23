@@ -6,8 +6,11 @@ namespace VanillaPlus.Classes;
 public abstract class GameModification {
     public abstract ModificationInfo ModificationInfo { get; }
 
-    public abstract void OnEnable();
-    public abstract void OnDisable();
+    public abstract void OnEnableAsync();
+    public abstract void OnDisableAsync();
+
+    public virtual void OnEnableMainThreaded() { }
+    public virtual void OnDisableMainThreaded() { }
 
     public Action? OpenConfigAction { get; set; }
 

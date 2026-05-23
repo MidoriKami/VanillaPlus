@@ -28,7 +28,7 @@ public unsafe class BetterInterruptableCastBars : GameModification {
 
     private Hook<ActionManager.Delegates.IsActionHighlighted>? antsHook;
 
-    public override void OnEnable() {
+    public override void OnEnableAsync() {
         antsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnAntsCheck);
         antsHook?.Enable();
 
@@ -69,7 +69,7 @@ public unsafe class BetterInterruptableCastBars : GameModification {
         targetInfoCastbarController.Enable();
     }
 
-    public override void OnDisable() {
+    public override void OnDisableAsync() {
         targetInfoCastbarController?.Dispose();
         targetInfoCastbarController = null;
 
