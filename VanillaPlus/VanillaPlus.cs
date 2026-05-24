@@ -106,7 +106,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
 
         switch (arguments.Split('/')) {
             case [""] or [] or null:
-                System.ModificationBrowserAddon.Open();
+                System.ModificationBrowserAddon.Toggle();
                 break;
 
             case ["debug"]:
