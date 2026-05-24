@@ -6,8 +6,6 @@ permissions:
 
 on:
   push:
-    branches:
-      - master
 
 env:
   INTERNAL_NAME: VanillaPlus
