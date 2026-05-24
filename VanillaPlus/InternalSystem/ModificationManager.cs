@@ -62,13 +62,21 @@ public class ModificationManager : IAsyncDisposable {
 
         Services.PluginLog.InternalDebug("Disposing Modification Manager, now disabling all GameModifications");
 
-        var disableTasks = loadedModifications
-            .Where(loadedMod => loadedMod.State is LoadedState.Enabled)
-            .Select(async module => {
-                await Task.Run(() => TryDisableModification(module, false));
-            });
+        if (System.SystemConfig.SafeMode) {
+            foreach (var modification in loadedModifications.Where(mod => mod.State is LoadedState.Enabled)) {
+                TryDisableModification(modification, false);
+            }
+        }
+        else {
+            var disableTasks = loadedModifications
+                .Where(loadedMod => loadedMod.State is LoadedState.Enabled)
+                .Select(async module => {
+                    await Task.Run(() => TryDisableModification(module, false));
+                });
 
-        await Task.WhenAll(disableTasks);
+            await Task.WhenAll(disableTasks);
+        }
+
         await Task.WhenAll(FrameworkUnloadTasks);
     }
 
