@@ -64,13 +64,15 @@ public unsafe class LockChatButton : GameModification {
         moveDeltaHook?.Dispose();
         moveDeltaHook = null;
 
+        data = null;
+    }
+
+    public override void OnDisableMainThreaded() {
         foreach (var (_, button) in panelButtons ?? []) {
             button.Dispose();
         }
         panelButtons?.Clear();
         panelButtons = null;
-
-        data = null;
     }
 
     private void SetupChatLog(AddonChatLog* addon) {

@@ -38,7 +38,9 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
     public override void OnDisableAsync() {
         cursorEventListener?.Dispose();
         cursorEventListener = null;
+    }
 
+    public override void OnDisableMainThreaded() {
         foreach (var (_, node) in windowInteractionNodes ?? []) {
             node.Dispose();
         }

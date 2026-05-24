@@ -79,13 +79,15 @@ public unsafe class ResourceBarPercentages : GameModification {
     public override void OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(OnParameterDraw, OnPartyListDraw);
 
-        OnParameterDisable();
-        OnPartyListDisable();
-
         configWindow?.Dispose();
         configWindow = null;
 
         config = null;
+    }
+
+    public override void OnDisableMainThreaded() {
+        OnParameterDisable();
+        OnPartyListDisable();
     }
 
     private void OnConfigChanged() {

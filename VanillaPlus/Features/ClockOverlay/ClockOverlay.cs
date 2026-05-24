@@ -70,9 +70,6 @@ public class ClockOverlay : GameModification {
         overlayController?.Dispose();
         overlayController = null;
 
-        clockNode?.Dispose();
-        clockNode = null;
-
         config = null;
     }
 }
