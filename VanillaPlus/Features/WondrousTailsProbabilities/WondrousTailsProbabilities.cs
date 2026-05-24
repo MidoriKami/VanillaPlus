@@ -18,7 +18,7 @@ using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.WondrousTailsProbabilities;
 
-public unsafe class WondrousTailsProbabilities : GameModification {
+public class WondrousTailsProbabilities : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_WondrousTailsProbabilities,
         Description = Strings.ModificationDescription_WondrousTailsProbabilities,
@@ -35,29 +35,33 @@ public unsafe class WondrousTailsProbabilities : GameModification {
 
     public override string ImageName => "WondrousTailsProbabilities.png";
 
-    public override void OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         // Initial load of PerfectTails takes approx 100ms
-        Task.Run(() => {
+        await Task.Run(() => {
             perfectTails = new PerfectTails();
 
-            weeklyBingoController = new AddonController<AddonWeeklyBingo> {
-                AddonName = "WeeklyBingo",
-                OnSetup = SetupWeeklyBingo,
-                OnFinalize = FinalizeWeeklyBingo,
-                OnRefresh = RefreshWeeklyBingo,
-            };
-            weeklyBingoController.Enable();
+            unsafe {
+                weeklyBingoController = new AddonController<AddonWeeklyBingo> {
+                    AddonName = "WeeklyBingo",
+                    OnSetup = SetupWeeklyBingo,
+                    OnFinalize = FinalizeWeeklyBingo,
+                    OnRefresh = RefreshWeeklyBingo,
+                };
+                weeklyBingoController.Enable();
+            }
         });
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         weeklyBingoController?.Dispose();
         weeklyBingoController = null;
 
         perfectTails = null;
+
+        return Task.CompletedTask;
     }
 
-    private void SetupWeeklyBingo(AddonWeeklyBingo* addon) {
+    private unsafe void SetupWeeklyBingo(AddonWeeklyBingo* addon) {
         if (perfectTails is null) return;
 
         var existingTextNode = addon->GetTextNodeById(34);
@@ -115,7 +119,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         animationContainer.Timeline?.PlayAnimation(1);
     }
 
-    private void RefreshWeeklyBingo(AddonWeeklyBingo* addon) {
+    private unsafe void RefreshWeeklyBingo(AddonWeeklyBingo* addon) {
         if (perfectTails is null) return;
         var existingTextNode = addon->GetTextNodeById(34);
         if (existingTextNode is not null) {
@@ -156,7 +160,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         AdjustCurrentDutyIndicator(addon);
     }
 
-    private void FinalizeWeeklyBingo(AddonWeeklyBingo* addon) {
+    private unsafe void FinalizeWeeklyBingo(AddonWeeklyBingo* addon) {
         var existingTextNode = addon->GetTextNodeById(34);
         if (existingTextNode is not null) {
             existingTextNode->SetHeight((ushort)(existingTextNode->GetHeight() * 3.0f / 2.0f));
@@ -169,7 +173,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         currentDutyNode = null;
     }
 
-    private void AdjustCurrentDutyIndicator(AddonWeeklyBingo* addon) {
+    private unsafe void AdjustCurrentDutyIndicator(AddonWeeklyBingo* addon) {
         if (animationContainer is null || currentDutyNode is null) return;
         if (GetTaskForCurrentTerritory(Services.ClientState.TerritoryType) is { } dutySlot) {
             var nativeDutySlot = addon->DutySlotList[dutySlot].DutyButton->OwnerNode;
@@ -184,7 +188,7 @@ public unsafe class WondrousTailsProbabilities : GameModification {
         }
     }
 
-    private static int? GetTaskForCurrentTerritory(uint territory) {
+    private static unsafe int? GetTaskForCurrentTerritory(uint territory) {
         foreach (var index in Enumerable.Range(0, 16)) {
             var territoriesForSlot = Services.DataManager.GetTerritoriesForOrderData(PlayerState.Instance()->WeeklyBingoOrderData[index]);
 

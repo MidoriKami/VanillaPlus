@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Keys;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -22,7 +23,7 @@ public unsafe class BetterSelectString : GameModification {
     private AddonController<AddonSelectString>? selectStringController;
     private NativeListController<AddonSelectString>? selectStringListController;
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         selectStringController = new AddonController<AddonSelectString> {
             AddonName = "SelectString",
             OnSetup = addon => {
@@ -53,14 +54,18 @@ public unsafe class BetterSelectString : GameModification {
             },
         };
         selectStringListController.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         selectStringController?.Dispose();
         selectStringController = null;
 
         selectStringListController?.Dispose();
         selectStringListController = null;
+
+        return Task.CompletedTask;
     }
 
     private static void UpdateSelectString(AddonSelectString* addon) {

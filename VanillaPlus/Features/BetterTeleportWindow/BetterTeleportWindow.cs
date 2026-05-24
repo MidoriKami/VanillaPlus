@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using KamiToolKit.Controllers;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -24,8 +25,8 @@ public class BetterTeleportWindow : GameModification {
 
     private AddonFactoryController? teleportFactoryController;
 
-    public override void OnEnableAsync() {
-        Config = BetterTeleportWindowConfig.Load();
+    public override async Task OnEnableAsync() {
+        Config = await BetterTeleportWindowConfig.Load();
 
         teleportFactoryController = new AddonFactoryController {
             AddonName = "Teleport",
@@ -38,8 +39,10 @@ public class BetterTeleportWindow : GameModification {
         teleportFactoryController.Enable();
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         teleportFactoryController?.Dispose();
         teleportFactoryController = null;
+
+        return Task.CompletedTask;
     }
 }

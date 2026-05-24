@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -13,7 +14,7 @@ using Action = Lumina.Excel.Sheets.Action;
 
 namespace VanillaPlus.Features.FadeUnavailableActions;
 
-public unsafe class FadeUnavailableActions : GameModification {
+public class FadeUnavailableActions : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_FadeUnavailableActions,
         Description = Strings.ModificationDescription_FadeUnavailableActions,
@@ -31,10 +32,10 @@ public unsafe class FadeUnavailableActions : GameModification {
 
     public override string ImageName => "FadeUnavailableActions.png";
 
-    public override void OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         actionCache = [];
 
-        config = FadeUnavailableActionsConfig.Load();
+        config = await FadeUnavailableActionsConfig.Load();
 
         configWindow = new ConfigAddon {
             Size = new Vector2(400.0f, 250.0f),
@@ -54,11 +55,13 @@ public unsafe class FadeUnavailableActions : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        onHotBarSlotUpdateHook = Services.Hooker.HookFromAddress<AddonActionBarBase.Delegates.UpdateHotbarSlot>(AddonActionBarBase.MemberFunctionPointers.UpdateHotbarSlot, OnHotBarSlotUpdate);
-        onHotBarSlotUpdateHook?.Enable();
+        unsafe {
+            onHotBarSlotUpdateHook = Services.Hooker.HookFromAddress<AddonActionBarBase.Delegates.UpdateHotbarSlot>(AddonActionBarBase.MemberFunctionPointers.UpdateHotbarSlot, OnHotBarSlotUpdate);
+            onHotBarSlotUpdateHook?.Enable();
+        }
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         onHotBarSlotUpdateHook?.Dispose();
         onHotBarSlotUpdateHook = null;
 
@@ -68,9 +71,11 @@ public unsafe class FadeUnavailableActions : GameModification {
         actionCache = null;
 
         ResetAllHotbars();
+
+        return Task.CompletedTask;
     }
 
-    private void OnHotBarSlotUpdate(AddonActionBarBase* addon, ActionBarSlot* hotBarSlotData, NumberArrayData* numberArray, StringArrayData* stringArray, int numberArrayIndex, int stringArrayIndex) {
+    private unsafe void OnHotBarSlotUpdate(AddonActionBarBase* addon, ActionBarSlot* hotBarSlotData, NumberArrayData* numberArray, StringArrayData* stringArray, int numberArrayIndex, int stringArrayIndex) {
         try {
             ProcessHotBarSlot(hotBarSlotData, numberArray, numberArrayIndex);
         }
@@ -81,7 +86,7 @@ public unsafe class FadeUnavailableActions : GameModification {
         }
     }
 
-    private void ProcessHotBarSlot(ActionBarSlot* hotBarSlotData, NumberArrayData* numberArray, int numberArrayIndex) {
+    private unsafe void ProcessHotBarSlot(ActionBarSlot* hotBarSlotData, NumberArrayData* numberArray, int numberArrayIndex) {
         if (config is null) return;
         if (Services.ObjectTable.LocalPlayer is { IsCasting: true }) return;
 
@@ -117,7 +122,7 @@ public unsafe class FadeUnavailableActions : GameModification {
         }
     }
 
-    private Action? GetAction(uint actionId) {
+    private unsafe Action? GetAction(uint actionId) {
         var adjustedActionId = ActionManager.Instance()->GetAdjustedActionId(actionId);
 
         if (actionCache?.TryGetValue(adjustedActionId, out var action) ?? false) return action;
@@ -127,10 +132,10 @@ public unsafe class FadeUnavailableActions : GameModification {
         return action;
     }
 
-    private bool ShouldFadeAction(ActionBarSlotNumberArray* numberArrayData)
+    private static unsafe bool ShouldFadeAction(ActionBarSlotNumberArray* numberArrayData)
         => !(numberArrayData->Executable && numberArrayData->Executable2);
 
-    private void ApplyColoring(ActionBarSlot* hotBarSlotData, bool redden, bool fade) {
+    private unsafe void ApplyColoring(ActionBarSlot* hotBarSlotData, bool redden, bool fade) {
         if (config is null) return;
         if (hotBarSlotData is null) return;
 
@@ -147,7 +152,7 @@ public unsafe class FadeUnavailableActions : GameModification {
         frame->Color.A = fade ? config.ApplyToFrame ? (byte)(0xFF * ((100 - config.FadePercentage) / 100.0f)) : (byte)0xFF : (byte)0xFF;
     }
 
-    private static void ResetAllHotbars() {
+    private static unsafe void ResetAllHotbars() {
         foreach (var addon in RaptureAtkUnitManager.Instance()->AllLoadedUnitsList.Entries) {
             if (addon.Value is null) continue;
             if (addon.Value->NameString.Contains("_Action") && !addon.Value->NameString.Contains("Contents")) {

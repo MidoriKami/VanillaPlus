@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Overlay.UiOverlay;
 using VanillaPlus.Classes;
@@ -23,8 +24,8 @@ public class ClockOverlay : GameModification {
 
     private ConfigAddon? configWindow;
 
-    public override void OnEnableAsync() {
-        config = ClockOverlayConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await ClockOverlayConfig.Load();
         overlayController = new OverlayController();
 
         configWindow = new ConfigAddon {
@@ -55,7 +56,7 @@ public class ClockOverlay : GameModification {
                 Position = config.Position,
                 OnMoveComplete = thisNode => {
                     config.Position = thisNode.Position;
-                    config.Save();
+                    Task.Run(config.Save);
                 },
             };
 
@@ -63,7 +64,7 @@ public class ClockOverlay : GameModification {
         });
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         configWindow?.Dispose();
         configWindow = null;
 
@@ -71,5 +72,7 @@ public class ClockOverlay : GameModification {
         overlayController = null;
 
         config = null;
+
+        return Task.CompletedTask;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -18,7 +19,7 @@ public class QuestListWindow : GameModification {
 
     public override string ImageName => "QuestList.png";
 
-    public override void OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         addonQuestList = new QuestListAddon {
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "QuestList",
@@ -28,12 +29,14 @@ public class QuestListWindow : GameModification {
             ListItems = [],
         };
 
-        addonQuestList.Initialize();
+        await addonQuestList.Initialize();
         OpenConfigAction = addonQuestList.OpenAddonConfig;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         addonQuestList?.Dispose();
         addonQuestList = null;
+
+        return Task.CompletedTask;
     }
 }

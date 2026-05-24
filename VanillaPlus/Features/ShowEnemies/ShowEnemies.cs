@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using KamiToolKit.Overlay.MapOverlay;
 using VanillaPlus.Classes;
@@ -6,7 +7,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ShowEnemies;
 
-public unsafe class ShowEnemies : GameModification {
+public class ShowEnemies : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_ShowEnemies,
         Description = Strings.ModificationDescription_ShowEnemies,
@@ -20,20 +21,24 @@ public unsafe class ShowEnemies : GameModification {
 
     private MapOverlayController? mapOverlayController;
 
-    public override void OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         mapOverlayController = new MapOverlayController();
 
-        Services.Framework.RunOnFrameworkThread(() => {
-            foreach (var index in Enumerable.Range(0, CharacterManager.Instance()->BattleCharas.Length)) {
-                mapOverlayController.AddMarker(new EnemyMapMarker {
-                    ObjectIndex = index,
-                });
+        await Services.Framework.Run(() => {
+            unsafe {
+                foreach (var index in Enumerable.Range(0, CharacterManager.Instance()->BattleCharas.Length)) {
+                    mapOverlayController.AddMarker(new EnemyMapMarker {
+                        ObjectIndex = index,
+                    });
+                }
             }
         });
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         mapOverlayController?.Dispose();
         mapOverlayController = null;
+
+        return Task.CompletedTask;
     }
 }

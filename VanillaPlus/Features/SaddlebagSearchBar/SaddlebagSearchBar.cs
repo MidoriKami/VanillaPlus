@@ -1,4 +1,5 @@
-﻿using VanillaPlus.Classes;
+﻿using System.Threading.Tasks;
+using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.SaddlebagSearchBar;
@@ -17,12 +18,16 @@ public class SaddlebagSearchBar : GameModification {
 
     public override string ImageName => "SaddlebagSearchBar.png";
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         saddlebagInventoryController = new InventorySearchAddonController("InventoryBuddy");
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         saddlebagInventoryController?.Dispose();
         saddlebagInventoryController = null;
+
+        return Task.CompletedTask;
     }
 }

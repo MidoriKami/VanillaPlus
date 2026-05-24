@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -8,7 +9,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.SelectNextLootItem;
 
-public unsafe class SelectNextLootItem : GameModification {
+public class SelectNextLootItem : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_SelectNextLootItem,
         Description = Strings.ModificationDescription_SelectNextLootItem,
@@ -17,15 +18,20 @@ public unsafe class SelectNextLootItem : GameModification {
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@LootWindowSelectNext", "1.14.0.2"),
     };
 
-    public override void OnEnableAsync() {
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "NeedGreed", OnNeedGreedSetup);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, "NeedGreed", OnNeedGreedEvent);
+    public override async Task OnEnableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "NeedGreed", OnNeedGreedSetup);
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, "NeedGreed", OnNeedGreedEvent);
+        });
     }
 
-    public override void OnDisableAsync()
-        => Services.AddonLifecycle.UnregisterListener(OnNeedGreedSetup, OnNeedGreedEvent);
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.UnregisterListener(OnNeedGreedSetup, OnNeedGreedEvent);
+        });
+    }
 
-    private static void OnNeedGreedSetup(AddonEvent type, AddonArgs args) {
+    private static unsafe void OnNeedGreedSetup(AddonEvent type, AddonArgs args) {
         // Find first item that hasn't been rolled on, and select it.
         var addonNeedGreed = args.GetAddon<AddonNeedGreed>();
 
@@ -37,7 +43,7 @@ public unsafe class SelectNextLootItem : GameModification {
         }
     }
 
-    private static void OnNeedGreedEvent(AddonEvent type, AddonArgs args) {
+    private static unsafe void OnNeedGreedEvent(AddonEvent type, AddonArgs args) {
         if (args is not AddonReceiveEventArgs eventArgs) return;
 
         var eventType = (AtkEventType)eventArgs.AtkEventType;
@@ -63,7 +69,7 @@ public unsafe class SelectNextLootItem : GameModification {
         }
     }
 
-    private static void SelectItem(AddonNeedGreed* addon, int index) {
+    private static unsafe void SelectItem(AddonNeedGreed* addon, int index) {
         var eventData = new AtkEventData();
         eventData.ListItemData.SelectedIndex = index;
         addon->ReceiveEvent(AtkEventType.ListItemClick, 0, null, &eventData);

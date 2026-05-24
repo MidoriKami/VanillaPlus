@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.Addon.Lifecycle;
+﻿using System.Threading.Tasks;
+using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -7,7 +8,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.SkipLoginConfirm;
 
-public unsafe class SkipLoginConfirm : GameModification {
+public class SkipLoginConfirm : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_SkipLoginConfirm,
         Description = Strings.ModificationDescription_SkipLoginConfirm,
@@ -15,13 +16,19 @@ public unsafe class SkipLoginConfirm : GameModification {
         Authors = ["MidoriKami"],
     };
 
-    public override void OnEnableAsync()
-        => Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
+    public override async Task OnEnableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
+        });
+    }
 
-    public override void OnDisableAsync()
-        => Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
+        });
+    }
 
-    private static void SelectYesNoHandler(AddonEvent _, AddonArgs yesNoArgs) {
+    private static unsafe void SelectYesNoHandler(AddonEvent _, AddonArgs yesNoArgs) {
         var addon = yesNoArgs.GetAddon();
 
         if (addon->GetCallbackHandlerInfo() is { AgentId: AgentId.Lobby, EventKind: 3 }) {

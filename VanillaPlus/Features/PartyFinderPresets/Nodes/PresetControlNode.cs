@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
@@ -98,7 +99,7 @@ public sealed class PresetControlNode : SimpleComponentNode {
                     newPreset.LoadFromCurrentState();
 
                     Config.Presets.Add(newPreset);
-                    Config.Save();
+                    Task.Run(Config.Save);
 
                     PresetEntry = newPreset;
 
@@ -111,7 +112,7 @@ public sealed class PresetControlNode : SimpleComponentNode {
         }
         else {
             PresetEntry.LoadFromCurrentState();
-            Config.Save();
+            Task.Run(Config.Save);
 
             SetPreset(PresetEntry);
         }
@@ -121,7 +122,7 @@ public sealed class PresetControlNode : SimpleComponentNode {
         if (PresetEntry is null) return;
 
         Config.Presets.Remove(PresetEntry);
-        Config.Save();
+        Task.Run(Config.Save);
 
         PresetEntry = null;
     }

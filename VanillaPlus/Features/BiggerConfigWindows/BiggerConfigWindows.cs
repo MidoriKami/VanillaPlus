@@ -1,4 +1,5 @@
-﻿using VanillaPlus.Classes;
+﻿using System.Threading.Tasks;
+using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
 
@@ -20,8 +21,8 @@ public class BiggerConfigWindows : GameModification {
     private BiggerConfigWindowsConfig? config;
     private ConfigAddon? configAddon;
 
-    public override void OnEnableAsync() {
-        config = BiggerConfigWindowsConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await BiggerConfigWindowsConfig.Load();
 
         configAddon = new ConfigAddon {
             InternalName = "BiggerConfigWindowsConfig",
@@ -39,7 +40,7 @@ public class BiggerConfigWindows : GameModification {
         characterConfigController = new CharacterConfigController(config);
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         systemConfigController?.Dispose();
         systemConfigController = null;
 
@@ -50,5 +51,7 @@ public class BiggerConfigWindows : GameModification {
         configAddon = null;
 
         config = null;
+
+        return Task.CompletedTask;
     }
 }

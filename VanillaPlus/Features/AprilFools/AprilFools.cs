@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
@@ -23,8 +24,8 @@ public class AprilFools : GameModification {
 
     private List<FoolsModule>? modules;
 
-    public override void OnEnableAsync() {
-        config = AprilFoolsConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await AprilFoolsConfig.Load();
 
         modules = [
             new ScrollingFools { Config = config },
@@ -75,7 +76,7 @@ public class AprilFools : GameModification {
         }
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         foreach (var module in modules ?? []) {
             module.Disable();
         }
@@ -86,5 +87,7 @@ public class AprilFools : GameModification {
         configAddon = null;
 
         config = null;
+
+        return Task.CompletedTask;
     }
 }

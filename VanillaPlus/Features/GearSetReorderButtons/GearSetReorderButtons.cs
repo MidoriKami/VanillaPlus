@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -27,7 +28,7 @@ public unsafe class GearSetReorderButtons : GameModification {
 
     private const float ExtraAddonWidth = 56.0f;
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         gearSetsAddonController = new AddonController<AddonGearSetList> {
             AddonName = "GearSetList",
             OnSetup = SetUpAddon,
@@ -41,14 +42,18 @@ public unsafe class GearSetReorderButtons : GameModification {
             UpdateElement = UpdateElement,
         };
         gearSetsListController.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         gearSetsAddonController?.Dispose();
         gearSetsListController?.Dispose();
 
         gearSetsAddonController = null;
         gearSetsListController = null;
+
+        return Task.CompletedTask;
     }
 
     private static void SetUpAddon(AddonGearSetList* addon) {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using KamiToolKit;
 using KamiToolKit.Nodes;
 
@@ -24,7 +25,7 @@ public class DropDownConfig : BaseConfigEntry {
                 if (Options.TryGetValue(newValue, out var result)) {
                     InitialValue = result;
                     MemberInfo.SetValue(Config, result);
-                    Config.Save();
+                    Task.Run(Config.Save);
                 }
             },
             MaxListOptions = 20,

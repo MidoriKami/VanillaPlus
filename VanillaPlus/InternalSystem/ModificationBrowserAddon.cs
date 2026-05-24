@@ -111,7 +111,7 @@ public class ModificationBrowserAddon : NativeAddon {
                     OnInputReceived = OnSearchBoxInputReceived,
                     OnFocusLost = () => {
                         System.SystemConfig.CurrentSearch = searchBoxNode.String.ToString();
-                        System.SystemConfig.Save();
+                        Task.Run(System.SystemConfig.Save);
                     },
                 },
                 new CheckboxNode {
@@ -120,7 +120,7 @@ public class ModificationBrowserAddon : NativeAddon {
                     IsChecked = System.SystemConfig.PersistSearch,
                     OnClick = value => {
                         System.SystemConfig.PersistSearch = value;
-                        System.SystemConfig.Save();
+                        Task.Run(System.SystemConfig.Save);
                     },
                 },
             ],

@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using KamiToolKit.Controllers;
 using VanillaPlus.Classes;
@@ -18,7 +19,7 @@ public unsafe class ReverseCharacterPanel : GameModification {
 
     private AddonController<AddonCharacter>? characterController;
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         characterController = new AddonController<AddonCharacter> {
             AddonName = "Character",
             OnSetup = SetupCharacter,
@@ -26,11 +27,15 @@ public unsafe class ReverseCharacterPanel : GameModification {
             OnFinalize = FinalizeCharacter,
         };
         characterController.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         characterController?.Dispose();
         characterController = null;
+
+        return Task.CompletedTask;
     }
 
     private static void SetupCharacter(AddonCharacter* addonCharacter) {

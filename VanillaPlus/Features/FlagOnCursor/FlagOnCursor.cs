@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Game.Command;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -17,13 +18,20 @@ public unsafe class FlagOnCursor : GameModification {
 
     private const string CommandName = "/flagthere";
 
-    public override void OnEnableAsync() => Services.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
-        HelpMessage = Strings.FlagOnCursor_CommandHelpMessage,
-        ShowInHelp = true,
-    });
+    public override Task OnEnableAsync() {
+        Services.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
+            HelpMessage = Strings.FlagOnCursor_CommandHelpMessage,
+            ShowInHelp = true,
+        });
 
-    public override void OnDisableAsync()
-        => Services.CommandManager.RemoveHandler(CommandName);
+        return Task.CompletedTask;
+    }
+
+    public override Task OnDisableAsync() {
+        Services.CommandManager.RemoveHandler(CommandName);
+
+        return Task.CompletedTask;
+    }
 
     private static void OnCommand(string command, string args) {
         ref var cursorData = ref UIInputData.Instance()->UIFilteredCursorInputs;

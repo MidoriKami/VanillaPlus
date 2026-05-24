@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
@@ -25,7 +26,7 @@ public unsafe class MacroLineNumbers : GameModification {
 
     private List<TextNode>? textNodes;
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         textNodes = [];
 
         macroAddonController = new AddonController {
@@ -63,14 +64,18 @@ public unsafe class MacroLineNumbers : GameModification {
             },
         };
         macroAddonController.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         macroAddonController?.Dispose();
         macroAddonController = null;
 
         textNodes?.Clear();
         textNodes = null;
+
+        return Task.CompletedTask;
     }
 
     private static void RepositionNode(AtkComponentNode* inputComponentNode, Vector2 offset) {

@@ -103,18 +103,20 @@ public class GameModificationOptionNode : SelectableNode {
     private void ToggleModification(bool shouldEnableModification) {
         checkboxNode.IsEnabled = false;
 
-        Task.Run(() => {
+        Task.Run(async () => {
             if (shouldEnableModification && Modification.State is LoadedState.Disabled) {
-                ModificationManager.TryEnableModification(Modification);
+                await ModificationManager.TryEnableModification(Modification);
             }
             else if (!shouldEnableModification && Modification.State is LoadedState.Enabled) {
-                ModificationManager.TryDisableModification(Modification);
+                await ModificationManager.TryDisableModification(Modification);
             }
 
-            UpdateDisabledState();
+            await Services.Framework.Run(() => {
+                UpdateDisabledState();
 
-            OnClick?.Invoke(this);
-            RefreshConfigWindowButton();
+                OnClick?.Invoke(this);
+                RefreshConfigWindowButton();
+            });
         });
     }
 

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using KamiToolKit.Overlay.MapOverlay;
 using VanillaPlus.Classes;
@@ -6,7 +7,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ShowTreasureChests;
 
-public unsafe class ShowTreasureChests : GameModification {
+public class ShowTreasureChests : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_ShowTreasureChests,
         Description = Strings.ModificationDescription_ShowTreasureChests,
@@ -20,20 +21,24 @@ public unsafe class ShowTreasureChests : GameModification {
 
     private MapOverlayController? mapOverlayController;
 
-    public override void OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         mapOverlayController = new MapOverlayController();
 
-        Services.Framework.RunOnFrameworkThread(() => {
-            foreach (var index in Enumerable.Range(0, EventObjectManager.Instance()->EventObjects.Length)) {
-                mapOverlayController.AddMarker(new TreasureChestMapMarker {
-                    ObjectIndex = index,
-                });
+        await Services.Framework.Run(() => {
+            unsafe {
+                foreach (var index in Enumerable.Range(0, EventObjectManager.Instance()->EventObjects.Length)) {
+                    mapOverlayController.AddMarker(new TreasureChestMapMarker {
+                        ObjectIndex = index,
+                    });
+                }
             }
         });
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         mapOverlayController?.Dispose();
         mapOverlayController = null;
+
+        return Task.CompletedTask;
     }
 }

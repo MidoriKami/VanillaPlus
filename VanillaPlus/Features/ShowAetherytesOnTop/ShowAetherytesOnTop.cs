@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.Agent;
+﻿using System.Threading.Tasks;
+using Dalamud.Game.Agent;
 using Dalamud.Game.Agent.AgentArgTypes;
 using FFXIVClientStructs.FFXIV.Client.System.Input;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -9,7 +10,7 @@ using AgentId = Dalamud.Game.Agent.AgentId;
 
 namespace VanillaPlus.Features.ShowAetherytesOnTop;
 
-public unsafe class ShowAetherytesOnTop : GameModification {
+public class ShowAetherytesOnTop : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_ShowAetherytesOnTop,
         Description = Strings.ModificationDescription_ShowAetherytesOnTop,
@@ -21,24 +22,31 @@ public unsafe class ShowAetherytesOnTop : GameModification {
 
     private KeyStateFlags controlPreState;
 
-    public override void OnEnableAsync() {
-        Services.AgentLifecycle.RegisterListener(AgentEvent.PreUpdate, AgentId.Map, OnMapPreUpdate);
-        Services.AgentLifecycle.RegisterListener(AgentEvent.PostUpdate, AgentId.Map, OnMapPostUpdate);
+    public override async Task OnEnableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AgentLifecycle.RegisterListener(AgentEvent.PreUpdate, AgentId.Map, OnMapPreUpdate);
+            Services.AgentLifecycle.RegisterListener(AgentEvent.PostUpdate, AgentId.Map, OnMapPostUpdate);
+        });
     }
 
-    public override void OnDisableAsync() {
-        Services.AgentLifecycle.UnregisterListener(OnMapPreUpdate, OnMapPostUpdate);
-        AgentMap.Instance()->IsControlKeyPressed = true;
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AgentLifecycle.UnregisterListener(OnMapPreUpdate, OnMapPostUpdate);
+
+            unsafe {
+                AgentMap.Instance()->IsControlKeyPressed = true;
+            }
+        });
     }
 
-    private void OnMapPreUpdate(AgentEvent type, AgentArgs args) {
+    private unsafe void OnMapPreUpdate(AgentEvent type, AgentArgs args) {
         if (AgentMap.Instance()->SelectedTerritoryId is 0) return;
 
         controlPreState = ControlKeyState;
         ControlKeyState = KeyStateFlags.Down | KeyStateFlags.Held;
     }
 
-    private void OnMapPostUpdate(AgentEvent type, AgentArgs args) {
+    private unsafe void OnMapPostUpdate(AgentEvent type, AgentArgs args) {
         if (AgentMap.Instance()->SelectedTerritoryId is 0) return;
 
         if (!controlPreState.HasFlag(KeyStateFlags.Down) && !controlPreState.HasFlag(KeyStateFlags.Held)) {
@@ -47,7 +55,7 @@ public unsafe class ShowAetherytesOnTop : GameModification {
         }
     }
 
-    private static KeyStateFlags ControlKeyState {
+    private static unsafe KeyStateFlags ControlKeyState {
         get => UIModule.Instance()->GetUIInputData()->KeyboardInputs.KeyState[(int)SeVirtualKey.CONTROL];
         set => UIModule.Instance()->GetUIInputData()->KeyboardInputs.KeyState[(int)SeVirtualKey.CONTROL] = value;
     }

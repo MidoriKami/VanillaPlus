@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace VanillaPlus.Classes;
 
 public abstract class GameModification {
     public abstract ModificationInfo ModificationInfo { get; }
 
-    public abstract void OnEnableAsync();
-    public abstract void OnDisableAsync();
-
-    public virtual void OnEnableMainThreaded() { }
-    public virtual void OnDisableMainThreaded() { }
+    public abstract Task OnEnableAsync();
+    public abstract Task OnDisableAsync();
 
     public Action? OpenConfigAction { get; set; }
 

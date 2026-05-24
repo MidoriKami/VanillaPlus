@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Game.Inventory.InventoryEventArgTypes;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using VanillaPlus.Classes;
@@ -9,7 +10,7 @@ using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.RecentlyLootedWindow;
 
-public unsafe class RecentlyLootedWindow : GameModification {
+public class RecentlyLootedWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_RecentlyLootedWindow,
         Description = Strings.ModificationDescription_RecentlyLootedWindow,
@@ -23,7 +24,7 @@ public unsafe class RecentlyLootedWindow : GameModification {
 
     public override string ImageName => "RecentlyLootedWindow.png";
 
-    public override void OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         addonRecentlyLooted = new NodeListAddon<LootedItemInfo, LootedItemListItemNode> {
             Size = new Vector2(250.0f, 350.0f),
             InternalName = "RecentlyLooted",
@@ -33,7 +34,7 @@ public unsafe class RecentlyLootedWindow : GameModification {
             ItemSpacing = 2.0f,
         };
 
-        addonRecentlyLooted.Initialize();
+        await addonRecentlyLooted.Initialize();
 
         OpenConfigAction = addonRecentlyLooted.OpenAddonConfig;
 
@@ -44,13 +45,15 @@ public unsafe class RecentlyLootedWindow : GameModification {
         Services.ClientState.Logout += OnLogout;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         addonRecentlyLooted?.Dispose();
         addonRecentlyLooted = null;
 
         Services.GameInventory.InventoryChanged -= OnRawItemAdded;
         Services.ClientState.Login -= OnLogin;
         Services.ClientState.Logout -= OnLogout;
+
+        return Task.CompletedTask;
     }
 
     private void OnLogin() {
@@ -61,7 +64,7 @@ public unsafe class RecentlyLootedWindow : GameModification {
     private void OnLogout(int type, int code)
         => enableTracking = false;
 
-    private void OnRawItemAdded(IReadOnlyCollection<InventoryEventArgs> events) {
+    private unsafe void OnRawItemAdded(IReadOnlyCollection<InventoryEventArgs> events) {
         if (!enableTracking) return;
         if (addonRecentlyLooted is null) return;
 

@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
@@ -22,7 +23,7 @@ public class CosmicExplorationProgressWindow : GameModification {
 
     public override string ImageName => "CosmicExplorationProgressWindow.png";
 
-    public override unsafe void OnEnableAsync() {
+    public override unsafe Task OnEnableAsync() {
         addon = new CosmicExplorationProgressAddon {
             Size = new Vector2(320.0f, 290.0f),
             InternalName = "CosmicExplorationProgress",
@@ -54,9 +55,11 @@ public class CosmicExplorationProgressWindow : GameModification {
             },
         };
         wksHudController.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         wksHudController?.Disable();
         wksHudController = null;
 
@@ -65,5 +68,7 @@ public class CosmicExplorationProgressWindow : GameModification {
 
         hudShowNode?.Dispose();
         hudShowNode = null;
+
+        return Task.CompletedTask;
     }
 }

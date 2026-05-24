@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading.Tasks;
 using KamiToolKit;
 using KamiToolKit.Nodes;
 
@@ -37,6 +38,6 @@ public class FloatSliderConfig : BaseConfigEntry {
     private void OnOptionChanged(float newValue) {
         InitialValue = newValue;
         MemberInfo.SetValue(Config, newValue);
-        Config.Save();
+        Task.Run(Config.Save);
     }
 }

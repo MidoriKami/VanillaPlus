@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.Addon.Lifecycle;
+﻿using System.Threading.Tasks;
+using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -8,7 +9,7 @@ using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.SuppressDialogAdvance;
 
-public unsafe class SuppressDialogueAdvance : GameModification {
+public class SuppressDialogueAdvance : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_SuppressDialogAdvance,
         Description = Strings.ModificationDescription_SuppressDialogAdvance,
@@ -19,8 +20,8 @@ public unsafe class SuppressDialogueAdvance : GameModification {
     private SuppressDialogAdvanceConfig? config;
     private ConfigAddon? configWindow;
 
-    public override void OnEnableAsync() {
-        config = SuppressDialogAdvanceConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await SuppressDialogAdvanceConfig.Load();
 
         configWindow = new ConfigAddon {
             InternalName = "SuppressDialogAdvanceConfig",
@@ -33,11 +34,16 @@ public unsafe class SuppressDialogueAdvance : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "Talk", OnTalkReceiveEvent);
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "Talk", OnTalkReceiveEvent);
+        });
     }
 
-    public override void OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnTalkReceiveEvent);
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.UnregisterListener(OnTalkReceiveEvent);
+        });
+
 
         configWindow?.Dispose();
         configWindow = null;
@@ -45,7 +51,7 @@ public unsafe class SuppressDialogueAdvance : GameModification {
         config = null;
     }
 
-    private void OnTalkReceiveEvent(AddonEvent type, AddonArgs args) {
+    private unsafe void OnTalkReceiveEvent(AddonEvent type, AddonArgs args) {
         if (args is not AddonReceiveEventArgs eventArgs) return;
         if ((config?.ApplyOnlyInCutscenes ?? false) && !Services.Condition.IsInCutscene) return;
 

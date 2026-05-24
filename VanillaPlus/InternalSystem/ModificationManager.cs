@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -16,8 +15,6 @@ public class ModificationManager : IAsyncDisposable {
     public readonly List<IGrouping<ModificationType, LoadedModification>> CategoryGroups;
     public readonly Dictionary<ModificationType, List<IGrouping<ModificationSubType?, LoadedModification>>> SubCategoryGroups = [];
 
-    private static readonly ConcurrentBag<Task> FrameworkUnloadTasks = [];
-
     public ModificationManager() {
         var allGameModifications = GetGameModifications();
 
@@ -30,7 +27,7 @@ public class ModificationManager : IAsyncDisposable {
 
             if (System.SystemConfig.EnabledModifications.Contains(gameMod.Name)) {
                 if (System.SystemConfig.SafeMode) {
-                    TryEnableModification(newLoadedModification);
+                    _ = TryEnableModification(newLoadedModification);
                 }
                 else {
                     Task.Run(() => TryEnableModification(newLoadedModification));
@@ -66,7 +63,7 @@ public class ModificationManager : IAsyncDisposable {
             Services.PluginLog.InternalDebug("Disposing in safemode, all modules will be unloaded sequentially.");
 
             foreach (var modification in loadedModifications.Where(mod => mod.State is LoadedState.Enabled)) {
-                TryDisableModification(modification, false);
+                _ = TryDisableModification(modification, false);
             }
         }
         else {
@@ -78,8 +75,6 @@ public class ModificationManager : IAsyncDisposable {
 
             await Task.WhenAll(disableTasks);
         }
-
-        await Task.WhenAll(FrameworkUnloadTasks);
     }
 
     // When loaded plugins change, re-evaluate any compat modules
@@ -99,7 +94,7 @@ public class ModificationManager : IAsyncDisposable {
                     // This module was enabled, but after a refresh it's not allowed, disable it
                     if (!compatibilityModule.ShouldLoadGameModification()) {
                         Services.PluginLog.InternalWarning($"Loaded plugins have changed, and {gameModification.Name} is now no longer allowed to be enabled");
-                        TryDisableModification(gameModification, false);
+                        Task.Run(() => TryDisableModification(gameModification, false));
                         gameModification.State = LoadedState.CompatError;
                         gameModification.ErrorMessage = compatibilityModule.GetErrorMessage();
                     }
@@ -111,7 +106,7 @@ public class ModificationManager : IAsyncDisposable {
                     // This module was disabled due to compat, it is now allowed, load it
                     if (compatibilityModule.ShouldLoadGameModification()) {
                         Services.PluginLog.InternalInfo($"Loaded plugins have changed, and {gameModification.Name} is now allowed to be enabled");
-                        TryEnableModification(gameModification);
+                        Task.Run(() => TryEnableModification(gameModification));
                     }
                     break;
             }
@@ -120,7 +115,7 @@ public class ModificationManager : IAsyncDisposable {
         System.ModificationBrowserAddon.UpdateDisabledState();
     }
 
-    public static void TryEnableModification(LoadedModification modification) {
+    public static async Task TryEnableModification(LoadedModification modification) {
         if (modification.State is LoadedState.Errored) {
             Services.PluginLog.InternalError($"[{modification.Name}] Attempted to enable errored modification");
             return;
@@ -149,13 +144,12 @@ public class ModificationManager : IAsyncDisposable {
                 }
             }
 
-            modification.Modification.OnEnableAsync();
-            Services.Framework.RunOnFrameworkThread(modification.Modification.OnEnableMainThreaded);
+            await modification.Modification.OnEnableAsync();
 
             modification.State = LoadedState.Enabled;
             Services.PluginLog.InternalInfo($"Successfully Enabled {modification.Name}");
             System.SystemConfig.EnabledModifications.Add(modification.Name);
-            System.SystemConfig.Save();
+            await System.SystemConfig.Save();
         }
         catch (Exception e) {
             modification.State = LoadedState.Errored;
@@ -164,8 +158,7 @@ public class ModificationManager : IAsyncDisposable {
 
             try {
 
-                modification.Modification.OnDisableAsync();
-                Services.Framework.RunOnFrameworkThread(() => modification.Modification.OnDisableMainThreaded());
+                await modification.Modification.OnDisableAsync();
 
                 Services.PluginLog.InternalInfo($"Successfully disabled erroring modification {modification.Name}");
             }
@@ -176,7 +169,7 @@ public class ModificationManager : IAsyncDisposable {
         }
     }
 
-    public static void TryDisableModification(LoadedModification modification, bool removeFromList = true) {
+    public static async Task TryDisableModification(LoadedModification modification, bool removeFromList = true) {
         if (modification.State is LoadedState.Errored) {
             Services.PluginLog.InternalError($"[{modification.Name}] Attempted to disable errored modification");
             return;
@@ -185,8 +178,7 @@ public class ModificationManager : IAsyncDisposable {
         try {
             Services.PluginLog.InternalInfo($"Disabling {modification.Name}");
 
-            modification.Modification.OnDisableAsync();
-            FrameworkUnloadTasks.Add(Services.Framework.RunOnFrameworkThread(() => modification.Modification.OnDisableMainThreaded()));
+            await modification.Modification.OnDisableAsync();
 
             modification.Modification.OpenConfigAction = null;
             modification.State = LoadedState.Disabled;
@@ -199,7 +191,7 @@ public class ModificationManager : IAsyncDisposable {
 
         if (removeFromList) {
             System.SystemConfig.EnabledModifications.Remove(modification.Name);
-            System.SystemConfig.Save();
+            await System.SystemConfig.Save();
         }
     }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Game.Gui.ContextMenu;
@@ -20,7 +21,7 @@ using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.InstancedWaymarks;
 
-public unsafe class InstancedWaymarks : GameModification {
+public class InstancedWaymarks : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_InstancedWaymarks,
         Description = Strings.ModificationDescription_InstancedWaymarks,
@@ -36,8 +37,8 @@ public unsafe class InstancedWaymarks : GameModification {
 
     public override string ImageName => "InstanceWaymarks.png";
 
-    public override void OnEnableAsync() {
-        config = InstancedWaymarksConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await InstancedWaymarksConfig.Load();
 
         renameWindow ??= new RenameAddon {
             Size = new Vector2(250.0f, 150.0f),
@@ -52,14 +53,16 @@ public unsafe class InstancedWaymarks : GameModification {
 
         SaveWaymarks(0);
 
-        var currentCfc = GameMain.Instance()->CurrentContentFinderConditionId;
-        if (currentCfc is not 0) {
-            LoadWaymarks(currentCfc);
-            previousCfc = currentCfc;
+        unsafe {
+            var currentCfc = GameMain.Instance()->CurrentContentFinderConditionId;
+            if (currentCfc is not 0) {
+                LoadWaymarks(currentCfc);
+                previousCfc = currentCfc;
+            }
         }
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(OnFieldMarkerDraw);
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
         Services.ContextMenu.OnMenuOpened -= OnMenuOpened;
@@ -70,9 +73,11 @@ public unsafe class InstancedWaymarks : GameModification {
         renameWindow = null;
 
         config = null;
+
+        return Task.CompletedTask;
     }
 
-    private void OnTerritoryChanged(uint u) {
+    private unsafe void OnTerritoryChanged(uint u) {
         var currentCfc = GameMain.Instance()->CurrentContentFinderConditionId;
 
         SaveWaymarks(previousCfc);
@@ -81,7 +86,7 @@ public unsafe class InstancedWaymarks : GameModification {
         previousCfc = currentCfc;
     }
 
-    private void OnMenuOpened(IMenuOpenedArgs args) {
+    private unsafe void OnMenuOpened(IMenuOpenedArgs args) {
         if (args.AddonName is not "FieldMarker") return;
 
         slotClicked = AgentFieldMarker.Instance()->PageIndexOffset;
@@ -98,7 +103,7 @@ public unsafe class InstancedWaymarks : GameModification {
         });
     }
 
-    private void OnFieldMarkerDraw(AddonEvent type, AddonArgs args) {
+    private unsafe void OnFieldMarkerDraw(AddonEvent type, AddonArgs args) {
         if (config is null) return;
 
         var selectedPage = args.GetAddon<AddonFieldMarker>()->SelectedPage;
@@ -120,7 +125,7 @@ public unsafe class InstancedWaymarks : GameModification {
         }
     }
 
-    private void RenameContextMenuAction(IMenuItemClickedArgs menuItemClickedArgs) {
+    private unsafe void RenameContextMenuAction(IMenuItemClickedArgs menuItemClickedArgs) {
         if (slotClicked is -1) return;
         if (config is null) return;
         if (renameWindow is null) return;
@@ -139,14 +144,14 @@ public unsafe class InstancedWaymarks : GameModification {
             config.NamedWaymarks.TryAdd(cfc, []);
             config.NamedWaymarks[cfc].TryAdd(slotClicked, newString.ToString());
             config.NamedWaymarks[cfc][slotClicked] = newString.ToString();
-            config.Save();
+            Task.Run(config.Save);
         };
 
         renameWindow.DefaultString = defaultName;
         renameWindow.Toggle();
     }
 
-    private static void SaveWaymarks(uint contentFinderCondition) {
+    private static unsafe void SaveWaymarks(uint contentFinderCondition) {
         Services.PluginLog.Debug($"Saving Waymarks for Duty: {contentFinderCondition}", "InstancedWaymarks");
 
         var address = Unsafe.AsPointer(ref FieldMarkerModule.Instance()->Presets[0]);
@@ -158,7 +163,7 @@ public unsafe class InstancedWaymarks : GameModification {
         FilesystemUtil.WriteAllBytesSafe(dataFilePath, dataSpan.ToArray());
     }
 
-    private static void LoadWaymarks(uint contentFinderCondition) {
+    private static unsafe void LoadWaymarks(uint contentFinderCondition) {
         Services.PluginLog.Debug($"Loading Waymarks for Duty: {contentFinderCondition}", "InstancedWaymarks");
 
         var address = Unsafe.AsPointer(ref FieldMarkerModule.Instance()->Presets[0]);
