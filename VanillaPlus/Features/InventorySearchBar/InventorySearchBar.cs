@@ -21,7 +21,9 @@ public class InventorySearchBar : GameModification {
         inventoryController = new InventorySearchAddonController("InventoryExpansion", "InventoryLarge", "Inventory");
     }
 
-    public override void OnDisableAsync() {
+    public override void OnDisableAsync() { }
+
+    public override void OnDisableMainThreaded() {
         inventoryController?.Dispose();
         inventoryController = null;
     }

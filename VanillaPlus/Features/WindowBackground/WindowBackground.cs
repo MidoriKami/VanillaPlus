@@ -168,12 +168,14 @@ public unsafe class WindowBackground : GameModification {
         configWindow?.Dispose();
         configWindow = null;
 
+        config = null;
+    }
+
+    public override void OnDisableMainThreaded() {
         foreach (var node in backgroundImageNodes ?? []) {
             node.Dispose();
         }
         backgroundImageNodes?.Clear();
         backgroundImageNodes = null;
-
-        config = null;
     }
 }

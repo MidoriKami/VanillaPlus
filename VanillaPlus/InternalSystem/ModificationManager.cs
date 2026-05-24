@@ -63,6 +63,8 @@ public class ModificationManager : IAsyncDisposable {
         Services.PluginLog.InternalDebug("Disposing Modification Manager, now disabling all GameModifications");
 
         if (System.SystemConfig.SafeMode) {
+            Services.PluginLog.InternalDebug("Disposing in safemode, all modules will be unloaded sequentially.");
+
             foreach (var modification in loadedModifications.Where(mod => mod.State is LoadedState.Enabled)) {
                 TryDisableModification(modification, false);
             }

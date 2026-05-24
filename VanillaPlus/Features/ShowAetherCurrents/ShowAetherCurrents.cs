@@ -43,9 +43,7 @@ public class ShowAetherCurrents : GameModification {
         }
     }
 
-    public override void OnDisableAsync() { }
-
-    public override void OnDisableMainThreaded() {
+    public override void OnDisableAsync() {
         mapOverlayController?.Dispose();
         mapOverlayController = null;
     }
