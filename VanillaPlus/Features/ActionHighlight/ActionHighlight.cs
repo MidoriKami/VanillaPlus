@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.Sheets;
@@ -9,7 +10,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ActionHighlight;
 
-public unsafe class ActionHighlight : GameModification {
+public class ActionHighlight : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ActionHighlight_DisplayName,
         Description = Strings.ActionHighlight_Description,
@@ -31,10 +32,10 @@ public unsafe class ActionHighlight : GameModification {
         [33] = [7444, 7445, 37018, 37023, 37024, 37025, 37026, 37027, 37028],
     };
 
-    public override void OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         cachedActions = [];
 
-        config = ActionHighlightConfig.Load();
+        config = await ActionHighlightConfig.Load();
 
         configWindow = new ActionHighlightAddon {
             Size = new Vector2(700.0f, 500.0f),
@@ -45,13 +46,17 @@ public unsafe class ActionHighlight : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        onAntsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
-        onAntsHook?.Enable();
+        await Services.Framework.Run(() => {
+            unsafe {
+                onAntsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
+                onAntsHook?.Enable();
+            }
+        });
 
         CacheActions();
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         onAntsHook?.Dispose();
         onAntsHook = null;
 
@@ -59,9 +64,11 @@ public unsafe class ActionHighlight : GameModification {
         configWindow = null;
 
         cachedActions = null;
+
+        return Task.CompletedTask;
     }
 
-    private bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {
+    private unsafe bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {
         if (Services.ObjectTable.LocalPlayer is not { Level: var playerLevel, GameObjectId: var playerId }) return false;
         if (config is null) return false;
         if (cachedActions is null) return false;

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -30,7 +31,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
 
     public override string ImageName => "MissingJobStone.png";
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         contentsFinderController = new AddonController<AddonContentsFinder> {
             AddonName = "ContentsFinder",
             OnSetup = SetupContentsFinder,
@@ -39,11 +40,15 @@ public unsafe class MissingJobStoneLockout : GameModification {
             OnFinalize = FinalizeContentsFinder,
         };
         contentsFinderController.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         contentsFinderController?.Dispose();
         contentsFinderController = null;
+
+        return Task.CompletedTask;
     }
 
     private void SetupContentsFinder(AddonContentsFinder* addon) {

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Dalamud.Game.Config;
 using Dalamud.Game.Gui.ContextMenu;
 using VanillaPlus.Classes;
@@ -21,11 +22,17 @@ public class PetSizeContextMenu : GameModification {
 
     public override string ImageName => "PetSizeContextMenu.png";
 
-    public override void OnEnableAsync()
-        => Services.ContextMenu.OnMenuOpened += OnMenuOpened;
+    public override Task OnEnableAsync() {
+        Services.ContextMenu.OnMenuOpened += OnMenuOpened;
 
-    public override void OnDisableAsync()
-        => Services.ContextMenu.OnMenuOpened -= OnMenuOpened;
+        return Task.CompletedTask;
+    }
+
+    public override Task OnDisableAsync() {
+        Services.ContextMenu.OnMenuOpened -= OnMenuOpened;
+
+        return Task.CompletedTask;
+    }
 
     private void OnMenuOpened(IMenuOpenedArgs args) {
         if (args is not { MenuType: ContextMenuType.Default }) return;

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Overlay.UiOverlay;
@@ -12,7 +13,7 @@ using VanillaPlus.Features.CurrencyOverlay.Nodes;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 
-public unsafe class CurrencyOverlay : GameModification {
+public class CurrencyOverlay : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_CurrencyOverlay,
         Description = Strings.ModificationDescription_CurrencyOverlay,
@@ -29,10 +30,10 @@ public unsafe class CurrencyOverlay : GameModification {
     private OverlayController? overlayController;
     private List<CurrencyOverlayNode>? currencyNodes;
 
-    public override void OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         currencyNodes = [];
 
-        config = CurrencyOverlayConfig.Load();
+        config = await CurrencyOverlayConfig.Load();
 
         overlayController = new OverlayController();
 
@@ -51,7 +52,7 @@ public unsafe class CurrencyOverlay : GameModification {
             ItemComparer = CurrencySetting.Comparison,
             IsSearchMatch = CurrencySetting.IsMatch,
 
-            EditCompleted = _ => config.Save(),
+            EditCompleted = _ => Task.Run(config.Save),
 
             AddClicked = listNode => {
                 itemSearchAddon.SelectionResult = searchResult => {
@@ -60,7 +61,7 @@ public unsafe class CurrencyOverlay : GameModification {
                     };
 
                     config.Currencies.Add(newCurrencyOption);
-                    config.Save();
+                    Task.Run(config.Save);
                     listNode.RefreshList();
                     listNode.SelectItem(newCurrencyOption);
 
@@ -79,13 +80,13 @@ public unsafe class CurrencyOverlay : GameModification {
                 }
 
                 config.Currencies.Remove(setting);
-                config.Save();
+                Task.Run(config.Save);
             },
         };
 
         OpenConfigAction = configAddon.Toggle;
 
-        Services.Framework.RunOnFrameworkThread(AddOverlayNodes);
+        await Services.Framework.Run(AddOverlayNodes);
     }
 
     private void AddOverlayNodes() {
@@ -100,7 +101,7 @@ public unsafe class CurrencyOverlay : GameModification {
         }
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         overlayController?.Dispose();
         overlayController = null;
 
@@ -114,9 +115,11 @@ public unsafe class CurrencyOverlay : GameModification {
 
         currencyNodes?.Clear();
         currencyNodes = null;
+
+        return Task.CompletedTask;
     }
 
-    private CurrencyOverlayNode BuildCurrencyNode(CurrencySetting setting) {
+    private unsafe CurrencyOverlayNode BuildCurrencyNode(CurrencySetting setting) {
         var newCurrencyNode = new CurrencyOverlayNode {
             Size = new Vector2(164.0f, 36.0f),
             Currency = setting,

@@ -1,4 +1,5 @@
-﻿using VanillaPlus.Classes;
+﻿using System.Threading.Tasks;
+using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.PartyFinderPresets;
@@ -21,14 +22,14 @@ public class PartyFinderPresets : GameModification {
 
     private PartyFinderPresetConfig? config;
 
-    public override void OnEnableAsync() {
-        config = PartyFinderPresetConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await PartyFinderPresetConfig.Load();
 
         mainWindowController = new MainWindowController(config);
         recruitmentWindowController = new RecruitmentWindowController(config);
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         mainWindowController?.Dispose();
         mainWindowController = null;
 
@@ -36,5 +37,7 @@ public class PartyFinderPresets : GameModification {
         recruitmentWindowController = null;
 
         config = null;
+
+        return Task.CompletedTask;
     }
 }

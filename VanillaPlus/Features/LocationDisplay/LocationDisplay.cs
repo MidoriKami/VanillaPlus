@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text;
 using Dalamud.Plugin.Services;
@@ -11,7 +12,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.LocationDisplay;
 
-public unsafe class LocationDisplay : GameModification {
+public class LocationDisplay : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_LocationDisplay,
         Description = Strings.ModificationDescription_LocationDisplay,
@@ -36,16 +37,16 @@ public unsafe class LocationDisplay : GameModification {
     private uint lastTerritory;
     private bool locationChanged;
 
-    private static TerritoryInfo* AreaInfo => TerritoryInfo.Instance();
-    private static HousingManager* HousingInfo => HousingManager.Instance();
+    private static unsafe TerritoryInfo* AreaInfo => TerritoryInfo.Instance();
+    private static unsafe HousingManager* HousingInfo => HousingManager.Instance();
 
     private LocationDisplayConfig? config;
     private LocationDisplayConfigAddon? configWindow;
 
     public override string ImageName => "LocationDisplay.png";
 
-    public override void OnEnableAsync() {
-        config = LocationDisplayConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await LocationDisplayConfig.Load();
 
         configWindow = new LocationDisplayConfigAddon {
             InternalName = "LocationDisplayConfig",
@@ -66,7 +67,7 @@ public unsafe class LocationDisplay : GameModification {
         Services.ClientState.TerritoryChanged += OnZoneChange;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         configWindow?.Dispose();
         configWindow = null;
 
@@ -77,6 +78,8 @@ public unsafe class LocationDisplay : GameModification {
         dtrBarEntry = null;
 
         config = null;
+
+        return Task.CompletedTask;
     }
 
     private void OnZoneChange(uint u)
@@ -123,7 +126,7 @@ public unsafe class LocationDisplay : GameModification {
         _ => string.Empty,
     };
 
-    private string FormatString(string inputFormat) {
+    private unsafe string FormatString(string inputFormat) {
         if (config is null) return string.Empty;
 
         try {
@@ -180,7 +183,7 @@ public unsafe class LocationDisplay : GameModification {
         }
     }
 
-    private void UpdateInstanceId() {
+    private unsafe void UpdateInstanceId() {
         if (lastInstanceId != UIState.Instance()->PublicInstance.InstanceId) {
             lastInstanceId = UIState.Instance()->PublicInstance.InstanceId;
 
@@ -188,7 +191,7 @@ public unsafe class LocationDisplay : GameModification {
         }
     }
 
-    private void UpdateSubArea() {
+    private unsafe void UpdateSubArea() {
         if (lastSubArea != AreaInfo->SubAreaPlaceNameId) {
             lastSubArea = AreaInfo->SubAreaPlaceNameId;
             currentSubArea = GetPlaceName(AreaInfo->SubAreaPlaceNameId);
@@ -196,7 +199,7 @@ public unsafe class LocationDisplay : GameModification {
         }
     }
 
-    private void UpdateRegion() {
+    private unsafe void UpdateRegion() {
         if (lastRegion != AreaInfo->AreaPlaceNameId) {
             lastRegion = AreaInfo->AreaPlaceNameId;
             currentRegion = GetPlaceName(AreaInfo->AreaPlaceNameId);
@@ -204,7 +207,7 @@ public unsafe class LocationDisplay : GameModification {
         }
     }
 
-    private void UpdateHousing() {
+    private unsafe void UpdateHousing() {
         if (HousingInfo is null || HousingInfo->CurrentTerritory is null) {
             currentWard = null;
             return;
@@ -219,7 +222,7 @@ public unsafe class LocationDisplay : GameModification {
         }
     }
 
-    private void UpdatePreciseHousing() {
+    private unsafe void UpdatePreciseHousing() {
         if (HousingInfo is null) {
             currentWard = null;
             return;
@@ -240,7 +243,7 @@ public unsafe class LocationDisplay : GameModification {
         }
     }
 
-    private string GetCurrentHouseAddress() {
+    private unsafe string GetCurrentHouseAddress() {
         var housingManager = HousingManager.Instance();
         if (housingManager == null) return string.Empty;
         var strings = new List<string>();
@@ -277,7 +280,7 @@ public unsafe class LocationDisplay : GameModification {
     private static PlaceName GetPlaceName(uint row)
         => Services.DataManager.GetExcelSheet<PlaceName>().GetRow(row);
 
-    private static TerritoryType GetCurrentTerritory() {
+    private static unsafe TerritoryType GetCurrentTerritory() {
         if (HousingInfo is not null && HousingInfo->IsInside()) {
             return Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(HousingManager.GetOriginalHouseTerritoryTypeId());
         }

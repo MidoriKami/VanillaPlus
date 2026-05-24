@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.Config;
+﻿using System.Threading.Tasks;
+using Dalamud.Game.Config;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -21,7 +22,7 @@ public class ArmourySearchBar : GameModification {
 
     public override string ImageName => "ArmourySearchBar.png";
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         armouryInventoryController = new InventorySearchAddonController("ArmouryBoard");
 
         armouryInventoryController.PreSearch += searchString => {
@@ -40,10 +41,14 @@ public class ArmourySearchBar : GameModification {
                 searchStarted = false;
             }
         };
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         armouryInventoryController?.Dispose();
         armouryInventoryController = null;
+
+        return Task.CompletedTask;
     }
 }

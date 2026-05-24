@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using KamiToolKit.Overlay.MapOverlay;
 using VanillaPlus.Classes;
@@ -6,7 +7,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ShowGatheringPoints;
 
-public unsafe class ShowGatheringPoints : GameModification {
+public class ShowGatheringPoints : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_ShowGatheringPoints,
         Description = Strings.ModificationDescription_ShowGatheringPoints,
@@ -20,22 +21,24 @@ public unsafe class ShowGatheringPoints : GameModification {
 
     private MapOverlayController? mapOverlayController;
 
-    public override void OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         mapOverlayController = new MapOverlayController();
+
+        await Services.Framework.Run(() => {
+            unsafe {
+                foreach (var index in Enumerable.Range(0, EventObjectManager.Instance()->EventObjects.Length)) {
+                    mapOverlayController.AddMarker(new GatheringPointMapMarker {
+                        ObjectIndex = index,
+                    });
+                }
+            }
+        });
     }
 
-    public override void OnEnableMainThreaded() {
-        if (mapOverlayController is null) return;
-
-        foreach (var index in Enumerable.Range(0, EventObjectManager.Instance()->EventObjects.Length)) {
-            mapOverlayController.AddMarker(new GatheringPointMapMarker {
-                ObjectIndex = index,
-            });
-        }
-    }
-
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         mapOverlayController?.Dispose();
         mapOverlayController = null;
+
+        return Task.CompletedTask;
     }
 }

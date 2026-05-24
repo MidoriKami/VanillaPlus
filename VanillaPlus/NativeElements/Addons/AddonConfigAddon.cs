@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Classes;
@@ -110,7 +111,7 @@ public class AddonConfigAddon : NativeAddon {
             Value = (int)AddonConfig.WindowSize.X,
             OnValueUpdate = newValue => {
                 AddonConfig.WindowSize = new Vector2(newValue, AddonConfig.WindowSize.Y);
-                AddonConfig.Save();
+                Task.Run(AddonConfig.Save);
             },
         };
         widthInputNode.AttachNode(windowSizeGridNode[0, 1]);
@@ -121,7 +122,7 @@ public class AddonConfigAddon : NativeAddon {
             Value = (int)AddonConfig.WindowSize.Y,
             OnValueUpdate = newValue => {
                 AddonConfig.WindowSize = new Vector2(AddonConfig.WindowSize.X, newValue);
-                AddonConfig.Save();
+                Task.Run(AddonConfig.Save);
             },
         };
         heightInputNode.AttachNode(windowSizeGridNode[1, 1]);
@@ -153,7 +154,7 @@ public class AddonConfigAddon : NativeAddon {
             IsChecked = AddonConfig.DisableInCombat,
             OnClick = newValue => {
                 AddonConfig.DisableInCombat = newValue;
-                AddonConfig.Save();
+                Task.Run(AddonConfig.Save);
             },
         }.AttachNode(this);
     }
@@ -170,13 +171,12 @@ public class AddonConfigAddon : NativeAddon {
         AddonConfig.KeybindEnabled = !AddonConfig.KeybindEnabled;
         keybindEnableButtonNode.String = AddonConfig.KeybindEnabled ? Strings.Common_Disable : Strings.Common_Enable;
         keybindTextNode.MultiplyColor = AddonConfig.KeybindEnabled ? new Vector3(1.0f, 1.0f, 1.0f) : new Vector3(0.5f, 0.5f, 0.5f);
-
-        AddonConfig.Save();
+        Task.Run(AddonConfig.Save);
     }
 
     private void OnKeybindChanged(Keybind newKeybind) {
         AddonConfig.Keybind = newKeybind;
-        AddonConfig.Save();
+        Task.Run(AddonConfig.Save);
 
         keybindTextNode?.String = AddonConfig.Keybind.ToString();
     }

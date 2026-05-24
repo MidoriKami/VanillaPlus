@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Threading.Tasks;
 using Dalamud.Interface;
 using KamiToolKit.Overlay.UiOverlay;
 using VanillaPlus.Classes;
@@ -22,8 +23,8 @@ public class BetterCursor : GameModification {
 
     public override string ImageName => "BetterCursor.png";
 
-    public override void OnEnableAsync() {
-        config = BetterCursorConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await BetterCursorConfig.Load();
 
         configWindow = new ConfigAddon {
             InternalName = "BetterCursorConfig",
@@ -54,7 +55,7 @@ public class BetterCursor : GameModification {
         });
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         overlayController?.Dispose();
         overlayController = null;
 
@@ -62,5 +63,7 @@ public class BetterCursor : GameModification {
         configWindow = null;
 
         config = null;
+
+        return Task.CompletedTask;
     }
 }

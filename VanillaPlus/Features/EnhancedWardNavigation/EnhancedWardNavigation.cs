@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -24,7 +25,7 @@ public unsafe class EnhancedWardNavigation : GameModification {
     private TextButtonNode? nextWardButtonNode;
     private int currentWard;
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         housingAddonController = new AddonController {
             AddonName = "HousingSelectBlock",
             OnSetup = SetupHousingSelectBlock,
@@ -32,6 +33,15 @@ public unsafe class EnhancedWardNavigation : GameModification {
             OnRefresh = RefreshHousingSelectBlock,
         };
         housingAddonController.Enable();
+
+        return Task.CompletedTask;
+    }
+
+    public override Task OnDisableAsync() {
+        housingAddonController?.Dispose();
+        housingAddonController = null;
+
+        return Task.CompletedTask;
     }
 
     private void SetupHousingSelectBlock(AtkUnitBase* addon) {
@@ -102,10 +112,5 @@ public unsafe class EnhancedWardNavigation : GameModification {
 
         previousWardButtonNode?.IsEnabled = previousEnabled;
         nextWardButtonNode?.IsEnabled = nextEnabled;
-    }
-
-    public override void OnDisableAsync() {
-        housingAddonController?.Dispose();
-        housingAddonController = null;
     }
 }

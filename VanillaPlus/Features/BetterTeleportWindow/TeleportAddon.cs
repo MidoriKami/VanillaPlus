@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Aetherytes;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -97,7 +98,7 @@ public class TeleportAddon : NativeAddon {
                                     TextTooltip = "Toggle Auto Focus Searchbar",
                                     OnClick = newValue => {
                                         config.AutoFocusSearch = newValue;
-                                        config.Save();
+                                        Task.Run(config.Save);
                                     },
                                 },
                             ],
@@ -209,7 +210,7 @@ public class TeleportAddon : NativeAddon {
         targetNode.IsSelected = true;
         currentMode = premadeOption;
         config.LastListMode = currentMode;
-        config.Save();
+        Task.Run(config.Save);
 
         textInputNode?.String = string.Empty;
         OnSearchBoxInputReceived(string.Empty);

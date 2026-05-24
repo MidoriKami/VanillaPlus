@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
@@ -8,7 +9,7 @@ using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.FasterScroll;
 
-public unsafe class FasterScroll : GameModification {
+public class FasterScroll : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_FasterScroll,
         Description = Strings.ModificationDescription_FasterScroll,
@@ -21,8 +22,8 @@ public unsafe class FasterScroll : GameModification {
     private FasterScrollConfig? config;
     private ConfigAddon? configWindow;
 
-    public override void OnEnableAsync() {
-        config = FasterScrollConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await FasterScrollConfig.Load();
 
         configWindow = new ConfigAddon {
             Size = new Vector2(400.0f, 125.0f),
@@ -36,11 +37,13 @@ public unsafe class FasterScroll : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        scrollBarReceiveEventHook = Services.Hooker.HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
-        scrollBarReceiveEventHook?.Enable();
+        unsafe {
+            scrollBarReceiveEventHook = Services.Hooker.HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
+            scrollBarReceiveEventHook?.Enable();
+        }
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         scrollBarReceiveEventHook?.Dispose();
         scrollBarReceiveEventHook = null;
 
@@ -48,9 +51,11 @@ public unsafe class FasterScroll : GameModification {
         configWindow = null;
 
         config = null;
+
+        return Task.CompletedTask;
     }
 
-    private void AtkComponentScrollBarReceiveEvent(AtkComponentScrollBar* thisPtr, AtkEventType type, int param, AtkEvent* eventPointer, AtkEventData* dataPointer) {
+    private unsafe void AtkComponentScrollBarReceiveEvent(AtkComponentScrollBar* thisPtr, AtkEventType type, int param, AtkEvent* eventPointer, AtkEventData* dataPointer) {
         try {
             if (config is null) {
                 scrollBarReceiveEventHook!.Original(thisPtr, type, param, eventPointer, dataPointer);

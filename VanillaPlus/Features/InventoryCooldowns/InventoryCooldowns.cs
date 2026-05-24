@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -13,7 +14,7 @@ using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.InventoryCooldowns;
 
-public unsafe class InventoryCooldowns : GameModification {
+public class InventoryCooldowns : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_InventoryCooldowns,
         Description = Strings.ModificationDescription_InventoryCooldowns,
@@ -28,19 +29,26 @@ public unsafe class InventoryCooldowns : GameModification {
 
     private MultiAddonController? controller;
 
-    public override void OnEnableAsync() {
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, ["InventoryExpansion", "InventoryLarge", "Inventory"], OnPostReceiveEvent);
+    public override async Task OnEnableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, ["InventoryExpansion", "InventoryLarge", "Inventory"], OnPostReceiveEvent);
+        });
 
-        controller = new MultiAddonController {
-            AddonNames = ["InventoryExpansion", "InventoryLarge", "Inventory"],
-            OnUpdate = UpdateInventory,
-            OnFinalize = FinalizeInventory,
-        };
-        controller.Enable();
+        unsafe {
+            controller = new MultiAddonController {
+                AddonNames = ["InventoryExpansion", "InventoryLarge", "Inventory"],
+                OnUpdate = UpdateInventory,
+                OnFinalize = FinalizeInventory,
+            };
+            controller.Enable();
+        }
     }
 
-    public override void OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnPostReceiveEvent);
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.UnregisterListener(OnPostReceiveEvent);
+        });
+
         controller?.Dispose();
         controller = null;
     }
@@ -55,7 +63,7 @@ public unsafe class InventoryCooldowns : GameModification {
         }
     }
 
-    private void OnPostReceiveEvent(AddonEvent type, AddonArgs args) {
+    private unsafe void OnPostReceiveEvent(AddonEvent type, AddonArgs args) {
         if (args is not AddonReceiveEventArgs { EventType: AtkEventType.ChildAddonAttached } receiveEventArgs)
             return;
 
@@ -97,7 +105,7 @@ public unsafe class InventoryCooldowns : GameModification {
         }
     }
 
-    private void UpdateInventory(AtkUnitBase* addon) {
+    private unsafe void UpdateInventory(AtkUnitBase* addon) {
         var inventorySorter = Inventory.GetSorterForInventory(addon);
 
         foreach (var childAddon in Inventory.GetInventoryAddons(addon)) {
@@ -122,7 +130,7 @@ public unsafe class InventoryCooldowns : GameModification {
         }
     }
 
-    private void FinalizeInventory(AtkUnitBase* addon) {
+    private unsafe void FinalizeInventory(AtkUnitBase* addon) {
         foreach (var childAddon in Inventory.GetInventoryAddons(addon)) {
             if (!IsAllowedChildAddon(childAddon))
                 continue;
@@ -137,6 +145,6 @@ public unsafe class InventoryCooldowns : GameModification {
         }
     }
 
-    private static bool IsAllowedChildAddon(AtkUnitBase* addon)
+    private static unsafe bool IsAllowedChildAddon(AtkUnitBase* addon)
         => !addon->Name.StartsWith("InventoryEvent"u8);
 }

@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
@@ -31,7 +32,7 @@ public unsafe class HUDPresets : GameModification {
 
     private RenameAddon? renameAddon;
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         renameAddon = new RenameAddon {
             Size = new Vector2(250.0f, 150.0f),
             InternalName = "PresetNameWindow",
@@ -46,6 +47,18 @@ public unsafe class HUDPresets : GameModification {
             OnFinalize = FinalizeHudLayoutWindow,
         };
         hudLayoutController.Enable();
+
+        return Task.CompletedTask;
+    }
+
+    public override Task OnDisableAsync() {
+        renameAddon?.Dispose();
+        renameAddon = null;
+
+        hudLayoutController?.Dispose();
+        hudLayoutController = null;
+
+        return Task.CompletedTask;
     }
 
     private void SetupHudLayoutWindow(AtkUnitBase* addon) {
@@ -151,14 +164,6 @@ public unsafe class HUDPresets : GameModification {
 
         labelNode?.Dispose();
         labelNode = null;
-    }
-
-    public override void OnDisableAsync() {
-        renameAddon?.Dispose();
-        renameAddon = null;
-
-        hudLayoutController?.Dispose();
-        hudLayoutController = null;
     }
 
     private void LoadPreset() {

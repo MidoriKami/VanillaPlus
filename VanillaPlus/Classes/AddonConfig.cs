@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Classes;
@@ -6,16 +7,16 @@ namespace VanillaPlus.Classes;
 public class AddonConfig {
     private string fileName = null!;
 
-    public static AddonConfig Load(string fileName) {
-        var loadedConfig = Config.LoadConfig<AddonConfig>(fileName);
+    public static async Task<AddonConfig> Load(string fileName) {
+        var loadedConfig = await Config.LoadConfig<AddonConfig>(fileName);
         loadedConfig.fileName = fileName;
 
         return loadedConfig;
     }
 
-    public void Save() {
+    public async Task Save() {
         if (fileName.IsNullOrEmpty()) return;
-        Config.SaveConfig(this, fileName);
+        await Config.SaveConfig(this, fileName);
     }
 
     public Vector2 WindowSize = Vector2.Zero;

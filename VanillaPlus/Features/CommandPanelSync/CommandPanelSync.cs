@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+﻿using System.Threading.Tasks;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Utilities;
@@ -15,22 +16,26 @@ public unsafe class CommandPanelSync : GameModification {
 
     private const int CurrentVersion = 2;
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         Services.ClientState.Login += OnLogin;
         Services.ClientState.Logout += OnLogout;
 
         if (Services.ClientState.IsLoggedIn) {
             ApplySharedQuickPanel();
         }
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         Services.ClientState.Login -= OnLogin;
         Services.ClientState.Logout -= OnLogout;
 
         if (Services.ClientState.IsLoggedIn) {
             RestoreOriginalQuickPanel();
         }
+
+        return Task.CompletedTask;
     }
 
     private static void OnLogin()

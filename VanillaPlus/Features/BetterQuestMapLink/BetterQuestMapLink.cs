@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.Sheets;
@@ -19,14 +20,18 @@ public unsafe class BetterQuestMapLink : GameModification {
 
     private Hook<AgentMap.Delegates.OpenMap>? openMapHook;
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         openMapHook = Services.Hooker.HookFromAddress<AgentMap.Delegates.OpenMap>(AgentMap.MemberFunctionPointers.OpenMap, OnOpenMap);
         openMapHook?.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         openMapHook?.Dispose();
         openMapHook = null;
+
+        return Task.CompletedTask;
     }
 
     private void OnOpenMap(AgentMap* agent, OpenMapInfo* data) {

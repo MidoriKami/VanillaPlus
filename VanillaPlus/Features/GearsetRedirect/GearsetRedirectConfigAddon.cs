@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
@@ -108,7 +109,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
                         Config.Redirections[gearsetListNode.SelectedOption.GearsetId].Add(redirectInfo);
                     }
 
-                    Config.Save();
+                    Task.Run(Config.Save);
                     redirectListNode?.RefreshList();
                 };
 
@@ -118,7 +119,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
                 if (gearsetListNode?.SelectedOption is null) return;
 
                 Config.Redirections[gearsetListNode.SelectedOption.GearsetId].Remove(entry);
-                Config.Save();
+                Task.Run(Config.Save);
             },
             IsSearchMatch = RedirectInfo.IsMatch,
         };
@@ -156,14 +157,14 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
 
     private void OnRemoveEntry(GearsetInfo obj) {
         Config.Redirections.Remove(obj.GearsetId);
-        Config.Save();
+        Task.Run(Config.Save);
     }
 
     private void OnAddEntry() {
         gearsetSearchAddon.SelectionResult = result => {
             if (Config.Redirections.TryAdd(result.Id, [])) {
                 gearsetListNode?.Options = GetConfigInfos();
-                Config.Save();
+                Task.Run(Config.Save);
             }
         };
 
@@ -192,7 +193,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         }
 
         if (invalidGearsets.Count is not 0) {
-            Config.Save();
+            Task.Run(Config.Save);
         }
 
         return gearsets;

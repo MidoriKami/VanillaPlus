@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using KamiToolKit;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -19,7 +20,7 @@ public class DebugCustomAddon : GameModification {
 
     private NativeAddon? debugAddon;
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         debugAddon = new DebugAddon {
             InternalName = "DebugAddon",
             Title = Strings.DebugCustomAddon_Title,
@@ -29,11 +30,15 @@ public class DebugCustomAddon : GameModification {
         debugAddon.DebugOpen();
 
         OpenConfigAction = debugAddon.Toggle;
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         debugAddon?.Dispose();
         debugAddon = null;
+
+        return Task.CompletedTask;
     }
 }
 #endif

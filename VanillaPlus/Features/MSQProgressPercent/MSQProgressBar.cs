@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -16,7 +17,7 @@ using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.MSQProgressPercent;
 
-public unsafe class MSQProgressBar : GameModification {
+public class MSQProgressBar : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.MSQProgressBar_DisplayName,
         Description = Strings.MSQProgressBar_Description,
@@ -33,8 +34,8 @@ public unsafe class MSQProgressBar : GameModification {
     private MSQProgressBarConfig? config;
     private ConfigAddon? configAddon;
 
-    public override void OnEnableAsync() {
-        config = MSQProgressBarConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await MSQProgressBarConfig.Load();
 
         expansionRanges = [];
 
@@ -65,17 +66,18 @@ public unsafe class MSQProgressBar : GameModification {
             .AddColorEdit(Strings.MSQProgressBar_LabelBarColor, nameof(config.BarColor), KnownColor.White.Vector());
 
         OpenConfigAction = configAddon.Toggle;
-
-        scenarioTreeAddonController = new AddonController {
-            AddonName = "ScenarioTree",
-            OnSetup = ScenarioTreeSetup,
-            OnUpdate = ScenarioTreeUpdate,
-            OnFinalize = ScenarioTreeFinalize,
-        };
-        scenarioTreeAddonController.Enable();
+        unsafe {
+            scenarioTreeAddonController = new AddonController {
+                AddonName = "ScenarioTree",
+                OnSetup = ScenarioTreeSetup,
+                OnUpdate = ScenarioTreeUpdate,
+                OnFinalize = ScenarioTreeFinalize,
+            };
+            scenarioTreeAddonController.Enable();
+        }
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         scenarioTreeAddonController?.Dispose();
         scenarioTreeAddonController = null;
 
@@ -86,9 +88,11 @@ public unsafe class MSQProgressBar : GameModification {
         configAddon = null;
 
         config = null;
+
+        return Task.CompletedTask;
     }
 
-    private void ScenarioTreeSetup(AtkUnitBase* addon) {
+    private unsafe void ScenarioTreeSetup(AtkUnitBase* addon) {
         var targetPositioningNode = addon->GetNodeById<AtkComponentNode>(13);
         var msqTextNode = targetPositioningNode->SearchNodeById<AtkTextNode>(6);
 
@@ -98,7 +102,7 @@ public unsafe class MSQProgressBar : GameModification {
         progressBarNode.AttachNode(msqTextNode, NodePosition.BeforeTarget);
     }
 
-    private void ScenarioTreeUpdate(AtkUnitBase* addon) {
+    private unsafe void ScenarioTreeUpdate(AtkUnitBase* addon) {
         if (expansionRanges is null) return;
         if (config is null) return;
         if (addon->AtkValuesCount < 7) return;
@@ -133,7 +137,7 @@ public unsafe class MSQProgressBar : GameModification {
         progressBarNode?.Alpha = config.BarColor.W;
     }
 
-    private void ScenarioTreeFinalize(AtkUnitBase* _) {
+    private unsafe void ScenarioTreeFinalize(AtkUnitBase* _) {
         progressBarNode?.Dispose();
         progressBarNode = null;
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using KamiToolKit.Classes;
@@ -28,7 +29,7 @@ public unsafe class BetterInterruptableCastBars : GameModification {
 
     private Hook<ActionManager.Delegates.IsActionHighlighted>? antsHook;
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         antsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnAntsCheck);
         antsHook?.Enable();
 
@@ -67,14 +68,18 @@ public unsafe class BetterInterruptableCastBars : GameModification {
             },
         };
         targetInfoCastbarController.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         targetInfoCastbarController?.Dispose();
         targetInfoCastbarController = null;
 
         antsHook?.Dispose();
         antsHook = null;
+
+        return Task.CompletedTask;
     }
 
     private bool OnAntsCheck(ActionManager* thisPtr, ActionType actionType, uint actionId) {

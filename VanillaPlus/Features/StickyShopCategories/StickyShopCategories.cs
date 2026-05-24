@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -7,7 +8,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.StickyShopCategories;
 
-public unsafe class StickyShopCategories : GameModification {
+public class StickyShopCategories : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_StickyShopCategories,
         Description = Strings.ModificationDescription_StickyShopCategories,
@@ -17,21 +18,28 @@ public unsafe class StickyShopCategories : GameModification {
 
     private StickyShopCategoriesData? config;
 
-    public override void OnEnableAsync() {
-        config = StickyShopCategoriesData.Load();
+    public override async Task OnEnableAsync() {
+        config = await StickyShopCategoriesData.Load();
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "InclusionShop", OnInclusionShopSetup);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, "InclusionShop", OnInclusionShopFinalize);
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "InclusionShop", OnInclusionShopSetup);
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, "InclusionShop", OnInclusionShopFinalize);
+        });
     }
 
-    public override void OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnInclusionShopFinalize, OnInclusionShopSetup);
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.UnregisterListener(OnInclusionShopFinalize, OnInclusionShopSetup);
+        });
 
-        config?.Save();
-        config = null;
+
+        if (config is not null) {
+            await config.Save();
+            config = null;
+        }
     }
 
-    private void OnInclusionShopSetup(AddonEvent type, AddonArgs args) {
+    private unsafe void OnInclusionShopSetup(AddonEvent type, AddonArgs args) {
         if (config is null) return;
 
         var shopId = args.ValueSpan[0].UInt;
@@ -46,7 +54,7 @@ public unsafe class StickyShopCategories : GameModification {
         }
     }
 
-    private void OnInclusionShopFinalize(AddonEvent type, AddonArgs args) {
+    private unsafe void OnInclusionShopFinalize(AddonEvent type, AddonArgs args) {
         if (config is null) return;
 
         var shopId = args.ValueSpan[0].UInt;
@@ -66,12 +74,12 @@ public unsafe class StickyShopCategories : GameModification {
 
         Services.PluginLog.Debug($"Saving Values: {dropDownCategoryIndex}, {dropDownSubCategoryIndex}", "StickyShopCategories");
 
-        config.Save();
+        Task.Run(config.Save);
     }
 
-    private static AtkComponentDropDownList* GetCategoryDropDown(AddonArgs args)
+    private static unsafe AtkComponentDropDownList* GetCategoryDropDown(AddonArgs args)
         => (AtkComponentDropDownList*)args.GetAddon<AtkUnitBase>()->GetComponentByNodeId(7);
 
-    private static AtkComponentDropDownList* GetSubCategoryDropDown(AddonArgs args)
+    private static unsafe AtkComponentDropDownList* GetSubCategoryDropDown(AddonArgs args)
         => (AtkComponentDropDownList*)args.GetAddon<AtkUnitBase>()->GetComponentByNodeId(9);
 }

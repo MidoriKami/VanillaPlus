@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using VanillaPlus.Classes;
@@ -8,7 +9,7 @@ using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.QuickPanelAdjustments;
 
-public unsafe class CommandPanelAdjustments : GameModification {
+public class CommandPanelAdjustments : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.QuickPanelAdjustments_DisplayName,
         Description = Strings.QuickPanelAdjustments_Description,
@@ -22,8 +23,8 @@ public unsafe class CommandPanelAdjustments : GameModification {
     private QuickPanelAdjustmentsConfig? config;
     private ConfigAddon? configWindow;
 
-    public override void OnEnableAsync() {
-        config = QuickPanelAdjustmentsConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await QuickPanelAdjustmentsConfig.Load();
 
         configWindow = new ConfigAddon {
             Size = new Vector2(600.0f, 125.0f),
@@ -41,16 +42,17 @@ public unsafe class CommandPanelAdjustments : GameModification {
             .AddColorEdit(Strings.QuickPanelAdjustments_BackgroundColor, nameof(config.BackgroundColor), new Vector4(1.0f, 1.0f, 1.0f, 25.0f / 255.0f));
 
         OpenConfigAction = configWindow.Toggle;
-
-        quickPanelController = new AddonController {
-            AddonName = "QuickPanel",
-            OnUpdate = UpdateQuickPanel,
-            OnRefresh = UpdateQuickPanel,
-        };
-        quickPanelController.Enable();
+        unsafe {
+            quickPanelController = new AddonController {
+                AddonName = "QuickPanel",
+                OnUpdate = UpdateQuickPanel,
+                OnRefresh = UpdateQuickPanel,
+            };
+            quickPanelController.Enable();
+        }
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         quickPanelController?.Dispose();
         quickPanelController = null;
 
@@ -58,9 +60,11 @@ public unsafe class CommandPanelAdjustments : GameModification {
 
         configWindow?.Dispose();
         configWindow = null;
+
+        return Task.CompletedTask;
     }
 
-    private void UpdateQuickPanel(AtkUnitBase* addon) {
+    private unsafe void UpdateQuickPanel(AtkUnitBase* addon) {
         if (config is null) return;
 
         var windowComponent = addon->GetComponentById<AtkComponentWindow>(45);

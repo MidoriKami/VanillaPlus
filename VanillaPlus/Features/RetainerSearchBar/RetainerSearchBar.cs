@@ -1,4 +1,5 @@
-﻿using VanillaPlus.Classes;
+﻿using System.Threading.Tasks;
+using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.RetainerSearchBar;
@@ -17,12 +18,16 @@ public class RetainerSearchBar : GameModification {
 
     public override string ImageName => "RetainerSearchBar.png";
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         retainerInventoryController = new InventorySearchAddonController("InventoryRetainerLarge", "InventoryRetainer");
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         retainerInventoryController?.Dispose();
         retainerInventoryController = null;
+
+        return Task.CompletedTask;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
@@ -22,7 +23,7 @@ public unsafe class HUDCoordinates : GameModification {
 
     private List<TextNode>? textNodes;
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         textNodes = [];
 
         hudLayoutScreenController = new AddonController {
@@ -68,13 +69,17 @@ public unsafe class HUDCoordinates : GameModification {
             },
         };
         hudLayoutScreenController.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         hudLayoutScreenController?.Dispose();
         hudLayoutScreenController = null;
 
         textNodes?.Clear();
         textNodes = null;
+
+        return Task.CompletedTask;
     }
 }

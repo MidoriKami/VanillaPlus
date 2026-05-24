@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using VanillaPlus.Classes;
@@ -18,14 +19,18 @@ public unsafe class DisableTitleScreenMovie : GameModification {
 
     private Hook<AgentLobby.Delegates.UpdateLobbyUIStage>? updateTitleScreenHook;
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         updateTitleScreenHook = Services.Hooker.HookFromAddress<AgentLobby.Delegates.UpdateLobbyUIStage>(AgentLobby.MemberFunctionPointers.UpdateLobbyUIStage, OnTitleScreenUpdate);
         updateTitleScreenHook?.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         updateTitleScreenHook?.Dispose();
         updateTitleScreenHook = null;
+
+        return Task.CompletedTask;
     }
 
     private void OnTitleScreenUpdate(AgentLobby* thisPtr) {

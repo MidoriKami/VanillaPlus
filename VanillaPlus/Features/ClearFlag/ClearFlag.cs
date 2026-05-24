@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.Addon.Events;
+﻿using System.Threading.Tasks;
+using Dalamud.Game.Addon.Events;
 using Dalamud.Game.Addon.Events.EventDataTypes;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -20,7 +21,7 @@ public unsafe class ClearFlag : GameModification {
     private AddonController? minimapController;
     private IAddonEventHandle? minimapMouseClick;
 
-    public override void OnEnableAsync() {
+    public override Task OnEnableAsync() {
         minimapController = new AddonController {
             AddonName = "_NaviMap",
             OnSetup = addon => {
@@ -41,11 +42,15 @@ public unsafe class ClearFlag : GameModification {
             },
         };
         minimapController.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         minimapController?.Dispose();
         minimapController = null;
+
+        return Task.CompletedTask;
     }
 
     private static void OnMiniMapMouseClick(AddonEventType addonEventType, AddonEventData data) {

@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Threading.Tasks;
 using VanillaPlus.Classes;
 using VanillaPlus.Features.DutyLootPreview.Data;
 using VanillaPlus.Enums;
@@ -21,8 +22,8 @@ public class DutyLootPreview : GameModification {
     private DutyLootInDutyUiController? inDutyUiController;
     private DutyLootPreviewAddon? addonDutyLoot;
 
-    public override void OnEnableAsync() {
-        config = DutyLootPreviewConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await DutyLootPreviewConfig.Load();
 
         dataLoader = new DutyLootDataLoader();
         dataLoader.Enable();
@@ -48,7 +49,7 @@ public class DutyLootPreview : GameModification {
         inDutyUiController.OnEnable();
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         journalUiController?.OnDisable();
         journalUiController = null;
 
@@ -62,5 +63,7 @@ public class DutyLootPreview : GameModification {
         dataLoader = null;
 
         config = null;
+
+        return Task.CompletedTask;
     }
 }

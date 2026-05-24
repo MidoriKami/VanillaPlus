@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using KamiToolKit.Overlay.MapOverlay;
 using Lumina.Excel.Sheets;
+using Lumina.Extensions;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -20,31 +22,40 @@ public class ShowAetherCurrents : GameModification {
 
     private MapOverlayController? mapOverlayController;
 
-    public override void OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         mapOverlayController = new MapOverlayController();
-    }
 
-    public override void OnEnableMainThreaded() {
-        if (mapOverlayController is null) return;
+        List<AetherCurrentInfo> aetherCurrentInfos = [];
 
-        var aetherCurrents = Services.DataManager
-            .GetExcelSheet<AetherCurrentCompFlgSet>()
-            .SelectMany(currentSet => currentSet.AetherCurrents);
+        foreach (var currentFlagSet in Services.DataManager.GetExcelSheet<AetherCurrentCompFlgSet>()) {
+            foreach (var aetherCurrent in currentFlagSet.AetherCurrents) {
+                if (aetherCurrent is not { IsValid: true, Value.Quest.IsValid: true }) continue;
 
-        foreach (var aetherCurrent in aetherCurrents) {
-            if (!aetherCurrent.IsValid) continue;
+                if (!Services.DataManager.GetExcelSheet<EObj>().TryGetFirst(rowObject => rowObject.Data.RowId == aetherCurrent.RowId, out var eventObject)) continue;
+                if (!Services.DataManager.GetExcelSheet<Level>().TryGetFirst(rowObject => rowObject.Object.RowId == eventObject.RowId, out var level)) continue;
 
-            // Skip any aether currents that require quests as they don't need to be shown on the map.
-            if (aetherCurrent.Value.Quest.IsValid) continue;
-
-            mapOverlayController.AddMarker(new AetherCurrentMapMarker {
-                AetherCurrent = aetherCurrent,
-            });
+                aetherCurrentInfos.Add(new AetherCurrentInfo {
+                    RowData = aetherCurrent,
+                    LevelData = level,
+                });
+            }
         }
+
+        await Services.Framework.Run(() => {
+            foreach (var aetherCurrent in aetherCurrentInfos) {
+                mapOverlayController.AddMarker(new AetherCurrentMapMarker {
+                    AetherCurrent = aetherCurrent.RowData,
+                    MapId = aetherCurrent.MapId,
+                    Position = aetherCurrent.Position,
+                });
+            }
+        });
     }
 
-    public override void OnDisableAsync() {
+    public override Task OnDisableAsync() {
         mapOverlayController?.Dispose();
         mapOverlayController = null;
+
+        return Task.CompletedTask;
     }
 }
