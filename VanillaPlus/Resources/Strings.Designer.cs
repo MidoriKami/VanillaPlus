@@ -1983,6 +1983,15 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Make your aetherwells fill up as you fill them.
+        /// </summary>
+        internal static string ModificationDescription_AetherwellProgress {
+            get {
+                return ResourceManager.GetString("ModificationDescription_AetherwellProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adds a search bar to the armoury window..
         /// </summary>
         internal static string ModificationDescription_ArmourySearchBar {
@@ -2636,6 +2645,15 @@ namespace VanillaPlus.Resources {
         internal static string ModificationDescription_WondrousTailsProbabilities {
             get {
                 return ResourceManager.GetString("ModificationDescription_WondrousTailsProbabilities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aetherwell Progress.
+        /// </summary>
+        internal static string ModificationDisplay_AetherwellProgress {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_AetherwellProgress", resourceCulture);
             }
         }
         

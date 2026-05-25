@@ -1566,4 +1566,10 @@ ID: {0}</value>
   <data name="ModificationDescription_SkipLoginConfirm" xml:space="preserve">
     <value>Skips the confirmation window that appears when logging in.</value>
   </data>
+  <data name="ModificationDisplay_AetherwellProgress" xml:space="preserve">
+      <value>Aetherwell Progress</value>
+  </data>
+  <data name="ModificationDescription_AetherwellProgress" xml:space="preserve">
+      <value>Make your aetherwells fill up as you fill them</value>
+  </data>
 </root>
