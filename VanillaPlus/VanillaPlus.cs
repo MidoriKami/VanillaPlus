@@ -77,6 +77,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
         Services.CommandManager.RemoveHandler("/vanillaplus");
         Services.PluginInterface.LanguageChanged -= SetCultureInfo;
 
+        // If the game is unloading, then it's probably already deallocated everything that we've done =D
         if (!Services.Framework.IsFrameworkUnloading) {
             await System.ModificationBrowserAddon.DisposeAsync();
             await System.SeasonEventAddon.DisposeAsync();
