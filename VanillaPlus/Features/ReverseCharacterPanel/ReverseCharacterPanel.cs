@@ -7,7 +7,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ReverseCharacterPanel;
 
-public unsafe class ReverseCharacterPanel : GameModification {
+public class ReverseCharacterPanel : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_ReverseCharacterPanel,
         Description = Strings.ModificationDescription_ReverseCharacterPanel,
@@ -19,33 +19,34 @@ public unsafe class ReverseCharacterPanel : GameModification {
 
     private AddonController<AddonCharacter>? characterController;
 
-    public override Task OnEnableAsync() {
-        characterController = new AddonController<AddonCharacter> {
-            AddonName = "Character",
-            OnSetup = SetupCharacter,
-            OnPreUpdate = UpdateCharacter,
-            OnFinalize = FinalizeCharacter,
-        };
-        characterController.Enable();
+    public override async Task OnEnableAsync() {
+        unsafe {
+            characterController = new AddonController<AddonCharacter> {
+                AddonName = "Character",
+                OnSetup = SetupCharacter,
+                OnPreUpdate = UpdateCharacter,
+                OnFinalize = FinalizeCharacter,
+            };
+        }
 
-        return Task.CompletedTask;
+        await characterController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        characterController?.Dispose();
-        characterController = null;
-
-        return Task.CompletedTask;
+    public override async Task OnDisableAsync() {
+        if (characterController is not null) {
+            await characterController.DisableAsync();
+            characterController = null;
+        }
     }
 
-    private static void SetupCharacter(AddonCharacter* addonCharacter) {
+    private static unsafe void SetupCharacter(AddonCharacter* addonCharacter) {
         var characterNode = addonCharacter->GetNodeById(10);
         if (characterNode is null) return;
 
         characterNode->Position -= new Vector2(380.0f, 0.0f);
     }
 
-    private static void UpdateCharacter(AddonCharacter* addonCharacter) {
+    private static unsafe void UpdateCharacter(AddonCharacter* addonCharacter) {
         foreach (var child in addonCharacter->AddonControl.ChildAddons) {
             if (child.Value is null) continue;
 
@@ -53,7 +54,7 @@ public unsafe class ReverseCharacterPanel : GameModification {
         }
     }
 
-    private static void FinalizeCharacter(AddonCharacter* addonCharacter) {
+    private static unsafe void FinalizeCharacter(AddonCharacter* addonCharacter) {
         var characterNode = addonCharacter->GetNodeById(10);
         if (characterNode is null) return;
 

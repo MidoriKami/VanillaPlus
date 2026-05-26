@@ -46,23 +46,28 @@ public class LockChatButton : GameModification {
                 OnPreUpdate = UpdateChatLog,
                 OnFinalize = FinalizeChatLog,
             };
-            chatLogController.Enable();
 
             panelController = new MultiAddonController<AddonChatLogPanel> {
                 AddonNames = ["ChatLogPanel_1", "ChatLogPanel_2", "ChatLogPanel_3"],
                 OnSetup = SetupChatLogPanel,
                 OnFinalize = FinalizeChatLogPanel,
             };
-            panelController.Enable();
         }
+
+        await chatLogController.EnableAsync();
+        await panelController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        chatLogController?.Dispose();
-        chatLogController = null;
+        if (chatLogController is not null) {
+            await chatLogController.DisableAsync();
+            chatLogController = null;
+        }
 
-        panelController?.Dispose();
-        panelController = null;
+        if (panelController is not null) {
+            await panelController.DisableAsync();
+            panelController = null;
+        }
 
         moveDeltaHook?.Dispose();
         moveDeltaHook = null;
@@ -79,10 +84,8 @@ public class LockChatButton : GameModification {
     }
 
     private unsafe void SetupChatLog(AddonChatLog* addon) {
-        var addonControl = (AtkAddonControl*)((byte*)addon + 0x568);
-
         addonControlHook = Services.Hooker.HookFromAddress<AtkEventListener.Delegates.ReceiveEvent>(
-            addonControl->AtkEventListener.VirtualTable->ReceiveEvent,
+            addon->AddonControl.AtkEventListener.VirtualTable->ReceiveEvent,
             OnAddonControl
         );
         addonControlHook.Enable();

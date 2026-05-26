@@ -67,19 +67,19 @@ public class LocationDisplay : GameModification {
         Services.ClientState.TerritoryChanged += OnZoneChange;
     }
 
-    public override Task OnDisableAsync() {
-        configWindow?.Dispose();
-        configWindow = null;
-
+    public override async Task OnDisableAsync() {
         Services.Framework.Update -= OnFrameworkUpdate;
         Services.ClientState.TerritoryChanged -= OnZoneChange;
+
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         dtrBarEntry?.Remove();
         dtrBarEntry = null;
 
         config = null;
-
-        return Task.CompletedTask;
     }
 
     private void OnZoneChange(uint u)

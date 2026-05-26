@@ -32,7 +32,6 @@ public class StickyShopCategories : GameModification {
             Services.AddonLifecycle.UnregisterListener(OnInclusionShopFinalize, OnInclusionShopSetup);
         });
 
-
         if (config is not null) {
             await config.Save();
             config = null;

@@ -77,10 +77,12 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
         Services.CommandManager.RemoveHandler("/vanillaplus");
         Services.PluginInterface.LanguageChanged -= SetCultureInfo;
 
-        System.ModificationBrowserAddon.Dispose();
-        System.SeasonEventAddon.Dispose();
+        if (!Services.Framework.IsFrameworkUnloading) {
+            await System.ModificationBrowserAddon.DisposeAsync();
+            await System.SeasonEventAddon.DisposeAsync();
+            await System.ModificationManager.DisposeAsync();
+        }
 
-        await System.ModificationManager.DisposeAsync();
         await Services.Framework.RunOnFrameworkThread(KamiToolKitLibrary.Dispose);
     }
 
@@ -96,7 +98,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
     private static void AutoOpenBrowser(bool enabled) {
         if (!enabled) return;
 
-        System.ModificationBrowserAddon.Open();
+        Services.Framework.Run(System.ModificationBrowserAddon.Open);
     }
 
     private static void CommandHandler(string command, string arguments) {

@@ -8,7 +8,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.FlagOnCursor;
 
-public unsafe class FlagOnCursor : GameModification {
+public class FlagOnCursor : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_FlagOnCursor,
         Description = Strings.ModificationDescription_FlagOnCursor,
@@ -18,22 +18,22 @@ public unsafe class FlagOnCursor : GameModification {
 
     private const string CommandName = "/flagthere";
 
-    public override Task OnEnableAsync() {
-        Services.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
-            HelpMessage = Strings.FlagOnCursor_CommandHelpMessage,
-            ShowInHelp = true,
+    public override async Task OnEnableAsync() {
+        await Services.Framework.Run(() => {
+            Services.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
+                HelpMessage = Strings.FlagOnCursor_CommandHelpMessage,
+                ShowInHelp = true,
+            });
         });
-
-        return Task.CompletedTask;
     }
 
-    public override Task OnDisableAsync() {
-        Services.CommandManager.RemoveHandler(CommandName);
-
-        return Task.CompletedTask;
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.CommandManager.RemoveHandler(CommandName);
+        });
     }
 
-    private static void OnCommand(string command, string args) {
+    private static unsafe void OnCommand(string command, string args) {
         ref var cursorData = ref UIInputData.Instance()->UIFilteredCursorInputs;
         var position = new Vector2(cursorData.PositionX, cursorData.PositionY);
 

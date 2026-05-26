@@ -50,20 +50,23 @@ public class SystemConfigSearchBar : GameModification {
                 OnSetup = SetupConfigSystem,
                 OnFinalize = FinalizeConfigSystem,
             };
-            systemConfigController.Enable();
         }
+
+        await systemConfigController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        configAddon?.Dispose();
-        configAddon = null;
+    public override async Task OnDisableAsync() {
+        if (configAddon is not null) {
+            await configAddon.DisposeAsync();
+            configAddon = null;
+        }
+
+        if (systemConfigController is not null) {
+            await systemConfigController.DisableAsync();
+            systemConfigController = null;
+        }
 
         config = null;
-
-        systemConfigController?.Dispose();
-        systemConfigController = null;
-
-        return Task.CompletedTask;
     }
 
     private unsafe void SetupConfigSystem(AtkUnitBase* addon) {

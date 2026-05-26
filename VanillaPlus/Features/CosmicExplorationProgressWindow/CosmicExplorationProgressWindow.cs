@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
@@ -23,7 +24,7 @@ public class CosmicExplorationProgressWindow : GameModification {
 
     public override string ImageName => "CosmicExplorationProgressWindow.png";
 
-    public override unsafe Task OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         addon = new CosmicExplorationProgressAddon {
             Size = new Vector2(320.0f, 290.0f),
             InternalName = "CosmicExplorationProgress",
@@ -32,43 +33,54 @@ public class CosmicExplorationProgressWindow : GameModification {
             DisableCloseTransition = true,
         };
 
-        wksHudController = new AddonController {
-            AddonName = "WKSHud",
-            OnSetup = wksHud => {
-                hudShowNode = new CircleButtonNode {
-                    Icon = ButtonIcon.Eye,
-                    AddColor = new Vector3(0.0f, -0.125f, 128f / 255f),
-                    Size = new Vector2(28.0f),
-                    Position = new Vector2(26.0f, 26.0f),
-                    OnClick = addon.Toggle,
-                    TextTooltip = Strings.CosmicExplorationProgressWindow_HudButtonTooltip,
-                };
+        unsafe {
+            wksHudController = new AddonController {
+                AddonName = "WKSHud",
+                OnSetup = WKSHudSetup,
+                OnFinalize = WKSHudFinalize,
+            };
+        }
 
-                // override the texture to use the base theme, since that's what the gear button in WKSHud does
-                hudShowNode.ImageNode.LoadTexture("ui/uld/CircleButtons.tex", false);
-
-                hudShowNode.AttachNode(wksHud);
-            },
-            OnFinalize = _ => {
-                hudShowNode?.Dispose();
-                hudShowNode = null;
-            },
-        };
-        wksHudController.Enable();
-
-        return Task.CompletedTask;
+        await wksHudController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        wksHudController?.Disable();
-        wksHudController = null;
+    public override async Task OnDisableAsync() {
+        if (wksHudController is not null) {
+            await wksHudController.DisableAsync();
+            wksHudController = null;
+        }
 
-        addon?.Dispose();
-        addon = null;
+        if (hudShowNode is not null) {
+            await hudShowNode.DisposeAsync();
+            hudShowNode = null;
+        }
 
+        if (addon is not null) {
+            await addon.DisposeAsync();
+            addon = null;
+        }
+    }
+
+    private unsafe void WKSHudFinalize(AtkUnitBase* _) {
         hudShowNode?.Dispose();
         hudShowNode = null;
-
-        return Task.CompletedTask;
     }
+
+    private unsafe void WKSHudSetup(AtkUnitBase* wksHud) {
+        if (addon is null) return;
+
+        hudShowNode = new CircleButtonNode {
+            Icon = ButtonIcon.Eye,
+            AddColor = new Vector3(0.0f, -0.125f, 128f / 255f),
+            Size = new Vector2(28.0f),
+            Position = new Vector2(26.0f, 26.0f),
+            OnClick = addon.Toggle,
+            TextTooltip = Strings.CosmicExplorationProgressWindow_HudButtonTooltip, };
+
+        // override the texture to use the base theme, since that's what the gear button in WKSHud does
+        hudShowNode.ImageNode.LoadTexture("ui/uld/CircleButtons.tex", false);
+
+        hudShowNode.AttachNode(wksHud);
+    }
+
 }

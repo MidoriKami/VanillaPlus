@@ -33,10 +33,10 @@ public class QuestListWindow : GameModification {
         OpenConfigAction = addonQuestList.OpenAddonConfig;
     }
 
-    public override Task OnDisableAsync() {
-        addonQuestList?.Dispose();
-        addonQuestList = null;
-
-        return Task.CompletedTask;
+    public override async Task OnDisableAsync() {
+        if (addonQuestList is not null) {
+            await addonQuestList.DisposeAsync();
+            addonQuestList = null;
+        }
     }
 }

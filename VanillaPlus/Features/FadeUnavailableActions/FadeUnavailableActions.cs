@@ -61,18 +61,18 @@ public class FadeUnavailableActions : GameModification {
         }
     }
 
-    public override Task OnDisableAsync() {
+    public override async Task OnDisableAsync() {
         onHotBarSlotUpdateHook?.Dispose();
         onHotBarSlotUpdateHook = null;
 
-        configWindow?.Dispose();
-        configWindow = null;
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         actionCache = null;
 
-        ResetAllHotbars();
-
-        return Task.CompletedTask;
+        await Services.Framework.Run(ResetAllHotbars);
     }
 
     private unsafe void OnHotBarSlotUpdate(AddonActionBarBase* addon, ActionBarSlot* hotBarSlotData, NumberArrayData* numberArray, StringArrayData* stringArray, int numberArrayIndex, int stringArrayIndex) {

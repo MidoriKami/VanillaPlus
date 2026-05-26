@@ -33,15 +33,14 @@ public class ChatPlayerTooltip : GameModification {
     public override async Task OnEnableAsync() {
         await Services.Framework.Run(() => {
             Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, addonNames, PreReceiveEvent);
-        }).ConfigureAwait(true);
+        });
     }
 
     public override async Task OnDisableAsync() {
         await Services.Framework.Run(() => {
             Services.AddonLifecycle.UnregisterListener(PreReceiveEvent);
-        }).ConfigureAwait(true);
-
-        HideTooltip();
+            HideTooltip();
+        });
     }
 
     private unsafe void PreReceiveEvent(AddonEvent type, AddonArgs args) {

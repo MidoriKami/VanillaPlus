@@ -34,10 +34,10 @@ public class ListInventory : GameModification {
         OpenConfigAction = addonListInventory.OpenAddonConfig;
     }
 
-    public override Task OnDisableAsync() {
-        addonListInventory?.Dispose();
-        addonListInventory = null;
-
-        return Task.CompletedTask;
+    public override async Task OnDisableAsync() {
+        if (addonListInventory is not null) {
+            await addonListInventory.DisposeAsync();
+            addonListInventory = null;
+        }
     }
 }

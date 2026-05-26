@@ -50,20 +50,27 @@ public class BetterCursor : GameModification {
         OpenConfigAction = configWindow.Toggle;
 
         overlayController = new OverlayController();
-        overlayController.CreateNode(() => new CursorImageNode {
-            Config = config,
+
+        await Services.Framework.Run(() => {
+            overlayController.Initialize();
+
+            overlayController.AddNode(new CursorImageNode {
+                Config = config,
+            });
         });
     }
 
-    public override Task OnDisableAsync() {
-        overlayController?.Dispose();
-        overlayController = null;
+    public override async Task OnDisableAsync() {
+        if (overlayController is not null) {
+            await overlayController.DisposeAsync();
+            overlayController = null;
+        }
 
-        configWindow?.Dispose();
-        configWindow = null;
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         config = null;
-
-        return Task.CompletedTask;
     }
 }

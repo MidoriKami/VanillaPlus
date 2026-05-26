@@ -36,7 +36,7 @@ public class ModificationBrowserAddon : NativeAddon {
     private bool isImageEnlarged;
     private bool isImageHovered;
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+    protected override Task BuildUiAsync() {
         mainContainerNode = new SimpleComponentNode {
             Position = ContentStartPosition,
             Size = ContentSize,
@@ -47,7 +47,9 @@ public class ModificationBrowserAddon : NativeAddon {
         BuildSearchContainer();
         BuildDescriptionContainer();
 
-        addon->AdditionalFocusableNodes[0] = (AtkResNode*)descriptionImageNode;
+        unsafe {
+            InternalAddon->AdditionalFocusableNodes[0] = (AtkResNode*)descriptionImageNode;
+        }
 
         uint optionIndex = 0;
 
@@ -89,6 +91,12 @@ public class ModificationBrowserAddon : NativeAddon {
             OnSearchBoxInputReceived(System.SystemConfig.CurrentSearch);
             searchBoxNode.String = System.SystemConfig.CurrentSearch;
         }
+
+        return Task.CompletedTask;
+    }
+
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+
     }
 
     private void BuildOptionsContainer() {

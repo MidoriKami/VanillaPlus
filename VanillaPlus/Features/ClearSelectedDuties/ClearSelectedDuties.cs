@@ -47,8 +47,10 @@ public class ClearSelectedDuties : GameModification {
             Services.AddonLifecycle.UnregisterListener(OnContentsFinderSetup);
         });
 
-        configWindow?.Dispose();
-        configWindow = null;
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         config = null;
     }

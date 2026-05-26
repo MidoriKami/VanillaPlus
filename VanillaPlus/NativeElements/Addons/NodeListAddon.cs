@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Game.Command;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
@@ -59,27 +60,24 @@ public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, ILis
         OnClose?.Invoke();
     }
 
-    public override async void Dispose() {
-        try {
-            config = null;
+    public override async ValueTask DisposeAsync() {
+        config = null;
 
-            addonConfigWindow?.Dispose();
+        if (addonConfigWindow is not null) {
+            await addonConfigWindow.DisposeAsync();
             addonConfigWindow = null;
-
-            keybindListener?.Dispose();
-            keybindListener = null;
-
-            await Services.Framework.Run(() => {
-                if (OpenCommand is not null) {
-                    Services.CommandManager.RemoveHandler(OpenCommand);
-                }
-            });
-
-            base.Dispose();
         }
-        catch (Exception e) {
-            Services.PluginLog.Exception(e);
-        }
+
+        keybindListener?.Dispose();
+        keybindListener = null;
+
+        await Services.Framework.Run(() => {
+            if (OpenCommand is not null) {
+                Services.CommandManager.RemoveHandler(OpenCommand);
+            }
+        });
+
+        await base.DisposeAsync();
     }
 
     public string? OpenCommand {

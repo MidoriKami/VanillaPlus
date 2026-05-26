@@ -20,18 +20,16 @@ public class DebugCustomAddon : GameModification {
 
     private NativeAddon? debugAddon;
 
-    public override Task OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         debugAddon = new DebugAddon {
             InternalName = "DebugAddon",
             Title = Strings.DebugCustomAddon_Title,
             Size = new Vector2(500.0f, 500.0f),
         };
 
-        debugAddon.DebugOpen();
-
         OpenConfigAction = debugAddon.Toggle;
 
-        return Task.CompletedTask;
+        await debugAddon.OpenAsync();
     }
 
     public override Task OnDisableAsync() {

@@ -43,16 +43,16 @@ public class GearsetRedirect : GameModification {
         }
     }
 
-    public override Task OnDisableAsync() {
+    public override async Task OnDisableAsync() {
         gearsetChangedHook?.Dispose();
         gearsetChangedHook = null;
 
-        configWindow?.Dispose();
-        configWindow = null;
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         config = null;
-
-        return Task.CompletedTask;
     }
 
     private unsafe int OnGearsetChanged(RaptureGearsetModule* thisPtr, int gearsetId, byte glamourPlateId) {

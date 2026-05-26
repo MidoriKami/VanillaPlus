@@ -16,24 +16,8 @@ public unsafe class FlippingOutFools : FoolsModule {
     protected override void OnEnable() {
         locationTitleController = new AddonController {
             AddonName = "_LocationTitle",
-            OnSetup = addon => {
-                foreach (var node in addon->UldManager.Nodes) {
-                    if (node.Value is null) continue;
-                    if (node.Value->GetNodeType() is NodeType.Image) {
-                        node.Value->ScaleY = -1;
-                        node.Value->Origin = node.Value->Size / 2.0f;
-                    }
-                }
-            },
-            OnFinalize = addon => {
-                foreach (var node in addon->UldManager.Nodes) {
-                    if (node.Value is null) continue;
-                    if (node.Value->GetNodeType() is NodeType.Image) {
-                        node.Value->ScaleY = 1;
-                        node.Value->Origin = Vector2.Zero;
-                    }
-                }
-            },
+            OnSetup = LocationTitleSetup,
+            OnFinalize = LocationTitleFinalize,
         };
         locationTitleController.Enable();
     }
@@ -41,5 +25,25 @@ public unsafe class FlippingOutFools : FoolsModule {
     protected override void OnDisable() {
         locationTitleController?.Dispose();
         locationTitleController = null;
+    }
+
+    private void LocationTitleFinalize(AtkUnitBase* addon) {
+        foreach (var node in addon->UldManager.Nodes) {
+            if (node.Value is null) continue;
+            if (node.Value->GetNodeType() is NodeType.Image) {
+                node.Value->ScaleY = 1;
+                node.Value->Origin = Vector2.Zero;
+            }
+        }
+    }
+
+    private void LocationTitleSetup(AtkUnitBase* addon) {
+        foreach (var node in addon->UldManager.Nodes) {
+            if (node.Value is null) continue;
+            if (node.Value->GetNodeType() is NodeType.Image) {
+                node.Value->ScaleY = -1;
+                node.Value->Origin = node.Value->Size / 2.0f;
+            }
+        }
     }
 }

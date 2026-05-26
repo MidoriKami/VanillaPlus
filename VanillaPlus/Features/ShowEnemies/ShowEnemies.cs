@@ -32,13 +32,15 @@ public class ShowEnemies : GameModification {
                     });
                 }
             }
+
+            mapOverlayController.Enable();
         });
     }
 
-    public override Task OnDisableAsync() {
-        mapOverlayController?.Dispose();
-        mapOverlayController = null;
-
-        return Task.CompletedTask;
+    public override async Task OnDisableAsync() {
+        if (mapOverlayController is not null) {
+            await mapOverlayController.DisposeAsync();
+            mapOverlayController = null;
+        }
     }
 }

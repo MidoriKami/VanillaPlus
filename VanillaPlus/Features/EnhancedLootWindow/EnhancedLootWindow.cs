@@ -59,20 +59,23 @@ public class EnhancedLootWindow : GameModification {
                 OnFinalize = FinalizeNeedGreed,
                 OnRefresh = RefreshNeedGreed,
             };
-            needGreedController.Enable();
         }
+
+        await needGreedController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        needGreedController?.Dispose();
-        needGreedController = null;
+    public override async Task OnDisableAsync() {
+        if (needGreedController is not null) {
+            await needGreedController.DisableAsync();
+            needGreedController = null;
+        }
 
-        configWindow?.Dispose();
-        configWindow = null;
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         config = null;
-
-        return Task.CompletedTask;
     }
 
     private unsafe void SetupNeedGreed(AddonNeedGreed* addon) {

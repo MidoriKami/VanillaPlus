@@ -82,21 +82,21 @@ public class ForcedCutsceneSounds : GameModification {
         }
     }
 
-    public override Task OnDisableAsync() {
+    public override async Task OnDisableAsync() {
         createCutSceneControllerHook?.Dispose();
         createCutSceneControllerHook = null;
 
         cutSceneControllerDtorHook?.Dispose();
         cutSceneControllerDtorHook = null;
 
-        configWindow?.Dispose();
-        configWindow = null;
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         config = null;
 
         wasMuted = null;
-
-        return Task.CompletedTask;
     }
 
     private unsafe CutSceneController* CreateCutSceneControllerDetour(ScheduleManagement* thisPtr, byte* path, uint id, byte a4) {

@@ -55,20 +55,23 @@ public class TargetCastBarCountdown : GameModification {
                 OnFinalize = FinalizeCastBar,
                 OnUpdate = UpdateCastBar,
             };
-            addonController.Enable();
         }
+
+        await addonController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        configWindow?.Dispose();
-        configWindow = null;
+    public override async Task OnDisableAsync() {
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
-        addonController?.Dispose();
-        addonController = null;
+        if (addonController is not null) {
+            await addonController.DisableAsync();
+            addonController = null;
+        }
 
         castBarEnemyTextNode = null;
-
-        return Task.CompletedTask;
     }
 
     private async Task LoadStyles() {

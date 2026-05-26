@@ -43,16 +43,16 @@ public class FasterScroll : GameModification {
         }
     }
 
-    public override Task OnDisableAsync() {
+    public override async Task OnDisableAsync() {
         scrollBarReceiveEventHook?.Dispose();
         scrollBarReceiveEventHook = null;
 
-        configWindow?.Dispose();
-        configWindow = null;
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         config = null;
-
-        return Task.CompletedTask;
     }
 
     private unsafe void AtkComponentScrollBarReceiveEvent(AtkComponentScrollBar* thisPtr, AtkEventType type, int param, AtkEvent* eventPointer, AtkEventData* dataPointer) {

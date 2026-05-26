@@ -36,29 +36,29 @@ public class WondrousTailsProbabilities : GameModification {
     public override string ImageName => "WondrousTailsProbabilities.png";
 
     public override async Task OnEnableAsync() {
-        // Initial load of PerfectTails takes approx 100ms
-        await Task.Run(() => {
-            perfectTails = new PerfectTails();
+        perfectTails = new PerfectTails();
 
-            unsafe {
-                weeklyBingoController = new AddonController<AddonWeeklyBingo> {
-                    AddonName = "WeeklyBingo",
-                    OnSetup = SetupWeeklyBingo,
-                    OnFinalize = FinalizeWeeklyBingo,
-                    OnRefresh = RefreshWeeklyBingo,
-                };
-                weeklyBingoController.Enable();
-            }
-        });
+        await perfectTails.Initialize();
+
+        unsafe {
+            weeklyBingoController = new AddonController<AddonWeeklyBingo> {
+                AddonName = "WeeklyBingo",
+                OnSetup = SetupWeeklyBingo,
+                OnFinalize = FinalizeWeeklyBingo,
+                OnRefresh = RefreshWeeklyBingo,
+            };
+        }
+
+        await weeklyBingoController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        weeklyBingoController?.Dispose();
-        weeklyBingoController = null;
+    public override async Task OnDisableAsync() {
+        if (weeklyBingoController is not null) {
+            await weeklyBingoController.DisposeAsync();
+            weeklyBingoController = null;
+        }
 
         perfectTails = null;
-
-        return Task.CompletedTask;
     }
 
     private unsafe void SetupWeeklyBingo(AddonWeeklyBingo* addon) {

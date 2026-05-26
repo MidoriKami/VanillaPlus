@@ -10,7 +10,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ClearFlag;
 
-public unsafe class ClearFlag : GameModification {
+public class ClearFlag : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_ClearFlag,
         Description = Strings.ModificationDescription_ClearFlag,
@@ -21,39 +21,44 @@ public unsafe class ClearFlag : GameModification {
     private AddonController? minimapController;
     private IAddonEventHandle? minimapMouseClick;
 
-    public override Task OnEnableAsync() {
-        minimapController = new AddonController {
-            AddonName = "_NaviMap",
-            OnSetup = addon => {
-                var collisionNode = addon->GetNodeById<AtkCollisionNode>(19);
-                if (collisionNode is null) return;
+    public override async Task OnEnableAsync() {
+        unsafe {
+            minimapController = new AddonController {
+                AddonName = "_NaviMap",
+                OnSetup = NaviMapSetup,
+                OnFinalize = NaviMapFinalize,
+            };
+        }
 
-                collisionNode->DrawFlags |= (uint)DrawFlags.ClickableCursor;
-
-                minimapMouseClick = Services.AddonEventManager.AddEvent((nint)addon, (nint)collisionNode, AddonEventType.MouseClick, OnMiniMapMouseClick);
-            },
-            OnFinalize = addon => {
-                Services.AddonEventManager.RemoveEventNullable(minimapMouseClick);
-
-                var collisionNode = addon->GetNodeById<AtkCollisionNode>(19);
-                if (collisionNode is null) return;
-
-                collisionNode->DrawFlags &= ~(uint)DrawFlags.ClickableCursor;
-            },
-        };
-        minimapController.Enable();
-
-        return Task.CompletedTask;
+        await minimapController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        minimapController?.Dispose();
-        minimapController = null;
-
-        return Task.CompletedTask;
+    public override async Task OnDisableAsync() {
+        if (minimapController is not null) {
+            await minimapController.DisableAsync();
+            minimapMouseClick = null;
+        }
     }
 
-    private static void OnMiniMapMouseClick(AddonEventType addonEventType, AddonEventData data) {
+    private unsafe void NaviMapSetup(AtkUnitBase* addon) {
+        var collisionNode = addon->GetNodeById<AtkCollisionNode>(19);
+        if (collisionNode is null) return;
+
+        collisionNode->DrawFlags |= (uint)DrawFlags.ClickableCursor;
+
+        minimapMouseClick = Services.AddonEventManager.AddEvent((nint)addon, (nint)collisionNode, AddonEventType.MouseClick, OnMiniMapMouseClick);
+    }
+
+    private unsafe void NaviMapFinalize(AtkUnitBase* addon) {
+        Services.AddonEventManager.RemoveEventNullable(minimapMouseClick);
+
+        var collisionNode = addon->GetNodeById<AtkCollisionNode>(19);
+        if (collisionNode is null) return;
+
+        collisionNode->DrawFlags &= ~(uint)DrawFlags.ClickableCursor;
+    }
+
+    private static unsafe void OnMiniMapMouseClick(AddonEventType addonEventType, AddonEventData data) {
         if (data.IsRightClick && AgentMap.Instance()->FlagMarkerCount is not 0) {
             AgentMap.Instance()->FlagMarkerCount = 0;
         }

@@ -36,7 +36,7 @@ public unsafe class DisableTitleScreenMovie : GameModification {
     private void OnTitleScreenUpdate(AgentLobby* thisPtr) {
         try {
             if (thisPtr->LobbyUIStage is 9) {
-                var flagValue = Marshal.ReadInt64((nint)thisPtr, 0x1378) & 0xFF;
+                var flagValue = Marshal.ReadInt64((nint)thisPtr, 0x1378) & 0xFF; // todo: need to figure out how to add this to CS
                 if (flagValue is 0) {
                     return;
                 }

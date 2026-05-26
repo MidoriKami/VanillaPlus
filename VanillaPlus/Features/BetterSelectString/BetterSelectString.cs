@@ -10,7 +10,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.BetterSelectString;
 
-public unsafe class BetterSelectString : GameModification {
+public class BetterSelectString : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_BetterSelectString,
         Description = Strings.ModificationDescription_BetterSelectString,
@@ -23,52 +23,57 @@ public unsafe class BetterSelectString : GameModification {
     private AddonController<AddonSelectString>? selectStringController;
     private NativeListController<AddonSelectString>? selectStringListController;
 
-    public override Task OnEnableAsync() {
-        selectStringController = new AddonController<AddonSelectString> {
-            AddonName = "SelectString",
-            OnSetup = addon => {
-                addon->AtkUnitBase.Size += new Vector2(32.0f, 0.0f);
-            },
-            OnUpdate = UpdateSelectString,
-            OnFinalize = addon => {
-                addon->AtkUnitBase.Size -= new Vector2(32.0f, 0.0f);
-            },
-        };
-        selectStringController.Enable();
+    public override async Task OnEnableAsync() {
+        unsafe {
+            selectStringController = new AddonController<AddonSelectString> {
+                AddonName = "SelectString",
+                OnSetup = addon
+                    => addon->AtkUnitBase.Size += new Vector2(32.0f, 0.0f),
+                OnFinalize = addon
+                    => addon->AtkUnitBase.Size -= new Vector2(32.0f, 0.0f),
 
-        selectStringListController = new NativeListController<AddonSelectString> {
-            AddonName = "SelectString",
-            GetPopulatorNode = addon => addon->GetComponentListById(3)->GetComponentItemRendererById(5),
-            UpdateElement = (_, item) => {
-                var textNode = item.GetNode<AtkTextNode>(0);
-                if (textNode is null) return;
-                if (item.ItemIndex > 9) return;
+                OnUpdate = UpdateSelectString,
+            };
+        }
 
-                using var stringBuilder = new RentedSeStringBuilder();
-                var builtString = stringBuilder
-                    .Builder.Append($"{(item.ItemIndex + 1) % 10}. ")
-                    .Append(textNode->GetText().AsReadOnlySeStringSpan())
-                    .GetViewAsSpan();
+        await selectStringController.EnableAsync();
 
-                textNode->SetText(builtString);
-            },
-        };
-        selectStringListController.Enable();
+        unsafe {
+            selectStringListController = new NativeListController<AddonSelectString> {
+                AddonName = "SelectString",
+                GetPopulatorNode = addon => addon->GetComponentListById(3)->GetComponentItemRendererById(5),
+                UpdateElement = (_, item) => {
+                    var textNode = item.GetNode<AtkTextNode>(0);
+                    if (textNode is null) return;
+                    if (item.ItemIndex > 9) return;
 
-        return Task.CompletedTask;
+                    using var stringBuilder = new RentedSeStringBuilder();
+                    var builtString = stringBuilder
+                        .Builder.Append($"{(item.ItemIndex + 1) % 10}. ")
+                        .Append(textNode->GetText().AsReadOnlySeStringSpan())
+                        .GetViewAsSpan();
+
+                    textNode->SetText(builtString);
+                },
+            };
+        }
+
+        await selectStringListController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        selectStringController?.Dispose();
-        selectStringController = null;
+    public override async Task OnDisableAsync() {
+        if (selectStringController is not null) {
+            await selectStringController.DisableAsync();
+            selectStringListController = null;
+        }
 
-        selectStringListController?.Dispose();
-        selectStringListController = null;
-
-        return Task.CompletedTask;
+        if (selectStringListController is not null) {
+            await selectStringListController.EnableAsync();
+            selectStringListController = null;
+        }
     }
 
-    private static void UpdateSelectString(AddonSelectString* addon) {
+    private static unsafe void UpdateSelectString(AddonSelectString* addon) {
         if (RaptureAtkModule.Instance()->IsTextInputActive()) return;
 
         var listComponent = addon->GetComponentListById(3);

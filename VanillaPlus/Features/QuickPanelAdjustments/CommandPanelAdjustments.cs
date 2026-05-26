@@ -48,20 +48,23 @@ public class CommandPanelAdjustments : GameModification {
                 OnUpdate = UpdateQuickPanel,
                 OnRefresh = UpdateQuickPanel,
             };
-            quickPanelController.Enable();
         }
+
+        await quickPanelController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        quickPanelController?.Dispose();
-        quickPanelController = null;
+    public override async Task OnDisableAsync() {
+        if (quickPanelController is not null) {
+            await quickPanelController.DisableAsync();
+            quickPanelController = null;
+        }
+
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         config = null;
-
-        configWindow?.Dispose();
-        configWindow = null;
-
-        return Task.CompletedTask;
     }
 
     private unsafe void UpdateQuickPanel(AtkUnitBase* addon) {

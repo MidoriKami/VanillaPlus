@@ -44,9 +44,10 @@ public class SuppressDialogueAdvance : GameModification {
             Services.AddonLifecycle.UnregisterListener(OnTalkReceiveEvent);
         });
 
-
-        configWindow?.Dispose();
-        configWindow = null;
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         config = null;
     }

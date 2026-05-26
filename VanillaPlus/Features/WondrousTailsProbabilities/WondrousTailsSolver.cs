@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Dalamud.Game.Text.SeStringHandling;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Lumina.Text.ReadOnly;
@@ -17,12 +18,11 @@ public sealed partial class PerfectTails {
 
     public readonly bool[] GameState = new bool[16];
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PerfectTails"/> class.
-    /// </summary>
-    public PerfectTails() {
+    public Task Initialize() {
         CalculateBoards(0, 0, 0, 0, 0);
         CalculateSamples();
+
+        return Task.CompletedTask;
     }
 
     private static double[] Error { get; } = [-1, -1, -1];

@@ -18,16 +18,16 @@ public class SaddlebagSearchBar : GameModification {
 
     public override string ImageName => "SaddlebagSearchBar.png";
 
-    public override Task OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         saddlebagInventoryController = new InventorySearchAddonController("InventoryBuddy");
 
-        return Task.CompletedTask;
+        await saddlebagInventoryController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        saddlebagInventoryController?.Dispose();
-        saddlebagInventoryController = null;
-
-        return Task.CompletedTask;
+    public override async Task OnDisableAsync() {
+        if (saddlebagInventoryController is not null) {
+            await saddlebagInventoryController.DisposeAsync();
+            saddlebagInventoryController = null;
+        }
     }
 }

@@ -71,23 +71,24 @@ public class AprilFools : GameModification {
 
         foreach (var module in modules) {
             if (module.IsEnabledByConfig) {
-                module.Enable();
+                await Services.Framework.Run(module.Enable);
             }
         }
     }
 
-    public override Task OnDisableAsync() {
+    public override async Task OnDisableAsync() {
         foreach (var module in modules ?? []) {
-            module.Disable();
+            await Services.Framework.Run(module.Disable);
         }
+
         modules?.Clear();
         modules = null;
 
-        configAddon?.Dispose();
-        configAddon = null;
+        if (configAddon is not null) {
+            await configAddon.DisposeAsync();
+            configAddon = null;
+        }
 
         config = null;
-
-        return Task.CompletedTask;
     }
 }

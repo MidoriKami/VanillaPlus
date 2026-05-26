@@ -73,23 +73,26 @@ public class MSQProgressBar : GameModification {
                 OnUpdate = ScenarioTreeUpdate,
                 OnFinalize = ScenarioTreeFinalize,
             };
-            scenarioTreeAddonController.Enable();
         }
+
+        await scenarioTreeAddonController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        scenarioTreeAddonController?.Dispose();
-        scenarioTreeAddonController = null;
+    public override async Task OnDisableAsync() {
+        if (scenarioTreeAddonController is not null) {
+            await scenarioTreeAddonController.DisposeAsync();
+            scenarioTreeAddonController = null;
+        }
+
+        if (configAddon is not null) {
+            await configAddon.DisposeAsync();
+            configAddon = null;
+        }
 
         expansionRanges?.Clear();
         expansionRanges = null;
 
-        configAddon?.Dispose();
-        configAddon = null;
-
         config = null;
-
-        return Task.CompletedTask;
     }
 
     private unsafe void ScenarioTreeSetup(AtkUnitBase* addon) {
@@ -97,7 +100,10 @@ public class MSQProgressBar : GameModification {
         var msqTextNode = targetPositioningNode->SearchNodeById<AtkTextNode>(6);
 
         progressBarNode = new ProgressBarNode {
-            Size = new Vector2(msqTextNode->Width, 9.0f), Position = new Vector2(0.0f, msqTextNode->Height - 3.0f), TextTooltip = string.Format(Strings.MSQProgressBar_TooltipCurrentProgress, "000"), Progress = 0.5f,
+            Size = new Vector2(msqTextNode->Width, 9.0f),
+            Position = new Vector2(0.0f, msqTextNode->Height - 3.0f),
+            TextTooltip = string.Format(Strings.MSQProgressBar_TooltipCurrentProgress, "000"),
+            Progress = 0.5f,
         };
         progressBarNode.AttachNode(msqTextNode, NodePosition.BeforeTarget);
     }

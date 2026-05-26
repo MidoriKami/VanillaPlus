@@ -31,9 +31,10 @@ public class HideGuildhestObjectivePopup : GameModification {
         });
     }
 
-    private unsafe void OnJournalAcceptOpen(AddonEvent type, AddonArgs args) {
+    private static unsafe void OnJournalAcceptOpen(AddonEvent type, AddonArgs args) {
         if (Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(Services.ClientState.TerritoryType) is not { TerritoryIntendedUse.RowId: 3 }) return;
 
+        // todo: figure out how to use the agent to do this.
         args.GetAddon<AtkUnitBase>()->Hide(false, false, 1);
     }
 }

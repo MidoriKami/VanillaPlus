@@ -11,7 +11,7 @@ using VanillaPlus.Features.GearSetReorderButtons.Nodes;
 
 namespace VanillaPlus.Features.GearSetReorderButtons;
 
-public unsafe class GearSetReorderButtons : GameModification {
+public class GearSetReorderButtons : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_GearSetReorderButtons,
         Description = Strings.ModificationDescription_GearSetReorderButtons,
@@ -28,35 +28,43 @@ public unsafe class GearSetReorderButtons : GameModification {
 
     private const float ExtraAddonWidth = 56.0f;
 
-    public override Task OnEnableAsync() {
-        gearSetsAddonController = new AddonController<AddonGearSetList> {
-            AddonName = "GearSetList",
-            OnSetup = SetUpAddon,
-            OnFinalize = FinalizeAddon,
-        };
-        gearSetsAddonController.Enable();
+    public override async Task OnEnableAsync() {
+        unsafe {
+            gearSetsAddonController = new AddonController<AddonGearSetList> {
+                AddonName = "GearSetList",
+                OnSetup = SetUpAddon,
+                OnFinalize = FinalizeAddon,
+            };
 
-        gearSetsListController = new NativeListController<AddonGearSetList, GearSetListListItem> {
-            AddonName = "GearSetList",
-            GetPopulatorNode = GetPopulatorNode,
-            UpdateElement = UpdateElement,
-        };
-        gearSetsListController.Enable();
+            gearSetsListController = new NativeListController<AddonGearSetList, GearSetListListItem> {
+                AddonName = "GearSetList",
+                GetPopulatorNode = GetPopulatorNode,
+                UpdateElement = UpdateElement,
+            };
+        }
 
-        return Task.CompletedTask;
+        await gearSetsAddonController.EnableAsync();
+        await gearSetsListController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        gearSetsAddonController?.Dispose();
-        gearSetsListController?.Dispose();
+    public override async Task OnDisableAsync() {
+        if (gearSetsAddonController is not null) {
+            await gearSetsAddonController.DisposeAsync();
+            gearSetsAddonController = null;
+        }
 
-        gearSetsAddonController = null;
-        gearSetsListController = null;
+        if (gearSetsAddonController is not null) {
+            await gearSetsAddonController.DisposeAsync();
+            gearSetsAddonController = null;
+        }
 
-        return Task.CompletedTask;
+        if (gearSetsListController is not null) {
+            await gearSetsListController.DisposeAsync();
+            gearSetsListController = null;
+        }
     }
 
-    private static void SetUpAddon(AddonGearSetList* addon) {
+    private static unsafe void SetUpAddon(AddonGearSetList* addon) {
 
         // Gearset Help Header Button
         var gearsetHelpButton = addon->GetNodeById(2);
@@ -79,7 +87,7 @@ public unsafe class GearSetReorderButtons : GameModification {
         addon->AtkUnitBase.Size += new Vector2(ExtraAddonWidth, 0.0f);
     }
 
-    private void FinalizeAddon(AddonGearSetList* addon) {
+    private unsafe void FinalizeAddon(AddonGearSetList* addon) {
 
         // Gearset Help Header Button
         var gearsetHelpButton = addon->GetNodeById(2);
@@ -107,10 +115,10 @@ public unsafe class GearSetReorderButtons : GameModification {
         reorderButtonNodes.Clear();
     }
 
-    private static AtkComponentListItemRenderer* GetPopulatorNode(AddonGearSetList* addon)
+    private static unsafe AtkComponentListItemRenderer* GetPopulatorNode(AddonGearSetList* addon)
         => addon->GetComponentListById(7)->FirstAtkComponentListItemRenderer;
 
-    private void UpdateElement(AddonGearSetList* addon, GearSetListListItem listItemData) {
+    private unsafe void UpdateElement(AddonGearSetList* addon, GearSetListListItem listItemData) {
 
         // If the reorder button node does not exist, create and add it.
         if (!reorderButtonNodes.TryGetValue(listItemData.NodeId, out var reorderButton)) {

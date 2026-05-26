@@ -51,72 +51,82 @@ public class CurrencyOverlay : GameModification {
             Options = config.Currencies,
             ItemComparer = CurrencySetting.Comparison,
             IsSearchMatch = CurrencySetting.IsMatch,
-
             EditCompleted = _ => Task.Run(config.Save),
-
-            AddClicked = listNode => {
-                itemSearchAddon.SelectionResult = searchResult => {
-                    var newCurrencyOption = new CurrencySetting {
-                        ItemId = searchResult.RowId,
-                    };
-
-                    config.Currencies.Add(newCurrencyOption);
-                    Task.Run(config.Save);
-                    listNode.RefreshList();
-                    listNode.SelectItem(newCurrencyOption);
-
-                    var newCurrencyNode = BuildCurrencyNode(newCurrencyOption);
-                    currencyNodes.Add(newCurrencyNode);
-                    overlayController.AddNode(newCurrencyNode);
-                };
-                itemSearchAddon.Toggle();
-            },
-
-            RemoveClicked = (_, setting) => {
-                var targetNode = currencyNodes.FirstOrDefault(node => node.Currency == setting);
-                if (targetNode is not null) {
-                    overlayController.RemoveNode(targetNode);
-                    currencyNodes.Remove(targetNode);
-                }
-
-                config.Currencies.Remove(setting);
-                Task.Run(config.Save);
-            },
+            AddClicked = OnAddButtonClicked,
+            RemoveClicked = OnRemoveButtonClicked,
         };
 
         OpenConfigAction = configAddon.Toggle;
 
-        await Services.Framework.Run(AddOverlayNodes);
+        await Services.Framework.Run(() => {
+            foreach (var currencySetting in config.Currencies) {
+                var newCurrencyNode = BuildCurrencyNode(currencySetting);
+                currencyNodes.Add(newCurrencyNode);
+                overlayController.AddNode(newCurrencyNode);
+            }
+
+            overlayController.Initialize();
+        });
     }
 
-    private void AddOverlayNodes() {
-        if (config is null) return;
+    private void OnRemoveButtonClicked(ListConfigAddon<CurrencySetting, CurrencyOverlayListItemNode, CurrencyOverlayConfigNode> _, CurrencySetting setting) {
         if (currencyNodes is null) return;
         if (overlayController is null) return;
+        if (config is null) return;
 
-        foreach (var currencySetting in config.Currencies) {
-            var newCurrencyNode = BuildCurrencyNode(currencySetting);
-            currencyNodes.Add(newCurrencyNode);
-            overlayController.AddNode(newCurrencyNode);
+        var targetNode = currencyNodes.FirstOrDefault(node => node.Currency == setting);
+        if (targetNode is not null) {
+            overlayController.RemoveNode(targetNode);
+            currencyNodes.Remove(targetNode);
         }
+
+        config.Currencies.Remove(setting);
+        Task.Run(config.Save);
     }
 
-    public override Task OnDisableAsync() {
-        overlayController?.Dispose();
-        overlayController = null;
+    public override async Task OnDisableAsync() {
+        if (overlayController is not null) {
+            await overlayController.DisposeAsync();
+            overlayController = null;
+        }
 
-        itemSearchAddon?.Dispose();
-        itemSearchAddon = null;
+        if (itemSearchAddon is not null) {
+            await itemSearchAddon.DisposeAsync();
+            itemSearchAddon = null;
+        }
 
-        configAddon?.Dispose();
-        configAddon = null;
+        if (configAddon is not null) {
+            await configAddon.DisposeAsync();
+            configAddon = null;
+        }
 
         config = null;
 
         currencyNodes?.Clear();
         currencyNodes = null;
+    }
 
-        return Task.CompletedTask;
+    private void OnAddButtonClicked(ListConfigAddon<CurrencySetting, CurrencyOverlayListItemNode, CurrencyOverlayConfigNode> listNode) {
+        if (config is null) return;
+        if (itemSearchAddon is null) return;
+        if (currencyNodes is null) return;
+        if (overlayController is null) return;
+
+        itemSearchAddon.SelectionResult = searchResult => {
+            var newCurrencyOption = new CurrencySetting {
+                ItemId = searchResult.RowId,
+            };
+
+            config.Currencies.Add(newCurrencyOption);
+            Task.Run(config.Save);
+            listNode.RefreshList();
+            listNode.SelectItem(newCurrencyOption);
+
+            var newCurrencyNode = BuildCurrencyNode(newCurrencyOption);
+            currencyNodes.Add(newCurrencyNode);
+            overlayController.AddNode(newCurrencyNode);
+        };
+        itemSearchAddon.Toggle();
     }
 
     private unsafe CurrencyOverlayNode BuildCurrencyNode(CurrencySetting setting) {

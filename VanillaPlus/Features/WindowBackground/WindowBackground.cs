@@ -46,53 +46,59 @@ public class WindowBackground : GameModification {
             Size = new Vector2(350.0f, 600.0f),
         };
 
-        unsafe {
-            dynamicAddonController = new DynamicAddonController {
-                AddonNames = config.Settings.Select(setting => setting.AddonName).ToList(),
-                OnSetup = AttachNode,
-                OnFinalize = DetachNode,
-                OnUpdate = UpdateNode,
-            };
-            dynamicAddonController.Enable();
+        await Services.Framework.Run(() => {
+            unsafe {
+                dynamicAddonController = new DynamicAddonController {
+                    AddonNames = config.Settings.Select(setting => setting.AddonName).ToList(),
+                    OnSetup = AttachNode,
+                    OnFinalize = DetachNode,
+                    OnUpdate = UpdateNode,
+                };
 
-            configWindow = new ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode> {
-                InternalName = "WindowBackgroundConfig",
-                Title = Strings.WindowBackground_ConfigTitle,
-                Size = new Vector2(600.0f, 500.0f),
-                Options = config.Settings,
+                dynamicAddonController.Enable();
+            }
+        });
 
-                EditCompleted = _ => Task.Run(config.Save),
-
-                AddClicked = listNode => {
-                    addonSearchAddon.SelectionResult = searchResult => {
-                        if (searchResult.Value is null)
-                            return;
-
-                        var newOption = new WindowBackgroundSetting {
-                            AddonName = searchResult.Value->NameString,
-                        };
-
-                        config.Settings.Add(newOption);
-                        Task.Run(config.Save);
-
-                        dynamicAddonController.AddAddon(searchResult.Value->NameString);
-                        listNode.RefreshList();
-                    };
-
-                    addonSearchAddon.Toggle();
-                },
-
-                RemoveClicked = (_, oldItem) => {
-                    config.Settings.Remove(oldItem);
-                    Task.Run(config.Save);
-                    dynamicAddonController.RemoveAddon(oldItem.AddonName);
-                },
-                ItemComparer = WindowBackgroundSetting.Compare,
-                IsSearchMatch = WindowBackgroundSetting.IsMatch,
-            };
-        }
+        configWindow = new ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode> {
+            InternalName = "WindowBackgroundConfig",
+            Title = Strings.WindowBackground_ConfigTitle,
+            Size = new Vector2(600.0f, 500.0f),
+            Options = config.Settings,
+            EditCompleted = _ => Task.Run(config.Save),
+            AddClicked = OnAddClicked,
+            RemoveClicked = OnRemoveClicked,
+            ItemComparer = WindowBackgroundSetting.Compare,
+            IsSearchMatch = WindowBackgroundSetting.IsMatch,
+        };
 
         OpenConfigAction = configWindow.Toggle;
+    }
+
+    public override async Task OnDisableAsync() {
+        if (dynamicAddonController is not null) {
+            await dynamicAddonController.DisposeAsync();
+            dynamicAddonController = null;
+        }
+
+        if (overlayController is not null) {
+            await overlayController.DisposeAsync();
+            overlayController = null;
+        }
+
+        if (addonSearchAddon is not null) {
+            await addonSearchAddon.DisposeAsync();
+            addonSearchAddon = null;
+        }
+
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
+
+        config = null;
+
+        backgroundImageNodes?.Clear();
+        backgroundImageNodes = null;
     }
 
     private unsafe void AttachNode(AtkUnitBase* addon) {
@@ -147,6 +153,37 @@ public class WindowBackground : GameModification {
         backgroundImageNodes.RemoveAll(node => node.Settings.AddonName == addon->NameString);
     }
 
+    private unsafe void OnAddClicked(ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode> listNode) {
+        if (config is null) return;
+        if (dynamicAddonController is null) return;
+        if (addonSearchAddon is null) return;
+
+        addonSearchAddon.SelectionResult = searchResult => {
+            if (searchResult.Value is null) return;
+
+            var newOption = new WindowBackgroundSetting {
+                AddonName = searchResult.Value->NameString,
+            };
+
+            config.Settings.Add(newOption);
+            Task.Run(config.Save);
+
+            dynamicAddonController.AddAddon(searchResult.Value->NameString);
+            listNode.RefreshList();
+        };
+
+        addonSearchAddon.Toggle();
+    }
+
+    private void OnRemoveClicked(ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode> _, WindowBackgroundSetting oldItem) {
+        if (config is null) return;
+        if (dynamicAddonController is null) return;
+
+        config.Settings.Remove(oldItem);
+        Task.Run(config.Save);
+        dynamicAddonController.RemoveAddon(oldItem.AddonName);
+    }
+
     private static unsafe AtkResNode* GetWindowNineGridNode(AtkComponentNode* windowNode) {
         foreach (var node in windowNode->Component->UldManager.Nodes) {
             if (node.Value is null) continue;
@@ -156,29 +193,5 @@ public class WindowBackground : GameModification {
         }
 
         return null;
-    }
-
-    public override async Task OnDisableAsync() {
-        dynamicAddonController?.Dispose();
-        dynamicAddonController = null;
-
-        overlayController?.Dispose();
-        overlayController = null;
-
-        addonSearchAddon?.Dispose();
-        addonSearchAddon = null;
-
-        configWindow?.Dispose();
-        configWindow = null;
-
-        config = null;
-
-        await Services.Framework.Run(() => {
-            foreach (var node in backgroundImageNodes ?? []) {
-                node.Dispose();
-            }
-            backgroundImageNodes?.Clear();
-            backgroundImageNodes = null;
-        });
     }
 }

@@ -49,13 +49,15 @@ public class ShowAetherCurrents : GameModification {
                     Position = aetherCurrent.Position,
                 });
             }
+
+            mapOverlayController.Enable();
         });
     }
 
-    public override Task OnDisableAsync() {
-        mapOverlayController?.Dispose();
-        mapOverlayController = null;
-
-        return Task.CompletedTask;
+    public override async Task OnDisableAsync() {
+        if (mapOverlayController is not null) {
+            await mapOverlayController.DisableAsync();
+            mapOverlayController = null;
+        }
     }
 }

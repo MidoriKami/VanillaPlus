@@ -55,32 +55,37 @@ public class HideMpBars : GameModification {
                 OnPreUpdate = UpdatePartyList,
                 OnFinalize = ResetPartyList,
             };
-            partyListController?.Enable();
 
             paramController = new AddonController<AddonParameterWidget> {
                 AddonName = "_ParameterWidget",
                 OnPreUpdate = UpdateParamWidget,
                 OnFinalize = ResetParamWidget,
             };
-            paramController?.Enable();
         }
+
+        await partyListController.EnableAsync();
+        await paramController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        partyListController?.Dispose();
-        partyListController = null;
+    public override async Task OnDisableAsync() {
+        if (partyListController is not null) {
+            await partyListController.DisableAsync();
+            partyListController = null;
+        }
 
-        paramController?.Dispose();
-        paramController = null;
+        if (paramController is not null) {
+            await paramController.DisableAsync();
+            paramController = null;
+        }
+
+        if (configAddon is not null) {
+            await configAddon.DisposeAsync();
+            configAddon = null;
+        }
 
         manaUsingClassJobs = null;
 
-        configAddon?.Dispose();
-        configAddon = null;
-
         config = null;
-
-        return Task.CompletedTask;
     }
 
     private unsafe void UpdatePartyList(AddonPartyList* addon) {

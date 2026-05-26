@@ -44,20 +44,23 @@ public class FadeLootButton : GameModification {
                 OnUpdate = UpdateNotificationLoot,
                 OnFinalize = FinalizeNotificationLoot,
             };
-            notificationLootController.Enable();
         }
+
+        await notificationLootController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        notificationLootController?.Dispose();
-        notificationLootController = null;
+    public override async Task OnDisableAsync() {
+        if (notificationLootController is not null) {
+            await notificationLootController.DisableAsync();
+            notificationLootController = null;
+        }
+
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         config = null;
-
-        configWindow?.Dispose();
-        configWindow = null;
-
-        return Task.CompletedTask;
     }
 
     private unsafe void UpdateNotificationLoot(AtkUnitBase* addon) {

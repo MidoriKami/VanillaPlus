@@ -15,7 +15,7 @@ using VanillaPlus.NativeElements.SearchAddons;
 
 namespace VanillaPlus.Features.GearsetRedirect;
 
-public unsafe class GearsetRedirectConfigAddon : NativeAddon {
+public class GearsetRedirectConfigAddon : NativeAddon {
     private ModifyListNode<GearsetInfo, GearsetInfoListItemNode>? gearsetListNode;
     private VerticalLineNode? lineNode;
     private SimpleComponentNode? optionsContainerNode;
@@ -38,7 +38,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         Title = Strings.GearsetRedirect_AddRedirectionTitle,
     };
 
-    protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         gearsetListNode = new ModifyListNode<GearsetInfo, GearsetInfoListItemNode> {
             Size = new Vector2(225.0f, ContentSize.Y),
             Position = ContentStartPosition,
@@ -126,14 +126,13 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         redirectListNode.AttachNode(optionsContainerNode);
     }
 
-    public override void Dispose() {
-        base.Dispose();
-
-        gearsetSearchAddon.Dispose();
-        newRedirectionAddon.Dispose();
+    public override async ValueTask DisposeAsync() {
+        await base.DisposeAsync();
+        await gearsetSearchAddon.DisposeAsync();
+        await newRedirectionAddon.DisposeAsync();
     }
 
-    private void OnOptionChanged(GearsetInfo? gearsetInfo) {
+    private unsafe void OnOptionChanged(GearsetInfo? gearsetInfo) {
         if (jobImageNode is null) return;
         if (gearsetLabelNode is null) return;
         if (redirectListNode is null) return;
@@ -171,7 +170,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         gearsetSearchAddon.Open();
     }
 
-    private List<GearsetInfo> GetConfigInfos() {
+    private unsafe List<GearsetInfo> GetConfigInfos() {
         List<GearsetInfo> gearsets = [];
         List<int> invalidGearsets = [];
 

@@ -20,7 +20,6 @@ public class ClockOverlay : GameModification {
 
     private ClockOverlayConfig? config;
     private OverlayController? overlayController;
-    private ClockOverlayNode? clockNode;
 
     private ConfigAddon? configWindow;
 
@@ -50,29 +49,32 @@ public class ClockOverlay : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        overlayController.CreateNode(() => {
-            clockNode = new ClockOverlayNode(config) {
+        await Services.Framework.Run(() => {
+            overlayController.Initialize();
+
+            overlayController.AddNode(new ClockOverlayNode {
+                Config = config,
                 Size = new Vector2(150.0f, 30.0f),
                 Position = config.Position,
                 OnMoveComplete = thisNode => {
                     config.Position = thisNode.Position;
                     Task.Run(config.Save);
                 },
-            };
-
-            return clockNode;
+            });
         });
     }
 
-    public override Task OnDisableAsync() {
-        configWindow?.Dispose();
-        configWindow = null;
+    public override async Task OnDisableAsync() {
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
-        overlayController?.Dispose();
-        overlayController = null;
+        if (overlayController is not null) {
+            await overlayController.DisposeAsync();
+            overlayController = null;
+        }
 
         config = null;
-
-        return Task.CompletedTask;
     }
 }

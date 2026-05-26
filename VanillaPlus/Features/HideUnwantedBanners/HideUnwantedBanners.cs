@@ -37,22 +37,23 @@ public class HideUnwantedBanners : GameModification {
         };
 
         OpenConfigAction = configWindow.Toggle;
+
         unsafe {
             setImageTextureHook = Services.Hooker.HookFromAddress<AddonImage.Delegates.SetImage>(AddonImage.Addresses.SetImage.Value, OnSetImageTexture);
             setImageTextureHook?.Enable();
         }
     }
 
-    public override Task OnDisableAsync() {
-        configWindow?.Dispose();
-        configWindow = null;
+    public override async Task OnDisableAsync() {
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         setImageTextureHook?.Dispose();
         setImageTextureHook = null;
 
         config = null;
-
-        return Task.CompletedTask;
     }
 
     private unsafe void OnSetImageTexture(AddonImage* addon, int bannerId, IconSubFolder language, int soundEffectId) {

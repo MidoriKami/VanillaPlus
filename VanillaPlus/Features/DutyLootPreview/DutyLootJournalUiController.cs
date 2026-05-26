@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
@@ -11,7 +12,7 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// <summary>
 /// Displays the "Open Duty Loot Table" button in Duty Finder
 /// </summary>
-public unsafe class DutyLootJournalUiController {
+public class DutyLootJournalUiController {
     private AddonController<AddonJournalDetail>? journalDetail;
     private DutyLootOpenWindowButtonNode? lootButtonNode;
     private ushort attachedAddonId;
@@ -20,26 +21,31 @@ public unsafe class DutyLootJournalUiController {
 
     public Action? OnButtonClicked { get; init; }
 
-    public void OnEnable() {
-        journalDetail = new AddonController<AddonJournalDetail> {
-            AddonName = "JournalDetail",
-            OnSetup = SetupJournalDetail,
-            OnFinalize = FinalizeJournalDetail,
-            OnRefresh = RefreshJournalDetail,
-        };
-        journalDetail.Enable();
+    public async Task EnableAsync() {
+        unsafe {
+            journalDetail = new AddonController<AddonJournalDetail> {
+                AddonName = "JournalDetail",
+                OnSetup = SetupJournalDetail,
+                OnFinalize = FinalizeJournalDetail,
+                OnRefresh = RefreshJournalDetail,
+            };
+        }
+
+        await journalDetail.EnableAsync();
 
         DataLoader.OnChanged += OnDataChanged;
     }
 
-    public void OnDisable() {
+    public async Task DisableAsync() {
         DataLoader.OnChanged -= OnDataChanged;
 
-        journalDetail?.Dispose();
-        journalDetail = null;
+        if (journalDetail is not null) {
+            await journalDetail.DisableAsync();
+            journalDetail = null;
+        }
     }
 
-    private void SetupJournalDetail(AddonJournalDetail* addon) {
+    private unsafe void SetupJournalDetail(AddonJournalDetail* addon) {
         var dutyTitleNode = addon->GetNodeById(37);
         if (dutyTitleNode is null) return;
 
@@ -69,10 +75,10 @@ public unsafe class DutyLootJournalUiController {
         attachedAddonId = addon->Id;
     }
 
-    private void RefreshJournalDetail(AddonJournalDetail* addon)
+    private unsafe void RefreshJournalDetail(AddonJournalDetail* addon)
         => lootButtonNode?.IsVisible = ShouldShow();
 
-    private void OnDataChanged() {
+    private unsafe void OnDataChanged() {
         if (lootButtonNode == null) return;
 
         var addon = Services.GameGui.GetAddonByName<AddonJournalDetail>("JournalDetail");
@@ -86,7 +92,7 @@ public unsafe class DutyLootJournalUiController {
         return lootData is not null || DataLoader.IsLoading;
     }
 
-    private void FinalizeJournalDetail(AddonJournalDetail* addon) {
+    private unsafe void FinalizeJournalDetail(AddonJournalDetail* addon) {
         if (addon->Id != attachedAddonId) return;
 
         CleanupAttached();

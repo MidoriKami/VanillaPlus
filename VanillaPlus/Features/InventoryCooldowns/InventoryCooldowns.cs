@@ -40,8 +40,9 @@ public class InventoryCooldowns : GameModification {
                 OnUpdate = UpdateInventory,
                 OnFinalize = FinalizeInventory,
             };
-            controller.Enable();
         }
+
+        await controller.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
@@ -49,8 +50,10 @@ public class InventoryCooldowns : GameModification {
             Services.AddonLifecycle.UnregisterListener(OnPostReceiveEvent);
         });
 
-        controller?.Dispose();
-        controller = null;
+        if (controller is not null) {
+            await controller.DisposeAsync();
+            controller = null;
+        }
     }
 
     public void RemoveNodeFromCache(TextNode node) {

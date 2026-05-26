@@ -14,7 +14,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.MissingJobStoneLockout;
 
-public unsafe class MissingJobStoneLockout : GameModification {
+public class MissingJobStoneLockout : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_MissingJobStoneLockout,
         Description = Strings.ModificationDescription_MissingJobStoneLockout,
@@ -31,27 +31,28 @@ public unsafe class MissingJobStoneLockout : GameModification {
 
     public override string ImageName => "MissingJobStone.png";
 
-    public override Task OnEnableAsync() {
-        contentsFinderController = new AddonController<AddonContentsFinder> {
-            AddonName = "ContentsFinder",
-            OnSetup = SetupContentsFinder,
-            OnUpdate = UpdateContentsFinder,
-            OnRefresh = UpdateContentsFinder,
-            OnFinalize = FinalizeContentsFinder,
-        };
-        contentsFinderController.Enable();
+    public override async Task OnEnableAsync() {
+        unsafe {
+            contentsFinderController = new AddonController<AddonContentsFinder> {
+                AddonName = "ContentsFinder",
+                OnSetup = SetupContentsFinder,
+                OnUpdate = UpdateContentsFinder,
+                OnRefresh = UpdateContentsFinder,
+                OnFinalize = FinalizeContentsFinder,
+            };
+        }
 
-        return Task.CompletedTask;
+        await contentsFinderController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        contentsFinderController?.Dispose();
-        contentsFinderController = null;
-
-        return Task.CompletedTask;
+    public override async Task OnDisableAsync() {
+        if (contentsFinderController is not null) {
+            await contentsFinderController.DisableAsync();
+            contentsFinderController = null;
+        }
     }
 
-    private void SetupContentsFinder(AddonContentsFinder* addon) {
+    private unsafe void SetupContentsFinder(AddonContentsFinder* addon) {
         suppressed = false;
         clickCount = 0;
 
@@ -105,7 +106,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
         });
     }
 
-    private void UpdateContentsFinder(AddonContentsFinder* addon) {
+    private unsafe void UpdateContentsFinder(AddonContentsFinder* addon) {
         if (animationContainer is null) return;
         var showWarning = !HasJobStoneEquipped() && CouldHaveJobStoneEquipped();
 
@@ -113,7 +114,7 @@ public unsafe class MissingJobStoneLockout : GameModification {
         addon->JoinButton->SetEnabledState(!showWarning || suppressed);
     }
 
-    private void FinalizeContentsFinder(AddonContentsFinder* addon) {
+    private unsafe void FinalizeContentsFinder(AddonContentsFinder* addon) {
         warningTextNode?.Dispose();
         warningTextNode = null;
 
@@ -121,10 +122,10 @@ public unsafe class MissingJobStoneLockout : GameModification {
         animationContainer = null;
     }
 
-    private static bool HasJobStoneEquipped()
+    private static unsafe bool HasJobStoneEquipped()
         => InventoryManager.Instance()->GetInventoryContainer(InventoryType.EquippedItems)->GetInventorySlot(13)->ItemId is not 0;
 
-    private static bool CouldHaveJobStoneEquipped() {
+    private static unsafe bool CouldHaveJobStoneEquipped() {
         var currentJob = PlayerState.Instance()->CurrentClassJobId;
         var currentLevel = PlayerState.Instance()->CurrentLevel;
         if (currentJob is 0) return false;

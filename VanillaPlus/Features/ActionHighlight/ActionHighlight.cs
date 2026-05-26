@@ -46,26 +46,24 @@ public class ActionHighlight : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        await Services.Framework.Run(() => {
-            unsafe {
-                onAntsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
-                onAntsHook?.Enable();
-            }
-        });
+        unsafe {
+            onAntsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
+            onAntsHook?.Enable();
+        }
 
         CacheActions();
     }
 
-    public override Task OnDisableAsync() {
+    public override async Task OnDisableAsync() {
         onAntsHook?.Dispose();
         onAntsHook = null;
 
-        configWindow?.Dispose();
-        configWindow = null;
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         cachedActions = null;
-
-        return Task.CompletedTask;
     }
 
     private unsafe bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {

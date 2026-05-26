@@ -26,7 +26,7 @@ public class DutyLootPreview : GameModification {
         config = await DutyLootPreviewConfig.Load();
 
         dataLoader = new DutyLootDataLoader();
-        dataLoader.Enable();
+        await dataLoader.EnableAsync();
 
         addonDutyLoot = new DutyLootPreviewAddon {
             InternalName = "DutyLootPreview",
@@ -40,30 +40,38 @@ public class DutyLootPreview : GameModification {
             DataLoader = dataLoader,
             OnButtonClicked = addonDutyLoot.Toggle,
         };
-        journalUiController.OnEnable();
+
+        await journalUiController.EnableAsync();
 
         inDutyUiController = new DutyLootInDutyUiController {
             DataLoader = dataLoader,
             OnButtonClicked = addonDutyLoot.Toggle,
         };
-        inDutyUiController.OnEnable();
+
+        await inDutyUiController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        journalUiController?.OnDisable();
-        journalUiController = null;
+    public override async Task OnDisableAsync() {
+        if (journalUiController is not null) {
+            await journalUiController.DisableAsync();
+            journalUiController = null;
+        }
 
-        inDutyUiController?.OnDisable();
-        inDutyUiController = null;
+        if (inDutyUiController is not null) {
+            await inDutyUiController.DisableAsync();
+            inDutyUiController = null;
+        }
 
-        addonDutyLoot?.Dispose();
-        addonDutyLoot = null;
+        if (addonDutyLoot is not null) {
+            await addonDutyLoot.DisposeAsync();
+            addonDutyLoot = null;
+        }
 
-        dataLoader?.Dispose();
-        dataLoader = null;
+        if (dataLoader is not null) {
+            await dataLoader.DisposeAsync();
+            dataLoader = null;
+        }
 
         config = null;
-
-        return Task.CompletedTask;
     }
 }

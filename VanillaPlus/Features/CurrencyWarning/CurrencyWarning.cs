@@ -89,53 +89,63 @@ public class CurrencyWarning : GameModification {
         await Services.Framework.Run(() => {
             if (config is null) return;
 
+            overlayController.Initialize();
+
             tooltipNode = new CurrencyTooltipNode {
                 Config = config,
                 IsVisible = false,
             };
-            overlayController?.AddNode(tooltipNode);
-
-            warningNode = new CurrencyWarningOverlayNode {
-                Config = config,
-                Size = new Vector2(48.0f, 48.0f),
-                TooltipNode = tooltipNode,
-                OnMoveComplete = thisNode => {
-                    config.Position = thisNode.Position;
-                    Task.Run(config.Save);
-                },
-            };
+            overlayController.AddNode(tooltipNode);
 
             unsafe {
-                var screenCenter = (Vector2)AtkStage.Instance()->ScreenSize / 2.0f;
-                warningNode.Position = config.Position != Vector2.Zero ? config.Position : screenCenter;
+                warningNode = new CurrencyWarningOverlayNode {
+                    Config = config,
+                    Size = new Vector2(48.0f, 48.0f),
+                    TooltipNode = tooltipNode,
+                    OnMoveComplete = thisNode => {
+                        config.Position = thisNode.Position;
+                        Task.Run(config.Save);
+                    },
+                    Position = config.Position != Vector2.Zero ? config.Position : (Vector2)AtkStage.Instance()->ScreenSize / 2.0f,
+                };
             }
 
-            overlayController?.AddNode(warningNode);
+            overlayController.AddNode(warningNode);
         });
     }
 
     public override async Task OnDisableAsync() {
-        overlayController?.Dispose();
-        overlayController = null;
+        if (overlayController is not null) {
+            await overlayController.DisposeAsync();
+            overlayController = null;
+        }
 
-        configWindow?.Dispose();
-        configWindow = null;
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
-        listConfigWindow?.Dispose();
-        listConfigWindow = null;
+        if (listConfigWindow is not null) {
+            await listConfigWindow.DisposeAsync();
+            listConfigWindow = null;
+        }
 
-        itemSearchAddon?.Dispose();
-        itemSearchAddon = null;
+        if (itemSearchAddon is not null) {
+            await itemSearchAddon.DisposeAsync();
+            itemSearchAddon = null;
+        }
+
+        if (tooltipNode is not null) {
+            await tooltipNode.DisposeAsync();
+            tooltipNode = null;
+        }
+
+        if (warningNode is not null) {
+            await warningNode.DisposeAsync();
+            warningNode = null;
+        }
 
         config = null;
-
-        await Services.Framework.Run(() => {
-            tooltipNode?.Dispose();
-            tooltipNode = null;
-
-            warningNode?.Dispose();
-            warningNode = null;
-        });
     }
 
     private void OnAddClicked(ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode> listNode) {

@@ -18,16 +18,16 @@ public class RetainerSearchBar : GameModification {
 
     public override string ImageName => "RetainerSearchBar.png";
 
-    public override Task OnEnableAsync() {
+    public override async Task OnEnableAsync() {
         retainerInventoryController = new InventorySearchAddonController("InventoryRetainerLarge", "InventoryRetainer");
 
-        return Task.CompletedTask;
+        await retainerInventoryController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        retainerInventoryController?.Dispose();
-        retainerInventoryController = null;
-
-        return Task.CompletedTask;
+    public override async Task OnDisableAsync() {
+        if (retainerInventoryController is not null) {
+            await retainerInventoryController.DisposeAsync();
+            retainerInventoryController = null;
+        }
     }
 }

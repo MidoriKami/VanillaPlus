@@ -36,22 +36,35 @@ public class BiggerConfigWindows : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        systemConfigController = new SystemConfigController(config);
-        characterConfigController = new CharacterConfigController(config);
+        systemConfigController = new SystemConfigController {
+            Config = config,
+        };
+
+        await systemConfigController.EnableAsync();
+
+        characterConfigController = new CharacterConfigController {
+            Config = config,
+        };
+
+        await characterConfigController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        systemConfigController?.Dispose();
-        systemConfigController = null;
+    public override async Task OnDisableAsync() {
+        if (systemConfigController is not null) {
+            await systemConfigController.DisableAsync();
+            systemConfigController = null;
+        }
 
-        characterConfigController?.Dispose();
-        characterConfigController = null;
+        if (characterConfigController is not null) {
+            await characterConfigController.DisableAsync();
+            characterConfigController = null;
+        }
 
-        configAddon?.Dispose();
-        configAddon = null;
+        if (configAddon is not null) {
+            await configAddon.DisposeAsync();
+            configAddon = null;
+        }
 
         config = null;
-
-        return Task.CompletedTask;
     }
 }

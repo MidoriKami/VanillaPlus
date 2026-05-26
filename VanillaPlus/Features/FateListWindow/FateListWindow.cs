@@ -31,10 +31,10 @@ public class FateListWindow : GameModification {
         OpenConfigAction = addonFateList.OpenAddonConfig;
     }
 
-    public override Task OnDisableAsync() {
-        addonFateList?.Dispose();
-        addonFateList = null;
-
-        return Task.CompletedTask;
+    public override async Task OnDisableAsync() {
+        if (addonFateList is not null) {
+            await addonFateList.DisposeAsync();
+            addonFateList = null;
+        }
     }
 }

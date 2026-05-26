@@ -70,25 +70,31 @@ public class ResourceBarPercentages : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_ParameterWidget", OnParameterDraw);
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_ParameterWidget", OnParameterDraw);
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_PartyList", OnPartyListDraw);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_PartyList", OnPartyListDraw);
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
+        });
     }
 
     public override async Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnParameterDraw, OnPartyListDraw);
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.UnregisterListener(OnParameterDraw, OnPartyListDraw);
+        });
 
-        configWindow?.Dispose();
-        configWindow = null;
-
-        config = null;
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
         await Services.Framework.Run(() => {
             OnParameterDisable();
             OnPartyListDisable();
         });
+
+        config = null;
     }
 
     private void OnConfigChanged() {

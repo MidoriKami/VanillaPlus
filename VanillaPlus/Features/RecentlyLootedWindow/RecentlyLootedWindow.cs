@@ -45,15 +45,15 @@ public class RecentlyLootedWindow : GameModification {
         Services.ClientState.Logout += OnLogout;
     }
 
-    public override Task OnDisableAsync() {
-        addonRecentlyLooted?.Dispose();
-        addonRecentlyLooted = null;
+    public override async Task OnDisableAsync() {
+        if (addonRecentlyLooted is not null) {
+            await addonRecentlyLooted.DisposeAsync();
+            addonRecentlyLooted = null;
+        }
 
         Services.GameInventory.InventoryChanged -= OnRawItemAdded;
         Services.ClientState.Login -= OnLogin;
         Services.ClientState.Logout -= OnLogout;
-
-        return Task.CompletedTask;
     }
 
     private void OnLogin() {

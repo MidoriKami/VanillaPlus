@@ -70,23 +70,26 @@ public class MiniCactpotHelper : GameModification {
                 OnFinalize = FinalizeLotteryDaily,
                 OnUpdate = UpdateLotteryDaily,
             };
-            lotteryDailyController.Enable();
         }
+
+        await lotteryDailyController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
+    public override async Task OnDisableAsync() {
         gameTask?.Dispose();
         gameTask = null;
 
-        configWindow?.Dispose();
-        configWindow = null;
+        if (configWindow is not null) {
+            await configWindow.DisposeAsync();
+            configWindow = null;
+        }
 
-        lotteryDailyController?.Dispose();
-        lotteryDailyController = null;
+        if (lotteryDailyController is not null) {
+            await lotteryDailyController.DisableAsync();
+            lotteryDailyController = null;
+        }
 
         config = null;
-
-        return Task.CompletedTask;
     }
 
     private void ApplyConfigStyle() {

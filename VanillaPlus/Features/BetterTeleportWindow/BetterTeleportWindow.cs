@@ -17,9 +17,6 @@ public class BetterTeleportWindow : GameModification {
 
     public override string ImageName => "BetterTeleportWindow.png";
 
-    // Hyper Experimental lol. Game go boom, probably.
-    public override bool IsExperimental => true;
-
     internal static BetterTeleportWindowConfig? Config;
     internal static TeleportAddon? CustomTeleportAddon;
 
@@ -36,13 +33,14 @@ public class BetterTeleportWindow : GameModification {
                 Size = new Vector2(700.0f, 600.0f),
             },
         };
-        teleportFactoryController.Enable();
+
+        await teleportFactoryController.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        teleportFactoryController?.Dispose();
-        teleportFactoryController = null;
-
-        return Task.CompletedTask;
+    public override async Task OnDisableAsync() {
+        if (teleportFactoryController is not null) {
+            await teleportFactoryController.DisableAsync();
+            CustomTeleportAddon = null;
+        }
     }
 }
