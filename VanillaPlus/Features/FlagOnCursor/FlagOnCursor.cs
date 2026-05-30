@@ -18,19 +18,19 @@ public class FlagOnCursor : GameModification {
 
     private const string CommandName = "/flagthere";
 
-    public override async Task OnEnableAsync() {
-        await Services.Framework.Run(() => {
-            Services.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
-                HelpMessage = Strings.FlagOnCursor_CommandHelpMessage,
-                ShowInHelp = true,
-            });
+    public override Task OnEnableAsync() {
+        Services.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
+            HelpMessage = Strings.FlagOnCursor_CommandHelpMessage,
+            ShowInHelp = true,
         });
+
+        return Task.CompletedTask;
     }
 
-    public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.CommandManager.RemoveHandler(CommandName);
-        });
+    public override Task OnDisableAsync() {
+        Services.CommandManager.RemoveHandler(CommandName);
+
+        return Task.CompletedTask;
     }
 
     private static unsafe void OnCommand(string command, string args) {

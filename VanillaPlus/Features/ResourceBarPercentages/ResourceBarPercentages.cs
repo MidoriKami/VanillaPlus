@@ -68,7 +68,7 @@ public class ResourceBarPercentages : GameModification {
             .AddIntSlider(Strings.ResourceBarPercentages_DecimalPlaces, 0, 2, nameof(config.DecimalPlaces))
             .AddCheckbox(Strings.ResourceBarPercentages_ShowDecimalsBelowHundred, nameof(config.ShowDecimalsBelowHundredOnly));
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configWindow.ToggleAsync;
 
         await Services.Framework.Run(() => {
             Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);
@@ -82,17 +82,13 @@ public class ResourceBarPercentages : GameModification {
     public override async Task OnDisableAsync() {
         await Services.Framework.Run(() => {
             Services.AddonLifecycle.UnregisterListener(OnParameterDraw, OnPartyListDraw);
-        });
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
-
-        await Services.Framework.Run(() => {
             OnParameterDisable();
             OnPartyListDisable();
         });
+
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configWindow = null;
 
         config = null;
     }

@@ -49,19 +49,15 @@ public class HUDPresets : GameModification {
             };
         }
 
-        await hudLayoutController.EnableAsync();
+        await Services.Framework.Run(hudLayoutController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (renameAddon is not null) {
-            await renameAddon.DisposeAsync();
-            renameAddon = null;
-        }
+        await Services.Framework.Run(() => hudLayoutController?.Dispose());
+        hudLayoutController = null;
 
-        if (hudLayoutController is not null) {
-            await hudLayoutController.DisposeAsync();
-            hudLayoutController = null;
-        }
+        await Task.WhenAll(renameAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        renameAddon = null;
     }
 
     private unsafe void SetupHudLayoutWindow(AtkUnitBase* addon) {

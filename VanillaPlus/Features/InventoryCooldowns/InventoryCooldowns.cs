@@ -42,18 +42,16 @@ public class InventoryCooldowns : GameModification {
             };
         }
 
-        await controller.EnableAsync();
+        await Services.Framework.Run(controller.Enable);
     }
 
     public override async Task OnDisableAsync() {
         await Services.Framework.Run(() => {
             Services.AddonLifecycle.UnregisterListener(OnPostReceiveEvent);
+            controller?.Dispose();
         });
 
-        if (controller is not null) {
-            await controller.DisposeAsync();
-            controller = null;
-        }
+        controller = null;
     }
 
     public void RemoveNodeFromCache(TextNode node) {

@@ -11,6 +11,7 @@ public abstract class GameModification {
     public abstract Task OnDisableAsync();
 
     public Action? OpenConfigAction { get; set; }
+    public Func<Task>? OpenConfigAsync { get; set; }
 
     /// <summary>
     /// Indicates this modification is experimental in nature and may cause issues.

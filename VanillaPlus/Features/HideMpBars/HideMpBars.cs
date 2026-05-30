@@ -45,7 +45,7 @@ public class HideMpBars : GameModification {
                 .AddCheckbox("Hide in Parameter Widget", nameof(config.HideParamWidget), _ => ResetParamWidget());
         }
 
-        OpenConfigAction = configAddon.Toggle;
+        OpenConfigAsync = configAddon.ToggleAsync;
 
         manaUsingClassJobs = Services.DataManager.GetManaUsingClassJobs().ToList();
 
@@ -63,28 +63,25 @@ public class HideMpBars : GameModification {
             };
         }
 
-        await partyListController.EnableAsync();
-        await paramController.EnableAsync();
+        await Services.Framework.Run(() => {
+            partyListController.Enable();
+            paramController.Enable();
+        });
     }
 
     public override async Task OnDisableAsync() {
-        if (partyListController is not null) {
-            await partyListController.DisableAsync();
-            partyListController = null;
-        }
+        await Services.Framework.Run(() => {
+            partyListController?.Dispose();
+            paramController?.Dispose();
+        });
 
-        if (paramController is not null) {
-            await paramController.DisableAsync();
-            paramController = null;
-        }
+        partyListController = null;
+        paramController = null;
 
-        if (configAddon is not null) {
-            await configAddon.DisposeAsync();
-            configAddon = null;
-        }
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
 
         manaUsingClassJobs = null;
-
         config = null;
     }
 

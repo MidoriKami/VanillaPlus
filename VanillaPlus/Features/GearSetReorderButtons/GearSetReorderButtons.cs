@@ -43,25 +43,20 @@ public class GearSetReorderButtons : GameModification {
             };
         }
 
-        await gearSetsAddonController.EnableAsync();
-        await gearSetsListController.EnableAsync();
+        await Services.Framework.Run(() => {
+            gearSetsAddonController.Enable();
+            gearSetsListController.Enable();
+        });
     }
 
     public override async Task OnDisableAsync() {
-        if (gearSetsAddonController is not null) {
-            await gearSetsAddonController.DisposeAsync();
-            gearSetsAddonController = null;
-        }
+        await Services.Framework.Run(() => {
+            gearSetsAddonController?.Dispose();
+            gearSetsListController?.Dispose();
+        });
 
-        if (gearSetsAddonController is not null) {
-            await gearSetsAddonController.DisposeAsync();
-            gearSetsAddonController = null;
-        }
-
-        if (gearSetsListController is not null) {
-            await gearSetsListController.DisposeAsync();
-            gearSetsListController = null;
-        }
+        gearSetsAddonController = null;
+        gearSetsListController = null;
     }
 
     private static unsafe void SetUpAddon(AddonGearSetList* addon) {

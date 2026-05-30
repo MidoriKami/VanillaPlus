@@ -1,5 +1,5 @@
+using System;
 using System.Numerics;
-using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
@@ -12,7 +12,7 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// <summary>
 /// Displays the "Open Duty Loot Table" button in Duty Finder
 /// </summary>
-public class DutyLootJournalUiController {
+public class DutyLootJournalUiController : IDisposable {
     private AddonController<AddonJournalDetail>? journalDetail;
     private DutyLootOpenWindowButtonNode? lootButtonNode;
     private ushort attachedAddonId;
@@ -21,7 +21,7 @@ public class DutyLootJournalUiController {
 
     public Action? OnButtonClicked { get; init; }
 
-    public async Task EnableAsync() {
+    public void Enable() {
         unsafe {
             journalDetail = new AddonController<AddonJournalDetail> {
                 AddonName = "JournalDetail",
@@ -31,18 +31,16 @@ public class DutyLootJournalUiController {
             };
         }
 
-        await journalDetail.EnableAsync();
+        journalDetail.Enable();
 
         DataLoader.OnChanged += OnDataChanged;
     }
 
-    public async Task DisableAsync() {
+    public void Dispose() {
         DataLoader.OnChanged -= OnDataChanged;
 
-        if (journalDetail is not null) {
-            await journalDetail.DisableAsync();
-            journalDetail = null;
-        }
+        journalDetail?.Dispose();
+        journalDetail = null;
     }
 
     private unsafe void SetupJournalDetail(AddonJournalDetail* addon) {

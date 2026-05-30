@@ -34,11 +34,7 @@ public class BetterSelectString : GameModification {
 
                 OnUpdate = UpdateSelectString,
             };
-        }
 
-        await selectStringController.EnableAsync();
-
-        unsafe {
             selectStringListController = new NativeListController<AddonSelectString> {
                 AddonName = "SelectString",
                 GetPopulatorNode = addon => addon->GetComponentListById(3)->GetComponentItemRendererById(5),
@@ -58,19 +54,20 @@ public class BetterSelectString : GameModification {
             };
         }
 
-        await selectStringListController.EnableAsync();
+        await Services.Framework.Run(() => {
+            selectStringController.Enable();
+            selectStringListController.Enable();
+        });
     }
 
     public override async Task OnDisableAsync() {
-        if (selectStringController is not null) {
-            await selectStringController.DisableAsync();
-            selectStringListController = null;
-        }
+        await Services.Framework.Run(() => {
+            selectStringController?.Dispose();
+            selectStringListController?.Dispose();
+        });
 
-        if (selectStringListController is not null) {
-            await selectStringListController.EnableAsync();
-            selectStringListController = null;
-        }
+        selectStringController = null;
+        selectStringListController = null;
     }
 
     private static unsafe void UpdateSelectString(AddonSelectString* addon) {

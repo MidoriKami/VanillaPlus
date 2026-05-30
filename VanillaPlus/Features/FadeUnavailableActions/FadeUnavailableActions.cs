@@ -53,7 +53,7 @@ public class FadeUnavailableActions : GameModification {
             .AddCheckbox(Strings.FadeUnavailableActions_LabelApplyToSync, nameof(config.ApplyToSyncActions))
             .AddCheckbox(Strings.FadeUnavailableActions_LabelReddenOutOfRange, nameof(config.ReddenOutOfRange));
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configWindow.ToggleAsync;
 
         unsafe {
             onHotBarSlotUpdateHook = Services.Hooker.HookFromAddress<AddonActionBarBase.Delegates.UpdateHotbarSlot>(AddonActionBarBase.MemberFunctionPointers.UpdateHotbarSlot, OnHotBarSlotUpdate);
@@ -65,10 +65,8 @@ public class FadeUnavailableActions : GameModification {
         onHotBarSlotUpdateHook?.Dispose();
         onHotBarSlotUpdateHook = null;
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configWindow = null;
 
         actionCache = null;
 

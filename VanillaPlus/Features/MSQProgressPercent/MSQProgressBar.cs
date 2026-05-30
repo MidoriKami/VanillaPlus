@@ -65,7 +65,8 @@ public class MSQProgressBar : GameModification {
             })
             .AddColorEdit(Strings.MSQProgressBar_LabelBarColor, nameof(config.BarColor), KnownColor.White.Vector());
 
-        OpenConfigAction = configAddon.Toggle;
+        OpenConfigAsync = configAddon.ToggleAsync;
+
         unsafe {
             scenarioTreeAddonController = new AddonController {
                 AddonName = "ScenarioTree",
@@ -75,19 +76,15 @@ public class MSQProgressBar : GameModification {
             };
         }
 
-        await scenarioTreeAddonController.EnableAsync();
+        await Services.Framework.Run(scenarioTreeAddonController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (scenarioTreeAddonController is not null) {
-            await scenarioTreeAddonController.DisposeAsync();
-            scenarioTreeAddonController = null;
-        }
+        await Services.Framework.Run(() => scenarioTreeAddonController?.Dispose());
+        scenarioTreeAddonController = null;
 
-        if (configAddon is not null) {
-            await configAddon.DisposeAsync();
-            configAddon = null;
-        }
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
 
         expansionRanges?.Clear();
         expansionRanges = null;

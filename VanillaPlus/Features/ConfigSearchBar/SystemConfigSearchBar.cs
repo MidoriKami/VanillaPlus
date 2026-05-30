@@ -42,7 +42,7 @@ public class SystemConfigSearchBar : GameModification {
             .AddColorEdit(Strings.SystemConfigSearchBar_LabelTabHighlight, nameof(config.TabColor), KnownColor.LimeGreen.Vector())
             .AddColorEdit(Strings.SystemConfigSearchBar_LabelTextHighlight, nameof(config.HighlightColor), KnownColor.Red.Vector());
 
-        OpenConfigAction = configAddon.Toggle;
+        OpenConfigAsync = configAddon.ToggleAsync;
 
         unsafe {
             systemConfigController = new AddonController {
@@ -52,19 +52,15 @@ public class SystemConfigSearchBar : GameModification {
             };
         }
 
-        await systemConfigController.EnableAsync();
+        await Services.Framework.Run(systemConfigController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (configAddon is not null) {
-            await configAddon.DisposeAsync();
-            configAddon = null;
-        }
+        await Services.Framework.Run(() => systemConfigController?.Dispose());
+        systemConfigController = null;
 
-        if (systemConfigController is not null) {
-            await systemConfigController.DisableAsync();
-            systemConfigController = null;
-        }
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
 
         config = null;
     }

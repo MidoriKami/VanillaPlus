@@ -1,6 +1,6 @@
-using System;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using VanillaPlus.Features.DutyLootPreview.Data;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
@@ -14,7 +14,7 @@ namespace VanillaPlus.Features.DutyLootPreview;
 /// <summary>
 /// The window that shows loot for a duty.
 /// </summary>
-public unsafe class DutyLootPreviewAddon : NativeAddon {
+public class DutyLootPreviewAddon : NativeAddon {
     private const int VisibleItemCount = 12;
     internal const float ItemHeight = 32.0f;
     private const float ItemSpacing = 2.25f;
@@ -33,13 +33,13 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
     public required DutyLootPreviewConfig Config { get; init; }
     public required DutyLootDataLoader DataLoader { get; init; }
 
-    protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+    protected override async Task BuildUiAsync() {
         DataLoader.OnChanged += OnDataLoaderStateChanged;
 
         filterBarNode = new DutyLootFilterBarNode {
             Position = ContentStartPosition,
             Size = new Vector2(ContentSize.X, FilterBarHeight),
-            OnFilterChanged = _ => UpdateList(),
+            OnFilterChanged = _ => Task.Run(UpdateList),
         };
         filterBarNode.AttachNode(this);
 
@@ -72,21 +72,21 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
         UpdateHintTextNodePosition();
         hintTextNode.AttachNode(this);
 
-        UpdateList();
+        await UpdateList();
     }
 
     private void OnDataLoaderStateChanged()
-        => Services.Framework.RunOnFrameworkThread(UpdateList);
+        => Task.Run(UpdateList);
 
-    protected override void OnFinalize(AtkUnitBase* addon)
+    protected override unsafe void OnFinalize(AtkUnitBase* addon)
         => DataLoader.OnChanged -= OnDataLoaderStateChanged;
 
-    private void UpdateList() {
+    private async Task UpdateList() {
         if (listNode is null || hintTextNode is null || filterBarNode is null || separatorNode is null) return;
 
         var dutyLootData = DataLoader.ActiveDutyLootData;
         if (dutyLootData is null && !DataLoader.IsLoading) {
-            Close();
+            await CloseAsync();
             return;
         }
 
@@ -108,7 +108,7 @@ public unsafe class DutyLootPreviewAddon : NativeAddon {
             ))
             .ToList();
 
-        listNode.OptionsList = viewModels;
+        await Services.Framework.Run(() => listNode.OptionsList = viewModels);
         listNode.ResetScroll();
 
         var hasData = items.Count != 0;

@@ -21,19 +21,19 @@ public class CommandPanelAdjustments : GameModification {
 
     private AddonController? quickPanelController;
     private QuickPanelAdjustmentsConfig? config;
-    private ConfigAddon? configWindow;
+    private ConfigAddon? configAddon;
 
     public override async Task OnEnableAsync() {
         config = await QuickPanelAdjustmentsConfig.Load();
 
-        configWindow = new ConfigAddon {
+        configAddon = new ConfigAddon {
             Size = new Vector2(600.0f, 125.0f),
             InternalName = "CommandPanelAdjustmentsConfig",
             Title = Strings.QuickPanelAdjustments_ConfigTitle,
             Config = config,
         };
 
-        configWindow.AddCategory("")
+        configAddon.AddCategory("")
             .AddCheckbox(Strings.QuickPanelAdjustments_LabelHideHighlighting, nameof(config.HideHighlighting))
             .AddCheckbox(Strings.QuickPanelAdjustments_LabelHideFocusBorder, nameof(config.HideFocusBorder))
             .AddCheckbox(Strings.QuickPanelAdjustments_LabelHidePanelBackground, nameof(config.HidePanelBackground))
@@ -41,7 +41,8 @@ public class CommandPanelAdjustments : GameModification {
             .AddCheckbox(Strings.QuickPanelAdjustments_LabelMoveButtons, nameof(config.MoveButtons))
             .AddColorEdit(Strings.QuickPanelAdjustments_BackgroundColor, nameof(config.BackgroundColor), new Vector4(1.0f, 1.0f, 1.0f, 25.0f / 255.0f));
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configAddon.ToggleAsync;
+
         unsafe {
             quickPanelController = new AddonController {
                 AddonName = "QuickPanel",
@@ -50,19 +51,15 @@ public class CommandPanelAdjustments : GameModification {
             };
         }
 
-        await quickPanelController.EnableAsync();
+        await Services.Framework.Run(quickPanelController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (quickPanelController is not null) {
-            await quickPanelController.DisableAsync();
-            quickPanelController = null;
-        }
+        await Services.Framework.Run(() => quickPanelController?.Dispose());
+        quickPanelController = null;
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
 
         config = null;
     }

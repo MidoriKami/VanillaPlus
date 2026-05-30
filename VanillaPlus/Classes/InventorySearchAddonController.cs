@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Keys;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -12,7 +11,7 @@ using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Classes;
 
-public class InventorySearchAddonController : IAsyncDisposable {
+public class InventorySearchAddonController : IDisposable {
 
     private readonly MultiAddonController inventoryController;
     private readonly Dictionary<string, TextInputWithHintNode> inputTextNodes = [];
@@ -43,16 +42,14 @@ public class InventorySearchAddonController : IAsyncDisposable {
         };
     }
 
-    public async ValueTask DisposeAsync() {
+    public void Dispose() {
         Services.PluginLog.Info("Disposing", "InventorySearchAddonController");
 
-        await Services.Framework.Run(() => {
-            foreach (var node in inputTextNodes.Values) {
-                node.Dispose();
-            }
-        });
+        foreach (var node in inputTextNodes.Values) {
+            node.Dispose();
+        }
 
-        await inventoryController.DisposeAsync();
+        inventoryController.Dispose();
 
         inputTextNodes.Clear();
         selectedTabs.Clear();
@@ -60,8 +57,8 @@ public class InventorySearchAddonController : IAsyncDisposable {
         keybindListener?.KeybindCallback -= OnKeybindPressed;
     }
 
-    public async Task EnableAsync()
-        => await inventoryController.EnableAsync();
+    public void Enable()
+        => inventoryController.Enable();
 
     private unsafe void OnKeybindPressed(ref bool isHandled) {
         var focusedAddonCount = RaptureAtkUnitManager.Instance()->FocusedUnitsList.Count;

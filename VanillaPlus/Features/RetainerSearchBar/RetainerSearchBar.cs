@@ -21,13 +21,11 @@ public class RetainerSearchBar : GameModification {
     public override async Task OnEnableAsync() {
         retainerInventoryController = new InventorySearchAddonController("InventoryRetainerLarge", "InventoryRetainer");
 
-        await retainerInventoryController.EnableAsync();
+        await Services.Framework.Run(retainerInventoryController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (retainerInventoryController is not null) {
-            await retainerInventoryController.DisposeAsync();
-            retainerInventoryController = null;
-        }
+        await Services.Framework.Run(() => retainerInventoryController?.Dispose());
+        retainerInventoryController = null;
     }
 }

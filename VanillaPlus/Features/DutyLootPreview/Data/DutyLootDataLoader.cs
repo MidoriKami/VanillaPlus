@@ -39,11 +39,7 @@ public class DutyLootDataLoader : IAsyncDisposable {
                 OnRefresh = OnContentsFinderChanged,
                 OnFinalize = OnContentsFinderChanged,
             };
-        }
 
-        await contentsFinder.EnableAsync();
-
-        unsafe {
             raidFinder = new AddonController<AddonRaidFinder> {
                 AddonName = "RaidFinder",
                 OnSetup = OnRaidFinderChanged,
@@ -52,7 +48,10 @@ public class DutyLootDataLoader : IAsyncDisposable {
             };
         }
 
-        await raidFinder.EnableAsync();
+        await Services.Framework.Run(() => {
+            contentsFinder.Enable();
+            raidFinder.Enable();
+        });
 
         dutyLootDataCache.OnChanged += OnCacheChanged;
 
@@ -60,15 +59,13 @@ public class DutyLootDataLoader : IAsyncDisposable {
     }
 
     public async ValueTask DisposeAsync() {
-        if (contentsFinder is not null) {
-            await contentsFinder.DisableAsync();
-            contentsFinder = null;
-        }
+        await Services.Framework.Run(() => {
+            contentsFinder?.Dispose();
+            raidFinder?.Dispose();
+        });
 
-        if (raidFinder is not null) {
-            await raidFinder.DisableAsync();
-            raidFinder = null;
-        }
+        contentsFinder = null;
+        raidFinder = null;
 
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
         Services.GameGui.AgentUpdate -= OnAgentUpdate;

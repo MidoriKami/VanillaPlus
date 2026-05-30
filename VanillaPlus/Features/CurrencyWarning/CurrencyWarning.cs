@@ -84,11 +84,9 @@ public class CurrencyWarning : GameModification {
         configWindow.AddCategory(Strings.CurrencyWarning_CategorySelection)
             .AddButton(Strings.CurrencyWarning_ConfigureButton, () => listConfigWindow.Toggle());
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configWindow.ToggleAsync;
 
         await Services.Framework.Run(() => {
-            if (config is null) return;
-
             overlayController.Initialize();
 
             tooltipNode = new CurrencyTooltipNode {
@@ -115,35 +113,25 @@ public class CurrencyWarning : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        if (overlayController is not null) {
-            await overlayController.DisposeAsync();
-            overlayController = null;
-        }
+        await Services.Framework.Run(() => {
+            overlayController?.Dispose();
+            tooltipNode?.Dispose();
+            warningNode?.Dispose();
+        });
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        overlayController = null;
+        tooltipNode = null;
+        warningNode = null;
 
-        if (listConfigWindow is not null) {
-            await listConfigWindow.DisposeAsync();
-            listConfigWindow = null;
-        }
+        await Task.WhenAll(
+            configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask,
+            listConfigWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask,
+            itemSearchAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
+        );
 
-        if (itemSearchAddon is not null) {
-            await itemSearchAddon.DisposeAsync();
-            itemSearchAddon = null;
-        }
-
-        if (tooltipNode is not null) {
-            await tooltipNode.DisposeAsync();
-            tooltipNode = null;
-        }
-
-        if (warningNode is not null) {
-            await warningNode.DisposeAsync();
-            warningNode = null;
-        }
+        configWindow = null;
+        listConfigWindow = null;
+        itemSearchAddon = null;
 
         config = null;
     }

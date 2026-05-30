@@ -12,8 +12,8 @@ namespace VanillaPlus.InternalSystem;
 public class ModificationManager : IAsyncDisposable {
 
     private readonly List<LoadedModification> loadedModifications = [];
-    public readonly List<IGrouping<ModificationType, LoadedModification>> CategoryGroups;
-    public readonly Dictionary<ModificationType, List<IGrouping<ModificationSubType?, LoadedModification>>> SubCategoryGroups = [];
+
+    public IReadOnlyList<LoadedModification> LoadedModifications => loadedModifications;
 
     public ModificationManager() {
         var allGameModifications = GetGameModifications();
@@ -36,22 +36,6 @@ public class ModificationManager : IAsyncDisposable {
         }
 
         Services.PluginInterface.ActivePluginsChanged += OnPluginsChanged;
-
-        CategoryGroups = loadedModifications
-            .Select(option => option)
-            .GroupBy(option => option.Modification.ModificationInfo.Type)
-            .OrderByDescending(group => group.Key is ModificationType.Seasonal && DateTime.Now.IsSeasonalEvent)
-            .ThenBy(group => group.Key)
-            .ToList();
-
-        foreach (var categoryGroup in CategoryGroups) {
-            var subCategoryGroup = categoryGroup
-                .GroupBy(option => option.Modification.ModificationInfo.SubType)
-                .OrderBy(group => group.Key?.Description)
-                .ToList();
-
-            SubCategoryGroups.Add(categoryGroup.Key, subCategoryGroup);
-        }
     }
 
     public async ValueTask DisposeAsync() {
@@ -79,9 +63,11 @@ public class ModificationManager : IAsyncDisposable {
 
     // When loaded plugins change, re-evaluate any compat modules
     private void OnPluginsChanged(IActivePluginsChangedEventArgs args)
-        => ReloadConflictedModules();
+        => Task.Run(ReloadConflictedModules);
 
-    public void ReloadConflictedModules() {
+    public async Task ReloadConflictedModules() {
+        List<Task> moduleTasks = [];
+
         foreach (var gameModification in loadedModifications) {
 
             // Only evaluate modules that have a compatability module
@@ -94,7 +80,7 @@ public class ModificationManager : IAsyncDisposable {
                     // This module was enabled, but after a refresh it's not allowed, disable it
                     if (!compatibilityModule.ShouldLoadGameModification()) {
                         Services.PluginLog.InternalWarning($"Loaded plugins have changed, and {gameModification.Name} is now no longer allowed to be enabled");
-                        Task.Run(() => TryDisableModification(gameModification, false));
+                        moduleTasks.Add(Task.Run(() => TryDisableModification(gameModification, false)));
                         gameModification.State = LoadedState.CompatError;
                         gameModification.ErrorMessage = compatibilityModule.GetErrorMessage();
                     }
@@ -106,16 +92,18 @@ public class ModificationManager : IAsyncDisposable {
                     // This module was disabled due to compat, it is now allowed, load it
                     if (compatibilityModule.ShouldLoadGameModification()) {
                         Services.PluginLog.InternalInfo($"Loaded plugins have changed, and {gameModification.Name} is now allowed to be enabled");
-                        Task.Run(() => TryEnableModification(gameModification));
+                        moduleTasks.Add(Task.Run(() => TryEnableModification(gameModification)));
                     }
                     break;
             }
         }
 
+        await Task.WhenAll(moduleTasks);
+
         System.ModificationBrowserAddon.UpdateDisabledState();
     }
 
-    public static async Task TryEnableModification(LoadedModification modification) {
+    private static async Task TryEnableModification(LoadedModification modification) {
         if (modification.State is LoadedState.Errored) {
             Services.PluginLog.InternalError($"[{modification.Name}] Attempted to enable errored modification");
             return;
@@ -148,8 +136,10 @@ public class ModificationManager : IAsyncDisposable {
 
             modification.State = LoadedState.Enabled;
             Services.PluginLog.InternalInfo($"Successfully Enabled {modification.Name}");
-            System.SystemConfig.EnabledModifications.Add(modification.Name);
-            await System.SystemConfig.Save();
+
+            if (System.SystemConfig.EnabledModifications.Add(modification.Name)) {
+                await System.SystemConfig.Save();
+            }
         }
         catch (Exception e) {
             modification.State = LoadedState.Errored;
@@ -169,7 +159,7 @@ public class ModificationManager : IAsyncDisposable {
         }
     }
 
-    public static async Task TryDisableModification(LoadedModification modification, bool removeFromList = true) {
+    private static async Task TryDisableModification(LoadedModification modification, bool removeFromList = true) {
         if (modification.State is LoadedState.Errored) {
             Services.PluginLog.InternalError($"[{modification.Name}] Attempted to disable errored modification");
             return;
@@ -192,6 +182,15 @@ public class ModificationManager : IAsyncDisposable {
         if (removeFromList) {
             System.SystemConfig.EnabledModifications.Remove(modification.Name);
             await System.SystemConfig.Save();
+        }
+    }
+
+    public static async Task TryToggleModification(LoadedModification modification) {
+        if (modification is { State: LoadedState.Enabled }) {
+            await TryDisableModification(modification);
+        }
+        else if (modification is { State: LoadedState.Disabled }) {
+            await TryEnableModification(modification);
         }
     }
 

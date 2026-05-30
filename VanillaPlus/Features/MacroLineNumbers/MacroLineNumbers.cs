@@ -37,14 +37,12 @@ public class MacroLineNumbers : GameModification {
             };
         }
 
-        await macroAddonController.EnableAsync();
+        await Services.Framework.Run(macroAddonController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (macroAddonController is not null) {
-            await macroAddonController.DisposeAsync();
-            macroAddonController = null;
-        }
+        await Services.Framework.Run(() => macroAddonController?.Dispose());
+        macroAddonController = null;
 
         textNodes?.Clear();
         textNodes = null;

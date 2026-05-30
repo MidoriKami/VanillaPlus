@@ -25,6 +25,7 @@ public class ClockOverlay : GameModification {
 
     public override async Task OnEnableAsync() {
         config = await ClockOverlayConfig.Load();
+
         overlayController = new OverlayController();
 
         configWindow = new ConfigAddon {
@@ -47,7 +48,7 @@ public class ClockOverlay : GameModification {
             .AddDropdown<AlignmentType>(Strings.ClockOverlay_LabelAlignment, nameof(config.AlignmentType))
             .AddDropdown<TextFlags>(Strings.ClockOverlay_TextRendering, nameof(config.TextFlags));
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configWindow.ToggleAsync;
 
         await Services.Framework.Run(() => {
             overlayController.Initialize();
@@ -65,15 +66,11 @@ public class ClockOverlay : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await Services.Framework.Run(() => overlayController?.Dispose());
+        overlayController = null;
 
-        if (overlayController is not null) {
-            await overlayController.DisposeAsync();
-            overlayController = null;
-        }
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configWindow = null;
 
         config = null;
     }

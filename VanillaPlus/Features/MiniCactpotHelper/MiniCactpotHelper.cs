@@ -26,7 +26,7 @@ public class MiniCactpotHelper : GameModification {
     private AddonController<AddonLotteryDaily>? lotteryDailyController;
 
     private MiniCactpotHelperConfig? config;
-    private ConfigAddon? configWindow;
+    private ConfigAddon? configAddon;
     private PerfectCactpot? perfectCactpot;
 
     private int[]? boardState;
@@ -43,25 +43,25 @@ public class MiniCactpotHelper : GameModification {
 
         config = await MiniCactpotHelperConfig.Load();
 
-        configWindow = new ConfigAddon {
+        configAddon = new ConfigAddon {
             InternalName = "MiniCactpotConfig",
             Title = Strings.Title_MiniCactpotConfig,
             Config = config,
         };
 
-        configWindow.AddCategory(Strings.ConfigCategory_Animations)
+        configAddon.AddCategory(Strings.ConfigCategory_Animations)
             .AddCheckbox(Strings.ConfigLabel_EnableAnimations, nameof(config.EnableAnimations));
 
-        configWindow.AddCategory(Strings.Icon)
+        configAddon.AddCategory(Strings.Icon)
             .AddMultiSelectIcon(Strings.Icon, nameof(config.IconId), true, 61332, 90452, 234008);
 
-        configWindow.AddCategory(Strings.ConfigCategory_Colors)
+        configAddon.AddCategory(Strings.ConfigCategory_Colors)
             .AddColorEdit(Strings.ConfigLabel_ButtonColor, nameof(config.ButtonColor), KnownColor.White.Vector() with { W = 0.8f })
             .AddColorEdit(Strings.ConfigLabel_LaneColor, nameof(config.LaneColor), KnownColor.White.Vector());
 
         config.OnSave += ApplyConfigStyle;
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configAddon.ToggleAsync;
 
         unsafe {
             lotteryDailyController = new AddonController<AddonLotteryDaily> {
@@ -72,22 +72,18 @@ public class MiniCactpotHelper : GameModification {
             };
         }
 
-        await lotteryDailyController.EnableAsync();
+        await Services.Framework.Run(lotteryDailyController.Enable);
     }
 
     public override async Task OnDisableAsync() {
         gameTask?.Dispose();
         gameTask = null;
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await Services.Framework.Run(() => lotteryDailyController?.Dispose());
+        lotteryDailyController = null;
 
-        if (lotteryDailyController is not null) {
-            await lotteryDailyController.DisableAsync();
-            lotteryDailyController = null;
-        }
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
 
         config = null;
     }
@@ -99,7 +95,7 @@ public class MiniCactpotHelper : GameModification {
 
     private unsafe void SetupLotteryDaily(AddonLotteryDaily* addon) {
         if (config is null) return;
-        if (configWindow is null) return;
+        if (configAddon is null) return;
         if (addon is null) return;
 
         var buttonContainerNode = addon->GetNodeById(8);
@@ -115,7 +111,7 @@ public class MiniCactpotHelper : GameModification {
             Size = new Vector2(32.0f, 32.0f),
             Icon = ButtonIcon.GearCog,
             TextTooltip = Strings.Tooltip_ConfigEzMiniCactpot,
-            OnClick = () => configWindow.Toggle(),
+            OnClick = () => configAddon.Toggle(),
         };
         configButton.AttachNode(buttonContainerNode);
     }

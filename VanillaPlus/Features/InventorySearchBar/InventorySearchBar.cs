@@ -21,13 +21,11 @@ public class InventorySearchBar : GameModification {
     public override async Task OnEnableAsync() {
         inventoryController = new InventorySearchAddonController("InventoryExpansion", "InventoryLarge", "Inventory");
 
-        await inventoryController.EnableAsync();
+        await Services.Framework.Run(inventoryController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (inventoryController is not null) {
-            await inventoryController.DisposeAsync();
-            inventoryController = null;
-        }
+        await Services.Framework.Run(() => inventoryController?.Dispose());
+        inventoryController = null;
     }
 }

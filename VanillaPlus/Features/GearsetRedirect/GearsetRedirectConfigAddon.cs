@@ -38,8 +38,8 @@ public class GearsetRedirectConfigAddon : NativeAddon {
         Title = Strings.GearsetRedirect_AddRedirectionTitle,
     };
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
-        gearsetListNode = new ModifyListNode<GearsetInfo, GearsetInfoListItemNode> {
+    protected override Task BuildUiAsync() {
+                gearsetListNode = new ModifyListNode<GearsetInfo, GearsetInfoListItemNode> {
             Size = new Vector2(225.0f, ContentSize.Y),
             Position = ContentStartPosition,
             Options = GetConfigInfos(),
@@ -124,6 +124,8 @@ public class GearsetRedirectConfigAddon : NativeAddon {
             IsSearchMatch = RedirectInfo.IsMatch,
         };
         redirectListNode.AttachNode(optionsContainerNode);
+
+        return Task.CompletedTask;
     }
 
     public override async ValueTask DisposeAsync() {

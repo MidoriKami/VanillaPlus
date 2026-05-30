@@ -26,7 +26,7 @@ public class WindowBackground : GameModification {
     public override string ImageName => "WindowBackgrounds.png";
 
     private WindowBackgroundConfig? config;
-    private ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode>? configWindow;
+    private ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode>? configAddon;
     private AddonSearchAddon? addonSearchAddon;
 
     private DynamicAddonController? dynamicAddonController;
@@ -59,7 +59,7 @@ public class WindowBackground : GameModification {
             }
         });
 
-        configWindow = new ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode> {
+        configAddon = new ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode> {
             InternalName = "WindowBackgroundConfig",
             Title = Strings.WindowBackground_ConfigTitle,
             Size = new Vector2(600.0f, 500.0f),
@@ -71,34 +71,30 @@ public class WindowBackground : GameModification {
             IsSearchMatch = WindowBackgroundSetting.IsMatch,
         };
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configAddon.ToggleAsync;
     }
 
     public override async Task OnDisableAsync() {
-        if (dynamicAddonController is not null) {
-            await dynamicAddonController.DisposeAsync();
-            dynamicAddonController = null;
-        }
+        await Services.Framework.Run(() => {
+            dynamicAddonController?.Dispose();
+            overlayController?.Dispose();
+        });
 
-        if (overlayController is not null) {
-            await overlayController.DisposeAsync();
-            overlayController = null;
-        }
+        dynamicAddonController = null;
+        overlayController = null;
 
-        if (addonSearchAddon is not null) {
-            await addonSearchAddon.DisposeAsync();
-            addonSearchAddon = null;
-        }
+        await Task.WhenAll(
+            addonSearchAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
+            configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
+        );
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
-
-        config = null;
+        addonSearchAddon = null;
+        configAddon = null;
 
         backgroundImageNodes?.Clear();
         backgroundImageNodes = null;
+
+        config = null;
     }
 
     private unsafe void AttachNode(AtkUnitBase* addon) {

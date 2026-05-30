@@ -32,7 +32,7 @@ public class SuppressDialogueAdvance : GameModification {
         configWindow.AddCategory(Strings.SuppressDialogAdvance_CategoryGeneral)
             .AddCheckbox(Strings.SuppressDialogAdvance_ApplyOnlyInCutscenes, nameof(config.ApplyOnlyInCutscenes));
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configWindow.ToggleAsync;
 
         await Services.Framework.Run(() => {
             Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "Talk", OnTalkReceiveEvent);
@@ -44,10 +44,8 @@ public class SuppressDialogueAdvance : GameModification {
             Services.AddonLifecycle.UnregisterListener(OnTalkReceiveEvent);
         });
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configWindow = null;
 
         config = null;
     }

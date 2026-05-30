@@ -50,7 +50,7 @@ public class EnhancedLootWindow : GameModification {
             .AddCheckbox(Strings.EnhancedLootWindow_LabelMarkUnobtainable, nameof(config.MarkUnobtainableItems))
             .AddCheckbox(Strings.EnhancedLootWindow_LabelMarkAlreadyObtained, nameof(config.MarkAlreadyObtainedItems));
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configWindow.ToggleAsync;
 
         unsafe {
             needGreedController = new AddonController<AddonNeedGreed> {
@@ -61,19 +61,15 @@ public class EnhancedLootWindow : GameModification {
             };
         }
 
-        await needGreedController.EnableAsync();
+        await Services.Framework.Run(needGreedController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (needGreedController is not null) {
-            await needGreedController.DisableAsync();
-            needGreedController = null;
-        }
+        await Services.Framework.Run(() => needGreedController?.Dispose());
+        needGreedController = null;
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configWindow = null;
 
         config = null;
     }

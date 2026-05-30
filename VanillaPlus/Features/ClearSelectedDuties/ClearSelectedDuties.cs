@@ -25,6 +25,7 @@ public class ClearSelectedDuties : GameModification {
 
     public override async Task OnEnableAsync() {
         config = await ClearSelectedDutiesConfig.Load();
+
         configWindow = new ConfigAddon {
             Size = new Vector2(300.0f, 135.0f),
             InternalName = "ClearSelectedConfig",
@@ -35,7 +36,7 @@ public class ClearSelectedDuties : GameModification {
         configWindow.AddCategory(Strings.Settings)
             .AddCheckbox(Strings.ClearSelectedDuties_DisableWhenUnrestricted, nameof(config.DisableWhenUnrestricted));
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configWindow.ToggleAsync;
 
         await Services.Framework.Run(() => {
             Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "ContentsFinder", OnContentsFinderSetup);
@@ -47,10 +48,8 @@ public class ClearSelectedDuties : GameModification {
             Services.AddonLifecycle.UnregisterListener(OnContentsFinderSetup);
         });
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configWindow = null;
 
         config = null;
     }

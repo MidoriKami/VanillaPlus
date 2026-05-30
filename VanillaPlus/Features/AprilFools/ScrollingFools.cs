@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 
@@ -11,23 +12,29 @@ namespace VanillaPlus.Features.AprilFools;
 /// When in Insane Scroll mode which the user has to explicitly opt in, reverses the scroll direction every other second,
 /// with even seconds scrolling backwards twice as fast as forwards.
 /// </summary>
-public unsafe class ScrollingFools : FoolsModule {
+public class ScrollingFools : FoolsModule {
     private Hook<AtkComponentScrollBar.Delegates.ReceiveEvent>? scrollBarReceiveEventHook;
 
     public override bool IsEnabledByConfig
         => Config.InvertScroll;
 
-    protected override void OnEnable() {
-        scrollBarReceiveEventHook = Services.Hooker.HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
-        scrollBarReceiveEventHook?.Enable();
+    protected override Task OnEnable() {
+        unsafe {
+            scrollBarReceiveEventHook = Services.Hooker.HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
+            scrollBarReceiveEventHook?.Enable();
+        }
+
+        return Task.CompletedTask;
     }
 
-    protected override void OnDisable() {
+    protected override Task OnDisable() {
         scrollBarReceiveEventHook?.Dispose();
         scrollBarReceiveEventHook = null;
+
+        return Task.CompletedTask;
     }
 
-    private void AtkComponentScrollBarReceiveEvent(AtkComponentScrollBar* thisPtr, AtkEventType type, int param, AtkEvent* eventPointer, AtkEventData* dataPointer) {
+    private unsafe void AtkComponentScrollBarReceiveEvent(AtkComponentScrollBar* thisPtr, AtkEventType type, int param, AtkEvent* eventPointer, AtkEventData* dataPointer) {
         try {
             dataPointer->MouseData.WheelDirection *= -1;
             scrollBarReceiveEventHook!.Original(thisPtr, type, param, eventPointer, dataPointer);

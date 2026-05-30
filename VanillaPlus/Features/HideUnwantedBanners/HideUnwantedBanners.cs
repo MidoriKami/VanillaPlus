@@ -36,7 +36,7 @@ public class HideUnwantedBanners : GameModification {
             OnClose = () => Task.Run(config.Save),
         };
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configWindow.ToggleAsync;
 
         unsafe {
             setImageTextureHook = Services.Hooker.HookFromAddress<AddonImage.Delegates.SetImage>(AddonImage.Addresses.SetImage.Value, OnSetImageTexture);
@@ -45,10 +45,8 @@ public class HideUnwantedBanners : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configWindow = null;
 
         setImageTextureHook?.Dispose();
         setImageTextureHook = null;

@@ -18,7 +18,7 @@ public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, ILis
     private KeybindListener? keybindListener;
     private AddonConfigAddon? addonConfigWindow;
 
-    public async Task Initialize() {
+    public async Task InitializeAsync() {
         config = await AddonConfig.Load($"{InternalName}.addon.json");
 
         keybindListener = new KeybindListener {
@@ -41,7 +41,7 @@ public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, ILis
         };
     }
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+    protected override Task BuildUiAsync() {
         ListNode = new ListNode<T, TU> {
             Position = ContentStartPosition,
             Size = ContentSize,
@@ -49,6 +49,8 @@ public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, ILis
             ItemSpacing = ItemSpacing,
         };
         ListNode.AttachNode(this);
+
+        return Task.CompletedTask;
     }
 
     protected override unsafe void OnUpdate(AtkUnitBase* addon)
@@ -63,10 +65,8 @@ public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, ILis
     public override async ValueTask DisposeAsync() {
         config = null;
 
-        if (addonConfigWindow is not null) {
-            await addonConfigWindow.DisposeAsync();
-            addonConfigWindow = null;
-        }
+        await Task.WhenAll(addonConfigWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+addonConfigWindow = null;
 
         keybindListener?.Dispose();
         keybindListener = null;

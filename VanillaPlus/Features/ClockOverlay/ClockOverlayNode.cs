@@ -15,7 +15,6 @@ public class ClockOverlayNode : OverlayNode {
     public required ClockOverlayConfig Config { get; init; }
 
     public ClockOverlayNode() {
-
         timeNode = new TextNode();
         timeNode.AttachNode(this);
     }

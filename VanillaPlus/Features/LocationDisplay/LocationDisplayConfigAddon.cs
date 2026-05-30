@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -29,8 +28,8 @@ public class LocationDisplayConfigAddon : NativeAddon {
 
     public required LocationDisplayConfig Config { get; init; }
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
-        SetWindowSize(560.0f, 335.0f);
+    protected override Task BuildUiAsync() {
+                SetWindowSize(560.0f, 335.0f);
 
         instructionTextNode = new TextNode {
             Position = ContentStartPosition,
@@ -146,6 +145,8 @@ public class LocationDisplayConfigAddon : NativeAddon {
             },
         };
         showPreciseHousingLocationNode.AttachNode(this);
+
+        return Task.CompletedTask;
     }
 
     private static bool BracesMismatched(string formatString)

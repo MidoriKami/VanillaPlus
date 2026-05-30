@@ -1,5 +1,4 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
@@ -18,7 +17,7 @@ public class AddonConfigAddon : NativeAddon {
 
     public required AddonConfig AddonConfig { get; init; }
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+    protected override Task BuildUiAsync() {
         SetWindowSize(390.0f, 360.0f);
 
         keybindAddon = new KeybindConfigAddon {
@@ -157,6 +156,8 @@ public class AddonConfigAddon : NativeAddon {
                 Task.Run(AddonConfig.Save);
             },
         }.AttachNode(this);
+
+        return Task.CompletedTask;
     }
 
     protected override unsafe void OnFinalize(AtkUnitBase* addon) {

@@ -47,7 +47,7 @@ public class BetterCursor : GameModification {
         configWindow.AddCategory(Strings.BetterCursor_CategoryIconSelection)
             .AddSelectIcon(Strings.Icon, nameof(config.IconId));
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configWindow.ToggleAsync;
 
         overlayController = new OverlayController();
 
@@ -61,15 +61,11 @@ public class BetterCursor : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        if (overlayController is not null) {
-            await overlayController.DisposeAsync();
-            overlayController = null;
-        }
+        await Services.Framework.Run(() => overlayController?.Dispose());
+        overlayController = null;
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await (configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configWindow = null;
 
         config = null;
     }

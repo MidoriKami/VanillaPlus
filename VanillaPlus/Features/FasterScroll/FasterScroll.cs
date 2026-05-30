@@ -35,7 +35,7 @@ public class FasterScroll : GameModification {
         configWindow.AddCategory(Strings.Settings)
             .AddFloatSlider(Strings.FasterScroll_LabelSpeedMultiplier, 0.5f, 4.0f, 2, 0.05f, nameof(config.SpeedMultiplier));
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAction = () => Task.Run(configWindow.ToggleAsync);
 
         unsafe {
             scrollBarReceiveEventHook = Services.Hooker.HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
@@ -47,10 +47,8 @@ public class FasterScroll : GameModification {
         scrollBarReceiveEventHook?.Dispose();
         scrollBarReceiveEventHook = null;
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configWindow = null;
 
         config = null;
     }

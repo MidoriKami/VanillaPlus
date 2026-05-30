@@ -27,7 +27,7 @@ public class DebugCustomAddon : GameModification {
             Size = new Vector2(500.0f, 500.0f),
         };
 
-        OpenConfigAction = debugAddon.Toggle;
+        OpenConfigAsync = debugAddon.ToggleAsync;
 
         await debugAddon.OpenAsync();
     }

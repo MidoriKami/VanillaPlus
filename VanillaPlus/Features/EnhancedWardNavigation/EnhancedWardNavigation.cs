@@ -35,14 +35,12 @@ public class EnhancedWardNavigation : GameModification {
             };
         }
 
-        await housingAddonController.EnableAsync();
+        await Services.Framework.Run(housingAddonController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (housingAddonController is not null) {
-            await housingAddonController.DisableAsync();
-            housingAddonController = null;
-        }
+        await Services.Framework.Run(() => housingAddonController?.Dispose());
+        housingAddonController = null;
     }
 
     private unsafe void SetupHousingSelectBlock(AtkUnitBase* addon) {

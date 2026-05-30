@@ -38,39 +38,36 @@ public class DutyLootPreview : GameModification {
 
         journalUiController = new DutyLootJournalUiController {
             DataLoader = dataLoader,
-            OnButtonClicked = addonDutyLoot.Toggle,
+            OnButtonClicked = () => Task.Run(addonDutyLoot.ToggleAsync),
         };
-
-        await journalUiController.EnableAsync();
 
         inDutyUiController = new DutyLootInDutyUiController {
             DataLoader = dataLoader,
-            OnButtonClicked = addonDutyLoot.Toggle,
+            OnButtonClicked = () => Task.Run(addonDutyLoot.ToggleAsync),
         };
 
-        await inDutyUiController.EnableAsync();
+        await Services.Framework.Run(() => {
+            journalUiController.Enable();
+            inDutyUiController.Enable();
+        });
     }
 
     public override async Task OnDisableAsync() {
-        if (journalUiController is not null) {
-            await journalUiController.DisableAsync();
-            journalUiController = null;
-        }
+        await Services.Framework.Run(() => {
+            journalUiController?.Dispose();
+            inDutyUiController?.Dispose();
+        });
 
-        if (inDutyUiController is not null) {
-            await inDutyUiController.DisableAsync();
-            inDutyUiController = null;
-        }
+        journalUiController = null;
+        inDutyUiController = null;
 
-        if (addonDutyLoot is not null) {
-            await addonDutyLoot.DisposeAsync();
-            addonDutyLoot = null;
-        }
+        await Task.WhenAll(
+            addonDutyLoot?.DisposeAsync().AsTask() ?? Task.CompletedTask,
+            dataLoader?.DisposeAsync().AsTask() ?? Task.CompletedTask
+        );
 
-        if (dataLoader is not null) {
-            await dataLoader.DisposeAsync();
-            dataLoader = null;
-        }
+        addonDutyLoot = null;
+        dataLoader = null;
 
         config = null;
     }

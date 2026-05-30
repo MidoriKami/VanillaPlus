@@ -54,33 +54,32 @@ public class LockChatButton : GameModification {
             };
         }
 
-        await chatLogController.EnableAsync();
-        await panelController.EnableAsync();
+        await Services.Framework.Run(() => {
+            chatLogController.Enable();
+            panelController.Enable();
+        });
     }
 
     public override async Task OnDisableAsync() {
-        if (chatLogController is not null) {
-            await chatLogController.DisableAsync();
-            chatLogController = null;
-        }
+        await Services.Framework.Run(() => {
+            chatLogController?.Dispose();
+            panelController?.Dispose();
 
-        if (panelController is not null) {
-            await panelController.DisableAsync();
-            panelController = null;
-        }
+            foreach (var (_, button) in panelButtons ?? []) {
+                button.Dispose();
+            }
+        });
+
+        chatLogController = null;
+        panelController = null;
 
         moveDeltaHook?.Dispose();
         moveDeltaHook = null;
 
-        data = null;
+        panelButtons?.Clear();
+        panelButtons = null;
 
-        await Services.Framework.Run(() => {
-            foreach (var (_, button) in panelButtons ?? []) {
-                button.Dispose();
-            }
-            panelButtons?.Clear();
-            panelButtons = null;
-        });
+        data = null;
     }
 
     private unsafe void SetupChatLog(AddonChatLog* addon) {

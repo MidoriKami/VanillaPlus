@@ -30,14 +30,12 @@ public class ClearFlag : GameModification {
             };
         }
 
-        await minimapController.EnableAsync();
+        await Services.Framework.Run(minimapController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (minimapController is not null) {
-            await minimapController.DisableAsync();
-            minimapMouseClick = null;
-        }
+        await Services.Framework.Run(() => minimapController?.Dispose());
+        minimapMouseClick = null;
     }
 
     private unsafe void NaviMapSetup(AtkUnitBase* addon) {

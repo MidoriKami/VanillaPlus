@@ -42,14 +42,12 @@ public class BetterInterruptableCastBars : GameModification {
             };
         }
 
-        await targetInfoCastbarController.EnableAsync();
+        await Services.Framework.Run(targetInfoCastbarController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (targetInfoCastbarController is not null) {
-            await targetInfoCastbarController.DisableAsync();
-            targetInfoCastbarController = null;
-        }
+        await Services.Framework.Run(() => targetInfoCastbarController?.Disable() );
+        targetInfoCastbarController = null;
 
         antsHook?.Dispose();
         antsHook = null;

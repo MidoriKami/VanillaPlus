@@ -42,14 +42,12 @@ public class MissingJobStoneLockout : GameModification {
             };
         }
 
-        await contentsFinderController.EnableAsync();
+        await Services.Framework.Run(contentsFinderController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (contentsFinderController is not null) {
-            await contentsFinderController.DisableAsync();
-            contentsFinderController = null;
-        }
+        await Services.Framework.Run(() => contentsFinderController?.Dispose());
+        contentsFinderController = null;
     }
 
     private unsafe void SetupContentsFinder(AddonContentsFinder* addon) {

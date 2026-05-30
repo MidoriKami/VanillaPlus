@@ -26,15 +26,13 @@ public class FateListWindow : GameModification {
             ItemSpacing = 3.0f,
         };
 
-        await addonFateList.Initialize();
+        await addonFateList.InitializeAsync();
 
         OpenConfigAction = addonFateList.OpenAddonConfig;
     }
 
     public override async Task OnDisableAsync() {
-        if (addonFateList is not null) {
-            await addonFateList.DisposeAsync();
-            addonFateList = null;
-        }
+        await Task.WhenAll(addonFateList?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        addonFateList = null;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
@@ -12,36 +13,43 @@ namespace VanillaPlus.Features.AprilFools;
 /// Adds several dummy buttons to SelectYesno windows, with randomized words.
 /// When any button is click it will play a random chat sound effect, and then disable the button.
 /// </summary>
-public unsafe class IndecisiveFools : FoolsModule {
+public class IndecisiveFools : FoolsModule {
     private AddonController<AddonSelectYesno>? addonController;
     private List<TextButtonNode>? textButtons;
 
     public override bool IsEnabledByConfig
         => Config.Indecisive;
 
-    protected override void OnEnable() {
+    protected override async Task OnEnable() {
         textButtons = [];
 
-        addonController = new AddonController<AddonSelectYesno> {
-            AddonName = "SelectYesno",
-            OnSetup = SetupSelectYesNo,
-            OnFinalize = FinalizeSelectYesNo,
-        };
-        addonController.Enable();
+        unsafe {
+            addonController = new AddonController<AddonSelectYesno> {
+                AddonName = "SelectYesno",
+                OnSetup = SetupSelectYesNo,
+                OnFinalize = FinalizeSelectYesNo,
+            };
+        }
+
+        await Services.Framework.Run(addonController.Enable);
     }
 
-    protected override void OnDisable() {
-        foreach (var textButton in textButtons ?? []) {
-            textButton.Dispose();
-        }
+    protected override async Task OnDisable() {
+        await Services.Framework.Run(() => {
+            foreach (var textButton in textButtons ?? []) {
+                textButton.Dispose();
+            }
+
+            addonController?.Dispose();
+        });
+
         textButtons?.Clear();
         textButtons = null;
 
-        addonController?.Dispose();
         addonController = null;
     }
 
-    private void SetupSelectYesNo(AddonSelectYesno* addon) {
+    private unsafe void SetupSelectYesNo(AddonSelectYesno* addon) {
         if (textButtons is null) return;
 
         addon->AtkUnitBase.Size += new Vector2(0.0f, 65.0f);
@@ -80,7 +88,7 @@ public unsafe class IndecisiveFools : FoolsModule {
         }
     }
 
-    private void FinalizeSelectYesNo(AddonSelectYesno* addon) {
+    private unsafe void FinalizeSelectYesNo(AddonSelectYesno* addon) {
         addon->AtkUnitBase.Size -= new Vector2(0.0f, 65.0f);
 
         foreach (var textButton in textButtons ?? []) {

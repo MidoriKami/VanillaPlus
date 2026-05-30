@@ -17,7 +17,7 @@ public class CosmicExplorationProgressWindow : GameModification {
         Authors = ["salanth357"],
     };
 
-    private CosmicExplorationProgressAddon? addon;
+    private CosmicExplorationProgressAddon? progressAddon;
     private CircleButtonNode? hudShowNode;
 
     private AddonController? wksHudController;
@@ -25,7 +25,7 @@ public class CosmicExplorationProgressWindow : GameModification {
     public override string ImageName => "CosmicExplorationProgressWindow.png";
 
     public override async Task OnEnableAsync() {
-        addon = new CosmicExplorationProgressAddon {
+        progressAddon = new CosmicExplorationProgressAddon {
             Size = new Vector2(320.0f, 290.0f),
             InternalName = "CosmicExplorationProgress",
             Title = string.Empty, // No title actually needed for this addon
@@ -41,24 +41,20 @@ public class CosmicExplorationProgressWindow : GameModification {
             };
         }
 
-        await wksHudController.EnableAsync();
+        await Services.Framework.Run(wksHudController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (wksHudController is not null) {
-            await wksHudController.DisableAsync();
-            wksHudController = null;
-        }
+        await Services.Framework.Run(() => {
+            wksHudController?.Dispose();
+            hudShowNode?.Dispose();
+        });
 
-        if (hudShowNode is not null) {
-            await hudShowNode.DisposeAsync();
-            hudShowNode = null;
-        }
+        wksHudController = null;
+        hudShowNode = null;
 
-        if (addon is not null) {
-            await addon.DisposeAsync();
-            addon = null;
-        }
+        await Task.WhenAll(progressAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        progressAddon = null;
     }
 
     private unsafe void WKSHudFinalize(AtkUnitBase* _) {
@@ -67,14 +63,14 @@ public class CosmicExplorationProgressWindow : GameModification {
     }
 
     private unsafe void WKSHudSetup(AtkUnitBase* wksHud) {
-        if (addon is null) return;
+        if (progressAddon is null) return;
 
         hudShowNode = new CircleButtonNode {
             Icon = ButtonIcon.Eye,
             AddColor = new Vector3(0.0f, -0.125f, 128f / 255f),
             Size = new Vector2(28.0f),
             Position = new Vector2(26.0f, 26.0f),
-            OnClick = addon.Toggle,
+            OnClick = () => Task.Run(progressAddon.ToggleAsync),
             TextTooltip = Strings.CosmicExplorationProgressWindow_HudButtonTooltip, };
 
         // override the texture to use the base theme, since that's what the gear button in WKSHud does
@@ -82,5 +78,4 @@ public class CosmicExplorationProgressWindow : GameModification {
 
         hudShowNode.AttachNode(wksHud);
     }
-
 }

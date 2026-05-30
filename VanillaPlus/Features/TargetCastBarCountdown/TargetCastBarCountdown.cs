@@ -38,7 +38,7 @@ public class TargetCastBarCountdown : GameModification {
     private TextNodeStyle? castBarEnemyStyle;
 
     private TargetCastBarCountdownConfig? config;
-    private ConfigAddon? configWindow;
+    private ConfigAddon? configAddon;
 
     public override string ImageName => "TargetCastBarCountdown.png";
 
@@ -57,19 +57,15 @@ public class TargetCastBarCountdown : GameModification {
             };
         }
 
-        await addonController.EnableAsync();
+        await Services.Framework.Run(addonController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await Services.Framework.Run(() => addonController?.Dispose());
+        addonController = null;
 
-        if (addonController is not null) {
-            await addonController.DisableAsync();
-            addonController = null;
-        }
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
 
         castBarEnemyTextNode = null;
     }
@@ -168,30 +164,30 @@ public class TargetCastBarCountdown : GameModification {
         if (focusTargetStyle is null) return;
         if (castBarEnemyStyle is null) return;
 
-        configWindow = new ConfigAddon {
+        configAddon = new ConfigAddon {
             InternalName = "TargetCastBarConfig",
             Title = Strings.TargetCastBarCountdown_ConfigTitle,
             Config = config,
         };
 
-        configWindow.AddCategory(Strings.Toggles)
+        configAddon.AddCategory(Strings.Toggles)
             .AddCheckbox(Strings.TargetCastBarCountdown_CheckboxPrimary, nameof(config.PrimaryTarget))
             .AddCheckbox(Strings.TargetCastBarCountdown_CheckboxFocus, nameof(config.FocusTarget))
             .AddCheckbox(Strings.TargetCastBarCountdown_CheckboxNameplate, nameof(config.NamePlateTargets));
 
-        configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryPrimaryStyle)
+        configAddon.AddCategory(Strings.TargetCastBarCountdown_CategoryPrimaryStyle)
             .AddNodeConfig(primaryTargetStyle, TextNodeConfigOptions.TextAlignment);
 
-        configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryPrimaryAltStyle)
+        configAddon.AddCategory(Strings.TargetCastBarCountdown_CategoryPrimaryAltStyle)
             .AddNodeConfig(primaryTargetAltStyle, TextNodeConfigOptions.TextAlignment);
 
-        configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryFocusStyle)
+        configAddon.AddCategory(Strings.TargetCastBarCountdown_CategoryFocusStyle)
             .AddNodeConfig(focusTargetStyle, TextNodeConfigOptions.TextAlignment);
 
-        configWindow.AddCategory(Strings.TargetCastBarCountdown_CategoryNameplateStyle)
+        configAddon.AddCategory(Strings.TargetCastBarCountdown_CategoryNameplateStyle)
             .AddNodeConfig(castBarEnemyStyle, TextNodeConfigOptions.TextAlignment);
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configAddon.ToggleAsync;
     }
 
     private static TextNode BuildTextNode(Vector2 position) => new() {

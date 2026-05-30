@@ -21,13 +21,11 @@ public class SaddlebagSearchBar : GameModification {
     public override async Task OnEnableAsync() {
         saddlebagInventoryController = new InventorySearchAddonController("InventoryBuddy");
 
-        await saddlebagInventoryController.EnableAsync();
+        await Services.Framework.Run(saddlebagInventoryController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (saddlebagInventoryController is not null) {
-            await saddlebagInventoryController.DisposeAsync();
-            saddlebagInventoryController = null;
-        }
+        await Services.Framework.Run(() => saddlebagInventoryController?.Dispose());
+        saddlebagInventoryController = null;
     }
 }

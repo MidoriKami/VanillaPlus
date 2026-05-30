@@ -36,7 +36,7 @@ public class FadeLootButton : GameModification {
         configWindow.AddCategory(Strings.FadeLootButton_CategoryStyleSettings)
             .AddFloatSlider(Strings.FadeLootButton_LabelFadePercentage, 0.0f, 1.0f, 2, 0.05f, nameof(config.FadePercent));
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configWindow.ToggleAsync;
 
         unsafe {
             notificationLootController = new AddonController {
@@ -46,19 +46,15 @@ public class FadeLootButton : GameModification {
             };
         }
 
-        await notificationLootController.EnableAsync();
+        await Services.Framework.Run(notificationLootController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (notificationLootController is not null) {
-            await notificationLootController.DisableAsync();
-            notificationLootController = null;
-        }
+        await Services.Framework.Run(() => notificationLootController?.Dispose());
+        notificationLootController = null;
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configWindow = null;
 
         config = null;
     }

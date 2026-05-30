@@ -35,14 +35,12 @@ public class HUDCoordinates : GameModification {
             };
         }
 
-        await hudLayoutScreenController.EnableAsync();
+        await Services.Framework.Run(hudLayoutScreenController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (hudLayoutScreenController is not null) {
-            await hudLayoutScreenController.DisableAsync();
-            hudLayoutScreenController = null;
-        }
+        await Services.Framework.Run(() => hudLayoutScreenController?.Dispose());
+        hudLayoutScreenController = null;
 
         textNodes?.Clear();
         textNodes = null;
@@ -56,7 +54,10 @@ public class HUDCoordinates : GameModification {
             if (node.Value->GetNodeType() is not NodeType.Component) continue;
 
             var newTextNode = new TextNode {
-                NodeId = 100, Size = new Vector2(90.0f, 22.0f), Position = new Vector2(node.Value->Width / 2.0f, node.Value->Height / 2.0f) - new Vector2(90.0f, 22.0f) / 2.0f, String = new Vector2(node.Value->X, node.Value->Y).ToString(),
+                NodeId = 100,
+                Size = new Vector2(90.0f, 22.0f),
+                Position = new Vector2(node.Value->Width / 2.0f, node.Value->Height / 2.0f) - new Vector2(90.0f, 22.0f) / 2.0f,
+                String = new Vector2(node.Value->X, node.Value->Y).ToString(),
             };
 
             textNodes.Add(newTextNode);

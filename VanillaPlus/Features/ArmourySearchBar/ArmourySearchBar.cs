@@ -26,14 +26,12 @@ public class ArmourySearchBar : GameModification {
         armouryInventoryController = new InventorySearchAddonController("ArmouryBoard");
         armouryInventoryController.PreSearch += OnPreSearch;
 
-        await armouryInventoryController.EnableAsync();
+        await Services.Framework.Run(armouryInventoryController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (armouryInventoryController is not null) {
-            await armouryInventoryController.DisposeAsync();
-            armouryInventoryController = null;
-        }
+        await Services.Framework.Run(() => armouryInventoryController?.Dispose());
+        armouryInventoryController = null;
     }
 
     private void OnPreSearch(string searchString) {

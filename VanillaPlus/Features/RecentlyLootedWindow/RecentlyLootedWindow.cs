@@ -34,7 +34,7 @@ public class RecentlyLootedWindow : GameModification {
             ItemSpacing = 2.0f,
         };
 
-        await addonRecentlyLooted.Initialize();
+        await addonRecentlyLooted.InitializeAsync();
 
         OpenConfigAction = addonRecentlyLooted.OpenAddonConfig;
 
@@ -46,14 +46,12 @@ public class RecentlyLootedWindow : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        if (addonRecentlyLooted is not null) {
-            await addonRecentlyLooted.DisposeAsync();
-            addonRecentlyLooted = null;
-        }
-
         Services.GameInventory.InventoryChanged -= OnRawItemAdded;
         Services.ClientState.Login -= OnLogin;
         Services.ClientState.Logout -= OnLogout;
+
+        await Task.WhenAll(addonRecentlyLooted?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        addonRecentlyLooted = null;
     }
 
     private void OnLogin() {

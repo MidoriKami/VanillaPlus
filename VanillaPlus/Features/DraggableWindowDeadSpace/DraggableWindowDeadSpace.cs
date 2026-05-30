@@ -43,18 +43,17 @@ public class DraggableWindowDeadSpace : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        if (cursorEventListener is not null) {
-            await cursorEventListener.DisposeAsync();
-            cursorEventListener = null;
-        }
-
         await Services.Framework.Run(() => {
             Services.AddonLifecycle.UnregisterListener(OnAddonSetup, OnAddonFinalize);
+
+            cursorEventListener?.Dispose();
 
             foreach (var (_, node) in windowInteractionNodes ?? []) {
                 node.Dispose();
             }
         });
+
+        cursorEventListener = null;
 
         windowInteractionNodes?.Clear();
         windowInteractionNodes = null;

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Enums;
@@ -33,8 +33,8 @@ public class NewRedirectionAddon : NativeAddon {
     public TerritoryType? SelectedTerritory { get; private set; }
     public Action? OnSelectionsConfirmed { get; set; }
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
-        SelectedGearset = null;
+    protected override Task BuildUiAsync() {
+                SelectedGearset = null;
         SelectedTerritory = null;
 
         AddNode(new VerticalListNode {
@@ -144,6 +144,8 @@ public class NewRedirectionAddon : NativeAddon {
                 },
             ],
         });
+
+        return Task.CompletedTask;
     }
 
     public override void Dispose() {

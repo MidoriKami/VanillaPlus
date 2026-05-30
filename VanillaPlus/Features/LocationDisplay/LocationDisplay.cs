@@ -56,7 +56,7 @@ public class LocationDisplay : GameModification {
 
         config.OnSave += UpdateDtrText;
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configWindow.ToggleAsync;
 
         dtrBarEntry = Services.DtrBar.Get(Strings.LocationDisplay_DtrEntryName);
         dtrBarEntry.OnClick = _ => configWindow.Toggle();
@@ -71,10 +71,8 @@ public class LocationDisplay : GameModification {
         Services.Framework.Update -= OnFrameworkUpdate;
         Services.ClientState.TerritoryChanged -= OnZoneChange;
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configWindow = null;
 
         dtrBarEntry?.Remove();
         dtrBarEntry = null;

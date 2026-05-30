@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 
 namespace VanillaPlus.Features.BiggerConfigWindows;
 
-public class CharacterConfigController : IAsyncDisposable {
+public class CharacterConfigController : IDisposable {
     public required BiggerConfigWindowsConfig Config { get; init; }
 
     private AddonController? characterConfigController;
@@ -22,43 +21,31 @@ public class CharacterConfigController : IAsyncDisposable {
         "ConfigCharaChatLogDetail", "ConfigCharaChatLogRing",
     ];
 
-    public async ValueTask DisposeAsync()
-        => await DisableAsync();
+    public unsafe void Enable() {
+        characterConfigController = new AddonController {
+            AddonName = "ConfigCharacter",
+            OnSetup = SetupConfigCharacter,
+            OnFinalize = FinalizeConfigCharacter,
+        };
 
-    public async Task EnableAsync() {
-        unsafe {
-            characterConfigController = new AddonController {
-                AddonName = "ConfigCharacter",
-                OnSetup = SetupConfigCharacter,
-                OnFinalize = FinalizeConfigCharacter,
-            };
-        }
-        await characterConfigController.EnableAsync();
+        childAddonController = new DynamicAddonController {
+            AddonNames = childAddons,
+            OnSetup = SetupConfigCharacterChild,
+            OnFinalize = FinalizeConfigCharacterChild,
+        };
 
-        await Services.Framework.Run(() => {
-            unsafe {
-                childAddonController = new DynamicAddonController {
-                    AddonNames = childAddons,
-                    OnSetup = SetupConfigCharacterChild,
-                    OnFinalize = FinalizeConfigCharacterChild,
-                };
-            }
-
-            childAddonController.Enable();
-
-        });
+        characterConfigController.Enable();
+        childAddonController.Enable();
     }
 
-    public async Task DisableAsync() {
-        if (characterConfigController is not null) {
-            await characterConfigController.DisableAsync();
-            characterConfigController = null;
-        }
+    public void Dispose() {
+        Services.Framework.Run(() => {
+            characterConfigController?.Dispose();
+            childAddonController?.Dispose();
+        });
 
-        if (childAddonController is not null) {
-            await childAddonController.DisableAsync();
-            childAddonController = null;
-        }
+        characterConfigController = null;
+        childAddonController = null;
     }
 
     private unsafe void SetupConfigCharacter(AtkUnitBase* addon) {

@@ -1,6 +1,5 @@
-﻿using System;
-using System.Numerics;
-using FFXIVClientStructs.FFXIV.Component.GUI;
+﻿using System.Numerics;
+using System.Threading.Tasks;
 using KamiToolKit;
 using KamiToolKit.Nodes;
 using VanillaPlus.Utilities;
@@ -13,15 +12,15 @@ namespace VanillaPlus.Features.AprilFools;
 /// </summary>
 public class JustMonikaFools : FoolsModule {
     private class MonikaAddon : NativeAddon {
-        protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
-            base.OnSetup(addon, atkValueSpan);
-
+        protected override Task BuildUiAsync() {
             new ImGuiImageNode {
                 Position = ContentStartPosition,
                 Size = ContentSize,
                 TexturePath = Assets.GetAssetPath("justmonika.png"),
                 FitTexture = true,
             }.AttachNode(this);
+
+            return Task.CompletedTask;
         }
     }
 
@@ -30,7 +29,7 @@ public class JustMonikaFools : FoolsModule {
     public override bool IsEnabledByConfig
         => Config.JustMonika;
 
-    protected override void OnEnable() {
+    protected override Task OnEnable() {
         monikaAddon = new MonikaAddon {
             InternalName = "JustMonika",
             Title = "Just Monika",
@@ -38,15 +37,17 @@ public class JustMonikaFools : FoolsModule {
         };
 
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+
+        return Task.CompletedTask;
     }
 
-    protected override void OnDisable() {
+    protected override async Task OnDisable() {
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
 
-        monikaAddon?.Dispose();
+        await Task.WhenAll(monikaAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         monikaAddon = null;
     }
 
     private void OnTerritoryChanged(uint u)
-        => monikaAddon?.Open();
+        => Task.Run(() => monikaAddon?.OpenAsync());
 }

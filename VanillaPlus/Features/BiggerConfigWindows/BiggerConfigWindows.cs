@@ -34,36 +34,33 @@ public class BiggerConfigWindows : GameModification {
             .AddInputFloat(Strings.BiggerConfigWindows_SystemConfigAdditionalSize, 5, ..4000, nameof(config.SystemConfigAdditionalHeight))
             .AddInputFloat(Strings.BiggerConfigWindows_CharacterConfigAdditionalSize, 5, ..4000, nameof(config.CharacterConfigAdditionalHeight));
 
-        OpenConfigAction = configAddon.Toggle;
+        OpenConfigAsync = configAddon.ToggleAsync;
 
         systemConfigController = new SystemConfigController {
             Config = config,
         };
 
-        await systemConfigController.EnableAsync();
-
         characterConfigController = new CharacterConfigController {
             Config = config,
         };
 
-        await characterConfigController.EnableAsync();
+        await Services.Framework.Run(() => {
+            systemConfigController.Enable();
+            characterConfigController.Enable();
+        });
     }
 
     public override async Task OnDisableAsync() {
-        if (systemConfigController is not null) {
-            await systemConfigController.DisableAsync();
-            systemConfigController = null;
-        }
+        await Services.Framework.Run(() => {
+            systemConfigController?.Dispose();
+            characterConfigController?.Dispose();
+        });
 
-        if (characterConfigController is not null) {
-            await characterConfigController.DisableAsync();
-            characterConfigController = null;
-        }
+        systemConfigController = null;
+        characterConfigController = null;
 
-        if (configAddon is not null) {
-            await configAddon.DisposeAsync();
-            configAddon = null;
-        }
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
 
         config = null;
     }

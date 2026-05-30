@@ -56,7 +56,7 @@ public class CurrencyOverlay : GameModification {
             RemoveClicked = OnRemoveButtonClicked,
         };
 
-        OpenConfigAction = configAddon.Toggle;
+        OpenConfigAsync = configAddon.ToggleAsync;
 
         await Services.Framework.Run(() => {
             foreach (var currencySetting in config.Currencies) {
@@ -67,6 +67,24 @@ public class CurrencyOverlay : GameModification {
 
             overlayController.Initialize();
         });
+    }
+
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => overlayController?.Dispose());
+        overlayController = null;
+
+        await Task.WhenAll(
+            itemSearchAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
+            configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
+        );
+
+        itemSearchAddon = null;
+        configAddon = null;
+
+        config = null;
+
+        currencyNodes?.Clear();
+        currencyNodes = null;
     }
 
     private void OnRemoveButtonClicked(ListConfigAddon<CurrencySetting, CurrencyOverlayListItemNode, CurrencyOverlayConfigNode> _, CurrencySetting setting) {
@@ -82,28 +100,6 @@ public class CurrencyOverlay : GameModification {
 
         config.Currencies.Remove(setting);
         Task.Run(config.Save);
-    }
-
-    public override async Task OnDisableAsync() {
-        if (overlayController is not null) {
-            await overlayController.DisposeAsync();
-            overlayController = null;
-        }
-
-        if (itemSearchAddon is not null) {
-            await itemSearchAddon.DisposeAsync();
-            itemSearchAddon = null;
-        }
-
-        if (configAddon is not null) {
-            await configAddon.DisposeAsync();
-            configAddon = null;
-        }
-
-        config = null;
-
-        currencyNodes?.Clear();
-        currencyNodes = null;
     }
 
     private void OnAddButtonClicked(ListConfigAddon<CurrencySetting, CurrencyOverlayListItemNode, CurrencyOverlayConfigNode> listNode) {

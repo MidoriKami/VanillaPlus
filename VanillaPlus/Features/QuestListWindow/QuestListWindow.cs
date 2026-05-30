@@ -29,14 +29,13 @@ public class QuestListWindow : GameModification {
             ListItems = [],
         };
 
-        await addonQuestList.Initialize();
+        await addonQuestList.InitializeAsync();
+
         OpenConfigAction = addonQuestList.OpenAddonConfig;
     }
 
     public override async Task OnDisableAsync() {
-        if (addonQuestList is not null) {
-            await addonQuestList.DisposeAsync();
-            addonQuestList = null;
-        }
+        await Task.WhenAll(addonQuestList?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        addonQuestList = null;
     }
 }

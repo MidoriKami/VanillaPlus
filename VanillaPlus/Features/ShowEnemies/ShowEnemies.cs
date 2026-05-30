@@ -38,9 +38,7 @@ public class ShowEnemies : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        if (mapOverlayController is not null) {
-            await mapOverlayController.DisposeAsync();
-            mapOverlayController = null;
-        }
+        await Services.Framework.Run(() => mapOverlayController?.Dispose());
+        mapOverlayController = null;
     }
 }

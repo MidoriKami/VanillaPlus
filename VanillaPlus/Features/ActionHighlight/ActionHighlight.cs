@@ -23,28 +23,30 @@ public class ActionHighlight : GameModification {
 
     private Hook<ActionManager.Delegates.IsActionHighlighted>? onAntsHook;
     private ActionHighlightConfig? config;
-    private ActionHighlightAddon? configWindow;
+    private ActionHighlightAddon? configAddon;
 
     private Dictionary<uint, Action>? cachedActions;
 
     // Needed for AST cards
-    public static readonly Dictionary<uint, HashSet<int>> JobActionWhiteList = new() {
-        [33] = [7444, 7445, 37018, 37023, 37024, 37025, 37026, 37027, 37028],
-    };
+    internal static Dictionary<uint, HashSet<int>>? JobActionWhiteList;
 
     public override async Task OnEnableAsync() {
+        JobActionWhiteList = new Dictionary<uint, HashSet<int>> {
+            [33] = [7444, 7445, 37018, 37023, 37024, 37025, 37026, 37027, 37028],
+        };
+
         cachedActions = [];
 
         config = await ActionHighlightConfig.Load();
 
-        configWindow = new ActionHighlightAddon {
+        configAddon = new ActionHighlightAddon {
             Size = new Vector2(700.0f, 500.0f),
             InternalName = "ActionHighlightConfig",
             Title = Strings.ActionHighlight_Configuration,
             Config = config,
         };
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAsync = configAddon.ToggleAsync;
 
         unsafe {
             onAntsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
@@ -55,13 +57,13 @@ public class ActionHighlight : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        onAntsHook?.Dispose();
+        await Services.Framework.Run(() => {
+            onAntsHook?.Dispose();
+        });
         onAntsHook = null;
 
-        if (configWindow is not null) {
-            await configWindow.DisposeAsync();
-            configWindow = null;
-        }
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
 
         cachedActions = null;
     }
@@ -132,6 +134,8 @@ public class ActionHighlight : GameModification {
     }
 
     public static List<Action> GetClassActions() {
+        if (JobActionWhiteList is null) return [];
+
         var whitelistedActions = JobActionWhiteList.Values.SelectMany(hashSet => hashSet).ToList();
 
         // I have no idea what Unknown6 is, but it's been in there since the very first AbilityAnts release.

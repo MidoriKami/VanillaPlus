@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 
 namespace VanillaPlus.Features.BiggerConfigWindows;
 
-public class SystemConfigController : IAsyncDisposable {
+public class SystemConfigController : IDisposable {
     public required BiggerConfigWindowsConfig Config { get; init; }
 
     private AddonController? systemConfigController;
     private readonly List<uint> scrollBarIdList = [17, 89, 286, 507];
 
-    public async ValueTask DisposeAsync()
-        => await DisableAsync();
-
-    public async Task EnableAsync() {
+    public void Enable() {
         unsafe {
             systemConfigController = new AddonController {
                 AddonName = "ConfigSystem",
@@ -25,14 +21,12 @@ public class SystemConfigController : IAsyncDisposable {
             };
         }
 
-        await systemConfigController.EnableAsync();
+        systemConfigController.Enable();
     }
 
-    public async Task DisableAsync() {
-        if (systemConfigController is not null) {
-            await systemConfigController.DisableAsync();
-            systemConfigController = null;
-        }
+    public void Dispose() {
+        systemConfigController?.Dispose();
+        systemConfigController = null;
     }
 
     private unsafe void SetupConfigSystem(AtkUnitBase* addon) {

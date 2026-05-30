@@ -9,8 +9,7 @@ namespace VanillaPlus.Features.BetterTeleportWindow;
 public class BetterTeleportWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Better Teleport Window",
-        Description = "Replaces the games Teleport window with a better custom made version.\n\n" +
-                      "Note: Configuration such as using Teleport Tickets must be done from the original teleport window.",
+        Description = "Replaces the games Teleport window with a better custom made version.",
         Type = ModificationType.NewWindow,
         Authors = [ "MidoriKami" ],
     };
@@ -34,13 +33,11 @@ public class BetterTeleportWindow : GameModification {
             },
         };
 
-        await teleportFactoryController.EnableAsync();
+        await Services.Framework.Run(teleportFactoryController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        if (teleportFactoryController is not null) {
-            await teleportFactoryController.DisableAsync();
-            CustomTeleportAddon = null;
-        }
+        await Services.Framework.Run(() => teleportFactoryController?.Dispose());
+        teleportFactoryController = null;
     }
 }

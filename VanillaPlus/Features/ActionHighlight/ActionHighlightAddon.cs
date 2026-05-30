@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Nodes;
@@ -21,7 +22,7 @@ public class ActionHighlightAddon : NativeAddon {
 
     public ActionHighlightConfig? Config { get; init; }
 
-    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+    protected override Task BuildUiAsync() {
         var combatJobs = Services.DataManager.GetExcelSheet<Lumina.Excel.Sheets.ClassJob>()
             .Where(classJob => classJob.JobIndex > 0 && classJob.Role != 0)
             .Select(classJob => new ActionCategory(ActionCategoryType.Job, classJob))
@@ -71,6 +72,8 @@ public class ActionHighlightAddon : NativeAddon {
         }
 
         configNode.AttachNode(this);
+
+        return Task.CompletedTask;
     }
 
     private void OnSelectionChanged(ActionCategory? category) {

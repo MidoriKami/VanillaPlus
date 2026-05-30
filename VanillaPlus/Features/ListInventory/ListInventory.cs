@@ -29,15 +29,13 @@ public class ListInventory : GameModification {
             ItemSpacing = 2.25f,
         };
 
-        await addonListInventory.Initialize();
+        await addonListInventory.InitializeAsync();
 
         OpenConfigAction = addonListInventory.OpenAddonConfig;
     }
 
     public override async Task OnDisableAsync() {
-        if (addonListInventory is not null) {
-            await addonListInventory.DisposeAsync();
-            addonListInventory = null;
-        }
+        await Task.WhenAll(addonListInventory?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        addonListInventory = null;
     }
 }

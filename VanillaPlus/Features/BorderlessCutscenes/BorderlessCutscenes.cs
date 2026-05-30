@@ -24,15 +24,13 @@ public class BorderlessCutscenes : GameModification {
 
         if (memoryAddress is { } address && memoryAddress != nint.Zero) {
             jumpPatch = new MemoryReplacement(address, [0x00]);
-            await jumpPatch.EnableAsync();
+            await Services.Framework.Run(jumpPatch.Enable);
         }
     }
 
     public override async Task OnDisableAsync() {
-        if (jumpPatch is not null) {
-            await jumpPatch.DisposeAsync();
-            jumpPatch = null;
-        }
+        await Task.WhenAll(jumpPatch?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        jumpPatch = null;
 
         memoryAddress = null;
     }
