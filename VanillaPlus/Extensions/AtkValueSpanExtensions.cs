@@ -10,7 +10,7 @@ public static class AtkValueSpanExtensions {
             foreach (var index in Enumerable.Range(0, values.Length)) {
                 ref var value = ref values[index];
 
-                Services.PluginLog.Debug($"{new string(' ', indentSpaces)}[{index}] [{value.Type}] {value.GetValueAsString()}");
+                Services.PluginLog.InternalDebug($"{new string(' ', indentSpaces)}[{index}] [{value.Type}] {value.GetValueAsString()}");
             }
         }
     }

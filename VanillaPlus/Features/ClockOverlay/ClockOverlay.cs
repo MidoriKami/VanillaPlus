@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Overlay.UiOverlay;
 using VanillaPlus.Classes;
@@ -19,13 +20,12 @@ public class ClockOverlay : GameModification {
 
     private ClockOverlayConfig? config;
     private OverlayController? overlayController;
-    private ClockOverlayNode? clockNode;
 
     private ConfigAddon? configWindow;
 
-    public override void OnEnable() {
-        config = ClockOverlayConfig.Load();
-        overlayController = new OverlayController();
+    public override async Task OnEnableAsync() {
+        config = await ClockOverlayConfig.Load();
+
 
         configWindow = new ConfigAddon {
             InternalName = "ClockOverlayConfig",
@@ -49,29 +49,26 @@ public class ClockOverlay : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        overlayController.CreateNode(() => {
-            clockNode = new ClockOverlayNode(config) {
+        await Services.Framework.Run(() => {
+            overlayController = new OverlayController();
+            overlayController.AddNode(new ClockOverlayNode {
+                Config = config,
                 Size = new Vector2(150.0f, 30.0f),
                 Position = config.Position,
                 OnMoveComplete = thisNode => {
                     config.Position = thisNode.Position;
-                    config.Save();
+                    Task.Run(config.Save);
                 },
-            };
-
-            return clockNode;
+            });
         });
     }
 
-    public override void OnDisable() {
-        configWindow?.Dispose();
-        configWindow = null;
-
-        overlayController?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => overlayController?.Dispose());
         overlayController = null;
 
-        clockNode?.Dispose();
-        clockNode = null;
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configWindow = null;
 
         config = null;
     }

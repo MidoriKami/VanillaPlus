@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -10,7 +11,7 @@ using VanillaPlus.NativeElements.Addons;
 
 namespace VanillaPlus.Features.HideUnwantedBanners;
 
-public unsafe class HideUnwantedBanners : GameModification {
+public class HideUnwantedBanners : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_HideUnwantedBanners,
         Description = Strings.ModificationDescription_HideUnwantedBanners,
@@ -24,25 +25,27 @@ public unsafe class HideUnwantedBanners : GameModification {
     private HideUnwantedBannersConfig? config;
     private NodeListAddon<BannerConfig, BannerConfigListItemNode>? configWindow;
 
-    public override void OnEnable() {
-        config = HideUnwantedBannersConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await HideUnwantedBannersConfig.Load();
 
         configWindow = new NodeListAddon<BannerConfig, BannerConfigListItemNode> {
             InternalName = "BannersConfig",
             Title = Strings.HideUnwantedBanners_ConfigTitle,
             Size = new Vector2(550.0f, 650.0f),
             ListItems = config.BannerSettings,
-            OnClose = config.Save,
+            OnClose = () => Task.Run(config.Save),
         };
 
         OpenConfigAction = configWindow.Toggle;
 
-        setImageTextureHook = Services.Hooker.HookFromAddress<AddonImage.Delegates.SetImage>(AddonImage.Addresses.SetImage.Value, OnSetImageTexture);
-        setImageTextureHook?.Enable();
+        unsafe {
+            setImageTextureHook = Services.Hooker.HookFromAddress<AddonImage.Delegates.SetImage>(AddonImage.Addresses.SetImage.Value, OnSetImageTexture);
+            setImageTextureHook?.Enable();
+        }
     }
 
-    public override void OnDisable() {
-        configWindow?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configWindow = null;
 
         setImageTextureHook?.Dispose();
@@ -51,7 +54,7 @@ public unsafe class HideUnwantedBanners : GameModification {
         config = null;
     }
 
-    private void OnSetImageTexture(AddonImage* addon, int bannerId, IconSubFolder language, int soundEffectId) {
+    private unsafe void OnSetImageTexture(AddonImage* addon, int bannerId, IconSubFolder language, int soundEffectId) {
         try {
             if (config is not null) {
                 if (config.BannerSettings.All(entry => entry.BannerId != bannerId)) {
@@ -59,7 +62,7 @@ public unsafe class HideUnwantedBanners : GameModification {
                         BannerId = bannerId,
                         IsSuppressed = false,
                     });
-                    config.Save();
+                    Task.Run(config.Save);
                 }
                 else {
                     if (config.BannerSettings.FirstOrDefault(entry => entry.BannerId == bannerId) is { IsSuppressed: true }) {
@@ -70,7 +73,7 @@ public unsafe class HideUnwantedBanners : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception in OnSetImageTexture");
+            Services.PluginLog.Exception(e);
         }
 
         setImageTextureHook!.Original(addon, bannerId, language, soundEffectId);

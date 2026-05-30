@@ -1,11 +1,12 @@
-﻿using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+﻿using System.Threading.Tasks;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.CommandPanelSync;
 
-public unsafe class CommandPanelSync : GameModification {
+public class CommandPanelSync : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.CommandPanelSync_DisplayName,
         Description = Strings.CommandPanelSync_Description,
@@ -15,21 +16,21 @@ public unsafe class CommandPanelSync : GameModification {
 
     private const int CurrentVersion = 2;
 
-    public override void OnEnable() {
+    public override async Task OnEnableAsync() {
         Services.ClientState.Login += OnLogin;
         Services.ClientState.Logout += OnLogout;
 
         if (Services.ClientState.IsLoggedIn) {
-            ApplySharedQuickPanel();
+            await Services.Framework.Run(ApplySharedQuickPanel);
         }
     }
 
-    public override void OnDisable() {
+    public override async Task OnDisableAsync() {
         Services.ClientState.Login -= OnLogin;
         Services.ClientState.Logout -= OnLogout;
 
         if (Services.ClientState.IsLoggedIn) {
-            RestoreOriginalQuickPanel();
+            await Services.Framework.Run(RestoreOriginalQuickPanel);
         }
     }
 
@@ -64,19 +65,19 @@ public unsafe class CommandPanelSync : GameModification {
     private static bool SharedExists
         => FileHelpers.GetFileInfo("Data", "CommandPanelSync", $"Shared.v{CurrentVersion}.qpnl.dat").Exists;
 
-    private static nint QuickPanelAddress => (nint)QuickPanelModule.Instance() + sizeof(UserFileManager.UserFileEvent);
+    private static unsafe nint QuickPanelAddress => (nint)QuickPanelModule.Instance() + sizeof(UserFileManager.UserFileEvent);
 
-    private static int QuickPanelSize => sizeof(QuickPanelModule) - sizeof(UserFileManager.UserFileEvent);
+    private static unsafe int QuickPanelSize => sizeof(QuickPanelModule) - sizeof(UserFileManager.UserFileEvent);
 
     private static void SaveOriginal()
-        => Data.SaveBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Original.v{CurrentVersion}.qpnl.dat");
+        => Task.Run(() => Data.SaveBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Original.v{CurrentVersion}.qpnl.dat"));
 
     private static void LoadOriginal()
-        => Data.LoadBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Original.v{CurrentVersion}.qpnl.dat");
+        => Task.Run(() => Data.LoadBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Original.v{CurrentVersion}.qpnl.dat"));
 
     private static void SaveShared()
-        => Data.SaveBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Shared.v{CurrentVersion}.qpnl.dat");
+        => Task.Run(() => Data.SaveBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Shared.v{CurrentVersion}.qpnl.dat"));
 
     private static void LoadShared()
-        => Data.LoadBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Shared.v{CurrentVersion}.qpnl.dat");
+        => Task.Run(() => Data.LoadBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Shared.v{CurrentVersion}.qpnl.dat"));
 }

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
@@ -23,8 +25,8 @@ public class AprilFools : GameModification {
 
     private List<FoolsModule>? modules;
 
-    public override void OnEnable() {
-        config = AprilFoolsConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await AprilFoolsConfig.Load();
 
         modules = [
             new ScrollingFools { Config = config },
@@ -43,47 +45,47 @@ public class AprilFools : GameModification {
 
         configAddon.AddCategory("Suffering Toggles")
             .AddCheckbox("Invert Scroll", nameof(config.InvertScroll),
-                enabled => modules[0].Toggle(enabled))
+                enabled => Task.Run(() => modules[0].Toggle(enabled)))
             .AddTooltip("What? Can't deal with a little up'n down?")
 
             .AddCheckbox("Indecisive", nameof(config.Indecisive),
-                enabled => modules[1].Toggle(enabled))
+                enabled => Task.Run(() => modules[1].Toggle(enabled)))
             .AddTooltip("Having a hard time deciding? Don't worry, I'll give you some more options!")
 
             .AddCheckbox("Emotional Damage", nameof(config.EmotionalDamage),
-                enabled => modules[2].Toggle(enabled))
+                enabled => Task.Run(() => modules[2].Toggle(enabled)))
             .AddTooltip("It's self damage ya' know. Would be unfair to inflict onto others.")
 
             .AddCheckbox("Just Monika", nameof(config.JustMonika),
-                enabled => modules[3].Toggle(enabled))
+                enabled => Task.Run(() => modules[3].Toggle(enabled)))
             .AddTooltip("Just Monika.")
 
             .AddCheckbox("Duty Pop", nameof(config.DutyPop),
-                enabled => modules[4].Toggle(enabled))
+                enabled => Task.Run(() => modules[4].Toggle(enabled)))
             .AddTooltip("Queuing for lots of duties? They seem to be poppin a lot.")
 
             .AddCheckbox("Flipping Out", nameof(config.FlippingOut),
-                enabled => modules[6].Toggle(enabled))
+                enabled => Task.Run(() => modules[6].Toggle(enabled)))
             .AddTooltip("Placeholder text, make CERTAIN to replace this before releasing or else you'll look really silly. \n    - MidoriKami");
 
         OpenConfigAction = configAddon.Toggle;
 
-        foreach (var module in modules) {
-            if (module.IsEnabledByConfig) {
-                module.Enable();
-            }
-        }
+        await Task.WhenAll(modules
+            .Where(module => module.IsEnabledByConfig)
+            .Select(module => module.EnableAsync())
+        );
     }
 
-    public override void OnDisable() {
-        foreach (var module in modules ?? []) {
-            module.Disable();
-        }
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            configAddon?.Dispose();
+            configAddon = null;
+        });
+
+        await Task.WhenAll(modules?.Select(module => module.DisableAsync()) ?? []);
+
         modules?.Clear();
         modules = null;
-
-        configAddon?.Dispose();
-        configAddon = null;
 
         config = null;
     }

@@ -1,4 +1,5 @@
-﻿using Dalamud.Game.Config;
+﻿using System.Threading.Tasks;
+using Dalamud.Game.Config;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -21,29 +22,33 @@ public class ArmourySearchBar : GameModification {
 
     public override string ImageName => "ArmourySearchBar.png";
 
-    public override void OnEnable() {
+    public override async Task OnEnableAsync() {
         armouryInventoryController = new InventorySearchAddonController("ArmouryBoard");
+        armouryInventoryController.PreSearch += OnPreSearch;
 
-        armouryInventoryController.PreSearch += searchString => {
-            if (configFadeUnusable is null) {
-                Services.GameConfig.TryGet(UiConfigOption.ItemNoArmoryMaskOff, out bool value);
-                configFadeUnusable = value;
-            }
-
-            if (!searchString.ToString().IsNullOrEmpty() && !searchStarted) {
-                Services.GameConfig.Set(UiConfigOption.ItemNoArmoryMaskOff, true);
-                searchStarted = true;
-            }
-
-            if (searchStarted && searchString.ToString().IsNullOrEmpty()) {
-                Services.GameConfig.Set(UiConfigOption.ItemNoArmoryMaskOff, configFadeUnusable.Value);
-                searchStarted = false;
-            }
-        };
+        await Services.Framework.Run(armouryInventoryController.Enable);
     }
 
-    public override void OnDisable() {
-        armouryInventoryController?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => armouryInventoryController?.Dispose());
         armouryInventoryController = null;
     }
+
+    private void OnPreSearch(string searchString) {
+        if (configFadeUnusable is null) {
+            Services.GameConfig.TryGet(UiConfigOption.ItemNoArmoryMaskOff, out bool value);
+            configFadeUnusable = value;
+        }
+
+        if (!searchString.IsNullOrEmpty() && !searchStarted) {
+            Services.GameConfig.Set(UiConfigOption.ItemNoArmoryMaskOff, true);
+            searchStarted = true;
+        }
+
+        if (searchStarted && searchString.IsNullOrEmpty()) {
+            Services.GameConfig.Set(UiConfigOption.ItemNoArmoryMaskOff, configFadeUnusable.Value);
+            searchStarted = false;
+        }
+    }
+
 }

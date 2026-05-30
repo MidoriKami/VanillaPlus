@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Threading.Tasks;
 using Dalamud.Interface;
 using KamiToolKit.Overlay.UiOverlay;
 using VanillaPlus.Classes;
@@ -22,8 +23,8 @@ public class BetterCursor : GameModification {
 
     public override string ImageName => "BetterCursor.png";
 
-    public override void OnEnable() {
-        config = BetterCursorConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await BetterCursorConfig.Load();
 
         configWindow = new ConfigAddon {
             InternalName = "BetterCursorConfig",
@@ -48,17 +49,20 @@ public class BetterCursor : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        overlayController = new OverlayController();
-        overlayController.CreateNode(() => new CursorImageNode {
-            Config = config,
+
+        await Services.Framework.Run(() => {
+            overlayController = new OverlayController();
+            overlayController.AddNode(new CursorImageNode {
+                Config = config,
+            });
         });
     }
 
-    public override void OnDisable() {
-        overlayController?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => overlayController?.Dispose());
         overlayController = null;
 
-        configWindow?.Dispose();
+        await (configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configWindow = null;
 
         config = null;

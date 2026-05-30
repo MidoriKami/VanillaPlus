@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using KamiToolKit;
 
 namespace VanillaPlus.NativeElements.Config.NodeEntries;
@@ -10,8 +11,8 @@ public class NodeStyle {
 
     [JsonIgnore] public Action<NodeStyle>? StyleChanged { get; set; }
 
-    public void Save(string filePath)
-        => Utilities.Config.SaveConfig(this, filePath);
+    public async Task Save(string filePath)
+        => await Utilities.Config.SaveConfig(this, filePath);
 }
 
 public class NodeStyle<T> : NodeStyle where T : NodeBase {

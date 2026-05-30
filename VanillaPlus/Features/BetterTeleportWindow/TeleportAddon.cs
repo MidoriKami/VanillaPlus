@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Aetherytes;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -14,7 +15,7 @@ using Lumina.Text.ReadOnly;
 
 namespace VanillaPlus.Features.BetterTeleportWindow;
 
-public class TeleportAddon : NativeAddon {
+public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
 
     private TextInputNode? textInputNode;
 
@@ -27,20 +28,7 @@ public class TeleportAddon : NativeAddon {
     private uint currentRegionId;
 
     private ListNode<IAetheryteEntry, TeleportListItemNode>? listNode;
-    private readonly Dictionary<ListMode, SelectableNode> premadeNodes = [];
     private readonly List<SelectableNode> selectableNodes = [];
-    private readonly BetterTeleportWindowConfig config;
-
-    public TeleportAddon(BetterTeleportWindowConfig config) {
-        this.config = config;
-        this.config.OnSave += OnConfigSaved;
-    }
-
-    public override void Dispose() {
-        base.Dispose();
-
-        config.OnSave -= OnConfigSaved;
-    }
 
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         base.OnSetup(addon, atkValueSpan);
@@ -86,10 +74,10 @@ public class TeleportAddon : NativeAddon {
                             InitialNodes = [
                                 textInputNode = new TextInputNode { // Search
                                     Width = 317.0f,
-                                    PlaceholderString = Strings.SearchPlaceholder,
-                                    AutoSelectAll = true,
                                     OnInputReceived = OnSearchBoxInputReceived,
                                     OnInputComplete = OnSearchBoxReturnPressed,
+                                    PlaceholderString = Strings.SearchPlaceholder,
+                                    AutoSelectAll = true,
                                 },
                                 new CheckboxNode {
                                     Size = new Vector2(28.0f, 28.0f),
@@ -97,7 +85,7 @@ public class TeleportAddon : NativeAddon {
                                     TextTooltip = "Toggle Auto Focus Searchbar",
                                     OnClick = newValue => {
                                         config.AutoFocusSearch = newValue;
-                                        config.Save();
+                                        Task.Run(config.Save);
                                     },
                                 },
                             ],
@@ -150,13 +138,11 @@ public class TeleportAddon : NativeAddon {
         };
         ticketConfigButton.AttachNode(this);
 
-        // Remember the last used category, and select it.
-        if (premadeNodes.TryGetValue(config.LastListMode, out var selectableNode)) {
-            OnPremadeOptionClicked(selectableNode, config.LastListMode);
-        }
+        currentMode = config.LastListMode;
+        OnSearchBoxInputReceived(string.Empty);
 
         if (config.AutoFocusSearch) {
-            textInputNode.SetFocus();
+            textInputNode?.SetFocus();
         }
     }
 
@@ -189,11 +175,10 @@ public class TeleportAddon : NativeAddon {
         foreach (var premadeOption in (List<ListMode>) [ ListMode.All, ListMode.Cities, ListMode.Favorites ]) {
             var newSelectableOption = new SelectableTextNode {
                 Height = 24.0f,
-                IsSelected = premadeOption is ListMode.All,
+                IsSelected = premadeOption == config.LastListMode,
                 String = premadeOption.Description,
                 OnClick = node => OnPremadeOptionClicked(node, premadeOption),
             };
-            premadeNodes.Add(premadeOption, newSelectableOption);
             selectableNodes.Add(newSelectableOption);
             nodeList.Add(newSelectableOption);
         }
@@ -209,10 +194,11 @@ public class TeleportAddon : NativeAddon {
         targetNode.IsSelected = true;
         currentMode = premadeOption;
         config.LastListMode = currentMode;
-        config.Save();
+        Task.Run(config.Save);
 
-        textInputNode?.String = string.Empty;
         OnSearchBoxInputReceived(string.Empty);
+        textInputNode?.ClearFocus();
+        textInputNode?.String = string.Empty;
     }
 
     private List<NodeBase> GetRegionNodes() {
@@ -244,12 +230,6 @@ public class TeleportAddon : NativeAddon {
 
         listNode?.ResetScroll();
 
-        textInputNode?.String = string.Empty;
-        OnSearchBoxInputReceived(string.Empty);
-    }
-
-    private void OnConfigSaved() {
-        listNode?.ResetScroll();
         textInputNode?.String = string.Empty;
         OnSearchBoxInputReceived(string.Empty);
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -11,7 +12,7 @@ using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.ConfigSearchBar;
 
-public unsafe class SystemConfigSearchBar : GameModification {
+public class SystemConfigSearchBar : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_SystemConfigSearchBar,
         Description = Strings.ModificationDescription_SystemConfigSearchBar,
@@ -28,8 +29,8 @@ public unsafe class SystemConfigSearchBar : GameModification {
     private ConfigSearchBarConfig? config;
     private ConfigAddon? configAddon;
 
-    public override void OnEnable() {
-        config = ConfigSearchBarConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await ConfigSearchBarConfig.Load();
 
         configAddon = new ConfigAddon {
             Title = Strings.SystemConfigSearchBar_ConfigTitle,
@@ -43,25 +44,28 @@ public unsafe class SystemConfigSearchBar : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        systemConfigController = new AddonController {
-            AddonName = "ConfigSystem",
-            OnSetup = SetupConfigSystem,
-            OnFinalize = FinalizeConfigSystem,
-        };
-        systemConfigController.Enable();
+        unsafe {
+            systemConfigController = new AddonController {
+                AddonName = "ConfigSystem",
+                OnSetup = SetupConfigSystem,
+                OnFinalize = FinalizeConfigSystem,
+            };
+        }
+
+        await Services.Framework.Run(systemConfigController.Enable);
     }
 
-    public override void OnDisable() {
-        configAddon?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => systemConfigController?.Dispose());
+        systemConfigController = null;
+
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configAddon = null;
 
         config = null;
-
-        systemConfigController?.Dispose();
-        systemConfigController = null;
     }
 
-    private void SetupConfigSystem(AtkUnitBase* addon) {
+    private unsafe void SetupConfigSystem(AtkUnitBase* addon) {
         if (config is null) return;
 
         systemConfigTabs = [
@@ -92,7 +96,7 @@ public unsafe class SystemConfigSearchBar : GameModification {
         systemConfigInput.AttachNode(addon);
     }
 
-    private void FinalizeConfigSystem(AtkUnitBase* _) {
+    private unsafe void FinalizeConfigSystem(AtkUnitBase* _) {
         foreach (var entry in systemConfigTabs ?? []) {
             entry.Dispose();
         }

@@ -21,7 +21,7 @@ public unsafe class RecruitmentWindowController : IDisposable {
             OnSetup = OnAddonSetup,
             OnFinalize = OnAddonFinalize,
         };
-        addonController.Enable();
+        addonController.Enable(); // todo: make this a passthrough enable
     }
 
     public void Dispose() {

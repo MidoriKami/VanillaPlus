@@ -1,4 +1,5 @@
-﻿using Dalamud.Interface.Windowing;
+﻿using System.Threading.Tasks;
+using Dalamud.Interface.Windowing;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -19,7 +20,7 @@ public class DebugImGuiWindow : GameModification {
     private WindowSystem? windowSystem;
     private DebugWindow? debugWindow;
 
-    public override void OnEnable() {
+    public override Task OnEnableAsync() {
         windowSystem = new WindowSystem("VanillaPlus - Debug");
         debugWindow = new DebugWindow {
             IsOpen = true,
@@ -30,9 +31,11 @@ public class DebugImGuiWindow : GameModification {
         OpenConfigAction = debugWindow.Toggle;
 
         Services.PluginInterface.UiBuilder.Draw += DrawImGui;
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisable() {
+    public override Task OnDisableAsync() {
         Services.PluginInterface.UiBuilder.Draw -= DrawImGui;
 
         windowSystem?.RemoveAllWindows();
@@ -40,6 +43,8 @@ public class DebugImGuiWindow : GameModification {
 
         debugWindow?.Dispose();
         debugWindow = null;
+
+        return Task.CompletedTask;
     }
 
     private void DrawImGui() {

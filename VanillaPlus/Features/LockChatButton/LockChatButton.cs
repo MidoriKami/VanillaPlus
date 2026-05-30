@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -10,7 +11,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.LockChatButton;
 
-public unsafe class LockChatButton : GameModification {
+public class LockChatButton : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_LockChatButton,
         Description = Strings.ModificationDescription_LockChatButton,
@@ -30,54 +31,60 @@ public unsafe class LockChatButton : GameModification {
 
     private LockChatButtonData? data;
 
-    public override void OnEnable() {
-        data = LockChatButtonData.Load();
+    public override async Task OnEnableAsync() {
+        data = await LockChatButtonData.Load();
 
         panelButtons = [];
 
-        moveDeltaHook = Services.Hooker.HookFromAddress<AtkUnitBase.Delegates.MoveDelta>(AtkUnitBase.MemberFunctionPointers.MoveDelta, OnMoveDelta);
-        moveDeltaHook?.Enable();
+        unsafe {
+            moveDeltaHook = Services.Hooker.HookFromAddress<AtkUnitBase.Delegates.MoveDelta>(AtkUnitBase.MemberFunctionPointers.MoveDelta, OnMoveDelta);
+            moveDeltaHook?.Enable();
 
-        chatLogController = new AddonController<AddonChatLog> {
-            AddonName = "ChatLog",
-            OnSetup = SetupChatLog,
-            OnPreUpdate = UpdateChatLog,
-            OnFinalize = FinalizeChatLog,
-        };
-        chatLogController.Enable();
+            chatLogController = new AddonController<AddonChatLog> {
+                AddonName = "ChatLog",
+                OnSetup = SetupChatLog,
+                OnPreUpdate = UpdateChatLog,
+                OnFinalize = FinalizeChatLog,
+            };
 
-        panelController = new MultiAddonController<AddonChatLogPanel> {
-            AddonNames = ["ChatLogPanel_1", "ChatLogPanel_2", "ChatLogPanel_3"],
-            OnSetup = SetupChatLogPanel,
-            OnFinalize = FinalizeChatLogPanel,
-        };
-        panelController.Enable();
+            panelController = new MultiAddonController<AddonChatLogPanel> {
+                AddonNames = ["ChatLogPanel_1", "ChatLogPanel_2", "ChatLogPanel_3"],
+                OnSetup = SetupChatLogPanel,
+                OnFinalize = FinalizeChatLogPanel,
+            };
+        }
+
+        await Services.Framework.Run(() => {
+            chatLogController.Enable();
+            panelController.Enable();
+        });
     }
 
-    public override void OnDisable() {
-        chatLogController?.Dispose();
-        chatLogController = null;
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            chatLogController?.Dispose();
+            panelController?.Dispose();
 
-        panelController?.Dispose();
+            foreach (var (_, button) in panelButtons ?? []) {
+                button.Dispose();
+            }
+        });
+
+        chatLogController = null;
         panelController = null;
 
         moveDeltaHook?.Dispose();
         moveDeltaHook = null;
 
-        foreach (var (_, button) in panelButtons ?? []) {
-            button.Dispose();
-        }
         panelButtons?.Clear();
         panelButtons = null;
 
         data = null;
     }
 
-    private void SetupChatLog(AddonChatLog* addon) {
-        var addonControl = (AtkAddonControl*)((byte*)addon + 0x568);
-
+    private unsafe void SetupChatLog(AddonChatLog* addon) {
         addonControlHook = Services.Hooker.HookFromAddress<AtkEventListener.Delegates.ReceiveEvent>(
-            addonControl->AtkEventListener.VirtualTable->ReceiveEvent,
+            addon->AddonControl.AtkEventListener.VirtualTable->ReceiveEvent,
             OnAddonControl
         );
         addonControlHook.Enable();
@@ -98,7 +105,7 @@ public unsafe class LockChatButton : GameModification {
         panelButtons.Add(addon->NameString, newButton);
     }
 
-    private void UpdateChatLog(AddonChatLog* addon) {
+    private unsafe void UpdateChatLog(AddonChatLog* addon) {
         if (panelButtons is null) return;
         if (!panelButtons.TryGetValue(addon->NameString, out var button)) return;
 
@@ -112,7 +119,7 @@ public unsafe class LockChatButton : GameModification {
         button.Scale = new Vector2(addonGlobalScale, addonGlobalScale);
     }
 
-    private void FinalizeChatLog(AddonChatLog* addon) {
+    private unsafe void FinalizeChatLog(AddonChatLog* addon) {
         addonControlHook?.Dispose();
         addonControlHook = null;
 
@@ -123,7 +130,7 @@ public unsafe class LockChatButton : GameModification {
         panelButtons.Remove(addon->NameString);
     }
 
-    private void SetupChatLogPanel(AddonChatLogPanel* addon) {
+    private unsafe void SetupChatLogPanel(AddonChatLogPanel* addon) {
         if (panelButtons is null) return;
         if (panelButtons?.ContainsKey(addon->NameString) ?? true) return;
         if (data is null) return;
@@ -150,7 +157,7 @@ public unsafe class LockChatButton : GameModification {
         panelButtons.Add(addon->NameString, newButton);
     }
 
-    private void FinalizeChatLogPanel(AddonChatLogPanel* addon) {
+    private unsafe void FinalizeChatLogPanel(AddonChatLogPanel* addon) {
         if (panelButtons is null) return;
         if (!panelButtons.TryGetValue(addon->NameString, out var button)) return;
 
@@ -162,7 +169,7 @@ public unsafe class LockChatButton : GameModification {
         if (data is null) return;
 
         data.IsLocked = !data.IsLocked;
-        data.Save();
+        Task.Run(data.Save);
 
         foreach (var buttonNode in panelButtons ?? []) {
             buttonNode.Value.IsLocked = data.IsLocked;
@@ -172,7 +179,7 @@ public unsafe class LockChatButton : GameModification {
         thisButton.ShowTooltip();
     }
 
-    private void OnAddonControl(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
+    private unsafe void OnAddonControl(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
         try {
             if (data is { IsLocked: true }) {
                 return;
@@ -185,7 +192,7 @@ public unsafe class LockChatButton : GameModification {
         addonControlHook!.Original(thisPtr, eventType, eventParam, atkEvent, atkEventData);
     }
 
-    private bool OnMoveDelta(AtkUnitBase* thisPtr, short* xDelta, short* yDelta) {
+    private unsafe bool OnMoveDelta(AtkUnitBase* thisPtr, short* xDelta, short* yDelta) {
         try {
             if (data is { IsLocked: true } && thisPtr->NameString.StartsWith("ChatLog")) {
                 *xDelta = 0;

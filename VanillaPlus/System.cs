@@ -4,7 +4,7 @@ using VanillaPlus.NativeElements.Addons;
 
 namespace VanillaPlus;
 
-public static class PluginSystem {
+public static class System {
     public static SystemConfiguration SystemConfig { get; set; } = null!;
     public static ModificationBrowserAddon ModificationBrowserAddon { get; set; } = null!;
     public static SeasonEventAddon SeasonEventAddon { get; set; } = null!;

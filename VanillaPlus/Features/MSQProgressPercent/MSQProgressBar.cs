@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -16,7 +17,7 @@ using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.MSQProgressPercent;
 
-public unsafe class MSQProgressBar : GameModification {
+public class MSQProgressBar : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.MSQProgressBar_DisplayName,
         Description = Strings.MSQProgressBar_Description,
@@ -33,8 +34,8 @@ public unsafe class MSQProgressBar : GameModification {
     private MSQProgressBarConfig? config;
     private ConfigAddon? configAddon;
 
-    public override void OnEnable() {
-        config = MSQProgressBarConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await MSQProgressBarConfig.Load();
 
         expansionRanges = [];
 
@@ -48,7 +49,7 @@ public unsafe class MSQProgressBar : GameModification {
 
             expansionRanges.TryAdd(expansion, min..max);
 
-            Services.PluginLog.Debug($"Range for {expansion.Name}: {min}..{max}");
+            Services.PluginLog.Debug($"Range for {expansion.Name}: {min}..{max}", "MSQProgressBar");
         }
 
         configAddon = new ConfigAddon {
@@ -66,53 +67,48 @@ public unsafe class MSQProgressBar : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        scenarioTreeAddonController = new AddonController {
-            AddonName = "ScenarioTree",
-            OnSetup = addon => {
-                var targetPositioningNode = addon->GetNodeById<AtkComponentNode>(13);
-                var msqTextNode = targetPositioningNode->SearchNodeById<AtkTextNode>(6);
+        unsafe {
+            scenarioTreeAddonController = new AddonController {
+                AddonName = "ScenarioTree",
+                OnSetup = ScenarioTreeSetup,
+                OnUpdate = ScenarioTreeUpdate,
+                OnFinalize = ScenarioTreeFinalize,
+            };
+        }
 
-                progressBarNode = new ProgressBarNode {
-                    Size = new Vector2(msqTextNode->Width, 9.0f),
-                    Position = new Vector2(0.0f, msqTextNode->Height - 3.0f),
-                    TextTooltip = string.Format(Strings.MSQProgressBar_TooltipCurrentProgress, "000"),
-                    Progress = 0.5f,
-                };
-                progressBarNode.AttachNode(msqTextNode, NodePosition.BeforeTarget);
-
-                UpdateProgress(addon);
-            },
-            OnUpdate = addon => {
-                if (addon->AtkValuesCount < 7) return;
-
-                UpdateProgress(addon);
-                progressBarNode?.BarColor = config.BarColor with { W = 1.0f };
-                progressBarNode?.Alpha = config.BarColor.W;
-            },
-            OnFinalize = _ => {
-                progressBarNode?.Dispose();
-                progressBarNode = null;
-            },
-        };
-        scenarioTreeAddonController.Enable();
+        await Services.Framework.Run(scenarioTreeAddonController.Enable);
     }
 
-    public override void OnDisable() {
-        scenarioTreeAddonController?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => scenarioTreeAddonController?.Dispose());
         scenarioTreeAddonController = null;
+
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
 
         expansionRanges?.Clear();
         expansionRanges = null;
 
-        configAddon?.Dispose();
-        configAddon = null;
-
         config = null;
     }
 
-    private void UpdateProgress(AtkUnitBase* addon) {
-        if (addon->AtkValuesCount < 7) return;
+    private unsafe void ScenarioTreeSetup(AtkUnitBase* addon) {
+        var targetPositioningNode = addon->GetNodeById<AtkComponentNode>(13);
+        var msqTextNode = targetPositioningNode->SearchNodeById<AtkTextNode>(6);
+
+        progressBarNode = new ProgressBarNode {
+            Size = new Vector2(msqTextNode->Width, 9.0f),
+            Position = new Vector2(0.0f, msqTextNode->Height - 3.0f),
+            TextTooltip = string.Format(Strings.MSQProgressBar_TooltipCurrentProgress, "000"),
+            Progress = 0.5f,
+        };
+        progressBarNode.AttachNode(msqTextNode, NodePosition.BeforeTarget);
+    }
+
+    private unsafe void ScenarioTreeUpdate(AtkUnitBase* addon) {
         if (expansionRanges is null) return;
+        if (config is null) return;
+        if (addon->AtkValuesCount < 7) return;
 
         if (addon->AtkValuesSpan[6].Type is not AtkValueType.String) {
             progressBarNode?.Progress = 1.0f;
@@ -124,7 +120,7 @@ public unsafe class MSQProgressBar : GameModification {
         var expansionRange = expansionRanges.FirstOrNull(pair => pair.Value.Contains(currentQuest));
         if (expansionRange is not { Value: var range }) return;
 
-        switch (config?.Mode) {
+        switch (config.Mode) {
             case MSQProgressBarMode.EntireGame:
                 var minTreeEntry = expansionRanges.Values.Min(expansion => expansion.Start.Value);
                 var maxTreeEntry = expansionRanges.Values.Max(expansion => expansion.End.Value);
@@ -139,5 +135,13 @@ public unsafe class MSQProgressBar : GameModification {
                 progressBarNode?.TextTooltip = string.Format(Strings.MSQProgressBar_TooltipExpansionProgress, progressBarNode.Progress * 100.0f);
                 break;
         }
+
+        progressBarNode?.BarColor = config.BarColor with { W = 1.0f };
+        progressBarNode?.Alpha = config.BarColor.W;
+    }
+
+    private unsafe void ScenarioTreeFinalize(AtkUnitBase* _) {
+        progressBarNode?.Dispose();
+        progressBarNode = null;
     }
 }

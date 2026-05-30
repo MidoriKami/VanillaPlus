@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Hooking;
@@ -10,7 +11,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.CastBarAetheryteNames;
 
-public unsafe class CastBarAetheryteNames : GameModification {
+public class CastBarAetheryteNames : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_CastBarAetheryteNames,
         Description = Strings.ModificationDescription_CastBarAetheryteNames,
@@ -24,17 +25,23 @@ public unsafe class CastBarAetheryteNames : GameModification {
 
     public override string ImageName => "CastBarAetheryteNames.png";
 
-    public override void OnEnable() {
-        teleportHook = Services.GameInteropProvider.HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
-        teleportHook?.Enable();
+    public override async Task OnEnableAsync() {
+        unsafe {
+            teleportHook = Services.GameInteropProvider.HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
+            teleportHook?.Enable();
+        }
 
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "_CastBar", OnCastBarRefresh);
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "_CastBar", OnCastBarRefresh);
+        });
     }
 
-    public override void OnDisable() {
-        Services.AddonLifecycle.UnregisterListener(OnCastBarRefresh);
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.UnregisterListener(OnCastBarRefresh);
+        });
 
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
 
@@ -47,7 +54,7 @@ public unsafe class CastBarAetheryteNames : GameModification {
     private void OnTerritoryChanged(uint u)
         => teleportInfo = null;
 
-    private void OnCastBarRefresh(AddonEvent type, AddonArgs args) {
+    private unsafe void OnCastBarRefresh(AddonEvent type, AddonArgs args) {
         if (teleportInfo is not { } info) return;
         if (Services.ObjectTable.LocalPlayer is not { IsCasting: true, CastActionId: 5 }) return;
 
@@ -71,7 +78,7 @@ public unsafe class CastBarAetheryteNames : GameModification {
         }
     }
 
-    private bool OnTeleport(Telepo* thisPtr, uint aetheryteId, byte subIndex) {
+    private unsafe bool OnTeleport(Telepo* thisPtr, uint aetheryteId, byte subIndex) {
         try {
             teleportInfo = null;
 
@@ -87,7 +94,7 @@ public unsafe class CastBarAetheryteNames : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception in OnTeleport");
+            Services.PluginLog.Exception(e);
         }
 
         return teleportHook!.Original(thisPtr, aetheryteId, subIndex);

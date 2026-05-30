@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VanillaPlus.Resources {
+namespace Resources {
     using System;
     
     
@@ -1019,7 +1019,7 @@ namespace VanillaPlus.Resources {
         ///   Looks up a localized string similar to No loot data found for this duty.
         ///
         ///Data is provided by a external source and may be incomplete.
-        ///        
+        ///
         ///Data will be updated as it becomes available, do not request data updates..
         /// </summary>
         internal static string DutyLoot_NoItemsMessage {
@@ -3306,7 +3306,7 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Custom Native Windows.
+        ///   Looks up a localized string similar to Custom Native Window.
         /// </summary>
         internal static string ModificationType_NewWindow {
             get {

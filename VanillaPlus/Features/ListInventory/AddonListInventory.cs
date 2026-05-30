@@ -43,7 +43,7 @@ public class AddonListInventory : SearchableNodeListAddon<ItemStack, InventoryIt
     }
 
     private void UpdateInventoryItems() {
-        Services.PluginLog.Debug("Inventory Updated");
+        Services.PluginLog.Debug("Inventory Updated", "ListInventory");
         ListItems = Inventory.GetInventoryStacks().Where(item => ItemStack.IsMatch(item, lastSearchString)).ToList();
         ListItems.Sort((left, right) => ItemStack.Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
     }

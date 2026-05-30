@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -9,7 +10,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.EnhancedWardNavigation;
 
-public unsafe class EnhancedWardNavigation : GameModification {
+public class EnhancedWardNavigation : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.EnhancedWardNavigation_DisplayName,
         Description = Strings.EnhancedWardNavigation_Description,
@@ -24,17 +25,25 @@ public unsafe class EnhancedWardNavigation : GameModification {
     private TextButtonNode? nextWardButtonNode;
     private int currentWard;
 
-    public override void OnEnable() {
-        housingAddonController = new AddonController {
-            AddonName = "HousingSelectBlock",
-            OnSetup = SetupHousingSelectBlock,
-            OnFinalize = FinalizeHousingSelectBlock,
-            OnRefresh = RefreshHousingSelectBlock,
-        };
-        housingAddonController.Enable();
+    public override async Task OnEnableAsync() {
+        unsafe {
+            housingAddonController = new AddonController {
+                AddonName = "HousingSelectBlock",
+                OnSetup = SetupHousingSelectBlock,
+                OnFinalize = FinalizeHousingSelectBlock,
+                OnRefresh = RefreshHousingSelectBlock,
+            };
+        }
+
+        await Services.Framework.Run(housingAddonController.Enable);
     }
 
-    private void SetupHousingSelectBlock(AtkUnitBase* addon) {
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => housingAddonController?.Dispose());
+        housingAddonController = null;
+    }
+
+    private unsafe void SetupHousingSelectBlock(AtkUnitBase* addon) {
         if (addon->RootNode is null) return;
 
         var selectButton = addon->GetNodeById(34);
@@ -64,7 +73,7 @@ public unsafe class EnhancedWardNavigation : GameModification {
         nextWardButtonNode.AttachNode(addon->RootNode);
     }
 
-    private void FinalizeHousingSelectBlock(AtkUnitBase* addon) {
+    private unsafe void FinalizeHousingSelectBlock(AtkUnitBase* addon) {
         if (addon is null) return;
         if (addon->RootNode is null) return;
         if (previousWardButtonNode is null) return;
@@ -77,7 +86,7 @@ public unsafe class EnhancedWardNavigation : GameModification {
         nextWardButtonNode = null;
     }
 
-    private void RefreshHousingSelectBlock(AtkUnitBase* addon) {
+    private unsafe void RefreshHousingSelectBlock(AtkUnitBase* addon) {
         if (addon->AtkValuesSpan.Length < 2) return;
 
         var eventKind = addon->AtkValuesSpan[0].UInt;
@@ -87,7 +96,7 @@ public unsafe class EnhancedWardNavigation : GameModification {
         ToggleButtons(eventKind is 4);
     }
 
-    private void SetCurrentWard(bool isNext = false) {
+    private unsafe void SetCurrentWard(bool isNext = false) {
         var destinationWard = Math.Clamp(currentWard + (isNext ? 1 : -1), 0, 29);
         ToggleButtons(false);
         AgentHousingPortal.Instance()->AgentInterface.SendCommand(1, [1, destinationWard]);
@@ -102,10 +111,5 @@ public unsafe class EnhancedWardNavigation : GameModification {
 
         previousWardButtonNode?.IsEnabled = previousEnabled;
         nextWardButtonNode?.IsEnabled = nextEnabled;
-    }
-
-    public override void OnDisable() {
-        housingAddonController?.Dispose();
-        housingAddonController = null;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.InternalSystem;
@@ -12,10 +13,15 @@ public class SystemConfiguration {
     public string CurrentSearch = string.Empty;
     public DateTime LastSeasonalNotice = DateTime.MinValue;
     public bool PersistSearch = false;
+    public bool SafeMode = false;
 
-    public static SystemConfiguration Load()
-        => Config.LoadConfig<SystemConfiguration>("system.config.json");
+    public static async Task<SystemConfiguration> Load() {
+        Services.PluginLog.InternalDebug("Loading system.config.json");
+        return await Config.LoadConfig<SystemConfiguration>("system.config.json");
+    }
 
-    public void Save()
-        => Config.SaveConfig(this, "system.config.json");
+    public async Task Save() {
+        Services.PluginLog.InternalDebug("Saving system.config.json");
+        await Config.SaveConfig(this, "system.config.json");
+    }
 }

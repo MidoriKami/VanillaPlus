@@ -1,4 +1,5 @@
-﻿using VanillaPlus.Utilities;
+﻿using System.Threading.Tasks;
+using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Classes;
 
@@ -9,15 +10,15 @@ namespace VanillaPlus.Classes;
 public abstract class GameModificationCharacterConfig<T> where T : GameModificationCharacterConfig<T>, new() {
     protected abstract string FileName { get; }
 
-    public static T Load() {
+    public static async Task<T> Load() {
         var fileName = new T().FileName;
-        Services.PluginLog.Debug($"Loading Character Config {fileName}");
+        Services.PluginLog.InternalDebug($"Loading Character Config {fileName}");
 
-        return Config.LoadCharacterConfig<T>(fileName);
+        return await Config.LoadCharacterConfig<T>(fileName);
     }
 
-    public void Save() {
-        Services.PluginLog.Debug($"Saving Character Config {FileName}");
-        Config.SaveCharacterConfig(this, FileName);
+    public async Task Save() {
+        Services.PluginLog.InternalDebug($"Saving Character Config {FileName}");
+        await Config.SaveCharacterConfig(this, FileName);
     }
 }

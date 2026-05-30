@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -119,7 +120,7 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
                 else {
                     config.FavoriteItems.Add(item.ItemId);
                 }
-                config.Save();
+                Task.Run(config.Save);
                 favoriteStarNode.IsVisible = !isFavorite;
             },
         });

@@ -5,6 +5,7 @@ using Lumina.Excel.Sheets;
 using Lumina.Text.Payloads;
 using Lumina.Text.ReadOnly;
 using System;
+using System.Threading.Tasks;
 using Dalamud.Game.Text.SeStringHandling;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -29,12 +30,17 @@ public class ChatPlayerTooltip : GameModification {
         "ChatLogPanel_3",
     ];
 
-    public override void OnEnable()
-        => Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, addonNames, PreReceiveEvent);
+    public override async Task OnEnableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, addonNames, PreReceiveEvent);
+        });
+    }
 
-    public override void OnDisable() {
-        Services.AddonLifecycle.UnregisterListener(PreReceiveEvent);
-        HideTooltip();
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.UnregisterListener(PreReceiveEvent);
+            HideTooltip();
+        });
     }
 
     private unsafe void PreReceiveEvent(AddonEvent type, AddonArgs args) {

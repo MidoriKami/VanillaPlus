@@ -22,6 +22,8 @@ public class ActionHighlightAddon : NativeAddon {
     public ActionHighlightConfig? Config { get; init; }
 
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         var combatJobs = Services.DataManager.GetExcelSheet<Lumina.Excel.Sheets.ClassJob>()
             .Where(classJob => classJob.JobIndex > 0 && classJob.Role != 0)
             .Select(classJob => new ActionCategory(ActionCategoryType.Job, classJob))

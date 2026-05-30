@@ -1,4 +1,5 @@
-﻿using VanillaPlus.Classes;
+﻿using System.Threading.Tasks;
+using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.InventorySearchBar;
@@ -17,12 +18,14 @@ public class InventorySearchBar : GameModification {
 
     private InventorySearchAddonController? inventoryController;
 
-    public override void OnEnable() {
+    public override async Task OnEnableAsync() {
         inventoryController = new InventorySearchAddonController("InventoryExpansion", "InventoryLarge", "Inventory");
+
+        await Services.Framework.Run(inventoryController.Enable);
     }
 
-    public override void OnDisable() {
-        inventoryController?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => inventoryController?.Dispose());
         inventoryController = null;
     }
 }

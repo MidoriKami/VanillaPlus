@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 using KamiToolKit.Premade.Node.Simple;
@@ -17,7 +18,7 @@ public sealed class GeneralSettingsNode : SimpleComponentNode {
                     IsChecked = config.ShowOnlyInCombat,
                     OnClick = value => {
                         config.ShowOnlyInCombat = value;
-                        config.Save();
+                        Task.Run(config.Save);
                     },
                     Size = new Vector2(300.0f, 24.0f),
                     String = Strings.ActionHighlight_ShowInCombat,
@@ -26,7 +27,7 @@ public sealed class GeneralSettingsNode : SimpleComponentNode {
                     IsChecked = config.AntOnlyOnFinalStack,
                     OnClick = value => {
                         config.AntOnlyOnFinalStack = value;
-                        config.Save();
+                        Task.Run(config.Save);
                     },
                     Size = new Vector2(300.0f, 24.0f),
                     String = Strings.ActionHighlight_AntOnlyOnFinalStack,
@@ -35,7 +36,7 @@ public sealed class GeneralSettingsNode : SimpleComponentNode {
                     IsChecked = config.ShowOnlyUsableActions,
                     OnClick = value => {
                         config.ShowOnlyUsableActions = value;
-                        config.Save();
+                        Task.Run(config.Save);
                     },
                     Size = new Vector2(300.0f, 24.0f),
                     String = Strings.ActionHighlight_ShowOnlyUsableActions,
@@ -44,7 +45,7 @@ public sealed class GeneralSettingsNode : SimpleComponentNode {
                     IsChecked = config.UseGlocalPreAntMs,
                     OnClick = value => {
                         config.UseGlocalPreAntMs = value;
-                        config.Save();
+                        Task.Run(config.Save);
                     },
                     Size = new Vector2(300.0f, 24.0f),
                     String = Strings.ActionHighlight_UseGlobalPreAntMs,
@@ -59,7 +60,7 @@ public sealed class GeneralSettingsNode : SimpleComponentNode {
                     Value = config.PreAntTimeMs,
                     OnValueUpdate = newValue => {
                         config.PreAntTimeMs = newValue;
-                        config.Save();
+                        Task.Run(config.Save);
                     },
                     Size = new Vector2(100.0f, 24.0f),
                 },

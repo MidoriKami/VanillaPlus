@@ -1,6 +1,7 @@
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using VanillaPlus.Classes;
 
 namespace VanillaPlus;
 
@@ -10,7 +11,7 @@ namespace VanillaPlus;
 public class Services {
     [PluginService] public static IDalamudPluginInterface PluginInterface { get; set; } = null!;
     [PluginService] public static IClientState ClientState { get; set; } = null!;
-    [PluginService] public static IPluginLog PluginLog { get; set; } = null!;
+    [PluginService] private static IPluginLog Log { get; set; } = null!;
     [PluginService] public static IAddonLifecycle AddonLifecycle { get; set; } = null!;
     [PluginService] public static IAgentLifecycle AgentLifecycle { get; set; } = null!;
     [PluginService] public static IDutyState DutyState { get; set; } = null!;
@@ -42,4 +43,7 @@ public class Services {
     // I dislike the name GameInteropProvider, so this is my mini rebellion on a bad name.
     // It's just an alias, use whichever you want.
     public static IGameInteropProvider Hooker => GameInteropProvider;
+
+    // Wrapper around PluginLog to make module-tagged logging more natural.
+    public static PluginLog PluginLog => new(Log);
 }

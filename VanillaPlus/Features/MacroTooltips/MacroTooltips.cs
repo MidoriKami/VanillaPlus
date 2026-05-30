@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
@@ -23,14 +24,18 @@ public unsafe class MacroTooltips : GameModification {
 
     public override string ImageName => "MacroTooltips.png";
 
-    public override void OnEnable() {
+    public override Task OnEnableAsync() {
         showTooltipHook = Services.Hooker.HookFromAddress<AddonActionBarBase.Delegates.ShowTooltip>(AddonActionBarBase.MemberFunctionPointers.ShowTooltip, OnShowMacroTooltip);
         showTooltipHook?.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisable() {
+    public override Task OnDisableAsync() {
         showTooltipHook?.Dispose();
         showTooltipHook = null;
+
+        return Task.CompletedTask;
     }
 
     private void OnShowMacroTooltip(AddonActionBarBase* a1, AtkResNode* macroResNode, NumberArrayData* numberArray, StringArrayData* stringArray, int numberArrayIndex, int stringArrayIndex) {
@@ -54,7 +59,7 @@ public unsafe class MacroTooltips : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception in OnShowMacroTooltip");
+            Services.PluginLog.Exception(e);
         }
 
         showTooltipHook!.Original(a1, macroResNode, numberArray, stringArray, numberArrayIndex, stringArrayIndex);

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using VanillaPlus.Classes;
@@ -16,7 +17,7 @@ public unsafe class SuppressSharedBoards : GameModification {
     private Hook<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>? showSharedNotificationHook;
     private Hook<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>? saveBoardAndPlaySoundHook;
 
-    public override void OnEnable() {
+    public override Task OnEnableAsync() {
         showSharedNotificationHook = Services.Hooker.HookFromAddress<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>(
             TofuHelper.TofuHelperData.MemberFunctionPointers.ShowSharedNotification,
             (_, _, _) => { }
@@ -29,13 +30,17 @@ public unsafe class SuppressSharedBoards : GameModification {
 
         showSharedNotificationHook?.Enable();
         saveBoardAndPlaySoundHook?.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisable() {
+    public override Task OnDisableAsync() {
         showSharedNotificationHook?.Dispose();
         showSharedNotificationHook = null;
 
         saveBoardAndPlaySoundHook?.Dispose();
         saveBoardAndPlaySoundHook = null;
+
+        return Task.CompletedTask;
     }
 }

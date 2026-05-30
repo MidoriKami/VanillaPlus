@@ -1,4 +1,5 @@
-﻿using VanillaPlus.Classes;
+﻿using System.Threading.Tasks;
+using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;
 
@@ -20,8 +21,8 @@ public class BiggerConfigWindows : GameModification {
     private BiggerConfigWindowsConfig? config;
     private ConfigAddon? configAddon;
 
-    public override void OnEnable() {
-        config = BiggerConfigWindowsConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await BiggerConfigWindowsConfig.Load();
 
         configAddon = new ConfigAddon {
             InternalName = "BiggerConfigWindowsConfig",
@@ -35,18 +36,30 @@ public class BiggerConfigWindows : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        systemConfigController = new SystemConfigController(config);
-        characterConfigController = new CharacterConfigController(config);
+        systemConfigController = new SystemConfigController {
+            Config = config,
+        };
+
+        characterConfigController = new CharacterConfigController {
+            Config = config,
+        };
+
+        await Services.Framework.Run(() => {
+            systemConfigController.Enable();
+            characterConfigController.Enable();
+        });
     }
 
-    public override void OnDisable() {
-        systemConfigController?.Dispose();
-        systemConfigController = null;
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            systemConfigController?.Dispose();
+            characterConfigController?.Dispose();
+        });
 
-        characterConfigController?.Dispose();
+        systemConfigController = null;
         characterConfigController = null;
 
-        configAddon?.Dispose();
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configAddon = null;
 
         config = null;

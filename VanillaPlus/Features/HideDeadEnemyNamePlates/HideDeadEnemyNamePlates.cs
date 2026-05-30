@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dalamud.Game.Gui.NamePlate;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -13,12 +14,16 @@ public class HideDeadEnemyNamePlates : GameModification {
         Authors = ["nebel"],
     };
 
-    public override void OnEnable() {
+    public override Task OnEnableAsync() {
         Services.NamePlateGui.OnDataUpdate += OnNamePlateUpdate;
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisable() {
+    public override Task OnDisableAsync() {
         Services.NamePlateGui.OnDataUpdate -= OnNamePlateUpdate;
+
+        return Task.CompletedTask;
     }
 
     private static void OnNamePlateUpdate(INamePlateUpdateContext context, IReadOnlyList<INamePlateUpdateHandler> handlers) {

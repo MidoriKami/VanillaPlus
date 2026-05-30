@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.Enums;
@@ -22,8 +23,9 @@ public class ClearSelectedDuties : GameModification {
     private ClearSelectedDutiesConfig? config;
     private ConfigAddon? configWindow;
 
-    public override void OnEnable() {
-        config = ClearSelectedDutiesConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await ClearSelectedDutiesConfig.Load();
+
         configWindow = new ConfigAddon {
             Size = new Vector2(300.0f, 135.0f),
             InternalName = "ClearSelectedConfig",
@@ -36,13 +38,17 @@ public class ClearSelectedDuties : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "ContentsFinder", OnContentsFinderSetup);
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "ContentsFinder", OnContentsFinderSetup);
+        });
     }
 
-    public override void OnDisable() {
-        Services.AddonLifecycle.UnregisterListener(OnContentsFinderSetup);
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.UnregisterListener(OnContentsFinderSetup);
+        });
 
-        configWindow?.Dispose();
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configWindow = null;
 
         config = null;

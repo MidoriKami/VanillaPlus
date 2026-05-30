@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Aetherytes;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -105,7 +106,7 @@ public unsafe class TeleportListItemNode : ListItemNode<IAetheryteEntry>, IListI
                     else {
                         config.FavoriteAetherytes.Add(ItemData.AetheryteId);
                     }
-                    config.Save();
+                    Task.Run(config.Save);
                 },
             });
 
@@ -128,7 +129,7 @@ public unsafe class TeleportListItemNode : ListItemNode<IAetheryteEntry>, IListI
                                 }
                             }
 
-                            config.Save();
+                            Task.Run(config.Save);
 
                             renameAddon?.Dispose();
                             renameAddon = null;

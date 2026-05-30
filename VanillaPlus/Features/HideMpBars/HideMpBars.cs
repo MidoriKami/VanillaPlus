@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.Game.Group;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -10,7 +11,7 @@ using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.HideMpBars;
 
-public unsafe class HideMpBars : GameModification {
+public class HideMpBars : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_HideMpBars,
         Description = Strings.ModificationDescription_HideMpBars,
@@ -29,8 +30,8 @@ public unsafe class HideMpBars : GameModification {
     private HideMpBarsConfig? config;
     private ConfigAddon? configAddon;
 
-    public override void OnEnable() {
-        config = HideMpBarsConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await HideMpBarsConfig.Load();
 
         configAddon = new ConfigAddon {
             Config = config,
@@ -38,45 +39,53 @@ public unsafe class HideMpBars : GameModification {
             Title = "Hide MP Bars Config",
         };
 
-        configAddon.AddCategory("General")
-            .AddCheckbox("Hide in Party List", nameof(config.HidePartyList), _ => ResetPartyList())
-            .AddCheckbox("Hide in Parameter Widget", nameof(config.HideParamWidget), _ => ResetParamWidget());
+        unsafe {
+            configAddon.AddCategory("General")
+                .AddCheckbox("Hide in Party List", nameof(config.HidePartyList), _ => ResetPartyList())
+                .AddCheckbox("Hide in Parameter Widget", nameof(config.HideParamWidget), _ => ResetParamWidget());
+        }
 
         OpenConfigAction = configAddon.Toggle;
 
         manaUsingClassJobs = Services.DataManager.GetManaUsingClassJobs().ToList();
 
-        partyListController = new AddonController<AddonPartyList> {
-            AddonName = "_PartyList",
-            OnPreUpdate = UpdatePartyList,
-            OnFinalize = ResetPartyList,
-        };
-        partyListController?.Enable();
+        unsafe {
+            partyListController = new AddonController<AddonPartyList> {
+                AddonName = "_PartyList",
+                OnPreUpdate = UpdatePartyList,
+                OnFinalize = ResetPartyList,
+            };
 
-        paramController = new AddonController<AddonParameterWidget> {
-            AddonName = "_ParameterWidget",
-            OnPreUpdate = UpdateParamWidget,
-            OnFinalize = ResetParamWidget,
-        };
-        paramController?.Enable();
+            paramController = new AddonController<AddonParameterWidget> {
+                AddonName = "_ParameterWidget",
+                OnPreUpdate = UpdateParamWidget,
+                OnFinalize = ResetParamWidget,
+            };
+        }
+
+        await Services.Framework.Run(() => {
+            partyListController.Enable();
+            paramController.Enable();
+        });
     }
 
-    public override void OnDisable() {
-        partyListController?.Dispose();
-        partyListController = null;
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            partyListController?.Dispose();
+            paramController?.Dispose();
+        });
 
-        paramController?.Dispose();
+        partyListController = null;
         paramController = null;
 
-        manaUsingClassJobs = null;
-
-        configAddon?.Dispose();
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configAddon = null;
 
+        manaUsingClassJobs = null;
         config = null;
     }
 
-    private void UpdatePartyList(AddonPartyList* addon) {
+    private unsafe void UpdatePartyList(AddonPartyList* addon) {
         if (Services.ClientState.IsPvP) return;
         if (manaUsingClassJobs is null) return;
         if (Services.ObjectTable.LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob }, EntityId: var playerId } localPlayer) return;
@@ -99,7 +108,7 @@ public unsafe class HideMpBars : GameModification {
         }
     }
 
-    private void UpdateParamWidget(AddonParameterWidget* addon) {
+    private unsafe void UpdateParamWidget(AddonParameterWidget* addon) {
         if (Services.ClientState.IsPvP) return;
         if (manaUsingClassJobs is null) return;
         if (Services.ObjectTable.LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob } }) return;
@@ -112,7 +121,7 @@ public unsafe class HideMpBars : GameModification {
         paramElement->ToggleVisibility(!isEnabled || manaUsingClassJobs.Contains(classJob.RowId) || classJob.IsNonCombatant);
     }
 
-    private static void ResetPartyList(AddonPartyList* addon = null) {
+    private static unsafe void ResetPartyList(AddonPartyList* addon = null) {
         if (addon is null) {
             addon = Services.GameGui.GetAddonByName<AddonPartyList>("_PartyList");
         }
@@ -123,7 +132,7 @@ public unsafe class HideMpBars : GameModification {
         }
     }
 
-    private static void ResetParamWidget(AddonParameterWidget* addon = null) {
+    private static unsafe void ResetParamWidget(AddonParameterWidget* addon = null) {
         if (addon is null) {
             addon = Services.GameGui.GetAddonByName<AddonParameterWidget>("_ParameterWidget");
         }

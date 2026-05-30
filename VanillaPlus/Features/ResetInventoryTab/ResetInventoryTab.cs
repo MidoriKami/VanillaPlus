@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -8,7 +9,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ResetInventoryTab;
 
-public unsafe class ResetInventoryTab : GameModification {
+public class ResetInventoryTab : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_ResetInventoryTab,
         Description = Strings.ModificationDescription_ResetInventoryTab,
@@ -17,13 +18,19 @@ public unsafe class ResetInventoryTab : GameModification {
         CompatibilityModule = new HaselTweaksCompatibilityModule("FixInventoryOpenTab"),
     };
 
-    public override void OnEnable()
-        => Services.AddonLifecycle.RegisterListener(AddonEvent.PreRefresh, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnPreRefresh);
+    public override async Task OnEnableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PreRefresh, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnPreRefresh);
+        });
+    }
 
-    public override void OnDisable()
-        => Services.AddonLifecycle.UnregisterListener(OnPreRefresh);
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.UnregisterListener(OnPreRefresh);
+        });
+    }
 
-    private void OnPreRefresh(AddonEvent type, AddonArgs args) {
+    private static unsafe void OnPreRefresh(AddonEvent type, AddonArgs args) {
         if (args is not AddonRefreshArgs refreshArgs || refreshArgs.AtkValues is 0 || refreshArgs.AtkValueCount is 0)
             return;
 
@@ -44,7 +51,7 @@ public unsafe class ResetInventoryTab : GameModification {
         ResetTabIndex(addon);
     }
 
-    private int GetTabIndex(AtkUnitBase* addon)
+    private static unsafe int GetTabIndex(AtkUnitBase* addon)
         => addon->NameString switch {
             "Inventory" => ((AddonInventory*)addon)->TabIndex,
             "InventoryLarge" => ((AddonInventoryLarge*)addon)->TabIndex,
@@ -52,7 +59,7 @@ public unsafe class ResetInventoryTab : GameModification {
             _ => 0,
         };
 
-    private void ResetTabIndex(AtkUnitBase* addon) {
+    private static unsafe void ResetTabIndex(AtkUnitBase* addon) {
         switch (addon->NameString) {
             case "Inventory": ((AddonInventory*)addon)->SetTab(0); break;
             case "InventoryLarge": ((AddonInventoryLarge*)addon)->SetTab(0); break;

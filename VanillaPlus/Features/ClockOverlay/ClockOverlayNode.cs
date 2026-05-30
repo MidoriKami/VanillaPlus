@@ -12,11 +12,9 @@ public class ClockOverlayNode : OverlayNode {
     public override OverlayLayer OverlayLayer => OverlayLayer.BehindUserInterface;
 
     private readonly TextNode timeNode;
-    private readonly ClockOverlayConfig config;
+    public required ClockOverlayConfig Config { get; init; }
 
-    public ClockOverlayNode(ClockOverlayConfig config) {
-        this.config = config;
-
+    public ClockOverlayNode() {
         timeNode = new TextNode();
         timeNode.AttachNode(this);
     }
@@ -28,19 +26,19 @@ public class ClockOverlayNode : OverlayNode {
     }
 
     protected override void OnUpdate() {
-        timeNode.TextFlags = config.TextFlags;
-        timeNode.TextColor = config.TextColor;
-        timeNode.TextOutlineColor = config.TextOutlineColor;
-        timeNode.FontSize = (uint)config.FontSize;
-        timeNode.FontType = config.FontType;
-        timeNode.AlignmentType = config.AlignmentType;
+        timeNode.TextFlags = Config.TextFlags;
+        timeNode.TextColor = Config.TextColor;
+        timeNode.TextOutlineColor = Config.TextOutlineColor;
+        timeNode.FontSize = (uint)Config.FontSize;
+        timeNode.FontType = Config.FontType;
+        timeNode.AlignmentType = Config.AlignmentType;
 
-        EnableMoving = config.IsMoveable;
+        EnableMoving = Config.IsMoveable;
 
-        var format = config.ShowSeconds ? "HH:mm:ss" : "HH:mm";
-        var prefix = config.ShowPrefix ? GetPrefix(config.Type) : string.Empty;
+        var format = Config.ShowSeconds ? "HH:mm:ss" : "HH:mm";
+        var prefix = Config.ShowPrefix ? GetPrefix(Config.Type) : string.Empty;
 
-        timeNode.String = config.Type switch {
+        timeNode.String = Config.Type switch {
             ClockType.Local => $"{prefix}{DateTime.Now.ToString(format)}",
             ClockType.Server => $"{prefix}{GetServerTime().ToString(format)}",
             ClockType.Eorzea => $"{prefix}{GetEorzeaTime():HH:mm}",

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using VanillaPlus.Classes;
@@ -15,11 +16,17 @@ public class OpenGlamourDresserToCurrentJob : GameModification {
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@OpenGlamourDresserToCurrentJob"),
     };
 
-    public override void OnEnable()
-        => Services.AddonLifecycle.RegisterListener(AddonEvent.PreSetup, "MiragePrismPrismBox", OnGlamourDresserSetup);
+    public override async Task OnEnableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PreSetup, "MiragePrismPrismBox", OnGlamourDresserSetup);
+        });
+    }
 
-    public override void OnDisable()
-        => Services.AddonLifecycle.UnregisterListener(OnGlamourDresserSetup);
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.UnregisterListener(OnGlamourDresserSetup);
+        });
+    }
 
     private void OnGlamourDresserSetup(AddonEvent type, AddonArgs args) {
         if (Services.ObjectTable is { LocalPlayer.ClassJob.RowId: var playerJob }) {
