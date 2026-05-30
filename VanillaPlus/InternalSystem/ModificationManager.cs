@@ -27,7 +27,7 @@ public class ModificationManager : IAsyncDisposable {
 
             if (System.SystemConfig.EnabledModifications.Contains(gameMod.Name)) {
                 if (System.SystemConfig.SafeMode) {
-                    _ = TryEnableModification(newLoadedModification);
+                    TryEnableModification(newLoadedModification).GetAwaiter().GetResult();
                 }
                 else {
                     Task.Run(() => TryEnableModification(newLoadedModification));
@@ -47,17 +47,16 @@ public class ModificationManager : IAsyncDisposable {
             Services.PluginLog.InternalDebug("Disposing in safemode, all modules will be unloaded sequentially.");
 
             foreach (var modification in loadedModifications.Where(mod => mod.State is LoadedState.Enabled)) {
-                _ = TryDisableModification(modification, false);
+                TryDisableModification(modification, false).GetAwaiter().GetResult();
             }
         }
         else {
-            var disableTasks = loadedModifications
+            await Task.WhenAll(loadedModifications
                 .Where(loadedMod => loadedMod.State is LoadedState.Enabled)
                 .Select(async module => {
                     await Task.Run(() => TryDisableModification(module, false));
-                });
-
-            await Task.WhenAll(disableTasks);
+                })
+            );
         }
     }
 
@@ -186,11 +185,14 @@ public class ModificationManager : IAsyncDisposable {
     }
 
     public static async Task TryToggleModification(LoadedModification modification) {
-        if (modification is { State: LoadedState.Enabled }) {
-            await TryDisableModification(modification);
-        }
-        else if (modification is { State: LoadedState.Disabled }) {
-            await TryEnableModification(modification);
+        switch (modification) {
+            case { State: LoadedState.Enabled }:
+                await TryDisableModification(modification);
+                break;
+
+            case { State: LoadedState.Disabled }:
+                await TryEnableModification(modification);
+                break;
         }
     }
 

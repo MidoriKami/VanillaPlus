@@ -23,8 +23,6 @@ public class ShowAetherCurrents : GameModification {
     private MapOverlayController? mapOverlayController;
 
     public override async Task OnEnableAsync() {
-        mapOverlayController = new MapOverlayController();
-
         List<AetherCurrentInfo> aetherCurrentInfos = [];
 
         foreach (var currentFlagSet in Services.DataManager.GetExcelSheet<AetherCurrentCompFlgSet>()) {
@@ -42,6 +40,8 @@ public class ShowAetherCurrents : GameModification {
         }
 
         await Services.Framework.Run(() => {
+            mapOverlayController = new MapOverlayController();
+
             foreach (var aetherCurrent in aetherCurrentInfos) {
                 mapOverlayController.AddMarker(new AetherCurrentMapMarker {
                     AetherCurrent = aetherCurrent.RowData,
@@ -49,8 +49,6 @@ public class ShowAetherCurrents : GameModification {
                     Position = aetherCurrent.Position,
                 });
             }
-
-            mapOverlayController.Enable();
         });
     }
 

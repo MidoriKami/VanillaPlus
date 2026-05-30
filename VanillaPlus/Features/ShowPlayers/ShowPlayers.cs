@@ -22,9 +22,8 @@ public class ShowPlayersOnMap : GameModification {
     private MapOverlayController? mapOverlayController;
 
     public override async Task OnEnableAsync() {
-        mapOverlayController = new MapOverlayController();
-
         await Services.Framework.Run(() => {
+            mapOverlayController = new MapOverlayController();
             unsafe {
                 foreach (var index in Enumerable.Range(0, CharacterManager.Instance()->BattleCharas.Length)) {
                     mapOverlayController.AddMarker(new PlayerMapMarker {
@@ -32,8 +31,6 @@ public class ShowPlayersOnMap : GameModification {
                     });
                 }
             }
-
-            mapOverlayController.Enable();
         });
     }
 

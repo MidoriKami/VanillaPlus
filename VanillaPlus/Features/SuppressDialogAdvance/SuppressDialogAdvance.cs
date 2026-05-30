@@ -32,7 +32,7 @@ public class SuppressDialogueAdvance : GameModification {
         configWindow.AddCategory(Strings.SuppressDialogAdvance_CategoryGeneral)
             .AddCheckbox(Strings.SuppressDialogAdvance_ApplyOnlyInCutscenes, nameof(config.ApplyOnlyInCutscenes));
 
-        OpenConfigAsync = configWindow.ToggleAsync;
+        OpenConfigAction = configWindow.Toggle;
 
         await Services.Framework.Run(() => {
             Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "Talk", OnTalkReceiveEvent);

@@ -68,7 +68,7 @@ public class AprilFools : GameModification {
                 enabled => Task.Run(() => modules[6].Toggle(enabled)))
             .AddTooltip("Placeholder text, make CERTAIN to replace this before releasing or else you'll look really silly. \n    - MidoriKami");
 
-        OpenConfigAsync = configAddon.ToggleAsync;
+        OpenConfigAction = configAddon.Toggle;
 
         await Task.WhenAll(modules
             .Where(module => module.IsEnabledByConfig)
@@ -77,17 +77,15 @@ public class AprilFools : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        List<Task> tasks = [
-            ..modules?.Select(module => module.DisableAsync()) ?? [],
-            configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
-        ];
+        await Services.Framework.Run(() => {
+            configAddon?.Dispose();
+            configAddon = null;
+        });
 
-        await Task.WhenAll(tasks);
+        await Task.WhenAll(modules?.Select(module => module.DisableAsync()) ?? []);
 
         modules?.Clear();
         modules = null;
-
-        configAddon = null;
 
         config = null;
     }

@@ -24,7 +24,9 @@ public class ModificationBrowserAddon : NativeAddon {
     private BrowserSelectedTab selectedTab = BrowserSelectedTab.All;
     private BrowserSelectedCategory selectedCategory = BrowserSelectedCategory.All;
 
-    protected override Task BuildUiAsync() {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         new VerticalListNode { // Main Container
             Position = ContentStartPosition,
             Size = ContentSize,
@@ -134,25 +136,18 @@ public class ModificationBrowserAddon : NativeAddon {
             Task.Run(UpdateListNode);
         }, "Changes how parts of the game work");
 
-        unsafe {
-            modificationInfoNode.AddInteractionNode(InternalAddon);
-        }
+        modificationInfoNode.AddInteractionNode(addon);
 
-        return Task.CompletedTask;
+        if (System.SystemConfig.PersistSearch) {
+            textInputNode?.String = System.SystemConfig.CurrentSearch;
+        }
+        return;
 
         void UpdateListNode() {
             listNode.OptionsList = GetModifications();
             listNode.ResetScroll();
             listNode.ClearSelection();
             modificationInfoNode.SetDisplayedGameModification(null);
-        }
-    }
-
-    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
-        base.OnSetup(addon, atkValueSpan);
-
-        if (System.SystemConfig.PersistSearch) {
-            textInputNode?.String = System.SystemConfig.CurrentSearch;
         }
     }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace VanillaPlus.Utilities;
@@ -50,41 +49,26 @@ public static class Data {
     /// <summary>
     /// Loads a binary file from PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName}
     /// </summary>
-    public static byte[] LoadBinaryData(int length, string folderName, string fileName)
-        => FileHelpers.LoadBinaryFile(length, FileHelpers.GetFileInfo("Data", folderName, fileName).FullName).Result;
+    public static async Task<byte[]> LoadBinaryData(int length, string folderName, string fileName)
+        => await FileHelpers.LoadBinaryFile(length, FileHelpers.GetFileInfo("Data", folderName, fileName).FullName);
 
     /// <summary>
     /// Loads a binary file from PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName} directly into game memory.
     /// </summary>
-    public static unsafe void LoadBinaryData<T>(T* targetMemoryAddress, int memorySize, string folderName, string fileName) where T : unmanaged {
-        var result = LoadBinaryData(memorySize, folderName, fileName);
-        Marshal.Copy(result, 0, (nint)targetMemoryAddress, memorySize);
-    }
-
-    /// <summary>
-    /// Loads a binary file from PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName} directly into game memory.
-    /// </summary>
-    public static void LoadBinaryData(nint targetMemoryAddress, int memorySize, string folderName, string fileName) {
-        var result = LoadBinaryData(memorySize, folderName, fileName);
+    public static async Task LoadBinaryData(nint targetMemoryAddress, int memorySize, string folderName, string fileName) {
+        var result = await LoadBinaryData(memorySize, folderName, fileName);
         Marshal.Copy(result, 0, targetMemoryAddress, memorySize);
     }
 
     /// <summary>
     /// Saves a binary file to PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName}
     /// </summary>
-    public static void SaveBinaryData(byte[] data, string folderName, string fileName)
-        => FileHelpers.SaveBinaryFile(data, FileHelpers.GetFileInfo("Data", folderName, fileName).FullName);
+    public static async Task SaveBinaryData(byte[] data, string folderName, string fileName)
+        => await FileHelpers.SaveBinaryFile(data, FileHelpers.GetFileInfo("Data", folderName, fileName).FullName);
 
     /// <summary>
     /// Saves a memory block to PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName}
     /// </summary>
-    public static unsafe void SaveBinaryData<T>(T* dataPointer, int dataSize, string folderName, string fileName) where T : unmanaged
-        => FileHelpers.SaveBinaryFile(new Span<byte>(dataPointer, dataSize).ToArray(), FileHelpers.GetFileInfo("Data", folderName, fileName).FullName);
-
-    /// <summary>
-    /// Saves a memory block to PluginConfigs\VanillaPlus\Data\{FolderName}\{FileName}
-    /// </summary>
-    public static unsafe void SaveBinaryData(nint dataPointer, int dataSize, string folderName, string fileName)
-        => FileHelpers.SaveBinaryFile(new Span<byte>((void*)dataPointer, dataSize).ToArray(), FileHelpers.GetFileInfo("Data", folderName, fileName).FullName);
-
+    public static async Task SaveBinaryData(nint dataPointer, int dataSize, string folderName, string fileName)
+        => await FileHelpers.SaveBinaryFile(dataPointer, dataSize, FileHelpers.GetFileInfo("Data", folderName, fileName).FullName);
 }

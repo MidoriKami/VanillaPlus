@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 
 namespace VanillaPlus.DevFeatures.DebugCustomAddon;
@@ -9,9 +10,8 @@ namespace VanillaPlus.DevFeatures.DebugCustomAddon;
 /// </summary>
 public class DebugAddon : NativeAddon {
 
-    protected override Task BuildUiAsync() {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
 
-        return Task.CompletedTask;
     }
 }
 #endif

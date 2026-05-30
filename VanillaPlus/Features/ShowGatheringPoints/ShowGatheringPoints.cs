@@ -22,9 +22,10 @@ public class ShowGatheringPoints : GameModification {
     private MapOverlayController? mapOverlayController;
 
     public override async Task OnEnableAsync() {
-        mapOverlayController = new MapOverlayController();
 
         await Services.Framework.Run(() => {
+            mapOverlayController = new MapOverlayController();
+
             unsafe {
                 foreach (var index in Enumerable.Range(0, EventObjectManager.Instance()->EventObjects.Length)) {
                     mapOverlayController.AddMarker(new GatheringPointMapMarker {
@@ -32,8 +33,6 @@ public class ShowGatheringPoints : GameModification {
                     });
                 }
             }
-
-            mapOverlayController.Enable();
         });
     }
 

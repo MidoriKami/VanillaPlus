@@ -40,7 +40,6 @@ public class CurrencyWarning : GameModification {
             await Task.Run(config.Save);
         }
 
-        overlayController = new OverlayController();
 
         itemSearchAddon = new CurrencySearchAddon {
             InternalName = "CurrencyWarningSearch",
@@ -84,10 +83,10 @@ public class CurrencyWarning : GameModification {
         configWindow.AddCategory(Strings.CurrencyWarning_CategorySelection)
             .AddButton(Strings.CurrencyWarning_ConfigureButton, () => listConfigWindow.Toggle());
 
-        OpenConfigAsync = configWindow.ToggleAsync;
+        OpenConfigAction = configWindow.Toggle;
 
         await Services.Framework.Run(() => {
-            overlayController.Initialize();
+            overlayController = new OverlayController();
 
             tooltipNode = new CurrencyTooltipNode {
                 Config = config,

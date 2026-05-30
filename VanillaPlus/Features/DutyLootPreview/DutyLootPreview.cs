@@ -38,12 +38,12 @@ public class DutyLootPreview : GameModification {
 
         journalUiController = new DutyLootJournalUiController {
             DataLoader = dataLoader,
-            OnButtonClicked = () => Task.Run(addonDutyLoot.ToggleAsync),
+            OnButtonClicked = addonDutyLoot.Toggle,
         };
 
         inDutyUiController = new DutyLootInDutyUiController {
             DataLoader = dataLoader,
-            OnButtonClicked = () => Task.Run(addonDutyLoot.ToggleAsync),
+            OnButtonClicked = addonDutyLoot.Toggle,
         };
 
         await Services.Framework.Run(() => {

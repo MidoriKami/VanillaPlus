@@ -70,14 +70,14 @@ public class CommandPanelSync : GameModification {
     private static unsafe int QuickPanelSize => sizeof(QuickPanelModule) - sizeof(UserFileManager.UserFileEvent);
 
     private static void SaveOriginal()
-        => Data.SaveBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Original.v{CurrentVersion}.qpnl.dat");
+        => Task.Run(() => Data.SaveBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Original.v{CurrentVersion}.qpnl.dat"));
 
     private static void LoadOriginal()
-        => Data.LoadBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Original.v{CurrentVersion}.qpnl.dat");
+        => Task.Run(() => Data.LoadBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Original.v{CurrentVersion}.qpnl.dat"));
 
     private static void SaveShared()
-        => Data.SaveBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Shared.v{CurrentVersion}.qpnl.dat");
+        => Task.Run(() => Data.SaveBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Shared.v{CurrentVersion}.qpnl.dat"));
 
     private static void LoadShared()
-        => Data.LoadBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Shared.v{CurrentVersion}.qpnl.dat");
+        => Task.Run(() => Data.LoadBinaryData(QuickPanelAddress, QuickPanelSize, "CommandPanelSync", $"Shared.v{CurrentVersion}.qpnl.dat"));
 }

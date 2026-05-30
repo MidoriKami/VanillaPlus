@@ -33,7 +33,7 @@ public class GearsetRedirect : GameModification {
 
         OpenConfigAction = () => {
             if (Services.ClientState.IsLoggedIn) {
-                Task.Run(configWindow.ToggleAsync);
+                configWindow.Toggle();
             }
         };
 

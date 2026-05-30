@@ -30,7 +30,9 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
     private ListNode<IAetheryteEntry, TeleportListItemNode>? listNode;
     private readonly List<SelectableNode> selectableNodes = [];
 
-    protected override Task BuildUiAsync() {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         const float itemSpacing = 5.0f;
 
         SetWindowSize(new Vector2(600.0f, 689.0f));
@@ -132,21 +134,10 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
             Position = new Vector2(ContentSize.X - 36.0f, 6.0f),
             Icon = ButtonIcon.GearCog,
             TextTooltip = Services.DataManager.GetAddonText(8515), // "Open Teleport Settings"
-            OnClick = () => {
-                unsafe {
-                    AgentTeleport.Instance()->AgentInterface.SendCommand(2, [3, 0, 0]);
-                }
-            },
+            OnClick = () => AgentTeleport.Instance()->AgentInterface.SendCommand(2, [3, 0, 0]),
         };
         ticketConfigButton.AttachNode(this);
 
-        return Task.CompletedTask;
-    }
-
-    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
-        base.OnSetup(addon, atkValueSpan);
-
-        // Remember the last used category, and select it.
         currentMode = config.LastListMode;
         OnSearchBoxInputReceived(string.Empty);
 

@@ -68,7 +68,7 @@ public class ResourceBarPercentages : GameModification {
             .AddIntSlider(Strings.ResourceBarPercentages_DecimalPlaces, 0, 2, nameof(config.DecimalPlaces))
             .AddCheckbox(Strings.ResourceBarPercentages_ShowDecimalsBelowHundred, nameof(config.ShowDecimalsBelowHundredOnly));
 
-        OpenConfigAsync = configWindow.ToggleAsync;
+        OpenConfigAction = configWindow.Toggle;
 
         await Services.Framework.Run(() => {
             Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);

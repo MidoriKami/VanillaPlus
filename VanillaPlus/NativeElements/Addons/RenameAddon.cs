@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Numerics;
-using System.Threading.Tasks;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Nodes;
 using Lumina.Text.ReadOnly;
@@ -14,7 +14,9 @@ public class RenameAddon : NativeAddon {
 
     public Action<ReadOnlySeString>? OnRenameComplete { get; set; }
 
-    protected override Task BuildUiAsync() {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         SetWindowSize(325.0f, 115.0f);
 
         inputNode = new TextInputNode {
@@ -52,8 +54,6 @@ public class RenameAddon : NativeAddon {
         cancelButton.AttachNode(this);
 
         inputNode.SetFocus();
-
-        return Task.CompletedTask;
     }
 
     private void OnConfirm() {

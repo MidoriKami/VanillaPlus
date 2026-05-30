@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Keys;
 using FFXIVClientStructs.FFXIV.Client.System.Input;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -33,7 +32,9 @@ public unsafe class KeybindConfigAddon : NativeAddon {
 
     public required Keybind InitialKeybind { get; init; }
 
-    protected override Task BuildUiAsync() {
+    protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         SetWindowSize(500.0f, 333.0f);
 
         inputComboLabelNode = new CategoryTextNode {
@@ -113,8 +114,6 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         cancelButtonNode.AttachNode(this);
 
         System.KeyListener.OnKeyPressed += KeyPressed;
-
-        return Task.CompletedTask;
     }
 
     private void KeyPressed(VirtualKey pressedKey, bool isPressed) {

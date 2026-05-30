@@ -68,7 +68,7 @@ public class ForcedCutsceneSounds : GameModification {
         configWindow.AddCategory(Strings.ForcedCutsceneSounds_CategorySpecial)
             .AddCheckbox(Strings.ForcedCutsceneSounds_DisableMsq, nameof(config.DisableInMsqRoulette));
 
-        OpenConfigAsync = configWindow.ToggleAsync;
+        OpenConfigAction = configWindow.Toggle;
 
         unsafe {
             createCutSceneControllerHook = Services.GameInteropProvider.HookFromAddress<ScheduleManagement.Delegates.CreateCutSceneController>(

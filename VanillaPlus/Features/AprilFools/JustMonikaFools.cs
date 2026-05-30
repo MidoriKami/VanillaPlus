@@ -1,5 +1,7 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using System.Threading.Tasks;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Nodes;
 using VanillaPlus.Utilities;
@@ -12,15 +14,15 @@ namespace VanillaPlus.Features.AprilFools;
 /// </summary>
 public class JustMonikaFools : FoolsModule {
     private class MonikaAddon : NativeAddon {
-        protected override Task BuildUiAsync() {
+        protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+            base.OnSetup(addon, atkValueSpan);
+
             new ImGuiImageNode {
                 Position = ContentStartPosition,
                 Size = ContentSize,
                 TexturePath = Assets.GetAssetPath("justmonika.png"),
                 FitTexture = true,
             }.AttachNode(this);
-
-            return Task.CompletedTask;
         }
     }
 
@@ -49,5 +51,5 @@ public class JustMonikaFools : FoolsModule {
     }
 
     private void OnTerritoryChanged(uint u)
-        => Task.Run(() => monikaAddon?.OpenAsync());
+        => monikaAddon?.Open();
 }

@@ -187,7 +187,7 @@ public class TargetCastBarCountdown : GameModification {
         configAddon.AddCategory(Strings.TargetCastBarCountdown_CategoryNameplateStyle)
             .AddNodeConfig(castBarEnemyStyle, TextNodeConfigOptions.TextAlignment);
 
-        OpenConfigAsync = configAddon.ToggleAsync;
+        OpenConfigAction = configAddon.Toggle;
     }
 
     private static TextNode BuildTextNode(Vector2 position) => new() {

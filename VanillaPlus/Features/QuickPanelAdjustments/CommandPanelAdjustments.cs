@@ -41,7 +41,7 @@ public class CommandPanelAdjustments : GameModification {
             .AddCheckbox(Strings.QuickPanelAdjustments_LabelMoveButtons, nameof(config.MoveButtons))
             .AddColorEdit(Strings.QuickPanelAdjustments_BackgroundColor, nameof(config.BackgroundColor), new Vector4(1.0f, 1.0f, 1.0f, 25.0f / 255.0f));
 
-        OpenConfigAsync = configAddon.ToggleAsync;
+        OpenConfigAction = configAddon.Toggle;
 
         unsafe {
             quickPanelController = new AddonController {

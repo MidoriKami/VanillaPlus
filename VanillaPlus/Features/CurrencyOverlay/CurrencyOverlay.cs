@@ -35,8 +35,6 @@ public class CurrencyOverlay : GameModification {
 
         config = await CurrencyOverlayConfig.Load();
 
-        overlayController = new OverlayController();
-
         itemSearchAddon = new CurrencySearchAddon {
             InternalName = "CurrencySearch",
             Title = "Currency Search",
@@ -56,16 +54,16 @@ public class CurrencyOverlay : GameModification {
             RemoveClicked = OnRemoveButtonClicked,
         };
 
-        OpenConfigAsync = configAddon.ToggleAsync;
+        OpenConfigAction = configAddon.Toggle;
 
         await Services.Framework.Run(() => {
+            overlayController = new OverlayController();
+
             foreach (var currencySetting in config.Currencies) {
                 var newCurrencyNode = BuildCurrencyNode(currencySetting);
                 currencyNodes.Add(newCurrencyNode);
                 overlayController.AddNode(newCurrencyNode);
             }
-
-            overlayController.Initialize();
         });
     }
 

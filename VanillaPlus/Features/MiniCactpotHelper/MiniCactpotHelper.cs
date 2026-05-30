@@ -61,7 +61,7 @@ public class MiniCactpotHelper : GameModification {
 
         config.OnSave += ApplyConfigStyle;
 
-        OpenConfigAsync = configAddon.ToggleAsync;
+        OpenConfigAction = configAddon.Toggle;
 
         unsafe {
             lotteryDailyController = new AddonController<AddonLotteryDaily> {

@@ -42,7 +42,7 @@ public class SystemConfigSearchBar : GameModification {
             .AddColorEdit(Strings.SystemConfigSearchBar_LabelTabHighlight, nameof(config.TabColor), KnownColor.LimeGreen.Vector())
             .AddColorEdit(Strings.SystemConfigSearchBar_LabelTextHighlight, nameof(config.HighlightColor), KnownColor.Red.Vector());
 
-        OpenConfigAsync = configAddon.ToggleAsync;
+        OpenConfigAction = configAddon.Toggle;
 
         unsafe {
             systemConfigController = new AddonController {

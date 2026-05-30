@@ -50,7 +50,7 @@ public class EnhancedLootWindow : GameModification {
             .AddCheckbox(Strings.EnhancedLootWindow_LabelMarkUnobtainable, nameof(config.MarkUnobtainableItems))
             .AddCheckbox(Strings.EnhancedLootWindow_LabelMarkAlreadyObtained, nameof(config.MarkAlreadyObtainedItems));
 
-        OpenConfigAsync = configWindow.ToggleAsync;
+        OpenConfigAction = configWindow.Toggle;
 
         unsafe {
             needGreedController = new AddonController<AddonNeedGreed> {

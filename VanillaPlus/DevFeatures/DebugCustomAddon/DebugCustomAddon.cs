@@ -27,16 +27,14 @@ public class DebugCustomAddon : GameModification {
             Size = new Vector2(500.0f, 500.0f),
         };
 
-        OpenConfigAsync = debugAddon.ToggleAsync;
+        OpenConfigAction = debugAddon.Toggle;
 
-        await debugAddon.OpenAsync();
+        await Services.Framework.Run(debugAddon.Open);
     }
 
-    public override Task OnDisableAsync() {
-        debugAddon?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Task.WhenAll(debugAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         debugAddon = null;
-
-        return Task.CompletedTask;
     }
 }
 #endif

@@ -99,7 +99,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
     private static void AutoOpenBrowser(bool enabled) {
         if (!enabled) return;
 
-        Task.Run(System.ModificationBrowserAddon.OpenAsync);
+        Services.Framework.Run(System.ModificationBrowserAddon.Open);
     }
 
     private static void CommandHandler(string command, string arguments) {
@@ -107,7 +107,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
 
         switch (arguments.Split('/')) {
             case [""] or [] or null:
-                Task.Run(System.ModificationBrowserAddon.ToggleAsync);
+                System.ModificationBrowserAddon.Toggle();
                 break;
 
             case ["debug"]:

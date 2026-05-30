@@ -70,8 +70,9 @@ public class CosmicExplorationProgressWindow : GameModification {
             AddColor = new Vector3(0.0f, -0.125f, 128f / 255f),
             Size = new Vector2(28.0f),
             Position = new Vector2(26.0f, 26.0f),
-            OnClick = () => Task.Run(progressAddon.ToggleAsync),
-            TextTooltip = Strings.CosmicExplorationProgressWindow_HudButtonTooltip, };
+            OnClick = progressAddon.Toggle,
+            TextTooltip = Strings.CosmicExplorationProgressWindow_HudButtonTooltip,
+        };
 
         // override the texture to use the base theme, since that's what the gear button in WKSHud does
         hudShowNode.ImageNode.LoadTexture("ui/uld/CircleButtons.tex", false);

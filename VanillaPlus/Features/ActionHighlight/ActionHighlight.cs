@@ -46,7 +46,7 @@ public class ActionHighlight : GameModification {
             Config = config,
         };
 
-        OpenConfigAsync = configAddon.ToggleAsync;
+        OpenConfigAction = configAddon.Toggle;
 
         unsafe {
             onAntsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
@@ -66,6 +66,7 @@ public class ActionHighlight : GameModification {
         configAddon = null;
 
         cachedActions = null;
+        JobActionWhiteList = null;
     }
 
     private unsafe bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {

@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
-using System.Threading.Tasks;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
@@ -17,7 +18,9 @@ public class ConfigAddon : NativeAddon {
     private const float MaximumHeight = 400.0f;
     private const float Width = 400.0f;
 
-    protected override Task BuildUiAsync() {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         configurationListNode = new ScrollingListNode {
             AutoHideScrollBar = true,
             FitContents = true,
@@ -28,8 +31,6 @@ public class ConfigAddon : NativeAddon {
             configurationListNode.AddNode(category.BuildNode());
         }
         RecalculateWindowSize();
-
-        return Task.CompletedTask;
     }
 
     private void RecalculateWindowSize() {

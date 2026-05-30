@@ -47,13 +47,11 @@ public class BetterCursor : GameModification {
         configWindow.AddCategory(Strings.BetterCursor_CategoryIconSelection)
             .AddSelectIcon(Strings.Icon, nameof(config.IconId));
 
-        OpenConfigAsync = configWindow.ToggleAsync;
+        OpenConfigAction = configWindow.Toggle;
 
-        overlayController = new OverlayController();
 
         await Services.Framework.Run(() => {
-            overlayController.Initialize();
-
+            overlayController = new OverlayController();
             overlayController.AddNode(new CursorImageNode {
                 Config = config,
             });

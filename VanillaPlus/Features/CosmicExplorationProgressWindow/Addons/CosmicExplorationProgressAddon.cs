@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.Game.WKS;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -25,7 +25,9 @@ public class CosmicExplorationProgressAddon : NativeAddon {
         ContentPadding = Vector2.Zero;
     }
 
-    protected override Task BuildUiAsync() {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         allOptions = GetInitialProgressList();
 
         listNode = new ListNode<Progress, WksProgressListItemNode> {
@@ -39,12 +41,8 @@ public class CosmicExplorationProgressAddon : NativeAddon {
         listNode.ScrollBarNode.IsVisible = false;
         listNode.AttachNode(this);
 
-        unsafe {
-            InternalAddon->Flags1C8 = 0x100001; // Properly allow ESC-closing.
-        }
+        addon->Flags1C8 = 0x100001; // Properly allow ESC-closing.
         watchHud = true;
-
-        return Task.CompletedTask;
     }
 
     protected override unsafe void OnFinalize(AtkUnitBase* addon) {

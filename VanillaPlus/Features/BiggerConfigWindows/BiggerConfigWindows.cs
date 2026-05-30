@@ -34,7 +34,7 @@ public class BiggerConfigWindows : GameModification {
             .AddInputFloat(Strings.BiggerConfigWindows_SystemConfigAdditionalSize, 5, ..4000, nameof(config.SystemConfigAdditionalHeight))
             .AddInputFloat(Strings.BiggerConfigWindows_CharacterConfigAdditionalSize, 5, ..4000, nameof(config.CharacterConfigAdditionalHeight));
 
-        OpenConfigAsync = configAddon.ToggleAsync;
+        OpenConfigAction = configAddon.Toggle;
 
         systemConfigController = new SystemConfigController {
             Config = config,

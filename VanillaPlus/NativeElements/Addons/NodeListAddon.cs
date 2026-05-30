@@ -41,7 +41,9 @@ public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, ILis
         };
     }
 
-    protected override Task BuildUiAsync() {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         ListNode = new ListNode<T, TU> {
             Position = ContentStartPosition,
             Size = ContentSize,
@@ -49,8 +51,6 @@ public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, ILis
             ItemSpacing = ItemSpacing,
         };
         ListNode.AttachNode(this);
-
-        return Task.CompletedTask;
     }
 
     protected override unsafe void OnUpdate(AtkUnitBase* addon)

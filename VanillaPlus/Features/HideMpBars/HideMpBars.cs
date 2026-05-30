@@ -45,7 +45,7 @@ public class HideMpBars : GameModification {
                 .AddCheckbox("Hide in Parameter Widget", nameof(config.HideParamWidget), _ => ResetParamWidget());
         }
 
-        OpenConfigAsync = configAddon.ToggleAsync;
+        OpenConfigAction = configAddon.Toggle;
 
         manaUsingClassJobs = Services.DataManager.GetManaUsingClassJobs().ToList();
 

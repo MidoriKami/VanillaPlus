@@ -38,8 +38,6 @@ public class WindowBackground : GameModification {
 
         config = await WindowBackgroundConfig.Load();
 
-        overlayController = new OverlayController();
-
         addonSearchAddon = new AddonSearchAddon {
             InternalName = "AddonSearch",
             Title = Strings.WindowBackground_SearchTitle,
@@ -48,6 +46,8 @@ public class WindowBackground : GameModification {
 
         await Services.Framework.Run(() => {
             unsafe {
+                overlayController = new OverlayController();
+
                 dynamicAddonController = new DynamicAddonController {
                     AddonNames = config.Settings.Select(setting => setting.AddonName).ToList(),
                     OnSetup = AttachNode,
@@ -71,7 +71,7 @@ public class WindowBackground : GameModification {
             IsSearchMatch = WindowBackgroundSetting.IsMatch,
         };
 
-        OpenConfigAsync = configAddon.ToggleAsync;
+        OpenConfigAction = configAddon.Toggle;
     }
 
     public override async Task OnDisableAsync() {

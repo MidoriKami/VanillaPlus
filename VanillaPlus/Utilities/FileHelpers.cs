@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -59,7 +60,7 @@ public static class FileHelpers {
         var fileInfo = new FileInfo(filePath);
         if (fileInfo is { Exists: true }) {
             try {
-                var dataObject = Services.ReliableFileStorage.ReadAllBytesAsync(fileInfo.FullName).Result;
+                var dataObject = await Services.ReliableFileStorage.ReadAllBytesAsync(fileInfo.FullName);
 
                 // If deserialize result is null, create a new instance instead and save it.
                 if (dataObject.Length != length) {
@@ -83,9 +84,20 @@ public static class FileHelpers {
         return newFile;
     }
 
-    public static async void SaveBinaryFile(byte[] data, string filePath) {
+    public static async Task SaveBinaryFile(byte[] data, string filePath) {
         try {
             await Services.ReliableFileStorage.WriteAllBytesAsync(filePath, data);
+        }
+        catch (Exception e) {
+            Services.PluginLog.InternalError(e, $"Error trying to save binary data {filePath}");
+        }
+    }
+
+    public static async Task SaveBinaryFile(nint pointer, int size, string filePath) {
+        try {
+            var managedArray = new byte[size];
+            Marshal.Copy(pointer, managedArray, 0, size);
+            await Services.ReliableFileStorage.WriteAllBytesAsync(filePath, managedArray);
         }
         catch (Exception e) {
             Services.PluginLog.InternalError(e, $"Error trying to save binary data {filePath}");

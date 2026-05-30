@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -33,7 +34,9 @@ public class DutyLootPreviewAddon : NativeAddon {
     public required DutyLootPreviewConfig Config { get; init; }
     public required DutyLootDataLoader DataLoader { get; init; }
 
-    protected override async Task BuildUiAsync() {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         DataLoader.OnChanged += OnDataLoaderStateChanged;
 
         filterBarNode = new DutyLootFilterBarNode {
@@ -72,7 +75,7 @@ public class DutyLootPreviewAddon : NativeAddon {
         UpdateHintTextNodePosition();
         hintTextNode.AttachNode(this);
 
-        await UpdateList();
+        Task.Run(UpdateList);
     }
 
     private void OnDataLoaderStateChanged()

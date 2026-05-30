@@ -56,7 +56,7 @@ public class LocationDisplay : GameModification {
 
         config.OnSave += UpdateDtrText;
 
-        OpenConfigAsync = configWindow.ToggleAsync;
+        OpenConfigAction = configWindow.Toggle;
 
         dtrBarEntry = Services.DtrBar.Get(Strings.LocationDisplay_DtrEntryName);
         dtrBarEntry.OnClick = _ => configWindow.Toggle();

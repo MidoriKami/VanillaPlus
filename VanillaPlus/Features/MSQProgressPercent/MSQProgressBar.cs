@@ -65,7 +65,7 @@ public class MSQProgressBar : GameModification {
             })
             .AddColorEdit(Strings.MSQProgressBar_LabelBarColor, nameof(config.BarColor), KnownColor.White.Vector());
 
-        OpenConfigAsync = configAddon.ToggleAsync;
+        OpenConfigAction = configAddon.Toggle;
 
         unsafe {
             scenarioTreeAddonController = new AddonController {

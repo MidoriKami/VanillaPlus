@@ -4,7 +4,6 @@ using System.Linq;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using Task = System.Threading.Tasks.Task;
 
 namespace VanillaPlus.NativeElements.Addons;
 
@@ -16,7 +15,9 @@ public class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where TU : Li
 
     public required List<Enum> DropDownOptions { get; init; }
 
-    protected override Task BuildUiAsync() {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         new VerticalListNode {
             Position = ContentStartPosition,
             Size = ContentSize,
@@ -69,8 +70,6 @@ public class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where TU : Li
                 },
             ],
         }.AttachNode(this);
-
-        return Task.CompletedTask;
     }
 
     protected override unsafe void OnUpdate(AtkUnitBase* addon) {

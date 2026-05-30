@@ -36,7 +36,7 @@ public class ClearSelectedDuties : GameModification {
         configWindow.AddCategory(Strings.Settings)
             .AddCheckbox(Strings.ClearSelectedDuties_DisableWhenUnrestricted, nameof(config.DisableWhenUnrestricted));
 
-        OpenConfigAsync = configWindow.ToggleAsync;
+        OpenConfigAction = configWindow.Toggle;
 
         await Services.Framework.Run(() => {
             Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "ContentsFinder", OnContentsFinderSetup);
