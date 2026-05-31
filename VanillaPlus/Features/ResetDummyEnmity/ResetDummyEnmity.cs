@@ -114,8 +114,9 @@ public class ResetDummyEnmity : GameModification {
 
             if (wasVisible && !shouldBeVisible) {
                 resetButton.HideTooltip();
-                resetButton.IsVisible = shouldBeVisible;
             }
+
+            resetButton.IsVisible = shouldBeVisible;
         }
     }
 
