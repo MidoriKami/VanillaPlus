@@ -277,7 +277,7 @@
     <value>调试</value>
   </data>
   <data name="ModificationType_NewWindow" xml:space="preserve">
-    <value>Custom Native Window</value>
+    <value>自定义原生窗口</value>
   </data>
   <data name="ModificationType_UserInterface" xml:space="preserve">
     <value>界面改造</value>
@@ -398,11 +398,11 @@ ID：{0}</value>
     <value>正在载入战利品数据...</value>
   </data>
   <data name="DutyLoot_NoItemsMessage" xml:space="preserve">
-    <value>No loot data found for this duty.
+    <value>未找到此任务的战利品数据。
 
-Data is provided by a external source and may be incomplete.
+数据由第三方提供，可能不完整。
 
-Data will be updated as it becomes available, do not request data updates.</value>
+数据将在可用时自动更新，请勿请求数据更新。</value>
   </data>
   <data name="DutyLoot_NoResultsMessage" xml:space="preserve">
     <value>没有结果</value>
@@ -1567,5 +1567,14 @@ Data will be updated as it becomes available, do not request data updates.</valu
   </data>
   <data name="ModificationDescription_SkipLoginConfirm" xml:space="preserve">
     <value>跳过登录时出现的确认窗口。</value>
+  </data>
+  <data name="ModificationDescription_ResetDummyEnmity" xml:space="preserve">
+      <value>在敌对列表中添加一个用于重置木人仇恨的按钮。</value>
+  </data>
+  <data name="ModificationDisplay_ResetDummyEnmity" xml:space="preserve">
+      <value>重置木人仇恨</value>
+  </data>
+  <data name="ResetDummyEnmity_ResetEnmityToolTip" xml:space="preserve">
+      <value>[VanillaPlus] 重置仇恨</value>
   </data>
 </root>
