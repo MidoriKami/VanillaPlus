@@ -1568,13 +1568,10 @@ Data will be updated as it becomes available, do not request data updates.</valu
   <data name="ModificationDescription_SkipLoginConfirm" xml:space="preserve">
     <value>Skips the confirmation window that appears when logging in.</value>
   </data>
-  <data name="ModificationDescription_ResetDummyEnmity" xml:space="preserve">
-      <value>Adds a button in the enemy list to reset a Striking Dummy's enmity.</value>
+  <data name="ModificationDisplay_AetherwellProgress" xml:space="preserve">
+      <value>Aetherwell Progress</value>
   </data>
-  <data name="ModificationDisplay_ResetDummyEnmity" xml:space="preserve">
-      <value>Reset Dummy Enmity</value>
-  </data>
-  <data name="ResetDummyEnmity_ResetEnmityToolTip" xml:space="preserve">
-      <value>[VanillaPlus] Reset Enmity</value>
+  <data name="ModificationDescription_AetherwellProgress" xml:space="preserve">
+      <value>Make your aetherwells fill up as you fill them</value>
   </data>
 </root>
