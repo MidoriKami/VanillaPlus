@@ -1568,4 +1568,13 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
   <data name="ModificationDescription_SkipLoginConfirm" xml:space="preserve">
     <value>Valide la boîte de dialogue lors de la connexion.</value>
   </data>
+  <data name="ModificationDescription_ResetDummyEnmity" xml:space="preserve">
+      <value>Adds a button in the enemy list to reset a Striking Dummy's enmity.</value>
+  </data>
+  <data name="ModificationDisplay_ResetDummyEnmity" xml:space="preserve">
+      <value>Reset Dummy Enmity</value>
+  </data>
+  <data name="ResetDummyEnmity_ResetEnmityToolTip" xml:space="preserve">
+      <value>[VanillaPlus] Reset Enmity</value>
+  </data>
 </root>
