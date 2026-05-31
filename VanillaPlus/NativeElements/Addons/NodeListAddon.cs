@@ -66,7 +66,7 @@ public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, ILis
         config = null;
 
         await Task.WhenAll(addonConfigWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
-addonConfigWindow = null;
+        addonConfigWindow = null;
 
         keybindListener?.Dispose();
         keybindListener = null;
