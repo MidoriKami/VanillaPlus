@@ -60,6 +60,7 @@ public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, ILis
         base.OnFinalize(addon);
 
         OnClose?.Invoke();
+        ListNode = null;
     }
 
     public override async ValueTask DisposeAsync() {
