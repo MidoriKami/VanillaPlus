@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -8,7 +7,6 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Arrays;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using FFXIVClientStructs.Interop;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
@@ -26,18 +24,18 @@ public class ResetDummyEnmity : GameModification {
 
     public override string ImageName => "ResetDummyEnmity.png";
 
-    private AddonController? enemyListController;
-
     private const int MaxEnemyCount = 8;
     private const uint StrikingDummyNameId = 541;
     private const float ButtonSize = 30.0f;
+
+    private AddonController<AddonEnemyList>? enemyListController;
 
     private CircleButtonNode?[]? resetButtons;
     private IBattleChara?[]? buttonTargets;
 
     public override async Task OnEnableAsync() {
         unsafe {
-            enemyListController = new AddonController {
+            enemyListController = new AddonController<AddonEnemyList> {
                 AddonName = "_EnemyList",
                 OnSetup = SetupEnemyList,
                 OnUpdate = UpdateEnemyList,
@@ -62,14 +60,13 @@ public class ResetDummyEnmity : GameModification {
         buttonTargets = null;
     }
 
-    private unsafe void SetupEnemyList(AtkUnitBase* addon) {
+    private unsafe void SetupEnemyList(AddonEnemyList* addon) {
         if (resetButtons is null) return;
-        if (addon == null) return;
 
-        for (int i = 0; i < MaxEnemyCount; i++) {
+        foreach (uint i in Enumerable.Range(0, MaxEnemyCount)) {
             if (resetButtons[i] is not null) continue;
 
-            var duplicatedNode = (AtkComponentNode*)addon->UldManager.GetDuplicatedNode(2, (uint)i, 0);
+            var duplicatedNode = (AtkComponentNode*)addon->UldManager.GetDuplicatedNode(2, i, 0);
             if (duplicatedNode == null) continue;
 
             var button = new CircleButtonNode {
@@ -77,22 +74,19 @@ public class ResetDummyEnmity : GameModification {
                 Size = new Vector2(ButtonSize),
                 Position = new Vector2(
                     duplicatedNode->X + duplicatedNode->Width - ButtonSize,
-                    duplicatedNode->Y + ((duplicatedNode->Height - ButtonSize) / 2.0f)
+                    duplicatedNode->Y + (duplicatedNode->Height - ButtonSize) / 2.0f
                 ),
                 TextTooltip = Strings.ResetDummyEnmity_ResetEnmityToolTip,
                 IsVisible = false,
+                OnClick = () => ResetDummy(i),
             };
-
-            var buttonIndex = i;
-            button.OnClick = () => ResetDummy(buttonIndex);
-
-            button.AttachNode(addon);
+            button.AttachNode(&addon->AtkUnitBase);
 
             resetButtons[i] = button;
         }
     }
 
-    private unsafe void UpdateEnemyList(AtkUnitBase* addon) {
+    private unsafe void UpdateEnemyList(AddonEnemyList* addon) {
         if (resetButtons == null) return;
         if (buttonTargets == null) return;
 
@@ -103,12 +97,15 @@ public class ResetDummyEnmity : GameModification {
             var resetButton = resetButtons[index];
             if (resetButton is null) continue;
 
+            ref var entry = ref enemyListData->Enemies[index];
+
             var wasVisible = resetButton.IsVisible;
             var shouldBeVisible = false;
+
             buttonTargets[index] = null;
 
-            if (index < enemyCount && enemyListData->Enemies[index].ActiveInList) {
-                var matchingDummy = GetDummyByEntityId((uint)enemyListData->Enemies[index].EntityId);
+            if (index < enemyCount && entry.ActiveInList) {
+                var matchingDummy = GetDummyByEntityId((uint)entry.EntityId);
                 if (matchingDummy is { NameId: StrikingDummyNameId }) {
                     shouldBeVisible = Services.Condition[ConditionFlag.InCombat];
                     buttonTargets[index] = matchingDummy;
@@ -117,13 +114,12 @@ public class ResetDummyEnmity : GameModification {
 
             if (wasVisible && !shouldBeVisible) {
                 resetButton.HideTooltip();
+                resetButton.IsVisible = shouldBeVisible;
             }
-
-            resetButton.IsVisible = shouldBeVisible;
         }
     }
 
-    private unsafe void FinalizeEnemyList(AtkUnitBase* addon) {
+    private unsafe void FinalizeEnemyList(AddonEnemyList* _) {
         if (resetButtons == null) return;
         if (buttonTargets == null) return;
 
@@ -134,7 +130,7 @@ public class ResetDummyEnmity : GameModification {
         }
     }
 
-    private void ResetDummy(int buttonIndex) {
+    private void ResetDummy(uint buttonIndex) {
         var dummy = buttonTargets?[buttonIndex];
         if (dummy is not { NameId: StrikingDummyNameId }) return;
         if (!dummy.IsValid()) return;
