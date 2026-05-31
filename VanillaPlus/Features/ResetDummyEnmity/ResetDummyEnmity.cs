@@ -67,7 +67,7 @@ public class ResetDummyEnmity : GameModification {
             if (resetButtons[i] is not null) continue;
 
             var duplicatedNode = (AtkComponentNode*)addon->UldManager.GetDuplicatedNode(2, i, 0);
-            if (duplicatedNode == null) continue;
+            if (duplicatedNode is null) continue;
 
             var button = new CircleButtonNode {
                 Icon = ButtonIcon.Refresh,
@@ -88,8 +88,8 @@ public class ResetDummyEnmity : GameModification {
     }
 
     private unsafe void UpdateEnemyList(AddonEnemyList* addon) {
-        if (resetButtons == null) return;
-        if (buttonTargets == null) return;
+        if (resetButtons is null) return;
+        if (buttonTargets is null) return;
 
         var enemyListData = EnemyListNumberArray.Instance();
         var enemyCount = enemyListData is not null ? enemyListData->EnemyCount : 0;
