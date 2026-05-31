@@ -30,10 +30,6 @@ public class InventoryCooldowns : GameModification {
     private MultiAddonController? controller;
 
     public override async Task OnEnableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, ["InventoryExpansion", "InventoryLarge", "Inventory"], OnPostReceiveEvent);
-        });
-
         unsafe {
             controller = new MultiAddonController {
                 AddonNames = ["InventoryExpansion", "InventoryLarge", "Inventory"],
@@ -42,7 +38,10 @@ public class InventoryCooldowns : GameModification {
             };
         }
 
-        await Services.Framework.Run(controller.Enable);
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, ["InventoryExpansion", "InventoryLarge", "Inventory"], OnPostReceiveEvent);
+            controller.Enable();
+        });
     }
 
     public override async Task OnDisableAsync() {
