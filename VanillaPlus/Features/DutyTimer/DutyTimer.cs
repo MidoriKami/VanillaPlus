@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Dalamud.Game.DutyState;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -16,16 +17,20 @@ public class DutyTimer : GameModification {
 
     private DateTime startTimestamp;
 
-    public override void OnEnable() {
+    public override Task OnEnableAsync() {
         Services.DutyState.DutyStarted += OnDutyStarted;
         Services.DutyState.DutyCompleted += OnDutyCompleted;
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisable() {
+    public override Task OnDisableAsync() {
         Services.DutyState.DutyStarted -= OnDutyStarted;
         Services.DutyState.DutyCompleted -= OnDutyCompleted;
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
+
+        return Task.CompletedTask;
     }
 
     private void OnDutyStarted(IDutyStateEventArgs args)

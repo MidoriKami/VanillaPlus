@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace VanillaPlus.Classes;
 
 public abstract class GameModification {
     public abstract ModificationInfo ModificationInfo { get; }
 
-    public abstract void OnEnable();
-    public abstract void OnDisable();
+    public abstract Task OnEnableAsync();
+    public abstract Task OnDisableAsync();
 
     public Action? OpenConfigAction { get; set; }
+    public Func<Task>? OpenConfigAsync { get; set; }
 
     /// <summary>
     /// Indicates this modification is experimental in nature and may cause issues.

@@ -1,5 +1,6 @@
 ﻿// ReSharper disable RedundantUnsafeContext
 
+using System.Threading.Tasks;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -17,12 +18,14 @@ public unsafe class DebugGameModification : GameModification {
         Authors = ["YourNameHere"],
     };
 
-    public override void OnEnable() {
+    public override Task OnEnableAsync() {
 
+        return Task.CompletedTask;
     }
 
-    public override void OnDisable() {
+    public override Task OnDisableAsync() {
 
+        return Task.CompletedTask;
     }
 }
 #endif

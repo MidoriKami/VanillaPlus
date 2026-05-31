@@ -1,5 +1,6 @@
 ﻿// ReSharper disable RedundantUnsafeContext
 
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using Dalamud.Utility.Signatures;
 using VanillaPlus.Classes;
@@ -24,15 +25,19 @@ public unsafe class DebugHook : GameModification {
     [Signature("AA BB CC DD EE FF", DetourName = nameof(HookDetour))]
     private Hook<HookDelegate>? hook;
 
-    public override void OnEnable() {
+    public override Task OnEnableAsync() {
         Services.GameInteropProvider.InitializeFromAttributes(this);
 
         hook?.Enable();
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisable() {
+    public override Task OnDisableAsync() {
         hook?.Dispose();
         hook = null;
+
+        return Task.CompletedTask;
     }
 
     private void HookDetour() {

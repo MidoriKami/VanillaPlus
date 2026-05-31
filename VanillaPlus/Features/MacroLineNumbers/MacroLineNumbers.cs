@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
@@ -9,7 +10,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.MacroLineNumbers;
 
-public unsafe class MacroLineNumbers : GameModification {
+public class MacroLineNumbers : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_MacroLineNumbers,
         Description = Strings.ModificationDescription_MacroLineNumbers,
@@ -25,55 +26,65 @@ public unsafe class MacroLineNumbers : GameModification {
 
     private List<TextNode>? textNodes;
 
-    public override void OnEnable() {
+    public override async Task OnEnableAsync() {
         textNodes = [];
 
-        macroAddonController = new AddonController {
-            AddonName = "Macro",
-            OnSetup = addon => {
-                var textInputNode = addon->GetNodeById<AtkComponentNode>(119);
-                if (textInputNode is null) return;
+        unsafe {
+            macroAddonController = new AddonController {
+                AddonName = "Macro",
+                OnSetup = MacroSetup,
+                OnFinalize = MacroFinalize,
+            };
+        }
 
-                RepositionNode(textInputNode, sizeOffset);
-
-                foreach (var index in Enumerable.Range(0, 15)) {
-                    var newTextNode = new TextNode {
-                        Position = new Vector2(460.0f, 119.0f + index * 14f),
-                        Size = new Vector2(sizeOffset.X - 5.0f, 14.0f),
-                        String = $"{index + 1}",
-                        FontType = FontType.Axis,
-                        FontSize = 12,
-                        AlignmentType = AlignmentType.TopRight,
-                    };
-                    newTextNode.AttachNode(addon);
-                    textNodes.Add(newTextNode);
-                }
-            },
-            OnFinalize = addon => {
-                var textInputNode = addon->GetNodeById<AtkComponentNode>(119);
-                if (textInputNode is null) return;
-
-                RepositionNode(textInputNode, -sizeOffset);
-
-                foreach (var node in textNodes) {
-                    node.Dispose();
-                }
-
-                textNodes.Clear();
-            },
-        };
-        macroAddonController.Enable();
+        await Services.Framework.Run(macroAddonController.Enable);
     }
 
-    public override void OnDisable() {
-        macroAddonController?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => macroAddonController?.Dispose());
         macroAddonController = null;
 
         textNodes?.Clear();
         textNodes = null;
     }
 
-    private static void RepositionNode(AtkComponentNode* inputComponentNode, Vector2 offset) {
+    private unsafe void MacroSetup(AtkUnitBase* addon) {
+        if (textNodes is null) return;
+
+        var textInputNode = addon->GetNodeById<AtkComponentNode>(119);
+        if (textInputNode is null) return;
+
+        RepositionNode(textInputNode, sizeOffset);
+
+        foreach (var index in Enumerable.Range(0, 15)) {
+            var newTextNode = new TextNode {
+                Position = new Vector2(460.0f, 119.0f + index * 14f),
+                Size = new Vector2(sizeOffset.X - 5.0f, 14.0f),
+                String = $"{index + 1}",
+                FontType = FontType.Axis,
+                FontSize = 12,
+                AlignmentType = AlignmentType.TopRight, };
+            newTextNode.AttachNode(addon);
+            textNodes.Add(newTextNode);
+        }
+    }
+
+    private unsafe void MacroFinalize(AtkUnitBase* addon) {
+        if (textNodes is null) return;
+
+        var textInputNode = addon->GetNodeById<AtkComponentNode>(119);
+        if (textInputNode is null) return;
+
+        RepositionNode(textInputNode, -sizeOffset);
+
+        foreach (var node in textNodes) {
+            node.Dispose();
+        }
+
+        textNodes.Clear();
+    }
+
+    private static unsafe void RepositionNode(AtkComponentNode* inputComponentNode, Vector2 offset) {
         var collisionNode = inputComponentNode->SearchNodeById<AtkCollisionNode>(20);
         var backgroundNode = inputComponentNode->SearchNodeById<AtkNineGridNode>(19);
         var borderNode = inputComponentNode->SearchNodeById<AtkNineGridNode>(18);

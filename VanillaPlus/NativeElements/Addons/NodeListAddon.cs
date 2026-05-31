@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Game.Command;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
+using Task = System.Threading.Tasks.Task;
 
 namespace VanillaPlus.NativeElements.Addons;
 
-public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, IListItemNode, new() {
+public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, IListItemNode, new() {
     protected ListNode<T, TU>? ListNode;
 
     private AddonConfig? config;
     private KeybindListener? keybindListener;
     private AddonConfigAddon? addonConfigWindow;
 
-    public void Initialize() {
-        config = AddonConfig.Load($"{InternalName}.addon.json");
+    public async Task InitializeAsync() {
+        config = await AddonConfig.Load($"{InternalName}.addon.json");
 
         keybindListener = new KeybindListener {
             AddonConfig = config,
@@ -39,7 +41,9 @@ public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T
         };
     }
 
-    protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         ListNode = new ListNode<T, TU> {
             Position = ContentStartPosition,
             Size = ContentSize,
@@ -49,29 +53,31 @@ public unsafe class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T
         ListNode.AttachNode(this);
     }
 
-    protected override void OnUpdate(AtkUnitBase* addon)
+    protected override unsafe void OnUpdate(AtkUnitBase* addon)
         => ListNode?.Update();
 
-    protected override void OnFinalize(AtkUnitBase* addon) {
+    protected override unsafe void OnFinalize(AtkUnitBase* addon) {
         base.OnFinalize(addon);
 
         OnClose?.Invoke();
     }
 
-    public override void Dispose() {
+    public override async ValueTask DisposeAsync() {
         config = null;
 
-        addonConfigWindow?.Dispose();
-        addonConfigWindow = null;
+        await Task.WhenAll(addonConfigWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+addonConfigWindow = null;
 
         keybindListener?.Dispose();
         keybindListener = null;
 
-        if (OpenCommand is not null) {
-            Services.CommandManager.RemoveHandler(OpenCommand);
-        }
+        await Services.Framework.Run(() => {
+            if (OpenCommand is not null) {
+                Services.CommandManager.RemoveHandler(OpenCommand);
+            }
+        });
 
-        base.Dispose();
+        await base.DisposeAsync();
     }
 
     public string? OpenCommand {

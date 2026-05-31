@@ -1,4 +1,5 @@
-﻿using VanillaPlus.Classes;
+﻿using System.Threading.Tasks;
+using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.DevFeatures.SampleGameModification;
@@ -16,9 +17,13 @@ public class SampleGameModification : GameModification {
 
     // public override bool IsExperimental => true;
 
-    public override void OnEnable() {
+    public override Task OnEnableAsync() {
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisable() {
+    public override Task OnDisableAsync() {
+
+        return Task.CompletedTask;
     }
 }

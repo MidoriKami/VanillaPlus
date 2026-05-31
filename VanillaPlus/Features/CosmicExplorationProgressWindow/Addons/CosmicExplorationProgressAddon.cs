@@ -26,6 +26,8 @@ public class CosmicExplorationProgressAddon : NativeAddon {
     }
 
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         allOptions = GetInitialProgressList();
 
         listNode = new ListNode<Progress, WksProgressListItemNode> {

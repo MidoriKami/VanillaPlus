@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using VanillaPlus.Classes;
@@ -8,7 +9,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.GearsetRedirect;
 
-public unsafe class GearsetRedirect : GameModification {
+public class GearsetRedirect : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_GearsetRedirect,
         Description = Strings.ModificationDescription_GearsetRedirect,
@@ -20,8 +21,8 @@ public unsafe class GearsetRedirect : GameModification {
     private GearsetRedirectConfig? config;
     private GearsetRedirectConfigAddon? configWindow;
 
-    public override void OnEnable() {
-        config = GearsetRedirectConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await GearsetRedirectConfig.Load();
 
         configWindow = new GearsetRedirectConfigAddon {
             Size = new Vector2(600.0f, 525.0f),
@@ -36,21 +37,23 @@ public unsafe class GearsetRedirect : GameModification {
             }
         };
 
-        gearsetChangedHook = Services.Hooker.HookFromAddress<RaptureGearsetModule.Delegates.EquipGearset>(RaptureGearsetModule.Addresses.EquipGearset.Value, OnGearsetChanged);
-        gearsetChangedHook?.Enable();
+        unsafe {
+            gearsetChangedHook = Services.Hooker.HookFromAddress<RaptureGearsetModule.Delegates.EquipGearset>(RaptureGearsetModule.Addresses.EquipGearset.Value, OnGearsetChanged);
+            gearsetChangedHook?.Enable();
+        }
     }
 
-    public override void OnDisable() {
+    public override async Task OnDisableAsync() {
         gearsetChangedHook?.Dispose();
         gearsetChangedHook = null;
 
-        configWindow?.Dispose();
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configWindow = null;
 
         config = null;
     }
 
-    private int OnGearsetChanged(RaptureGearsetModule* thisPtr, int gearsetId, byte glamourPlateId) {
+    private unsafe int OnGearsetChanged(RaptureGearsetModule* thisPtr, int gearsetId, byte glamourPlateId) {
         try {
             if (config is not null && config.Redirections.TryGetValue(gearsetId, out var redirection)) {
                 var targetRedirection = redirection.FirstOrDefault(info => Services.ClientState.TerritoryType == info.TerritoryType);
@@ -60,7 +63,7 @@ public unsafe class GearsetRedirect : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception while handling Gearset Redirect.");
+            Services.PluginLog.Exception(e);
         }
 
         return gearsetChangedHook!.Original(thisPtr, gearsetId, glamourPlateId);

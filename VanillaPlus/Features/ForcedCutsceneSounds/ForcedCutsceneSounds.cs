@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.System.Scheduler;
 using FFXIVClientStructs.FFXIV.Client.System.Scheduler.Base;
@@ -11,7 +12,7 @@ using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.ForcedCutsceneSounds;
 
-public unsafe class ForcedCutsceneSounds : GameModification {
+public class ForcedCutsceneSounds : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_ForcedCutsceneSounds,
         Description = Strings.ModificationDescription_ForcedCutsceneSounds,
@@ -32,7 +33,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
 
     private Dictionary<string, bool>? wasMuted;
 
-    private delegate CutSceneController* CutSceneControllerDtorDelegate(CutSceneController* self, byte freeFlags);
+    private unsafe delegate CutSceneController* CutSceneControllerDtorDelegate(CutSceneController* self, byte freeFlags);
 
     private Hook<ScheduleManagement.Delegates.CreateCutSceneController>? createCutSceneControllerHook;
     private Hook<CutSceneControllerDtorDelegate>? cutSceneControllerDtorHook;
@@ -40,10 +41,10 @@ public unsafe class ForcedCutsceneSounds : GameModification {
     private ForcedCutsceneSoundsConfig? config;
     private ConfigAddon? configWindow;
 
-    public override void OnEnable() {
+    public override async Task OnEnableAsync() {
         wasMuted = [];
 
-        config = ForcedCutsceneSoundsConfig.Load();
+        config = await ForcedCutsceneSoundsConfig.Load();
 
         configWindow = new ConfigAddon {
             Size = new Vector2(330.0f, 385.0f),
@@ -69,25 +70,27 @@ public unsafe class ForcedCutsceneSounds : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        createCutSceneControllerHook = Services.GameInteropProvider.HookFromAddress<ScheduleManagement.Delegates.CreateCutSceneController>(
-            ScheduleManagement.MemberFunctionPointers.CreateCutSceneController,
-            CreateCutSceneControllerDetour);
-        createCutSceneControllerHook.Enable();
+        unsafe {
+            createCutSceneControllerHook = Services.GameInteropProvider.HookFromAddress<ScheduleManagement.Delegates.CreateCutSceneController>(
+                ScheduleManagement.MemberFunctionPointers.CreateCutSceneController,
+                CreateCutSceneControllerDetour);
+            createCutSceneControllerHook.Enable();
 
-        cutSceneControllerDtorHook = Services.GameInteropProvider.HookFromVTable<CutSceneControllerDtorDelegate>(
-            CutSceneController.StaticVirtualTablePointer, 0,
-            CutSceneControllerDtorDetour);
-        cutSceneControllerDtorHook.Enable();
+            cutSceneControllerDtorHook = Services.GameInteropProvider.HookFromVTable<CutSceneControllerDtorDelegate>(
+                CutSceneController.StaticVirtualTablePointer, 0,
+                CutSceneControllerDtorDetour);
+            cutSceneControllerDtorHook.Enable();
+        }
     }
 
-    public override void OnDisable() {
+    public override async Task OnDisableAsync() {
         createCutSceneControllerHook?.Dispose();
         createCutSceneControllerHook = null;
 
         cutSceneControllerDtorHook?.Dispose();
         cutSceneControllerDtorHook = null;
 
-        configWindow?.Dispose();
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configWindow = null;
 
         config = null;
@@ -95,7 +98,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
         wasMuted = null;
     }
 
-    private CutSceneController* CreateCutSceneControllerDetour(ScheduleManagement* thisPtr, byte* path, uint id, byte a4) {
+    private unsafe CutSceneController* CreateCutSceneControllerDetour(ScheduleManagement* thisPtr, byte* path, uint id, byte a4) {
         var result = createCutSceneControllerHook!.Original(thisPtr, path, id, a4);
 
         try {
@@ -115,13 +118,13 @@ public unsafe class ForcedCutsceneSounds : GameModification {
 
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Error in CreateCutSceneControllerDetour");
+            Services.PluginLog.Exception(e);
         }
 
         return result;
     }
 
-    private CutSceneController* CutSceneControllerDtorDetour(CutSceneController* self, byte freeFlags) {
+    private unsafe CutSceneController* CutSceneControllerDtorDetour(CutSceneController* self, byte freeFlags) {
         try {
             if (config is null) {
                 return cutSceneControllerDtorHook!.Original(self, freeFlags);
@@ -138,7 +141,7 @@ public unsafe class ForcedCutsceneSounds : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, "Error in CutSceneControllerDtorDetour");
+            Services.PluginLog.Exception(e);
         }
 
         return cutSceneControllerDtorHook!.Original(self, freeFlags);

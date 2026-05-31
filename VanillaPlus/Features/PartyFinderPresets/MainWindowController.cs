@@ -25,7 +25,7 @@ public unsafe class MainWindowController : IDisposable {
             OnSetup = OnAddonSetup,
             OnFinalize = OnAddonFinalize,
         };
-        mainWindowController.Enable();
+        mainWindowController.Enable(); // todo: make this a passthrough enable
 
         Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "LookingForGroup", OnLookingForGroupEvent);
 

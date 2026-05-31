@@ -8,7 +8,7 @@ using VanillaPlus.Classes;
 
 namespace VanillaPlus.NativeElements.Config;
 
-public unsafe class ConfigAddon : NativeAddon {
+public class ConfigAddon : NativeAddon {
     private ScrollingListNode? configurationListNode;
 
     private readonly List<ConfigCategory> configCategories = [];
@@ -18,7 +18,9 @@ public unsafe class ConfigAddon : NativeAddon {
     private const float MaximumHeight = 400.0f;
     private const float Width = 400.0f;
 
-    protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         configurationListNode = new ScrollingListNode {
             AutoHideScrollBar = true,
             FitContents = true,

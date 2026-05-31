@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -18,7 +19,7 @@ public class ListInventory : GameModification {
 
     public override string ImageName => "ListInventory.png";
 
-    public override void OnEnable() {
+    public override async Task OnEnableAsync() {
         addonListInventory = new AddonListInventory {
             InternalName = "ListInventory",
             Title = Strings.ListInventory_Title,
@@ -28,13 +29,13 @@ public class ListInventory : GameModification {
             ItemSpacing = 2.25f,
         };
 
-        addonListInventory.Initialize();
+        await addonListInventory.InitializeAsync();
 
         OpenConfigAction = addonListInventory.OpenAddonConfig;
     }
 
-    public override void OnDisable() {
-        addonListInventory?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Task.WhenAll(addonListInventory?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         addonListInventory = null;
     }
 }

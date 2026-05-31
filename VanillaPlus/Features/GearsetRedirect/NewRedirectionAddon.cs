@@ -34,7 +34,9 @@ public class NewRedirectionAddon : NativeAddon {
     public Action? OnSelectionsConfirmed { get; set; }
 
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
-        SelectedGearset = null;
+    base.OnSetup(addon, atkValueSpan);
+
+                SelectedGearset = null;
         SelectedTerritory = null;
 
         AddNode(new VerticalListNode {

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.DutyState;
 using VanillaPlus.Classes;
@@ -17,16 +18,20 @@ public class FocusTargetLock : GameModification {
     private uint? targetBaseId;
     private uint? targetEntityId;
 
-    public override void OnEnable() {
+    public override Task OnEnableAsync() {
         Services.DutyState.DutyWiped += OnDutyWiped;
         Services.DutyState.DutyRecommenced += OnDutyRecommenced;
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+
+        return Task.CompletedTask;
     }
 
-    public override void OnDisable() {
+    public override Task OnDisableAsync() {
         Services.DutyState.DutyWiped -= OnDutyWiped;
         Services.DutyState.DutyRecommenced -= OnDutyRecommenced;
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
+
+        return Task.CompletedTask;
     }
 
     private void OnDutyRecommenced(IDutyStateEventArgs args) {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Nodes;
@@ -30,7 +31,7 @@ public class JustMonikaFools : FoolsModule {
     public override bool IsEnabledByConfig
         => Config.JustMonika;
 
-    protected override void OnEnable() {
+    protected override Task OnEnable() {
         monikaAddon = new MonikaAddon {
             InternalName = "JustMonika",
             Title = "Just Monika",
@@ -38,12 +39,14 @@ public class JustMonikaFools : FoolsModule {
         };
 
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+
+        return Task.CompletedTask;
     }
 
-    protected override void OnDisable() {
+    protected override async Task OnDisable() {
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
 
-        monikaAddon?.Dispose();
+        await Task.WhenAll(monikaAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         monikaAddon = null;
     }
 

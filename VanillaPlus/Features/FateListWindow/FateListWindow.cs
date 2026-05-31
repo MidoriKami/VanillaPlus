@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -16,7 +17,7 @@ public class FateListWindow : GameModification {
 
     private FateListAddon? addonFateList;
 
-    public override void OnEnable() {
+    public override async Task OnEnableAsync() {
         addonFateList = new FateListAddon {
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "FateList",
@@ -25,13 +26,13 @@ public class FateListWindow : GameModification {
             ItemSpacing = 3.0f,
         };
 
-        addonFateList.Initialize();
+        await addonFateList.InitializeAsync();
 
         OpenConfigAction = addonFateList.OpenAddonConfig;
     }
 
-    public override void OnDisable() {
-        addonFateList?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Task.WhenAll(addonFateList?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         addonFateList = null;
     }
 }

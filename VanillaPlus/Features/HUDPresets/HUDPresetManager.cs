@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using VanillaPlus.Utilities;
 
@@ -43,9 +44,8 @@ public static unsafe class HUDPresetManager {
         var layoutOffset = layoutEntryCount * dataSet->CurrentHudLayout;
         var layoutAddress = Unsafe.AsPointer(ref dataSet->HudLayoutConfigEntries[layoutOffset]);
         var layoutSize = sizeof(AddonConfigEntry) * layoutEntryCount;
-        var layoutDataSpan = new Span<byte>(layoutAddress, layoutSize);
 
-        Data.SaveBinaryData(layoutDataSpan.ToArray(), "HUDPresets", $"{fileName}.layout.data");
+        Task.Run(() => Data.SaveBinaryData((nint)layoutAddress, layoutSize, "HUDPresets", $"{fileName}.layout.data"));
     }
 
     public static void LoadPreset(string fileName) {
@@ -58,7 +58,7 @@ public static unsafe class HUDPresetManager {
         var layoutAddress = Unsafe.AsPointer(ref dataSet->HudLayoutConfigEntries[layoutOffset]);
         var layoutSize = sizeof(AddonConfigEntry) * layoutEntryCount;
 
-        var layoutData = Data.LoadBinaryData(layoutSize, "HUDPresets", $"{fileName}.layout.data");
+        var layoutData = Data.LoadBinaryData(layoutSize, "HUDPresets", $"{fileName}.layout.data").Result;
         Marshal.Copy(layoutData, 0, (nint)layoutAddress, layoutSize);
 
         addonConfig->ApplyHudLayout();

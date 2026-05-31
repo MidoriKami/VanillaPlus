@@ -7,11 +7,11 @@ using KamiToolKit.Controllers;
 
 namespace VanillaPlus.Features.BiggerConfigWindows;
 
-public unsafe class CharacterConfigController : IDisposable {
-    private readonly BiggerConfigWindowsConfig config;
+public class CharacterConfigController : IDisposable {
+    public required BiggerConfigWindowsConfig Config { get; init; }
 
-    private readonly AddonController characterConfigController;
-    private readonly DynamicAddonController childAddonController;
+    private AddonController? characterConfigController;
+    private DynamicAddonController? childAddonController;
 
     // Doesn't seem like there's a way around this, the parent addon doesn't appear to have a reference to its children.
     private readonly List<string> childAddons = [
@@ -21,86 +21,91 @@ public unsafe class CharacterConfigController : IDisposable {
         "ConfigCharaChatLogDetail", "ConfigCharaChatLogRing",
     ];
 
-    public CharacterConfigController(BiggerConfigWindowsConfig config) {
-        this.config = config;
+    public unsafe void Enable() {
         characterConfigController = new AddonController {
             AddonName = "ConfigCharacter",
             OnSetup = SetupConfigCharacter,
             OnFinalize = FinalizeConfigCharacter,
         };
-        characterConfigController.Enable();
 
         childAddonController = new DynamicAddonController {
             AddonNames = childAddons,
             OnSetup = SetupConfigCharacterChild,
             OnFinalize = FinalizeConfigCharacterChild,
         };
+
+        characterConfigController.Enable();
         childAddonController.Enable();
     }
 
     public void Dispose() {
-        childAddonController.Dispose();
-        characterConfigController.Dispose();
+        Services.Framework.Run(() => {
+            characterConfigController?.Dispose();
+            childAddonController?.Dispose();
+        });
+
+        characterConfigController = null;
+        childAddonController = null;
     }
 
-    private void SetupConfigCharacter(AtkUnitBase* addon) {
-        if (AtkStage.Instance()->ScreenSize.Height < addon->Size.Y + config.SystemConfigAdditionalHeight) {
-            Services.ChatGui.PrintError("Unable to resize config window, height would be too big.", "[VanillaPlus] [BiggerConfigWindow]");
-            Services.PluginLog.Warning("[BiggerConfigWindow] Unable to resize config window, height would be too big.");
+    private unsafe void SetupConfigCharacter(AtkUnitBase* addon) {
+        if (AtkStage.Instance()->ScreenSize.Height < addon->Size.Y + Config.SystemConfigAdditionalHeight) {
+            Services.ChatGui.PrintError("[BiggerConfigWindow] Unable to resize config window, height would be too big.", "VanillaPlus");
+            Services.PluginLog.Warning("Unable to resize config window, height would be too big.", "BiggerConfigWindow");
             return;
         }
 
-        addon->Size += new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
+        addon->Size += new Vector2(0.0f, Config.CharacterConfigAdditionalHeight);
 
         // Adjust "Default" "Apply" "Close" container
-        addon->GetNodeById(35)->Position += new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
+        addon->GetNodeById(35)->Position += new Vector2(0.0f, Config.CharacterConfigAdditionalHeight);
 
         // Adjust vertical line ninegridnode
-        addon->GetNodeById(34)->Size += new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
+        addon->GetNodeById(34)->Size += new Vector2(0.0f, Config.CharacterConfigAdditionalHeight);
     }
 
-    private void FinalizeConfigCharacter(AtkUnitBase* addon) {
-        addon->Size -= new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
+    private unsafe void FinalizeConfigCharacter(AtkUnitBase* addon) {
+        addon->Size -= new Vector2(0.0f, Config.CharacterConfigAdditionalHeight);
 
         // Adjust "Default" "Apply" "Close" container
-        addon->GetNodeById(35)->Position -= new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
+        addon->GetNodeById(35)->Position -= new Vector2(0.0f, Config.CharacterConfigAdditionalHeight);
 
         // Adjust vertical line ninegridnode
-        addon->GetNodeById(34)->Size -= new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
+        addon->GetNodeById(34)->Size -= new Vector2(0.0f, Config.CharacterConfigAdditionalHeight);
     }
 
-    private void SetupConfigCharacterChild(AtkUnitBase* addon) {
+    private unsafe void SetupConfigCharacterChild(AtkUnitBase* addon) {
         var scrollBarComponent = GetScrollbarForChild(addon);
         if (scrollBarComponent is null) return;
 
-        ResizeHelpers.ResizeScrollBarNode(scrollBarComponent, config.CharacterConfigAdditionalHeight);
+        ResizeHelpers.ResizeScrollBarNode(scrollBarComponent, Config.CharacterConfigAdditionalHeight);
 
         // Adjust list area stop, only visible in certain themes
-        addon->GetNodeById(5)->Position += new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
+        addon->GetNodeById(5)->Position += new Vector2(0.0f, Config.CharacterConfigAdditionalHeight);
 
         ApplyStupidFixes(addon);
     }
 
-    private void FinalizeConfigCharacterChild(AtkUnitBase* addon) {
+    private unsafe void FinalizeConfigCharacterChild(AtkUnitBase* addon) {
         var scrollBarComponent = GetScrollbarForChild(addon);
         if (scrollBarComponent is null) return;
 
-        ResizeHelpers.ResizeScrollBarNode(scrollBarComponent, -config.CharacterConfigAdditionalHeight);
+        ResizeHelpers.ResizeScrollBarNode(scrollBarComponent, -Config.CharacterConfigAdditionalHeight);
 
         // Adjust list area stop, only visible in certain themes
-        addon->GetNodeById(5)->Position -= new Vector2(0.0f, config.CharacterConfigAdditionalHeight);
+        addon->GetNodeById(5)->Position -= new Vector2(0.0f, Config.CharacterConfigAdditionalHeight);
 
         ApplyStupidFixes(addon);
     }
 
-    private AtkComponentScrollBar* GetScrollbarForChild(AtkUnitBase* addon)
+    private unsafe AtkComponentScrollBar* GetScrollbarForChild(AtkUnitBase* addon)
         => (AtkComponentScrollBar*)Marshal.ReadIntPtr((nint)addon, sizeof(AtkUnitBase));
 
     /// <summary>
     /// Applies manual adjustments to certain nodes because square has
     /// to be extra and do shit in a weird way.
     /// </summary>
-    private static void ApplyStupidFixes(AtkUnitBase* addon) {
+    private unsafe static void ApplyStupidFixes(AtkUnitBase* addon) {
         switch (addon->NameString) {
             case "ConfigCharaChatLogRing":
                 var realContentsNode = addon->GetNodeById(5);

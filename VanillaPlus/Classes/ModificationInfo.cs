@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.Classes;
@@ -20,13 +20,12 @@ public class ModificationInfo {
     /// </summary>
     public CompatibilityModule? CompatibilityModule { get; init; }
 
-    public bool IsMatch(string searchTerm) {
-        if (DisplayName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) return true;
-        // if (Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) return true; // Probably not a good idea to use this without a fuzzy matcher.
-        if (Authors.Any(author => author.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))) return true;
-        if (Type.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) return true;
-        if (SubType is not null && SubType.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) return true;
-        if (Tags.Any(tag => tag.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))) return true;
+    public bool IsMatch(Regex searchRegex) {
+        if (searchRegex.IsMatch(DisplayName)) return true;
+        if (Authors.Any(searchRegex.IsMatch)) return true;
+        if (searchRegex.IsMatch(Type.Description)) return true;
+        if (SubType is not null && searchRegex.IsMatch(SubType.Description)) return true;
+        if (Tags.Any(searchRegex.IsMatch)) return true;
 
         return false;
     }

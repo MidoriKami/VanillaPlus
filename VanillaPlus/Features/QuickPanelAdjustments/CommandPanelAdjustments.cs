@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using VanillaPlus.Classes;
@@ -8,7 +9,7 @@ using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.QuickPanelAdjustments;
 
-public unsafe class CommandPanelAdjustments : GameModification {
+public class CommandPanelAdjustments : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.QuickPanelAdjustments_DisplayName,
         Description = Strings.QuickPanelAdjustments_Description,
@@ -20,19 +21,19 @@ public unsafe class CommandPanelAdjustments : GameModification {
 
     private AddonController? quickPanelController;
     private QuickPanelAdjustmentsConfig? config;
-    private ConfigAddon? configWindow;
+    private ConfigAddon? configAddon;
 
-    public override void OnEnable() {
-        config = QuickPanelAdjustmentsConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await QuickPanelAdjustmentsConfig.Load();
 
-        configWindow = new ConfigAddon {
+        configAddon = new ConfigAddon {
             Size = new Vector2(600.0f, 125.0f),
             InternalName = "CommandPanelAdjustmentsConfig",
             Title = Strings.QuickPanelAdjustments_ConfigTitle,
             Config = config,
         };
 
-        configWindow.AddCategory("")
+        configAddon.AddCategory("")
             .AddCheckbox(Strings.QuickPanelAdjustments_LabelHideHighlighting, nameof(config.HideHighlighting))
             .AddCheckbox(Strings.QuickPanelAdjustments_LabelHideFocusBorder, nameof(config.HideFocusBorder))
             .AddCheckbox(Strings.QuickPanelAdjustments_LabelHidePanelBackground, nameof(config.HidePanelBackground))
@@ -40,27 +41,30 @@ public unsafe class CommandPanelAdjustments : GameModification {
             .AddCheckbox(Strings.QuickPanelAdjustments_LabelMoveButtons, nameof(config.MoveButtons))
             .AddColorEdit(Strings.QuickPanelAdjustments_BackgroundColor, nameof(config.BackgroundColor), new Vector4(1.0f, 1.0f, 1.0f, 25.0f / 255.0f));
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAction = configAddon.Toggle;
 
-        quickPanelController = new AddonController {
-            AddonName = "QuickPanel",
-            OnUpdate = UpdateQuickPanel,
-            OnRefresh = UpdateQuickPanel,
-        };
-        quickPanelController.Enable();
+        unsafe {
+            quickPanelController = new AddonController {
+                AddonName = "QuickPanel",
+                OnUpdate = UpdateQuickPanel,
+                OnRefresh = UpdateQuickPanel,
+            };
+        }
+
+        await Services.Framework.Run(quickPanelController.Enable);
     }
 
-    public override void OnDisable() {
-        quickPanelController?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => quickPanelController?.Dispose());
         quickPanelController = null;
 
-        config = null;
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
 
-        configWindow?.Dispose();
-        configWindow = null;
+        config = null;
     }
 
-    private void UpdateQuickPanel(AtkUnitBase* addon) {
+    private unsafe void UpdateQuickPanel(AtkUnitBase* addon) {
         if (config is null) return;
 
         var windowComponent = addon->GetComponentById<AtkComponentWindow>(45);

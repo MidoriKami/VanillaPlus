@@ -1,4 +1,6 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
@@ -15,15 +17,15 @@ public class CosmicExplorationProgressWindow : GameModification {
         Authors = ["salanth357"],
     };
 
-    private CosmicExplorationProgressAddon? addon;
+    private CosmicExplorationProgressAddon? progressAddon;
     private CircleButtonNode? hudShowNode;
 
     private AddonController? wksHudController;
 
     public override string ImageName => "CosmicExplorationProgressWindow.png";
 
-    public override unsafe void OnEnable() {
-        addon = new CosmicExplorationProgressAddon {
+    public override async Task OnEnableAsync() {
+        progressAddon = new CosmicExplorationProgressAddon {
             Size = new Vector2(320.0f, 290.0f),
             InternalName = "CosmicExplorationProgress",
             Title = string.Empty, // No title actually needed for this addon
@@ -31,39 +33,50 @@ public class CosmicExplorationProgressWindow : GameModification {
             DisableCloseTransition = true,
         };
 
-        wksHudController = new AddonController {
-            AddonName = "WKSHud",
-            OnSetup = wksHud => {
-                hudShowNode = new CircleButtonNode {
-                    Icon = ButtonIcon.Eye,
-                    AddColor = new Vector3(0.0f, -0.125f, 128f / 255f),
-                    Size = new Vector2(28.0f),
-                    Position = new Vector2(26.0f, 26.0f),
-                    OnClick = addon.Toggle,
-                    TextTooltip = Strings.CosmicExplorationProgressWindow_HudButtonTooltip,
-                };
+        unsafe {
+            wksHudController = new AddonController {
+                AddonName = "WKSHud",
+                OnSetup = WKSHudSetup,
+                OnFinalize = WKSHudFinalize,
+            };
+        }
 
-                // override the texture to use the base theme, since that's what the gear button in WKSHud does
-                hudShowNode.ImageNode.LoadTexture("ui/uld/CircleButtons.tex", false);
-
-                hudShowNode.AttachNode(wksHud);
-            },
-            OnFinalize = _ => {
-                hudShowNode?.Dispose();
-                hudShowNode = null;
-            },
-        };
-        wksHudController.Enable();
+        await Services.Framework.Run(wksHudController.Enable);
     }
 
-    public override void OnDisable() {
-        wksHudController?.Disable();
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            wksHudController?.Dispose();
+            hudShowNode?.Dispose();
+        });
+
         wksHudController = null;
+        hudShowNode = null;
 
-        addon?.Dispose();
-        addon = null;
+        await Task.WhenAll(progressAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        progressAddon = null;
+    }
 
+    private unsafe void WKSHudFinalize(AtkUnitBase* _) {
         hudShowNode?.Dispose();
         hudShowNode = null;
+    }
+
+    private unsafe void WKSHudSetup(AtkUnitBase* wksHud) {
+        if (progressAddon is null) return;
+
+        hudShowNode = new CircleButtonNode {
+            Icon = ButtonIcon.Eye,
+            AddColor = new Vector3(0.0f, -0.125f, 128f / 255f),
+            Size = new Vector2(28.0f),
+            Position = new Vector2(26.0f, 26.0f),
+            OnClick = progressAddon.Toggle,
+            TextTooltip = Strings.CosmicExplorationProgressWindow_HudButtonTooltip,
+        };
+
+        // override the texture to use the base theme, since that's what the gear button in WKSHud does
+        hudShowNode.ImageNode.LoadTexture("ui/uld/CircleButtons.tex", false);
+
+        hudShowNode.AttachNode(wksHud);
     }
 }

@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Game.ClientState.Objects.SubKinds;
@@ -11,7 +12,7 @@ using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.ResourceBarPercentages;
 
-public unsafe class ResourceBarPercentages : GameModification {
+public class ResourceBarPercentages : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_ResourceBarPercentages,
         Description = Strings.ModificationDescription_ResourceBarPercentages,
@@ -28,8 +29,8 @@ public unsafe class ResourceBarPercentages : GameModification {
 
     public override string ImageName => "ResourcePercentages.png";
 
-    public override void OnEnable() {
-        config = ResourceBarPercentagesConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await ResourceBarPercentagesConfig.Load();
         config.OnSave += OnConfigChanged;
 
         configWindow = new ConfigAddon {
@@ -69,20 +70,24 @@ public unsafe class ResourceBarPercentages : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_ParameterWidget", OnParameterDraw);
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_ParameterWidget", OnParameterDraw);
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_PartyList", OnPartyListDraw);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_PartyList", OnPartyListDraw);
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
+        });
     }
 
-    public override void OnDisable() {
-        Services.AddonLifecycle.UnregisterListener(OnParameterDraw, OnPartyListDraw);
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.UnregisterListener(OnParameterDraw, OnPartyListDraw);
 
-        OnParameterDisable();
-        OnPartyListDisable();
+            OnParameterDisable();
+            OnPartyListDisable();
+        });
 
-        configWindow?.Dispose();
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configWindow = null;
 
         config = null;
@@ -100,7 +105,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         }
     }
 
-    private void OnParameterDraw(AddonEvent type, AddonArgs args) {
+    private unsafe void OnParameterDraw(AddonEvent type, AddonArgs args) {
         if (config is null) return;
         if (!config.ParameterWidgetEnabled) return;
 
@@ -113,7 +118,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         addon->ManaAmount->SetText(GetCorrectText(activeResource.Current, activeResource.Max, activeResource.Enabled));
     }
 
-    private void OnPartyListDraw(AddonEvent type, AddonArgs args) {
+    private unsafe void OnPartyListDraw(AddonEvent type, AddonArgs args) {
         if (config is null) return;
         if (!config.PartyListEnabled) return;
 
@@ -126,7 +131,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         }
     }
 
-    private void OnPartyListDisable() {
+    private unsafe void OnPartyListDisable() {
         var addon = Services.GameGui.GetAddonByName<AddonPartyList>("_PartyList");
         if (addon is null) return;
 
@@ -142,7 +147,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         ModifyPartyListParameter(hudData, revertToDefault);
     }
 
-    private void ModifyPartyListHp(PartyListHudData hudData, bool revertToDefault) {
+    private unsafe void ModifyPartyListHp(PartyListHudData hudData, bool revertToDefault) {
         if (config is null) return;
 
         var health = hudData.HudMember->HealthValues;
@@ -164,7 +169,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         }
     }
 
-    private void ModifyPartyListParameter(PartyListHudData hudData, bool revertToDefault) {
+    private unsafe void ModifyPartyListParameter(PartyListHudData hudData, bool revertToDefault) {
         if (config is null) return;
 
         if (hudData.HudMember->ClassJob is not { } classJob) return;
@@ -189,7 +194,7 @@ public unsafe class ResourceBarPercentages : GameModification {
         resourceGaugeTextSubNode->ToggleVisibility(isMpDisabled);
     }
 
-    private void OnParameterDisable() {
+    private unsafe void OnParameterDisable() {
         var addon = Services.GameGui.GetAddonByName<AddonParameterWidget>("_ParameterWidget");
         if (addon is null) return;
         if (Services.ObjectTable.LocalPlayer is not { } localPlayer) return;
@@ -209,7 +214,7 @@ public unsafe class ResourceBarPercentages : GameModification {
     private string GetCorrectText(uint current, uint max, bool enabled = true)
         => !enabled ? current.ToString() : FormatPercentage(current, max);
 
-    private string GetCorrectPartyResourceText(PartyListHudData hudData, bool enabled = true, bool revertToDefault = false) {
+    private unsafe string GetCorrectPartyResourceText(PartyListHudData hudData, bool enabled = true, bool revertToDefault = false) {
         if (hudData.HudMember->ClassJob is not { } classJob) return string.Empty;
 
         var currentMana = (uint)hudData.NumberArrayData->CurrentMana;

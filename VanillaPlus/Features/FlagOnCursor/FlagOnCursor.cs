@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Game.Command;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -7,7 +8,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.FlagOnCursor;
 
-public unsafe class FlagOnCursor : GameModification {
+public class FlagOnCursor : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_FlagOnCursor,
         Description = Strings.ModificationDescription_FlagOnCursor,
@@ -17,15 +18,22 @@ public unsafe class FlagOnCursor : GameModification {
 
     private const string CommandName = "/flagthere";
 
-    public override void OnEnable() => Services.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
-        HelpMessage = Strings.FlagOnCursor_CommandHelpMessage,
-        ShowInHelp = true,
-    });
+    public override Task OnEnableAsync() {
+        Services.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
+            HelpMessage = Strings.FlagOnCursor_CommandHelpMessage,
+            ShowInHelp = true,
+        });
 
-    public override void OnDisable()
-        => Services.CommandManager.RemoveHandler(CommandName);
+        return Task.CompletedTask;
+    }
 
-    private static void OnCommand(string command, string args) {
+    public override Task OnDisableAsync() {
+        Services.CommandManager.RemoveHandler(CommandName);
+
+        return Task.CompletedTask;
+    }
+
+    private static unsafe void OnCommand(string command, string args) {
         ref var cursorData = ref UIInputData.Instance()->UIFilteredCursorInputs;
         var position = new Vector2(cursorData.PositionX, cursorData.PositionY);
 

@@ -9,11 +9,11 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.InternalSystem;
 
-public class ModificationManager : IDisposable {
+public class ModificationManager : IAsyncDisposable {
 
     private readonly List<LoadedModification> loadedModifications = [];
-    public readonly List<IGrouping<ModificationType, LoadedModification>> CategoryGroups;
-    public readonly Dictionary<ModificationType, List<IGrouping<ModificationSubType?, LoadedModification>>> SubCategoryGroups = [];
+
+    public IReadOnlyList<LoadedModification> LoadedModifications => loadedModifications;
 
     public ModificationManager() {
         var allGameModifications = GetGameModifications();
@@ -25,39 +25,38 @@ public class ModificationManager : IDisposable {
 
             loadedModifications.Add(newLoadedModification);
 
-            if (PluginSystem.SystemConfig.EnabledModifications.Contains(gameMod.Name)) {
-                TryEnableModification(newLoadedModification);
+            if (System.SystemConfig.EnabledModifications.Contains(gameMod.Name)) {
+                if (System.SystemConfig.SafeMode) {
+                    TryEnableModification(newLoadedModification).GetAwaiter().GetResult();
+                }
+                else {
+                    Task.Run(() => TryEnableModification(newLoadedModification));
+                }
             }
         }
 
         Services.PluginInterface.ActivePluginsChanged += OnPluginsChanged;
-
-        CategoryGroups = loadedModifications
-            .Select(option => option)
-            .GroupBy(option => option.Modification.ModificationInfo.Type)
-            .OrderByDescending(group => group.Key is ModificationType.Seasonal && DateTime.Now.IsSeasonalEvent)
-            .ThenBy(group => group.Key)
-            .ToList();
-
-        foreach (var categoryGroup in CategoryGroups) {
-            var subCategoryGroup = categoryGroup
-                .GroupBy(option => option.Modification.ModificationInfo.SubType)
-                .OrderBy(group => group.Key?.Description)
-                .ToList();
-
-            SubCategoryGroups.Add(categoryGroup.Key, subCategoryGroup);
-        }
     }
 
-    public void Dispose() {
+    public async ValueTask DisposeAsync() {
         Services.PluginInterface.ActivePluginsChanged -= OnPluginsChanged;
 
-        Services.PluginLog.Debug("Disposing Modification Manager, now disabling all GameModifications");
+        Services.PluginLog.InternalDebug("Disposing Modification Manager, now disabling all GameModifications");
 
-        foreach (var loadedMod in loadedModifications) {
-            if (loadedMod.State is LoadedState.Enabled) {
-                TryDisableModification(loadedMod, false);
+        if (System.SystemConfig.SafeMode) {
+            Services.PluginLog.InternalDebug("Disposing in safemode, all modules will be unloaded sequentially.");
+
+            foreach (var modification in loadedModifications.Where(mod => mod.State is LoadedState.Enabled)) {
+                TryDisableModification(modification, false).GetAwaiter().GetResult();
             }
+        }
+        else {
+            await Task.WhenAll(loadedModifications
+                .Where(loadedMod => loadedMod.State is LoadedState.Enabled)
+                .Select(async module => {
+                    await Task.Run(() => TryDisableModification(module, false));
+                })
+            );
         }
     }
 
@@ -65,7 +64,9 @@ public class ModificationManager : IDisposable {
     private void OnPluginsChanged(IActivePluginsChangedEventArgs args)
         => Task.Run(ReloadConflictedModules);
 
-    public void ReloadConflictedModules() {
+    public async Task ReloadConflictedModules() {
+        List<Task> moduleTasks = [];
+
         foreach (var gameModification in loadedModifications) {
 
             // Only evaluate modules that have a compatability module
@@ -77,8 +78,8 @@ public class ModificationManager : IDisposable {
 
                     // This module was enabled, but after a refresh it's not allowed, disable it
                     if (!compatibilityModule.ShouldLoadGameModification()) {
-                        Services.PluginLog.Warning($"Loaded plugins have changed, and {gameModification.Name} is now no longer allowed to be enabled");
-                        TryDisableModification(gameModification, false);
+                        Services.PluginLog.InternalWarning($"Loaded plugins have changed, and {gameModification.Name} is now no longer allowed to be enabled");
+                        moduleTasks.Add(Task.Run(() => TryDisableModification(gameModification, false)));
                         gameModification.State = LoadedState.CompatError;
                         gameModification.ErrorMessage = compatibilityModule.GetErrorMessage();
                     }
@@ -89,31 +90,33 @@ public class ModificationManager : IDisposable {
 
                     // This module was disabled due to compat, it is now allowed, load it
                     if (compatibilityModule.ShouldLoadGameModification()) {
-                        Services.PluginLog.Info($"Loaded plugins have changed, and {gameModification.Name} is now allowed to be enabled");
-                        TryEnableModification(gameModification);
+                        Services.PluginLog.InternalInfo($"Loaded plugins have changed, and {gameModification.Name} is now allowed to be enabled");
+                        moduleTasks.Add(Task.Run(() => TryEnableModification(gameModification)));
                     }
                     break;
             }
         }
 
-        PluginSystem.ModificationBrowserAddon.UpdateDisabledState();
+        await Task.WhenAll(moduleTasks);
+
+        System.ModificationBrowserAddon.UpdateDisabledState();
     }
 
-    public static void TryEnableModification(LoadedModification modification) {
+    private static async Task TryEnableModification(LoadedModification modification) {
         if (modification.State is LoadedState.Errored) {
-            Services.PluginLog.Error($"[{modification.Name}] Attempted to enable errored modification");
+            Services.PluginLog.InternalError($"[{modification.Name}] Attempted to enable errored modification");
             return;
         }
 
         try {
-            Services.PluginLog.Info($"Enabling {modification.Name}");
+            Services.PluginLog.InternalInfo($"Enabling {modification.Name}");
 
             if (modification.Modification.ModificationInfo is { DisabledReason: { } disabledReason }) {
                 modification.State = LoadedState.ForceDisabled;
                 modification.ErrorMessage = disabledReason;
 
-                Services.PluginLog.Warning($"[{modification.Name}] Force Disabled. {disabledReason}");
-                Services.PluginLog.Warning($"Aborted enabling {modification.Name}");
+                Services.PluginLog.InternalWarning($"[{modification.Name}] Force Disabled. {disabledReason}");
+                Services.PluginLog.InternalWarning($"Aborted enabling {modification.Name}");
                 return;
             }
 
@@ -122,57 +125,76 @@ public class ModificationManager : IDisposable {
                     modification.State = LoadedState.CompatError;
                     modification.ErrorMessage = compatibilityModule.GetErrorMessage();
 
-                    Services.PluginLog.Warning($"[{modification.Name}] {compatibilityModule.GetErrorMessage()}");
-                    Services.PluginLog.Warning($"Aborted enabling {modification.Name}");
+                    Services.PluginLog.InternalWarning($"[{modification.Name}] {compatibilityModule.GetErrorMessage()}");
+                    Services.PluginLog.InternalWarning($"Aborted enabling {modification.Name}");
                     return;
                 }
             }
 
-            modification.Modification.OnEnable();
+            await modification.Modification.OnEnableAsync();
+
             modification.State = LoadedState.Enabled;
-            Services.PluginLog.Info($"Successfully Enabled {modification.Name}");
-            PluginSystem.SystemConfig.EnabledModifications.Add(modification.Name);
-            PluginSystem.SystemConfig.Save();
+            Services.PluginLog.InternalInfo($"Successfully Enabled {modification.Name}");
+
+            if (System.SystemConfig.EnabledModifications.Add(modification.Name)) {
+                await System.SystemConfig.Save();
+            }
         }
         catch (Exception e) {
             modification.State = LoadedState.Errored;
             modification.ErrorMessage = "Failed to load, this module has been disabled.";
-            Services.PluginLog.Error(e, $"Error while enabling {modification.Name}, attempting to disable");
+            Services.PluginLog.InternalError(e, $"Error while enabling {modification.Name}, attempting to disable");
 
             try {
-                modification.Modification.OnDisable();
-                Services.PluginLog.Information($"Successfully disabled erroring modification {modification.Name}");
+
+                await modification.Modification.OnDisableAsync();
+
+                Services.PluginLog.InternalInfo($"Successfully disabled erroring modification {modification.Name}");
             }
             catch (Exception fatal) {
                 modification.ErrorMessage = "Critical Error: Module failed to load, and errored again while unloading.";
-                Services.PluginLog.Error(fatal, $"Critical Error while trying to unload erroring modification: {modification.Name}");
+                Services.PluginLog.InternalError(fatal, $"Critical Error while trying to unload erroring modification: {modification.Name}");
             }
         }
     }
 
-    public static void TryDisableModification(LoadedModification modification, bool removeFromList = true) => Services.Framework.RunOnFrameworkThread(() => {
+    private static async Task TryDisableModification(LoadedModification modification, bool removeFromList = true) {
         if (modification.State is LoadedState.Errored) {
-            Services.PluginLog.Error($"[{modification.Name}] Attempted to disable errored modification");
+            Services.PluginLog.InternalError($"[{modification.Name}] Attempted to disable errored modification");
             return;
         }
 
         try {
-            Services.PluginLog.Info($"Disabling {modification.Name}");
-            modification.Modification.OnDisable();
+            Services.PluginLog.InternalInfo($"Disabling {modification.Name}");
+
+            await modification.Modification.OnDisableAsync();
+
             modification.Modification.OpenConfigAction = null;
             modification.State = LoadedState.Disabled;
-            Services.PluginLog.Debug($"Successfully Disabled {modification.Name}");
+            Services.PluginLog.InternalDebug($"Successfully Disabled {modification.Name}");
         }
         catch (Exception e) {
             modification.State = LoadedState.Errored;
-            Services.PluginLog.Error(e, $"Failed to Disable {modification.Name}");
+            Services.PluginLog.InternalError(e, $"Failed to Disable {modification.Name}");
         }
 
         if (removeFromList) {
-            PluginSystem.SystemConfig.EnabledModifications.Remove(modification.Name);
-            PluginSystem.SystemConfig.Save();
+            System.SystemConfig.EnabledModifications.Remove(modification.Name);
+            await System.SystemConfig.Save();
         }
-    });
+    }
+
+    public static async Task TryToggleModification(LoadedModification modification) {
+        switch (modification) {
+            case { State: LoadedState.Enabled }:
+                await TryDisableModification(modification);
+                break;
+
+            case { State: LoadedState.Disabled }:
+                await TryEnableModification(modification);
+                break;
+        }
+    }
 
     private static List<GameModification> GetGameModifications() => Assembly
         .GetCallingAssembly()

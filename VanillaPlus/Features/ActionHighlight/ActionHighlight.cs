@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.Sheets;
@@ -9,7 +10,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ActionHighlight;
 
-public unsafe class ActionHighlight : GameModification {
+public class ActionHighlight : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ActionHighlight_DisplayName,
         Description = Strings.ActionHighlight_Description,
@@ -22,46 +23,53 @@ public unsafe class ActionHighlight : GameModification {
 
     private Hook<ActionManager.Delegates.IsActionHighlighted>? onAntsHook;
     private ActionHighlightConfig? config;
-    private ActionHighlightAddon? configWindow;
+    private ActionHighlightAddon? configAddon;
 
     private Dictionary<uint, Action>? cachedActions;
 
     // Needed for AST cards
-    public static readonly Dictionary<uint, HashSet<int>> JobActionWhiteList = new() {
-        [33] = [7444, 7445, 37018, 37023, 37024, 37025, 37026, 37027, 37028],
-    };
+    internal static Dictionary<uint, HashSet<int>>? JobActionWhiteList;
 
-    public override void OnEnable() {
+    public override async Task OnEnableAsync() {
+        JobActionWhiteList = new Dictionary<uint, HashSet<int>> {
+            [33] = [7444, 7445, 37018, 37023, 37024, 37025, 37026, 37027, 37028],
+        };
+
         cachedActions = [];
 
-        config = ActionHighlightConfig.Load();
+        config = await ActionHighlightConfig.Load();
 
-        configWindow = new ActionHighlightAddon {
+        configAddon = new ActionHighlightAddon {
             Size = new Vector2(700.0f, 500.0f),
             InternalName = "ActionHighlightConfig",
             Title = Strings.ActionHighlight_Configuration,
             Config = config,
         };
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAction = configAddon.Toggle;
 
-        onAntsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
-        onAntsHook?.Enable();
+        unsafe {
+            onAntsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
+            onAntsHook?.Enable();
+        }
 
         CacheActions();
     }
 
-    public override void OnDisable() {
-        onAntsHook?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            onAntsHook?.Dispose();
+        });
         onAntsHook = null;
 
-        configWindow?.Dispose();
-        configWindow = null;
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
 
         cachedActions = null;
+        JobActionWhiteList = null;
     }
 
-    private bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {
+    private unsafe bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {
         if (Services.ObjectTable.LocalPlayer is not { Level: var playerLevel, GameObjectId: var playerId }) return false;
         if (config is null) return false;
         if (cachedActions is null) return false;
@@ -127,6 +135,8 @@ public unsafe class ActionHighlight : GameModification {
     }
 
     public static List<Action> GetClassActions() {
+        if (JobActionWhiteList is null) return [];
+
         var whitelistedActions = JobActionWhiteList.Values.SelectMany(hashSet => hashSet).ToList();
 
         // I have no idea what Unknown6 is, but it's been in there since the very first AbilityAnts release.

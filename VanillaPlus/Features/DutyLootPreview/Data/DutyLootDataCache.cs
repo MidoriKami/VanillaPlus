@@ -76,7 +76,7 @@ public class DutyLootDataCache : IDisposable {
             State = CacheState.Loaded;
         }
         catch (Exception ex) {
-            Services.PluginLog.Error(ex, "Failed to load duty loot");
+            Services.PluginLog.Exception(ex);
             State = CacheState.Empty;
         } finally {
             OnChanged?.Invoke();

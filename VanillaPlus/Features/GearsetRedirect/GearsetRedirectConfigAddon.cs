@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
@@ -14,7 +15,7 @@ using VanillaPlus.NativeElements.SearchAddons;
 
 namespace VanillaPlus.Features.GearsetRedirect;
 
-public unsafe class GearsetRedirectConfigAddon : NativeAddon {
+public class GearsetRedirectConfigAddon : NativeAddon {
     private ModifyListNode<GearsetInfo, GearsetInfoListItemNode>? gearsetListNode;
     private VerticalLineNode? lineNode;
     private SimpleComponentNode? optionsContainerNode;
@@ -37,7 +38,9 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         Title = Strings.GearsetRedirect_AddRedirectionTitle,
     };
 
-    protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
         gearsetListNode = new ModifyListNode<GearsetInfo, GearsetInfoListItemNode> {
             Size = new Vector2(225.0f, ContentSize.Y),
             Position = ContentStartPosition,
@@ -108,7 +111,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
                         Config.Redirections[gearsetListNode.SelectedOption.GearsetId].Add(redirectInfo);
                     }
 
-                    Config.Save();
+                    Task.Run(Config.Save);
                     redirectListNode?.RefreshList();
                 };
 
@@ -118,21 +121,20 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
                 if (gearsetListNode?.SelectedOption is null) return;
 
                 Config.Redirections[gearsetListNode.SelectedOption.GearsetId].Remove(entry);
-                Config.Save();
+                Task.Run(Config.Save);
             },
             IsSearchMatch = RedirectInfo.IsMatch,
         };
         redirectListNode.AttachNode(optionsContainerNode);
     }
 
-    public override void Dispose() {
-        base.Dispose();
-
-        gearsetSearchAddon.Dispose();
-        newRedirectionAddon.Dispose();
+    public override async ValueTask DisposeAsync() {
+        await base.DisposeAsync();
+        await gearsetSearchAddon.DisposeAsync();
+        await newRedirectionAddon.DisposeAsync();
     }
 
-    private void OnOptionChanged(GearsetInfo? gearsetInfo) {
+    private unsafe void OnOptionChanged(GearsetInfo? gearsetInfo) {
         if (jobImageNode is null) return;
         if (gearsetLabelNode is null) return;
         if (redirectListNode is null) return;
@@ -156,21 +158,21 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
 
     private void OnRemoveEntry(GearsetInfo obj) {
         Config.Redirections.Remove(obj.GearsetId);
-        Config.Save();
+        Task.Run(Config.Save);
     }
 
     private void OnAddEntry() {
         gearsetSearchAddon.SelectionResult = result => {
             if (Config.Redirections.TryAdd(result.Id, [])) {
                 gearsetListNode?.Options = GetConfigInfos();
-                Config.Save();
+                Task.Run(Config.Save);
             }
         };
 
         gearsetSearchAddon.Open();
     }
 
-    private List<GearsetInfo> GetConfigInfos() {
+    private unsafe List<GearsetInfo> GetConfigInfos() {
         List<GearsetInfo> gearsets = [];
         List<int> invalidGearsets = [];
 
@@ -192,7 +194,7 @@ public unsafe class GearsetRedirectConfigAddon : NativeAddon {
         }
 
         if (invalidGearsets.Count is not 0) {
-            Config.Save();
+            Task.Run(Config.Save);
         }
 
         return gearsets;

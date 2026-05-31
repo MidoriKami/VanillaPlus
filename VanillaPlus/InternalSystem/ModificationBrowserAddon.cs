@@ -1,349 +1,208 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
-using KamiToolKit.Classes;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node;
-using KamiToolKit.Premade.Node.Simple;
-using Lumina.Text.ReadOnly;
 using VanillaPlus.Enums;
-using VanillaPlus.Utilities;
+using VanillaPlus.InternalSystem.Nodes;
 
 namespace VanillaPlus.InternalSystem;
 
 public class ModificationBrowserAddon : NativeAddon {
 
-    private SimpleComponentNode mainContainerNode = null!;
+    private TextInputNode? textInputNode;
+    private TabBarNode? enabledStateTabBar;
+    private TabBarNode? categoryTabBar;
+    private ListNode<LoadedModification, GameModificationListItemNode>? listNode;
+    private GameModificationInfoNode? modificationInfoNode;
+    private Regex? searchRegex;
 
-    private HorizontalListNode searchContainerNode = null!;
-    private TextInputNode searchBoxNode = null!;
-    private ScrollingAreaNode<TreeListNode> optionContainerNode = null!;
-    private SimpleComponentNode descriptionContainerNode = null!;
-    private SimpleComponentNode descriptionImageFrame = null!;
-    private ImGuiImageNode descriptionImageNode = null!;
-    private BorderNineGridNode borderNineGridNode = null!;
-    private TextNode descriptionImageTextNode = null!;
-    private TextNode descriptionTextNode = null!;
-
-    private const float ItemPadding = 5.0f;
-
-    private GameModificationOptionNode? selectedOption;
-
-    private bool isImageEnlarged;
-    private bool isImageHovered;
+    private BrowserSelectedTab selectedTab = BrowserSelectedTab.All;
+    private BrowserSelectedCategory selectedCategory = BrowserSelectedCategory.All;
 
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
-        mainContainerNode = new SimpleComponentNode {
+        base.OnSetup(addon, atkValueSpan);
+
+        new VerticalListNode { // Main Container
             Position = ContentStartPosition,
             Size = ContentSize,
-        };
-        mainContainerNode.AttachNode(this);
-
-        BuildOptionsContainer();
-        BuildSearchContainer();
-        BuildDescriptionContainer();
-
-        addon->AdditionalFocusableNodes[0] = (AtkResNode*)descriptionImageNode;
-
-        uint optionIndex = 0;
-
-        foreach (var category in PluginSystem.ModificationManager.CategoryGroups) {
-            var newCategoryNode = new TreeListCategoryNode {
-                String = category.Key.Description,
-                OnToggle = isVisible => OnCategoryToggled(isVisible, category.Key),
-                VerticalPadding = 0.0f,
-            };
-
-            foreach (var subCategory in PluginSystem.ModificationManager.SubCategoryGroups[category.Key]) {
-                if (subCategory.Key is not null) {
-                    var newHeaderNode = new TreeListHeaderNode {
-                        Size = new Vector2(0.0f, 24.0f),
-                        String = subCategory.Key.Description,
-                    };
-
-                    newCategoryNode.AddNode(newHeaderNode);
-                }
-
-                foreach (var mod in subCategory.OrderBy(modification => modification.Modification.ModificationInfo.DisplayName)) {
-                    newCategoryNode.AddNode(new GameModificationOptionNode {
-                        NodeId = optionIndex++,
-                        Height = 38.0f,
-                        Modification = mod,
-                        IsVisible = true,
-                        OnClick = thisNode => OnOptionClicked((GameModificationOptionNode)thisNode),
-                    });
-                }
-            }
-
-            optionContainerNode.ContentNode.AddCategoryNode(newCategoryNode);
-        }
-
-        RecalculateScrollableAreaSize();
-        UpdateSizes();
-
-        if (PluginSystem.SystemConfig.PersistSearch) {
-            OnSearchBoxInputReceived(PluginSystem.SystemConfig.CurrentSearch);
-            searchBoxNode.String = PluginSystem.SystemConfig.CurrentSearch;
-        }
-    }
-
-    private void BuildOptionsContainer() {
-        optionContainerNode = new ScrollingAreaNode<TreeListNode> {
-            ContentHeight = 1000.0f,
-            ScrollSpeed = 38,
-        };
-        optionContainerNode.AttachNode(mainContainerNode);
-    }
-
-    private void BuildSearchContainer() {
-        searchContainerNode = new HorizontalListNode {
-            Size = new Vector2(ContentSize.X, 28.0f),
-            FitHeight = true,
+            FitWidth = true,
             InitialNodes = [
-                searchBoxNode = new TextInputNode {
-                    Width = ContentSize.X - 32.0f,
-                    PlaceholderString = Strings.SearchPlaceholder,
-                    AutoSelectAll = true,
-                    OnInputReceived = OnSearchBoxInputReceived,
-                    OnFocusLost = () => {
-                        PluginSystem.SystemConfig.CurrentSearch = searchBoxNode.String.ToString();
-                        PluginSystem.SystemConfig.Save();
-                    },
+                new HorizontalListNode { // Search Container
+                    Height = 28.0f,
+                    FitHeight = true,
+                    Alignment = HorizontalListAnchor.Right,
+                    InitialNodes = [
+                        new CheckboxNode { // Persist Search Button
+                            Width = 28.0f,
+                            TextTooltip = "Persist Search Between Sessions",
+                            IsChecked = System.SystemConfig.PersistSearch,
+                            OnClick = value => {
+                                System.SystemConfig.PersistSearch = value;
+                                Task.Run(System.SystemConfig.Save);
+                            },
+                        },
+                        textInputNode = new TextInputNode { // Search Input
+                            Width = ContentSize.X - 28.0f,
+                            PlaceholderString = "Search . . .",
+                            AutoSelectAll = true,
+                            String = System.SystemConfig.PersistSearch ? System.SystemConfig.CurrentSearch : string.Empty,
+                            OnInputReceived = input => {
+                                try {
+                                    searchRegex = new Regex(input.ToString(), RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+                                    System.SystemConfig.CurrentSearch = input.ToString();
+                                    listNode?.OptionsList = GetModifications();
+                                }
+                                catch (RegexParseException) {
+                                    searchRegex = null;
+                                }
+                            },
+                            OnFocusLost = () => {
+                                if (System.SystemConfig.PersistSearch) {
+                                    Task.Run(System.SystemConfig.Save);
+                                }
+                            },
+                        },
+                    ],
                 },
-                new CheckboxNode {
-                    Width = 24.0f,
-                    TextTooltip = "Persist Search Between Sessions",
-                    IsChecked = PluginSystem.SystemConfig.PersistSearch,
-                    OnClick = value => {
-                        PluginSystem.SystemConfig.PersistSearch = value;
-                        PluginSystem.SystemConfig.Save();
-                    },
+                new HorizontalListNode { // Body Container
+                    Height = ContentSize.Y - 28.0f,
+                    FitHeight = true,
+                    InitialNodes = [
+                        new VerticalListNode { // Option Select Container
+                            Width = ContentSize.X * 4.5f / 10.0f,
+                            FitWidth = true,
+                            InitialNodes = [
+                                enabledStateTabBar = new TabBarNode { // Option Category Select
+                                    Height = 28.0f,
+                                },
+                                categoryTabBar = new TabBarNode {
+                                    Height = 28.0f,
+                                },
+                                new ResNode { Height = 12.0f },
+                                listNode = new ListNode<LoadedModification, GameModificationListItemNode> { // Options
+                                    Height = ContentSize.Y - 28.0f - 28.0f - 28.0f - 12.0f,
+                                    OptionsList = GetModifications(),
+                                    NoResultsString = "No Results Match Search",
+                                    OnItemSelected = selectedItem
+                                        => modificationInfoNode?.SetDisplayedGameModification(selectedItem),
+                                },
+                            ],
+                        },
+                        modificationInfoNode = new GameModificationInfoNode { // Option Info Container
+                            Width = ContentSize.X * 5.5f / 10.0f,
+                        },
+                    ],
                 },
             ],
-        };
-        searchContainerNode.AttachNode(mainContainerNode);
-    }
+        }.AttachNode(this);
 
-    private void BuildDescriptionContainer() {
-        descriptionContainerNode = new SimpleComponentNode();
-        descriptionContainerNode.AttachNode(mainContainerNode);
-
-        descriptionTextNode = new TextNode {
-            AlignmentType = AlignmentType.Center,
-            TextFlags = TextFlags.WordWrap | TextFlags.MultiLine,
-            FontSize = 14,
-            LineSpacing = 22,
-            FontType = FontType.Axis,
-            String = Strings.SelectionPrompt,
-            TextColor = ColorHelper.GetColor(1),
-        };
-        descriptionTextNode.AttachNode(descriptionContainerNode);
-
-        descriptionImageTextNode = new TextNode {
-            AlignmentType = AlignmentType.TopLeft,
-            TextFlags = TextFlags.WordWrap | TextFlags.MultiLine,
-            FontSize = 14,
-            LineSpacing = 22,
-            FontType = FontType.Axis,
-            TextColor = ColorHelper.GetColor(1),
-        };
-        descriptionImageTextNode.AttachNode(descriptionContainerNode);
-
-        descriptionImageFrame = new SimpleComponentNode();
-        descriptionImageFrame.AttachNode(descriptionContainerNode);
-
-        descriptionImageNode = new ImGuiImageNode {
-            FitTexture = true,
-            ShowClickableCursor = true,
-        };
-
-        descriptionImageNode.AddEvent(AtkEventType.MouseClick, () => {
-            if (!isImageEnlarged) {
-                descriptionImageNode.Scale = new Vector2(2.5f, 2.5f);
-            }
-            else {
-                if (isImageHovered) {
-                    descriptionImageNode.Scale = new Vector2(1.05f, 1.05f);
-                }
-                else {
-                    descriptionImageNode.Scale = Vector2.One;
-                }
-            }
-
-            isImageEnlarged = !isImageEnlarged;
+        enabledStateTabBar.AddTab("All", () => {
+            selectedTab = BrowserSelectedTab.All;
+            Task.Run(UpdateListNode);
         });
 
-        descriptionImageNode.AddEvent(AtkEventType.MouseOver, () => {
-            if (isImageEnlarged) return;
-
-            descriptionImageNode.Scale = new Vector2(1.05f, 1.05f);
-            isImageHovered = true;
+        enabledStateTabBar.AddTab("Enabled", () => {
+            selectedTab = BrowserSelectedTab.Enabled;
+            Task.Run(UpdateListNode);
         });
 
-        descriptionImageNode.AddEvent(AtkEventType.MouseOut, () => {
-            if (isImageEnlarged) return;
-
-            descriptionImageNode.Scale = Vector2.One;
-            isImageHovered = false;
+        enabledStateTabBar.AddTab("Disabled", () => {
+            selectedTab = BrowserSelectedTab.Disabled;
+            Task.Run(UpdateListNode);
         });
-        descriptionImageNode.AttachNode(descriptionImageFrame);
 
-        borderNineGridNode = new BorderNineGridNode {
-            Alpha = 125,
-            Offsets = new Vector4(40.0f),
-        };
-        borderNineGridNode.AttachNode(descriptionImageNode);
-    }
+        categoryTabBar.AddTab("All", () => {
+            selectedCategory = BrowserSelectedCategory.All;
+            Task.Run(UpdateListNode);
+        });
 
-    private void OnCategoryToggled(bool isVisible, ModificationType type) {
-        var selectionCategory = selectedOption?.Modification.Modification.ModificationInfo.Type;
-        if (selectionCategory is not null) {
-            if (!isVisible && selectionCategory == type) {
-                ClearSelection();
-            }
+        categoryTabBar.AddTab("Window", () => {
+            selectedCategory = BrowserSelectedCategory.Window;
+            Task.Run(UpdateListNode);
+        }, "New Windows or Overlays");
+
+        categoryTabBar.AddTab("UI", () => {
+            selectedCategory = BrowserSelectedCategory.Ui;
+            Task.Run(UpdateListNode);
+        }, "Modifies existing game UI");
+
+        categoryTabBar.AddTab("Behavior", () => {
+            selectedCategory = BrowserSelectedCategory.Behavior;
+            Task.Run(UpdateListNode);
+        }, "Changes how parts of the game work");
+
+        modificationInfoNode.AddInteractionNode(addon);
+
+        if (System.SystemConfig.PersistSearch) {
+            textInputNode?.String = System.SystemConfig.CurrentSearch;
         }
+        return;
 
-        RecalculateScrollableAreaSize();
-    }
-
-    private void OnSearchBoxInputReceived(ReadOnlySeString searchTerm) {
-        List<GameModificationOptionNode> validOptions = [];
-
-        foreach (var option in optionContainerNode.ContentNode.CategoryNodes.SelectMany(category => category.GetNodes<GameModificationOptionNode>())) {
-            var isTarget = option.ModificationInfo.IsMatch(searchTerm.ToString());
-            option.IsVisible = isTarget;
-
-            if (isTarget) {
-                validOptions.Add(option);
-            }
-        }
-
-        foreach (var headerNode in optionContainerNode.ContentNode.CategoryNodes.SelectMany(category => category.HeaderNodes)) {
-            headerNode.IsVisible = searchTerm.ToString() == string.Empty;
-        }
-
-        foreach (var categoryNode in optionContainerNode.ContentNode.CategoryNodes) {
-            categoryNode.IsVisible = validOptions.Any(option => option.ModificationInfo.Type.Description == categoryNode.String.ToString());
-            categoryNode.RecalculateLayout();
-        }
-
-        if (validOptions.All(option => option != selectedOption)) {
-            ClearSelection();
-        }
-
-        optionContainerNode.ContentNode.RefreshLayout();
-        RecalculateScrollableAreaSize();
-    }
-
-    private void OnOptionClicked(GameModificationOptionNode option) {
-        ClearSelection();
-
-        selectedOption = option;
-        selectedOption.IsSelected = true;
-
-        if (selectedOption.Modification.Modification.ImageName is { } assetName) {
-            Task.Run(() => LoadModuleImage(assetName));
-
-            descriptionImageFrame.IsVisible = true;
-            descriptionImageTextNode.IsVisible = true;
-            descriptionTextNode.IsVisible = false;
-            descriptionImageTextNode.String = selectedOption.Modification.Modification.ModificationInfo.Description;
-        }
-        else {
-            descriptionImageFrame.IsVisible = false;
-            descriptionImageTextNode.IsVisible = false;
-            descriptionTextNode.IsVisible = true;
-            descriptionTextNode.String = selectedOption.Modification.Modification.ModificationInfo.Description;
+        void UpdateListNode() {
+            listNode.OptionsList = GetModifications();
+            listNode.ResetScroll();
+            listNode.ClearSelection();
+            modificationInfoNode.SetDisplayedGameModification(null);
         }
     }
 
-    private async void LoadModuleImage(string assetName) {
-        try {
-            var texture = await Services.TextureProvider.GetFromFile(Assets.GetAssetPath(assetName)).RentAsync();
-            descriptionImageNode.LoadTexture(texture);
-            descriptionImageNode.TextureSize = texture.Size;
+    private List<LoadedModification> GetModifications() =>
+        System.ModificationManager.LoadedModifications
+            .Where(ShouldShowByLoadedState)
+            .Where(ShouldShowByCategory)
+            .Where(loadedModification => searchRegex is null || loadedModification.Modification.ModificationInfo.IsMatch(searchRegex))
+            .OrderByDescending(loadedModification => loadedModification.Modification.ModificationInfo.Type is ModificationType.Debug)
+            .ThenBy(loadedModification => {
+                var isSeasonalGameMod = loadedModification.Modification.ModificationInfo.Type is ModificationType.Seasonal;
+                return DateTime.Now.IsSeasonalEvent ? !isSeasonalGameMod : isSeasonalGameMod;
+            })
+            .ThenBy(loadedModification => loadedModification.Modification.ModificationInfo.DisplayName)
+            .ToList();
 
-            if (texture.Width > texture.Height) {
-                var ratio = texture.Width / descriptionImageFrame.Width;
-                var multiplier = 1 / ratio;
+    private bool ShouldShowByCategory(LoadedModification loadedModification) => selectedCategory switch {
+        BrowserSelectedCategory.All
+            => true,
 
-                descriptionImageNode.Width = descriptionImageFrame.Width;
-                descriptionImageNode.Height = texture.Height * multiplier;
-                descriptionImageNode.Y = (descriptionImageFrame.Width - descriptionImageNode.Height) / 2.0f;
-                descriptionImageNode.X = 0.0f;
-            }
-            else {
-                var ratio = texture.Height / descriptionImageFrame.Width;
-                var multiplier = 1 / ratio;
+        BrowserSelectedCategory.Window when loadedModification is {
+            Modification.ModificationInfo.Type: ModificationType.NewWindow or ModificationType.NewOverlay or ModificationType.Seasonal,
+        } => true,
 
-                descriptionImageNode.Height = descriptionImageFrame.Width;
-                descriptionImageNode.Width = texture.Width * multiplier;
-                descriptionImageNode.X = (descriptionImageFrame.Width - descriptionImageNode.Width) / 2.0f;
-                descriptionImageNode.Y = 0.0f;
-            }
+        BrowserSelectedCategory.Ui when loadedModification is {
+            Modification.ModificationInfo.Type: ModificationType.UserInterface or ModificationType.Seasonal,
+        } => true,
 
-            descriptionImageNode.Origin = descriptionImageNode.Size / 2.0f;
+        BrowserSelectedCategory.Behavior when loadedModification is {
+            Modification.ModificationInfo.Type: ModificationType.GameBehavior or ModificationType.Seasonal,
+        } => true,
 
-            borderNineGridNode.Position = new Vector2(-16.0f, -16.0f);
-            borderNineGridNode.Size = descriptionImageNode.Size + new Vector2(32.0f, 32.0f);
-        }
-        catch (Exception e) {
-            Services.PluginLog.Error(e, "Exception while loading Module Image");
-        }
-    }
+        _ => false,
+    };
 
-    private void ClearSelection() {
-        selectedOption = null;
-        foreach (var node in optionContainerNode.ContentNode.CategoryNodes.SelectMany(category => category.GetNodes<GameModificationOptionNode>())) {
-            node.IsSelected = false;
-            node.IsHovered = false;
-        }
+    private bool ShouldShowByLoadedState(LoadedModification loadedModification) => selectedTab switch {
+        BrowserSelectedTab.All
+            => true,
 
-        descriptionTextNode.IsVisible = true;
-        descriptionTextNode.String = Strings.SelectionPrompt;
+        BrowserSelectedTab.Enabled when loadedModification is {
+            State: LoadedState.Enabled,
+        } => true,
 
-        descriptionImageFrame.Scale = Vector2.One;
+        BrowserSelectedTab.Disabled when loadedModification is {
+            State: LoadedState.Disabled,
+        } => true,
 
-        descriptionImageFrame.IsVisible = false;
-        descriptionImageTextNode.IsVisible = false;
-    }
+        _ => false,
+    };
 
-    private void RecalculateScrollableAreaSize() {
-        optionContainerNode.ContentHeight = optionContainerNode.ContentNode.CategoryNodes.Sum(node => node.Height) + 20.0f;
-    }
+    public unsafe void UpdateDisabledState() {
+        listNode?.Update();
 
-    public void UpdateDisabledState() {
-        if (IsOpen) {
-            foreach (var modificationOptionNode in optionContainerNode.ContentNode.CategoryNodes.SelectMany(category => category.GetNodes<GameModificationOptionNode>())) {
-                modificationOptionNode.UpdateDisabledState();
-            }
-        }
-    }
-
-    private void UpdateSizes() {
-        searchContainerNode.Size = new Vector2(mainContainerNode.Width, 28.0f);
-
-        optionContainerNode.Position = new Vector2(0.0f, searchContainerNode.Height + ItemPadding);
-        optionContainerNode.Size = new Vector2(mainContainerNode.Width / 2.0f - ItemPadding, mainContainerNode.Height - searchContainerNode.Height - ItemPadding);
-
-        descriptionContainerNode.Position = new Vector2(mainContainerNode.Width / 2.0f, searchContainerNode.Height + ItemPadding);
-        descriptionContainerNode.Size = new Vector2(mainContainerNode.Width / 2.0f, mainContainerNode.Height - searchContainerNode.Height - ItemPadding);
-
-        descriptionImageFrame.Size = new Vector2(descriptionContainerNode.Width * 0.8f, descriptionContainerNode.Width * 0.8f);
-        descriptionImageFrame.Position = new Vector2(descriptionContainerNode.Width * 0.2f / 2.0f, descriptionContainerNode.Width * 0.2f / 4.0f);
-
-        descriptionImageTextNode.Size = new Vector2(descriptionContainerNode.Width - 16.0f, descriptionContainerNode.Height - descriptionImageFrame.Y - descriptionImageFrame.Height - 22.0f);
-        descriptionImageTextNode.Position = new Vector2(8.0f, descriptionImageFrame.Position.Y + descriptionImageFrame.Height + 16.0f);
-
-        descriptionTextNode.Size = descriptionContainerNode.Size - new Vector2(16.0f, 16.0f);
-        descriptionTextNode.Position = new Vector2(8.0f, 8.0f);
-
-        foreach (var node in optionContainerNode.ContentNode.CategoryNodes) {
-            node.Width = optionContainerNode.ContentNode.Width;
+        if (InternalAddon is not null) {
+            InternalAddon->UpdateCollisionNodeList(false);
         }
     }
 }

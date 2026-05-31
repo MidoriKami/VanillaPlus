@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Threading.Tasks;
 using VanillaPlus.Classes;
 using VanillaPlus.Features.DutyLootPreview.Data;
 using VanillaPlus.Enums;
@@ -21,11 +22,11 @@ public class DutyLootPreview : GameModification {
     private DutyLootInDutyUiController? inDutyUiController;
     private DutyLootPreviewAddon? addonDutyLoot;
 
-    public override void OnEnable() {
-        config = DutyLootPreviewConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await DutyLootPreviewConfig.Load();
 
         dataLoader = new DutyLootDataLoader();
-        dataLoader.Enable();
+        await dataLoader.EnableAsync();
 
         addonDutyLoot = new DutyLootPreviewAddon {
             InternalName = "DutyLootPreview",
@@ -39,26 +40,33 @@ public class DutyLootPreview : GameModification {
             DataLoader = dataLoader,
             OnButtonClicked = addonDutyLoot.Toggle,
         };
-        journalUiController.OnEnable();
 
         inDutyUiController = new DutyLootInDutyUiController {
             DataLoader = dataLoader,
             OnButtonClicked = addonDutyLoot.Toggle,
         };
-        inDutyUiController.OnEnable();
+
+        await Services.Framework.Run(() => {
+            journalUiController.Enable();
+            inDutyUiController.Enable();
+        });
     }
 
-    public override void OnDisable() {
-        journalUiController?.OnDisable();
-        journalUiController = null;
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            journalUiController?.Dispose();
+            inDutyUiController?.Dispose();
+        });
 
-        inDutyUiController?.OnDisable();
+        journalUiController = null;
         inDutyUiController = null;
 
-        addonDutyLoot?.Dispose();
-        addonDutyLoot = null;
+        await Task.WhenAll(
+            addonDutyLoot?.DisposeAsync().AsTask() ?? Task.CompletedTask,
+            dataLoader?.DisposeAsync().AsTask() ?? Task.CompletedTask
+        );
 
-        dataLoader?.Dispose();
+        addonDutyLoot = null;
         dataLoader = null;
 
         config = null;

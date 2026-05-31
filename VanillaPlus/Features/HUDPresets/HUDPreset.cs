@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
@@ -10,7 +11,7 @@ using VanillaPlus.NativeElements.Addons;
 
 namespace VanillaPlus.Features.HUDPresets;
 
-public unsafe class HUDPresets : GameModification {
+public class HUDPresets : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_HUDPresets,
         Description = Strings.ModificationDescription_HUDPresets,
@@ -31,7 +32,7 @@ public unsafe class HUDPresets : GameModification {
 
     private RenameAddon? renameAddon;
 
-    public override void OnEnable() {
+    public override async Task OnEnableAsync() {
         renameAddon = new RenameAddon {
             Size = new Vector2(250.0f, 150.0f),
             InternalName = "PresetNameWindow",
@@ -39,16 +40,27 @@ public unsafe class HUDPresets : GameModification {
             DepthLayer = 6,
         };
 
-        hudLayoutController = new AddonController {
-            AddonName = "_HudLayoutWindow",
-            OnSetup = SetupHudLayoutWindow,
-            OnUpdate = UpdateHudLayoutWindow,
-            OnFinalize = FinalizeHudLayoutWindow,
-        };
-        hudLayoutController.Enable();
+        unsafe {
+            hudLayoutController = new AddonController {
+                AddonName = "_HudLayoutWindow",
+                OnSetup = SetupHudLayoutWindow,
+                OnUpdate = UpdateHudLayoutWindow,
+                OnFinalize = FinalizeHudLayoutWindow,
+            };
+        }
+
+        await Services.Framework.Run(hudLayoutController.Enable);
     }
 
-    private void SetupHudLayoutWindow(AtkUnitBase* addon) {
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => hudLayoutController?.Dispose());
+        hudLayoutController = null;
+
+        await Task.WhenAll(renameAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        renameAddon = null;
+    }
+
+    private unsafe void SetupHudLayoutWindow(AtkUnitBase* addon) {
         addon->Resize(addon->Size + new Vector2(0.0f, 95.0f));
 
         labelNode = new CategoryTextNode {
@@ -113,7 +125,7 @@ public unsafe class HUDPresets : GameModification {
         saveButtonNode.AttachNode(addon);
     }
 
-    private void UpdateHudLayoutWindow(AtkUnitBase* addon) {
+    private unsafe void UpdateHudLayoutWindow(AtkUnitBase* addon) {
         if (saveButtonNode is not null) {
             var mainSaveButton = addon->GetComponentButtonById(16);
             if (mainSaveButton is not null) {
@@ -131,7 +143,7 @@ public unsafe class HUDPresets : GameModification {
         }
     }
 
-    private void FinalizeHudLayoutWindow(AtkUnitBase* addon) {
+    private unsafe void FinalizeHudLayoutWindow(AtkUnitBase* addon) {
         addon->Resize(addon->Size - new Vector2(0.0f, 95.0f));
 
         presetDropdownNode?.Dispose();
@@ -153,15 +165,7 @@ public unsafe class HUDPresets : GameModification {
         labelNode = null;
     }
 
-    public override void OnDisable() {
-        renameAddon?.Dispose();
-        renameAddon = null;
-
-        hudLayoutController?.Dispose();
-        hudLayoutController = null;
-    }
-
-    private void LoadPreset() {
+    private unsafe void LoadPreset() {
         if (presetDropdownNode?.SelectedOption is null) return;
         if (presetDropdownNode.SelectedOption == HUDPresetManager.DefaultOption) return;
 

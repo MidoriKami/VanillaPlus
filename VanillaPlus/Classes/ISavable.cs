@@ -1,5 +1,7 @@
-﻿namespace VanillaPlus.Classes;
+﻿using System.Threading.Tasks;
+
+namespace VanillaPlus.Classes;
 
 public interface ISavable {
-    void Save();
+    Task Save();
 }

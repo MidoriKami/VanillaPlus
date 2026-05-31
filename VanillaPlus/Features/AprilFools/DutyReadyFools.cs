@@ -1,4 +1,5 @@
-﻿using Dalamud.Plugin.Services;
+﻿using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 
 namespace VanillaPlus.Features.AprilFools;
@@ -13,11 +14,17 @@ public unsafe class DutyReadyFools : FoolsModule {
     public override bool IsEnabledByConfig
         => Config.DutyPop;
 
-    protected override void OnEnable()
-        => Services.Framework.Update += OnFrameworkUpdate;
+    protected override Task OnEnable() {
+        Services.Framework.Update += OnFrameworkUpdate;
 
-    protected override void OnDisable()
-        => Services.Framework.Update -= OnFrameworkUpdate;
+        return Task.CompletedTask;
+    }
+
+    protected override Task OnDisable() {
+        Services.Framework.Update -= OnFrameworkUpdate;
+
+        return Task.CompletedTask;
+    }
 
     private void OnFrameworkUpdate(IFramework framework) {
         if (lastAfkState != IsPlayerAfk) {

@@ -89,6 +89,6 @@ public static class AddonLifecycleExtensions {
                 break;
         }
 
-        Services.PluginLog.Information(logString.Trim());
+        Services.PluginLog.InternalInfo(logString.Trim());
     }
 }

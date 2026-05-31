@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Game.Addon.Events;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
@@ -12,7 +13,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.DraggableWindowDeadSpace;
 
-public unsafe class DraggableWindowDeadSpace : GameModification {
+public class DraggableWindowDeadSpace : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_DraggableWindowDeadSpace,
         Description = Strings.ModificationDescription_DraggableWindowDeadSpace,
@@ -26,28 +27,39 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
     private Vector2 dragStart = Vector2.Zero;
     private bool isDragging;
 
-    public override void OnEnable() {
+    public override async Task OnEnableAsync() {
         windowInteractionNodes = [];
 
-        cursorEventListener = new ViewportEventListener(OnViewportEvent);
+        await Services.Framework.Run(() => {
+            unsafe {
+                return cursorEventListener = new ViewportEventListener(OnViewportEvent);
+            }
+        });
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, string.Empty, OnAddonSetup);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, string.Empty, OnAddonFinalize);
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, string.Empty, OnAddonSetup);
+            Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, string.Empty, OnAddonFinalize);
+        });
     }
 
-    public override void OnDisable() {
-        cursorEventListener?.Dispose();
-        cursorEventListener = null;
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            Services.AddonLifecycle.UnregisterListener(OnAddonSetup, OnAddonFinalize);
 
-        foreach (var (_, node) in windowInteractionNodes ?? []) {
-            node.Dispose();
-        }
+            cursorEventListener?.Dispose();
+
+            foreach (var (_, node) in windowInteractionNodes ?? []) {
+                node.Dispose();
+            }
+        });
+
+        cursorEventListener = null;
 
         windowInteractionNodes?.Clear();
         windowInteractionNodes = null;
     }
 
-    private void OnAddonSetup(AddonEvent type, AddonArgs args) {
+    private unsafe void OnAddonSetup(AddonEvent type, AddonArgs args) {
         if (!Services.ClientState.IsLoggedIn) return;
         if (windowInteractionNodes is null) return;
 
@@ -108,7 +120,7 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         }
     }
 
-    private void OnWindowMouseDown(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
+    private unsafe void OnWindowMouseDown(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
         var targetNode = (AtkResNode*)atkEvent->Target;
         var targetAddon = RaptureAtkUnitManager.Instance()->GetAddonByNode(targetNode);
 
@@ -132,7 +144,7 @@ public unsafe class DraggableWindowDeadSpace : GameModification {
         }
     }
 
-    private void OnViewportEvent(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
+    private unsafe void OnViewportEvent(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
         if (eventType is not (AtkEventType.MouseMove or AtkEventType.MouseUp)) return;
 
         var targetAddon = RaptureAtkUnitManager.Instance()->GetAddonByNode(atkEvent->Node);

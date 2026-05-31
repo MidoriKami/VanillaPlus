@@ -14,7 +14,7 @@ using OperationCanceledException = System.OperationCanceledException;
 
 namespace VanillaPlus.Features.MiniCactpotHelper;
 
-public unsafe class MiniCactpotHelper : GameModification {
+public class MiniCactpotHelper : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_MiniCactpotHelper,
         Description = Strings.ModificationDescription_MiniCactpotHelper,
@@ -26,7 +26,7 @@ public unsafe class MiniCactpotHelper : GameModification {
     private AddonController<AddonLotteryDaily>? lotteryDailyController;
 
     private MiniCactpotHelperConfig? config;
-    private ConfigAddon? configWindow;
+    private ConfigAddon? configAddon;
     private PerfectCactpot? perfectCactpot;
 
     private int[]? boardState;
@@ -36,51 +36,54 @@ public unsafe class MiniCactpotHelper : GameModification {
 
     public override string ImageName => "MiniCactpotHelper.png";
 
-    public override void OnEnable() {
+    public override async Task OnEnableAsync() {
         boardState = [];
 
         perfectCactpot = new PerfectCactpot();
 
-        config = MiniCactpotHelperConfig.Load();
+        config = await MiniCactpotHelperConfig.Load();
 
-        configWindow = new ConfigAddon {
+        configAddon = new ConfigAddon {
             InternalName = "MiniCactpotConfig",
             Title = Strings.Title_MiniCactpotConfig,
             Config = config,
         };
 
-        configWindow.AddCategory(Strings.ConfigCategory_Animations)
+        configAddon.AddCategory(Strings.ConfigCategory_Animations)
             .AddCheckbox(Strings.ConfigLabel_EnableAnimations, nameof(config.EnableAnimations));
 
-        configWindow.AddCategory(Strings.Icon)
+        configAddon.AddCategory(Strings.Icon)
             .AddMultiSelectIcon(Strings.Icon, nameof(config.IconId), true, 61332, 90452, 234008);
 
-        configWindow.AddCategory(Strings.ConfigCategory_Colors)
+        configAddon.AddCategory(Strings.ConfigCategory_Colors)
             .AddColorEdit(Strings.ConfigLabel_ButtonColor, nameof(config.ButtonColor), KnownColor.White.Vector() with { W = 0.8f })
             .AddColorEdit(Strings.ConfigLabel_LaneColor, nameof(config.LaneColor), KnownColor.White.Vector());
 
         config.OnSave += ApplyConfigStyle;
 
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAction = configAddon.Toggle;
 
-        lotteryDailyController = new AddonController<AddonLotteryDaily> {
-            AddonName = "LotteryDaily",
-            OnSetup = SetupLotteryDaily,
-            OnFinalize = FinalizeLotteryDaily,
-            OnUpdate = UpdateLotteryDaily,
-        };
-        lotteryDailyController.Enable();
+        unsafe {
+            lotteryDailyController = new AddonController<AddonLotteryDaily> {
+                AddonName = "LotteryDaily",
+                OnSetup = SetupLotteryDaily,
+                OnFinalize = FinalizeLotteryDaily,
+                OnUpdate = UpdateLotteryDaily,
+            };
+        }
+
+        await Services.Framework.Run(lotteryDailyController.Enable);
     }
 
-    public override void OnDisable() {
+    public override async Task OnDisableAsync() {
         gameTask?.Dispose();
         gameTask = null;
 
-        configWindow?.Dispose();
-        configWindow = null;
-
-        lotteryDailyController?.Dispose();
+        await Services.Framework.Run(() => lotteryDailyController?.Dispose());
         lotteryDailyController = null;
+
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
 
         config = null;
     }
@@ -90,9 +93,9 @@ public unsafe class MiniCactpotHelper : GameModification {
         gameGrid?.UpdateButtonStyle(config);
     }
 
-    private void SetupLotteryDaily(AddonLotteryDaily* addon) {
+    private unsafe void SetupLotteryDaily(AddonLotteryDaily* addon) {
         if (config is null) return;
-        if (configWindow is null) return;
+        if (configAddon is null) return;
         if (addon is null) return;
 
         var buttonContainerNode = addon->GetNodeById(8);
@@ -108,12 +111,12 @@ public unsafe class MiniCactpotHelper : GameModification {
             Size = new Vector2(32.0f, 32.0f),
             Icon = ButtonIcon.GearCog,
             TextTooltip = Strings.Tooltip_ConfigEzMiniCactpot,
-            OnClick = () => configWindow.Toggle(),
+            OnClick = () => configAddon.Toggle(),
         };
         configButton.AttachNode(buttonContainerNode);
     }
 
-    private void UpdateLotteryDaily(AddonLotteryDaily* addon) {
+    private unsafe void UpdateLotteryDaily(AddonLotteryDaily* addon) {
         if (perfectCactpot is null) return;
 
         var newState = Enumerable.Range(0, 9).Select(i => addon->GameNumbers[i]).ToArray();
@@ -148,14 +151,14 @@ public unsafe class MiniCactpotHelper : GameModification {
             }
             catch (OperationCanceledException) { }
             catch (Exception ex) {
-                Services.PluginLog.Error(ex, "Updater has crashed");
+                Services.PluginLog.Exception(ex);
             }
         }
 
         boardState = newState;
     }
 
-    private void FinalizeLotteryDaily(AddonLotteryDaily* addon) {
+    private unsafe void FinalizeLotteryDaily(AddonLotteryDaily* addon) {
         gameGrid?.Dispose();
         gameGrid = null;
 

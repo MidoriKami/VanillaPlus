@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit;
 using KamiToolKit.Nodes;
@@ -39,6 +40,6 @@ public class IntSliderConfig : BaseConfigEntry {
     private void OnOptionChanged(int newValue) {
         InitialValue = newValue;
         MemberInfo.SetValue(Config, newValue);
-        Config.Save();
+        Task.Run(Config.Save);
     }
 }

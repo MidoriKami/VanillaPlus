@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VanillaPlus.Resources {
+namespace Resources {
     using System;
     
     
@@ -1019,7 +1019,7 @@ namespace VanillaPlus.Resources {
         ///   Looks up a localized string similar to No loot data found for this duty.
         ///
         ///Data is provided by a external source and may be incomplete.
-        ///        
+        ///
         ///Data will be updated as it becomes available, do not request data updates..
         /// </summary>
         internal static string DutyLoot_NoItemsMessage {
@@ -2456,6 +2456,15 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adds a button in the enemy list to reset a Striking Dummy&apos;s enmity..
+        /// </summary>
+        internal static string ModificationDescription_ResetDummyEnmity {
+            get {
+                return ResourceManager.GetString("ModificationDescription_ResetDummyEnmity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatically resets the inventory to the first tab when opened..
         /// </summary>
         internal static string ModificationDescription_ResetInventoryTab {
@@ -3108,6 +3117,15 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset Dummy Enmity.
+        /// </summary>
+        internal static string ModificationDisplay_ResetDummyEnmity {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_ResetDummyEnmity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset Inventory Tab.
         /// </summary>
         internal static string ModificationDisplay_ResetInventoryTab {
@@ -3324,7 +3342,7 @@ namespace VanillaPlus.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Custom Native Windows.
+        ///   Looks up a localized string similar to Custom Native Window.
         /// </summary>
         internal static string ModificationType_NewWindow {
             get {
@@ -3689,6 +3707,15 @@ namespace VanillaPlus.Resources {
         internal static string RecentlyLootedWindow_Title {
             get {
                 return ResourceManager.GetString("RecentlyLootedWindow_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [VanillaPlus] Reset Enmity.
+        /// </summary>
+        internal static string ResetDummyEnmity_ResetEnmityToolTip {
+            get {
+                return ResourceManager.GetString("ResetDummyEnmity_ResetEnmityToolTip", resourceCulture);
             }
         }
         

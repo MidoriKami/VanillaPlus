@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Dalamud.Game.Gui;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -14,7 +15,7 @@ namespace VanillaPlus.Features.DutyLootPreview.Data;
 /// Loads duty loot data for the "active" duty.
 /// Listens to game events and manages async loading.
 /// </summary>
-public class DutyLootDataLoader : IDisposable {
+public class DutyLootDataLoader : IAsyncDisposable {
     public event Action? OnChanged;
 
     public bool IsLoading => dutyLootDataCache.State == CacheState.Loading;
@@ -27,36 +28,43 @@ public class DutyLootDataLoader : IDisposable {
     private AddonController<AddonContentsFinder>? contentsFinder;
     private AddonController<AddonRaidFinder>? raidFinder;
 
-    public unsafe void Enable() {
+    public async Task EnableAsync() {
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
         Services.GameGui.AgentUpdate += OnAgentUpdate;
 
-        contentsFinder = new AddonController<AddonContentsFinder> {
-            AddonName = "ContentsFinder",
-            OnSetup = OnContentsFinderChanged,
-            OnRefresh = OnContentsFinderChanged,
-            OnFinalize = OnContentsFinderChanged,
-        };
-        contentsFinder.Enable();
+        unsafe {
+            contentsFinder = new AddonController<AddonContentsFinder> {
+                AddonName = "ContentsFinder",
+                OnSetup = OnContentsFinderChanged,
+                OnRefresh = OnContentsFinderChanged,
+                OnFinalize = OnContentsFinderChanged,
+            };
 
-        raidFinder = new AddonController<AddonRaidFinder> {
-            AddonName = "RaidFinder",
-            OnSetup = OnRaidFinderChanged,
-            OnRefresh = OnRaidFinderChanged,
-            OnFinalize = OnRaidFinderChanged,
-        };
-        raidFinder.Enable();
+            raidFinder = new AddonController<AddonRaidFinder> {
+                AddonName = "RaidFinder",
+                OnSetup = OnRaidFinderChanged,
+                OnRefresh = OnRaidFinderChanged,
+                OnFinalize = OnRaidFinderChanged,
+            };
+        }
+
+        await Services.Framework.Run(() => {
+            contentsFinder.Enable();
+            raidFinder.Enable();
+        });
 
         dutyLootDataCache.OnChanged += OnCacheChanged;
 
         RefreshActiveDuty();
     }
 
-    public void Dispose() {
-        contentsFinder?.Dispose();
-        contentsFinder = null;
+    public async ValueTask DisposeAsync() {
+        await Services.Framework.Run(() => {
+            contentsFinder?.Dispose();
+            raidFinder?.Dispose();
+        });
 
-        raidFinder?.Dispose();
+        contentsFinder = null;
         raidFinder = null;
 
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;

@@ -1,130 +1,106 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace VanillaPlus.Utilities;
 
 public static class FileHelpers {
-    private static readonly Dictionary<string, Task> FileSavingTasks = [];
-
     private static readonly JsonSerializerOptions SerializerOptions = new() {
         WriteIndented = true,
         IncludeFields = true,
     };
 
-    public static T LoadFile<T>(string filePath, T? defaultObject = null) where T : class, new() {
+    public static async Task<T> LoadFile<T>(string filePath, T? defaultObject = null) where T : class, new() {
         var fileInfo = new FileInfo(filePath);
         if (fileInfo is { Exists: true }) {
             try {
-                var fileText = Services.ReliableFileStorage.ReadAllTextAsync(fileInfo.FullName).Result;
+                var fileText = await Services.ReliableFileStorage.ReadAllTextAsync(fileInfo.FullName);
                 var dataObject = JsonSerializer.Deserialize<T>(fileText, SerializerOptions);
 
                 // If deserialize result is null, create a new instance instead and save it.
                 if (dataObject is null) {
                     dataObject = defaultObject ?? new T();
-                    SaveFile(dataObject, filePath);
+                    await SaveFile(dataObject, filePath);
                 }
 
                 return dataObject;
             }
             catch (Exception e) {
                 // If there is any kind of error loading the file, generate a new one instead and save it.
-                Services.PluginLog.Error(e, $"Error trying to load file {filePath}, creating a new one instead.");
+                Services.PluginLog.InternalError(e, $"Error trying to load file {filePath}, creating a new one instead.");
 
-                SaveFile(defaultObject ?? new T(), filePath);
+                await SaveFile(defaultObject ?? new T(), filePath);
             }
         }
 
         var newFile = defaultObject ?? new T();
-        SaveFile(newFile, filePath);
+        await SaveFile(newFile, filePath);
 
         return newFile;
     }
 
-    public static void SaveFile<T>(T? file, string filePath) {
+    public static async Task SaveFile<T>(T? file, string filePath) {
         try {
             if (file is null) {
-                Services.PluginLog.Error("Null file provided.");
+                Services.PluginLog.InternalError("Null file provided.");
                 return;
             }
 
             var fileText = JsonSerializer.Serialize(file, file.GetType(), SerializerOptions);
-
-            if (FileSavingTasks.TryGetValue(filePath, out var task)) {
-                if (task.IsCompleted) {
-                    FileSavingTasks[filePath] = Services.ReliableFileStorage.WriteAllTextAsync(filePath, fileText);
-                }
-                else if (task.IsFaulted) {
-                    throw task.Exception;
-                }
-                else if (task.Status is TaskStatus.Running) {
-                    Services.PluginLog.Debug($"File save for {filePath} in progress, trying again.");
-                    Services.Framework.RunOnTick(() => {
-                        SaveFile(file, filePath); // try again
-                    });
-                }
-            }
-            else {
-                FileSavingTasks[filePath] = Services.ReliableFileStorage.WriteAllTextAsync(filePath, fileText);
-            }
+            await Services.ReliableFileStorage.WriteAllTextAsync(filePath, fileText);
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, $"Error trying to save file {filePath}");
+            Services.PluginLog.InternalError(e, $"Error trying to save file {filePath}");
         }
     }
 
-    public static byte[] LoadBinaryFile(int length, string filePath) {
+    public static async Task<byte[]> LoadBinaryFile(int length, string filePath) {
         var fileInfo = new FileInfo(filePath);
         if (fileInfo is { Exists: true }) {
             try {
-                var dataObject = Services.ReliableFileStorage.ReadAllBytesAsync(fileInfo.FullName).Result;
+                var dataObject = await Services.ReliableFileStorage.ReadAllBytesAsync(fileInfo.FullName);
 
                 // If deserialize result is null, create a new instance instead and save it.
                 if (dataObject.Length != length) {
                     dataObject = new byte[length];
-                    SaveFile(dataObject, filePath);
+                    await SaveFile(dataObject, filePath);
                 }
 
                 return dataObject;
             }
             catch (Exception e) {
                 // If there is any kind of error loading the file, generate a new one instead and save it.
-                Services.PluginLog.Error(e, $"Error trying to load file {filePath}, creating a new one instead.");
+                Services.PluginLog.InternalError(e, $"Error trying to load file {filePath}, creating a new one instead.");
 
-                SaveFile(new byte[length], filePath);
+                await SaveFile(new byte[length], filePath);
             }
         }
 
         var newFile = new byte[length];
-        SaveFile(newFile, filePath);
+        await SaveFile(newFile, filePath);
 
         return newFile;
     }
 
-    public static void SaveBinaryFile(byte[] data, string filePath) {
+    public static async Task SaveBinaryFile(byte[] data, string filePath) {
         try {
-            if (FileSavingTasks.TryGetValue(filePath, out var task)) {
-                if (task.IsCompleted) {
-                    FileSavingTasks[filePath] = Services.ReliableFileStorage.WriteAllBytesAsync(filePath, data);
-                }
-                else if (task.IsFaulted) {
-                    throw task.Exception;
-                }
-                else if (task.Status is TaskStatus.Running) {
-                    Services.PluginLog.Debug($"File save for {filePath} in progress, trying again.");
-                    Services.Framework.RunOnTick(() => {
-                        SaveBinaryFile(data, filePath); // try again
-                    });
-                }
-            }
-            else {
-                FileSavingTasks[filePath] = Services.ReliableFileStorage.WriteAllBytesAsync(filePath, data);
-            }
+            await Services.ReliableFileStorage.WriteAllBytesAsync(filePath, data);
         }
         catch (Exception e) {
-            Services.PluginLog.Error(e, $"Error trying to save binary data {filePath}");
+            Services.PluginLog.InternalError(e, $"Error trying to save binary data {filePath}");
+        }
+    }
+
+    public static async Task SaveBinaryFile(nint pointer, int size, string filePath) {
+        try {
+            var managedArray = new byte[size];
+            Marshal.Copy(pointer, managedArray, 0, size);
+            await Services.ReliableFileStorage.WriteAllBytesAsync(filePath, managedArray);
+        }
+        catch (Exception e) {
+            Services.PluginLog.InternalError(e, $"Error trying to save binary data {filePath}");
         }
     }
 

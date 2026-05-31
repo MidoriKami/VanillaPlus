@@ -1,4 +1,6 @@
-﻿namespace VanillaPlus.Features.AprilFools;
+﻿using System.Threading.Tasks;
+
+namespace VanillaPlus.Features.AprilFools;
 
 public abstract class FoolsModule {
     public required AprilFoolsConfig Config { set; protected get; }
@@ -6,29 +8,29 @@ public abstract class FoolsModule {
 
     private bool isEnabled;
 
-    public void Toggle(bool newState) {
+    public async Task Toggle(bool newState) {
         if (isEnabled && !newState) {
-            Disable();
+            await DisableAsync();
         }
         else if (!isEnabled && newState) {
-            Enable();
+            await EnableAsync();
         }
     }
 
-    public void Enable() {
+    public async Task EnableAsync() {
         if (!isEnabled) {
-            OnEnable();
+            await OnEnable();
             isEnabled = true;
         }
     }
 
-    public void Disable() {
+    public async Task DisableAsync() {
         if (isEnabled) {
-            OnDisable();
+            await OnDisable();
             isEnabled = false;
         }
     }
 
-    protected abstract void OnEnable();
-    protected abstract void OnDisable();
+    protected abstract Task OnEnable();
+    protected abstract Task OnDisable();
 }

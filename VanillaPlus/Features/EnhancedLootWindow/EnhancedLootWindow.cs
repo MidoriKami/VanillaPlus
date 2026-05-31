@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -18,7 +19,7 @@ using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.EnhancedLootWindow;
 
-public unsafe class EnhancedLootWindow : GameModification {
+public class EnhancedLootWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_EnhancedLootWindow,
         Description = Strings.ModificationDescription_EnhancedLootWindow,
@@ -36,8 +37,8 @@ public unsafe class EnhancedLootWindow : GameModification {
 
     public override string ImageName => "EnhancedLootWindow.png";
 
-    public override void OnEnable() {
-        config = EnhancedLootWindowConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await EnhancedLootWindowConfig.Load();
 
         configWindow = new ConfigAddon {
             InternalName = "EnhancedLootWindowConfig",
@@ -51,26 +52,29 @@ public unsafe class EnhancedLootWindow : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        needGreedController = new AddonController<AddonNeedGreed> {
-            AddonName = "NeedGreed",
-            OnSetup = SetupNeedGreed,
-            OnFinalize = FinalizeNeedGreed,
-            OnRefresh = RefreshNeedGreed,
-        };
-        needGreedController.Enable();
+        unsafe {
+            needGreedController = new AddonController<AddonNeedGreed> {
+                AddonName = "NeedGreed",
+                OnSetup = SetupNeedGreed,
+                OnFinalize = FinalizeNeedGreed,
+                OnRefresh = RefreshNeedGreed,
+            };
+        }
+
+        await Services.Framework.Run(needGreedController.Enable);
     }
 
-    public override void OnDisable() {
-        needGreedController?.Dispose();
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => needGreedController?.Dispose());
         needGreedController = null;
 
-        configWindow?.Dispose();
+        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configWindow = null;
 
         config = null;
     }
 
-    private void SetupNeedGreed(AddonNeedGreed* addon) {
+    private unsafe void SetupNeedGreed(AddonNeedGreed* addon) {
         var listComponentNode = (AtkComponentNode*)addon->GetNodeById(6);
         if (listComponentNode is null) return;
 
@@ -113,7 +117,7 @@ public unsafe class EnhancedLootWindow : GameModification {
         }
     }
 
-    private void FinalizeNeedGreed(AddonNeedGreed* addon) {
+    private unsafe void FinalizeNeedGreed(AddonNeedGreed* addon) {
         foreach (var node in crossNodes) {
             node.Dispose();
         }
@@ -129,7 +133,7 @@ public unsafe class EnhancedLootWindow : GameModification {
     private const int MountCategory = 63;
     private const int MountSubCategory = 175;
 
-    private void RefreshNeedGreed(AddonNeedGreed* addon) {
+    private unsafe void RefreshNeedGreed(AddonNeedGreed* addon) {
         // For each possible item slot, get the item info
         for (var index = 0; index < addon->Items.Length; index++) {
             ref var itemInfo = ref addon->Items[index];
@@ -170,7 +174,7 @@ public unsafe class EnhancedLootWindow : GameModification {
         }
     }
 
-    private static bool IsItemAlreadyUnlocked(uint itemId) {
+    private static unsafe bool IsItemAlreadyUnlocked(uint itemId) {
         var exdItem = ExdModule.GetItemRowById(itemId);
         return exdItem is null || UIState.Instance()->IsItemActionUnlocked(exdItem) is 1;
     }

@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Overlay.UiOverlay;
@@ -11,7 +12,7 @@ using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.CurrencyWarning;
 
-public unsafe class CurrencyWarning : GameModification {
+public class CurrencyWarning : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.CurrencyWarning_DisplayName,
         Description = Strings.CurrencyWarning_Description,
@@ -30,16 +31,15 @@ public unsafe class CurrencyWarning : GameModification {
 
     public override string ImageName => "CurrencyWarning.png";
 
-    public override void OnEnable() {
-        config = CurrencyWarningConfig.Load();
+    public override async Task OnEnableAsync() {
+        config = await CurrencyWarningConfig.Load();
 
         if (!config.IsConfigured) {
             config.IsMoveable = true;
             config.IsConfigured = true;
-            config.Save();
+            await Task.Run(config.Save);
         }
 
-        overlayController = new OverlayController();
 
         itemSearchAddon = new CurrencySearchAddon {
             InternalName = "CurrencyWarningSearch",
@@ -57,7 +57,7 @@ public unsafe class CurrencyWarning : GameModification {
             IsSearchMatch = CurrencyWarningSetting.IsSearchMatch,
             AddClicked = OnAddClicked,
             RemoveClicked = OnRemoveClicked,
-            EditCompleted = _ => config.Save(),
+            EditCompleted = _ => Task.Run(config.Save),
         };
 
         configWindow = new ConfigAddon {
@@ -85,52 +85,52 @@ public unsafe class CurrencyWarning : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        Services.Framework.RunOnFrameworkThread(LoadNodes);
+        await Services.Framework.Run(() => {
+            overlayController = new OverlayController();
+
+            tooltipNode = new CurrencyTooltipNode {
+                Config = config,
+                IsVisible = false,
+            };
+            overlayController.AddNode(tooltipNode);
+
+            unsafe {
+                warningNode = new CurrencyWarningOverlayNode {
+                    Config = config,
+                    Size = new Vector2(48.0f, 48.0f),
+                    TooltipNode = tooltipNode,
+                    OnMoveComplete = thisNode => {
+                        config.Position = thisNode.Position;
+                        Task.Run(config.Save);
+                    },
+                    Position = config.Position != Vector2.Zero ? config.Position : (Vector2)AtkStage.Instance()->ScreenSize / 2.0f,
+                };
+            }
+
+            overlayController.AddNode(warningNode);
+        });
     }
 
-    private void LoadNodes() {
-        if (config is null) return;
+    public override async Task OnDisableAsync() {
+        await Services.Framework.Run(() => {
+            overlayController?.Dispose();
+            tooltipNode?.Dispose();
+            warningNode?.Dispose();
+        });
 
-        tooltipNode = new CurrencyTooltipNode {
-            Config = config,
-            IsVisible = false,
-        };
-        overlayController?.AddNode(tooltipNode);
-
-        warningNode = new CurrencyWarningOverlayNode {
-            Config = config,
-            Size = new Vector2(48.0f, 48.0f),
-            TooltipNode = tooltipNode,
-            OnMoveComplete = thisNode => {
-                config.Position = thisNode.Position;
-                config.Save();
-            },
-        };
-
-        var screenCenter = (Vector2)AtkStage.Instance()->ScreenSize / 2.0f;
-        warningNode.Position = config.Position != Vector2.Zero ? config.Position : screenCenter;
-
-        overlayController?.AddNode(warningNode);
-    }
-
-    public override void OnDisable() {
-        overlayController?.Dispose();
         overlayController = null;
-
-        configWindow?.Dispose();
-        configWindow = null;
-
-        listConfigWindow?.Dispose();
-        listConfigWindow = null;
-
-        itemSearchAddon?.Dispose();
-        itemSearchAddon = null;
-
-        tooltipNode?.Dispose();
         tooltipNode = null;
-
-        warningNode?.Dispose();
         warningNode = null;
+
+        await Task.WhenAll(
+            configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask,
+            listConfigWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask,
+            itemSearchAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
+        );
+
+        configWindow = null;
+        listConfigWindow = null;
+        itemSearchAddon = null;
 
         config = null;
     }

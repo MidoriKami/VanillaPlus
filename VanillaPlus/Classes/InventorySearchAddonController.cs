@@ -11,18 +11,15 @@ using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Classes;
 
-public unsafe class InventorySearchAddonController : IDisposable {
+public class InventorySearchAddonController : IDisposable {
 
-    private MultiAddonController? inventoryController;
-    private Dictionary<string, TextInputWithHintNode>? inputTextNodes;
-    private Dictionary<string, int>? selectedTabs;
+    private readonly MultiAddonController inventoryController;
+    private readonly Dictionary<string, TextInputWithHintNode> inputTextNodes = [];
+    private readonly Dictionary<string, int> selectedTabs = [];
 
     private static KeybindListener? keybindListener;
 
-    public InventorySearchAddonController(params string[] addons) {
-        inputTextNodes = [];
-        selectedTabs = [];
-
+    public unsafe InventorySearchAddonController(params string[] addons) {
         keybindListener ??= new KeybindListener {
             AddonConfig = new AddonConfig {
                 DisableInCombat = true,
@@ -43,28 +40,27 @@ public unsafe class InventorySearchAddonController : IDisposable {
             OnUpdate = UpdateInventory,
             OnFinalize = FinalizeInventory,
         };
-        inventoryController.Enable();
     }
 
     public void Dispose() {
-        Services.PluginLog.Info("InventorySearchAddonController.Dispose");
+        Services.PluginLog.Info("Disposing", "InventorySearchAddonController");
 
-        foreach (var (_, node) in inputTextNodes ?? []) {
+        foreach (var node in inputTextNodes.Values) {
             node.Dispose();
         }
-        inputTextNodes?.Clear();
-        inputTextNodes = null;
 
-        inventoryController?.Dispose();
-        inventoryController = null;
+        inventoryController.Dispose();
 
-        selectedTabs?.Clear();
-        selectedTabs = null;
+        inputTextNodes.Clear();
+        selectedTabs.Clear();
 
         keybindListener?.KeybindCallback -= OnKeybindPressed;
     }
 
-    private void OnKeybindPressed(ref bool isHandled) {
+    public void Enable()
+        => inventoryController.Enable();
+
+    private unsafe void OnKeybindPressed(ref bool isHandled) {
         var focusedAddonCount = RaptureAtkUnitManager.Instance()->FocusedUnitsList.Count;
         if (focusedAddonCount < 1) return;
 
@@ -72,7 +68,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
         if (focusedAddon.Value is null) return;
         if (focusedAddon.Value->Id is 0) return;
 
-        foreach (var (addonName, searchBarNode) in inputTextNodes ?? []) {
+        foreach (var (addonName, searchBarNode) in inputTextNodes) {
             var addonPointer = RaptureAtkUnitManager.Instance()->GetAddonByName(addonName);
             if (addonPointer is null) continue;
 
@@ -84,9 +80,8 @@ public unsafe class InventorySearchAddonController : IDisposable {
         }
     }
 
-    private void SetupInventory(AtkUnitBase* addon) {
-        Services.PluginLog.Info($"OnInventoryAttach: {addon->NameString}");
-        if (inputTextNodes is null) return;
+    private unsafe void SetupInventory(AtkUnitBase* addon) {
+        Services.PluginLog.Info($"OnInventoryAttach: {addon->NameString}", "InventorySearchAddonController");
         var size = new Vector2(addon->Size.X / 2.0f, 28.0f);
 
         var headerSize = new Vector2(addon->WindowHeaderCollisionNode->Width, addon->WindowHeaderCollisionNode->Height);
@@ -100,9 +95,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
         inputTextNodes.TryAdd(addon->NameString, newInputNode);
     }
 
-    private void UpdateInventory(AtkUnitBase* addon) {
-        if (selectedTabs is null) return;
-        if (inputTextNodes is null) return;
+    private unsafe void UpdateInventory(AtkUnitBase* addon) {
         if (!addon->IsReady) return;
 
         var currentTab = Inventory.GetTabForInventory(addon);
@@ -115,9 +108,9 @@ public unsafe class InventorySearchAddonController : IDisposable {
         selectedTabs[addon->NameString] = currentTab;
     }
 
-    private void FinalizeInventory(AtkUnitBase* addon) {
-        Services.PluginLog.Info($"OnInventoryDetach: {addon->NameString}");
-        if (inputTextNodes?.TryGetValue(addon->NameString, out _) ?? false) {
+    private unsafe void FinalizeInventory(AtkUnitBase* addon) {
+        Services.PluginLog.Info($"OnInventoryDetach: {addon->NameString}", "InventorySearchAddonController");
+        if (inputTextNodes.TryGetValue(addon->NameString, out _)) {
             // Intentionally leak node for now, the memory should still be automatically cleaned up by the game.
             // Node will still get manually disposed on plugin unload correctly.
             // node.Dispose();
@@ -129,7 +122,7 @@ public unsafe class InventorySearchAddonController : IDisposable {
     public Action<string>? PreSearch { get; set; }
     public Action<string>? PostSearch { get; set; }
 
-    private void PerformSearch(AtkUnitBase* addon, string searchString) {
+    private unsafe void PerformSearch(AtkUnitBase* addon, string searchString) {
         PreSearch?.Invoke(searchString);
         InventorySearchController.FadeInventoryNodes(addon, searchString);
         PostSearch?.Invoke(searchString);

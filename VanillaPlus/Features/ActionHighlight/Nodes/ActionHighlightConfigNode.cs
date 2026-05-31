@@ -87,6 +87,7 @@ public class ActionHighlightConfigNode : ConfigNode<ActionCategory> {
     }
 
     private static bool IsValidAction(ClassJob job, Action action) {
+        if (ActionHighlight.JobActionWhiteList is null) return true;
         if (action.IsUsableByJob(job)) return true;
 
         var whitelisted = ActionHighlight.JobActionWhiteList.TryGetValue(job.RowId, out var list);
