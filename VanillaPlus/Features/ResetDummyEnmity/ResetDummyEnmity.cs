@@ -78,6 +78,7 @@ public class ResetDummyEnmity : GameModification {
                 ),
                 TextTooltip = Strings.ResetDummyEnmity_ResetEnmityToolTip,
                 IsVisible = false,
+                IsEnabled = false,
                 OnClick = () => ResetDummy(i),
             };
             button.AttachNode(&addon->AtkUnitBase);
@@ -116,6 +117,7 @@ public class ResetDummyEnmity : GameModification {
                 resetButton.HideTooltip();
             }
 
+            resetButton.IsEnabled = TargetMatchesEntityId((uint)entry.EntityId);
             resetButton.IsVisible = shouldBeVisible;
         }
     }
@@ -136,10 +138,14 @@ public class ResetDummyEnmity : GameModification {
         if (dummy is not { NameId: StrikingDummyNameId }) return;
         if (!dummy.IsValid()) return;
         if (!Services.Condition[ConditionFlag.InCombat]) return;
+        if (!TargetMatchesEntityId(dummy.EntityId)) return;
 
         GameMain.ExecuteCommand(319, (int)dummy.GameObjectId);
     }
 
     private static IBattleChara? GetDummyByEntityId(uint entityId)
         => Services.ObjectTable.CharacterManagerObjects.FirstOrDefault(obj => obj.EntityId == entityId) as IBattleChara;
+
+    private static bool TargetMatchesEntityId(uint entityId) =>
+        Services.TargetManager.GetTarget() is { } target && target.EntityId == entityId;
 }
