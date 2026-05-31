@@ -93,7 +93,7 @@ public class ResetDummyEnmity : GameModification {
         var enemyListData = EnemyListNumberArray.Instance();
         var enemyCount = enemyListData is not null ? enemyListData->EnemyCount : 0;
 
-        for (var index = 0; index < resetButtons.Length; index++) {
+        foreach (var index in Enumerable.Range(0, resetButtons.Length)) {
             var resetButton = resetButtons[index];
             if (resetButton is null) continue;
 
