@@ -1574,4 +1574,13 @@ ID：{0}</value>
   <data name="ModificationDescription_AetherwellProgress" xml:space="preserve">
       <value>Make your aetherwells fill up as you fill them</value>
   </data>
+  <data name="ModificationDisplay_ResetDummyEnmity" xml:space="preserve">
+      <value>Reset Dummy Enmity</value>
+  </data>
+  <data name="ModificationDescription_ResetDummyEnmity" xml:space="preserve">
+      <value>Adds a button in the enemy list to reset a Striking Dummy's enmity.</value>
+  </data>
+  <data name="ResetDummyEnmity_ResetEnmityToolTip" xml:space="preserve">
+      <value>[VanillaPlus] Reset Enmity</value>
+  </data>
 </root>
