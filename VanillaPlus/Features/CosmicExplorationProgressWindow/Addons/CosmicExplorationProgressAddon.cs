@@ -36,9 +36,6 @@ public class CosmicExplorationProgressAddon : NativeAddon {
             OptionsList = allOptions.Where(entry => entry.JobId == Services.PlayerState.ClassJob.Value.RowId - 7).ToList(),
             ItemSpacing = 1.0f,
         };
-        listNode.ScrollBarNode.HideWhenDisabled = true;
-        listNode.ScrollBarNode.IsEnabled = false;
-        listNode.ScrollBarNode.IsVisible = false;
         listNode.AttachNode(this);
 
         addon->Flags1C8 = 0x100001; // Properly allow ESC-closing.
