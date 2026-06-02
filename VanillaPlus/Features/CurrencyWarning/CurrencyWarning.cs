@@ -40,7 +40,6 @@ public class CurrencyWarning : GameModification {
             await Task.Run(config.Save);
         }
 
-
         itemSearchAddon = new CurrencySearchAddon {
             InternalName = "CurrencyWarningSearch",
             Title = Strings.CurrencyWarning_ItemSearchTitle,
