@@ -9,7 +9,7 @@ using VanillaPlus.Enums;
 namespace VanillaPlus.Features.DutyPortalNameplateOffset;
 
 public class DutyPortalNameplateOffset : GameModification {
-    private const float RaisedNameplateY = 5.1f; // Slightly below SE's current elevated raid nameplate height: 5.4
+    private const float RaisedNameplateY = 3.1f; // Slightly below SE's current elevated raid nameplate height.
 
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Raise Duty Portal Nameplates",
