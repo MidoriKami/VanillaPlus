@@ -26,7 +26,7 @@ public class CosmicExplorationProgressWindow : GameModification {
 
     public override async Task OnEnableAsync() {
         progressAddon = new CosmicExplorationProgressAddon {
-            Size = new Vector2(320.0f, 290.0f),
+            Size = new Vector2(320.0f, 317.0f),
             InternalName = "CosmicExplorationProgress",
             Title = string.Empty, // No title actually needed for this addon
             DisableClose = true,

@@ -34,7 +34,7 @@ public class CosmicExplorationProgressAddon : NativeAddon {
             Position = ContentStartPosition,
             Size = ContentSize,
             OptionsList = allOptions.Where(entry => entry.JobId == Services.PlayerState.ClassJob.Value.RowId - 7).ToList(),
-            ItemSpacing = 1.0f,
+            ItemSpacing = 0.0f,
         };
         listNode.ScrollBarNode.HideWhenDisabled = true;
         listNode.ScrollBarNode.IsEnabled = false;
