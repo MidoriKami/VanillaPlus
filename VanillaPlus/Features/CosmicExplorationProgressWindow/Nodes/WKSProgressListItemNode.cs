@@ -37,7 +37,7 @@ public sealed class WksProgressListItemNode : ListItemNode<Progress>, IListItemN
                     MaxProgress = 1.0f,
                 },
                 currentLabelNode = new TextNode {
-                    Size = new Vector2(26.0f, 26.0f),
+                    Size = new Vector2(32.0f, 26.0f),
                     TextColor = ColorHelper.GetColor(1),
                     TextOutlineColor = ColorHelper.GetColor(707),
                     FontType = FontType.TrumpGothic,
@@ -47,12 +47,12 @@ public sealed class WksProgressListItemNode : ListItemNode<Progress>, IListItemN
                     String = "UNK",
                 },
                 new TextNode {
-                    Size = new Vector2(8.0f, 26.0f),
+                    Size = new Vector2(10.0f, 26.0f),
                     FontType = FontType.TrumpGothic,
                     FontSize = 20,
                     TextColor = ColorHelper.GetColor(1),
                     TextOutlineColor = ColorHelper.GetColor(707),
-                    AlignmentType = AlignmentType.Right,
+                    AlignmentType = AlignmentType.Left,
                     TextFlags = TextFlags.Edge | TextFlags.Glare,
                     String = "/",
                 },

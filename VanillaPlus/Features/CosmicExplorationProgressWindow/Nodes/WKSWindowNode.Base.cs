@@ -28,7 +28,7 @@ public sealed unsafe partial class WksWindowNode : WindowNodeBase {
     public WksWindowNode() {
         Component->ShowFlags = 18;
 
-        var baseSize = new Vector2(320.0f, 290.0f);
+        var baseSize = new Vector2(320.0f, 317.0f);
         Size = baseSize;
 
         var contentSize = baseSize - 2 * BorderThickness;
@@ -75,7 +75,7 @@ public sealed unsafe partial class WksWindowNode : WindowNodeBase {
         starshipImageNode = new SimpleImageNode {
             TexturePath = "ui/uld/WKSWindowEff2.tex",
             WrapMode = WrapMode.Stretch,
-            Position = new Vector2(25.0f, 19.0f),
+            Position = new Vector2(25.0f, 46.0f),
             Scale = new Vector2(0.6f, 0.6f),
             Origin = new Vector2(290.0f, 250.0f),
             Size = new Vector2(290.0f, 250.0f),
@@ -105,7 +105,7 @@ public sealed unsafe partial class WksWindowNode : WindowNodeBase {
         bottomTextureNode = new SimpleImageNode {
             TexturePath = "ui/uld/WKSWindow.tex",
             WrapMode = WrapMode.Stretch,
-            Position = new Vector2(22.0f, 129.0f),
+            Position = new Vector2(22.0f, 156.0f),
             Size = new Vector2(228.0f, 126.0f),
             TextureCoordinates = new Vector2(96.0f, 0.0f),
             TextureSize = new Vector2(228.0f, 126.0f),

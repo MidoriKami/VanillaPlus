@@ -1569,18 +1569,18 @@ ID：{0}</value>
     <value>跳过登录时出现的确认窗口。</value>
   </data>
   <data name="ModificationDisplay_AetherwellProgress" xml:space="preserve">
-      <value>Aetherwell Progress</value>
+      <value>魔球盘进度</value>
   </data>
   <data name="ModificationDescription_AetherwellProgress" xml:space="preserve">
-      <value>Make your aetherwells fill up as you fill them</value>
+      <value>在填充魔球盘时显示实时填充进度</value>
   </data>
   <data name="ModificationDisplay_ResetDummyEnmity" xml:space="preserve">
-      <value>Reset Dummy Enmity</value>
+      <value>重置木人仇恨</value>
   </data>
   <data name="ModificationDescription_ResetDummyEnmity" xml:space="preserve">
-      <value>Adds a button in the enemy list to reset a Striking Dummy's enmity.</value>
+      <value>在敌对列表中添加一个用于重置木人仇恨的按钮。</value>
   </data>
   <data name="ResetDummyEnmity_ResetEnmityToolTip" xml:space="preserve">
-      <value>[VanillaPlus] Reset Enmity</value>
+      <value>[VanillaPlus] 重置仇恨</value>
   </data>
 </root>
