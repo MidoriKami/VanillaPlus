@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VanillaPlus", "VanillaPlus\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KamiToolKit", "KamiToolKit\KamiToolKit.csproj", "{5F018AFD-CA65-4079-A4A3-FCB36F330E5C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KamiToolKit.Components", "KamiToolKit.Components\KamiToolKit.Components.csproj", "{301479DE-FC47-4233-B72E-F83FA52B7540}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -25,6 +27,10 @@ Global
 		{5F018AFD-CA65-4079-A4A3-FCB36F330E5C}.Debug|x64.Build.0 = Debug|x64
 		{5F018AFD-CA65-4079-A4A3-FCB36F330E5C}.Release|x64.ActiveCfg = Release|x64
 		{5F018AFD-CA65-4079-A4A3-FCB36F330E5C}.Release|x64.Build.0 = Release|x64
+		{301479DE-FC47-4233-B72E-F83FA52B7540}.Debug|x64.ActiveCfg = Debug|x64
+		{301479DE-FC47-4233-B72E-F83FA52B7540}.Debug|x64.Build.0 = Debug|x64
+		{301479DE-FC47-4233-B72E-F83FA52B7540}.Release|x64.ActiveCfg = Release|x64
+		{301479DE-FC47-4233-B72E-F83FA52B7540}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
