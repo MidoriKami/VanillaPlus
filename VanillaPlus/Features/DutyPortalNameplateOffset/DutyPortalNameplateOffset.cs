@@ -47,6 +47,9 @@ public class DutyPortalNameplateOffset : GameModification {
             if (nativeObject->EntityId == 0xE0000000)
                 continue;
 
+            if (nativeObject->EventId.Id == 0)
+                continue;
+
             if (nativeObject->EventId.EntryId == 60006)
                 continue;
 
