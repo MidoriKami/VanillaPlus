@@ -61,6 +61,8 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
         System.KeyListener = new KeyListener();
         System.ModificationManager = new ModificationManager();
 
+        await System.ModificationManager.LoadModulesAsync();
+
         AutoOpenBrowser(System.SystemConfig.IsDebugMode);
 
         if (Services.ClientState.IsLoggedIn) {
