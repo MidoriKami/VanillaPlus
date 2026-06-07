@@ -33,7 +33,7 @@ public class FasterScroll : GameModification {
         };
 
         configWindow.AddCategory(Strings.Settings)
-            .AddFloatSlider(Strings.FasterScroll_LabelSpeedMultiplier, 0.5f, 4.0f, 2, 0.05f, nameof(config.SpeedMultiplier));
+            .AddFloatSlider(Strings.FasterScroll_LabelSpeedMultiplier, 0.5f, 4.0f, 0.05f, nameof(config.SpeedMultiplier));
 
         OpenConfigAction = configWindow.Toggle;
 
