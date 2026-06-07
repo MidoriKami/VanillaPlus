@@ -3,6 +3,8 @@ using System.Numerics;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
+using KamiToolKit.Enums;
+using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
 using VanillaPlus.Enums;
 using Addon = VanillaPlus.Utilities.Addon;
@@ -35,6 +37,11 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
         checkboxNode = new CheckboxNode {
             OnClick = ToggleGameModification,
         };
+
+        unsafe {
+            checkboxNode.AddEvent(AtkEventType.InputReceived, OnCheckboxInputReceived);
+        }
+
         checkboxNode.AttachNode(checkboxContainerNode);
 
         erroringImageNode = new IconImageNode {
@@ -73,14 +80,14 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
         buttonsContainerNode.AttachNode(this);
 
         openConfigButton = new CircleButtonNode {
-            Icon = ButtonIcon.GearCog,
+            Icon = CircleButtonIcon.GearCog,
             IsVisible = false,
             TextTooltip = Strings.Tooltip_OpenConfiguration,
         };
         openConfigButton.AttachNode(buttonsContainerNode);
 
         refreshCompatabilityButton = new CircleButtonNode {
-            Icon = ButtonIcon.Refresh,
+            Icon = CircleButtonIcon.Refresh,
             IsVisible = false,
             TextTooltip = Strings.Tooltip_RetryCompatibility,
             OnClick = () => {
@@ -162,12 +169,16 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
             collisionUpdateNeeded = true;
         }
 
+        var wantsConfigButton = itemData.Modification is { OpenConfigAction: not null } or { OpenConfigAsync: not null };
+        var hasConfigButton = openConfigButton.IsVisible;
+
+        if (wantsConfigButton && !hasConfigButton) {
+            collisionUpdateNeeded = true;
+        }
+
         switch (itemData.State) {
             case LoadedState.Enabled when itemData.Modification.OpenConfigAction is { } openConfig:
-                openConfigButton.OnClick = () => {
-                    openConfig();
-
-                };
+                openConfigButton.OnClick = () => openConfig();
                 openConfigButton.IsVisible = true;
                 break;
 
@@ -197,6 +208,39 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
         if (collisionUpdateNeeded) {
             HideTooltip();
             Addon.UpdateCollisionForNode(this);
+        }
+    }
+
+    public override void ProcessNav(int index, int up, int down) {
+        checkboxNode.NavIndex = index;
+        refreshCompatabilityButton.NavIndex = index + 1;
+        openConfigButton.NavIndex = index + 2;
+
+        checkboxNode.NavUp = up;
+        checkboxNode.NavDown = down;
+        checkboxNode.NavRight = refreshCompatabilityButton.NavIndex;
+        checkboxNode.NavLeft = openConfigButton.NavIndex;
+
+        refreshCompatabilityButton.NavUp = up;
+        refreshCompatabilityButton.NavDown = down;
+        refreshCompatabilityButton.NavRight = openConfigButton.NavIndex;
+        refreshCompatabilityButton.NavLeft = checkboxNode.NavIndex;
+
+        openConfigButton.NavUp = up;
+        openConfigButton.NavDown = down;
+        openConfigButton.NavRight = checkboxNode.NavIndex;
+        openConfigButton.NavLeft = refreshCompatabilityButton.NavIndex;
+    }
+
+    private unsafe void OnCheckboxInputReceived(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
+        if (eventType is not AtkEventType.InputReceived) return;
+
+        if (atkEventData->InputData.State is InputState.Down) {
+            IsHovered = false;
+        }
+        else if (atkEventData->InputData.State is InputState.Up or InputState.Held) {
+            IsHovered = true;
+            OnClick?.Invoke(this);
         }
     }
 
