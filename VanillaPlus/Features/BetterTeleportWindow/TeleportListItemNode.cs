@@ -5,6 +5,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.ContextMenu;
+using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
 using VanillaPlus.NativeElements.Addons;
 using ContextMenu = KamiToolKit.ContextMenu.ContextMenu;
@@ -40,8 +41,8 @@ public unsafe class TeleportListItemNode : ListItemNode<IAetheryteEntry>, IListI
         };
         regionName.AttachNode(this);
 
-        CollisionNode.AddEvent(AtkEventType.MouseOver, OnMouseOver);
-        CollisionNode.AddEvent(AtkEventType.MouseClick, OnClicked);
+        AddEvent(AtkEventType.MouseOver, OnMouseOver);
+        AddEvent(AtkEventType.MouseClick, OnClicked);
     }
 
     protected override void Dispose(bool disposing, bool isNativeDestructor) {

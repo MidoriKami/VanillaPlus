@@ -35,7 +35,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
 
         const float itemSpacing = 5.0f;
 
-        SetWindowSize(new Vector2(600.0f, 689.0f));
+        SetWindowSize(new Vector2(600.0f, 693.0f));
 
         AddNode(new HorizontalListNode { // Main Container
             Size = ContentSize,
