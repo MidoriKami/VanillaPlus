@@ -3,6 +3,7 @@ using System.Numerics;
 using Dalamud.Game.ClientState.Fates;
 using Dalamud.Game.Text;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
 using KamiToolKit.Timelines;
 
@@ -47,9 +48,7 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
         };
         levelNode.AttachNode(this);
 
-        progressNode = new ProgressBarNode {
-            DisableCollisionNode = true,
-        };
+        progressNode = new ProgressBarNode();
         progressNode.AttachNode(this);
 
         progressTextNode = new TextNode {
@@ -57,7 +56,7 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
         };
         progressTextNode.AttachNode(this);
 
-        CollisionNode.AddEvent(AtkEventType.MouseClick, () => ItemData?.FocusMarker());
+        AddEvent(AtkEventType.MouseClick, () => ItemData?.FocusMarker());
 
         AddTimeline(new TimelineBuilder()
             .BeginFrameSet(1, 120)
