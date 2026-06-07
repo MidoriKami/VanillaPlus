@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
+using Lumina.Text.ReadOnly;
 using VanillaPlus.Enums;
 using VanillaPlus.InternalSystem.Nodes;
 
@@ -36,6 +37,8 @@ public class ModificationBrowserAddon : NativeAddon {
                     Height = 28.0f,
                     FitHeight = true,
                     Alignment = HorizontalListAnchor.Right,
+                    NavIndex = 1,
+                    NavDown = 3,
                     InitialNodes = [
                         new CheckboxNode { // Persist Search Button
                             Width = 28.0f,
@@ -51,16 +54,7 @@ public class ModificationBrowserAddon : NativeAddon {
                             PlaceholderString = "Search . . .",
                             AutoSelectAll = true,
                             String = System.SystemConfig.PersistSearch ? System.SystemConfig.CurrentSearch : string.Empty,
-                            OnInputReceived = input => {
-                                try {
-                                    searchRegex = new Regex(input.ToString(), RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-                                    System.SystemConfig.CurrentSearch = input.ToString();
-                                    listNode?.OptionsList = GetModifications();
-                                }
-                                catch (RegexParseException) {
-                                    searchRegex = null;
-                                }
-                            },
+                            OnInputReceived = OnSearchInputReceived,
                             OnFocusLost = () => {
                                 if (System.SystemConfig.PersistSearch) {
                                     Task.Run(System.SystemConfig.Save);
@@ -79,13 +73,21 @@ public class ModificationBrowserAddon : NativeAddon {
                             InitialNodes = [
                                 enabledStateTabBar = new TabBarNode { // Option Category Select
                                     Height = 28.0f,
+                                    NavIndex = 3,
+                                    NavUp = 1,
+                                    NavDown = 6,
                                 },
                                 categoryTabBar = new TabBarNode {
                                     Height = 28.0f,
+                                    NavIndex = 6,
+                                    NavUp = 3,
+                                    NavDown = 10,
                                 },
                                 new ResNode { Height = 12.0f },
                                 listNode = new ListNode<LoadedModification, GameModificationListItemNode> { // Options
                                     Height = ContentSize.Y - 28.0f - 28.0f - 28.0f - 12.0f,
+                                    NavIndex = 10,
+                                    NavUp = 6,
                                     OptionsList = GetModifications(),
                                     NoResultsString = "No Results Match Search",
                                     OnItemSelected = selectedItem
@@ -138,9 +140,13 @@ public class ModificationBrowserAddon : NativeAddon {
 
         modificationInfoNode.AddInteractionNode(addon);
 
+        addon->FocusNode = textInputNode;
+
         if (System.SystemConfig.PersistSearch) {
             textInputNode?.String = System.SystemConfig.CurrentSearch;
+            OnSearchInputReceived(System.SystemConfig.CurrentSearch);
         }
+
         return;
 
         void UpdateListNode() {
@@ -148,6 +154,18 @@ public class ModificationBrowserAddon : NativeAddon {
             listNode.ResetScroll();
             listNode.ClearSelection();
             modificationInfoNode.SetDisplayedGameModification(null);
+        }
+    }
+
+    private void OnSearchInputReceived(ReadOnlySeString input) {
+        try {
+            searchRegex = new Regex(input.ToString(), RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+            System.SystemConfig.CurrentSearch = input.ToString();
+            listNode?.OptionsList = GetModifications();
+            listNode?.ResetScroll();
+        }
+        catch (RegexParseException) {
+            searchRegex = null;
         }
     }
 
