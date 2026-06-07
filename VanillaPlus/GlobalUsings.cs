@@ -1,4 +1,4 @@
 ﻿global using KamiToolKit.Extensions;
 global using VanillaPlus.Extensions;
-global using Resources;
-global using Dalamud.Utility; // For string.Format extension
+global using Dalamud.Utility;
+global using Resources; // For string.Format extension
