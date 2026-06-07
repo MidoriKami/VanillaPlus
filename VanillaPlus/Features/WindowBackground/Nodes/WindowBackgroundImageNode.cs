@@ -1,7 +1,7 @@
 ﻿using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
-using KamiToolKit.Overlay.UiOverlay;
-using KamiToolKit.Premade.Node;
+using KamiToolKit.Nodes;
+using KamiToolKit.UiOverlay;
 
 namespace VanillaPlus.Features.WindowBackground.Nodes;
 
@@ -13,27 +13,27 @@ public unsafe class WindowBackgroundImageNode : OverlayNode {
 
     public bool IsOverlayNode;
 
-    private readonly BackgroundImageNode backgroundImageNode;
+    private readonly ColorImageNode colorImageNode;
 
     public WindowBackgroundImageNode() {
-        backgroundImageNode = new BackgroundImageNode {
+        colorImageNode = new ColorImageNode {
             IsVisible = false,
         };
-        backgroundImageNode.AttachNode(this);
+        colorImageNode.AttachNode(this);
     }
 
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
 
-        backgroundImageNode.Size = Size;
+        colorImageNode.Size = Size;
     }
 
     protected override void OnUpdate() {
         var addon = Services.GameGui.GetAddonByName<AtkUnitBase>(Settings.AddonName);
-        backgroundImageNode.IsVisible = addon is not null && addon->IsActuallyVisible;
+        colorImageNode.IsVisible = addon is not null && addon->IsActuallyVisible;
 
         if (addon is not null) {
-            backgroundImageNode.Color = Settings.Color;
+            colorImageNode.Color = Settings.Color;
             Size = (addon->RootSize + Settings.Padding) * addon->Scale;
 
             if (IsOverlayNode) {

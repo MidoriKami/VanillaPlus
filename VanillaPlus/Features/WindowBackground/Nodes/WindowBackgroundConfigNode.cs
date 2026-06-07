@@ -3,8 +3,7 @@ using System.Numerics;
 using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node;
-using KamiToolKit.Premade.Node.Color;
+using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.WindowBackground.Nodes;
 
@@ -27,9 +26,8 @@ public class WindowBackgroundConfigNode : ConfigNode<WindowBackgroundSetting> {
         windowNameTextNode.AttachNode(this);
 
         verticalListNode = new TabbedVerticalListNode {
-            ItemVerticalSpacing = 20.0f,
+            ItemSpacing = 20.0f,
         };
-        verticalListNode.CollisionNode.IsVisible = false;
         verticalListNode.AttachNode(this);
 
         verticalListNode.AddNode(new CategoryTextNode {

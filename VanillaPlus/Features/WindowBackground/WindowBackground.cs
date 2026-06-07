@@ -3,14 +3,14 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
-using KamiToolKit.Overlay.UiOverlay;
-using KamiToolKit.Premade.Addon;
-using KamiToolKit.Premade.Addon.Search;
+using KamiToolKit.Enums;
+using KamiToolKit.UiOverlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.WindowBackground.Nodes;
+using VanillaPlus.NativeElements.Addons;
+using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.WindowBackground;
 
