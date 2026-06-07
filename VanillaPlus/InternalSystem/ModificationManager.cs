@@ -15,8 +15,10 @@ public class ModificationManager : IAsyncDisposable {
 
     public IReadOnlyList<LoadedModification> LoadedModifications => loadedModifications;
 
-    public ModificationManager() {
+    public async Task LoadModulesAsync() {
         var allGameModifications = GetGameModifications();
+
+        List<Task> loadingTasks = [];
 
         foreach (var gameMod in allGameModifications) {
             Services.PluginInterface.Inject(gameMod);
@@ -30,10 +32,12 @@ public class ModificationManager : IAsyncDisposable {
                     TryEnableModification(newLoadedModification).GetAwaiter().GetResult();
                 }
                 else {
-                    Task.Run(() => TryEnableModification(newLoadedModification));
+                    loadingTasks.Add(Task.Run(() => TryEnableModification(newLoadedModification)));
                 }
             }
         }
+
+        await Task.WhenAll(loadingTasks);
 
         Services.PluginInterface.ActivePluginsChanged += OnPluginsChanged;
     }
