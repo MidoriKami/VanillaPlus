@@ -42,6 +42,12 @@
       },
       "kamitoolkit": {
         "type": "Project"
+      },
+      "kamitoolkit.components": {
+        "type": "Project",
+        "dependencies": {
+          "KamiToolKit": "[1.0.0, )"
+        }
       }
     }
   }
