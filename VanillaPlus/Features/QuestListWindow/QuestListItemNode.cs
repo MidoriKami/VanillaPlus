@@ -2,6 +2,7 @@
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
+using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.QuestListWindow;
@@ -48,7 +49,7 @@ public class QuestListItemNode : ListItemNode<MarkerInfo>, IListItemNode {
         };
         distanceTextNode.AttachNode(this);
 
-        CollisionNode.AddEvent(AtkEventType.MouseClick, () => ItemData.FocusMarker());
+        AddEvent(AtkEventType.MouseClick, () => ItemData.FocusMarker());
     }
 
     protected override void OnSizeChanged() {
