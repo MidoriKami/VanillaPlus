@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node;
-using KamiToolKit.Premade.Node.Simple;
+using KamiToolKit.Nodes.Simplified;
 
 namespace VanillaPlus.NativeElements.Addons;
 

@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using KamiToolKit.Premade.Node.ListItem;
 using Lumina.Excel.Sheets;
+using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.GearsetRedirect.Nodes;
 

@@ -4,10 +4,10 @@ using System.Text.RegularExpressions;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
-using KamiToolKit.Premade.Addon.Search;
 using VanillaPlus.NativeElements.ListItemNodes;
+using VanillaPlus.NativeElements.Nodes;
 
-namespace VanillaPlus.NativeElements.SearchAddons;
+namespace VanillaPlus.NativeElements.Addons;
 
 public unsafe class GearsetSearchAddon : BaseSearchAddon<RaptureGearsetModule.GearsetEntry, GearsetListItemNode> {
     protected override int Comparer(RaptureGearsetModule.GearsetEntry left, RaptureGearsetModule.GearsetEntry right, Enum sortingMode, bool reversed) {

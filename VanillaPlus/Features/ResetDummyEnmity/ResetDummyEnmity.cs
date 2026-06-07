@@ -8,6 +8,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Arrays;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -70,7 +71,7 @@ public class ResetDummyEnmity : GameModification {
             if (duplicatedNode is null) continue;
 
             var button = new CircleButtonNode {
-                Icon = ButtonIcon.Refresh,
+                Icon = CircleButtonIcon.Refresh,
                 Size = new Vector2(ButtonSize),
                 Position = new Vector2(
                     duplicatedNode->X + duplicatedNode->Width - ButtonSize,

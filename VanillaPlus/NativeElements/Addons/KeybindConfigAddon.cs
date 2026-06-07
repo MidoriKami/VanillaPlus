@@ -6,9 +6,8 @@ using Dalamud.Game.ClientState.Keys;
 using FFXIVClientStructs.FFXIV.Client.System.Input;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node;
 using Lumina.Extensions;
 using Keybind = VanillaPlus.Classes.Keybind;
 
@@ -21,7 +20,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
 
     private CategoryTextNode? conflictsLabelNode;
     private HorizontalLineNode? conflictsLineNode;
-    private ScrollingListNode? conflictsScrollableAreaNode;
+    private ScrollingNode<VerticalListNode>? conflictsScrollableAreaNode;
 
     private HorizontalLineNode? buttonsLineNode;
     private TextButtonNode? confirmButtonNode;
@@ -72,17 +71,20 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         };
         conflictsLineNode.AttachNode(this);
 
-        conflictsScrollableAreaNode = new ScrollingListNode {
+        conflictsScrollableAreaNode = new ScrollingNode<VerticalListNode> {
+            ContentNode = {
+                FitContents = true,
+                InitialNodes = [
+                    new CategoryTextNode {
+                        String = Strings.KeybindConfig_NoConflicts,
+                    },
+                ],
+            },
             Position = new Vector2(ContentStartPosition.X, conflictsLabelNode.Y + conflictsLabelNode.Height + 10.0f),
             Size = new Vector2(ContentSize.X, 90.0f),
             AutoHideScrollBar = true,
         };
         conflictsScrollableAreaNode.AttachNode(this);
-
-        conflictsScrollableAreaNode.AddNode(new CategoryTextNode {
-            String = Strings.KeybindConfig_NoConflicts,
-        });
-        conflictsScrollableAreaNode.RecalculateLayout();
 
         buttonsLineNode = new HorizontalLineNode {
             Position = new Vector2(ContentStartPosition.X - 2.0f, conflictsScrollableAreaNode.Y + conflictsScrollableAreaNode.Height),
@@ -140,21 +142,22 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             }
         }
 
-        conflictsScrollableAreaNode.Clear();
+        var verticalListNode = conflictsScrollableAreaNode.ContentNode;
+
+        verticalListNode.Clear();
 
         if (conflicts.Count == 0) {
-            conflictsScrollableAreaNode.AddNode(new CategoryTextNode {
+            verticalListNode.AddNode(new CategoryTextNode {
                 String = Strings.KeybindConfig_NoConflicts,
             });
         }
         else {
-            foreach (var conflict in conflicts) {
-                conflictsScrollableAreaNode.AddNode(new CategoryTextNode {
-                    String = conflict.ToString(),
-                });
-            }
+            verticalListNode.AddNode(conflicts.Select(conflict => new CategoryTextNode {
+                String = conflict.ToString(),
+            }));
         }
-        conflictsScrollableAreaNode.RecalculateLayout();
+        verticalListNode.RecalculateLayout();
+        conflictsScrollableAreaNode.RecalculateSizes();
 
         Services.KeyState.ResetKeyCombo(combo);
     }

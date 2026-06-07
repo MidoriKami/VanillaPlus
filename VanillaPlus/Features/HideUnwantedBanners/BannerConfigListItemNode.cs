@@ -1,7 +1,8 @@
 ﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node.Simple;
+using KamiToolKit.Nodes.Simplified;
 
 namespace VanillaPlus.Features.HideUnwantedBanners;
 

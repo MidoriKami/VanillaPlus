@@ -1,7 +1,6 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Threading.Tasks;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
 
 namespace VanillaPlus.NativeElements.Config.ConfigEntries;
@@ -10,7 +9,6 @@ public class FloatSliderConfig : BaseConfigEntry {
     public required float MinValue { get; init; }
     public required float MaxValue { get; init; }
     public required float InitialValue { get; set; }
-    public required int DecimalPlaces { get; init; }
     public required float StepSpeed { get; init; }
 
     public override NodeBase BuildNode() {
@@ -19,14 +17,14 @@ public class FloatSliderConfig : BaseConfigEntry {
             ItemSpacing = 40.0f,
         };
 
-        var sliderNode = new SliderNode {
+        var sliderNode = new FloatSliderNode {
             Size = new Vector2(175.0f, 24.0f),
             Position = new Vector2(0.0f, 4.0f),
-            DecimalPlaces = DecimalPlaces,
-            Range = (int)(MinValue * Math.Pow(10, DecimalPlaces))..(int)(MaxValue * Math.Pow(10, DecimalPlaces)),
-            OnValueChanged = newValue => OnOptionChanged(newValue / MathF.Pow(10, DecimalPlaces)),
-            Value = (int)(InitialValue * Math.Pow(10, DecimalPlaces)),
-            Step = (int)(StepSpeed * MathF.Pow(10, DecimalPlaces)),
+            Min = MinValue,
+            Max = MaxValue,
+            OnValueChanged = OnOptionChanged,
+            Value = InitialValue,
+            Step = StepSpeed,
         };
 
         layoutNode.AddNode(sliderNode);

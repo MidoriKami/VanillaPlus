@@ -3,8 +3,8 @@ using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node;
 using VanillaPlus.Enums;
+using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.CurrencyWarning.Nodes;
 
@@ -33,7 +33,7 @@ public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
         itemNameTextNode.AttachNode(this);
 
         optionsContainer = new TabbedVerticalListNode {
-            ItemVerticalSpacing = 10.0f,
+            ItemSpacing = 10.0f,
             TabSize = 25.0f,
         };
         optionsContainer.AttachNode(this);

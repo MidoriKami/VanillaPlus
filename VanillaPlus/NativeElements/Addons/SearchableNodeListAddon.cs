@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
+using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
 
 namespace VanillaPlus.NativeElements.Addons;
@@ -44,7 +45,7 @@ public class SearchableNodeListAddon<T, TU> : NodeListAddon<T, TU> where TU : Li
                     InitialNodes = [
                         new CircleButtonNode {
                             Width = 28.0f,
-                            Icon = ButtonIcon.Sort,
+                            Icon = CircleButtonIcon.Sort,
                             OnClick = () => {
                                 reverseSort = !reverseSort;
                                 OnSortingUpdated?.Invoke(filterOption, reverseSort);

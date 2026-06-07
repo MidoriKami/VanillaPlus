@@ -1,8 +1,8 @@
 using System;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
+using KamiToolKit.Enums;
 using VanillaPlus.Features.DutyLootPreview.Data;
 using VanillaPlus.Features.DutyLootPreview.Nodes;
 using Action = System.Action;

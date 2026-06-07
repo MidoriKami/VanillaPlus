@@ -2,6 +2,7 @@
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Enums;
+using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
 using VanillaPlus.Features.CosmicExplorationProgressWindow.Classes;
 

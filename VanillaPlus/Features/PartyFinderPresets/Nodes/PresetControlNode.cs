@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node.Simple;
+using KamiToolKit.Nodes.Simplified;
 using VanillaPlus.NativeElements.Addons;
 
 namespace VanillaPlus.Features.PartyFinderPresets.Nodes;

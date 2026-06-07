@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Threading.Tasks;
 using Dalamud.Interface;
-using KamiToolKit.Overlay.UiOverlay;
+using KamiToolKit.UiOverlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.NativeElements.Config;

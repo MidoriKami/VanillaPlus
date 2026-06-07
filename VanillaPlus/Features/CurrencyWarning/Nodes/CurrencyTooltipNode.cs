@@ -6,8 +6,8 @@ using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using KamiToolKit.Overlay.UiOverlay;
-using KamiToolKit.Premade.Node.Simple;
+using KamiToolKit.Nodes.Simplified;
+using KamiToolKit.UiOverlay;
 
 namespace VanillaPlus.Features.CurrencyWarning.Nodes;
 

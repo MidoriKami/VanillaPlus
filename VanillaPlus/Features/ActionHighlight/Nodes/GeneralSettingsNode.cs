@@ -2,7 +2,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node.Simple;
+using KamiToolKit.Nodes.Simplified;
 
 namespace VanillaPlus.Features.ActionHighlight.Nodes;
 

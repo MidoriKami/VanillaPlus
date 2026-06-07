@@ -3,7 +3,7 @@ using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using KamiToolKit.Overlay.UiOverlay;
+using KamiToolKit.UiOverlay;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.ClockOverlay;

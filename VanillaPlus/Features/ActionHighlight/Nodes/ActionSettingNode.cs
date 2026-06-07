@@ -1,5 +1,6 @@
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
 using Action = Lumina.Excel.Sheets.Action;
 
@@ -16,7 +17,6 @@ public class ActionSettingNode : ListItemNode<ActionHighlightSetting>, IListItem
     public ActionSettingNode() {
         EnableSelection = false;
         EnableHighlight = false;
-        DisableCollisionNode = true;
 
         enabledCheckbox = new CheckboxNode {
             OnClick = OnCheckboxClicked,

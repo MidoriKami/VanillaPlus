@@ -4,14 +4,14 @@ using System.Numerics;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 using KamiToolKit.Classes;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node;
-using KamiToolKit.Premade.Node.Simple;
+using KamiToolKit.Nodes.Simplified;
 using VanillaPlus.Features.GearsetRedirect.Nodes;
-using VanillaPlus.NativeElements.SearchAddons;
+using VanillaPlus.NativeElements.Addons;
+using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.GearsetRedirect;
 

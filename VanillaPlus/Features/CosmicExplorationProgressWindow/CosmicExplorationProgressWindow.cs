@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -66,7 +67,7 @@ public class CosmicExplorationProgressWindow : GameModification {
         if (progressAddon is null) return;
 
         hudShowNode = new CircleButtonNode {
-            Icon = ButtonIcon.Eye,
+            Icon = CircleButtonIcon.Eye,
             AddColor = new Vector3(0.0f, -0.125f, 128f / 255f),
             Size = new Vector2(28.0f),
             Position = new Vector2(26.0f, 26.0f),

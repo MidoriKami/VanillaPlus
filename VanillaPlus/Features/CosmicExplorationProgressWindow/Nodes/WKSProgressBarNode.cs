@@ -1,5 +1,5 @@
 ﻿using System.Numerics;
-using KamiToolKit.Premade.Node.Simple;
+using KamiToolKit.Nodes.Simplified;
 using VanillaPlus.Features.CosmicExplorationProgressWindow.Enums;
 
 namespace VanillaPlus.Features.CosmicExplorationProgressWindow.Nodes;

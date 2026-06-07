@@ -2,11 +2,10 @@
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Addons;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Addon;
-using KamiToolKit.Premade.Node;
-using KamiToolKit.Premade.Node.Color;
-using KamiToolKit.Premade.Node.Simple;
+using KamiToolKit.Nodes.Simplified;
+using VanillaPlus.InternalSystem.Nodes;
 
 namespace VanillaPlus.NativeElements.Config.NodeEntries;
 
@@ -82,8 +81,8 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
             SaveStyleObject();
         };
 
-        colorPreviewNode.ColorPreviewNode.CollisionNode.ShowClickableCursor = true;
-        colorPreviewNode.ColorPreviewNode.CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
+        colorPreviewNode.ColorSquareNode.ShowClickableCursor = true;
+        colorPreviewNode.ColorSquareNode.AddEvent(AtkEventType.MouseClick, () => {
             colorPickerAddon.InitialColor = StyleObject.TextColor;
             colorPickerAddon.OnColorConfirmed = vector4 => {
                 StyleObject.TextColor = vector4;
@@ -123,8 +122,8 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
             SaveStyleObject();
         };
 
-        colorPreviewNode.ColorPreviewNode.CollisionNode.ShowClickableCursor = true;
-        colorPreviewNode.ColorPreviewNode.CollisionNode.AddEvent(AtkEventType.MouseClick, () => {
+        colorPreviewNode.ColorSquareNode.ShowClickableCursor = true;
+        colorPreviewNode.ColorSquareNode.AddEvent(AtkEventType.MouseClick, () => {
             colorPickerAddon.InitialColor = StyleObject.TextOutlineColor;
             colorPickerAddon.OnColorConfirmed = vector4 => {
                 StyleObject.TextOutlineColor = vector4;
@@ -178,7 +177,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
 
         var dropdown = new TextDropDownNode {
             Height = 28.0f,
-            MaxListOptions = 10,
+            // MaxListOptions = 10,
             Options = Enum.GetValues<FontType>().Select(value => value.ToString()).ToList(),
             SelectedOption = StyleObject.FontType.ToString(),
             OnOptionSelected = newValue => {
@@ -206,7 +205,7 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
 
         var dropdown = new TextDropDownNode {
             Height = 28.0f,
-            MaxListOptions = 10,
+            // MaxListOptions = 10,
             Options = Enum.GetValues<AlignmentType>().Select(value => value.ToString()).ToList(),
             SelectedOption = StyleObject.AlignmentType.ToString(),
             OnOptionSelected = newValue => {

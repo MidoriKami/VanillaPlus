@@ -2,7 +2,7 @@ using System;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node;
+using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.CurrencyOverlay.Nodes;
 
@@ -35,7 +35,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         itemNameTextNode.AttachNode(this);
 
         layoutNode = new TabbedVerticalListNode {
-            ItemVerticalSpacing = 6.0f,
+            ItemSpacing = 6.0f,
             FitWidth = true,
         };
 
@@ -118,11 +118,11 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
             },
             scaleSliderNode = new SliderNode {
                 Height = 24.0f,
-                Range = 50..300,
-                DecimalPlaces = 2,
+                Min = 50,
+                Max = 300,
                 OnValueChanged = newValue => {
                     if (ConfigurationOption is not null) {
-                        ConfigurationOption.Scale = newValue / 100.0f;
+                        ConfigurationOption.Scale = newValue;
                         OnConfigChanged?.Invoke(ConfigurationOption);
                     }
                 },
@@ -143,15 +143,26 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
             },
             fadeSliderNode = new SliderNode {
                 Height = 24.0f,
-                Range = ..90,
-                DecimalPlaces = 2,
+                Min = 0,
+                Max = 90,
                 OnValueChanged = newValue => {
                     if (ConfigurationOption is not null) {
-                        ConfigurationOption.FadePercent = newValue / 100.0f;
+                        ConfigurationOption.FadePercent = newValue;
                         OnConfigChanged?.Invoke(ConfigurationOption);
                     }
                 },
             },
+            // fadeSliderNode = new FloatSliderNode {
+            //     Height = 24.0f,
+            //     Min = 0.0f,
+            //     Max = 0.90f,
+            //     OnValueChanged = newValue => {
+            //         if (ConfigurationOption is not null) {
+            //             ConfigurationOption.FadePercent = newValue;
+            //             OnConfigChanged?.Invoke(ConfigurationOption);
+            //         }
+            //     },
+            // },
         ]);
 
         layoutNode.AttachNode(this);

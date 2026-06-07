@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node.Simple;
+using KamiToolKit.Nodes.Simplified;
 using Lumina.Text.ReadOnly;
 
 namespace VanillaPlus.Features.PartyFinderPresets.Nodes;

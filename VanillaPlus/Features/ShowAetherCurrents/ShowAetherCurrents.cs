@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using KamiToolKit.Overlay.MapOverlay;
+using KamiToolKit.MapOverlay;
 using Lumina.Excel.Sheets;
 using Lumina.Extensions;
 using VanillaPlus.Classes;

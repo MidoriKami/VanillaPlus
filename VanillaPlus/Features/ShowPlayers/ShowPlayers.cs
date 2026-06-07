@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
-using KamiToolKit.Overlay.MapOverlay;
+using KamiToolKit.MapOverlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 

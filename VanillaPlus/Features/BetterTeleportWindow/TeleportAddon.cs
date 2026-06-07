@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Aetherytes;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node;
-using KamiToolKit.Premade.Node.Simple;
+using KamiToolKit.Nodes.Simplified;
 using Lumina.Text.ReadOnly;
 
 namespace VanillaPlus.Features.BetterTeleportWindow;
@@ -101,7 +101,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
             ],
         });
 
-        mapBackgroundNode = new BackgroundImageNode {
+        mapBackgroundNode = new ColorImageNode {
             Size = new Vector2(350.0f, 350.0f),
             Position = new Vector2(Size.X + 24.0f, 0.0f),
             FitTexture = true,
@@ -132,7 +132,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
         ticketConfigButton = new CircleButtonNode {
             Size = new Vector2(28.0f, 28.0f),
             Position = new Vector2(ContentSize.X - 36.0f, 6.0f),
-            Icon = ButtonIcon.GearCog,
+            Icon = CircleButtonIcon.GearCog,
             TextTooltip = Services.DataManager.GetAddonText(8515), // "Open Teleport Settings"
             OnClick = () => AgentTeleport.Instance()->AgentInterface.SendCommand(2, [3, 0, 0]),
         };

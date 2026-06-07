@@ -3,7 +3,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.LocationDisplay;

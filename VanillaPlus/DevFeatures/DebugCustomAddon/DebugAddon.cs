@@ -1,6 +1,6 @@
 ﻿using System;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 
 namespace VanillaPlus.DevFeatures.DebugCustomAddon;
 

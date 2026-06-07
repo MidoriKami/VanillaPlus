@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.ActionHighlight.Enums;
 using VanillaPlus.Features.ActionHighlight.Nodes;
+using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.ActionHighlight;
 

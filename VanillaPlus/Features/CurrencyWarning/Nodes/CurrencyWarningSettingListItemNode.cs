@@ -1,5 +1,5 @@
-﻿using KamiToolKit.Premade.Node.ListItem;
-using Lumina.Excel.Sheets;
+﻿using Lumina.Excel.Sheets;
+using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.CurrencyWarning.Nodes;
 

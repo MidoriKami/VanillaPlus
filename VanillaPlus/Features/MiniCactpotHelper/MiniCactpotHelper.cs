@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using KamiToolKit.Controllers;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -109,7 +110,7 @@ public class MiniCactpotHelper : GameModification {
         configButton = new CircleButtonNode {
             Position = new Vector2(8.0f, 8.0f),
             Size = new Vector2(32.0f, 32.0f),
-            Icon = ButtonIcon.GearCog,
+            Icon = CircleButtonIcon.GearCog,
             TextTooltip = Strings.Tooltip_ConfigEzMiniCactpot,
             OnClick = () => configAddon.Toggle(),
         };

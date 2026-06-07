@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
-using KamiToolKit.Premade.Node.Simple;
+using KamiToolKit.Enums;
+using KamiToolKit.Nodes.Simplified;
 
 namespace VanillaPlus.Features.ConfigSearchBar;
 

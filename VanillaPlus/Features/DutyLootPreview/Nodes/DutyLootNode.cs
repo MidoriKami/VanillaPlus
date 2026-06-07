@@ -6,8 +6,9 @@ using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.ContextMenu;
 using KamiToolKit.Enums;
+using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node.Simple;
+using KamiToolKit.Nodes.Simplified;
 using VanillaPlus.Features.DutyLootPreview.Data;
 using ContextMenu = KamiToolKit.ContextMenu.ContextMenu;
 
@@ -75,7 +76,7 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
         };
         armoireIconNode.AttachNode(this);
 
-        CollisionNode.AddEvent(AtkEventType.MouseClick, MouseClickCallback);
+        AddEvent(AtkEventType.MouseClick, MouseClickCallback);
     }
 
     private void MouseClickCallback(AtkEventListener* atkEventListener, AtkEventType atkEventType, int i, AtkEvent* atkEvent, AtkEventData* atkEventData) {

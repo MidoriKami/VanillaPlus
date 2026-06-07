@@ -1,6 +1,6 @@
 ﻿using Dalamud.Game.Text;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using KamiToolKit.Premade.Node.ListItem;
+using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.NativeElements.ListItemNodes;
 

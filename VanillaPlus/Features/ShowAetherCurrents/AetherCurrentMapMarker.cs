@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using KamiToolKit.Overlay.MapOverlay;
+using KamiToolKit.MapOverlay;
 using Lumina.Excel;
 using Lumina.Excel.Sheets;
 

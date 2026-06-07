@@ -1,8 +1,9 @@
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
+using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node.Simple;
+using KamiToolKit.Nodes.Simplified;
 
 namespace VanillaPlus.Features.GearSetReorderButtons.Nodes;
 
@@ -14,7 +15,7 @@ public unsafe class GearSetListReorderButtonNode : SimpleComponentNode {
 
     public GearSetListReorderButtonNode() {
         upButtonNode = new CircleButtonNode {
-            Icon = ButtonIcon.UpArrow,
+            Icon = CircleButtonIcon.UpArrow,
             Size = new Vector2(32.0f, 32.0f),
             OnClick = () => AgentGearSet.Instance()->MoveSetUp(GearSetId),
             TextTooltip = Strings.GearSetReorderButtons_TooltipMoveUp,
@@ -22,7 +23,7 @@ public unsafe class GearSetListReorderButtonNode : SimpleComponentNode {
         };
 
         downButtonNode = new CircleButtonNode {
-            Icon = ButtonIcon.ArrowDown,
+            Icon = CircleButtonIcon.ArrowDown,
             Size = new Vector2(32.0f, 32.0f),
             Position = new Vector2(28.0f, 0.0f),
             OnClick = () => AgentGearSet.Instance()->MoveSetDown(GearSetId),

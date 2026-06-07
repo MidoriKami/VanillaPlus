@@ -5,7 +5,7 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.Game.WKS;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Features.CosmicExplorationProgressWindow.Classes;

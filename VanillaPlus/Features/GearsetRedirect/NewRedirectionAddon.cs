@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Addon.Search;
-using KamiToolKit.Premade.Node.ListItem;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Features.GearsetRedirect.Nodes;
-using VanillaPlus.NativeElements.SearchAddons;
+using VanillaPlus.NativeElements.Addons;
+using VanillaPlus.NativeElements.Nodes;
 using Action = System.Action;
 
 namespace VanillaPlus.Features.GearsetRedirect;
@@ -36,7 +35,7 @@ public class NewRedirectionAddon : NativeAddon {
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
     base.OnSetup(addon, atkValueSpan);
 
-                SelectedGearset = null;
+        SelectedGearset = null;
         SelectedTerritory = null;
 
         AddNode(new VerticalListNode {

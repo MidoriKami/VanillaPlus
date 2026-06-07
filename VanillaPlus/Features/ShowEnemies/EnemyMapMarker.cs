@@ -3,7 +3,7 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using KamiToolKit.Overlay.MapOverlay;
+using KamiToolKit.MapOverlay;
 using BattleNpcSubKind = Dalamud.Game.ClientState.Objects.Enums.BattleNpcSubKind;
 
 namespace VanillaPlus.Features.ShowEnemies;

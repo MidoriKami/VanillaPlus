@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
 using VanillaPlus.NativeElements.Nodes;
 
@@ -14,7 +15,6 @@ public class LootedItemListItemNode : ListItemNode<LootedItemInfo>, IListItemNod
     public LootedItemListItemNode() {
         EnableHighlight = false;
         EnableSelection = false;
-        DisableCollisionNode = true;
 
         iconNode = new IconWithCountNode {
             ShowClickableCursor = true,

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
 
 namespace VanillaPlus.NativeElements.Config.ConfigEntries;
@@ -28,7 +28,7 @@ public class DropDownConfig : BaseConfigEntry {
                     Task.Run(Config.Save);
                 }
             },
-            MaxListOptions = 20,
+            // MaxListOptions = 20,
         };
 
         layoutNode.AddNode(dropdown);

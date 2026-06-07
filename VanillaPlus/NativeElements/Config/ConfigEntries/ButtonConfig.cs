@@ -1,6 +1,6 @@
 ﻿using System;
 using KamiToolKit.Nodes;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 
 namespace VanillaPlus.NativeElements.Config.ConfigEntries;
 

@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.Classes;
+using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;

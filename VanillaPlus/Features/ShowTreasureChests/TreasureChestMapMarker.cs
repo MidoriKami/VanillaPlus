@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using KamiToolKit.Overlay.MapOverlay;
+using KamiToolKit.MapOverlay;
 
 namespace VanillaPlus.Features.ShowTreasureChests;
 

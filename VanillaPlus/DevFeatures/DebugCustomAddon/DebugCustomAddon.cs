@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 

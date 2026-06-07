@@ -3,8 +3,8 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using KamiToolKit.Overlay.UiOverlay;
 using KamiToolKit.Timelines;
+using KamiToolKit.UiOverlay;
 
 namespace VanillaPlus.Features.CurrencyOverlay.Nodes;
 
@@ -31,6 +31,12 @@ public unsafe class CurrencyOverlayNode : OverlayNode {
         countNode.AttachNode(this);
 
         BuildTimelines();
+    }
+
+    protected override void OnSizeChanged() {
+        base.OnSizeChanged();
+
+        Origin = Bounds.Center;
     }
 
     private void BuildTimelines() {

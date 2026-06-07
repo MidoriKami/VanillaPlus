@@ -2,7 +2,7 @@
 using System.Numerics;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
 
 namespace VanillaPlus.NativeElements.Config.NodeEntries;
 
