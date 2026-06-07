@@ -34,7 +34,7 @@ public class FadeLootButton : GameModification {
         };
 
         configWindow.AddCategory(Strings.FadeLootButton_CategoryStyleSettings)
-            .AddFloatSlider(Strings.FadeLootButton_LabelFadePercentage, 0.0f, 1.0f, 2, 0.05f, nameof(config.FadePercent));
+            .AddFloatSlider(Strings.FadeLootButton_LabelFadePercentage, 0.0f, 1.0f, 0.05f, nameof(config.FadePercent));
 
         OpenConfigAction = configWindow.Toggle;
 
