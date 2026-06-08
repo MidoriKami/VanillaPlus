@@ -16,9 +16,9 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
     private readonly CheckboxNode reverseIconCheckbox;
     private readonly CheckboxNode reverseTextCheckbox;
     private readonly CheckboxNode allowMovingCheckbox;
-    private readonly SliderNode scaleSliderNode;
+    private readonly FloatSliderNode scaleSliderNode;
     private readonly CheckboxNode fadeIfNoWarningsCheckbox;
-    private readonly SliderNode fadeSliderNode;
+    private readonly FloatSliderNode fadeSliderNode;
     private readonly TabbedVerticalListNode layoutNode;
 
     public CurrencyOverlayConfigNode() {
@@ -116,7 +116,7 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 Height = 24.0f,
                 String = "Scale",
             },
-            scaleSliderNode = new SliderNode {
+            scaleSliderNode = new FloatSliderNode {
                 Height = 24.0f,
                 Min = 50,
                 Max = 300,
@@ -141,10 +141,10 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 Height = 24.0f,
                 String = Strings.CurrencyOverlay_LabelFadePercentage,
             },
-            fadeSliderNode = new SliderNode {
+            fadeSliderNode = new FloatSliderNode {
                 Height = 24.0f,
-                Min = 0,
-                Max = 90,
+                Min = 0.0f,
+                Max = 0.90f,
                 OnValueChanged = newValue => {
                     if (ConfigurationOption is not null) {
                         ConfigurationOption.FadePercent = newValue;
@@ -152,17 +152,6 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                     }
                 },
             },
-            // fadeSliderNode = new FloatSliderNode {
-            //     Height = 24.0f,
-            //     Min = 0.0f,
-            //     Max = 0.90f,
-            //     OnValueChanged = newValue => {
-            //         if (ConfigurationOption is not null) {
-            //             ConfigurationOption.FadePercent = newValue;
-            //             OnConfigChanged?.Invoke(ConfigurationOption);
-            //         }
-            //     },
-            // },
         ]);
 
         layoutNode.AttachNode(this);
