@@ -88,6 +88,7 @@ public class ModificationBrowserAddon : NativeAddon {
                                     Height = ContentSize.Y - 28.0f - 28.0f - 28.0f - 12.0f,
                                     NavIndex = 10,
                                     NavUp = 6,
+                                    NavRight = 100,
                                     OptionsList = GetModifications(),
                                     NoResultsString = "No Results Match Search",
                                     OnItemSelected = selectedItem
