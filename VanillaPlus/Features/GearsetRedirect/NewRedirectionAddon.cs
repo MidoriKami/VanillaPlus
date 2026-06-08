@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
+using KamiToolKit.Components.ListItemNodes;
 using KamiToolKit.Components.Search;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;
+using Lumina.Extensions;
 using VanillaPlus.Features.GearsetRedirect.Nodes;
-using VanillaPlus.NativeElements.Nodes;
 using Action = System.Action;
 
 namespace VanillaPlus.Features.GearsetRedirect;
@@ -23,10 +25,15 @@ public class NewRedirectionAddon : NativeAddon {
         Title = Strings.SearchAddon_GearsetTitle,
     };
 
-    private readonly TerritorySearchAddon? territorySearchAddon = new() {
+    private readonly TerritoryTypeSearchAddon? territorySearchAddon = new() {
         Size = new Vector2(400.0f, 735.0f),
         InternalName = "TerritorySearch",
         Title = Strings.SearchAddon_TerritoryTitle,
+        OptionsList = Services.DataManager.GetExcelSheet<TerritoryType>()
+            .Where(territory => territory.RowId is not 0)
+            .Where(territory => territory.LoadingImage.RowId is not 0)
+            .Where(territory => !territory.PlaceName.ValueNullable?.Name.ToString().IsNullOrEmpty() ?? false)
+            .ToList(),
     };
 
     public GearsetInfo? SelectedGearset { get; private set; }
@@ -110,10 +117,12 @@ public class NewRedirectionAddon : NativeAddon {
                                     Height = 28.0f,
                                     String = "Select Zone",
                                     OnClick = () => {
-                                        territorySearchAddon?.SelectionResult = result => {
-                                            SelectedTerritory = result;
-
-                                            zoneInfoNode?.ItemData = result;
+                                        territorySearchAddon?.ConfirmedSelections = results => {
+                                            var result = results.FirstOrNull();
+                                            if (result is { } validResult) {
+                                                SelectedTerritory = validResult;
+                                                zoneInfoNode?.ItemData = validResult;
+                                            }
                                         };
 
                                         territorySearchAddon?.Open();
@@ -152,10 +161,12 @@ public class NewRedirectionAddon : NativeAddon {
         });
     }
 
-    public override void Dispose() {
-        base.Dispose();
+    public override async ValueTask DisposeAsync() {
+        await Task.WhenAll(
+            gearsetSearchAddon.DisposeAsync().AsTask(),
+            territorySearchAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
+        );
 
-        gearsetSearchAddon.Dispose();
-        territorySearchAddon?.Dispose();
+        await base.DisposeAsync();
     }
 }
