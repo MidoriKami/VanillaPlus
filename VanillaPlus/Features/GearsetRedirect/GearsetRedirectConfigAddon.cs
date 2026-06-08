@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
@@ -27,15 +26,10 @@ public class GearsetRedirectConfigAddon : NativeAddon {
 
     public required GearsetRedirectConfig Config { get; init; }
 
-    private readonly unsafe GearsetSearchAddon gearsetSearchAddon = new() {
+    private readonly GearsetSearchAddon gearsetSearchAddon = new() {
         Size = new Vector2(275.0f, 555.0f),
         InternalName = "GearsetSearch",
         Title = Strings.SearchAddon_GearsetTitle,
-        OptionsList = RaptureGearsetModule.Instance()->Entries
-            .ToArray()
-            .Where(entry => entry.Flags.HasFlag(RaptureGearsetModule.GearsetFlag.Exists))
-            .OrderBy(entry => entry.Id)
-            .ToList(),
     };
 
     private readonly NewRedirectionAddon newRedirectionAddon = new() {
