@@ -1,12 +1,18 @@
 using System;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Components.Configuration;
+using KamiToolKit.Components.ConfigurationNodes;
 using KamiToolKit.Nodes;
-using VanillaPlus.Native.Nodes;
 
 namespace VanillaPlus.Features.CurrencyOverlay.Nodes;
 
-public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
+/// <summary>
+/// Implementation of <see cref="EntryConfigurationNode{T}"/> for use in <see cref="ConfigurationAddon{T,TU,TV}"/>
+/// Used in <see cref="CurrencyOverlay"/>.
+/// </summary>
+public class CurrencyOverlayConfigNode : EntryConfigurationNode<CurrencySetting> {
+
     private readonly TextNode itemNameTextNode;
     private readonly IconImageNode iconImageNode;
     private readonly CheckboxNode enableLowLimitCheckbox;
@@ -26,91 +32,51 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
             FitTexture = true,
             Alpha = 0.1f,
         };
-        iconImageNode.AttachNode(this);
+        iconImageNode.AttachNode(ConfigurationContentNode);
 
         itemNameTextNode = new TextNode {
             AlignmentType = AlignmentType.Center,
             FontSize = 18,
         };
-        itemNameTextNode.AttachNode(this);
+        itemNameTextNode.AttachNode(ConfigurationContentNode);
 
         layoutNode = new TabbedVerticalListNode {
             ItemSpacing = 6.0f,
             FitWidth = true,
+            NavIndex = 150,
+            NavLeft = 1,
         };
 
         layoutNode.AddNode(0, enableLowLimitCheckbox = new CheckboxNode {
             Height = 24.0f,
             String = "Warn when below limit",
-            OnClick = enabled => {
-                if (ConfigurationOption is not null) {
-                    ConfigurationOption.EnableLowLimit = enabled;
-                    OnConfigChanged?.Invoke(ConfigurationOption);
-                }
-            },
         });
 
         layoutNode.AddNode(1, lowLimitInputNode = new NumericInputNode {
             Height = 24.0f,
-            OnValueUpdate = newValue => {
-                if (ConfigurationOption is not null) {
-                    ConfigurationOption.LowLimit = newValue;
-                    OnConfigChanged?.Invoke(ConfigurationOption);
-                }
-            },
         });
 
         layoutNode.AddNode(0, enableHighLimitCheckbox = new CheckboxNode {
             Height = 24.0f,
             String = "Warn when above limit",
-            OnClick = enabled => {
-                if (ConfigurationOption is not null) {
-                    ConfigurationOption.EnableHighLimit = enabled;
-                    OnConfigChanged?.Invoke(ConfigurationOption);
-                }
-            },
         });
 
         layoutNode.AddNode(1, highLimitInputNode = new NumericInputNode {
             Height = 24.0f,
-            OnValueUpdate = newValue => {
-                if (ConfigurationOption is not null) {
-                    ConfigurationOption.HighLimit = newValue;
-                    OnConfigChanged?.Invoke(ConfigurationOption);
-                }
-            },
         });
 
         layoutNode.AddNode(0, [
             reverseIconCheckbox = new CheckboxNode {
                 Height = 24.0f,
                 String = "Reverse icon position",
-                OnClick = enabled => {
-                    if (ConfigurationOption is not null) {
-                        ConfigurationOption.IconReversed = enabled;
-                        OnConfigChanged?.Invoke(ConfigurationOption);
-                    }
-                },
             },
             reverseTextCheckbox = new CheckboxNode {
                 Height = 24.0f,
                 String = "Reverse text position",
-                OnClick = enabled => {
-                    if (ConfigurationOption is not null) {
-                        ConfigurationOption.TextReversed = enabled;
-                        OnConfigChanged?.Invoke(ConfigurationOption);
-                    }
-                },
             },
             allowMovingCheckbox = new CheckboxNode {
                 Height = 24.0f,
                 String = "Enable moving overlay element",
-                OnClick = enabled => {
-                    if (ConfigurationOption is not null) {
-                        ConfigurationOption.IsNodeMoveable = enabled;
-                        OnConfigChanged?.Invoke(ConfigurationOption);
-                    }
-                },
             },
             new CategoryTextNode {
                 Height = 24.0f,
@@ -118,24 +84,12 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
             },
             scaleSliderNode = new FloatSliderNode {
                 Height = 24.0f,
-                Min = 50,
-                Max = 300,
-                OnValueChanged = newValue => {
-                    if (ConfigurationOption is not null) {
-                        ConfigurationOption.Scale = newValue;
-                        OnConfigChanged?.Invoke(ConfigurationOption);
-                    }
-                },
+                Min = 0.50f,
+                Max = 3.00f,
             },
             fadeIfNoWarningsCheckbox = new CheckboxNode {
                 Height = 24.0f,
                 String = "Fade if no warnings",
-                OnClick = enabled => {
-                    if (ConfigurationOption is not null) {
-                        ConfigurationOption.FadeIfNoWarnings = enabled;
-                        OnConfigChanged?.Invoke(ConfigurationOption);
-                    }
-                },
             },
             new CategoryTextNode {
                 Height = 24.0f,
@@ -145,40 +99,10 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
                 Height = 24.0f,
                 Min = 0.0f,
                 Max = 0.90f,
-                OnValueChanged = newValue => {
-                    if (ConfigurationOption is not null) {
-                        ConfigurationOption.FadePercent = newValue;
-                        OnConfigChanged?.Invoke(ConfigurationOption);
-                    }
-                },
             },
         ]);
 
-        layoutNode.AttachNode(this);
-    }
-
-    protected override void OptionChanged(CurrencySetting? option) {
-        if (option is null) return;
-
-        var itemInfo = Services.DataManager.GetItem(option.ItemId);
-
-        itemNameTextNode.String = itemInfo.Name.ToString();
-
-        iconImageNode.IconId = itemInfo.Icon;
-        iconImageNode.IsVisible = iconImageNode.IconId is not 0;
-
-        lowLimitInputNode.Value = option.LowLimit;
-        highLimitInputNode.Value = option.HighLimit;
-
-        enableLowLimitCheckbox.IsChecked = option.EnableLowLimit;
-        enableHighLimitCheckbox.IsChecked = option.EnableHighLimit;
-        reverseIconCheckbox.IsChecked = option.IconReversed;
-        reverseTextCheckbox.IsChecked = option.TextReversed;
-        allowMovingCheckbox.IsChecked = option.IsNodeMoveable;
-        fadeIfNoWarningsCheckbox.IsChecked = option.FadeIfNoWarnings;
-
-        scaleSliderNode.Value = (int)(option.Scale * 100.0f);
-        fadeSliderNode.Value = (int)(option.FadePercent * 100.0f);
+        layoutNode.AttachNode(ConfigurationContentNode);
     }
 
     protected override void OnSizeChanged() {
@@ -195,5 +119,84 @@ public class CurrencyOverlayConfigNode : ConfigNode<CurrencySetting> {
         layoutNode.Size = new Vector2(Width, Height - itemNameTextNode.Bounds.Bottom - 12.0f);
         layoutNode.Position = new Vector2(0.0f, itemNameTextNode.Bounds.Bottom + 12.0f);
         layoutNode.RecalculateLayout();
+    }
+
+    protected override void PopulateEntryData(CurrencySetting entry) {
+        var itemInfo = Services.DataManager.GetItem(entry.ItemId);
+
+        iconImageNode.IconId = itemInfo.Icon;
+        iconImageNode.IsVisible = iconImageNode.IconId is not 0;
+
+        itemNameTextNode.String = itemInfo.Name.ToString();
+
+        enableLowLimitCheckbox.OnClick = null;
+        enableLowLimitCheckbox.IsChecked = entry.EnableLowLimit;
+        enableLowLimitCheckbox.OnClick = newValue => {
+            entry.EnableLowLimit = newValue;
+            SaveConfig?.Invoke();
+        };
+
+        lowLimitInputNode.OnValueUpdate = null;
+        lowLimitInputNode.Value = entry.LowLimit;
+        lowLimitInputNode.OnValueUpdate = newValue => {
+            entry.LowLimit = newValue;
+            SaveConfig?.Invoke();
+        };
+
+        enableHighLimitCheckbox.OnClick = null;
+        enableHighLimitCheckbox.IsChecked = entry.EnableHighLimit;
+        enableHighLimitCheckbox.OnClick = newValue => {
+            entry.EnableHighLimit = newValue;
+            SaveConfig?.Invoke();
+        };
+
+        highLimitInputNode.OnValueUpdate = null;
+        highLimitInputNode.Value = entry.HighLimit;
+        highLimitInputNode.OnValueUpdate = newValue => {
+            entry.HighLimit = newValue;
+            SaveConfig?.Invoke();
+        };
+
+        reverseTextCheckbox.OnClick = null;
+        reverseIconCheckbox.IsChecked = entry.IconReversed;
+        reverseIconCheckbox.OnClick = newValue => {
+            entry.IconReversed = newValue;
+            SaveConfig?.Invoke();
+        };
+
+        reverseIconCheckbox.OnClick = null;
+        reverseTextCheckbox.IsChecked = entry.TextReversed;
+        reverseIconCheckbox.OnClick = newValue => {
+            entry.TextReversed = newValue;
+            SaveConfig?.Invoke();
+        };
+
+        allowMovingCheckbox.OnClick = null;
+        allowMovingCheckbox.IsChecked = entry.IsNodeMoveable;
+        allowMovingCheckbox.OnClick = newValue => {
+            entry.IsNodeMoveable = newValue;
+            SaveConfig?.Invoke();
+        };
+
+        scaleSliderNode.OnValueChanged = null;
+        scaleSliderNode.Value = entry.Scale;
+        scaleSliderNode.OnValueChanged = newValue => {
+            entry.Scale = newValue;
+            SaveConfig?.Invoke();
+        };
+
+        fadeIfNoWarningsCheckbox.OnClick = null;
+        fadeIfNoWarningsCheckbox.IsChecked = entry.FadeIfNoWarnings;
+        fadeIfNoWarningsCheckbox.OnClick = newValue => {
+            entry.FadeIfNoWarnings = newValue;
+            SaveConfig?.Invoke();
+        };
+
+        fadeSliderNode.OnValueChanged = null;
+        fadeSliderNode.Value = entry.FadePercent;
+        fadeSliderNode.OnValueChanged = newValue => {
+            entry.FadePercent = newValue;
+            SaveConfig?.Invoke();
+        };
     }
 }
