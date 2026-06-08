@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using KamiToolKit.BaseTypes;
+using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
-using KamiToolKit.Premade.Node;
 using VanillaPlus.Classes;
 using VanillaPlus.NativeElements.Config.ConfigEntries;
 using VanillaPlus.NativeElements.Config.NodeEntries;
@@ -16,40 +17,35 @@ public class ConfigCategory : IDisposable {
 
     private readonly List<IConfigEntry> configEntries = [];
 
-    public TabbedVerticalListNode BuildNode() {
-        var tabbedListNode = new TabbedVerticalListNode {
-            FitWidth = true,
-            ItemVerticalSpacing = 4.0f,
-        };
+    public List<TabbedNodeEntry<NodeBase>> BuildNode() {
+        List<TabbedNodeEntry<NodeBase>> nodeEntries = [
 
-        tabbedListNode.AddNode(new ResNode {
-            Size = new Vector2(4.0f, 4.0f),
-        });
+            // Add spacing
+            new(new ResNode { Width = 4.0f, Height = 4.0f }, 0),
+            // Add Category Label
 
-        tabbedListNode.AddNode(new CategoryTextNode {
-            String = CategoryLabel,
-        });
+            new(new CategoryTextNode {
+                String = CategoryLabel,
+            }, 0),
+        ];
 
-        tabbedListNode.AddTab(1);
+        var tabIndex = 1;
 
         foreach (var entry in configEntries) {
             if (entry is IndentEntry) {
-                tabbedListNode.AddTab(1);
+                tabIndex++;
                 continue;
             }
 
             var builtEntry = entry.BuildNode();
-
             if (entry.Tooltip is not null) {
                 builtEntry.TextTooltip = entry.Tooltip;
             }
 
-            tabbedListNode.AddNode(builtEntry);
+            nodeEntries.Add(new TabbedNodeEntry<NodeBase>(builtEntry, tabIndex));
         }
 
-        tabbedListNode.SubtractTab(1);
-
-        return tabbedListNode;
+        return nodeEntries;
     }
 
     public ConfigCategory AddCheckbox(string label, string memberName, Action<bool>? onToggle = null) {
@@ -86,7 +82,7 @@ public class ConfigCategory : IDisposable {
         return this;
     }
 
-    public ConfigCategory AddFloatSlider(string label, float min, float max, int decimalPlaces, float speed, string memberName) {
+    public ConfigCategory AddFloatSlider(string label, float min, float max, float speed, string memberName) {
         var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
         if (memberInfo is null) return this;
 
@@ -96,7 +92,6 @@ public class ConfigCategory : IDisposable {
             Label = label,
             MemberInfo = memberInfo,
             Config = ConfigObject,
-            DecimalPlaces = decimalPlaces,
             MaxValue = max,
             MinValue = min,
             InitialValue = initialValue,
