@@ -1,13 +1,14 @@
+using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Components.Search;
 using KamiToolKit.Enums;
-using KamiToolKit.Overlay.UiOverlay;
-using KamiToolKit.Premade.Addon;
-using KamiToolKit.Premade.Addon.Search;
+using KamiToolKit.UiOverlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.CurrencyWarning.Nodes;
+using VanillaPlus.NativeElements.Addons;
 using VanillaPlus.NativeElements.Config;
 
 namespace VanillaPlus.Features.CurrencyWarning;
@@ -27,7 +28,7 @@ public class CurrencyWarning : GameModification {
 
     private ConfigAddon? configWindow;
     private ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode>? listConfigWindow;
-    private CurrencySearchAddon? itemSearchAddon;
+    private ItemSearchAddon? itemSearchAddon;
 
     public override string ImageName => "CurrencyWarning.png";
 
@@ -40,10 +41,12 @@ public class CurrencyWarning : GameModification {
             await Task.Run(config.Save);
         }
 
-        itemSearchAddon = new CurrencySearchAddon {
+        itemSearchAddon = new ItemSearchAddon {
             InternalName = "CurrencyWarningSearch",
             Title = Strings.CurrencyWarning_ItemSearchTitle,
             Size = new Vector2(350.0f, 500.0f),
+            AllowMultiselect = true,
+            OptionsList = Services.DataManager.GetCurrencyItems().ToList(),
         };
 
         listConfigWindow = new ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode> {
@@ -69,7 +72,7 @@ public class CurrencyWarning : GameModification {
             .AddCheckbox(Strings.CurrencyWarning_EnableMoving, nameof(config.IsMoveable))
             .AddCheckbox(Strings.CurrencyWarning_PlayAnimations, nameof(config.PlayAnimations))
             .AddCheckbox("Hide in Duties", nameof(config.HideInDuties))
-            .AddFloatSlider(Strings.CurrencyWarning_IconScale, 0.5f, 5.0f, 2, 0.1f, nameof(config.Scale))
+            .AddFloatSlider(Strings.CurrencyWarning_IconScale, 0.5f, 5.0f, 0.1f, nameof(config.Scale))
             .AddColorEdit(Strings.CurrencyWarning_BelowColor, nameof(config.LowColor))
             .AddColorEdit(Strings.CurrencyWarning_AboveColor, nameof(config.HighColor));
 
@@ -135,16 +138,19 @@ public class CurrencyWarning : GameModification {
     }
 
     private void OnAddClicked(ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode> listNode) {
-        itemSearchAddon?.SelectionResult = item => {
-            var newSetting = new CurrencyWarningSetting {
-                ItemId = item.RowId, Mode = WarningMode.Above, Limit = (int)item.StackSize,
-            };
+        itemSearchAddon?.ConfirmedSelections = selectedItems => {
+            foreach (var option in selectedItems) {
+                var newSetting = new CurrencyWarningSetting {
+                    ItemId = option.RowId,
+                    Mode = WarningMode.Above,
+                    Limit = (int)option.StackSize,
+                };
 
-            config?.WarningSettings.Add(newSetting);
+                config?.WarningSettings.Add(newSetting);
+            }
+
             config?.Save();
-
             listNode.RefreshList();
-            listNode.SelectItem(newSetting);
         };
         itemSearchAddon?.Toggle();
     }

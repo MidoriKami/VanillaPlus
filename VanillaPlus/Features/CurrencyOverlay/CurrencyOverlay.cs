@@ -3,13 +3,13 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Components.Search;
 using KamiToolKit.Enums;
-using KamiToolKit.Overlay.UiOverlay;
-using KamiToolKit.Premade.Addon;
-using KamiToolKit.Premade.Addon.Search;
+using KamiToolKit.UiOverlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.CurrencyOverlay.Nodes;
+using VanillaPlus.NativeElements.Addons;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 
@@ -25,7 +25,7 @@ public class CurrencyOverlay : GameModification {
 
     private CurrencyOverlayConfig? config;
     private ListConfigAddon<CurrencySetting, CurrencyOverlayListItemNode, CurrencyOverlayConfigNode>? configAddon;
-    private CurrencySearchAddon? itemSearchAddon;
+    private ItemSearchAddon? itemSearchAddon;
 
     private OverlayController? overlayController;
     private List<CurrencyOverlayNode>? currencyNodes;
@@ -35,10 +35,12 @@ public class CurrencyOverlay : GameModification {
 
         config = await CurrencyOverlayConfig.Load();
 
-        itemSearchAddon = new CurrencySearchAddon {
+        itemSearchAddon = new ItemSearchAddon {
             InternalName = "CurrencySearch",
             Title = "Currency Search",
             Size = new Vector2(350.0f, 500.0f),
+            AllowMultiselect = true,
+            OptionsList = Services.DataManager.GetCurrencyItems().ToList(),
         };
 
         configAddon = new ListConfigAddon<CurrencySetting, CurrencyOverlayListItemNode, CurrencyOverlayConfigNode> {
@@ -106,19 +108,20 @@ public class CurrencyOverlay : GameModification {
         if (currencyNodes is null) return;
         if (overlayController is null) return;
 
-        itemSearchAddon.SelectionResult = searchResult => {
-            var newCurrencyOption = new CurrencySetting {
-                ItemId = searchResult.RowId,
-            };
+        itemSearchAddon.ConfirmedSelections = searchResult => {
+            foreach (var option in searchResult) {
+                var newCurrencyOption = new CurrencySetting {
+                    ItemId = option.RowId,
+                };
 
-            config.Currencies.Add(newCurrencyOption);
+                config.Currencies.Add(newCurrencyOption);
+                var newCurrencyNode = BuildCurrencyNode(newCurrencyOption);
+                currencyNodes.Add(newCurrencyNode);
+                overlayController.AddNode(newCurrencyNode);
+            }
+
             Task.Run(config.Save);
             listNode.RefreshList();
-            listNode.SelectItem(newCurrencyOption);
-
-            var newCurrencyNode = BuildCurrencyNode(newCurrencyOption);
-            currencyNodes.Add(newCurrencyNode);
-            overlayController.AddNode(newCurrencyNode);
         };
         itemSearchAddon.Toggle();
     }
