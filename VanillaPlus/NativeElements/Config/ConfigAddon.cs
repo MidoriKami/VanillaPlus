@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit;
+using KamiToolKit.BaseTypes;
+using KamiToolKit.BaseTypes.ComponentNode;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.NativeElements.Config;
 
 public class ConfigAddon : NativeAddon {
-    private ScrollingListNode? configurationListNode;
+    private ScrollingNode<TabbedVerticalListNode>? configurationListNode;
 
     private readonly List<ConfigCategory> configCategories = [];
 
@@ -21,25 +23,37 @@ public class ConfigAddon : NativeAddon {
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         base.OnSetup(addon, atkValueSpan);
 
-        configurationListNode = new ScrollingListNode {
+        configurationListNode = new ScrollingNode<TabbedVerticalListNode> {
+            ContentNode = {
+                FitContents = true,
+                NavIndex = 1,
+            },
             AutoHideScrollBar = true,
-            FitContents = true,
         };
         configurationListNode.AttachNode(this);
 
         foreach (var category in configCategories) {
-            configurationListNode.AddNode(category.BuildNode());
+            var builtCategory = category.BuildNode();
+            foreach (var (node, tab) in builtCategory) {
+                configurationListNode.ContentNode.AddNode(tab, node);
+            }
         }
+
+        var firstComponentNode  = configurationListNode.ContentNode.GetNodes<ComponentNode>().FirstOrDefault();
+        if (firstComponentNode?.FocusNode is not null) {
+            addon->FocusNode = firstComponentNode.FocusNode;
+        }
+
         RecalculateWindowSize();
     }
 
     private void RecalculateWindowSize() {
         if (configurationListNode is null) return;
 
-        configurationListNode.RecalculateLayout();
+        configurationListNode.RecalculateSizes();
 
-        if (configurationListNode.VerticalListNode.Height < MaximumHeight) {
-            Size = new Vector2(Width, configurationListNode.VerticalListNode.Height + ContentStartPosition.Y + 24.0f);
+        if (configurationListNode.ContentNode.Height < MaximumHeight) {
+            Size = new Vector2(Width, configurationListNode.ContentNode.Height + ContentStartPosition.Y + 24.0f);
         }
         else {
             Size = new Vector2(Width, MaximumHeight + ContentStartPosition.Y + 24.0f);
@@ -49,10 +63,10 @@ public class ConfigAddon : NativeAddon {
 
         configurationListNode.Size = ContentSize + new Vector2(0.0f, ContentPadding.Y);
         configurationListNode.Position = ContentStartPosition - new Vector2(0.0f, ContentPadding.Y);
-        configurationListNode.RecalculateLayout();
+        configurationListNode.RecalculateSizes();
 
-        foreach (var node in configurationListNode.GetNodes<TabbedVerticalListNode>()) {
-            node.Width = configurationListNode.ContentWidth;
+        foreach (var node in configurationListNode.ContentNode.GetNodes<TabbedVerticalListNode>()) {
+            node.Width = configurationListNode.ContentNode.Width;
             node.RecalculateLayout();
         }
     }
