@@ -11,7 +11,7 @@ using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Nodes.Simplified;
 using VanillaPlus.Features.GearsetRedirect.Nodes;
-using VanillaPlus.NativeElements.Nodes;
+using VanillaPlus.Native.Nodes;
 
 namespace VanillaPlus.Features.GearsetRedirect;
 

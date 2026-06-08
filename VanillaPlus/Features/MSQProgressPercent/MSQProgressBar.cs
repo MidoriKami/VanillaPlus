@@ -13,7 +13,7 @@ using Lumina.Excel.Sheets;
 using Lumina.Extensions;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
-using VanillaPlus.NativeElements.Config;
+using VanillaPlus.Native.Addons;
 
 namespace VanillaPlus.Features.MSQProgressPercent;
 

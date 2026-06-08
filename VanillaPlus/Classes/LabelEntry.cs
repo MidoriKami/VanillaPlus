@@ -1,0 +1,15 @@
+﻿using KamiToolKit.BaseTypes;
+using KamiToolKit.Nodes;
+
+namespace VanillaPlus.Classes;
+
+public class LabelEntry : IConfigEntry {
+    public string? Tooltip { get; set; }
+    public required string Text { get; set; }
+
+    public void Dispose() { }
+
+    public NodeBase BuildNode() => new TextNode {
+        String = Text,
+    };
+}

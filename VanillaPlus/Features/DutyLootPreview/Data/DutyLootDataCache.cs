@@ -6,8 +6,8 @@ using Dalamud.Game.ClientState.Objects.Enums;
 using Lumina.Text.ReadOnly;
 using LuminaSupplemental.Excel.Model;
 using LuminaSupplemental.Excel.Services;
+using VanillaPlus.Classes;
 using VanillaPlus.Features.DutyLootPreview.Enums;
-using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.DutyLootPreview.Data;
 

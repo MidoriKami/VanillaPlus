@@ -1,0 +1,275 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using KamiToolKit.BaseTypes;
+using KamiToolKit.Classes;
+using KamiToolKit.Nodes;
+
+namespace VanillaPlus.Classes;
+
+public class ConfigCategory : IDisposable {
+    public required string CategoryLabel { get; init; }
+    public required ISavable ConfigObject { get; init; }
+
+    private readonly List<IConfigEntry> configEntries = [];
+
+    public List<TabbedNodeEntry<NodeBase>> BuildNode() {
+        List<TabbedNodeEntry<NodeBase>> nodeEntries = [
+
+            // Add spacing
+            new(new ResNode { Width = 4.0f, Height = 4.0f }, 0),
+            // Add Category Label
+
+            new(new CategoryTextNode {
+                String = CategoryLabel,
+            }, 0),
+        ];
+
+        var tabIndex = 1;
+
+        foreach (var entry in configEntries) {
+            if (entry is IndentEntry) {
+                tabIndex++;
+                continue;
+            }
+
+            var builtEntry = entry.BuildNode();
+            if (entry.Tooltip is not null) {
+                builtEntry.TextTooltip = entry.Tooltip;
+            }
+
+            nodeEntries.Add(new TabbedNodeEntry<NodeBase>(builtEntry, tabIndex));
+        }
+
+        return nodeEntries;
+    }
+
+    public ConfigCategory AddCheckbox(string label, string memberName, Action<bool>? onToggle = null) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<bool>(ConfigObject);
+
+        configEntries.Add(new CheckBoxConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            InitialState = initialValue,
+            ToggleAction = onToggle,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddIntSlider(string label, int min, int max, string memberName) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<int>(ConfigObject);
+
+        configEntries.Add(new IntSliderConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            Range = min..max,
+            InitialValue = initialValue,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddFloatSlider(string label, float min, float max, float speed, string memberName) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<float>(ConfigObject);
+
+        configEntries.Add(new FloatSliderConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            MaxValue = max,
+            MinValue = min,
+            InitialValue = initialValue,
+            StepSpeed = speed,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddIndent() {
+        configEntries.Add(new IndentEntry());
+        return this;
+    }
+
+    public ConfigCategory AddButton(string label, Action onClick) {
+        configEntries.Add(new ButtonConfig {
+            Label = label,
+            OnClick = onClick,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddColorEdit(string label, string memberName, Vector4? defaultColor = null) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<Vector4>(ConfigObject);
+
+        configEntries.Add(new ColorConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            Color = initialValue,
+            DefaultColor = defaultColor,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddDropdown<T>(string label, string memberName) where T : struct, Enum {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<object>(ConfigObject);
+
+        configEntries.Add(new DropDownConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            Options = Enum.GetValues<T>().ToDictionary(enumValue => enumValue.Description, enumValue => (object)enumValue),
+            InitialValue = initialValue!,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddDropdown(string label, string memberName, Dictionary<string, object> options) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<object>(ConfigObject);
+
+        configEntries.Add(new DropDownConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            Options = options,
+            InitialValue = initialValue!,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddInputInt(string label, int step, Range range, string memberName) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<int>(ConfigObject);
+
+        configEntries.Add(new IntInputConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            Step = step,
+            Range = range,
+            InitialValue = initialValue,
+        });
+
+        return this;
+    }
+
+    // Input elements can't represent floats, so it will be truncated to an int
+    public ConfigCategory AddInputFloat(string label, int step, Range range, string memberName) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<float>(ConfigObject);
+
+        configEntries.Add(new FloatInputConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            Step = step,
+            Range = range,
+            InitialValue = initialValue,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddSelectIcon(string label, string memberName) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<uint>(ConfigObject);
+
+        configEntries.Add(new SelectIconConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            InitialIcon = initialValue,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddMultiSelectIcon(string label, string memberName, bool includeInput, params uint[] icons) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<uint>(ConfigObject);
+
+        configEntries.Add(new MultiSelectIconConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            InitialIcon = initialValue,
+            AllowManualInput = includeInput,
+            Options = icons.ToList(),
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddNodeConfig(TextNodeStyle primaryTargetStyle, TextNodeConfigOptions omitOptions = TextNodeConfigOptions.None) {
+        configEntries.Add(new TextNodeConfig {
+            StyleObject = primaryTargetStyle,
+            Options = TextNodeConfigOptions.All & ~omitOptions,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddNodeConfig(NodeStyle nodeStyle) {
+        configEntries.Add(new NodeConfig<NodeStyle> {
+            StyleObject = nodeStyle,
+        });
+
+        return this;
+    }
+
+    public ConfigCategory AddTooltip(string label) {
+        if (configEntries.Count is 0) return this;
+
+        configEntries[^1].Tooltip = label;
+
+        return this;
+    }
+
+    public ConfigCategory AddText(string label) {
+        configEntries.Add(new LabelEntry {
+            Text = label,
+        });
+
+        return this;
+    }
+
+    public void Dispose() {
+        foreach (var entry in configEntries) {
+            entry.Dispose();
+        }
+    }
+}

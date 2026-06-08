@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
-using VanillaPlus.NativeElements.Config;
+using VanillaPlus.Native.Addons;
 
 namespace VanillaPlus.Features.BiggerConfigWindows;
 

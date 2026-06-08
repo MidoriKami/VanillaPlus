@@ -2,7 +2,7 @@
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
-using VanillaPlus.NativeElements.Nodes;
+using VanillaPlus.Native.Nodes;
 
 namespace VanillaPlus.Features.RecentlyLootedWindow;
 

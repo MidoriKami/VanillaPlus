@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using Dalamud.Game.Text;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using KamiToolKit.Enums;
-using VanillaPlus.NativeElements.Nodes;
+using VanillaPlus.Native.Nodes;
 
 namespace VanillaPlus.Features.GearsetRedirect.Nodes;
 

@@ -1,6 +1,5 @@
 using VanillaPlus.Classes;
-using VanillaPlus.InternalSystem;
-using VanillaPlus.NativeElements.Addons;
+using VanillaPlus.Native.Addons;
 
 namespace VanillaPlus;
 

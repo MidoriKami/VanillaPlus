@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Dalamud.Game.ClientState.Fates;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using VanillaPlus.NativeElements.Addons;
+using VanillaPlus.Native.Addons;
 
 namespace VanillaPlus.Features.FateListWindow;
 

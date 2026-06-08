@@ -5,7 +5,7 @@ using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
-using VanillaPlus.NativeElements.Addons;
+using VanillaPlus.Native.Addons;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.ListInventory;

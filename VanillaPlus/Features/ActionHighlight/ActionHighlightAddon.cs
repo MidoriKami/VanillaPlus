@@ -8,7 +8,7 @@ using KamiToolKit.Nodes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.ActionHighlight.Enums;
 using VanillaPlus.Features.ActionHighlight.Nodes;
-using VanillaPlus.NativeElements.Nodes;
+using VanillaPlus.Native.Nodes;
 
 namespace VanillaPlus.Features.ActionHighlight;
 

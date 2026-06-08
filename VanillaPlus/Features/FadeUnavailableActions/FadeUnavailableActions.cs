@@ -9,7 +9,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Arrays.Common;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
-using VanillaPlus.NativeElements.Config;
+using VanillaPlus.Native.Addons;
 using Action = Lumina.Excel.Sheets.Action;
 
 namespace VanillaPlus.Features.FadeUnavailableActions;

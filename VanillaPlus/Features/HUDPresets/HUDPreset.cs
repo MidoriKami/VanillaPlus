@@ -6,7 +6,7 @@ using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
-using VanillaPlus.NativeElements.Addons;
+using VanillaPlus.Native.Addons;
 
 namespace VanillaPlus.Features.HUDPresets;
 

@@ -4,7 +4,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Nodes.Simplified;
-using VanillaPlus.NativeElements.Addons;
+using VanillaPlus.Native.Addons;
 
 namespace VanillaPlus.Features.PartyFinderPresets.Nodes;
 

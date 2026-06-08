@@ -7,7 +7,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using KamiToolKit.Controllers;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
-using VanillaPlus.NativeElements.Config;
+using VanillaPlus.Native.Addons;
 
 namespace VanillaPlus.Features.HideMpBars;
 

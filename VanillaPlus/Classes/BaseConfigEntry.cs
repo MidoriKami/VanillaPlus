@@ -1,0 +1,20 @@
+﻿using System.Reflection;
+using KamiToolKit.BaseTypes;
+using KamiToolKit.Nodes;
+
+namespace VanillaPlus.Classes;
+
+public abstract class BaseConfigEntry : IConfigEntry {
+    public required string Label { get; init; }
+    public required MemberInfo MemberInfo { get; init; }
+    public required ISavable Config { get; init; }
+    public string? Tooltip { get; set; }
+
+    public abstract NodeBase BuildNode();
+
+    public virtual void Dispose() { }
+
+    protected TextNode GetLabelNode() => new CategoryTextNode {
+        String = Label,
+    };
+}

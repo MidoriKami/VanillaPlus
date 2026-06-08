@@ -6,7 +6,7 @@ using Dalamud.Game.ClientState.Keys;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
-using VanillaPlus.NativeElements.Nodes;
+using VanillaPlus.Native.Nodes;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Classes;

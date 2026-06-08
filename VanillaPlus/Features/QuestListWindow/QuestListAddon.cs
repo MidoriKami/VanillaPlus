@@ -3,7 +3,7 @@ using System.Linq;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Enums;
-using VanillaPlus.NativeElements.Addons;
+using VanillaPlus.Native.Addons;
 using Map = FFXIVClientStructs.FFXIV.Client.Game.UI.Map;
 
 namespace VanillaPlus.Features.QuestListWindow;

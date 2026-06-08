@@ -7,7 +7,7 @@ using KamiToolKit.Classes;
 using KamiToolKit.ContextMenu;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
-using VanillaPlus.NativeElements.Addons;
+using VanillaPlus.Native.Addons;
 using ContextMenu = KamiToolKit.ContextMenu.ContextMenu;
 
 namespace VanillaPlus.Features.BetterTeleportWindow;

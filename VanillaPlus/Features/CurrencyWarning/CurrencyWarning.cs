@@ -8,8 +8,7 @@ using KamiToolKit.UiOverlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.CurrencyWarning.Nodes;
-using VanillaPlus.NativeElements.Addons;
-using VanillaPlus.NativeElements.Config;
+using VanillaPlus.Native.Addons;
 
 namespace VanillaPlus.Features.CurrencyWarning;
 

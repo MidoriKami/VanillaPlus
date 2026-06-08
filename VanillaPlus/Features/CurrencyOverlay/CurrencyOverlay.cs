@@ -9,7 +9,7 @@ using KamiToolKit.UiOverlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.CurrencyOverlay.Nodes;
-using VanillaPlus.NativeElements.Addons;
+using VanillaPlus.Native.Addons;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 

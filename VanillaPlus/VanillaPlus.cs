@@ -8,8 +8,7 @@ using Dalamud.IoC;
 using Dalamud.Plugin;
 using KamiToolKit;
 using VanillaPlus.Classes;
-using VanillaPlus.InternalSystem;
-using VanillaPlus.NativeElements.Addons;
+using VanillaPlus.Native.Addons;
 using static VanillaPlus.Utilities.Localization;
 
 namespace VanillaPlus;

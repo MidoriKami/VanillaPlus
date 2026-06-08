@@ -9,7 +9,7 @@ using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
-using VanillaPlus.NativeElements.Config;
+using VanillaPlus.Native.Addons;
 using Exception = System.Exception;
 using OperationCanceledException = System.OperationCanceledException;
 
