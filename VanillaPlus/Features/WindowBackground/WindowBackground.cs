@@ -2,15 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Components.Configuration;
+using KamiToolKit.Components.Search;
 using KamiToolKit.Controllers;
 using KamiToolKit.Enums;
 using KamiToolKit.UiOverlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.WindowBackground.Nodes;
-using VanillaPlus.NativeElements.Addons;
-using VanillaPlus.NativeElements.Nodes;
 
 namespace VanillaPlus.Features.WindowBackground;
 
@@ -26,8 +27,8 @@ public class WindowBackground : GameModification {
     public override string ImageName => "WindowBackgrounds.png";
 
     private WindowBackgroundConfig? config;
-    private ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode>? configAddon;
-    private AddonSearchAddon? addonSearchAddon;
+    private ConfigurationAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode>? configAddon;
+    private WindowSearchAddon? addonSearchAddon;
 
     private DynamicAddonController? dynamicAddonController;
     private OverlayController? overlayController;
@@ -38,10 +39,11 @@ public class WindowBackground : GameModification {
 
         config = await WindowBackgroundConfig.Load();
 
-        addonSearchAddon = new AddonSearchAddon {
+        addonSearchAddon = new WindowSearchAddon {
             InternalName = "AddonSearch",
             Title = Strings.WindowBackground_SearchTitle,
             Size = new Vector2(350.0f, 600.0f),
+            AllowMultiselect = true,
         };
 
         await Services.Framework.Run(() => {
@@ -59,16 +61,15 @@ public class WindowBackground : GameModification {
             }
         });
 
-        configAddon = new ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode> {
+        configAddon = new ConfigurationAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode> {
             InternalName = "WindowBackgroundConfig",
             Title = Strings.WindowBackground_ConfigTitle,
             Size = new Vector2(600.0f, 500.0f),
-            Options = config.Settings,
-            EditCompleted = _ => Task.Run(config.Save),
+            OptionsList = config.Settings,
             AddClicked = OnAddClicked,
             RemoveClicked = OnRemoveClicked,
-            ItemComparer = WindowBackgroundSetting.Compare,
-            IsSearchMatch = WindowBackgroundSetting.IsMatch,
+            SaveConfig = () => Task.Run(config.Save),
+            GetEntrySearchString = entry => entry.AddonName,
         };
 
         OpenConfigAction = configAddon.Toggle;
@@ -149,35 +150,45 @@ public class WindowBackground : GameModification {
         backgroundImageNodes.RemoveAll(node => node.Settings.AddonName == addon->NameString);
     }
 
-    private unsafe void OnAddClicked(ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode> listNode) {
+    private unsafe void OnAddClicked() {
         if (config is null) return;
         if (dynamicAddonController is null) return;
         if (addonSearchAddon is null) return;
 
-        addonSearchAddon.SelectionResult = searchResult => {
-            if (searchResult.Value is null) return;
+        addonSearchAddon.OptionsList = RaptureAtkUnitManager.Instance()->AllLoadedUnitsList.Entries
+            .ToArray()
+            .Where(option => option.Value is not null)
+            .ToList();
 
-            var newOption = new WindowBackgroundSetting {
-                AddonName = searchResult.Value->NameString,
-            };
+        addonSearchAddon.ConfirmedSelections = selectionResults => {
+            foreach (var result in selectionResults) {
+                if (result.Value is null) continue;
 
-            config.Settings.Add(newOption);
+                var newOption = new WindowBackgroundSetting {
+                    AddonName = result.Value->NameString,
+                };
+
+                config.Settings.Add(newOption);
+                dynamicAddonController.AddAddon(result.Value->NameString);
+            }
+
             Task.Run(config.Save);
-
-            dynamicAddonController.AddAddon(searchResult.Value->NameString);
-            listNode.RefreshList();
+            configAddon?.OptionsList = config.Settings;
         };
 
         addonSearchAddon.Toggle();
     }
 
-    private void OnRemoveClicked(ListConfigAddon<WindowBackgroundSetting, WindowBackgroundSettingListItemNode, WindowBackgroundConfigNode> _, WindowBackgroundSetting oldItem) {
+    private void OnRemoveClicked(WindowBackgroundSetting oldItem) {
         if (config is null) return;
         if (dynamicAddonController is null) return;
 
         config.Settings.Remove(oldItem);
         Task.Run(config.Save);
+
         dynamicAddonController.RemoveAddon(oldItem.AddonName);
+
+        configAddon?.OptionsList = config.Settings;
     }
 
     private static unsafe AtkResNode* GetWindowNineGridNode(AtkComponentNode* windowNode) {
