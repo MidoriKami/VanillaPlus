@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.Numerics;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
+using KamiToolKit.Components.Search;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Features.GearsetRedirect.Nodes;
-using VanillaPlus.NativeElements.Addons;
 using VanillaPlus.NativeElements.Nodes;
 using Action = System.Action;
 
@@ -16,10 +18,15 @@ public class NewRedirectionAddon : NativeAddon {
     private GearsetInfoListItemNode? gearsetInfoNode;
     private TerritoryTypeListItemNode? zoneInfoNode;
 
-    private readonly GearsetSearchAddon gearsetSearchAddon = new() {
+    private readonly unsafe GearsetSearchAddon gearsetSearchAddon = new() {
         Size = new Vector2(275.0f, 555.0f),
         InternalName = "GearsetSearch",
         Title = Strings.SearchAddon_GearsetTitle,
+        OptionsList = RaptureGearsetModule.Instance()->Entries
+            .ToArray()
+            .Where(entry => entry.Flags.HasFlag(RaptureGearsetModule.GearsetFlag.Exists))
+            .OrderBy(entry => entry.Id)
+            .ToList(),
     };
 
     private readonly TerritorySearchAddon? territorySearchAddon = new() {
@@ -69,12 +76,16 @@ public class NewRedirectionAddon : NativeAddon {
                                     Height = 28.0f,
                                     String = "Select Gearset",
                                     OnClick = () => {
-                                        gearsetSearchAddon.SelectionResult = result => {
-                                            SelectedGearset = new GearsetInfo {
-                                                GearsetId = result.Id,
-                                            };
+                                        gearsetSearchAddon.ConfirmedSelections = selections => {
+                                            foreach (var (index, gearset) in selections.Index()) {
+                                                SelectedGearset = new GearsetInfo {
+                                                    GearsetId = gearset.Id,
+                                                };
 
-                                            gearsetInfoNode?.ItemData = SelectedGearset;
+                                                if (index is 0) {
+                                                    gearsetInfoNode?.ItemData = SelectedGearset;
+                                                }
+                                            }
                                         };
 
                                         gearsetSearchAddon.Open();
