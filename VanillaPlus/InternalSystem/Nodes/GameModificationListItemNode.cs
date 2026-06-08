@@ -211,7 +211,9 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
         }
     }
 
-    public override void ProcessNav(int index, int up, int down) {
+    public override void ProcessNav(int index, int up, int down, int left, int right) {
+        base.ProcessNav(index, up, down, left, right);
+
         checkboxNode.NavIndex = index;
         refreshCompatabilityButton.NavIndex = index + 1;
         openConfigButton.NavIndex = index + 2;
@@ -219,7 +221,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
         checkboxNode.NavUp = up;
         checkboxNode.NavDown = down;
         checkboxNode.NavRight = refreshCompatabilityButton.NavIndex;
-        checkboxNode.NavLeft = openConfigButton.NavIndex;
+        checkboxNode.NavLeft = left;
 
         refreshCompatabilityButton.NavUp = up;
         refreshCompatabilityButton.NavDown = down;
@@ -228,7 +230,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
 
         openConfigButton.NavUp = up;
         openConfigButton.NavDown = down;
-        openConfigButton.NavRight = checkboxNode.NavIndex;
+        openConfigButton.NavRight = right;
         openConfigButton.NavLeft = refreshCompatabilityButton.NavIndex;
     }
 
