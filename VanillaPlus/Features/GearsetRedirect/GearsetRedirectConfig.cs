@@ -2,7 +2,6 @@
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using VanillaPlus.Classes;
-using VanillaPlus.Features.GearsetRedirect.Nodes;
 
 namespace VanillaPlus.Features.GearsetRedirect;
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using VanillaPlus.Features.GearsetRedirect.Nodes;
 
 namespace VanillaPlus.Features.GearsetRedirect;
 
