@@ -2,86 +2,68 @@
 using System.Linq;
 using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Classes;
+using KamiToolKit.Components.ConfigurationNodes;
 using KamiToolKit.Nodes;
 using VanillaPlus.Enums;
-using VanillaPlus.Native.Nodes;
 
 namespace VanillaPlus.Features.CurrencyWarning.Nodes;
 
-public class CurrencyWarningConfigNode : ConfigNode<CurrencyWarningSetting> {
+public class CurrencyWarningConfigNode : EntryConfigurationNode<CurrencyWarningSetting> {
     private readonly TextNode itemNameTextNode;
     private readonly IconImageNode iconImageNode;
-
     private readonly MultiStateButtonNode<WarningMode> modeStateButton;
     private readonly NumericInputNode limitInput;
-
     private readonly TabbedVerticalListNode optionsContainer;
-
-    private bool isUpdating;
 
     public CurrencyWarningConfigNode() {
         iconImageNode = new IconImageNode {
             FitTexture = true,
             Alpha = 0.1f,
         };
-        iconImageNode.AttachNode(this);
+        iconImageNode.AttachNode(ConfigurationContentNode);
 
         itemNameTextNode = new TextNode {
             AlignmentType = AlignmentType.Center,
             FontSize = 20,
         };
-        itemNameTextNode.AttachNode(this);
+        itemNameTextNode.AttachNode(ConfigurationContentNode);
 
         optionsContainer = new TabbedVerticalListNode {
             ItemSpacing = 10.0f,
             TabSize = 25.0f,
+            InitialTabbedNodes = [
+                new TabbedListEntry(0, modeStateButton = new MultiStateButtonNode<WarningMode> {
+                    Size = new Vector2(200.0f, 24.0f),
+                    States = Enum.GetValues<WarningMode>().ToList(),
+                }),
+                new TabbedListEntry(1, limitInput = new NumericInputNode {
+                    Size = new Vector2(160.0f, 24.0f),
+                }),
+            ],
         };
-        optionsContainer.AttachNode(this);
-
-        modeStateButton = new MultiStateButtonNode<WarningMode> {
-            Size = new Vector2(200.0f, 24.0f),
-            States = Enum.GetValues<WarningMode>().ToList(),
-            OnStateChanged = newIndex => {
-                if (isUpdating) return;
-
-                if (ConfigurationOption is not null) {
-                    ConfigurationOption.Mode = newIndex;
-                    OnConfigChanged?.Invoke(ConfigurationOption);
-                }
-            },
-        };
-        optionsContainer.AddNode(modeStateButton);
-
-        limitInput = new NumericInputNode {
-            Size = new Vector2(160.0f, 24.0f),
-            OnValueUpdate = newValue => {
-                if (isUpdating) return;
-
-                if (ConfigurationOption is not null) {
-                    ConfigurationOption.Limit = newValue;
-                    OnConfigChanged?.Invoke(ConfigurationOption);
-                }
-            },
-        };
-        optionsContainer.AddNode(1, limitInput);
+        optionsContainer.AttachNode(ConfigurationContentNode);
     }
 
-    protected override void OptionChanged(CurrencyWarningSetting? option) {
-        if (option is null) return;
-
-        isUpdating = true;
-
-        var item = Services.DataManager.GetItem(option.ItemId);
+    protected override void PopulateEntryData(CurrencyWarningSetting entry) {
+        var item = Services.DataManager.GetItem(entry.ItemId);
         itemNameTextNode.String = item.Name.ToString();
         iconImageNode.IconId = item.Icon;
 
-        modeStateButton.SelectedState = option.Mode;
+        modeStateButton.OnStateChanged = null;
+        modeStateButton.SelectedState = entry.Mode;
+        modeStateButton.OnStateChanged = newState => {
+            entry.Mode = newState;
+            SaveConfig?.Invoke();
+        };
+
+        limitInput.OnValueUpdate = null;
         limitInput.Max = (int)item.StackSize;
-        limitInput.Value = option.Limit;
-
-        optionsContainer.RecalculateLayout();
-
-        isUpdating = false;
+        limitInput.Value = entry.Limit;
+        limitInput.OnValueUpdate = newValue => {
+            entry.Limit = newValue;
+            SaveConfig?.Invoke();
+        };
     }
 
     protected override void OnSizeChanged() {

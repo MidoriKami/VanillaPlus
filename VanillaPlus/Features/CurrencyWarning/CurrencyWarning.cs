@@ -3,12 +3,17 @@ using System.Numerics;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Components.Search;
-using KamiToolKit.Enums;
 using KamiToolKit.UiOverlay;
+using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.CurrencyWarning.Nodes;
-using VanillaPlus.Native.Addons;
+
+using CurrencyWarningConfigAddon = KamiToolKit.Components.Configuration.TabbedConfigurationAddon<
+    VanillaPlus.Features.CurrencyWarning.CurrencyWarningSetting,
+    VanillaPlus.Features.CurrencyWarning.Nodes.CurrencyWarningSettingListItemNode,
+    VanillaPlus.Features.CurrencyWarning.Nodes.CurrencyWarningConfigNode,
+    VanillaPlus.Features.CurrencyWarning.Nodes.CurrencyWarningGeneralConfigNode>;
 
 namespace VanillaPlus.Features.CurrencyWarning;
 
@@ -20,24 +25,22 @@ public class CurrencyWarning : GameModification {
         Authors = ["Zeffuro"],
     };
 
-    private CurrencyWarningConfig? config;
-    private OverlayController? overlayController;
-    private CurrencyWarningOverlayNode? warningNode;
-    private CurrencyTooltipNode? tooltipNode;
+    public static CurrencyWarningConfig? Config { get; private set; }
 
-    private ConfigAddon? configWindow;
-    private ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode>? listConfigWindow;
+    private OverlayController? overlayController;
+
+    private CurrencyWarningConfigAddon? configAddon;
     private ItemSearchAddon? itemSearchAddon;
 
     public override string ImageName => "CurrencyWarning.png";
 
     public override async Task OnEnableAsync() {
-        config = await CurrencyWarningConfig.Load();
+        Config = await CurrencyWarningConfig.Load();
 
-        if (!config.IsConfigured) {
-            config.IsMoveable = true;
-            config.IsConfigured = true;
-            await Task.Run(config.Save);
+        if (!Config.IsConfigured) {
+            Config.IsMoveable = true;
+            Config.IsConfigured = true;
+            await Task.Run(Config.Save);
         }
 
         itemSearchAddon = new ItemSearchAddon {
@@ -48,95 +51,65 @@ public class CurrencyWarning : GameModification {
             OptionsList = Services.DataManager.GetCurrencyItems().ToList(),
         };
 
-        listConfigWindow = new ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode> {
+        configAddon = new CurrencyWarningConfigAddon {
             InternalName = "CurrencyWarningList",
             Title = Strings.CurrencyWarning_ListTitle,
             Size = new Vector2(700.0f, 500.0f),
-            SortOptions = [DefaultSortOptions.Alphabetical],
-            Options = config.WarningSettings,
-            ItemComparer = CurrencyWarningSetting.ItemComparer,
-            IsSearchMatch = CurrencyWarningSetting.IsSearchMatch,
+            OptionsList = Config.WarningSettings,
+            GetEntrySearchString = entry => Services.DataManager.GetExcelSheet<Item>().GetRow(entry.ItemId).Name.ToString(),
             AddClicked = OnAddClicked,
             RemoveClicked = OnRemoveClicked,
-            EditCompleted = _ => Task.Run(config.Save),
+            SaveConfig = () => Task.Run(Config.Save),
         };
 
-        configWindow = new ConfigAddon {
-            InternalName = "CurrencyWarningConfig",
-            Title = Strings.CurrencyWarning_ConfigTitle,
-            Config = config,
-        };
-
-        configWindow.AddCategory(Strings.CurrencyWarning_CategoryGeneral)
-            .AddCheckbox(Strings.CurrencyWarning_EnableMoving, nameof(config.IsMoveable))
-            .AddCheckbox(Strings.CurrencyWarning_PlayAnimations, nameof(config.PlayAnimations))
-            .AddCheckbox("Hide in Duties", nameof(config.HideInDuties))
-            .AddFloatSlider(Strings.CurrencyWarning_IconScale, 0.5f, 5.0f, 0.1f, nameof(config.Scale))
-            .AddColorEdit(Strings.CurrencyWarning_BelowColor, nameof(config.LowColor))
-            .AddColorEdit(Strings.CurrencyWarning_AboveColor, nameof(config.HighColor));
-
-        configWindow.AddCategory(Strings.CurrencyWarning_CategoryBelowIcon)
-            .AddMultiSelectIcon(Strings.Icon, nameof(config.LowIcon), true, 60073u, 60357u, 230402u);
-
-        configWindow.AddCategory(Strings.CurrencyWarning_CategoryAboveIcon)
-            .AddMultiSelectIcon(Strings.Icon, nameof(config.HighIcon), true, 60074u, 63908u, 230403u);
-
-        configWindow.AddCategory(Strings.CurrencyWarning_CategorySelection)
-            .AddButton(Strings.CurrencyWarning_ConfigureButton, () => listConfigWindow.Toggle());
-
-        OpenConfigAction = configWindow.Toggle;
+        OpenConfigAction = configAddon.Toggle;
 
         await Services.Framework.Run(() => {
             overlayController = new OverlayController();
 
-            tooltipNode = new CurrencyTooltipNode {
-                Config = config,
+            var tooltipNode = new CurrencyTooltipNode {
+                Config = Config,
                 IsVisible = false,
             };
             overlayController.AddNode(tooltipNode);
 
             unsafe {
-                warningNode = new CurrencyWarningOverlayNode {
-                    Config = config,
+                var warningNode = new CurrencyWarningOverlayNode {
+                    Config = Config,
                     Size = new Vector2(48.0f, 48.0f),
                     TooltipNode = tooltipNode,
                     OnMoveComplete = thisNode => {
-                        config.Position = thisNode.Position;
-                        Task.Run(config.Save);
+                        Config.Position = thisNode.Position;
+                        Task.Run(Config.Save);
                     },
-                    Position = config.Position != Vector2.Zero ? config.Position : (Vector2)AtkStage.Instance()->ScreenSize / 2.0f,
+                    Position = Config.Position != Vector2.Zero ? Config.Position : (Vector2)AtkStage.Instance()->ScreenSize / 2.0f,
                 };
-            }
 
-            overlayController.AddNode(warningNode);
+                overlayController.AddNode(warningNode);
+            }
         });
     }
 
     public override async Task OnDisableAsync() {
         await Services.Framework.Run(() => {
             overlayController?.Dispose();
-            tooltipNode?.Dispose();
-            warningNode?.Dispose();
         });
-
         overlayController = null;
-        tooltipNode = null;
-        warningNode = null;
 
         await Task.WhenAll(
-            configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask,
-            listConfigWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask,
+            configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
             itemSearchAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
         );
 
-        configWindow = null;
-        listConfigWindow = null;
+        configAddon = null;
         itemSearchAddon = null;
 
-        config = null;
+        Config = null;
     }
 
-    private void OnAddClicked(ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode> listNode) {
+    private void OnAddClicked() {
+        if (Config is null) return;
+
         itemSearchAddon?.ConfirmedSelections = selectedItems => {
             foreach (var option in selectedItems) {
                 var newSetting = new CurrencyWarningSetting {
@@ -145,17 +118,19 @@ public class CurrencyWarning : GameModification {
                     Limit = (int)option.StackSize,
                 };
 
-                config?.WarningSettings.Add(newSetting);
+                Config.WarningSettings.Add(newSetting);
             }
 
-            config?.Save();
-            listNode.RefreshList();
+            configAddon?.OptionsList = Config.WarningSettings;
+            Task.Run(Config.Save);
         };
         itemSearchAddon?.Toggle();
     }
 
-    private void OnRemoveClicked(ListConfigAddon<CurrencyWarningSetting, CurrencyWarningSettingListItemNode, CurrencyWarningConfigNode> _, CurrencyWarningSetting setting) {
-        config?.WarningSettings.Remove(setting);
-        config?.Save();
+    private static void OnRemoveClicked(CurrencyWarningSetting currencyWarningSetting) {
+        if (Config is null) return;
+
+        Config.WarningSettings.Remove(currencyWarningSetting);
+        Task.Run(Config.Save);
     }
 }
