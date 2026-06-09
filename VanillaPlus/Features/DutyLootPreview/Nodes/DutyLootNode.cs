@@ -33,6 +33,7 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
             TextureSize = new Vector2(ItemHeight),
             WrapMode = WrapMode.Stretch,
             ImageNodeFlags = ImageNodeFlags.AutoFit,
+            ItemTooltip = 1,
         };
         iconNode.AttachNode(this);
 
