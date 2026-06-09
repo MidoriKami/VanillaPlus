@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
 
@@ -23,7 +24,9 @@ public class CurrencyOverlayListItemNode : ListItemWithFocusNav<CurrencySetting>
         };
         iconNode.AttachNode(this);
 
-        labelTextNode = new TextNode();
+        labelTextNode = new TextNode {
+            TextFlags = TextFlags.Ellipsis | TextFlags.Emboss,
+        };
         labelTextNode.AttachNode(this);
     }
 

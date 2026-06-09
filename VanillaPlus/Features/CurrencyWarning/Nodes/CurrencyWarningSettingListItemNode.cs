@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;
@@ -24,7 +25,9 @@ public class CurrencyWarningSettingListItemNode : ListItemWithFocusNav<CurrencyW
         };
         iconNode.AttachNode(this);
 
-        labelTextNode = new TextNode();
+        labelTextNode = new TextNode {
+            TextFlags = TextFlags.Ellipsis | TextFlags.Emboss,
+        };
         labelTextNode.AttachNode(this);
     }
 
