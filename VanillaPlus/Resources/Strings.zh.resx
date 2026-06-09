@@ -1335,7 +1335,7 @@ ID：{0}</value>
       <value>ID</value>
     </data>
   <data name="CurrencyWarning_ListTitle" xml:space="preserve">
-      <value>已追踪的货币</value>
+      <value>Currency Warning Config</value>
     </data>
   <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
       <value>货币提醒设置</value>

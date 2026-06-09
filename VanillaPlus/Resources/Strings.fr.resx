@@ -1335,7 +1335,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>ID</value>
     </data>
   <data name="CurrencyWarning_ListTitle" xml:space="preserve">
-      <value>Devises suivies</value>
+      <value>Currency Warning Config</value>
     </data>
   <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
       <value>Paramètres d'avertissement des devises</value>

@@ -1335,7 +1335,7 @@ Data will be updated as it becomes available, do not request data updates.</valu
       <value>ID</value>
     </data>
   <data name="CurrencyWarning_ListTitle" xml:space="preserve">
-      <value>警告設定中の通貨</value>
+      <value>Currency Warning Config</value>
     </data>
   <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
       <value>通貨の警告設定</value>

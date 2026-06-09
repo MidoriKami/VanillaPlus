@@ -1335,7 +1335,7 @@ This game modification fixes it by always triggering the normal mouse click in a
       <value>ID</value>
     </data>
   <data name="CurrencyWarning_ListTitle" xml:space="preserve">
-      <value>Tracked Currencies</value>
+      <value>Currency Warning Config</value>
     </data>
   <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
       <value>Currency Warning Settings</value>
