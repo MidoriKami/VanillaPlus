@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Numerics;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
 using KamiToolKit.Nodes.Simplified;
 using Lumina.Text.ReadOnly;
 
 namespace VanillaPlus.Native.Nodes;
 
-public class TextInputWithHintNode : SimpleComponentNode {
+public class TextInputWithHintNode : ResNode {
     private readonly TextInputNode textInputNode;
     private readonly ImageNode helpNode;
+
+    public unsafe AtkResNode* FocusNode => textInputNode.FocusNode;
 
     public TextInputWithHintNode() {
         textInputNode = new TextInputNode {
             PlaceholderString = Strings.SearchPlaceholder,
         };
         textInputNode.AttachNode(this);
-
-        FocusNode = textInputNode.CollisionNode;
 
         helpNode = new SimpleImageNode {
             TexturePath = "ui/uld/CircleButtons.tex",

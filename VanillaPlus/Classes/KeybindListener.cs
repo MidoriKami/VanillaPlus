@@ -1,42 +1,69 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 
 namespace VanillaPlus.Classes;
 
-public unsafe class KeybindListener : IDisposable {
-    private readonly Stopwatch debouncer = Stopwatch.StartNew();
+/// <summary>
+/// Generalized implementation of a Keybind Listener.
+/// </summary>
+public class KeybindListener {
 
-    public required AddonConfig AddonConfig { get; set; }
-
+    /// <summary>
+    /// Callback delegate, isHandled will cause the keys input to be reset preventing other keybind listeners from triggering.
+    /// </summary>
     public delegate void KeybindCallbackDelegate(ref bool isHandled);
 
-    public KeybindCallbackDelegate? KeybindCallback { get; set; }
+    /// <summary>
+    /// Gets or sets if this listener is enabled.
+    /// </summary>
+    public bool IsEnabled { get; set; }
 
-    public KeybindListener()
-        => Services.Framework.Update += OnFrameworkUpdate;
+    /// <summary>
+    /// The keybind to be scanning for.
+    /// </summary>
+    public Keybind Keybind { get; set; } = new();
 
-    public void Dispose()
-        => Services.Framework.Update -= OnFrameworkUpdate;
+    /// <summary>
+    /// The function that is called when the keybind is pressed.
+    /// </summary>
+    public KeybindCallbackDelegate? Callback { get; set; }
 
-    private void OnFrameworkUpdate(IFramework framework) {
-        if (!AddonConfig.KeybindEnabled) return;
-        if (AddonConfig.DisableInCombat && Services.Condition.IsInCombat) return;
+    /// <summary>
+    /// Gets or sets if this keybind should be disabled in combat.
+    /// </summary>
+    /// <remarks>
+    /// By default, this is enabled, thus disabling keybinds in combat.
+    /// </remarks>
+    public bool DisableInCombat { get; set; } = true;
+
+    /// <summary>
+    /// How long to wait before allowing another keybind press to trigger the callback.
+    /// </summary>
+    public int DebounceMilliseconds { get; set; }
+
+    /// <summary>
+    /// Updates the keybind check, this reads dalamud's <see cref="IKeyState"/> service, and is slightly out of sync with the game.
+    /// </summary>
+    public unsafe void Update() {
+        if (!IsEnabled) return;
+        if (DisableInCombat && Services.Condition.IsInCombat) return;
 
         // Don't process keybinds if any input text is active
         if (RaptureAtkModule.Instance()->IsTextInputActive()) return;
 
-        if (AddonConfig.Keybind.IsPressed() && debouncer.ElapsedMilliseconds >= 25) {
+        if (Keybind.IsPressed() && debouncer.ElapsedMilliseconds >= DebounceMilliseconds) {
             debouncer.Restart();
 
             var isHandled = false;
-            KeybindCallback?.Invoke(ref isHandled);
+            Callback?.Invoke(ref isHandled);
 
             // If we handled this keypress, then suppress it.
             if (isHandled) {
-                AddonConfig.Keybind.Reset();
+                Keybind.Reset();
             }
         }
     }
+
+    private readonly Stopwatch debouncer = Stopwatch.StartNew();
 }

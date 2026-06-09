@@ -74,6 +74,33 @@ public static unsafe class Inventory {
         return sorter->GetInventoryItem(sorterItem);
     }
 
+    public static void FadeInventoryNodes(AtkUnitBase* addon, string searchString) {
+        var isDisallowedInventory = IsDisallowedInventory(addon);
+        var inventorySorter = GetSorterForInventory(addon);
+
+        foreach (var childAddon in GetInventoryAddons(addon)) {
+            var inventorySlots = GetInventorySlots(childAddon);
+
+            foreach (var index in Enumerable.Range(0, inventorySlots.Length)) {
+                var inventorySlot = inventorySlots[index].Value;
+                if (inventorySlot is null) continue;
+
+                var adjustedPage = GetAdjustedPage(childAddon, index);
+                var adjustedIndex = GetAdjustedIndex(childAddon, index);
+
+                var item = GetItemForSorter(inventorySorter, adjustedPage, adjustedIndex);
+                if (item is null) continue;
+
+                if (item->IsRegexMatch(searchString) || isDisallowedInventory) {
+                    inventorySlot->OwnerNode->FadeNode(0.0f);
+                }
+                else {
+                    inventorySlot->OwnerNode->FadeNode(0.5f);
+                }
+            }
+        }
+    }
+
     public static ItemOrderModuleSorter* GetSorterForInventory(AtkUnitBase* addon) {
         if (addon is null) return null;
 
@@ -209,4 +236,11 @@ public static unsafe class Inventory {
             return addons;
         }
     }
+
+    private static bool IsDisallowedInventory(AtkUnitBase* addon) => addon->NameString switch {
+        "InventoryExpansion" when GetTabForInventory(addon) is 1 => true,
+        "InventoryLarge" when GetTabForInventory(addon) is 2 or 3 => true,
+        "Inventory" when GetTabForInventory(addon) is 4 => true,
+        _ => false,
+    };
 }

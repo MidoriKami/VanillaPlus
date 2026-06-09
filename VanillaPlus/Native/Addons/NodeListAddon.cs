@@ -16,15 +16,15 @@ public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, ILis
     protected ListNode<T, TU>? ListNode;
 
     private AddonConfig? config;
-    private KeybindListener? keybindListener;
+    private AddonKeybindListener? keybindListener;
     private AddonConfigAddon? addonConfigWindow;
 
     public async Task InitializeAsync() {
         config = await AddonConfig.Load($"{InternalName}.addon.json");
 
-        keybindListener = new KeybindListener {
+        keybindListener = new AddonKeybindListener {
             AddonConfig = config,
-            KeybindCallback = (ref isHandled) => {
+            Callback = (ref isHandled) => {
                 if (config.WindowSize != Vector2.Zero) {
                     Size = config.WindowSize;
                 }

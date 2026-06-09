@@ -1,7 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System.Numerics;
+using System.Threading.Tasks;
+using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.Config;
+using Dalamud.Game.Gui;
+using FFXIVClientStructs.FFXIV.Client.UI;
+using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Controllers;
+using Lumina.Text.ReadOnly;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
+using VanillaPlus.Native.Nodes;
+using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.ArmourySearchBar;
 
@@ -15,23 +24,92 @@ public class ArmourySearchBar : GameModification {
         CompatibilityModule = new PluginCompatibilityModule("InventorySearchBar"),
     };
 
-    private InventorySearchAddonController? armouryInventoryController;
+    public override string ImageName => "ArmourySearchBar.png";
+
+    private AddonController? inventoryController;
+    private KeybindListener? keybindListener;
+    private TextInputWithHintNode? searchInputNode;
 
     private bool? configFadeUnusable;
     private bool searchStarted;
-
-    public override string ImageName => "ArmourySearchBar.png";
+    private int lastTab;
 
     public override async Task OnEnableAsync() {
-        armouryInventoryController = new InventorySearchAddonController("ArmouryBoard");
-        armouryInventoryController.PreSearch += OnPreSearch;
+        unsafe {
+            inventoryController = new AddonController {
+                AddonName = "ArmouryBoard",
+                OnSetup = OnArmourySetup,
+                OnFinalize = OnArmouryFinalize,
+                OnPreUpdate = OnArmouryUpdate,
+            };
+        }
 
-        await Services.Framework.Run(armouryInventoryController.Enable);
+        keybindListener = new KeybindListener {
+            Keybind = new Keybind {
+                Modifiers = [VirtualKey.CONTROL],
+                Key = VirtualKey.F,
+            },
+            IsEnabled = true,
+            Callback = OnKeybindPressed,
+        };
+
+        await Services.Framework.Run(inventoryController.Enable);
+
+        Services.GameGui.AgentUpdate += OnAgentUpdate;
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => armouryInventoryController?.Dispose());
-        armouryInventoryController = null;
+        Services.GameGui.AgentUpdate -= OnAgentUpdate;
+
+        await Services.Framework.Run(() => inventoryController?.Dispose());
+        inventoryController = null;
+    }
+
+    private unsafe void OnArmourySetup(AtkUnitBase* addon) {
+        var size = new Vector2(addon->Size.X / 2.0f, 28.0f);
+        var headerSize = new Vector2(addon->WindowHeaderCollisionNode->Width, addon->WindowHeaderCollisionNode->Height);
+
+        searchInputNode = new TextInputWithHintNode {
+            Position = headerSize / 2.0f - size / 2.0f + new Vector2(25.0f, 10.0f),
+            Size = size,
+            OnInputReceived = searchString => OnSearchInputChanged(addon, searchString),
+        };
+        searchInputNode.AttachNode(addon);
+    }
+
+    private unsafe void OnArmouryFinalize(AtkUnitBase* addon) {
+        searchInputNode?.Dispose();
+        searchInputNode = null;
+    }
+
+    private unsafe void OnArmouryUpdate(AtkUnitBase* addon) {
+        keybindListener?.Update();
+
+        var currentTab = Inventory.GetTabForInventory(addon);
+        if (lastTab != currentTab) {
+            lastTab = currentTab;
+
+            if (searchInputNode is not null) {
+                Inventory.FadeInventoryNodes(addon, searchInputNode.SearchString.ToString());
+            }
+        }
+    }
+
+    private unsafe void OnAgentUpdate(AgentUpdateFlag updateFlags) {
+        if (inventoryController is null) return;
+        if (searchInputNode is null) return;
+
+        if (!updateFlags.HasFlag(AgentUpdateFlag.InventoryUpdate)) return;
+
+        var inventoryAddon = RaptureAtkUnitManager.Instance()->GetAddonByName(inventoryController.AddonName);
+        if (inventoryAddon is null) return;
+
+        Inventory.FadeInventoryNodes(inventoryAddon, searchInputNode.SearchString.ToString());
+    }
+
+    private unsafe void OnSearchInputChanged(AtkUnitBase* addon, ReadOnlySeString searchString) {
+        OnPreSearch(searchString.ToString());
+        Inventory.FadeInventoryNodes(addon, searchString.ToString());
     }
 
     private void OnPreSearch(string searchString) {
@@ -51,4 +129,23 @@ public class ArmourySearchBar : GameModification {
         }
     }
 
+    private unsafe void OnKeybindPressed(ref bool isHandled) {
+        if (inventoryController is null) return;
+        if (searchInputNode is null) return;
+
+        var focusedAddonCount = RaptureAtkUnitManager.Instance()->FocusedUnitsList.Count;
+        if (focusedAddonCount < 1) return;
+
+        var focusedAddon = RaptureAtkUnitManager.Instance()->FocusedUnitsList.Entries[focusedAddonCount - 1];
+        if (focusedAddon.Value is null) return;
+        if (focusedAddon.Value->Id is 0) return;
+
+        var addonPointer = RaptureAtkUnitManager.Instance()->GetAddonByName(inventoryController.AddonName);
+        if (addonPointer is null) return;
+
+        if (focusedAddon.Value->Id == addonPointer->Id || focusedAddon.Value->ParentId == addonPointer->Id) {
+            AtkStage.Instance()->AtkInputManager->SetFocus(searchInputNode.FocusNode, addonPointer, 0);
+            isHandled = true;
+        }
+    }
 }
