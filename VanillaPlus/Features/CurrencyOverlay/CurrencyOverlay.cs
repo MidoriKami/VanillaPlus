@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Components.Configuration;
 using KamiToolKit.Components.Search;
+using KamiToolKit.Enums;
 using KamiToolKit.UiOverlay;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
@@ -92,6 +93,7 @@ public class CurrencyOverlay : GameModification {
 
         var targetNode = currencyNodes.FirstOrDefault(node => node.Currency == currencySetting);
         if (targetNode is not null) {
+            targetNode.DisableEditMode(NodeEditMode.Move | NodeEditMode.Resize);
             overlayController.RemoveNode(targetNode);
             currencyNodes.Remove(targetNode);
         }
