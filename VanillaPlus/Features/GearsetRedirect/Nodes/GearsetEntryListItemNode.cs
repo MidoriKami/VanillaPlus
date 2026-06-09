@@ -5,6 +5,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
+using VanillaPlus.Features.GearsetRedirect.Config;
 
 namespace VanillaPlus.Features.GearsetRedirect.Nodes;
 

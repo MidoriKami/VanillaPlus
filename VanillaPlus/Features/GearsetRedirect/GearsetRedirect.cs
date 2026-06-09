@@ -9,6 +9,7 @@ using KamiToolKit.Components.Search;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.GearsetRedirect.Addons;
+using VanillaPlus.Features.GearsetRedirect.Config;
 using VanillaPlus.Features.GearsetRedirect.Nodes;
 
 namespace VanillaPlus.Features.GearsetRedirect;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace VanillaPlus.Features.GearsetRedirect;
+namespace VanillaPlus.Features.GearsetRedirect.Config;
 
 /// <summary>
 /// Configuration definition for use with <see cref="GearsetRedirect"/>.

@@ -1,4 +1,4 @@
-﻿namespace VanillaPlus.Features.GearsetRedirect;
+﻿namespace VanillaPlus.Features.GearsetRedirect.Config;
 
 /// <summary>
 /// Data object representing a singular specific redirection target.

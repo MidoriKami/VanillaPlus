@@ -9,6 +9,7 @@ using KamiToolKit.Nodes;
 using Lumina.Data.Parsing.Uld;
 using Lumina.Excel.Sheets;
 using Lumina.Text.ReadOnly;
+using VanillaPlus.Features.GearsetRedirect.Config;
 
 namespace VanillaPlus.Features.GearsetRedirect.Nodes;
 

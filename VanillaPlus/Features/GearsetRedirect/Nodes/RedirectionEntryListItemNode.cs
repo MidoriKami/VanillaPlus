@@ -6,6 +6,7 @@ using KamiToolKit.Classes;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
 using Lumina.Excel.Sheets;
+using VanillaPlus.Features.GearsetRedirect.Config;
 
 namespace VanillaPlus.Features.GearsetRedirect.Nodes;
 

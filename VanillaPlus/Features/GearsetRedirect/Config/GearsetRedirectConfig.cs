@@ -3,7 +3,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using VanillaPlus.Classes;
 
-namespace VanillaPlus.Features.GearsetRedirect;
+namespace VanillaPlus.Features.GearsetRedirect.Config;
 
 public class GearsetRedirectConfig : GameModificationConfig<GearsetRedirectConfig> {
     protected override string FileName => "GearsetRedirect";

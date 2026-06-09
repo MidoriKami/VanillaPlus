@@ -9,6 +9,7 @@ using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using Lumina.Data.Parsing.Uld;
 using Lumina.Extensions;
+using VanillaPlus.Features.GearsetRedirect.Config;
 
 namespace VanillaPlus.Features.GearsetRedirect.Addons;
 
