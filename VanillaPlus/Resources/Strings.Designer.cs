@@ -908,7 +908,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tracked Currencies.
+        ///   Looks up a localized string similar to Currency Warning Config.
         /// </summary>
         internal static string CurrencyWarning_ListTitle {
             get {
