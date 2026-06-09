@@ -41,6 +41,11 @@ public static class DataManagerExtensions {
                 .Where(item => !obsoleteTomes.Contains(item));
         }
 
+        public IEnumerable<TerritoryType> GetTerritoryTypes() => dataManager.GetExcelSheet<TerritoryType>()
+            .Where(territory => territory.RowId is not 0)
+            .Where(territory => territory.LoadingImage.RowId is not 0)
+            .Where(territory => !territory.PlaceName.ValueNullable?.Name.ToString().IsNullOrEmpty() ?? false);
+
         private IEnumerable<Item> GetObsoleteTomestones()
             => dataManager.GetExcelSheet<TomestonesItem>()
                 .Where(item => item.Tomestones.RowId is 0)

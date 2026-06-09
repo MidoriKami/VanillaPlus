@@ -29,11 +29,7 @@ public class NewRedirectionAddon : NativeAddon {
         Size = new Vector2(400.0f, 735.0f),
         InternalName = "TerritorySearch",
         Title = Strings.SearchAddon_TerritoryTitle,
-        OptionsList = Services.DataManager.GetExcelSheet<TerritoryType>()
-            .Where(territory => territory.RowId is not 0)
-            .Where(territory => territory.LoadingImage.RowId is not 0)
-            .Where(territory => !territory.PlaceName.ValueNullable?.Name.ToString().IsNullOrEmpty() ?? false)
-            .ToList(),
+        OptionsList = Services.DataManager.GetTerritoryTypes().ToList(),
     };
 
     public GearsetInfo? SelectedGearset { get; private set; }
