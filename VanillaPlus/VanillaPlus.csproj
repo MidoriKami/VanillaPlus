@@ -16,7 +16,7 @@
     <ItemGroup>
         <ProjectReference Include="..\KamiToolKit.Components\KamiToolKit.Components.csproj" />
         <ProjectReference Include="..\KamiToolKit\KamiToolKit.csproj"/>
-        <PackageReference Include="LuminaSupplemental.Excel" Version="4.3.5" />
+        <PackageReference Include="LuminaSupplemental.Excel" Version="4.3.6" />
     </ItemGroup>
 
     <PropertyGroup>
