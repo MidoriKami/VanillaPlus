@@ -22,21 +22,22 @@ public class ShowAetherytesOnTop : GameModification {
 
     private KeyStateFlags controlPreState;
 
-    public override async Task OnEnableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AgentLifecycle.RegisterListener(AgentEvent.PreUpdate, AgentId.Map, OnMapPreUpdate);
-            Services.AgentLifecycle.RegisterListener(AgentEvent.PostUpdate, AgentId.Map, OnMapPostUpdate);
-        });
+    public override Task OnEnableAsync() {
+        Services.AgentLifecycle.RegisterListener(AgentEvent.PreUpdate, AgentId.Map, OnMapPreUpdate);
+        Services.AgentLifecycle.RegisterListener(AgentEvent.PostUpdate, AgentId.Map, OnMapPostUpdate);
+
+        return Task.CompletedTask;
     }
 
-    public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AgentLifecycle.UnregisterListener(OnMapPreUpdate, OnMapPostUpdate);
+    public override Task OnDisableAsync() {
+        Services.AgentLifecycle.UnregisterListener(OnMapPreUpdate, OnMapPostUpdate);
 
-            unsafe {
-                AgentMap.Instance()->IsControlKeyPressed = true;
-            }
-        });
+        // What's the worst that could happen ...
+        unsafe {
+            AgentMap.Instance()->IsControlKeyPressed = true;
+        }
+
+        return Task.CompletedTask;
     }
 
     private unsafe void OnMapPreUpdate(AgentEvent type, AgentArgs args) {

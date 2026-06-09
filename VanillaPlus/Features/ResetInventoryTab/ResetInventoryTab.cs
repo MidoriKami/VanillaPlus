@@ -18,16 +18,16 @@ public class ResetInventoryTab : GameModification {
         CompatibilityModule = new HaselTweaksCompatibilityModule("FixInventoryOpenTab"),
     };
 
-    public override async Task OnEnableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PreRefresh, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnPreRefresh);
-        });
+    public override Task OnEnableAsync() {
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PreRefresh, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnPreRefresh);
+
+        return Task.CompletedTask;
     }
 
-    public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.UnregisterListener(OnPreRefresh);
-        });
+    public override Task OnDisableAsync() {
+        Services.AddonLifecycle.UnregisterListener(OnPreRefresh);
+
+        return Task.CompletedTask;
     }
 
     private static unsafe void OnPreRefresh(AddonEvent type, AddonArgs args) {

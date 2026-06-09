@@ -34,15 +34,11 @@ public class SuppressDialogueAdvance : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "Talk", OnTalkReceiveEvent);
-        });
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "Talk", OnTalkReceiveEvent);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.UnregisterListener(OnTalkReceiveEvent);
-        });
+        Services.AddonLifecycle.UnregisterListener(OnTalkReceiveEvent);
 
         await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configWindow = null;

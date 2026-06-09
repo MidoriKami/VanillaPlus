@@ -30,17 +30,16 @@ public class ChatPlayerTooltip : GameModification {
         "ChatLogPanel_3",
     ];
 
-    public override async Task OnEnableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, addonNames, PreReceiveEvent);
-        });
+    public override Task OnEnableAsync() {
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, addonNames, PreReceiveEvent);
+
+        return Task.CompletedTask;
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.UnregisterListener(PreReceiveEvent);
-            HideTooltip();
-        });
+        Services.AddonLifecycle.UnregisterListener(PreReceiveEvent);
+
+        await Services.Framework.Run(HideTooltip);
     }
 
     private unsafe void PreReceiveEvent(AddonEvent type, AddonArgs args) {

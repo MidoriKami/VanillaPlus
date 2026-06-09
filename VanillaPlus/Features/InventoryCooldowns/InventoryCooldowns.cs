@@ -38,18 +38,15 @@ public class InventoryCooldowns : GameModification {
             };
         }
 
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, ["InventoryExpansion", "InventoryLarge", "Inventory"], OnPostReceiveEvent);
-            controller.Enable();
-        });
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, ["InventoryExpansion", "InventoryLarge", "Inventory"], OnPostReceiveEvent);
+
+        await Services.Framework.Run(controller.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.UnregisterListener(OnPostReceiveEvent);
-            controller?.Dispose();
-        });
+        Services.AddonLifecycle.UnregisterListener(OnPostReceiveEvent);
 
+        await Services.Framework.Run(() => controller?.Dispose());
         controller = null;
     }
 

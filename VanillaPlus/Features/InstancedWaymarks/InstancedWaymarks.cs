@@ -50,9 +50,7 @@ public class InstancedWaymarks : GameModification {
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
         Services.ContextMenu.OnMenuOpened += OnMenuOpened;
 
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PreDraw, "FieldMarker", OnFieldMarkerDraw);
-        });
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PreDraw, "FieldMarker", OnFieldMarkerDraw);
 
         SaveWaymarks(0);
 
@@ -66,10 +64,7 @@ public class InstancedWaymarks : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.UnregisterListener(OnFieldMarkerDraw);
-        });
-
+        Services.AddonLifecycle.UnregisterListener(OnFieldMarkerDraw);
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
         Services.ContextMenu.OnMenuOpened -= OnMenuOpened;
 

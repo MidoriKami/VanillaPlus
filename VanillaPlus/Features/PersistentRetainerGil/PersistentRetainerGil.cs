@@ -22,21 +22,21 @@ public class PersistentRetainerGil : GameModification {
     private bool needsUpdate;
     private bool isProcessing;
 
-    public override async Task OnEnableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "Bank", OnBankEvent);
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "Bank", OnBankRefreshEvent);
-        });
+    public override Task OnEnableAsync() {
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "Bank", OnBankEvent);
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "Bank", OnBankRefreshEvent);
+
+        return Task.CompletedTask;
     }
 
-    public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.UnregisterListener(OnBankEvent, OnBankRefreshEvent);
-        });
+    public override Task OnDisableAsync() {
+        Services.AddonLifecycle.UnregisterListener(OnBankEvent, OnBankRefreshEvent);
 
         previousGil = 0;
         needsUpdate = false;
         isProcessing = false;
+
+        return Task.CompletedTask;
     }
 
     private unsafe void OnBankRefreshEvent(AddonEvent type, AddonArgs args) {

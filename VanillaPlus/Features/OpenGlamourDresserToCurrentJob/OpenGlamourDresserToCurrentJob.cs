@@ -16,16 +16,16 @@ public class OpenGlamourDresserToCurrentJob : GameModification {
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@OpenGlamourDresserToCurrentJob"),
     };
 
-    public override async Task OnEnableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PreSetup, "MiragePrismPrismBox", OnGlamourDresserSetup);
-        });
+    public override Task OnEnableAsync() {
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PreSetup, "MiragePrismPrismBox", OnGlamourDresserSetup);
+
+        return Task.CompletedTask;
     }
 
-    public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.UnregisterListener(OnGlamourDresserSetup);
-        });
+    public override Task OnDisableAsync() {
+        Services.AddonLifecycle.UnregisterListener(OnGlamourDresserSetup);
+
+        return Task.CompletedTask;
     }
 
     private void OnGlamourDresserSetup(AddonEvent type, AddonArgs args) {

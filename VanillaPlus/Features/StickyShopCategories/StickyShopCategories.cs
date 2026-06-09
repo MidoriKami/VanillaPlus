@@ -21,16 +21,12 @@ public class StickyShopCategories : GameModification {
     public override async Task OnEnableAsync() {
         config = await StickyShopCategoriesData.Load();
 
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "InclusionShop", OnInclusionShopSetup);
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, "InclusionShop", OnInclusionShopFinalize);
-        });
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "InclusionShop", OnInclusionShopSetup);
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, "InclusionShop", OnInclusionShopFinalize);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.UnregisterListener(OnInclusionShopFinalize, OnInclusionShopSetup);
-        });
+        Services.AddonLifecycle.UnregisterListener(OnInclusionShopFinalize, OnInclusionShopSetup);
 
         if (config is not null) {
             await config.Save();

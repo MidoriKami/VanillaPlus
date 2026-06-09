@@ -16,16 +16,16 @@ public class SkipLoginConfirm : GameModification {
         Authors = ["MidoriKami"],
     };
 
-    public override async Task OnEnableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
-        });
+    public override Task OnEnableAsync() {
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
+
+        return Task.CompletedTask;
     }
 
-    public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
-        });
+    public override Task OnDisableAsync() {
+        Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
+
+        return Task.CompletedTask;
     }
 
     private static unsafe void SelectYesNoHandler(AddonEvent _, AddonArgs yesNoArgs) {

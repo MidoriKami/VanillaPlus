@@ -37,16 +37,14 @@ public class DraggableWindowDeadSpace : GameModification {
             }
         });
 
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, string.Empty, OnAddonSetup);
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, string.Empty, OnAddonFinalize);
-        });
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, string.Empty, OnAddonSetup);
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, string.Empty, OnAddonFinalize);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.UnregisterListener(OnAddonSetup, OnAddonFinalize);
+        Services.AddonLifecycle.UnregisterListener(OnAddonSetup, OnAddonFinalize);
 
+        await Services.Framework.Run(() => {
             cursorEventListener?.Dispose();
 
             foreach (var (_, node) in windowInteractionNodes ?? []) {

@@ -18,17 +18,17 @@ public class SelectNextLootItem : GameModification {
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@LootWindowSelectNext", "1.14.0.2"),
     };
 
-    public override async Task OnEnableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "NeedGreed", OnNeedGreedSetup);
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, "NeedGreed", OnNeedGreedEvent);
-        });
+    public override Task OnEnableAsync() {
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "NeedGreed", OnNeedGreedSetup);
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, "NeedGreed", OnNeedGreedEvent);
+
+        return Task.CompletedTask;
     }
 
-    public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.UnregisterListener(OnNeedGreedSetup, OnNeedGreedEvent);
-        });
+    public override Task OnDisableAsync() {
+        Services.AddonLifecycle.UnregisterListener(OnNeedGreedSetup, OnNeedGreedEvent);
+
+        return Task.CompletedTask;
     }
 
     private static unsafe void OnNeedGreedSetup(AddonEvent type, AddonArgs args) {

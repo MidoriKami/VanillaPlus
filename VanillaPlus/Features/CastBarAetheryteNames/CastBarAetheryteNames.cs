@@ -25,30 +25,28 @@ public class CastBarAetheryteNames : GameModification {
 
     public override string ImageName => "CastBarAetheryteNames.png";
 
-    public override async Task OnEnableAsync() {
+    public override Task OnEnableAsync() {
         unsafe {
             teleportHook = Services.GameInteropProvider.HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
             teleportHook?.Enable();
         }
 
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "_CastBar", OnCastBarRefresh);
 
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "_CastBar", OnCastBarRefresh);
-        });
+        return Task.CompletedTask;
     }
 
-    public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.UnregisterListener(OnCastBarRefresh);
-        });
-
+    public override Task OnDisableAsync() {
+        Services.AddonLifecycle.UnregisterListener(OnCastBarRefresh);
         Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
 
         teleportHook?.Dispose();
         teleportHook = null;
 
         teleportInfo = null;
+
+        return Task.CompletedTask;
     }
 
     private void OnTerritoryChanged(uint u)

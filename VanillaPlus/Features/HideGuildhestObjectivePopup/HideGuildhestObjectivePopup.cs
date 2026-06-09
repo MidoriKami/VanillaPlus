@@ -19,16 +19,16 @@ public class HideGuildhestObjectivePopup : GameModification {
 
     public override string ImageName => "HideGuildhestObjective.png";
 
-    public override async Task OnEnableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.RegisterListener(AddonEvent.PreSetup, "JournalAccept", OnJournalAcceptOpen);
-        });
+    public override Task OnEnableAsync() {
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PreSetup, "JournalAccept", OnJournalAcceptOpen);
+
+        return Task.CompletedTask;
     }
 
-    public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            Services.AddonLifecycle.UnregisterListener(OnJournalAcceptOpen);
-        });
+    public override Task OnDisableAsync() {
+        Services.AddonLifecycle.UnregisterListener(OnJournalAcceptOpen);
+
+        return Task.CompletedTask;
     }
 
     private static unsafe void OnJournalAcceptOpen(AddonEvent type, AddonArgs args) {
