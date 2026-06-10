@@ -42,17 +42,19 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
             Size = new Vector2(500.0f, 275.0f),
         };
 
-        Services.CommandManager.AddHandler("/vanillaplus", new CommandInfo(CommandHandler) {
-            DisplayOrder = 1,
-            ShowInHelp = true,
-            HelpMessage = Strings.CommandHelpOpenBrowser,
-        });
+        await Services.Framework.Run(() => {
+            Services.CommandManager.AddHandler("/vanillaplus", new CommandInfo(CommandHandler) {
+                DisplayOrder = 1,
+                ShowInHelp = true,
+                HelpMessage = Strings.CommandHelpOpenBrowser,
+            });
 
-        Services.CommandManager.AddHandler("/plus", new CommandInfo(CommandHandler) {
-            DisplayOrder = 2,
-            ShowInHelp = true,
-            HelpMessage = Strings.CommandHelpOpenBrowser,
-        });
+            Services.CommandManager.AddHandler("/plus", new CommandInfo(CommandHandler) {
+                DisplayOrder = 2,
+                ShowInHelp = true,
+                HelpMessage = Strings.CommandHelpOpenBrowser,
+            });
+        }, cancellationToken);
 
         Services.PluginInterface.UiBuilder.OpenConfigUi += System.ModificationBrowserAddon.Open;
         Services.ClientState.Login += OnLogin;
@@ -75,7 +77,6 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
         Services.PluginInterface.UiBuilder.OpenConfigUi -= System.ModificationBrowserAddon.Open;
         Services.ClientState.Login -= OnLogin;
 
-        Services.CommandManager.RemoveHandler("/vanillaplus");
         Services.PluginInterface.LanguageChanged -= SetCultureInfo;
 
         // If the game is unloading, then it's probably already deallocated everything that we've done =D
@@ -85,7 +86,10 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
             await System.ModificationManager.DisposeAsync();
         }
 
-        await Services.Framework.RunOnFrameworkThread(KamiToolKitLibrary.Dispose);
+        await Services.Framework.RunOnFrameworkThread(() => {
+            Services.CommandManager.RemoveHandler("/vanillaplus");
+            KamiToolKitLibrary.Dispose();
+        });
     }
 
     private void OnLogin() {

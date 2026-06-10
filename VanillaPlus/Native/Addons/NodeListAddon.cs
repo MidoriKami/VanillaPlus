@@ -73,9 +73,11 @@ public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, ILis
         keybindListener?.Dispose();
         keybindListener = null;
 
-        if (OpenCommand is not null) {
-            Services.CommandManager.RemoveHandler(OpenCommand);
-        }
+        await Services.Framework.Run(() => {
+            if (OpenCommand is not null) {
+                Services.CommandManager.RemoveHandler(OpenCommand);
+            }
+        });
 
         await base.DisposeAsync();
     }
@@ -84,9 +86,11 @@ public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, ILis
         private get;
         init {
             if (field is null && value is not null) {
-                Services.CommandManager.AddHandler(value, new CommandInfo(OnOpenCommand) {
-                    DisplayOrder = 3,
-                    HelpMessage = Strings.NodeList_OpenCommandHelp.Format(Title.ToString()),
+                Services.Framework.Run(() => {
+                    Services.CommandManager.AddHandler(value, new CommandInfo(OnOpenCommand) {
+                        DisplayOrder = 3,
+                        HelpMessage = Strings.NodeList_OpenCommandHelp.Format(Title.ToString()),
+                    });
                 });
 
                 field = value;
