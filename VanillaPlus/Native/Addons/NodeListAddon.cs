@@ -73,11 +73,9 @@ public class NodeListAddon<T, TU> : NativeAddon where TU : ListItemNode<T>, ILis
         keybindListener?.Dispose();
         keybindListener = null;
 
-        await Services.Framework.Run(() => {
-            if (OpenCommand is not null) {
-                Services.CommandManager.RemoveHandler(OpenCommand);
-            }
-        });
+        if (OpenCommand is not null) {
+            Services.CommandManager.RemoveHandler(OpenCommand);
+        }
 
         await base.DisposeAsync();
     }
