@@ -67,12 +67,6 @@ public class GearsetRedirect : GameModification {
                 configWindow.Toggle();
             }
         };
-
-        await Services.Framework.Run(() => {
-            if (Services.ClientState.IsLoggedIn) {
-                configWindow.DebugOpen();
-            }
-        });
     }
 
     public override async Task OnDisableAsync() {
