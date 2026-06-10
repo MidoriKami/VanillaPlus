@@ -2216,7 +2216,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Places a flag on the map for where your cursor is pointing in the world..
+        ///   Looks up a localized string similar to Places a flag on the map for where your cursor is pointing in the world via the command /placeflag..
         /// </summary>
         internal static string ModificationDescription_FlagOnCursor {
             get {
