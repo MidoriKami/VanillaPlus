@@ -4,9 +4,17 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using KamiToolKit.Components.Search;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
+using VanillaPlus.Features.ActionHighlight.Config;
+
+using AntsConfigAddon = KamiToolKit.Components.Configuration.TabbedConfigurationAddon<
+    VanillaPlus.Features.ActionHighlight.Config.AntsClassJobConfig,
+    VanillaPlus.Features.ActionHighlight.Nodes.AntsClassJobListItemNode,
+    VanillaPlus.Features.ActionHighlight.Nodes.AntsClassJobConfigurationNode,
+    VanillaPlus.Features.ActionHighlight.Nodes.AntsGeneralConfigurationNode>;
 
 namespace VanillaPlus.Features.ActionHighlight;
 
@@ -22,9 +30,13 @@ public class ActionHighlight : GameModification {
     public override string ImageName => "ActionHighlight.png";
 
     private Hook<ActionManager.Delegates.IsActionHighlighted>? onAntsHook;
-    private ActionHighlightConfig? config;
-    private ActionHighlightAddon? configAddon;
 
+    internal static AntsConfig? Config { get; private set; }
+    private AntsConfigAddon? configAddon;
+
+    private ClassJobSearchAddon? classJobSearchAddon;
+
+    // Cache of ActionId => Action
     private Dictionary<uint, Action>? cachedActions;
 
     // Needed for AST cards
@@ -37,13 +49,27 @@ public class ActionHighlight : GameModification {
 
         cachedActions = [];
 
-        config = await ActionHighlightConfig.Load();
+        Config = await AntsConfig.Load();
 
-        configAddon = new ActionHighlightAddon {
-            Size = new Vector2(700.0f, 500.0f),
+        classJobSearchAddon = new ClassJobSearchAddon {
+            InternalName = "ClassJobSearch",
+            Title = "Class Job Search",
+            Size = new Vector2(300.0f, 535.0f),
+            OptionsList = Services.DataManager.GetExcelSheet<ClassJob>()
+                .Where(job => job is { RowId: not 0, Name.IsEmpty: false, IsCrafter: false, IsGatherer: false })
+                .ToList(),
+            AllowMultiselect = true,
+        };
+
+        configAddon = new AntsConfigAddon {
+            Size = new Vector2(700.0f, 650.0f),
             InternalName = "ActionHighlightConfig",
             Title = Strings.ActionHighlight_Configuration,
-            Config = config,
+            OptionsList = Config.ClassJobConfigs,
+            SaveConfig = () => Task.Run(Config.Save),
+            GetEntrySearchString = entry => Services.DataManager.GetExcelSheet<ClassJob>().GetRow(entry.ClassJobId).Name.ToString(),
+            AddClicked = OnAddClicked,
+            RemoveClicked = OnRemoveClicked,
         };
 
         OpenConfigAction = configAddon.Toggle;
@@ -54,6 +80,8 @@ public class ActionHighlight : GameModification {
         }
 
         CacheActions();
+
+        await Services.Framework.Run(() => configAddon.DebugOpen());
     }
 
     public override async Task OnDisableAsync() {
@@ -62,36 +90,67 @@ public class ActionHighlight : GameModification {
         });
         onAntsHook = null;
 
-        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAll(
+            configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
+            classJobSearchAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
+        );
         configAddon = null;
+        classJobSearchAddon = null;
 
         cachedActions = null;
         JobActionWhiteList = null;
     }
 
+    private void OnAddClicked() {
+        if (Config is null) return;
+
+        classJobSearchAddon?.ConfirmedSelections = results => {
+            foreach (var result in results) {
+                if (Config.ClassJobConfigs.Any(entry => entry.ClassJobId == result.RowId)) continue;
+
+                Config.ClassJobConfigs.Add(new AntsClassJobConfig {
+                    ClassJobId = result.RowId,
+                    ActionSettings = [],
+                });
+            }
+
+            Task.Run(Config.Save);
+            configAddon?.OptionsList = Config.ClassJobConfigs;
+        };
+
+        classJobSearchAddon?.Open();
+    }
+
+    private void OnRemoveClicked(AntsClassJobConfig entry) {
+        if (Config is null) return;
+
+        Config.ClassJobConfigs.Remove(entry);
+        Task.Run(Config.Save);
+    }
+
     private unsafe bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {
-        if (Services.ObjectTable.LocalPlayer is not { Level: var playerLevel, GameObjectId: var playerId }) return false;
-        if (config is null) return false;
+        if (Services.ObjectTable.LocalPlayer is not { Level: var playerLevel, GameObjectId: var playerId, ClassJob: var classJob }) return false;
+        if (Config is null) return false;
         if (cachedActions is null) return false;
 
         var original = onAntsHook!.Original(actionManager, actionType, actionId);
-
         if (original) return original;
         if (actionType is not ActionType.Action) return original;
 
-        if (!config.ActionSettings.TryGetValue(actionId, out var setting)) return original;
-        if (!setting.IsEnabled) return original;
-
-        if (actionManager->GetActionStatus(actionType, actionId, playerId, false) != 0) return original;
-
-        if (config.ShowOnlyInCombat && !Services.Condition.IsInCombat) return original;
+        if (Config.ShowOnlyInCombat && !Services.Condition.IsInCombat) return original;
         if (!cachedActions.TryGetValue(actionId, out var action)) return original;
+        if (actionManager->GetActionStatus(actionType, actionId, playerId, false) != 0) return original;
+        if (Config.ShowOnlyUsableActions && action.ClassJobLevel > playerLevel) return original;
 
-        var thresholdMs = config.UseGlocalPreAntMs ? config.PreAntTimeMs : setting.ThresholdMs;
+        var classJobSettings = Config.ClassJobConfigs.FirstOrDefault(entry => entry.ClassJobId == classJob.RowId);
+        if (classJobSettings is null) return original;
 
-        if (config.ShowOnlyUsableActions && action.ClassJobLevel > playerLevel)
-            return original;
+        var actionSettings = classJobSettings.ActionSettings.FirstOrDefault(actionSetting => actionSetting.ActionId ==  actionId);
+        if (actionSettings is null) return original;
 
+        if (!actionSettings.IsEnabled) return original;
+
+        var thresholdMs = Config.UseGlocalPreAntMs ? Config.PreAntTimeMs : actionSettings.ThresholdMs;
         var maxCharges = ActionManager.GetMaxCharges(actionId, playerLevel);
         var recastActive = actionManager->IsRecastTimerActive(actionType, actionId);
         var recastTime = actionManager->GetRecastTime(actionType, actionId);
@@ -99,23 +158,28 @@ public class ActionHighlight : GameModification {
 
         if (maxCharges is 0) {
             if (!recastActive) return true;
+
             return recastTime - recastElapsed <= thresholdMs / 1000f;
         }
 
         var currentCharges = actionManager->GetCurrentCharges(actionId);
         var perChargeRecast = ActionManager.GetAdjustedRecastTime(ActionType.Action, actionId) / 1000f;
 
-        if (!config.AntOnlyOnFinalStack) {
+        if (!Config.AntOnlyOnFinalStack) {
             if (currentCharges > 0 && !recastActive) return true;
+
             var nextChargeBoundary = (currentCharges + 1) * perChargeRecast;
             var timeLeft = nextChargeBoundary - recastElapsed;
+
             return timeLeft <= thresholdMs / 1000f;
         }
         else {
             if (currentCharges >= maxCharges) return true;
             if (currentCharges < maxCharges - 1) return false;
+
             var finalChargeBoundary = maxCharges * perChargeRecast;
             var timeLeft = finalChargeBoundary - recastElapsed;
+
             return timeLeft <= thresholdMs / 1000f;
         }
     }
@@ -146,6 +210,6 @@ public class ActionHighlight : GameModification {
             .ToList();
     }
 
-    private static bool IsValidAction(Action action)
+    public static bool IsValidAction(Action action)
         => action is { IsPvP: false, ClassJob.ValueNullable.Unknown6: > 0, IsPlayerAction: true } and ({ ActionCategory.RowId: 4 } or { Recast100ms: > 100 });
 }
