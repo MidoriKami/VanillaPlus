@@ -55,6 +55,7 @@ public class InventoryListAddon : NativeAddon {
         lastSearchString = searchString.ToString();
 
         UpdateItemsList();
+        listNode?.ResetScroll();
     }
 
     private void OnAgentUpdate(AgentUpdateFlag updateFlags) {
