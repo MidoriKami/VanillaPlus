@@ -80,8 +80,6 @@ public class ActionHighlight : GameModification {
         }
 
         CacheActions();
-
-        await Services.Framework.Run(() => configAddon.DebugOpen());
     }
 
     public override async Task OnDisableAsync() {
