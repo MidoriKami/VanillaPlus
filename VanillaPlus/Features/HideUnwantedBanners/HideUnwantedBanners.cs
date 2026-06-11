@@ -7,7 +7,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
-using VanillaPlus.Native.Addons;
+using VanillaPlus.Features.HideUnwantedBanners.Addons;
 
 namespace VanillaPlus.Features.HideUnwantedBanners;
 
@@ -23,17 +23,15 @@ public class HideUnwantedBanners : GameModification {
     private Hook<AddonImage.Delegates.SetImage>? setImageTextureHook;
 
     private HideUnwantedBannersConfig? config;
-    private NodeListAddon<BannerConfig, BannerConfigListItemNode>? configWindow;
+    private HideUnwantedBannersAddon? configWindow;
 
     public override async Task OnEnableAsync() {
         config = await HideUnwantedBannersConfig.Load();
 
-        configWindow = new NodeListAddon<BannerConfig, BannerConfigListItemNode> {
+        configWindow = new HideUnwantedBannersAddon(config) {
             InternalName = "BannersConfig",
             Title = Strings.HideUnwantedBanners_ConfigTitle,
             Size = new Vector2(550.0f, 650.0f),
-            ListItems = config.BannerSettings,
-            OnClose = () => Task.Run(config.Save),
         };
 
         OpenConfigAction = configWindow.Toggle;

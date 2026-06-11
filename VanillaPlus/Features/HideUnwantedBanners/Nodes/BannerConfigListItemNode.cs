@@ -1,39 +1,29 @@
 ﻿using System.Numerics;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
-using KamiToolKit.Nodes.Simplified;
 
-namespace VanillaPlus.Features.HideUnwantedBanners;
+namespace VanillaPlus.Features.HideUnwantedBanners.Nodes;
 
 public class BannerConfigListItemNode : ListItemNode<BannerConfig>, IListItemNode {
 
     public static float ItemHeight => 96.0f;
 
     private readonly CheckboxNode checkboxNode;
-    private readonly SimpleComponentNode imageContainerNode;
+    private readonly ResNode imageContainerNode;
     private readonly IconImageNode iconImageNode;
 
     public BannerConfigListItemNode() {
-        EnableHighlight = false;
-        EnableSelection = false;
-
         checkboxNode = new CheckboxNode {
             OnClick = OnCheckboxClicked,
         };
         checkboxNode.AttachNode(this);
 
-        imageContainerNode = new SimpleComponentNode();
+        imageContainerNode = new ResNode();
         imageContainerNode.AttachNode(this);
 
         iconImageNode = new IconImageNode {
             FitTexture = true,
-            ShowClickableCursor = true,
         };
-
-        iconImageNode.AddEvent(AtkEventType.MouseClick, () => {
-            checkboxNode.IsChecked = !checkboxNode.IsChecked;
-        });
         iconImageNode.AttachNode(imageContainerNode);
     }
 
@@ -64,14 +54,25 @@ public class BannerConfigListItemNode : ListItemNode<BannerConfig>, IListItemNod
 
     protected override void SetNodeData(BannerConfig itemData) {
         iconImageNode.IconId = (uint)itemData.BannerId;
+
+        checkboxNode.OnClick = null;
         checkboxNode.IsChecked = itemData.IsSuppressed;
+        checkboxNode.OnClick = newValue => {
+            itemData.IsSuppressed = newValue;
+        };
 
         textureResized = false;
+
+        OnClick = _ => {
+            itemData.IsSuppressed = !itemData.IsSuppressed;
+            checkboxNode.IsChecked = itemData.IsSuppressed;
+
+            IsSelected = false;
+            IsHovered = true;
+        };
     }
 
     private void OnCheckboxClicked(bool newValue) {
-        if (IsSettingNodeData) return;
-
         ItemData?.IsSuppressed = newValue;
     }
 
