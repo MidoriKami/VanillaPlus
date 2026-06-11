@@ -31,6 +31,7 @@ public class InventoryListAddon : NativeAddon {
                 },
                 listNode = new ListNode<ItemStack, InventoryItemNode> {
                     Height = ContentSize.Y - 26.0f - 4.0f,
+                    AutoResetScroll = false,
                     OptionsList = [],
                 },
             ],
