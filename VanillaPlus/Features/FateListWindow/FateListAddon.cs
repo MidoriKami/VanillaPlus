@@ -1,17 +1,34 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Dalamud.Game.ClientState.Fates;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using VanillaPlus.Native.Addons;
+using KamiToolKit.BaseTypes;
+using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.FateListWindow;
 
-public class FateListAddon : NodeListAddon<IFate, FateListItemNode> {
+public class FateListAddon : NativeAddon {
+    protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
+        base.OnSetup(addon, atkValueSpan);
+
+        fateListNode = new ListNode<IFate, FateListItemNode> {
+            Position = ContentStartPosition,
+            Size = ContentSize,
+            AutoResetScroll = false,
+            ItemSpacing = 3.0f,
+            OptionsList = [],
+        };
+        fateListNode.AttachNode(this);
+    }
+
     protected override unsafe void OnUpdate(AtkUnitBase* addon) {
         base.OnUpdate(addon);
 
-        ListNode?.OptionsList = Services.FateTable
+        fateListNode?.OptionsList = Services.FateTable
             .Where(fate => fate is { State: FateState.Running or FateState.Preparing })
             .OrderBy(fate => fate.TimeRemaining)
             .ToList();
     }
+
+    private ListNode<IFate, FateListItemNode>? fateListNode;
 }
