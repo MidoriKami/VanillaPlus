@@ -36,19 +36,7 @@ public class ActionHighlight : GameModification {
 
     private ClassJobSearchAddon? classJobSearchAddon;
 
-    // Cache of ActionId => Action
-    private Dictionary<uint, Action>? cachedActions;
-
-    // Needed for AST cards
-    internal static Dictionary<uint, HashSet<int>>? JobActionWhiteList;
-
     public override async Task OnEnableAsync() {
-        JobActionWhiteList = new Dictionary<uint, HashSet<int>> {
-            [33] = [7444, 7445, 37018, 37023, 37024, 37025, 37026, 37027, 37028],
-        };
-
-        cachedActions = [];
-
         Config = await AntsConfig.Load();
 
         classJobSearchAddon = new ClassJobSearchAddon {
@@ -78,8 +66,6 @@ public class ActionHighlight : GameModification {
             onAntsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
             onAntsHook?.Enable();
         }
-
-        CacheActions();
     }
 
     public override async Task OnDisableAsync() {
@@ -94,9 +80,6 @@ public class ActionHighlight : GameModification {
         );
         configAddon = null;
         classJobSearchAddon = null;
-
-        cachedActions = null;
-        JobActionWhiteList = null;
     }
 
     private void OnAddClicked() {
@@ -129,15 +112,16 @@ public class ActionHighlight : GameModification {
     private unsafe bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {
         if (Services.ObjectTable.LocalPlayer is not { Level: var playerLevel, GameObjectId: var playerId, ClassJob: var classJob }) return false;
         if (Config is null) return false;
-        if (cachedActions is null) return false;
 
         var original = onAntsHook!.Original(actionManager, actionType, actionId);
         if (original) return original;
         if (actionType is not ActionType.Action) return original;
 
         if (Config.ShowOnlyInCombat && !Services.Condition.IsInCombat) return original;
-        if (!cachedActions.TryGetValue(actionId, out var action)) return original;
         if (actionManager->GetActionStatus(actionType, actionId, playerId, false) != 0) return original;
+
+        var action = Services.DataManager.GetExcelSheet<Action>().GetRow(actionId);
+
         if (Config.ShowOnlyUsableActions && action.ClassJobLevel > playerLevel) return original;
 
         var classJobSettings = Config.ClassJobConfigs.FirstOrDefault(entry => entry.ClassJobId == classJob.RowId);
@@ -182,29 +166,13 @@ public class ActionHighlight : GameModification {
         }
     }
 
-    private void CacheActions() {
-        var actions = GetClassActions();
-
-        foreach (var action in actions) {
-            cachedActions?.TryAdd(action.RowId, action);
-        }
-
-        var roleActions = Services.DataManager.RoleActions.ToList();
-
-        foreach (var roleAction in roleActions) {
-            cachedActions?.TryAdd(roleAction.RowId, roleAction);
-        }
-    }
-
     public static List<Action> GetClassActions() {
-        if (JobActionWhiteList is null) return [];
-
-        var whitelistedActions = JobActionWhiteList.Values.SelectMany(hashSet => hashSet).ToList();
+        List<uint> additionalActions = [7444, 7445, 37018, 37023, 37024, 37025, 37026, 37027, 37028];
 
         // I have no idea what Unknown6 is, but it's been in there since the very first AbilityAnts release.
         // My best guess at the moment is that it removes abilities that have been replaced or upgraded.
         return Services.DataManager.GetExcelSheet<Action>()
-            .Where(action => IsValidAction(action) || whitelistedActions.Contains((int)action.RowId))
+            .Where(action => IsValidAction(action) || additionalActions.Contains(action.RowId))
             .ToList();
     }
 
