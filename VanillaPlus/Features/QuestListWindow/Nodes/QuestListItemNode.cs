@@ -5,7 +5,7 @@ using KamiToolKit.Classes;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
 
-namespace VanillaPlus.Features.QuestListWindow;
+namespace VanillaPlus.Features.QuestListWindow.Nodes;
 
 public class QuestListItemNode : ListItemNode<MarkerInfo>, IListItemNode {
     public static float ItemHeight => 48.0f;

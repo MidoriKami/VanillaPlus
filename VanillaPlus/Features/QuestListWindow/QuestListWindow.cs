@@ -1,9 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Game.Command;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
+using VanillaPlus.Features.QuestListWindow.Addons;
+using VanillaPlus.Native.Addons;
 
 namespace VanillaPlus.Features.QuestListWindow;
 
@@ -15,27 +17,72 @@ public class QuestListWindow : GameModification {
         Authors = ["MidoriKami"],
     };
 
-    private QuestListAddon? addonQuestList;
 
     public override string ImageName => "QuestList.png";
 
+    private QuestListAddon? questListAddon;
+    private KeybindListener? keybindListener;
+    private AddonConfig? questListAddonSettings;
+    private AddonConfigAddon? keybindConfigAddon;
+
     public override async Task OnEnableAsync() {
-        addonQuestList = new QuestListAddon {
+        questListAddonSettings = await AddonConfig.Load("QuestList.addon.json");
+
+        questListAddon = new QuestListAddon {
             Size = new Vector2(300.0f, 400.0f),
             InternalName = "QuestList",
             Title = Strings.QuestListWindow_Title,
-            DropDownOptions = Enum.GetValues<QuestFilterMode>().Cast<Enum>().ToList(),
-            OpenCommand = "/questlist",
-            ListItems = [],
         };
 
-        await addonQuestList.InitializeAsync();
+        keybindConfigAddon = new AddonConfigAddon {
+            InternalName = "KeybindConfig",
+            Title = "Fate List Window Keybind",
+            AddonConfig = questListAddonSettings,
+        };
 
-        OpenConfigAction = addonQuestList.OpenAddonConfig;
+        keybindListener = new KeybindListener {
+            Callback = OnKeybindPressed,
+            Keybind = questListAddonSettings.Keybind,
+            IsEnabled = true,
+        };
+
+        OpenConfigAction = keybindConfigAddon.Open;
+
+        await Services.Framework.Run(() => {
+            Services.CommandManager.AddHandler("/questlist", new CommandInfo(OnQuestListCommand));
+        });
+
+        Services.Framework.Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
-        await Task.WhenAll(addonQuestList?.DisposeAsync().AsTask() ?? Task.CompletedTask);
-        addonQuestList = null;
+        Services.Framework.Update -= OnFrameworkUpdate;
+
+        await Services.Framework.Run(() => {
+            Services.CommandManager.RemoveHandler("/questlist");
+        });
+
+        await Task.WhenAll(
+            questListAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
+            keybindConfigAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
+        );
+        questListAddon = null;
+        keybindConfigAddon = null;
+
+        keybindListener = null;
+
+        questListAddonSettings = null;
+    }
+
+    private void OnFrameworkUpdate(IFramework framework)
+        => keybindListener?.Update();
+
+    private void OnQuestListCommand(string command, string arguments)
+        => questListAddon?.Toggle();
+
+    private void OnKeybindPressed(ref bool isHandled) {
+        Services.Framework.Run(() => questListAddon?.Toggle());
+
+        isHandled = true;
     }
 }
