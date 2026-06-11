@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Threading.Tasks;
-using Dalamud.Game.Inventory.InventoryEventArgTypes;
-using FFXIVClientStructs.FFXIV.Client.Game;
+using Dalamud.Game.Command;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
+using VanillaPlus.Features.RecentlyLootedWindow.Addons;
 using VanillaPlus.Native.Addons;
-using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.RecentlyLootedWindow;
 
@@ -18,73 +17,71 @@ public class RecentlyLootedWindow : GameModification {
         Authors = ["MidoriKami"],
     };
 
-    private NodeListAddon<LootedItemInfo, LootedItemListItemNode>? addonRecentlyLooted;
-
-    private bool enableTracking;
-
     public override string ImageName => "RecentlyLootedWindow.png";
 
+    private RecentlyLootedListAddon? addonRecentlyLooted;
+    private KeybindListener? keybindListener;
+    private AddonConfig? recentlyLootedAddonSettings;
+    private AddonConfigAddon? keybindConfigAddon;
+
     public override async Task OnEnableAsync() {
-        addonRecentlyLooted = new NodeListAddon<LootedItemInfo, LootedItemListItemNode> {
+        recentlyLootedAddonSettings = await AddonConfig.Load("RecentlyLooted.addon.json");
+
+        addonRecentlyLooted = new RecentlyLootedListAddon {
             Size = new Vector2(250.0f, 350.0f),
             InternalName = "RecentlyLooted",
             Title = Strings.RecentlyLootedWindow_Title,
-            OpenCommand = "/recentloot",
-            ListItems = [],
-            ItemSpacing = 2.0f,
         };
 
-        await addonRecentlyLooted.InitializeAsync();
+        keybindConfigAddon = new AddonConfigAddon {
+            InternalName = "KeybindConfig",
+            Title = "Fate List Window Keybind",
+            AddonConfig = recentlyLootedAddonSettings,
+        };
 
-        OpenConfigAction = addonRecentlyLooted.OpenAddonConfig;
+        keybindListener = new KeybindListener {
+            Callback = OnKeybindPressed,
+            Keybind = recentlyLootedAddonSettings.Keybind,
+            IsEnabled = true,
+        };
 
-        enableTracking = Services.ClientState.IsLoggedIn;
+        OpenConfigAction = keybindConfigAddon.Open;
 
-        Services.GameInventory.InventoryChanged += OnRawItemAdded;
-        Services.ClientState.Login += OnLogin;
-        Services.ClientState.Logout += OnLogout;
+        await Services.Framework.Run(() => {
+            Services.CommandManager.AddHandler("/recentloot", new CommandInfo(OnFateListCommand));
+        });
+
+        Services.Framework.Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
-        Services.GameInventory.InventoryChanged -= OnRawItemAdded;
-        Services.ClientState.Login -= OnLogin;
-        Services.ClientState.Logout -= OnLogout;
+        Services.Framework.Update -= OnFrameworkUpdate;
 
-        await Task.WhenAll(addonRecentlyLooted?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Services.Framework.Run(() => {
+            Services.CommandManager.RemoveHandler("/recentloot");
+        });
+
+        await Task.WhenAll(
+            addonRecentlyLooted?.DisposeAsync().AsTask() ?? Task.CompletedTask,
+            keybindConfigAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
+        );
         addonRecentlyLooted = null;
+        keybindConfigAddon = null;
+
+        keybindListener = null;
+
+        recentlyLootedAddonSettings = null;
     }
 
-    private void OnLogin() {
-        enableTracking = true;
-        addonRecentlyLooted?.ListItems.Clear();
-    }
+    private void OnFrameworkUpdate(IFramework framework)
+        => keybindListener?.Update();
 
-    private void OnLogout(int type, int code)
-        => enableTracking = false;
+    private void OnFateListCommand(string command, string arguments)
+        => addonRecentlyLooted?.Toggle();
 
-    private unsafe void OnRawItemAdded(IReadOnlyCollection<InventoryEventArgs> events) {
-        if (!enableTracking) return;
-        if (addonRecentlyLooted is null) return;
+    private void OnKeybindPressed(ref bool isHandled) {
+        Services.Framework.Run(() => addonRecentlyLooted?.Toggle());
 
-        foreach (var eventData in events) {
-            if (!Inventory.StandardInventories.Contains(eventData.Item.ContainerType)) continue;
-
-            if (!Services.ClientState.IsLoggedIn) break;
-            if (eventData is not (InventoryItemAddedArgs or InventoryItemChangedArgs)) break;
-            if (eventData is InventoryItemChangedArgs changedArgs && changedArgs.OldItemState.Quantity >= changedArgs.Item.Quantity) break;
-
-            var inventoryItem = (InventoryItem*)eventData.Item.Address;
-            var changeAmount = eventData is InventoryItemChangedArgs changed ? changed.Item.Quantity - changed.OldItemState.Quantity : eventData.Item.Quantity;
-
-            addonRecentlyLooted.ListItems = [
-                new LootedItemInfo(inventoryItem->GetItemId(),
-                    inventoryItem->IconId,
-                    inventoryItem->Name,
-                    changeAmount),
-                ..addonRecentlyLooted.ListItems,
-            ];
-        }
-
-        addonRecentlyLooted.RefreshList();
+        isHandled = true;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Interfaces;
@@ -20,10 +21,11 @@ public class InventoryItemNode : ListItemNode<ItemStack>, IListItemNode {
     public InventoryItemNode() {
         EnableSelection = false;
 
-        iconNode = new IconWithCountNode();
+        iconNode = new IconWithCountNode {
+            ShowClickableCursor = true,
+            InventoryItemTooltip = new InventoryItemTooltip(InventoryType.Inventory1, 0),
+        };
         iconNode.AttachNode(this);
-
-        iconNode.CollisionNode.ShowClickableCursor = true;
 
         itemNameTextNode = new TextNode {
             AlignmentType = AlignmentType.Left,
@@ -64,7 +66,7 @@ public class InventoryItemNode : ListItemNode<ItemStack>, IListItemNode {
         iconNode.IconId = luminaData.Icon;
         itemNameTextNode.String = luminaData.Name;
         iconNode.Count = itemData.Quantity;
-        iconNode.CollisionNode.InventoryItemTooltip = new InventoryItemTooltip(itemData.Item.Container, itemData.Item.Slot);
+        iconNode.InventoryItemTooltip = new InventoryItemTooltip(itemData.Item.Container, itemData.Item.Slot);
 
         if (luminaData.LevelEquip > 1) {
             levelTextNode.String = $"Lv. {luminaData.LevelEquip,3}";

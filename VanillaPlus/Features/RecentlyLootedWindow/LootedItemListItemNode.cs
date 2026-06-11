@@ -13,11 +13,11 @@ public class LootedItemListItemNode : ListItemNode<LootedItemInfo>, IListItemNod
     private readonly TextNode itemNameTextNode;
 
     public LootedItemListItemNode() {
-        EnableHighlight = false;
         EnableSelection = false;
 
         iconNode = new IconWithCountNode {
             ShowClickableCursor = true,
+            ItemTooltip = 1,
         };
         iconNode.AttachNode(this);
 
@@ -42,6 +42,6 @@ public class LootedItemListItemNode : ListItemNode<LootedItemInfo>, IListItemNod
         iconNode.IconId = itemData.IconId;
         itemNameTextNode.String = itemData.Name;
         iconNode.Count = itemData.Quantity;
-        iconNode.CollisionNode.ItemTooltip = itemData.ItemId;
+        iconNode.ItemTooltip = itemData.ItemId;
     }
 }

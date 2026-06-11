@@ -1,11 +1,10 @@
 ﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Nodes;
-using KamiToolKit.Nodes.Simplified;
 
 namespace VanillaPlus.Native.Nodes;
 
-public class IconWithCountNode : SimpleComponentNode {
+public class IconWithCountNode : ResNode {
 
     private readonly IconImageNode iconNode;
     private readonly TextNode countTextNode;
