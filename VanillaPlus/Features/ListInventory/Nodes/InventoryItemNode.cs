@@ -7,7 +7,7 @@ using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Native.Nodes;
 
-namespace VanillaPlus.Features.ListInventory;
+namespace VanillaPlus.Features.ListInventory.Nodes;
 
 public class InventoryItemNode : ListItemNode<ItemStack>, IListItemNode {
     public static float ItemHeight => 32.0f;

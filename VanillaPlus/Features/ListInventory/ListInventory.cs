@@ -1,9 +1,11 @@
-using System;
-using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Game.Command;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
+using VanillaPlus.Features.ListInventory.Addons;
+using VanillaPlus.Native.Addons;
 
 namespace VanillaPlus.Features.ListInventory;
 
@@ -15,27 +17,70 @@ public class ListInventory : GameModification {
         Authors = ["MidoriKami"],
     };
 
-    private AddonListInventory? addonListInventory;
-
     public override string ImageName => "ListInventory.png";
 
+    private InventoryListAddon? inventoryListAddon;
+    private KeybindListener? keybindListener;
+    private AddonConfig? inventoryListAddonSettings;
+    private AddonConfigAddon? keybindConfigAddon;
+
     public override async Task OnEnableAsync() {
-        addonListInventory = new AddonListInventory {
+        inventoryListAddonSettings = await AddonConfig.Load("ListInventory.addon.json");
+
+        inventoryListAddon = new InventoryListAddon {
             InternalName = "ListInventory",
             Title = Strings.ListInventory_Title,
-            Size = new Vector2(500.0f, 500.0f),
-            OpenCommand = "/listinventory",
-            DropDownOptions = Enum.GetValues<InventoryFilterMode>().Cast<Enum>().ToList(),
-            ItemSpacing = 2.25f,
+            Size = new Vector2(500.0f, 510.0f),
         };
 
-        await addonListInventory.InitializeAsync();
+        keybindConfigAddon = new AddonConfigAddon {
+            InternalName = "KeybindConfig",
+            Title = "List Inventory Window Keybind",
+            AddonConfig = inventoryListAddonSettings,
+        };
 
-        OpenConfigAction = addonListInventory.OpenAddonConfig;
+        keybindListener = new KeybindListener {
+            Callback = OnKeybindPressed,
+            Keybind = inventoryListAddonSettings.Keybind,
+            IsEnabled = true,
+        };
+
+        OpenConfigAction = keybindConfigAddon.Toggle;
+
+        await Services.Framework.Run(() => {
+            Services.CommandManager.AddHandler("/listinventory", new CommandInfo(OnListInventoryCommand));
+        });
+
+        Services.Framework.Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
-        await Task.WhenAll(addonListInventory?.DisposeAsync().AsTask() ?? Task.CompletedTask);
-        addonListInventory = null;
+        Services.Framework.Update -= OnFrameworkUpdate;
+
+        await Services.Framework.Run(() => {
+            Services.CommandManager.RemoveHandler("/listinventory");
+        });
+
+        await Task.WhenAll(inventoryListAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
+            keybindConfigAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
+        );
+        inventoryListAddon = null;
+        keybindConfigAddon = null;
+
+        keybindListener = null;
+
+        inventoryListAddonSettings  = null;
+    }
+
+    private void OnFrameworkUpdate(IFramework framework)
+        => keybindListener?.Update();
+
+    private void OnListInventoryCommand(string command, string arguments)
+        => inventoryListAddon?.Toggle();
+
+    private void OnKeybindPressed(ref bool isHandled) {
+        Services.Framework.Run(() => inventoryListAddon?.Toggle());
+
+        isHandled = true;
     }
 }
