@@ -1,14 +1,11 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using Dalamud.Hooking;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+﻿using System.Threading.Tasks;
+using Dalamud.Utility.Signatures;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.DisableTitleScreenMovie;
 
-public unsafe class DisableTitleScreenMovie : GameModification {
+public class DisableTitleScreenMovie : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_DisableTitleScreenMovie,
         Description = Strings.ModificationDescription_DisableTitleScreenMovie,
@@ -17,35 +14,39 @@ public unsafe class DisableTitleScreenMovie : GameModification {
         CompatibilityModule = new SimpleTweaksCompatibilityModule("DisableTitleScreenMovie"),
     };
 
-    private Hook<AgentLobby.Delegates.UpdateLobbyUIStage>? updateTitleScreenHook;
+    [Signature("0F 85 ?? ?? ?? ?? 8B 8E ?? ?? ?? ?? 8D 41 ?? 83 F8 ?? 0F 86 ?? ?? ?? ?? 8D 41")]
+    private nint? memoryAddress;
 
-    public override Task OnEnableAsync() {
-        updateTitleScreenHook = Services.Hooker.HookFromAddress<AgentLobby.Delegates.UpdateLobbyUIStage>(AgentLobby.MemberFunctionPointers.UpdateLobbyUIStage, OnTitleScreenUpdate);
-        updateTitleScreenHook?.Enable();
+    private MemoryReplacement? jumpPatch;
 
-        return Task.CompletedTask;
-    }
+    public override async Task OnEnableAsync() {
+        Services.GameInteropProvider.InitializeFromAttributes(this);
 
-    public override Task OnDisableAsync() {
-        updateTitleScreenHook?.Dispose();
-        updateTitleScreenHook = null;
+        // Convert the jnz instruction to a unconditional jmp instruction,
+        // but keeps the same address and replace the last byte with nop
+        if (memoryAddress is { } address && memoryAddress != nint.Zero) {
 
-        return Task.CompletedTask;
-    }
+            unsafe {
+                var originalJumpOffset = (byte*) address + 2;
 
-    private void OnTitleScreenUpdate(AgentLobby* thisPtr) {
-        try {
-            if (thisPtr->LobbyUIStage is 9) {
-                var flagValue = Marshal.ReadInt64((nint)thisPtr, 0x1378) & 0xFF; // todo: need to figure out how to add this to CS
-                if (flagValue is 0) {
-                    return;
-                }
+                jumpPatch = new MemoryReplacement(address, [
+                    0xE9,
+                    (byte) (originalJumpOffset[0] + 1), // Increase by 1 because we moved the instruction up by one.
+                    originalJumpOffset[1],
+                    originalJumpOffset[2],
+                    originalJumpOffset[3],
+                    0x90,
+                ]);
             }
 
-            updateTitleScreenHook!.Original(thisPtr);
+            await Services.Framework.Run(jumpPatch.Enable);
         }
-        catch (Exception e) {
-            Services.PluginLog.Exception(e);
-        }
+    }
+
+    public override async Task OnDisableAsync() {
+        await Task.WhenAll(jumpPatch?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        jumpPatch = null;
+
+        memoryAddress = null;
     }
 }
