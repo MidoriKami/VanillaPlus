@@ -1521,7 +1521,7 @@ Data will be updated as it becomes available, do not request data updates.</valu
     <value>Place Flag on Cursor</value>
   </data>
   <data name="ModificationDescription_FlagOnCursor" xml:space="preserve">
-    <value>Places a flag on the map for where your cursor is pointing in the world.</value>
+    <value>Places a flag on the map for where your cursor is pointing in the world via the command /placeflag.</value>
   </data>
   <data name="FlagOnCursor_CommandHelpMessage" xml:space="preserve">
     <value>Place a flag at mouse position</value>
