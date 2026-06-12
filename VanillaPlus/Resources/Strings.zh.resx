@@ -1521,7 +1521,7 @@ ID：{0}</value>
     <value>在光标位置放置标记</value>
   </data>
   <data name="ModificationDescription_FlagOnCursor" xml:space="preserve">
-    <value>在光标所指位置放置地图标记。</value>
+    <value>通过 /placeflag 命令，在光标所指位置放置地图标记。</value>
   </data>
   <data name="FlagOnCursor_CommandHelpMessage" xml:space="preserve">
     <value>在鼠标位置放置标记</value>
