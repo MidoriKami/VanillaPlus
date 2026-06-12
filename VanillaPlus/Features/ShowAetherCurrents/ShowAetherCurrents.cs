@@ -27,7 +27,7 @@ public class ShowAetherCurrents : GameModification {
 
         foreach (var currentFlagSet in Services.DataManager.GetExcelSheet<AetherCurrentCompFlgSet>()) {
             foreach (var aetherCurrent in currentFlagSet.AetherCurrents) {
-                if (aetherCurrent is not { IsValid: true, Value.Quest.IsValid: true }) continue;
+                if (aetherCurrent is { IsValid: false } or { Value.Quest.IsValid: true }) continue;
 
                 if (!Services.DataManager.GetExcelSheet<EObj>().TryGetFirst(rowObject => rowObject.Data.RowId == aetherCurrent.RowId, out var eventObject)) continue;
                 if (!Services.DataManager.GetExcelSheet<Level>().TryGetFirst(rowObject => rowObject.Object.RowId == eventObject.RowId, out var level)) continue;
