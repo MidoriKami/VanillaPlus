@@ -65,7 +65,7 @@ public class AntsClassJobConfigurationNode : EntryConfigurationNode<AntsClassJob
         backgroundImageNode.AttachNode(ConfigurationContentNode);
 
         actionsCategoryNode = new CategoryTextNode {
-            TextId = 14723,
+            TextId = 14723, // "Job Actions"
             SheetType = NodeData.SheetType.Addon,
         };
         actionsCategoryNode.AttachNode(ConfigurationContentNode);
@@ -77,7 +77,7 @@ public class AntsClassJobConfigurationNode : EntryConfigurationNode<AntsClassJob
         actionsListNode.AttachNode(ConfigurationContentNode);
 
         roleCategoryNode = new CategoryTextNode {
-            TextId = 8576,
+            TextId = 8576, // "Role Actions"
             SheetType = NodeData.SheetType.Addon,
         };
         roleCategoryNode.AttachNode(ConfigurationContentNode);
