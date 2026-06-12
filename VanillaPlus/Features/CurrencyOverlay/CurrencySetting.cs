@@ -1,8 +1,5 @@
-using System;
 using System.Numerics;
 using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
-using KamiToolKit.Enums;
 
 namespace VanillaPlus.Features.CurrencyOverlay;
 
@@ -20,26 +17,4 @@ public class CurrencySetting {
     public bool FadeIfNoWarnings;
 
     [JsonIgnore] public bool IsNodeMoveable;
-
-    public static int Comparison(CurrencySetting left, CurrencySetting right, Enum mode) {
-        switch (mode) {
-            case DefaultSortOptions.Alphabetical:
-                var leftItem = Services.DataManager.GetItem(left.ItemId);
-                var rightItem = Services.DataManager.GetItem(right.ItemId);
-                return string.Compare(leftItem.Name.ToString(), rightItem.Name.ToString(), StringComparison.OrdinalIgnoreCase);
-
-            case DefaultSortOptions.Id:
-                return left.ItemId.CompareTo(right.ItemId);
-        }
-
-        return 0;
-    }
-
-    public static bool IsMatch(CurrencySetting item, string searchString) {
-        var regex = new Regex(searchString, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-
-        var itemData = Services.DataManager.GetItem(item.ItemId);
-
-        return regex.IsMatch(itemData.Name.ToString());
-    }
 }
