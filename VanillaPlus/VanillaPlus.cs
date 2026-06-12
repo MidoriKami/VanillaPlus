@@ -42,19 +42,17 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
             Size = new Vector2(500.0f, 275.0f),
         };
 
-        await Services.Framework.Run(() => {
-            Services.CommandManager.AddHandler("/vanillaplus", new CommandInfo(CommandHandler) {
-                DisplayOrder = 1,
-                ShowInHelp = true,
-                HelpMessage = Strings.CommandHelpOpenBrowser,
-            });
+        Services.CommandManager.AddHandler("/vanillaplus", new CommandInfo(CommandHandler) {
+            DisplayOrder = 1,
+            ShowInHelp = true,
+            HelpMessage = Strings.CommandHelpOpenBrowser,
+        });
 
-            Services.CommandManager.AddHandler("/plus", new CommandInfo(CommandHandler) {
-                DisplayOrder = 2,
-                ShowInHelp = true,
-                HelpMessage = Strings.CommandHelpOpenBrowser,
-            });
-        }, cancellationToken);
+        Services.CommandManager.AddHandler("/plus", new CommandInfo(CommandHandler) {
+            DisplayOrder = 2,
+            ShowInHelp = true,
+            HelpMessage = Strings.CommandHelpOpenBrowser,
+        });
 
         Services.PluginInterface.UiBuilder.OpenConfigUi += System.ModificationBrowserAddon.Open;
         Services.ClientState.Login += OnLogin;
@@ -74,6 +72,9 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
     public async ValueTask DisposeAsync() {
         System.KeyListener.Dispose();
 
+        Services.CommandManager.RemoveHandler("/vanillaplus");
+        Services.CommandManager.RemoveHandler("/plus");
+
         Services.PluginInterface.UiBuilder.OpenConfigUi -= System.ModificationBrowserAddon.Open;
         Services.ClientState.Login -= OnLogin;
 
@@ -86,10 +87,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
             await System.ModificationManager.DisposeAsync();
         }
 
-        await Services.Framework.RunOnFrameworkThread(() => {
-            Services.CommandManager.RemoveHandler("/vanillaplus");
-            KamiToolKitLibrary.Dispose();
-        });
+        await Services.Framework.RunOnFrameworkThread(KamiToolKitLibrary.Dispose);
     }
 
     private void OnLogin() {

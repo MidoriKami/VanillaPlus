@@ -47,19 +47,13 @@ public class ListInventory : GameModification {
 
         OpenConfigAction = keybindConfigAddon.Toggle;
 
-        await Services.Framework.Run(() => {
-            Services.CommandManager.AddHandler("/listinventory", new CommandInfo(OnListInventoryCommand));
-        });
-
+        Services.CommandManager.AddHandler("/listinventory", new CommandInfo(OnListInventoryCommand));
         Services.Framework.Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
         Services.Framework.Update -= OnFrameworkUpdate;
-
-        await Services.Framework.Run(() => {
-            Services.CommandManager.RemoveHandler("/listinventory");
-        });
+        Services.CommandManager.RemoveHandler("/listinventory");
 
         await Task.WhenAll(inventoryListAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
             keybindConfigAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask

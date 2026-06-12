@@ -47,19 +47,13 @@ public class RecentlyLootedWindow : GameModification {
 
         OpenConfigAction = keybindConfigAddon.Open;
 
-        await Services.Framework.Run(() => {
-            Services.CommandManager.AddHandler("/recentloot", new CommandInfo(OnFateListCommand));
-        });
-
+        Services.CommandManager.AddHandler("/recentloot", new CommandInfo(OnFateListCommand));
         Services.Framework.Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
         Services.Framework.Update -= OnFrameworkUpdate;
-
-        await Services.Framework.Run(() => {
-            Services.CommandManager.RemoveHandler("/recentloot");
-        });
+        Services.CommandManager.RemoveHandler("/recentloot");
 
         await Task.WhenAll(
             addonRecentlyLooted?.DisposeAsync().AsTask() ?? Task.CompletedTask,

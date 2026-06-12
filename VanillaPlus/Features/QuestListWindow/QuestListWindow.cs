@@ -48,19 +48,13 @@ public class QuestListWindow : GameModification {
 
         OpenConfigAction = keybindConfigAddon.Open;
 
-        await Services.Framework.Run(() => {
-            Services.CommandManager.AddHandler("/questlist", new CommandInfo(OnQuestListCommand));
-        });
-
+        Services.CommandManager.AddHandler("/questlist", new CommandInfo(OnQuestListCommand));
         Services.Framework.Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
         Services.Framework.Update -= OnFrameworkUpdate;
-
-        await Services.Framework.Run(() => {
-            Services.CommandManager.RemoveHandler("/questlist");
-        });
+        Services.CommandManager.RemoveHandler("/questlist");
 
         await Task.WhenAll(
             questListAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
