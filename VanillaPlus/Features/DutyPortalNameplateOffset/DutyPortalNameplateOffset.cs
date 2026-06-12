@@ -1,63 +1,51 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.Gui.NamePlate;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
+using DalamudObjectKind = Dalamud.Game.ClientState.Objects.Enums.ObjectKind;
 
 namespace VanillaPlus.Features.DutyPortalNameplateOffset;
 
 public class DutyPortalNameplateOffset : GameModification {
-    private const float RaisedNameplateY = 3.1f; // Slightly below SE's current elevated raid nameplate height.
-
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Raise Duty Portal Nameplates",
         Description = "Raises certain duty-related interaction nameplates to improve visibility when crowded by player nameplates.",
         Type = ModificationType.UserInterface,
         Authors = ["Epinephren"],
     };
+
+    public override string ImageName => "DutyPortalNameplateOffset.png";
+
+    // Slightly below SE's current elevated raid nameplate height.
+    private const float RaisedNameplateY = 3.1f;
+
     public override Task OnEnableAsync() {
         Services.NamePlateGui.OnDataUpdate += OnNamePlateUpdate;
+
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
         Services.NamePlateGui.OnDataUpdate -= OnNamePlateUpdate;
+
         return Task.CompletedTask;
     }
 
-    private static unsafe void OnNamePlateUpdate(
-        INamePlateUpdateContext context,
-        IReadOnlyList<INamePlateUpdateHandler> handlers)
-    {
-        foreach (var handler in handlers)
-        {
-            var gameObject = handler.GameObject;
-            if (gameObject is null)
-                continue;
+    private static unsafe void OnNamePlateUpdate(INamePlateUpdateContext context, IReadOnlyList<INamePlateUpdateHandler> handlers) {
+        foreach (var handler in handlers) {
 
-            if (gameObject.ObjectKind != Dalamud.Game.ClientState.Objects.Enums.ObjectKind.EventObj)
-                continue;
+            if (handler is { GameObject: { ObjectKind: DalamudObjectKind.EventObj, EntityId: not 0xE0000000 } }) {
 
-            var nativeObject = (GameObject*)gameObject.Address;
-            if (nativeObject is null)
-                continue;
+                var nativeObject = (GameObject*)handler.GameObject.Address;
 
-            if (nativeObject->EntityId == 0xE0000000)
-                continue;
+                if (nativeObject->EventId is { Id: not 0, EntryId: not 60006 } && nativeObject->NameplateOffset.Y < RaisedNameplateY) {
 
-            if (nativeObject->EventId.Id == 0)
-                continue;
-
-            if (nativeObject->EventId.EntryId == 60006)
-                continue;
-
-            if (nativeObject->NameplateOffset.Y >= RaisedNameplateY)
-                continue;
-
-            nativeObject->NameplateOffset.Y = RaisedNameplateY;
-            nativeObject->NameplateOffsetTarget.Y = RaisedNameplateY;
+                    nativeObject->NameplateOffset.Y = RaisedNameplateY;
+                    nativeObject->NameplateOffsetTarget.Y = RaisedNameplateY;
+                }
+            }
         }
     }
 }
