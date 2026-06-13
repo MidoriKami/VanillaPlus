@@ -93,17 +93,17 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
             TextTooltip = Strings.Tooltip_RetryCompatibility,
             OnClick = () => {
                 refreshCompatabilityButton?.IsEnabled = false;
-                Task.Run((Func<Task?>) (async () => {
-                                               await System.ModificationManager.ReloadConflictedModules();
-                                               refreshCompatabilityButton?.IsEnabled = true;
+                Task.Run(async () => {
+                    await System.ModificationManager.ReloadConflictedModules();
+                    refreshCompatabilityButton?.IsEnabled = true;
 
-                                               if (ItemData is not null) {
-                                                   await Services.Framework.Run(() => {
-                                                       SetNodeData(ItemData);
-                                                       Addon.UpdateCollisionForNode(this);
-                                                   });
-                                               }
-                                           }));
+                    if (ItemData is not null) {
+                        await Services.Framework.Run(() => {
+                            SetNodeData(ItemData);
+                            Addon.UpdateCollisionForNode(this);
+                        });
+                    }
+                });
                 refreshCompatabilityButton?.HideTooltip();
             },
 
@@ -250,9 +250,9 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
     private void ToggleGameModification(bool isEnabled) {
         if (ItemData is null) return;
 
-        Task.Run((Func<Task?>) (async () => {
-                                       await ModificationManager.TryToggleModification(ItemData);
-                                       await Services.Framework.Run(() => SetNodeData(ItemData));
-                                   }));
+        Task.Run(async () => {
+            await ModificationManager.TryToggleModification(ItemData);
+            await Services.Framework.Run(() => SetNodeData(ItemData));
+        });
     }
 }
