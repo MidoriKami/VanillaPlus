@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
+using KamiToolKit.Classes;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using Lumina.Text.ReadOnly;
@@ -17,8 +18,6 @@ namespace VanillaPlus.Native.Addons;
 public class ModificationBrowserAddon : NativeAddon {
 
     private TextInputNode? textInputNode;
-    private TabBarNode? enabledStateTabBar;
-    private TabBarNode? categoryTabBar;
     private ListNode<LoadedModification, GameModificationListItemNode>? listNode;
     private GameModificationInfoNode? modificationInfoNode;
     private Regex? searchRegex;
@@ -72,17 +71,28 @@ public class ModificationBrowserAddon : NativeAddon {
                             Width = ContentSize.X * 4.5f / 10.0f,
                             FitWidth = true,
                             InitialNodes = [
-                                enabledStateTabBar = new TabBarNode { // Option Category Select
+                                new TabBarNode { // Option Category Select
                                     Height = 28.0f,
                                     NavIndex = 3,
                                     NavUp = 1,
                                     NavDown = 6,
+                                    InitialEntries = [
+                                        new TabBarEntry{ Label = "All", OnClick = () => SwitchTab(BrowserSelectedTab.All) },
+                                        new TabBarEntry{ Label = "Enable", OnClick = () => SwitchTab(BrowserSelectedTab.Enabled) },
+                                        new TabBarEntry{ Label = "Disable", OnClick = () => SwitchTab(BrowserSelectedTab.Disabled) },
+                                    ],
                                 },
-                                categoryTabBar = new TabBarNode {
+                                new TabBarNode {
                                     Height = 28.0f,
                                     NavIndex = 6,
                                     NavUp = 3,
                                     NavDown = 10,
+                                    InitialEntries = [
+                                        new TabBarEntry{ Label = "All", OnClick = () => SwitchCategory(BrowserSelectedCategory.All) },
+                                        new TabBarEntry{ Label = "Window", OnClick = () => SwitchCategory(BrowserSelectedCategory.Window), Tooltip = "New Windows or Overlays" },
+                                        new TabBarEntry{ Label = "UI", OnClick = () => SwitchCategory(BrowserSelectedCategory.Ui), Tooltip = "Modifies existing game UI" },
+                                        new TabBarEntry{ Label = "Behavior", OnClick = () => SwitchCategory(BrowserSelectedCategory.Behavior), Tooltip = "Changes how parts of the game work" },
+                                    ],
                                 },
                                 new ResNode { Height = 12.0f },
                                 listNode = new ListNode<LoadedModification, GameModificationListItemNode> { // Options
@@ -105,41 +115,6 @@ public class ModificationBrowserAddon : NativeAddon {
             ],
         }.AttachNode(this);
 
-        enabledStateTabBar.AddTab("All", () => {
-            selectedTab = BrowserSelectedTab.All;
-            Task.Run(UpdateListNode);
-        });
-
-        enabledStateTabBar.AddTab("Enabled", () => {
-            selectedTab = BrowserSelectedTab.Enabled;
-            Task.Run(UpdateListNode);
-        });
-
-        enabledStateTabBar.AddTab("Disabled", () => {
-            selectedTab = BrowserSelectedTab.Disabled;
-            Task.Run(UpdateListNode);
-        });
-
-        categoryTabBar.AddTab("All", () => {
-            selectedCategory = BrowserSelectedCategory.All;
-            Task.Run(UpdateListNode);
-        });
-
-        categoryTabBar.AddTab("Window", () => {
-            selectedCategory = BrowserSelectedCategory.Window;
-            Task.Run(UpdateListNode);
-        }, "New Windows or Overlays");
-
-        categoryTabBar.AddTab("UI", () => {
-            selectedCategory = BrowserSelectedCategory.Ui;
-            Task.Run(UpdateListNode);
-        }, "Modifies existing game UI");
-
-        categoryTabBar.AddTab("Behavior", () => {
-            selectedCategory = BrowserSelectedCategory.Behavior;
-            Task.Run(UpdateListNode);
-        }, "Changes how parts of the game work");
-
         modificationInfoNode.AddInteractionNode(addon);
 
         addon->FocusNode = textInputNode;
@@ -148,15 +123,22 @@ public class ModificationBrowserAddon : NativeAddon {
             textInputNode?.String = System.SystemConfig.CurrentSearch;
             OnSearchInputReceived(System.SystemConfig.CurrentSearch);
         }
+    }
 
-        return;
+    private void SwitchTab(BrowserSelectedTab tab) {
+        selectedTab = tab;
+        Task.Run(UpdateListNode);
+    }
 
-        void UpdateListNode() {
-            listNode.OptionsList = GetModifications();
-            listNode.ResetScroll();
-            listNode.ClearSelection();
-            modificationInfoNode.SetDisplayedGameModification(null);
-        }
+    private void SwitchCategory(BrowserSelectedCategory category) {
+        selectedCategory = category;
+        Task.Run(UpdateListNode);
+    }
+
+    private void UpdateListNode() {
+        listNode?.OptionsList = GetModifications();
+        listNode?.ResetScroll();
+        modificationInfoNode?.SetDisplayedGameModification(null);
     }
 
     private void OnSearchInputReceived(ReadOnlySeString input) {
