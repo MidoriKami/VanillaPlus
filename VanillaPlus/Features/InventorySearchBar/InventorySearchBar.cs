@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Game.Addon.Lifecycle;
+using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.Config;
 using Dalamud.Game.Gui;
@@ -39,9 +41,11 @@ public class InventorySearchBar : GameModification {
         Services.ClientState.Login += OnLogin;
         Services.ClientState.Logout += OnLogout;
         Services.GameGui.AgentUpdate += OnAgentUpdate;
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostHide, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnInventoryHide);
     }
 
     public override async Task OnDisableAsync() {
+        Services.AddonLifecycle.UnregisterListener(OnInventoryHide);
         Services.GameGui.AgentUpdate -= OnAgentUpdate;
         Services.ClientState.Login -= OnLogin;
         Services.ClientState.Logout -= OnLogout;
@@ -111,6 +115,14 @@ public class InventorySearchBar : GameModification {
 
     private unsafe void OnInventoryUpdate(AtkUnitBase* addon) {
         keybindListener?.Update();
+    }
+
+    private void OnInventoryHide(AddonEvent type, AddonArgs args) {
+
+        // Delay clearing it until its no longer visible.
+        Services.Framework.RunOnTick(() => {
+            searchInputNode?.SearchString = string.Empty;
+        }, delayTicks: 6);
     }
 
     private unsafe void OnAgentUpdate(AgentUpdateFlag updateFlags) {
