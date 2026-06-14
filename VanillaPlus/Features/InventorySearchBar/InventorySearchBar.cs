@@ -6,6 +6,7 @@ using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.Config;
 using Dalamud.Game.Gui;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -41,12 +42,14 @@ public class InventorySearchBar : GameModification {
         Services.ClientState.Login += OnLogin;
         Services.ClientState.Logout += OnLogout;
         Services.GameGui.AgentUpdate += OnAgentUpdate;
+        Services.Framework.Update += OnFrameworkUpdate;
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostHide, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnInventoryHide);
     }
 
     public override async Task OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(OnInventoryHide);
         Services.GameGui.AgentUpdate -= OnAgentUpdate;
+        Services.Framework.Update -= OnFrameworkUpdate;
         Services.ClientState.Login -= OnLogin;
         Services.ClientState.Logout -= OnLogout;
 
@@ -80,7 +83,6 @@ public class InventorySearchBar : GameModification {
                 },
                 OnSetup = OnInventorySetup,
                 OnFinalize = OnInventoryFinalize,
-                OnPreUpdate = OnInventoryUpdate,
             };
         }
 
@@ -113,7 +115,7 @@ public class InventorySearchBar : GameModification {
         searchInputNode = null;
     }
 
-    private unsafe void OnInventoryUpdate(AtkUnitBase* addon) {
+    private void OnFrameworkUpdate(IFramework framework) {
         keybindListener?.Update();
     }
 

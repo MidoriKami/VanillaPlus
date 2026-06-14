@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.Config;
 using Dalamud.Game.Gui;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -39,9 +40,11 @@ public class RetainerSearchBar : GameModification {
         Services.ClientState.Login += OnLogin;
         Services.ClientState.Logout += OnLogout;
         Services.GameGui.AgentUpdate += OnAgentUpdate;
+        Services.Framework.Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
+        Services.Framework.Update -= OnFrameworkUpdate;
         Services.GameGui.AgentUpdate -= OnAgentUpdate;
         Services.ClientState.Login -= OnLogin;
         Services.ClientState.Logout -= OnLogout;
@@ -75,7 +78,6 @@ public class RetainerSearchBar : GameModification {
                 },
                 OnSetup = OnInventorySetup,
                 OnFinalize = OnInventoryFinalize,
-                OnPreUpdate = OnInventoryUpdate,
             };
         }
 
@@ -108,7 +110,7 @@ public class RetainerSearchBar : GameModification {
         searchInputNode = null;
     }
 
-    private unsafe void OnInventoryUpdate(AtkUnitBase* addon) {
+    private void OnFrameworkUpdate(IFramework framework) {
         keybindListener?.Update();
     }
 

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.Config;
 using Dalamud.Game.Gui;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -56,9 +57,11 @@ public class ArmourySearchBar : GameModification {
         await Services.Framework.Run(inventoryController.Enable);
 
         Services.GameGui.AgentUpdate += OnAgentUpdate;
+        Services.Framework.Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
+        Services.Framework.Update -= OnFrameworkUpdate;
         Services.GameGui.AgentUpdate -= OnAgentUpdate;
 
         await Services.Framework.Run(() => inventoryController?.Dispose());
@@ -83,8 +86,6 @@ public class ArmourySearchBar : GameModification {
     }
 
     private unsafe void OnArmouryUpdate(AtkUnitBase* addon) {
-        keybindListener?.Update();
-
         var currentTab = Inventory.GetTabForInventory(addon);
         if (lastTab != currentTab) {
             lastTab = currentTab;
@@ -93,6 +94,10 @@ public class ArmourySearchBar : GameModification {
                 Inventory.FadeInventoryNodes(addon, searchInputNode.SearchString.ToString());
             }
         }
+    }
+
+    private void OnFrameworkUpdate(IFramework framework) {
+        keybindListener?.Update();
     }
 
     private unsafe void OnAgentUpdate(AgentUpdateFlag updateFlags) {
