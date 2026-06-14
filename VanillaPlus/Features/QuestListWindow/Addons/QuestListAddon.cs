@@ -4,7 +4,6 @@ using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
-using Lumina.Data.Parsing.Uld;
 using Lumina.Text.ReadOnly;
 using VanillaPlus.Features.QuestListWindow.Nodes;
 
@@ -21,10 +20,8 @@ public class QuestListAddon : NativeAddon {
             FitWidth = true,
             ItemSpacing = 4.0f,
             InitialNodes = [
-                new TextInputNode {
+                new SearchInputNode {
                     Height = 26.0f,
-                    PlaceholderStringId = 325, // "Search"
-                    SheetType = NodeData.SheetType.Addon,
                     OnInputReceived = OnSearchUpdated,
                 },
                 listNode = new ListNode<MarkerInfo, QuestListItemNode> {
@@ -61,33 +58,4 @@ public class QuestListAddon : NativeAddon {
 
     private ListNode<MarkerInfo, QuestListItemNode>? listNode;
     private string lastSearchString = string.Empty;
-
-    // private QuestFilterMode lastSortingMode = QuestFilterMode.Type;
-    // private bool isReversed;
-    // private string searchString = string.Empty;
-    //
-    // public QuestListAddon() {
-    //     OnSortingUpdated = UpdateSorting;
-    //     OnSearchUpdated = UpdateSearch;
-    // }
-    //
-    // protected override void OnUpdate(AtkUnitBase* addon) {
-    //     ListNode?.OptionsList = Map.Instance()->UnacceptedQuestMarkers
-    //         .Where(item => searchString == string.Empty || MarkerInfoExtensions.IsRegexMatch(item, searchString))
-    //         .ToList();
-    //
-    //     ListNode?.OptionsList
-    //         .Sort((left, right) => MarkerInfoExtensions.Comparison(left, right, lastSortingMode) * (isReversed ? -1 : 1));
-    //
-    //     base.OnUpdate(addon);
-    // }
-    //
-    // private void UpdateSorting(Enum sortingMode, bool reversed) {
-    //     lastSortingMode = (QuestFilterMode)sortingMode;
-    //     isReversed = reversed;
-    // }
-    //
-    // private void UpdateSearch(string newSearchString) {
-    //     searchString = newSearchString;
-    // }
 }

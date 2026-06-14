@@ -52,10 +52,8 @@ public class GearsetEntryConfigNode : EntryConfigurationNode<GearsetRedirectionE
                     // Force visible for LayoutRecalc to set the node height.
                     IsVisible = true,
                 },
-                new TextInputNode {
+                new SearchInputNode {
                     Height = 26.0f,
-                    PlaceholderStringId = 325, // "Search"
-                    SheetType = NodeData.SheetType.Addon,
                     OnInputReceived = OnSearchInputChanged,
                 },
                 redirectionsListNode = new ListNode<RedirectionConfig, RedirectionEntryListItemNode> {

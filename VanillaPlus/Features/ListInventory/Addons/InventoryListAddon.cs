@@ -4,7 +4,6 @@ using Dalamud.Game.Gui;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
-using Lumina.Data.Parsing.Uld;
 using Lumina.Text.ReadOnly;
 using VanillaPlus.Classes;
 using VanillaPlus.Features.ListInventory.Nodes;
@@ -23,10 +22,8 @@ public class InventoryListAddon : NativeAddon {
             FitWidth = true,
             ItemSpacing = 4.0f,
             InitialNodes = [
-                new TextInputNode {
+                new SearchInputNode {
                     Height = 26.0f,
-                    PlaceholderStringId = 325, // "Search"
-                    SheetType = NodeData.SheetType.Addon,
                     OnInputReceived = OnSearchUpdated,
                 },
                 listNode = new ListNode<ItemStack, InventoryItemNode> {
