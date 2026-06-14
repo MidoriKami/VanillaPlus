@@ -27,7 +27,7 @@ public class FateListWindow : GameModification {
         fateListAddonSettings = await AddonConfig.Load("FateList.addon.json");
 
         addonFateList = new FateListAddon {
-            Size = new Vector2(300.0f, 400.0f),
+            Size = fateListAddonSettings.GetWindowSizeWithDefault(new Vector2(300.0f, 400.0f)),
             InternalName = "FateList",
             Title = Strings.FateListWindow_Title,
         };
@@ -36,12 +36,13 @@ public class FateListWindow : GameModification {
             InternalName = "KeybindConfig",
             Title = "Fate List Window Keybind",
             AddonConfig = fateListAddonSettings,
+            OnConfigChanged = OnAddonConfigChanged,
         };
 
         keybindListener = new KeybindListener {
             Callback = OnKeybindPressed,
             Keybind = fateListAddonSettings.Keybind,
-            IsEnabled = true,
+            IsEnabled = fateListAddonSettings.KeybindEnabled,
         };
 
         OpenConfigAction = keybindConfigAddon.Open;
@@ -76,5 +77,10 @@ public class FateListWindow : GameModification {
         Services.Framework.Run(() => addonFateList?.Toggle());
 
         isHandled = true;
+    }
+
+    private void OnAddonConfigChanged(AddonConfig addonConfig) {
+        keybindListener?.IsEnabled = addonConfig.KeybindEnabled;
+        keybindListener?.Keybind = addonConfig.Keybind;
     }
 }

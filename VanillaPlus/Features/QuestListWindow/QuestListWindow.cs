@@ -29,7 +29,7 @@ public class QuestListWindow : GameModification {
         questListAddonSettings = await AddonConfig.Load("QuestList.addon.json");
 
         questListAddon = new QuestListAddon {
-            Size = new Vector2(300.0f, 400.0f),
+            Size = questListAddonSettings.GetWindowSizeWithDefault(new Vector2(300.0f, 400.0f)),
             InternalName = "QuestList",
             Title = Strings.QuestListWindow_Title,
         };
@@ -38,12 +38,13 @@ public class QuestListWindow : GameModification {
             InternalName = "KeybindConfig",
             Title = "Fate List Window Keybind",
             AddonConfig = questListAddonSettings,
+            OnConfigChanged = OnAddonConfigChanged,
         };
 
         keybindListener = new KeybindListener {
             Callback = OnKeybindPressed,
             Keybind = questListAddonSettings.Keybind,
-            IsEnabled = true,
+            IsEnabled = questListAddonSettings.KeybindEnabled,
         };
 
         OpenConfigAction = keybindConfigAddon.Open;
@@ -78,5 +79,10 @@ public class QuestListWindow : GameModification {
         Services.Framework.Run(() => questListAddon?.Toggle());
 
         isHandled = true;
+    }
+
+    private void OnAddonConfigChanged(AddonConfig addonConfig) {
+        keybindListener?.IsEnabled = addonConfig.KeybindEnabled;
+        keybindListener?.Keybind = addonConfig.Keybind;
     }
 }

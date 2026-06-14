@@ -9,13 +9,20 @@ using VanillaPlus.Classes;
 
 namespace VanillaPlus.Native.Addons;
 
+/// <summary>
+/// Window that provides options to change an addons window size, and open keybind.
+/// </summary>
 public class AddonConfigAddon : NativeAddon {
-    private TextButtonNode? keybindEnableButtonNode;
-    private TextNode? keybindTextNode;
 
-    private KeybindConfigAddon? keybindAddon;
-
+    /// <summary>
+    /// Sets the addon config entry this addon will edit.
+    /// </summary>
     public required AddonConfig AddonConfig { get; init; }
+
+    /// <summary>
+    /// Gets or sets the action that is invoked when a setting is changed.
+    /// </summary>
+    public Action<AddonConfig>? OnConfigChanged { get; set; }
 
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         base.OnSetup(addon, atkValueSpan);
@@ -173,6 +180,7 @@ public class AddonConfigAddon : NativeAddon {
         keybindEnableButtonNode.String = AddonConfig.KeybindEnabled ? Strings.Common_Disable : Strings.Common_Enable;
         keybindTextNode.MultiplyColor = AddonConfig.KeybindEnabled ? new Vector3(1.0f, 1.0f, 1.0f) : new Vector3(0.5f, 0.5f, 0.5f);
         Task.Run(AddonConfig.Save);
+        OnConfigChanged?.Invoke(AddonConfig);
     }
 
     private void OnKeybindChanged(Keybind newKeybind) {
@@ -180,5 +188,11 @@ public class AddonConfigAddon : NativeAddon {
         Task.Run(AddonConfig.Save);
 
         keybindTextNode?.String = AddonConfig.Keybind.ToString();
+        OnConfigChanged?.Invoke(AddonConfig);
     }
+
+    private TextButtonNode? keybindEnableButtonNode;
+    private TextNode? keybindTextNode;
+
+    private KeybindConfigAddon? keybindAddon;
 }

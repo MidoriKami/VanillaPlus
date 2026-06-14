@@ -28,7 +28,7 @@ public class RecentlyLootedWindow : GameModification {
         recentlyLootedAddonSettings = await AddonConfig.Load("RecentlyLooted.addon.json");
 
         addonRecentlyLooted = new RecentlyLootedListAddon {
-            Size = new Vector2(250.0f, 350.0f),
+            Size = recentlyLootedAddonSettings.GetWindowSizeWithDefault(new Vector2(250.0f, 350.0f)),
             InternalName = "RecentlyLooted",
             Title = Strings.RecentlyLootedWindow_Title,
         };
@@ -37,12 +37,13 @@ public class RecentlyLootedWindow : GameModification {
             InternalName = "KeybindConfig",
             Title = "Fate List Window Keybind",
             AddonConfig = recentlyLootedAddonSettings,
+            OnConfigChanged = OnAddonConfigChanged,
         };
 
         keybindListener = new KeybindListener {
             Callback = OnKeybindPressed,
             Keybind = recentlyLootedAddonSettings.Keybind,
-            IsEnabled = true,
+            IsEnabled = recentlyLootedAddonSettings.KeybindEnabled,
         };
 
         OpenConfigAction = keybindConfigAddon.Open;
@@ -77,5 +78,10 @@ public class RecentlyLootedWindow : GameModification {
         Services.Framework.Run(() => addonRecentlyLooted?.Toggle());
 
         isHandled = true;
+    }
+
+    private void OnAddonConfigChanged(AddonConfig addonConfig) {
+        keybindListener?.IsEnabled = addonConfig.KeybindEnabled;
+        keybindListener?.Keybind = addonConfig.Keybind;
     }
 }

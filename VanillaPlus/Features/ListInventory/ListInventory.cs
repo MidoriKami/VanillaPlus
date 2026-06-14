@@ -28,21 +28,22 @@ public class ListInventory : GameModification {
         inventoryListAddonSettings = await AddonConfig.Load("ListInventory.addon.json");
 
         inventoryListAddon = new InventoryListAddon {
+            Size = inventoryListAddonSettings.GetWindowSizeWithDefault(new Vector2(500.0f, 510.0f)),
             InternalName = "ListInventory",
             Title = Strings.ListInventory_Title,
-            Size = new Vector2(500.0f, 510.0f),
         };
 
         keybindConfigAddon = new AddonConfigAddon {
             InternalName = "KeybindConfig",
             Title = "List Inventory Window Keybind",
             AddonConfig = inventoryListAddonSettings,
+            OnConfigChanged = OnAddonConfigChanged,
         };
 
         keybindListener = new KeybindListener {
             Callback = OnKeybindPressed,
             Keybind = inventoryListAddonSettings.Keybind,
-            IsEnabled = true,
+            IsEnabled = inventoryListAddonSettings.KeybindEnabled,
         };
 
         OpenConfigAction = keybindConfigAddon.Toggle;
@@ -76,5 +77,10 @@ public class ListInventory : GameModification {
         Services.Framework.Run(() => inventoryListAddon?.Toggle());
 
         isHandled = true;
+    }
+
+    private void OnAddonConfigChanged(AddonConfig addonConfig) {
+        keybindListener?.IsEnabled = addonConfig.KeybindEnabled;
+        keybindListener?.Keybind = addonConfig.Keybind;
     }
 }

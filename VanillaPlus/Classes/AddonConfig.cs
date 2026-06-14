@@ -24,4 +24,9 @@ public class AddonConfig {
     public bool DisableInCombat = true;
 
     public Keybind Keybind = new();
+
+    public Vector2 GetWindowSizeWithDefault(Vector2 defaultSize) {
+        if (WindowSize == Vector2.Zero) return defaultSize;
+        return WindowSize;
+    }
 }
