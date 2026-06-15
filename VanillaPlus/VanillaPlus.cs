@@ -38,7 +38,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
 
         System.SeasonEventAddon = new SeasonEventAddon {
             InternalName = "SeasonalEventNotice",
-            Title = "Seasonal Event Notice",
+            Title = Strings.SeasonEventNotice_Title,
             Size = new Vector2(500.0f, 275.0f),
         };
 
