@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.SuppressSharedBoards;
 
 public unsafe class SuppressSharedBoards : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Suppress Shared Strategy Boards",
-        Description = "Completely suppresses any shared Strategy Board.",
+        DisplayName = Strings.ModificationDisplay_SuppressSharedBoards,
+        Description = Strings.ModificationDescription_SuppressSharedBoards,
         Type = ModificationType.GameBehavior,
         Authors = ["Treezy"],
     };

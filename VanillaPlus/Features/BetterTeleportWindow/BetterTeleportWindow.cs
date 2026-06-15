@@ -8,8 +8,8 @@ namespace VanillaPlus.Features.BetterTeleportWindow;
 
 public class BetterTeleportWindow : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Better Teleport Window",
-        Description = "Replaces the games Teleport window with a better custom made version.",
+        DisplayName = Strings.ModificationDisplay_BetterTeleportWindow,
+        Description = Strings.ModificationDescription_BetterTeleportWindow,
         Type = ModificationType.NewWindow,
         Authors = [ "MidoriKami" ],
     };
@@ -28,7 +28,7 @@ public class BetterTeleportWindow : GameModification {
             AddonName = "Teleport",
             CreateNativeAddonFunction = () => CustomTeleportAddon = new TeleportAddon(Config) {
                 InternalName = "Teleport",
-                Title = "Teleport",
+                Title = Strings.BetterTeleportWindow_WindowTitle,
                 Size = new Vector2(700.0f, 600.0f),
             },
         };

@@ -151,14 +151,14 @@ public class AddonConfigAddon : NativeAddon {
         var additionalOptionsTextNode = new UnderlinedTextNode {
             Size = new Vector2(ContentSize.X, 28.0f),
             Position = new Vector2(ContentStartPosition.X, editNoteTextNode.Bounds.Bottom),
-            String = "Additional Options",
+            String = Strings.AddonConfig_AdditionalOptions,
         };
         additionalOptionsTextNode.AttachNode(this);
 
         new CheckboxNode {
             Position = new Vector2(ContentStartPosition.X, additionalOptionsTextNode.Bounds.Bottom),
             Size = new Vector2(ContentSize.X, 24.0f),
-            String = "Disable Keybind in Combat",
+            String = Strings.AddonConfig_DisableKeybindInCombat,
             IsChecked = AddonConfig.DisableInCombat,
             OnClick = newValue => {
                 AddonConfig.DisableInCombat = newValue;
