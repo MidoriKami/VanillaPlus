@@ -10,8 +10,8 @@ namespace VanillaPlus.Features.DutyPortalNameplateOffset;
 
 public class DutyPortalNameplateOffset : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Raise Duty Portal Nameplates",
-        Description = "Raises certain duty-related interaction nameplates to improve visibility when crowded by player nameplates.",
+        DisplayName = Strings.ModificationDisplay_DutyPortalNameplateOffset,
+        Description = Strings.ModificationDescription_DutyPortalNameplateOffset,
         Type = ModificationType.UserInterface,
         Authors = ["Epinephren"],
     };

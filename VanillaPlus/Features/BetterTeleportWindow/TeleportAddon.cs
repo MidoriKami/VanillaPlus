@@ -82,7 +82,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
                                 new CheckboxNode {
                                     Size = new Vector2(28.0f, 28.0f),
                                     IsChecked = config.AutoFocusSearch,
-                                    TextTooltip = "Toggle Auto Focus Searchbar",
+                                    TextTooltip = Strings.BetterTeleportWindow_TooltipAutoFocus,
                                     OnClick = newValue => {
                                         config.AutoFocusSearch = newValue;
                                         Task.Run(config.Save);
@@ -94,7 +94,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
                             Height = ContentSize.Y - 28.0f - itemSpacing * 2.0f,
                             ItemSpacing = itemSpacing * 1.5f,
                             OptionsList = Services.AetheryteList.ToList(),
-                            NoResultsString = "No Aetherytes Match Search",
+                            NoResultsString = Strings.BetterTeleportWindow_NoResults,
                         },
                     ],
                 },

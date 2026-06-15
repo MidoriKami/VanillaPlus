@@ -42,7 +42,7 @@ public class ModificationBrowserAddon : NativeAddon {
                     InitialNodes = [
                         new CheckboxNode { // Persist Search Button
                             Width = 28.0f,
-                            TextTooltip = "Persist Search Between Sessions",
+                            TextTooltip = Strings.ModificationBrowser_PersistSearchTooltip,
                             IsChecked = System.SystemConfig.PersistSearch,
                             OnClick = value => {
                                 System.SystemConfig.PersistSearch = value;
@@ -51,7 +51,7 @@ public class ModificationBrowserAddon : NativeAddon {
                         },
                         textInputNode = new TextInputNode { // Search Input
                             Width = ContentSize.X - 28.0f,
-                            PlaceholderString = "Search . . .",
+                            PlaceholderString = Strings.SearchPlaceholder,
                             AutoSelectAll = true,
                             String = System.SystemConfig.PersistSearch ? System.SystemConfig.CurrentSearch : string.Empty,
                             OnInputReceived = OnSearchInputReceived,
@@ -77,9 +77,9 @@ public class ModificationBrowserAddon : NativeAddon {
                                     NavUp = 1,
                                     NavDown = 6,
                                     InitialEntries = [
-                                        new TabBarEntry{ Label = "All", OnClick = () => SwitchTab(BrowserSelectedTab.All) },
-                                        new TabBarEntry{ Label = "Enable", OnClick = () => SwitchTab(BrowserSelectedTab.Enabled) },
-                                        new TabBarEntry{ Label = "Disable", OnClick = () => SwitchTab(BrowserSelectedTab.Disabled) },
+                                        new TabBarEntry{ Label = Strings.ModificationBrowser_TabAll, OnClick = () => SwitchTab(BrowserSelectedTab.All) },
+                                        new TabBarEntry{ Label = Strings.ModificationBrowser_TabEnabled, OnClick = () => SwitchTab(BrowserSelectedTab.Enabled) },
+                                        new TabBarEntry{ Label = Strings.ModificationBrowser_TabDisabled, OnClick = () => SwitchTab(BrowserSelectedTab.Disabled) },
                                     ],
                                 },
                                 new TabBarNode {
@@ -88,10 +88,10 @@ public class ModificationBrowserAddon : NativeAddon {
                                     NavUp = 3,
                                     NavDown = 10,
                                     InitialEntries = [
-                                        new TabBarEntry{ Label = "All", OnClick = () => SwitchCategory(BrowserSelectedCategory.All) },
-                                        new TabBarEntry{ Label = "Window", OnClick = () => SwitchCategory(BrowserSelectedCategory.Window), Tooltip = "New Windows or Overlays" },
-                                        new TabBarEntry{ Label = "UI", OnClick = () => SwitchCategory(BrowserSelectedCategory.Ui), Tooltip = "Modifies existing game UI" },
-                                        new TabBarEntry{ Label = "Behavior", OnClick = () => SwitchCategory(BrowserSelectedCategory.Behavior), Tooltip = "Changes how parts of the game work" },
+                                        new TabBarEntry{ Label = Strings.ModificationBrowser_TabAll, OnClick = () => SwitchCategory(BrowserSelectedCategory.All) },
+                                        new TabBarEntry{ Label = Strings.ModificationBrowser_CategoryWindow, OnClick = () => SwitchCategory(BrowserSelectedCategory.Window), Tooltip = Strings.ModificationBrowser_CategoryWindowTooltip },
+                                        new TabBarEntry{ Label = Strings.ModificationBrowser_CategoryUi, OnClick = () => SwitchCategory(BrowserSelectedCategory.Ui), Tooltip = Strings.ModificationBrowser_CategoryUiTooltip },
+                                        new TabBarEntry{ Label = Strings.ModificationBrowser_CategoryBehavior, OnClick = () => SwitchCategory(BrowserSelectedCategory.Behavior), Tooltip = Strings.ModificationBrowser_CategoryBehaviorTooltip },
                                     ],
                                 },
                                 new ResNode { Height = 12.0f },
@@ -101,7 +101,7 @@ public class ModificationBrowserAddon : NativeAddon {
                                     NavUp = 6,
                                     NavRight = 100,
                                     OptionsList = GetModifications(),
-                                    NoResultsString = "No Results Match Search",
+                                    NoResultsString = Strings.ModificationBrowser_NoResults,
                                     OnItemSelected = selectedItem
                                         => modificationInfoNode?.SetDisplayedGameModification(selectedItem),
                                 },

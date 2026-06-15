@@ -54,21 +54,20 @@ public class SeasonEventAddon : NativeAddon {
             InitialNodes = [
                 new TextNode {
                     Height = 64.0f,
-                    String = "Seasonal Event",
+                    String = Strings.SeasonEventNotice_Heading,
                     FontSize = 32,
                     AlignmentType = AlignmentType.Center,
                 },
                 new TextNode {
                     Height = 32.0f,
-                    String = "It's that time of year again! There is a seasonal event happening right now!\n" +
-                             "To join in the festivities, check out the Seasonal section in VanillaPlus!",
+                    String = Strings.SeasonEventNotice_Body,
                     LineSpacing = 20,
                     AlignmentType = AlignmentType.Center,
                     TextFlags = TextFlags.WordWrap | TextFlags.MultiLine,
                 },
                 new CategoryTextNode {
                     Height = 32.0f,
-                    String = "This will only show once on each day a seasonal event occurs",
+                    String = Strings.SeasonEventNotice_DailyHint,
                     AlignmentType = AlignmentType.Bottom,
                 },
                 new ResNode { Height = 32.0f },
@@ -78,12 +77,12 @@ public class SeasonEventAddon : NativeAddon {
                     InitialNodes = [
                         new TextButtonNode {
                             Width = 200.0f,
-                            String = "Go Away",
+                            String = Strings.SeasonEventNotice_ButtonDismiss,
                             OnClick = Close,
                         },
                         new TextButtonNode {
                             Width = 200.0f,
-                            String = "Open VanillaPlus",
+                            String = Strings.SeasonEventNotice_ButtonOpen,
                             OnClick = System.ModificationBrowserAddon.Toggle,
                         },
                     ],
