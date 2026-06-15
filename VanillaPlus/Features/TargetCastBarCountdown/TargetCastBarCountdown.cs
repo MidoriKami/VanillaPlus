@@ -171,8 +171,7 @@ public class TargetCastBarCountdown : GameModification {
 
         configAddon.AddCategory(Strings.Toggles)
             .AddCheckbox(Strings.TargetCastBarCountdown_CheckboxPrimary, nameof(config.PrimaryTarget))
-            .AddCheckbox(Strings.TargetCastBarCountdown_CheckboxFocus, nameof(config.FocusTarget))
-            .AddCheckbox(Strings.TargetCastBarCountdown_CheckboxNameplate, nameof(config.NamePlateTargets));
+            .AddCheckbox(Strings.TargetCastBarCountdown_CheckboxFocus, nameof(config.FocusTarget));
 
         configAddon.AddCategory(Strings.TargetCastBarCountdown_CategoryPrimaryStyle)
             .AddNodeConfig(primaryTargetStyle, TextNodeConfigOptions.TextAlignment);
