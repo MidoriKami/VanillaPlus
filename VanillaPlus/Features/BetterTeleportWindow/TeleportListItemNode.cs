@@ -116,7 +116,7 @@ public unsafe class TeleportListItemNode : ListItemNode<IAetheryteEntry>, IListI
                 OnClick = () => {
                     renameAddon?.Dispose();
                     renameAddon = new RenameAddon {
-                        Title = "Rename Teleport",
+                        Title = Strings.BetterTeleportWindow_RenameTitle,
                         InternalName = "RenameTeleport",
                         AutoSelectAll = true,
                         DefaultString = GetCustomName(ItemData),

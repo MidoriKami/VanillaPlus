@@ -7,8 +7,8 @@ namespace VanillaPlus.Features.BorderlessCutscenes;
 
 public class BorderlessCutscenes : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Borderless Cutscenes",
-        Description = "Removes the letterboxing in cutscenes when using ultrawide displays.",
+        DisplayName = Strings.ModificationDisplay_BorderlessCutscenes,
+        Description = Strings.ModificationDescription_BorderlessCutscenes,
         Type = ModificationType.GameBehavior,
         Authors = ["goat", "Maple", "MidoriKami"],
         CompatibilityModule = new PluginCompatibilityModule("Dalamud.FullscreenCutscenes"),

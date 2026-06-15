@@ -4386,5 +4386,149 @@ namespace Resources {
                 return ResourceManager.GetString("WondrousTailsProbabilities_ShuffleAverageLabel", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Better Teleport Window.
+        /// </summary>
+        internal static string ModificationDisplay_BetterTeleportWindow {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_BetterTeleportWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replaces the games Teleport window with a better custom made version..
+        /// </summary>
+        internal static string ModificationDescription_BetterTeleportWindow {
+            get {
+                return ResourceManager.GetString("ModificationDescription_BetterTeleportWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Teleport.
+        /// </summary>
+        internal static string BetterTeleportWindow_WindowTitle {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_WindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Teleport.
+        /// </summary>
+        internal static string BetterTeleportWindow_RenameTitle {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_RenameTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Auto Focus Searchbar.
+        /// </summary>
+        internal static string BetterTeleportWindow_TooltipAutoFocus {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_TooltipAutoFocus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Aetherytes Match Search.
+        /// </summary>
+        internal static string BetterTeleportWindow_NoResults {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_NoResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        internal static string BetterTeleportWindow_ModeAll {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_ModeAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to History.
+        /// </summary>
+        internal static string BetterTeleportWindow_ModeHistory {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_ModeHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Favorites.
+        /// </summary>
+        internal static string BetterTeleportWindow_ModeFavorites {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_ModeFavorites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cities.
+        /// </summary>
+        internal static string BetterTeleportWindow_ModeCities {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_ModeCities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Borderless Cutscenes.
+        /// </summary>
+        internal static string ModificationDisplay_BorderlessCutscenes {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_BorderlessCutscenes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removes the letterboxing in cutscenes when using ultrawide displays..
+        /// </summary>
+        internal static string ModificationDescription_BorderlessCutscenes {
+            get {
+                return ResourceManager.GetString("ModificationDescription_BorderlessCutscenes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Suppress Shared Strategy Boards.
+        /// </summary>
+        internal static string ModificationDisplay_SuppressSharedBoards {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_SuppressSharedBoards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completely suppresses any shared Strategy Board..
+        /// </summary>
+        internal static string ModificationDescription_SuppressSharedBoards {
+            get {
+                return ResourceManager.GetString("ModificationDescription_SuppressSharedBoards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raise Duty Portal Nameplates.
+        /// </summary>
+        internal static string ModificationDisplay_DutyPortalNameplateOffset {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_DutyPortalNameplateOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raises certain duty-related interaction nameplates to improve visibility when crowded by player nameplates..
+        /// </summary>
+        internal static string ModificationDescription_DutyPortalNameplateOffset {
+            get {
+                return ResourceManager.GetString("ModificationDescription_DutyPortalNameplateOffset", resourceCulture);
+            }
+        }
     }
 }
