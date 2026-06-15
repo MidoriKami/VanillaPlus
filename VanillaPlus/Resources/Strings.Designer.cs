@@ -4710,5 +4710,23 @@ namespace Resources {
                 return ResourceManager.GetString("AddonConfig_DisableKeybindInCombat", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fancy Loading Screens.
+        /// </summary>
+        internal static string ModificationDisplay_FancyLoadingScreens {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_FancyLoadingScreens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replaces the loading screen artwork with the destination zone's full-size loading image..
+        /// </summary>
+        internal static string ModificationDescription_FancyLoadingScreens {
+            get {
+                return ResourceManager.GetString("ModificationDescription_FancyLoadingScreens", resourceCulture);
+            }
+        }
     }
 }
