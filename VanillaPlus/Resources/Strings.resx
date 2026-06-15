@@ -1698,4 +1698,16 @@ To join in the festivities, check out the Seasonal section in VanillaPlus!</valu
   <data name="ModificationDescription_FancyLoadingScreens" xml:space="preserve">
     <value>Replaces the loading screen artwork with the destination zone's full-size loading image.</value>
   </data>
+  <data name="FancyLoadingScreens_ConfigTitle" xml:space="preserve">
+    <value>Fancy Loading Screens</value>
+  </data>
+  <data name="FancyLoadingScreens_CategoryGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="FancyLoadingScreens_LabelInstancedLoad" xml:space="preserve">
+    <value>Show artwork on instance loads</value>
+  </data>
+  <data name="FancyLoadingScreens_LabelInstancedLoadNote" xml:space="preserve">
+    <value>Shows the destination artwork when switching instanced areas (duties, housing, etc.). Note: the artwork covers the chat box, so you cannot chat while loading.</value>
+  </data>
 </root>

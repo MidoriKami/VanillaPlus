@@ -4728,5 +4728,41 @@ namespace Resources {
                 return ResourceManager.GetString("ModificationDescription_FancyLoadingScreens", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fancy Loading Screens.
+        /// </summary>
+        internal static string FancyLoadingScreens_ConfigTitle {
+            get {
+                return ResourceManager.GetString("FancyLoadingScreens_ConfigTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        internal static string FancyLoadingScreens_CategoryGeneral {
+            get {
+                return ResourceManager.GetString("FancyLoadingScreens_CategoryGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show artwork on instance loads.
+        /// </summary>
+        internal static string FancyLoadingScreens_LabelInstancedLoad {
+            get {
+                return ResourceManager.GetString("FancyLoadingScreens_LabelInstancedLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shows the destination artwork when switching instanced areas (duties, housing, etc.). Note: the artwork covers the chat box, so you cannot chat while loading.
+        /// </summary>
+        internal static string FancyLoadingScreens_LabelInstancedLoadNote {
+            get {
+                return ResourceManager.GetString("FancyLoadingScreens_LabelInstancedLoadNote", resourceCulture);
+            }
+        }
     }
 }

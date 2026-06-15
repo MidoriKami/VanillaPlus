@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Hooking;
 using Dalamud.Plugin.Services;
@@ -7,13 +8,17 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Controllers;
+using KamiToolKit.Enums;
+using KamiToolKit.Nodes.Simplified;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
+using VanillaPlus.Native.Addons;
 
 namespace VanillaPlus.Features.FancyLoadingScreens;
 
-public unsafe class FancyLoadingScreens : GameModification {
+public class FancyLoadingScreens : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_FancyLoadingScreens,
         Description = Strings.ModificationDescription_FancyLoadingScreens,
@@ -26,6 +31,19 @@ public unsafe class FancyLoadingScreens : GameModification {
 
     private const string LoadingBannerAddonName = "_LocationTitle";
     private const uint ArtNodeId = 6;
+    private const float LoadingArtAspectRatio = 16.0f / 9.0f;
+
+    private const string NowLoadingAddonName = "NowLoading";
+
+    private FancyLoadingScreensConfig? config;
+    private ConfigAddon? configAddon;
+
+    private AddonController? nowLoadingController;
+    private SimpleImageNode? nowLoadingArtNode;
+    private bool nowLoadingArtGeometryCached;
+    private uint appliedNowLoadingTerritoryId;
+    private string? appliedNowLoadingTexturePath;
+    private float nowLoadingArtAlpha;
 
     private bool wasLoading;
     private uint sourceTerritoryId;
@@ -48,28 +66,55 @@ public unsafe class FancyLoadingScreens : GameModification {
 
     private Hook<Telepo.Delegates.Teleport>? teleportHook;
 
-    public override Task OnEnableAsync() {
-        teleportHook = Services.Hooker.HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
-        teleportHook?.Enable();
+    public override async Task OnEnableAsync() {
+        config = await FancyLoadingScreensConfig.Load();
+
+        configAddon = new ConfigAddon {
+            Config = config,
+            InternalName = "FancyLoadingScreensConfig",
+            Title = Strings.FancyLoadingScreens_ConfigTitle,
+        };
+        configAddon.AddCategory(Strings.FancyLoadingScreens_CategoryGeneral)
+            .AddCheckbox(Strings.FancyLoadingScreens_LabelInstancedLoad, nameof(config.ShowOnInstancedLoad))
+            .AddTooltip(Strings.FancyLoadingScreens_LabelInstancedLoadNote);
+        OpenConfigAction = configAddon.Toggle;
+
+        unsafe {
+            teleportHook = Services.Hooker.HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
+            teleportHook?.Enable();
+
+            nowLoadingController = new AddonController {
+                AddonName = NowLoadingAddonName,
+                OnFinalize = OnNowLoadingFinalize,
+            };
+        }
+
+        await Services.Framework.Run(nowLoadingController.Enable);
 
         Services.Framework.Update += OnFrameworkUpdate;
-
-        return Task.CompletedTask;
     }
 
-    public override Task OnDisableAsync() {
+    public override async Task OnDisableAsync() {
         Services.Framework.Update -= OnFrameworkUpdate;
 
         teleportHook?.Dispose();
         teleportHook = null;
 
-        var restore = Services.Framework.Run(ForceHideArtNode);
+        await Services.Framework.Run(() => {
+            ForceHideArtNode();
+            nowLoadingController?.Dispose();
+            nowLoadingArtNode?.Dispose();
+        });
+        nowLoadingController = null;
+        nowLoadingArtNode = null;
+
+        await (configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
+        config = null;
 
         wasLoading = false;
         sourceTerritoryId = 0;
         hookedTerritoryId = 0;
-
-        return restore;
     }
 
     private void OnFrameworkUpdate(IFramework framework) {
@@ -79,24 +124,18 @@ public unsafe class FancyLoadingScreens : GameModification {
 
             if (isLoading && !wasLoading) {
                 ForceHideArtNode();
-
+                ResetLoadState();
                 sourceTerritoryId = Services.ClientState.TerritoryType;
-                appliedTerritoryId = 0;
-                appliedTexturePath = null;
-                artGeometryCached = false;
-                currentAlpha = 0.0f;
             }
 
             if (isLoading) {
                 TryApplyDestinationArt(deltaSeconds);
+                TryApplyBlackScreenArt(deltaSeconds);
             }
 
             if (!isLoading && wasLoading) {
-                appliedTerritoryId = 0;
-                appliedTexturePath = null;
-                artGeometryCached = false;
+                ResetLoadState();
                 hookedTerritoryId = 0;
-                currentAlpha = 0.0f;
             }
 
             wasLoading = isLoading;
@@ -108,7 +147,7 @@ public unsafe class FancyLoadingScreens : GameModification {
         }
     }
 
-    private void TryApplyDestinationArt(float deltaSeconds) {
+    private unsafe void TryApplyDestinationArt(float deltaSeconds) {
         var (destinationTerritoryId, fromHook) = ResolveDestinationTerritory();
         if (destinationTerritoryId is 0) return;
 
@@ -143,8 +182,113 @@ public unsafe class FancyLoadingScreens : GameModification {
         resNode->ToggleVisibility(currentAlpha >= 1.0f);
     }
 
-    // Prefer the teleport hint until GameMain publishes the authoritative destination.
-    private (uint TerritoryId, bool FromHook) ResolveDestinationTerritory() {
+    private unsafe void TryApplyBlackScreenArt(float deltaSeconds) {
+        var bannerAddon = RaptureAtkUnitManager.Instance()->GetAddonByName(LoadingBannerAddonName);
+        var bannerVisible = bannerAddon is not null && bannerAddon->IsVisible;
+
+        // The destination is only published mid-load; the banner path handles non-black-screen loads.
+        var destinationTerritoryId = GameMain.Instance()->NextTerritoryTypeId;
+        var isCrossTerritory = destinationTerritoryId is not 0 && destinationTerritoryId != sourceTerritoryId;
+
+        var showArt = config is { ShowOnInstancedLoad: true }
+                      && Services.ClientState.IsLoggedIn
+                      && !bannerVisible
+                      && isCrossTerritory;
+
+        if (!showArt) {
+            if (nowLoadingArtNode is not null) {
+                nowLoadingArtNode.IsVisible = false;
+            }
+            return;
+        }
+
+        // NowLoading persists after login, so the node is attached lazily on the first qualifying load.
+        if (nowLoadingArtNode is null) {
+            EnsureNowLoadingArtNode();
+            if (nowLoadingArtNode is null) return;
+        }
+
+        if (destinationTerritoryId != appliedNowLoadingTerritoryId || appliedNowLoadingTexturePath is null) {
+            var texturePath = BuildLoadingImagePath(destinationTerritoryId, skipInstancedContent: false);
+            if (texturePath is null) {
+                nowLoadingArtNode.IsVisible = false;
+                return;
+            }
+
+            nowLoadingArtNode.LoadTexture(texturePath);
+            appliedNowLoadingTerritoryId = destinationTerritoryId;
+            appliedNowLoadingTexturePath = texturePath;
+            nowLoadingArtGeometryCached = false;
+            nowLoadingArtAlpha = 0.0f;
+        }
+
+        // A brief black screen before the art appears is expected; fade in once it is ready.
+        if (nowLoadingArtAlpha < 1.0f) {
+            nowLoadingArtAlpha = Math.Min(1.0f, nowLoadingArtAlpha + Math.Max(deltaSeconds, 0.0f) / FadeInDurationSeconds);
+        }
+
+        ApplyNowLoadingArtGeometry();
+        nowLoadingArtNode.Alpha = nowLoadingArtAlpha;
+        nowLoadingArtNode.IsVisible = true;
+    }
+
+    private unsafe void EnsureNowLoadingArtNode() {
+        var addon = RaptureAtkUnitManager.Instance()->GetAddonByName(NowLoadingAddonName);
+        if (addon is null) return;
+
+        nowLoadingArtGeometryCached = false;
+
+        nowLoadingArtNode = new SimpleImageNode {
+            IsVisible = false,
+            WrapMode = WrapMode.Stretch,
+            FitTexture = true,
+        };
+
+        // First child so the spinner draws on top of the art rather than behind it.
+        nowLoadingArtNode.AttachNode(addon, NodePosition.AsFirstChild);
+    }
+
+    private unsafe void OnNowLoadingFinalize(AtkUnitBase* addon) {
+        nowLoadingArtNode?.Dispose();
+        nowLoadingArtNode = null;
+    }
+
+    private unsafe void ApplyNowLoadingArtGeometry() {
+        if (nowLoadingArtGeometryCached || nowLoadingArtNode is null) return;
+
+        var addon = RaptureAtkUnitManager.Instance()->GetAddonByName(NowLoadingAddonName);
+        if (addon is null || addon->RootNode is null) return;
+
+        var root = addon->RootNode;
+        var scaleX = root->ScaleX <= 0.0f ? 1.0f : root->ScaleX;
+        var scaleY = root->ScaleY <= 0.0f ? 1.0f : root->ScaleY;
+
+        ref var screen = ref AtkStage.Instance()->ScreenSize;
+
+        var targetWidth = screen.Width / scaleX;
+        var targetHeight = screen.Height / scaleY;
+
+        var drawWidth = targetWidth;
+        var drawHeight = drawWidth / LoadingArtAspectRatio;
+        var drawPosX = -root->ScreenX / scaleX;
+        var drawPosY = -root->ScreenY / scaleY;
+
+        if (drawHeight > targetHeight) {
+            drawHeight = targetHeight;
+            drawWidth = drawHeight * LoadingArtAspectRatio;
+            drawPosX -= (drawWidth - targetWidth) * 0.5f;
+        }
+        else {
+            drawPosY -= (drawHeight - targetHeight) * 0.5f;
+        }
+
+        nowLoadingArtNode.Scale = Vector2.One;
+        nowLoadingArtNode.Size = new Vector2(drawWidth, drawHeight);
+        nowLoadingArtNode.Position = new Vector2(drawPosX, drawPosY);
+        nowLoadingArtGeometryCached = true;
+    }
+
+    private unsafe (uint TerritoryId, bool FromHook) ResolveDestinationTerritory() {
         var next = GameMain.Instance()->NextTerritoryTypeId;
         if (next is not 0 && next != sourceTerritoryId) {
             var matchedHint = hookedTerritoryId == next;
@@ -159,7 +303,7 @@ public unsafe class FancyLoadingScreens : GameModification {
         return (0, false);
     }
 
-    private bool OnTeleport(Telepo* thisPtr, uint aetheryteId, byte subIndex) {
+    private unsafe bool OnTeleport(Telepo* thisPtr, uint aetheryteId, byte subIndex) {
         var accepted = teleportHook!.Original(thisPtr, aetheryteId, subIndex);
 
         try {
@@ -175,8 +319,7 @@ public unsafe class FancyLoadingScreens : GameModification {
         return accepted;
     }
 
-    // Compute local full-screen geometry once, then reapply it while the game resets the node layout.
-    private void ApplyArtGeometry(AtkResNode* node) {
+    private unsafe void ApplyArtGeometry(AtkResNode* node) {
         if (!artGeometryCached) {
             ref var screen = ref AtkStage.Instance()->ScreenSize;
 
@@ -199,10 +342,27 @@ public unsafe class FancyLoadingScreens : GameModification {
             if (parentScaleX <= 0.0f) parentScaleX = 1.0f;
             if (parentScaleY <= 0.0f) parentScaleY = 1.0f;
 
-            cachedArtWidth = screen.Width / parentScaleX;
-            cachedArtHeight = screen.Height / parentScaleY;
-            cachedArtPosX = -parentScreenX / parentScaleX;
-            cachedArtPosY = -parentScreenY / parentScaleY;
+            var targetWidth = screen.Width / parentScaleX;
+            var targetHeight = screen.Height / parentScaleY;
+
+            var drawWidth = targetWidth;
+            var drawHeight = drawWidth / LoadingArtAspectRatio;
+            var drawPosX = -parentScreenX / parentScaleX;
+            var drawPosY = -parentScreenY / parentScaleY;
+
+            if (drawHeight > targetHeight) {
+                drawHeight = targetHeight;
+                drawWidth = drawHeight * LoadingArtAspectRatio;
+                drawPosX -= (drawWidth - targetWidth) * 0.5f;
+            }
+            else {
+                drawPosY -= (drawHeight - targetHeight) * 0.5f;
+            }
+
+            cachedArtWidth = drawWidth;
+            cachedArtHeight = drawHeight;
+            cachedArtPosX = drawPosX;
+            cachedArtPosY = drawPosY;
             artGeometryCached = true;
         }
 
@@ -212,13 +372,19 @@ public unsafe class FancyLoadingScreens : GameModification {
         node->SetPositionFloat(cachedArtPosX, cachedArtPosY);
     }
 
-    private void ForceHideArtNode() {
-        try {
-            currentAlpha = 0.0f;
-            appliedTerritoryId = 0;
-            appliedTexturePath = null;
-            artGeometryCached = false;
+    private void ResetLoadState() {
+        appliedTerritoryId = 0;
+        appliedTexturePath = null;
+        appliedNowLoadingTerritoryId = 0;
+        appliedNowLoadingTexturePath = null;
+        artGeometryCached = false;
+        nowLoadingArtGeometryCached = false;
+        currentAlpha = 0.0f;
+        nowLoadingArtAlpha = 0.0f;
+    }
 
+    private unsafe void ForceHideArtNode() {
+        try {
             var bannerAddon = RaptureAtkUnitManager.Instance()->GetAddonByName(LoadingBannerAddonName);
             if (bannerAddon is null) return;
 
@@ -234,13 +400,15 @@ public unsafe class FancyLoadingScreens : GameModification {
         }
     }
 
-    private static string? BuildLoadingImagePath(uint territoryId) {
+    private static string? BuildLoadingImagePath(uint territoryId, bool skipInstancedContent = true) {
         if (!Services.DataManager.GetExcelSheet<TerritoryType>().TryGetRow(territoryId, out var territory)) return null;
 
-        // Instanced content (dungeons, trials, raids, ...) already shows its own dedicated loading art.
-        var isInstancedContent = Services.DataManager.GetExcelSheet<ContentFinderCondition>()
-            .Any(condition => condition.ContentLinkType == 1 && condition.TerritoryType.RowId == territoryId);
-        if (isInstancedContent) return null;
+        if (skipInstancedContent) {
+            // Instanced content (dungeons, trials, raids, ...) already shows its own dedicated loading art.
+            var isInstancedContent = Services.DataManager.GetExcelSheet<ContentFinderCondition>()
+                .Any(condition => condition.ContentLinkType == 1 && condition.TerritoryType.RowId == territoryId);
+            if (isInstancedContent) return null;
+        }
 
         if (!Services.DataManager.GetExcelSheet<LoadingImage>().TryGetRow(territory.LoadingImage.RowId, out var loadingImage)) return null;
 
