@@ -1521,7 +1521,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Ajout Lien Position sur Curseur</value>
   </data>
   <data name="ModificationDescription_FlagOnCursor" xml:space="preserve">
-    <value>Ajoute un lien de position sur la carte à la position de votre curseur dans le monde.</value>
+    <value>Places a flag on the map for where your cursor is pointing in the world via the command /placeflag.</value>
   </data>
   <data name="FlagOnCursor_CommandHelpMessage" xml:space="preserve">
     <value>Ajoute un lien de position à l'emplacement de la souris</value>
@@ -1582,5 +1582,114 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
   </data>
   <data name="ResetDummyEnmity_ResetEnmityToolTip" xml:space="preserve">
       <value>[VanillaPlus] Reset Enmity</value>
+  </data>
+  <data name="ModificationDisplay_BetterTeleportWindow" xml:space="preserve">
+    <value>Better Teleport Window</value>
+  </data>
+  <data name="ModificationDescription_BetterTeleportWindow" xml:space="preserve">
+    <value>Replaces the games Teleport window with a better custom made version.</value>
+  </data>
+  <data name="BetterTeleportWindow_WindowTitle" xml:space="preserve">
+    <value>Teleport</value>
+  </data>
+  <data name="BetterTeleportWindow_RenameTitle" xml:space="preserve">
+    <value>Rename Teleport</value>
+  </data>
+  <data name="BetterTeleportWindow_TooltipAutoFocus" xml:space="preserve">
+    <value>Toggle Auto Focus Searchbar</value>
+  </data>
+  <data name="BetterTeleportWindow_NoResults" xml:space="preserve">
+    <value>No Aetherytes Match Search</value>
+  </data>
+  <data name="BetterTeleportWindow_ModeAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="BetterTeleportWindow_ModeHistory" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="BetterTeleportWindow_ModeFavorites" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="BetterTeleportWindow_ModeCities" xml:space="preserve">
+    <value>Cities</value>
+  </data>
+  <data name="ModificationDisplay_BorderlessCutscenes" xml:space="preserve">
+    <value>Borderless Cutscenes</value>
+  </data>
+  <data name="ModificationDescription_BorderlessCutscenes" xml:space="preserve">
+    <value>Removes the letterboxing in cutscenes when using ultrawide displays.</value>
+  </data>
+  <data name="ModificationDisplay_SuppressSharedBoards" xml:space="preserve">
+    <value>Suppress Shared Strategy Boards</value>
+  </data>
+  <data name="ModificationDescription_SuppressSharedBoards" xml:space="preserve">
+    <value>Completely suppresses any shared Strategy Board.</value>
+  </data>
+  <data name="ModificationDisplay_DutyPortalNameplateOffset" xml:space="preserve">
+    <value>Raise Duty Portal Nameplates</value>
+  </data>
+  <data name="ModificationDescription_DutyPortalNameplateOffset" xml:space="preserve">
+    <value>Raises certain duty-related interaction nameplates to improve visibility when crowded by player nameplates.</value>
+  </data>
+  <data name="ModificationBrowser_TabAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="ModificationBrowser_TabEnabled" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="ModificationBrowser_TabDisabled" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="ModificationBrowser_CategoryWindow" xml:space="preserve">
+    <value>Window</value>
+  </data>
+  <data name="ModificationBrowser_CategoryWindowTooltip" xml:space="preserve">
+    <value>New Windows or Overlays</value>
+  </data>
+  <data name="ModificationBrowser_CategoryUi" xml:space="preserve">
+    <value>UI</value>
+  </data>
+  <data name="ModificationBrowser_CategoryUiTooltip" xml:space="preserve">
+    <value>Modifies existing game UI</value>
+  </data>
+  <data name="ModificationBrowser_CategoryBehavior" xml:space="preserve">
+    <value>Behavior</value>
+  </data>
+  <data name="ModificationBrowser_CategoryBehaviorTooltip" xml:space="preserve">
+    <value>Changes how parts of the game work</value>
+  </data>
+  <data name="ModificationBrowser_PersistSearchTooltip" xml:space="preserve">
+    <value>Persist Search Between Sessions</value>
+  </data>
+  <data name="ModificationBrowser_NoResults" xml:space="preserve">
+    <value>No Results Match Search</value>
+  </data>
+  <data name="ModificationType_Seasonal" xml:space="preserve">
+    <value>Seasonal</value>
+  </data>
+  <data name="SeasonEventNotice_Title" xml:space="preserve">
+    <value>Seasonal Event Notice</value>
+  </data>
+  <data name="SeasonEventNotice_Heading" xml:space="preserve">
+    <value>Seasonal Event</value>
+  </data>
+  <data name="SeasonEventNotice_Body" xml:space="preserve">
+    <value>It's that time of year again! There is a seasonal event happening right now!
+To join in the festivities, check out the Seasonal section in VanillaPlus!</value>
+  </data>
+  <data name="SeasonEventNotice_DailyHint" xml:space="preserve">
+    <value>This will only show once on each day a seasonal event occurs</value>
+  </data>
+  <data name="SeasonEventNotice_ButtonDismiss" xml:space="preserve">
+    <value>Go Away</value>
+  </data>
+  <data name="SeasonEventNotice_ButtonOpen" xml:space="preserve">
+    <value>Open VanillaPlus</value>
+  </data>
+  <data name="AddonConfig_AdditionalOptions" xml:space="preserve">
+    <value>Additional Options</value>
+  </data>
+  <data name="AddonConfig_DisableKeybindInCombat" xml:space="preserve">
+    <value>Disable Keybind in Combat</value>
   </data>
 </root>
