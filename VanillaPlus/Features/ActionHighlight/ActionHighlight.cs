@@ -28,6 +28,7 @@ public class ActionHighlight : GameModification {
     };
 
     public override string ImageName => "ActionHighlight.png";
+    public override bool IsExperimental => true;
 
     private Hook<ActionManager.Delegates.IsActionHighlighted>? onAntsHook;
 
