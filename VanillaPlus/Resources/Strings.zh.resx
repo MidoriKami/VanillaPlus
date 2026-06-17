@@ -1584,112 +1584,112 @@ ID：{0}</value>
       <value>[VanillaPlus] 重置仇恨</value>
   </data>
   <data name="ModificationDisplay_BetterTeleportWindow" xml:space="preserve">
-    <value>Better Teleport Window</value>
+    <value>传送窗口优化</value>
   </data>
   <data name="ModificationDescription_BetterTeleportWindow" xml:space="preserve">
-    <value>Replaces the games Teleport window with a better custom made version.</value>
+    <value>用更好的自定义版本的传送窗口替换游戏自带版本。</value>
   </data>
   <data name="BetterTeleportWindow_WindowTitle" xml:space="preserve">
-    <value>Teleport</value>
+    <value>传送</value>
   </data>
   <data name="BetterTeleportWindow_RenameTitle" xml:space="preserve">
-    <value>Rename Teleport</value>
+    <value>重命名传送点</value>
   </data>
   <data name="BetterTeleportWindow_TooltipAutoFocus" xml:space="preserve">
-    <value>Toggle Auto Focus Searchbar</value>
+    <value>开关自动焦点搜索栏</value>
   </data>
   <data name="BetterTeleportWindow_NoResults" xml:space="preserve">
-    <value>No Aetherytes Match Search</value>
+    <value>没有搜索到符合的以太之光</value>
   </data>
   <data name="BetterTeleportWindow_ModeAll" xml:space="preserve">
-    <value>All</value>
+    <value>全部</value>
   </data>
   <data name="BetterTeleportWindow_ModeHistory" xml:space="preserve">
-    <value>History</value>
+    <value>历史</value>
   </data>
   <data name="BetterTeleportWindow_ModeFavorites" xml:space="preserve">
-    <value>Favorites</value>
+    <value>收藏</value>
   </data>
   <data name="BetterTeleportWindow_ModeCities" xml:space="preserve">
-    <value>Cities</value>
+    <value>主城</value>
   </data>
   <data name="ModificationDisplay_BorderlessCutscenes" xml:space="preserve">
-    <value>Borderless Cutscenes</value>
+    <value>无黑边过场动画</value>
   </data>
   <data name="ModificationDescription_BorderlessCutscenes" xml:space="preserve">
-    <value>Removes the letterboxing in cutscenes when using ultrawide displays.</value>
+    <value>移除超宽屏下的过场动画黑边。</value>
   </data>
   <data name="ModificationDisplay_SuppressSharedBoards" xml:space="preserve">
-    <value>Suppress Shared Strategy Boards</value>
+    <value>禁止共享战术板</value>
   </data>
   <data name="ModificationDescription_SuppressSharedBoards" xml:space="preserve">
-    <value>Completely suppresses any shared Strategy Board.</value>
+    <value>完全禁止任何共享战术板提示。</value>
   </data>
   <data name="ModificationDisplay_DutyPortalNameplateOffset" xml:space="preserve">
-    <value>Raise Duty Portal Nameplates</value>
+    <value>提高副本传送点名牌</value>
   </data>
   <data name="ModificationDescription_DutyPortalNameplateOffset" xml:space="preserve">
-    <value>Raises certain duty-related interaction nameplates to improve visibility when crowded by player nameplates.</value>
+    <value>提高副本内交互点的名牌高度来提高玩家拥挤在附近时的可见性。</value>
   </data>
   <data name="ModificationBrowser_TabAll" xml:space="preserve">
-    <value>All</value>
+    <value>全部</value>
   </data>
   <data name="ModificationBrowser_TabEnabled" xml:space="preserve">
-    <value>Enable</value>
+    <value>启用</value>
   </data>
   <data name="ModificationBrowser_TabDisabled" xml:space="preserve">
-    <value>Disable</value>
+    <value>禁用</value>
   </data>
   <data name="ModificationBrowser_CategoryWindow" xml:space="preserve">
-    <value>Window</value>
+    <value>窗口</value>
   </data>
   <data name="ModificationBrowser_CategoryWindowTooltip" xml:space="preserve">
-    <value>New Windows or Overlays</value>
+    <value>新窗口或覆盖层</value>
   </data>
   <data name="ModificationBrowser_CategoryUi" xml:space="preserve">
     <value>UI</value>
   </data>
   <data name="ModificationBrowser_CategoryUiTooltip" xml:space="preserve">
-    <value>Modifies existing game UI</value>
+    <value>修改现有游戏 UI</value>
   </data>
   <data name="ModificationBrowser_CategoryBehavior" xml:space="preserve">
-    <value>Behavior</value>
+    <value>行为</value>
   </data>
   <data name="ModificationBrowser_CategoryBehaviorTooltip" xml:space="preserve">
-    <value>Changes how parts of the game work</value>
+    <value>更改部分游戏功能的工作方式</value>
   </data>
   <data name="ModificationBrowser_PersistSearchTooltip" xml:space="preserve">
-    <value>Persist Search Between Sessions</value>
+    <value>保持搜索内容</value>
   </data>
   <data name="ModificationBrowser_NoResults" xml:space="preserve">
-    <value>No Results Match Search</value>
+    <value>没有搜索结果</value>
   </data>
   <data name="ModificationType_Seasonal" xml:space="preserve">
-    <value>Seasonal</value>
+    <value>季节活动</value>
   </data>
   <data name="SeasonEventNotice_Title" xml:space="preserve">
-    <value>Seasonal Event Notice</value>
+    <value>季节活动通知</value>
   </data>
   <data name="SeasonEventNotice_Heading" xml:space="preserve">
-    <value>Seasonal Event</value>
+    <value>季节活动</value>
   </data>
   <data name="SeasonEventNotice_Body" xml:space="preserve">
-    <value>It's that time of year again! There is a seasonal event happening right now!
-To join in the festivities, check out the Seasonal section in VanillaPlus!</value>
+    <value>又到了这个时候了！ 现在有一个季节活动开始了！
+要参加活动，请查看 VanillaPlus 中的季节活动部分！</value>
   </data>
   <data name="SeasonEventNotice_DailyHint" xml:space="preserve">
-    <value>This will only show once on each day a seasonal event occurs</value>
+    <value>每日只会显示一次季节活动通知</value>
   </data>
   <data name="SeasonEventNotice_ButtonDismiss" xml:space="preserve">
-    <value>Go Away</value>
+    <value>懂了懂了</value>
   </data>
   <data name="SeasonEventNotice_ButtonOpen" xml:space="preserve">
-    <value>Open VanillaPlus</value>
+    <value>打开 VanillaPlus</value>
   </data>
   <data name="AddonConfig_AdditionalOptions" xml:space="preserve">
-    <value>Additional Options</value>
+    <value>更多选项</value>
   </data>
   <data name="AddonConfig_DisableKeybindInCombat" xml:space="preserve">
-    <value>Disable Keybind in Combat</value>
+    <value>在战斗中禁用快捷键</value>
   </data>
 </root>
