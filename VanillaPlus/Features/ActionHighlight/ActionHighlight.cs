@@ -25,6 +25,7 @@ public class ActionHighlight : GameModification {
         Type = ModificationType.UserInterface,
         Authors = ["attickdoor", "Zeffuro"],
         CompatibilityModule = new PluginCompatibilityModule("AbilityAnts"),
+        DisabledReason = "Currently unavailable.\n\nTemporarily disabled, Will return shortly. Sorry for the trouble.",
     };
 
     public override string ImageName => "ActionHighlight.png";
