@@ -48,7 +48,9 @@ public class ListInventory : GameModification {
 
         OpenConfigAction = keybindConfigAddon.Toggle;
 
-        Services.CommandManager.AddHandler("/listinventory", new CommandInfo(OnListInventoryCommand));
+        Services.CommandManager.AddHandler("/listinventory", new CommandInfo(OnListInventoryCommand) {
+            HelpMessage = "Opens Inventory List Window",
+        });
         Services.Framework.Update += OnFrameworkUpdate;
     }
 

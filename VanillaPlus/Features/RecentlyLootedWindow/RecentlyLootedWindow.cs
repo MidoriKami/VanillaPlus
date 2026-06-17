@@ -48,7 +48,9 @@ public class RecentlyLootedWindow : GameModification {
 
         OpenConfigAction = keybindConfigAddon.Open;
 
-        Services.CommandManager.AddHandler("/recentloot", new CommandInfo(OnFateListCommand));
+        Services.CommandManager.AddHandler("/recentloot", new CommandInfo(OnFateListCommand) {
+            HelpMessage = "Opens Recently Looted Items window",
+        });
         Services.Framework.Update += OnFrameworkUpdate;
     }
 

@@ -49,7 +49,9 @@ public class QuestListWindow : GameModification {
 
         OpenConfigAction = keybindConfigAddon.Open;
 
-        Services.CommandManager.AddHandler("/questlist", new CommandInfo(OnQuestListCommand));
+        Services.CommandManager.AddHandler("/questlist", new CommandInfo(OnQuestListCommand) {
+            HelpMessage = "Opens Quest List Window",
+        });
         Services.Framework.Update += OnFrameworkUpdate;
     }
 

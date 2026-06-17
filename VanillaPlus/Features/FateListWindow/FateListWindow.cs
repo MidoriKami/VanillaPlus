@@ -47,7 +47,9 @@ public class FateListWindow : GameModification {
 
         OpenConfigAction = keybindConfigAddon.Open;
 
-        Services.CommandManager.AddHandler("/fatelist", new CommandInfo(OnFateListCommand));
+        Services.CommandManager.AddHandler("/fatelist", new CommandInfo(OnFateListCommand) {
+            HelpMessage = "Opens Fate List Window",
+        });
         Services.Framework.Update += OnFrameworkUpdate;
     }
 
