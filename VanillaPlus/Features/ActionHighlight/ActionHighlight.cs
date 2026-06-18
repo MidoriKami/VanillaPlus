@@ -182,8 +182,7 @@ public class ActionHighlight : GameModification {
            && action.IsUsableByJob(classJob);
 
     internal static bool IsValidAction(Action action, ClassJob classJob)
-        => action is { IsPvP: false, IsRoleAction: false }
-           && action.RowId is not (2272u or 29581u)
+        => action is { IsPvP: false, IsRoleAction: false, RowId: not (2272u or 29581u) } // Rabbit Medium and 六道輪廻 (should be a PVP action)
            && (action.ActionCategory.RowId == 4 || action.Recast100ms > 100)
            && (IsPlayerClassAction(action, classJob) || IsUnassignableClassAction(action, classJob));
 
