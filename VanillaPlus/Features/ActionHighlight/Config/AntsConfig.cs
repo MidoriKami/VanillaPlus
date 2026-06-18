@@ -46,8 +46,7 @@ public class AntsConfig : GameModificationConfig<AntsConfig> {
                     var action = Services.DataManager.GetExcelSheet<Action>().GetRow(actionId);
 
                     foreach (var classJob in classJobs) {
-                        if (!ActionHighlight.IsValidAction(action, classJob)) continue;
-                        if (!ActionHighlight.IsValidRoleAction(action, classJob)) continue;
+                        if (!ActionHighlight.IsValidAction(action, classJob) && !ActionHighlight.IsValidRoleAction(action, classJob)) continue;
 
                         AddActionSetting(newEntries, classJob.RowId, actionSettings, actionId);
                     }

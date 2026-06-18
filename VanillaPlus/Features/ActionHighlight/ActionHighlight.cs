@@ -198,8 +198,7 @@ public class ActionHighlight : GameModification {
     /// Returns true for actions that belong to the specified ClassJob <b>or its parent class</b>.
     /// </summary>
     private static bool IsPlayerClassAction(Action action, ClassJob classJob)
-        => action.IsPlayerAction
-           && (action.ClassJob.RowId == classJob.RowId || action.ClassJob.RowId == classJob.ClassJobParent.RowId);
+        => action.IsPlayerAction && action.ClassJobCategory.Value.ClassesJobs[(int) classJob.RowId];
 
     /// <summary>
     /// Returns true for actions that can be used, but only as flip actions from other skills, such as dancer steps.
@@ -212,8 +211,8 @@ public class ActionHighlight : GameModification {
     /// Returns true for actions that we want to allow ActionHighlight to highlight.
     /// </summary>
     internal static bool IsValidAction(Action action, ClassJob classJob)
-        => action is { IsPvP: false, IsRoleAction: false, RowId: not (2272u or 29581u) } // Rabbit Medium and 六道輪廻 (should be a PVP action)
-           && (action.ActionCategory.RowId == 4 || action.Recast100ms > 100)
+        => action is { IsPvP: false, IsRoleAction: false, RowId: not (2272u or 29581u or 1584u) } // Rabbit Medium and 六道輪廻 (should be a PVP action) and Purify
+           && (action.ActionCategory.RowId == 4 || action.Recast100ms > 150)
            && (IsPlayerClassAction(action, classJob) || IsUnassignableClassAction(action, classJob));
 
     /// <summary>
