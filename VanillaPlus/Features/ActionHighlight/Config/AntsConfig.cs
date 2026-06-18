@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lumina.Excel.Sheets;
 using Newtonsoft.Json.Linq;
 using VanillaPlus.Classes;
 using Action = Lumina.Excel.Sheets.Action;
@@ -30,6 +31,10 @@ public class AntsConfig : GameModificationConfig<AntsConfig> {
                 var actionSettingsObj = jObject["ActionSettings"]?.ToObject<JObject>();
                 if (actionSettingsObj is null) return false;
 
+                var classJobs = Services.DataManager.GetExcelSheet<ClassJob>()
+                    .Where(job => job is { RowId: not 0, Name.IsEmpty: false, IsCrafter: false, IsGatherer: false })
+                    .ToList();
+
                 List<AntsClassJobConfig> newEntries = [];
 
                 foreach (var property in actionSettingsObj.Properties()) {
@@ -38,20 +43,12 @@ public class AntsConfig : GameModificationConfig<AntsConfig> {
                     var actionSettings = property.Value.ToObject<AntsActionSetting>();
                     if (actionSettings is null) continue;
 
-                    var actionInfo = Services.DataManager.GetExcelSheet<Action>().GetRow(actionId);
+                    var action = Services.DataManager.GetExcelSheet<Action>().GetRow(actionId);
 
-                    var classJobEntry = newEntries.FirstOrDefault(entry => entry.ClassJobId == actionInfo.ClassJob.RowId);
+                    foreach (var classJob in classJobs) {
+                        if (!ActionHighlight.IsValidAction(action, classJob) && !ActionHighlight.IsValidRoleAction(action, classJob)) continue;
 
-                    if (classJobEntry is null) {
-                        newEntries.Add(new AntsClassJobConfig {
-                            ClassJobId = actionInfo.ClassJob.RowId,
-                            ActionSettings = [
-                                actionSettings,
-                            ],
-                        });
-                    }
-                    else {
-                        classJobEntry.ActionSettings.Add(actionSettings);
+                        AddActionSetting(newEntries, classJob.RowId, actionSettings, actionId);
                     }
                 }
 
@@ -60,5 +57,24 @@ public class AntsConfig : GameModificationConfig<AntsConfig> {
         }
 
         return false;
+    }
+
+    private static void AddActionSetting(List<AntsClassJobConfig> entries, uint classJobId, AntsActionSetting source, uint actionId) {
+        if (entries.FirstOrDefault(configEntry => configEntry.ClassJobId == classJobId) is not { } entry) {
+            entry = new AntsClassJobConfig {
+                ClassJobId = classJobId,
+                ActionSettings = [],
+            };
+
+            entries.Add(entry);
+        }
+
+        if (entry.ActionSettings.Any(setting => setting.ActionId == actionId)) return;
+
+        entry.ActionSettings.Add(new AntsActionSetting {
+            ActionId = actionId,
+            IsEnabled = source.IsEnabled,
+            ThresholdMs = source.ThresholdMs,
+        });
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using KamiToolKit.Components.ConfigurationNodes;
@@ -35,21 +34,7 @@ public class AntsClassJobConfigurationNode : EntryConfigurationNode<AntsClassJob
 
         backgroundImageNode.IconId = 62000 + entry.ClassJobId;
 
-        List<Action> additionalActions = [];
-
-        // Astrologian Entries.
-        if (entry.ClassJobId is 33) {
-            foreach (var action in (List<uint>)[7444, 7445, 37018, 37023, 37024, 37025, 37026, 37027, 37028]) {
-                additionalActions.Add(Services.DataManager.GetExcelSheet<Action>().GetRow(action));
-            }
-        }
-
-        actionsListNode.OptionsList = Services.DataManager.GetExcelSheet<Action>()
-            .Where(a => !a.IsPvP && (a.ClassJob.RowId == classJob.RowId || a.ClassJob.RowId == classJob.ClassJobParent.RowId)
-                                 && a.IsPlayerAction && (a.ActionCategory.RowId == 4 || a.Recast100ms > 100) && a.RowId != 29581)
-            .Where(action => action is { IsRoleAction: false })
-            .Concat(additionalActions)
-            .ToList();
+        actionsListNode.OptionsList = ActionHighlight.GetClassActions(classJob);
 
         rolesListNode.OptionsList = Services.DataManager.GetExcelSheet<Action>()
             .Where(action => action.ClassJobCategory.Value.ClassesJobs[(int) entry.ClassJobId])
