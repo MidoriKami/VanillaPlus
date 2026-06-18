@@ -54,12 +54,14 @@ public class ActionHighlight : GameModification {
             Size = new Vector2(700.0f, 650.0f),
             InternalName = "ActionHighlightConfig",
             Title = Strings.ActionHighlight_Configuration,
-            OptionsList = Config.ClassJobConfigs,
+            OptionsList = [],
             SaveConfig = () => Task.Run(Config.Save),
             GetEntrySearchString = entry => Services.DataManager.GetExcelSheet<ClassJob>().GetRow(entry.ClassJobId).Name.ToString(),
             AddClicked = OnAddClicked,
             RemoveClicked = OnRemoveClicked,
         };
+
+        UpdateOptionsList();
 
         OpenConfigAction = configAddon.Toggle;
 
@@ -97,7 +99,7 @@ public class ActionHighlight : GameModification {
             }
 
             Task.Run(Config.Save);
-            configAddon?.OptionsList = Config.ClassJobConfigs;
+            UpdateOptionsList();
         };
 
         classJobSearchAddon?.Open();
@@ -167,25 +169,56 @@ public class ActionHighlight : GameModification {
         }
     }
 
+    private void UpdateOptionsList() {
+        if (configAddon is null) return;
+        if (Config is null) return;
+
+        Task.Run(() => {
+            var results = Config.ClassJobConfigs
+                .Where(entry => entry.ClassJobId is not 0)
+                .OrderBy(entry => Services.SeStringEvaluator.EvaluateFromAddon(981, [entry.ClassJobId]).ToString())
+                .ToList();
+
+            Services.Framework.Run(() => {
+                configAddon.OptionsList = results;
+            });
+        });
+    }
+
+    /// <summary>
+    /// Gets all valid actions for the specified ClassJob.
+    /// </summary>
     public static List<Action> GetClassActions(ClassJob classJob)
         => Services.DataManager.GetExcelSheet<Action>()
             .Where(action => IsValidAction(action, classJob))
             .DistinctBy(action => action.RowId)
             .ToList();
 
+    /// <summary>
+    /// Returns true for actions that belong to the specified ClassJob <b>or its parent class</b>.
+    /// </summary>
     private static bool IsPlayerClassAction(Action action, ClassJob classJob)
         => action.IsPlayerAction
            && (action.ClassJob.RowId == classJob.RowId || action.ClassJob.RowId == classJob.ClassJobParent.RowId);
 
+    /// <summary>
+    /// Returns true for actions that can be used, but only as flip actions from other skills, such as dancer steps.
+    /// </summary>
     private static bool IsUnassignableClassAction(Action action, ClassJob classJob)
         => action is { IsPlayerAction: false, ClassJob.RowId: 0, ClassJobLevel: not 0 }
            && action.IsUsableByJob(classJob);
 
+    /// <summary>
+    /// Returns true for actions that we want to allow ActionHighlight to highlight.
+    /// </summary>
     internal static bool IsValidAction(Action action, ClassJob classJob)
         => action is { IsPvP: false, IsRoleAction: false, RowId: not (2272u or 29581u) } // Rabbit Medium and 六道輪廻 (should be a PVP action)
            && (action.ActionCategory.RowId == 4 || action.Recast100ms > 100)
            && (IsPlayerClassAction(action, classJob) || IsUnassignableClassAction(action, classJob));
 
+    /// <summary>
+    /// Returns true for actions that are valid for the specified ClassJob.
+    /// </summary>
     internal static bool IsValidRoleAction(Action action, ClassJob classJob)
         => action is { IsPvP: false, IsRoleAction: true }
            && action.ClassJobCategory.Value.ClassesJobs[(int) classJob.RowId];

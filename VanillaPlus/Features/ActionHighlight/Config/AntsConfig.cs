@@ -46,10 +46,8 @@ public class AntsConfig : GameModificationConfig<AntsConfig> {
                     var action = Services.DataManager.GetExcelSheet<Action>().GetRow(actionId);
 
                     foreach (var classJob in classJobs) {
-                        if (!ActionHighlight.IsValidAction(action, classJob)
-                            && !ActionHighlight.IsValidRoleAction(action, classJob)) {
-                            continue;
-                        }
+                        if (!ActionHighlight.IsValidAction(action, classJob)) continue;
+                        if (!ActionHighlight.IsValidRoleAction(action, classJob)) continue;
 
                         AddActionSetting(newEntries, classJob.RowId, actionSettings, actionId);
                     }
@@ -62,15 +60,8 @@ public class AntsConfig : GameModificationConfig<AntsConfig> {
         return false;
     }
 
-    private static void AddActionSetting(
-        List<AntsClassJobConfig> entries,
-        uint classJobId,
-        AntsActionSetting source,
-        uint actionId
-    ) {
-        var entry = entries.FirstOrDefault(entry => entry.ClassJobId == classJobId);
-
-        if (entry is null) {
+    private static void AddActionSetting(List<AntsClassJobConfig> entries, uint classJobId, AntsActionSetting source, uint actionId) {
+        if (entries.FirstOrDefault(configEntry => configEntry.ClassJobId == classJobId) is not { } entry) {
             entry = new AntsClassJobConfig {
                 ClassJobId = classJobId,
                 ActionSettings = [],
