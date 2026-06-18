@@ -198,7 +198,7 @@ public class ActionHighlight : GameModification {
     /// Returns true for actions that belong to the specified ClassJob <b>or its parent class</b>.
     /// </summary>
     private static bool IsPlayerClassAction(Action action, ClassJob classJob)
-        => action.IsPlayerAction && action.ClassJobCategory.Value.ClassesJobs[(int) classJob.RowId];
+        => action.IsPlayerAction && action.ClassJobCategory.Value.IncludesJob(classJob);
 
     /// <summary>
     /// Returns true for actions that can be used, but only as flip actions from other skills, such as dancer steps.
@@ -220,5 +220,5 @@ public class ActionHighlight : GameModification {
     /// </summary>
     internal static bool IsValidRoleAction(Action action, ClassJob classJob)
         => action is { IsPvP: false, IsRoleAction: true }
-           && action.ClassJobCategory.Value.ClassesJobs[(int) classJob.RowId];
+           && action.ClassJobCategory.Value.IncludesJob(classJob);
 }
