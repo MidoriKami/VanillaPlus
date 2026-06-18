@@ -25,7 +25,6 @@ public class ActionHighlight : GameModification {
         Type = ModificationType.UserInterface,
         Authors = ["attickdoor", "Zeffuro"],
         CompatibilityModule = new PluginCompatibilityModule("AbilityAnts"),
-        DisabledReason = "Currently unavailable.\n\nTemporarily disabled, Will return shortly. Sorry for the trouble.",
     };
 
     public override string ImageName => "ActionHighlight.png";
@@ -168,16 +167,27 @@ public class ActionHighlight : GameModification {
         }
     }
 
-    public static List<Action> GetClassActions() {
-        List<uint> additionalActions = [7444, 7445, 37018, 37023, 37024, 37025, 37026, 37027, 37028];
-
-        // I have no idea what Unknown6 is, but it's been in there since the very first AbilityAnts release.
-        // My best guess at the moment is that it removes abilities that have been replaced or upgraded.
-        return Services.DataManager.GetExcelSheet<Action>()
-            .Where(action => IsValidAction(action) || additionalActions.Contains(action.RowId))
+    public static List<Action> GetClassActions(ClassJob classJob)
+        => Services.DataManager.GetExcelSheet<Action>()
+            .Where(action => IsValidAction(action, classJob))
+            .DistinctBy(action => action.RowId)
             .ToList();
-    }
 
-    public static bool IsValidAction(Action action)
-        => action is { IsPvP: false, ClassJob.ValueNullable.Unknown6: > 0, IsPlayerAction: true } and ({ ActionCategory.RowId: 4 } or { Recast100ms: > 100 });
+    private static bool IsPlayerClassAction(Action action, ClassJob classJob)
+        => action.IsPlayerAction
+           && (action.ClassJob.RowId == classJob.RowId || action.ClassJob.RowId == classJob.ClassJobParent.RowId);
+
+    private static bool IsUnassignableClassAction(Action action, ClassJob classJob)
+        => action is { IsPlayerAction: false, ClassJob.RowId: 0, ClassJobLevel: not 0 }
+           && action.IsUsableByJob(classJob);
+
+    internal static bool IsValidAction(Action action, ClassJob classJob)
+        => action is { IsPvP: false, IsRoleAction: false }
+           && action.RowId is not (2272u or 29581u)
+           && (action.ActionCategory.RowId == 4 || action.Recast100ms > 100)
+           && (IsPlayerClassAction(action, classJob) || IsUnassignableClassAction(action, classJob));
+
+    internal static bool IsValidRoleAction(Action action, ClassJob classJob)
+        => action is { IsPvP: false, IsRoleAction: true }
+           && action.ClassJobCategory.Value.ClassesJobs[(int) classJob.RowId];
 }
