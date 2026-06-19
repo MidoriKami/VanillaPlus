@@ -10,7 +10,7 @@ public class BorderlessCutscenes : GameModification {
         DisplayName = Strings.ModificationDisplay_BorderlessCutscenes,
         Description = Strings.ModificationDescription_BorderlessCutscenes,
         Type = ModificationType.GameBehavior,
-        Authors = ["goat", "Maple", "MidoriKami"],
+        Authors = ["goat", "MapleRecall", "MidoriKami"],
         CompatibilityModule = new PluginCompatibilityModule("Dalamud.FullscreenCutscenes"),
     };
 
