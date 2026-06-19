@@ -1,7 +1,23 @@
-using Lumina.Excel;
+﻿using Lumina.Excel;
+using Lumina.Excel.Sheets;
 using Lumina.Text.ReadOnly;
 
-namespace VanillaPlus.Features.FancyLoadingScreens;
+namespace VanillaPlus.Extensions;
+
+public static class TerritoryTypeExtensions {
+    extension(TerritoryType territoryType) {
+        public string LoadingImagePath {
+            get {
+                if (!Services.DataManager.GetExcelSheet<LoadingImage>().TryGetRow(territoryType.LoadingImage.RowId, out var loadingImage)) return string.Empty;
+
+                var imageName = loadingImage.Name.ExtractText();
+                if (string.IsNullOrEmpty(imageName)) return string.Empty;
+
+                return $"ui/loadingimage/{imageName}_hr1.tex";
+            }
+        }
+    }
+}
 
 /// <summary>
 /// Minimal definition of the game's "LoadingImage" Excel sheet, which Lumina does not generate.
@@ -18,3 +34,4 @@ public readonly struct LoadingImage(ExcelPage page, uint offset, uint row) : IEx
     static LoadingImage IExcelRow<LoadingImage>.Create(ExcelPage page, uint offset, uint row)
         => new(page, offset, row);
 }
+
