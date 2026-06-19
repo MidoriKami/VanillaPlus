@@ -24,7 +24,7 @@ public class ShowGatheringPoints : GameModification {
     public override async Task OnEnableAsync() {
         mapOverlayController = new MapOverlayController();
 
-        await Services.Framework.Run(() => {
+        await Services.Framework.RunSafely(() => {
             unsafe {
                 foreach (var index in Enumerable.Range(0, EventObjectManager.Instance()->EventObjects.Length)) {
                     mapOverlayController.AddMarker(new GatheringPointMapMarker {
@@ -38,7 +38,7 @@ public class ShowGatheringPoints : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => mapOverlayController?.Dispose());
+        await Services.Framework.RunSafely(() => mapOverlayController?.Dispose());
         mapOverlayController = null;
     }
 }

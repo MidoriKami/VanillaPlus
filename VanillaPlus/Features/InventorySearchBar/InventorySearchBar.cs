@@ -53,7 +53,7 @@ public class InventorySearchBar : GameModification {
         Services.ClientState.Login -= OnLogin;
         Services.ClientState.Logout -= OnLogout;
 
-        await Services.Framework.Run(() => inventoryController?.Dispose());
+        await Services.Framework.RunSafely(() => inventoryController?.Dispose());
         keybindListener = null;
         inventoryController = null;
     }
@@ -95,7 +95,7 @@ public class InventorySearchBar : GameModification {
             Callback = OnKeybindPressed,
         };
 
-        await Services.Framework.Run(inventoryController.Enable);
+        await Services.Framework.RunSafely(inventoryController.Enable);
     }
 
     private unsafe void OnInventorySetup(AtkUnitBase* addon) {

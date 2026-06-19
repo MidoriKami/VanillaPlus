@@ -78,7 +78,7 @@ public class QuestListWindow : GameModification {
         => questListAddon?.Toggle();
 
     private void OnKeybindPressed(ref bool isHandled) {
-        Services.Framework.Run(() => questListAddon?.Toggle());
+        Services.Framework.RunSafely(() => questListAddon?.Toggle());
 
         isHandled = true;
     }

@@ -56,11 +56,11 @@ public class TargetCastBarCountdown : GameModification {
             };
         }
 
-        await Services.Framework.Run(addonController.Enable);
+        await Services.Framework.RunSafely(addonController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => addonController?.Dispose());
+        await Services.Framework.RunSafely(() => addonController?.Dispose());
         addonController = null;
 
         await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);

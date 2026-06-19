@@ -72,9 +72,7 @@ public class ActionHighlight : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
-            onAntsHook?.Dispose();
-        });
+        onAntsHook?.Dispose();
         onAntsHook = null;
 
         await Task.WhenAll(
@@ -179,7 +177,7 @@ public class ActionHighlight : GameModification {
                 .OrderBy(entry => Services.SeStringEvaluator.EvaluateFromAddon(981, [entry.ClassJobId]).ToString())
                 .ToList();
 
-            Services.Framework.Run(() => {
+            Services.Framework.RunSafely(() => {
                 configAddon.OptionsList = results;
             });
         });

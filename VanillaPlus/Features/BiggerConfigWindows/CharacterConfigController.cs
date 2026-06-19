@@ -39,7 +39,7 @@ public class CharacterConfigController : IDisposable {
     }
 
     public void Dispose() {
-        Services.Framework.Run(() => {
+        Services.Framework.RunSafely(() => {
             characterConfigController?.Dispose();
             childAddonController?.Dispose();
         });

@@ -70,7 +70,7 @@ public class FadeUnavailableActions : GameModification {
 
         actionCache = null;
 
-        await Services.Framework.Run(ResetAllHotbars);
+        await Services.Framework.RunSafely(ResetAllHotbars);
     }
 
     private unsafe void OnHotBarSlotUpdate(AddonActionBarBase* addon, ActionBarSlot* hotBarSlotData, NumberArrayData* numberArray, StringArrayData* stringArray, int numberArrayIndex, int stringArrayIndex) {

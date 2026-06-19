@@ -54,7 +54,7 @@ public class LockChatButton : GameModification {
             };
         }
 
-        await Services.Framework.Run(() => {
+        await Services.Framework.RunSafely(() => {
             chatLogController.Enable();
             panelController.Enable();
         });

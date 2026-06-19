@@ -24,7 +24,7 @@ public class BorderlessCutscenes : GameModification {
 
         if (memoryAddress is { } address && memoryAddress != nint.Zero) {
             jumpPatch = new MemoryReplacement(address, [0x00]);
-            await Services.Framework.Run(jumpPatch.Enable);
+            await Services.Framework.RunSafely(jumpPatch.Enable);
         }
     }
 

@@ -111,7 +111,7 @@ public class DutyLootPreviewAddon : NativeAddon {
             ))
             .ToList();
 
-        await Services.Framework.Run(() => listNode.OptionsList = viewModels);
+        await Services.Framework.RunSafely(() => listNode.OptionsList = viewModels);
         listNode.ResetScroll();
 
         var hasData = items.Count != 0;

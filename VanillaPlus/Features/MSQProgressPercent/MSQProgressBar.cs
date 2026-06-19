@@ -76,11 +76,11 @@ public class MSQProgressBar : GameModification {
             };
         }
 
-        await Services.Framework.Run(scenarioTreeAddonController.Enable);
+        await Services.Framework.RunSafely(scenarioTreeAddonController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => scenarioTreeAddonController?.Dispose());
+        await Services.Framework.RunSafely(() => scenarioTreeAddonController?.Dispose());
         scenarioTreeAddonController = null;
 
         await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);

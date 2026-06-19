@@ -47,11 +47,11 @@ public class ResetDummyEnmity : GameModification {
         resetButtons = new CircleButtonNode?[MaxEnemyCount];
         buttonTargets = new IBattleChara?[MaxEnemyCount];
 
-        await Services.Framework.Run(enemyListController.Enable);
+        await Services.Framework.RunSafely(enemyListController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
+        await Services.Framework.RunSafely(() => {
             enemyListController?.Dispose();
         });
 

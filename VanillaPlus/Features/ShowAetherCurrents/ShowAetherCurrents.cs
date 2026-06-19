@@ -41,7 +41,7 @@ public class ShowAetherCurrents : GameModification {
             }
         }
 
-        await Services.Framework.Run(() => {
+        await Services.Framework.RunSafely(() => {
 
             foreach (var aetherCurrent in aetherCurrentInfos) {
                 mapOverlayController.AddMarker(new AetherCurrentMapMarker {
@@ -56,7 +56,7 @@ public class ShowAetherCurrents : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => mapOverlayController?.Dispose());
+        await Services.Framework.RunSafely(() => mapOverlayController?.Dispose());
         mapOverlayController = null;
     }
 }

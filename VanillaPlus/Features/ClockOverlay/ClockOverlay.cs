@@ -49,7 +49,7 @@ public class ClockOverlay : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        await Services.Framework.Run(() => {
+        await Services.Framework.RunSafely(() => {
             overlayController = new OverlayController();
             overlayController.AddNode(new ClockOverlayNode {
                 Config = config,
@@ -64,7 +64,7 @@ public class ClockOverlay : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => overlayController?.Dispose());
+        await Services.Framework.RunSafely(() => overlayController?.Dispose());
         overlayController = null;
 
         await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);

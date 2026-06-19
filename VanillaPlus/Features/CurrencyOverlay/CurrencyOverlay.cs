@@ -57,7 +57,7 @@ public class CurrencyOverlay : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        await Services.Framework.Run(() => {
+        await Services.Framework.RunSafely(() => {
             overlayController = new OverlayController();
 
             foreach (var currencySetting in config.Currencies) {
@@ -69,7 +69,7 @@ public class CurrencyOverlay : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => overlayController?.Dispose());
+        await Services.Framework.RunSafely(() => overlayController?.Dispose());
         overlayController = null;
 
         await Task.WhenAll(

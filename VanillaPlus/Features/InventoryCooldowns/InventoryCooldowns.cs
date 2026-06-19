@@ -40,13 +40,13 @@ public class InventoryCooldowns : GameModification {
 
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, ["InventoryExpansion", "InventoryLarge", "Inventory"], OnPostReceiveEvent);
 
-        await Services.Framework.Run(controller.Enable);
+        await Services.Framework.RunSafely(controller.Enable);
     }
 
     public override async Task OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(OnPostReceiveEvent);
 
-        await Services.Framework.Run(() => controller?.Dispose());
+        await Services.Framework.RunSafely(() => controller?.Dispose());
         controller = null;
     }
 

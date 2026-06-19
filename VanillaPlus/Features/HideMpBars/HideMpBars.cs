@@ -63,14 +63,14 @@ public class HideMpBars : GameModification {
             };
         }
 
-        await Services.Framework.Run(() => {
+        await Services.Framework.RunSafely(() => {
             partyListController.Enable();
             paramController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
+        await Services.Framework.RunSafely(() => {
             partyListController?.Dispose();
             paramController?.Dispose();
         });

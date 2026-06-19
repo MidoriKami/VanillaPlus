@@ -39,7 +39,7 @@ public class ChatPlayerTooltip : GameModification {
     public override async Task OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(PreReceiveEvent);
 
-        await Services.Framework.Run(HideTooltip);
+        await Services.Framework.RunSafely(HideTooltip);
     }
 
     private unsafe void PreReceiveEvent(AddonEvent type, AddonArgs args) {

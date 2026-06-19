@@ -45,7 +45,7 @@ public class FancyLoadingScreens : GameModification {
             };
         }
 
-        await Services.Framework.Run(() => locationTitleController.Enable());
+        await Services.Framework.RunSafely(() => locationTitleController.Enable());
 
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostHide, "_LocationTitle", OnLoadingScreenHide);
         Services.ClientState.TerritoryChanged += OnTerritoryChanged;
@@ -58,7 +58,7 @@ public class FancyLoadingScreens : GameModification {
         teleportHook?.Dispose();
         teleportHook = null;
 
-        await Services.Framework.Run(() => {
+        await Services.Framework.RunSafely(() => {
             locationTitleController?.Dispose();
         });
         locationTitleController = null;

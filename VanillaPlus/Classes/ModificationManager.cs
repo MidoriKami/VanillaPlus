@@ -44,11 +44,6 @@ public class ModificationManager : IAsyncDisposable {
     public async ValueTask DisposeAsync() {
         Services.PluginInterface.ActivePluginsChanged -= OnPluginsChanged;
 
-        if (Services.Framework.IsFrameworkUnloading) {
-            Services.PluginLog.InternalInfo("Game is unloading, aborting module disable/disposals.");
-            return;
-        }
-
         Services.PluginLog.InternalDebug("Disposing Modification Manager, now disabling all GameModifications");
 
         if (System.SystemConfig.SafeMode) {

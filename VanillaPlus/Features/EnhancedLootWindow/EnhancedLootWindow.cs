@@ -60,11 +60,11 @@ public class EnhancedLootWindow : GameModification {
             };
         }
 
-        await Services.Framework.Run(needGreedController.Enable);
+        await Services.Framework.RunSafely(needGreedController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => needGreedController?.Dispose());
+        await Services.Framework.RunSafely(() => needGreedController?.Dispose());
         needGreedController = null;
 
         await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);

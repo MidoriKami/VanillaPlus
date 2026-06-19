@@ -24,7 +24,7 @@ public class FastMouseClick : GameModification {
 
         if (memoryAddress is { } address && memoryAddress != nint.Zero) {
             memoryPatch = new MemoryReplacement(address, [0x90, 0x90]);
-            await Services.Framework.Run(memoryPatch.Enable);
+            await Services.Framework.RunSafely(memoryPatch.Enable);
         }
     }
 

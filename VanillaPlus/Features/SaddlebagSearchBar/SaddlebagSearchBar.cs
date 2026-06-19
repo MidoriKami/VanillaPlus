@@ -48,7 +48,7 @@ public class SaddlebagSearchBar : GameModification {
             Callback = OnKeybindPressed,
         };
 
-        await Services.Framework.Run(inventoryController.Enable);
+        await Services.Framework.RunSafely(inventoryController.Enable);
 
         Services.GameGui.AgentUpdate += OnAgentUpdate;
         Services.Framework.Update += OnFrameworkUpdate;
@@ -58,7 +58,7 @@ public class SaddlebagSearchBar : GameModification {
         Services.Framework.Update -= OnFrameworkUpdate;
         Services.GameGui.AgentUpdate -= OnAgentUpdate;
 
-        await Services.Framework.Run(() => inventoryController?.Dispose());
+        await Services.Framework.RunSafely(() => inventoryController?.Dispose());
         inventoryController = null;
     }
 

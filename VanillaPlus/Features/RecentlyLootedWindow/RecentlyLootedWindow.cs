@@ -77,7 +77,7 @@ public class RecentlyLootedWindow : GameModification {
         => addonRecentlyLooted?.Toggle();
 
     private void OnKeybindPressed(ref bool isHandled) {
-        Services.Framework.Run(() => addonRecentlyLooted?.Toggle());
+        Services.Framework.RunSafely(() => addonRecentlyLooted?.Toggle());
 
         isHandled = true;
     }

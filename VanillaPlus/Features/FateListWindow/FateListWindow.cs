@@ -76,7 +76,7 @@ public class FateListWindow : GameModification {
         => addonFateList?.Toggle();
 
     private void OnKeybindPressed(ref bool isHandled) {
-        Services.Framework.Run(() => addonFateList?.Toggle());
+        Services.Framework.RunSafely(() => addonFateList?.Toggle());
 
         isHandled = true;
     }

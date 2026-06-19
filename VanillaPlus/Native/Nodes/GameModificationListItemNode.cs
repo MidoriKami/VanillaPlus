@@ -98,7 +98,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
                     refreshCompatabilityButton?.IsEnabled = true;
 
                     if (ItemData is not null) {
-                        await Services.Framework.Run(() => {
+                        await Services.Framework.RunSafely(() => {
                             SetNodeData(ItemData);
                             Addon.UpdateCollisionForNode(this);
                         });
@@ -252,7 +252,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
 
         Task.Run(async () => {
             await ModificationManager.TryToggleModification(ItemData);
-            await Services.Framework.Run(() => SetNodeData(ItemData));
+            await Services.Framework.RunSafely(() => SetNodeData(ItemData));
         });
     }
 }

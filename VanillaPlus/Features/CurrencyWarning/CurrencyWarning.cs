@@ -64,7 +64,7 @@ public class CurrencyWarning : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        await Services.Framework.Run(() => {
+        await Services.Framework.RunSafely(() => {
             overlayController = new OverlayController();
 
             var tooltipNode = new CurrencyTooltipNode {
@@ -91,7 +91,7 @@ public class CurrencyWarning : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
+        await Services.Framework.RunSafely(() => {
             overlayController?.Dispose();
         });
         overlayController = null;

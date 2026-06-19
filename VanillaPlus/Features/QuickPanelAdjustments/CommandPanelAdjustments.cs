@@ -51,11 +51,11 @@ public class CommandPanelAdjustments : GameModification {
             };
         }
 
-        await Services.Framework.Run(quickPanelController.Enable);
+        await Services.Framework.RunSafely(quickPanelController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => quickPanelController?.Dispose());
+        await Services.Framework.RunSafely(() => quickPanelController?.Dispose());
         quickPanelController = null;
 
         await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);

@@ -31,11 +31,11 @@ public class IndecisiveFools : FoolsModule {
             };
         }
 
-        await Services.Framework.Run(addonController.Enable);
+        await Services.Framework.RunSafely(addonController.Enable);
     }
 
     protected override async Task OnDisable() {
-        await Services.Framework.Run(() => {
+        await Services.Framework.RunSafely(() => {
             foreach (var textButton in textButtons ?? []) {
                 textButton.Dispose();
             }

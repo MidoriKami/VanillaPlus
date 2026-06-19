@@ -22,7 +22,7 @@ public class MemoryReplacement(nint address, byte[] replacementBytes) : IDisposa
     }
 
     public async Task EnableAsync()
-        => await Services.Framework.Run(Enable);
+        => await Services.Framework.RunSafely(Enable);
 
     public void Disable() {
         ThreadSafety.AssertMainThread();
@@ -35,7 +35,7 @@ public class MemoryReplacement(nint address, byte[] replacementBytes) : IDisposa
     }
 
     public async Task DisableAsync()
-        => await Services.Framework.Run(Disable);
+        => await Services.Framework.RunSafely(Disable);
 
     public void Dispose()
         => Disable();
