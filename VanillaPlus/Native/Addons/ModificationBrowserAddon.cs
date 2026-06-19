@@ -125,6 +125,18 @@ public class ModificationBrowserAddon : NativeAddon {
         }
     }
 
+    protected override unsafe void OnFinalize(AtkUnitBase* addon) {
+        base.OnFinalize(addon);
+
+        textInputNode = null;
+        listNode = null;
+        modificationInfoNode = null;
+        searchRegex = null;
+
+        selectedTab = BrowserSelectedTab.All;
+        selectedCategory = BrowserSelectedCategory.All;
+    }
+
     private void SwitchTab(BrowserSelectedTab tab) {
         selectedTab = tab;
         Task.Run(UpdateListNode);
