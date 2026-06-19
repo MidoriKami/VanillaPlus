@@ -61,7 +61,10 @@ public class LockChatButton : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.Run(() => {
+        addonControlHook?.Dispose();
+        addonControlHook = null;
+
+        await Services.Framework.RunSafely(() => {
             chatLogController?.Dispose();
             panelController?.Dispose();
 
