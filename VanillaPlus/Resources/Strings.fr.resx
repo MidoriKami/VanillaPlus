@@ -277,7 +277,7 @@
     <value>Débogage</value>
   </data>
   <data name="ModificationType_NewWindow" xml:space="preserve">
-    <value>Custom Native Window</value>
+    <value>Fenêtre Native Personnalisée</value>
   </data>
   <data name="ModificationType_UserInterface" xml:space="preserve">
     <value>Modification d'Interface</value>
@@ -304,13 +304,13 @@
     <value>Permet de sauvegarder et d'utiliser des préréglages pour la Recherche d'Équipe.</value>
   </data>
   <data name="ModificationDisplay_DisableTitleScreenMovie" xml:space="preserve">
-    <value>Désactiver la Vidéo de l'Écran Titre</value>
+    <value>Désactiver Vidéo Écran Titre</value>
   </data>
   <data name="ModificationDisplay_FadeStrategyBoard" xml:space="preserve">
     <value>Estomper le tableau de stratégie</value>
   </data>
   <data name="ModificationDisplay_HideDeadEnemyNamePlates" xml:space="preserve">
-    <value>Masquer les plaques des ennemis vaincus</value>
+    <value>Masquer Plaques Ennemis Vaincus</value>
   </data>
   <data name="ModificationDisplay_MiniCactpotHelper" xml:space="preserve">
     <value>Aide au Mini Cactpot</value>
@@ -398,11 +398,11 @@ Commencez la saisie par '$' pour rechercher par description</value>
     <value>Chargement des données du butin...</value>
   </data>
   <data name="DutyLoot_NoItemsMessage" xml:space="preserve">
-    <value>No loot data found for this duty.
+    <value>Aucune donnée relative au butin n'a été trouvée pour cette mission.
 
-Data is provided by a external source and may be incomplete.
+Les données proviennent d'une source externe et peuvent être incomplètes.
 
-Data will be updated as it becomes available, do not request data updates.</value>
+Les données seront mises à jour dès qu'elles seront disponibles, veuillez ne pas demander de mises à jour.</value>
   </data>
   <data name="DutyLoot_NoResultsMessage" xml:space="preserve">
     <value>Aucun résultat</value>
@@ -634,7 +634,7 @@ Affiche les coordonnées du centre de l'élément ATH.</value>
     <value>Module pour tester les fonctionnalités VanillaPlus</value>
   </data>
   <data name="ModificationDescription_SampleGameModification" xml:space="preserve">
-    <value>SampleDescription</value>
+    <value>Exemple de description</value>
   </data>
   <data name="ModificationDescription_BetterCursor" xml:space="preserve">
     <value>Dessine un anneau autour du curseur pour le rendre plus visible.</value>
@@ -825,13 +825,13 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Compte à Rebours Incantation (Cible)</value>
   </data>
   <data name="ModificationDisplay_SuppressDialogAdvance" xml:space="preserve">
-    <value>Suppression d'Avancement de Dialogue</value>
+    <value>Suppression Avancement Dialogue</value>
   </data>
   <data name="ModificationDisplay_StickyShopCategories" xml:space="preserve">
     <value>Catégories de Magasin Persistantes</value>
   </data>
   <data name="ModificationDisplay_SkipTeleportConfirm" xml:space="preserve">
-    <value>Sauter la Confirmation de Téléportation</value>
+    <value>Sauter Confirmation Téléportation</value>
   </data>
   <data name="ModificationDisplay_ShowAetherCurrents" xml:space="preserve">
     <value>Afficher les Vents Éthéréens</value>
@@ -846,7 +846,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Recherche Servant</value>
   </data>
   <data name="ModificationDisplay_ResourceBarPercentages" xml:space="preserve">
-    <value>Barres de Ressources en Pourcentages</value>
+    <value>Barres Ressources en Pourcentages</value>
   </data>
   <data name="ModificationDisplay_ResetInventoryTab" xml:space="preserve">
     <value>Réinitialiser l'Onglet d'Inventaire</value>
@@ -861,7 +861,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Ouvrir la Coiffeuse sur Job Actuel</value>
   </data>
   <data name="ModificationDisplay_HideGuildhestObjectivePopup" xml:space="preserve">
-    <value>Masquer les Instructions d'Opération de Guilde</value>
+    <value>Masquer Instructions Opération Guilde</value>
   </data>
   <data name="ModificationDisplay_HideMpBars" xml:space="preserve">
     <value>Masquer les Barres de PM</value>
@@ -897,25 +897,25 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Debug des Modifications de Jeu</value>
   </data>
   <data name="ModificationDisplay_SampleGameModification" xml:space="preserve">
-    <value>SampleDisplayName</value>
+    <value>Exemple de nom d'affichage</value>
   </data>
   <data name="ModificationDisplay_BetterCursor" xml:space="preserve">
     <value>Améliorations du Curseur</value>
   </data>
   <data name="ModificationDisplay_BetterInterruptableCastBars" xml:space="preserve">
-    <value>Meilleures Barres d'Incantation Interruptibles</value>
+    <value>Barres Incantation Interruptibles</value>
   </data>
   <data name="ModificationDisplay_BetterQuestMapLink" xml:space="preserve">
     <value>Meilleur Lien de Carte de Quête</value>
   </data>
   <data name="ModificationDisplay_CastBarAetheryteNames" xml:space="preserve">
-    <value>Noms d'Éthérite sur la Barre d'Incantation</value>
+    <value>Nom Éthérite Barre Incantation</value>
   </data>
   <data name="ModificationDisplay_CurrencyOverlay" xml:space="preserve">
     <value>Superposition des Devises</value>
   </data>
   <data name="ModificationDisplay_DraggableWindowDeadSpace" xml:space="preserve">
-    <value>Déplacement de Fenêtre sur Espace Vide</value>
+    <value>Déplacement Fenêtre Espace Vide</value>
   </data>
   <data name="ModificationDisplay_DutyTimer" xml:space="preserve">
     <value>Chronomètre de Mission</value>
@@ -1227,7 +1227,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Mémorise le montant de gils saisi lors du passage entre les modes de dépôt et de retrait.</value>
   </data>
   <data name="ClockOverlay_Title" xml:space="preserve">
-      <value>Overlay d'horloge</value>
+      <value>Superposition Horloge</value>
   </data>
   <data name="ClockOverlay_Description" xml:space="preserve">
       <value>Ajoute une horloge personnalisable (LT/ST/ET) en jeu.</value>
@@ -1308,7 +1308,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Quand la souris est sur le nom d'un joueur dans la fenêtre de chat, affiche le nom complet et son monde comme une infobulle.</value>
     </data>
   <data name="EnhancedWardNavigation_DisplayName" xml:space="preserve">
-      <value>Navigation améliorée dans les quartiers</value>
+      <value>Navigation Améliorée Quartiers</value>
     </data>
   <data name="EnhancedWardNavigation_Description" xml:space="preserve">
       <value>Ajoute les boutons précédent et suivant à la liste de sélection de la zone de logement.</value>
@@ -1335,7 +1335,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>ID</value>
     </data>
   <data name="CurrencyWarning_ListTitle" xml:space="preserve">
-      <value>Currency Warning Config</value>
+      <value>Configuration de l'avertissement des devises</value>
     </data>
   <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
       <value>Paramètres d'avertissement des devises</value>
@@ -1395,7 +1395,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Taille supplémentaire de la configuration personnage</value>
     </data>
   <data name="MSQProgressBar_DisplayName" xml:space="preserve">
-      <value>Pourcentage de progression de la MSQ</value>
+      <value>Pourcentage Progression MSQ</value>
     </data>
   <data name="MSQProgressBar_Description" xml:space="preserve">
       <value>Affiche la progression actuelle de la MSQ sous la forme d'une barre de progression dans le guide de scénario principal.</value>
@@ -1431,13 +1431,13 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
       <value>Progression de l'extension : {0:F}%</value>
     </data>
   <data name="CommandPanelSync_DisplayName" xml:space="preserve">
-        <value>Command Panel Sync</value>
+        <value>Synchronisation Panneau Commande</value>
       </data>
   <data name="CommandPanelSync_Description" xml:space="preserve">
-        <value>Synchronizes the command panel across all your characters.</value>
+        <value>Synchronise le panneau de commandes sur tous vos personnages.</value>
       </data>
   <data name="ModificationDisplay_CosmicExplorationProgressWindow" xml:space="preserve">
-      <value>Progression des outils de l'exploration cosmique</value>
+      <value>Prog Outils Exploration Cosmique</value>
   </data>
   <data name="ModificationDescription_CosmicExplorationProgressWindow" xml:space="preserve">
       <value>Une bulle d'aide qui montre la progression des outils de l'exploration cosmique pour vos DoH/DoL actuel</value>
@@ -1452,7 +1452,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Affiche le temps de recharge sur les objets dans l'inventaire.</value>
   </data>
   <data name="ModificationDisplay_SystemConfigSearchBar" xml:space="preserve">
-    <value>Barre de Recherche Configuration Système</value>
+    <value>Barre Recherche Config Système</value>
   </data>
   <data name="ModificationDescription_SystemConfigSearchBar" xml:space="preserve">
     <value>Ajoute une barre de recherche à la fenêtre de configuration système</value>
@@ -1521,7 +1521,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Ajout Lien Position sur Curseur</value>
   </data>
   <data name="ModificationDescription_FlagOnCursor" xml:space="preserve">
-    <value>Places a flag on the map for where your cursor is pointing in the world via the command /placeflag.</value>
+    <value>Permet de placer un drapeau sur la carte à l'endroit où se trouve votre curseur dans le monde, à l'aide de la commande /placeflag.</value>
   </data>
   <data name="FlagOnCursor_CommandHelpMessage" xml:space="preserve">
     <value>Ajoute un lien de position à l'emplacement de la souris</value>
@@ -1569,145 +1569,145 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Valide la boîte de dialogue lors de la connexion.</value>
   </data>
   <data name="ModificationDisplay_AetherwellProgress" xml:space="preserve">
-      <value>Aetherwell Progress</value>
+      <value>Progression Magi sphérier</value>
   </data>
   <data name="ModificationDescription_AetherwellProgress" xml:space="preserve">
-      <value>Make your aetherwells fill up as you fill them</value>
+      <value>Fait en sorte que le Magi sphérier se remplit au fur et à mesure que vous le remplissez</value>
   </data>
   <data name="ModificationDisplay_ResetDummyEnmity" xml:space="preserve">
-      <value>Reset Dummy Enmity</value>
+      <value>Réinitialiser Aggro Mannequin</value>
   </data>
   <data name="ModificationDescription_ResetDummyEnmity" xml:space="preserve">
-      <value>Adds a button in the enemy list to reset a Striking Dummy's enmity.</value>
+      <value>Ajoute un bouton dans la liste des ennemis permettant de réinitialiser l'agressivité d'un mannequin d'entraînement.</value>
   </data>
   <data name="ResetDummyEnmity_ResetEnmityToolTip" xml:space="preserve">
-      <value>[VanillaPlus] Reset Enmity</value>
+      <value>[VanillaPlus] Reset Aggro</value>
   </data>
   <data name="ModificationDisplay_BetterTeleportWindow" xml:space="preserve">
-    <value>Better Teleport Window</value>
+    <value>Fenêtre Téléportations Améliorée</value>
   </data>
   <data name="ModificationDescription_BetterTeleportWindow" xml:space="preserve">
-    <value>Replaces the games Teleport window with a better custom made version.</value>
+    <value>Remplace la fenêtre « Téléportations » du jeu par une version personnalisée plus performante.</value>
   </data>
   <data name="BetterTeleportWindow_WindowTitle" xml:space="preserve">
-    <value>Teleport</value>
+    <value>Téléportations</value>
   </data>
   <data name="BetterTeleportWindow_RenameTitle" xml:space="preserve">
-    <value>Rename Teleport</value>
+    <value>Téléportations</value>
   </data>
   <data name="BetterTeleportWindow_TooltipAutoFocus" xml:space="preserve">
-    <value>Toggle Auto Focus Searchbar</value>
+    <value>Activer/désactiver la barre de recherche</value>
   </data>
   <data name="BetterTeleportWindow_NoResults" xml:space="preserve">
-    <value>No Aetherytes Match Search</value>
+    <value>Votre recherche n'a donné aucun résultat</value>
   </data>
   <data name="BetterTeleportWindow_ModeAll" xml:space="preserve">
-    <value>All</value>
+    <value>Tout</value>
   </data>
   <data name="BetterTeleportWindow_ModeHistory" xml:space="preserve">
-    <value>History</value>
+    <value>Historique</value>
   </data>
   <data name="BetterTeleportWindow_ModeFavorites" xml:space="preserve">
-    <value>Favorites</value>
+    <value>Favoris</value>
   </data>
   <data name="BetterTeleportWindow_ModeCities" xml:space="preserve">
-    <value>Cities</value>
+    <value>Villes</value>
   </data>
   <data name="ModificationDisplay_BorderlessCutscenes" xml:space="preserve">
-    <value>Borderless Cutscenes</value>
+    <value>Scènes cinématiques sans bordures</value>
   </data>
   <data name="ModificationDescription_BorderlessCutscenes" xml:space="preserve">
-    <value>Removes the letterboxing in cutscenes when using ultrawide displays.</value>
+    <value>Supprime les bandes noires dans les cinématiques lors de l'utilisation d'écrans ultra-larges.</value>
   </data>
   <data name="ModificationDisplay_SuppressSharedBoards" xml:space="preserve">
-    <value>Suppress Shared Strategy Boards</value>
+    <value>Supprime Tableaux Stratégie Partagés</value>
   </data>
   <data name="ModificationDescription_SuppressSharedBoards" xml:space="preserve">
-    <value>Completely suppresses any shared Strategy Board.</value>
+    <value>Supprime complètement tout tableau stratégique partagé.</value>
   </data>
   <data name="ModificationDisplay_DutyPortalNameplateOffset" xml:space="preserve">
-    <value>Raise Duty Portal Nameplates</value>
+    <value>Remonte Plaque Portail Mission</value>
   </data>
   <data name="ModificationDescription_DutyPortalNameplateOffset" xml:space="preserve">
-    <value>Raises certain duty-related interaction nameplates to improve visibility when crowded by player nameplates.</value>
+    <value>Remonte certaines plaques de nom liées aux missions pour améliorer la visibilité lorsqu'elles sont masquées par les plaques de nom des joueurs.</value>
   </data>
   <data name="ModificationBrowser_TabAll" xml:space="preserve">
-    <value>All</value>
+    <value>Tout</value>
   </data>
   <data name="ModificationBrowser_TabEnabled" xml:space="preserve">
-    <value>Enable</value>
+    <value>Actif</value>
   </data>
   <data name="ModificationBrowser_TabDisabled" xml:space="preserve">
-    <value>Disable</value>
+    <value>Inactif</value>
   </data>
   <data name="ModificationBrowser_CategoryWindow" xml:space="preserve">
-    <value>Window</value>
+    <value>Fenêtre</value>
   </data>
   <data name="ModificationBrowser_CategoryWindowTooltip" xml:space="preserve">
-    <value>New Windows or Overlays</value>
+    <value>Nouvelles fenêtres ou superpositions</value>
   </data>
   <data name="ModificationBrowser_CategoryUi" xml:space="preserve">
     <value>UI</value>
   </data>
   <data name="ModificationBrowser_CategoryUiTooltip" xml:space="preserve">
-    <value>Modifies existing game UI</value>
+    <value>Modifie l'UI existante du jeu</value>
   </data>
   <data name="ModificationBrowser_CategoryBehavior" xml:space="preserve">
-    <value>Behavior</value>
+    <value>Réglage</value>
   </data>
   <data name="ModificationBrowser_CategoryBehaviorTooltip" xml:space="preserve">
-    <value>Changes how parts of the game work</value>
+    <value>Modifie le fonctionnement de certains aspects du jeu</value>
   </data>
   <data name="ModificationBrowser_PersistSearchTooltip" xml:space="preserve">
-    <value>Persist Search Between Sessions</value>
+    <value>Conserver les critères de recherche d'une session à l'autre</value>
   </data>
   <data name="ModificationBrowser_NoResults" xml:space="preserve">
-    <value>No Results Match Search</value>
+    <value>Votre recherche n'a donné aucun résultat</value>
   </data>
   <data name="ModificationType_Seasonal" xml:space="preserve">
-    <value>Seasonal</value>
+    <value>Saisonnier</value>
   </data>
   <data name="SeasonEventNotice_Title" xml:space="preserve">
-    <value>Seasonal Event Notice</value>
+    <value>Avis concernant un événement saisonnier</value>
   </data>
   <data name="SeasonEventNotice_Heading" xml:space="preserve">
-    <value>Seasonal Event</value>
+    <value>Événement saisonnier</value>
   </data>
   <data name="SeasonEventNotice_Body" xml:space="preserve">
-    <value>It's that time of year again! There is a seasonal event happening right now!
-To join in the festivities, check out the Seasonal section in VanillaPlus!</value>
+    <value>C'est à nouveau cette période de l'année ! Un événement saisonnier est en cours en ce moment même !
+Pour participer aux festivités, rendez-vous dans la section « Saison » de VanillaPlus !</value>
   </data>
   <data name="SeasonEventNotice_DailyHint" xml:space="preserve">
-    <value>This will only show once on each day a seasonal event occurs</value>
+    <value>Cela n'apparaîtra qu'une seule fois par jour lors d'un événement saisonnier</value>
   </data>
   <data name="SeasonEventNotice_ButtonDismiss" xml:space="preserve">
-    <value>Go Away</value>
+    <value>Partir</value>
   </data>
   <data name="SeasonEventNotice_ButtonOpen" xml:space="preserve">
-    <value>Open VanillaPlus</value>
+    <value>Ouvrir VanillaPlus</value>
   </data>
   <data name="AddonConfig_AdditionalOptions" xml:space="preserve">
-    <value>Additional Options</value>
+    <value>Options Supplémentaires</value>
   </data>
   <data name="AddonConfig_DisableKeybindInCombat" xml:space="preserve">
-    <value>Disable Keybind in Combat</value>
+    <value>Désactiver les raccourcis clavier en combat</value>
   </data>
   <data name="ModificationDisplay_FancyLoadingScreens" xml:space="preserve">
-    <value>Fancy Loading Screens</value>
+    <value>Écran de Chargement Amélioré</value>
   </data>
   <data name="ModificationDescription_FancyLoadingScreens" xml:space="preserve">
-    <value>Replaces the loading screen artwork with the destination zone's full-size loading image.</value>
+    <value>Remplace l'illustration de l'écran de chargement par l'image de chargement en taille réelle de la zone de destination.</value>
   </data>
   <data name="FancyLoadingScreens_ConfigTitle" xml:space="preserve">
-    <value>Fancy Loading Screens</value>
+    <value>Écran de Chargement Amélioré</value>
   </data>
   <data name="FancyLoadingScreens_CategoryGeneral" xml:space="preserve">
-    <value>General</value>
+    <value>Général</value>
   </data>
   <data name="FancyLoadingScreens_LabelInstancedLoad" xml:space="preserve">
-    <value>Show artwork on instance loads</value>
+    <value>Affiche les illustrations au chargement des instances</value>
   </data>
   <data name="FancyLoadingScreens_LabelInstancedLoadNote" xml:space="preserve">
-    <value>Shows the destination artwork when switching instanced areas (duties, housing, etc.). Note: the artwork covers the chat box, so you cannot chat while loading.</value>
+    <value>Affiche l'illustration de la destination lors du passage d'une zone instanciée à une autre (missions, logement, etc.). Remarque : l'illustration recouvre la fenêtre de discussion, vous ne pouvez donc pas discuter pendant le chargement.</value>
   </data>
 </root>
