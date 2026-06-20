@@ -24,7 +24,7 @@ public class GearSetReorderButtons : GameModification {
     private AddonController<AddonGearSetList>? gearSetsAddonController;
     private NativeListController<AddonGearSetList, GearSetListListItem>? gearSetsListController;
 
-    private readonly Dictionary<uint, GearSetListReorderButtonNode> reorderButtonNodes = [];
+    private Dictionary<uint, GearSetListReorderButtonNode>? reorderButtonNodes;
 
     private const float ExtraAddonWidth = 56.0f;
 
@@ -51,15 +51,21 @@ public class GearSetReorderButtons : GameModification {
 
     public override async Task OnDisableAsync() {
         await Services.Framework.RunSafely(() => {
+            foreach (var (_, node) in reorderButtonNodes ?? []) {
+                node.Dispose();
+            }
+            reorderButtonNodes?.Clear();
+
             gearSetsAddonController?.Dispose();
             gearSetsListController?.Dispose();
         });
 
         gearSetsAddonController = null;
         gearSetsListController = null;
+        reorderButtonNodes = null;
     }
 
-    private static unsafe void SetUpAddon(AddonGearSetList* addon) {
+    private unsafe void SetUpAddon(AddonGearSetList* addon) {
 
         // Gearset Help Header Button
         var gearsetHelpButton = addon->GetNodeById(2);
@@ -80,6 +86,8 @@ public class GearSetReorderButtons : GameModification {
         }
 
         addon->AtkUnitBase.Size += new Vector2(ExtraAddonWidth, 0.0f);
+
+        reorderButtonNodes = [];
     }
 
     private unsafe void FinalizeAddon(AddonGearSetList* addon) {
@@ -104,16 +112,17 @@ public class GearSetReorderButtons : GameModification {
 
         addon->AtkUnitBase.Size -= new Vector2(ExtraAddonWidth, 0.0f);
 
-        foreach (var (_, node) in reorderButtonNodes) {
-            node.Dispose();
-        }
-        reorderButtonNodes.Clear();
+        // Intentionally leak the nodes here, the native list doesn't like these being disposed in finalize.
+        // Instead, we will manually dispose in DisposeAsync if this feature is being disabled.
+        reorderButtonNodes?.Clear();
+        reorderButtonNodes = null;
     }
 
     private static unsafe AtkComponentListItemRenderer* GetPopulatorNode(AddonGearSetList* addon)
         => addon->GetComponentListById(7)->FirstAtkComponentListItemRenderer;
 
     private unsafe void UpdateElement(AddonGearSetList* addon, GearSetListListItem listItemData) {
+        if (reorderButtonNodes is null) return;
 
         // If the reorder button node does not exist, create and add it.
         if (!reorderButtonNodes.TryGetValue(listItemData.NodeId, out var reorderButton)) {
@@ -128,8 +137,12 @@ public class GearSetReorderButtons : GameModification {
             // Resize the entire entry, so it's collision and events don't overlap with ours.
             ownerNode->AtkResNode.Size -= new Vector2(ExtraAddonWidth + 4.0f, 0.0f);
 
-            reorderButtonNodes.Add(listItemData.NodeId, reorderButton);
-            reorderButton.AttachNode(ownerNode, NodePosition.AsLastChild);
+            if (reorderButtonNodes.TryAdd(listItemData.NodeId, reorderButton)) {
+                reorderButton.AttachNode(ownerNode, NodePosition.AsLastChild);
+            }
+            else {
+                return;
+            }
         }
 
         reorderButton.Update(listItemData);
