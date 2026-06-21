@@ -36,54 +36,7 @@ public class InventorySearchBar : GameModification {
 
     public override async Task OnEnableAsync() {
         if (Services.ClientState.IsLoggedIn) {
-            await SetupInventoryController();
-        }
-
-        Services.ClientState.Login += OnLogin;
-        Services.ClientState.Logout += OnLogout;
-        Services.GameGui.AgentUpdate += OnAgentUpdate;
-        Services.Framework.Update += OnFrameworkUpdate;
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostHide, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnInventoryHide);
-    }
-
-    public override async Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnInventoryHide);
-        Services.GameGui.AgentUpdate -= OnAgentUpdate;
-        Services.Framework.Update -= OnFrameworkUpdate;
-        Services.ClientState.Login -= OnLogin;
-        Services.ClientState.Logout -= OnLogout;
-
-        await Services.Framework.RunSafely(() => inventoryController?.Dispose());
-        keybindListener = null;
-        inventoryController = null;
-    }
-
-    private void OnLogin()
-        => Task.Run(SetupInventoryController);
-
-    private void OnLogout(int type, int code) {
-        inventoryController?.Dispose();
-        inventoryController = null;
-
-        keybindListener = null;
-    }
-
-    private async Task SetupInventoryController() {
-        if (!Services.GameConfig.TryGet(UiConfigOption.ItemInventryWindowSizeType, out uint inventoryType)) {
-            throw new Exception("Unable to read GameConfig.");
-        }
-
-        unsafe {
-            inventoryController = new AddonController {
-                AddonName = inventoryType switch {
-                    0 => "Inventory",
-                    1 => "InventoryLarge",
-                    2 => "InventoryExpansion",
-                    _ => throw new ArgumentOutOfRangeException(),
-                },
-                OnSetup = OnInventorySetup,
-                OnFinalize = OnInventoryFinalize,
-            };
+            await Services.Framework.Run(ReinitializeController);
         }
 
         keybindListener = new KeybindListener {
@@ -95,7 +48,47 @@ public class InventorySearchBar : GameModification {
             Callback = OnKeybindPressed,
         };
 
-        await Services.Framework.RunSafely(inventoryController.Enable);
+        Services.GameGui.AgentUpdate += OnAgentUpdate;
+        Services.Framework.Update += OnFrameworkUpdate;
+        Services.GameConfig.UiConfigChanged += OnUiConfigChanged;
+        Services.AddonLifecycle.RegisterListener(AddonEvent.PostHide, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnInventoryHide);
+    }
+
+    public override async Task OnDisableAsync() {
+        Services.AddonLifecycle.UnregisterListener(OnInventoryHide);
+        Services.GameConfig.UiConfigChanged -= OnUiConfigChanged;
+        Services.GameGui.AgentUpdate -= OnAgentUpdate;
+        Services.Framework.Update -= OnFrameworkUpdate;
+
+        await Services.Framework.RunSafely(() => inventoryController?.Dispose());
+        inventoryController = null;
+        keybindListener = null;
+        searchInputNode = null;
+    }
+
+    private  void OnUiConfigChanged(object? sender, ConfigChangeEvent e) {
+        if (e.Option is not UiConfigOption.ItemInventryWindowSizeType) return;
+
+        ReinitializeController();
+    }
+
+    private unsafe void ReinitializeController() {
+        if (!Services.GameConfig.TryGet(UiConfigOption.ItemInventryWindowSizeType, out uint inventoryType)) return;
+
+        inventoryController?.Dispose();
+
+        inventoryController = new AddonController {
+            AddonName = inventoryType switch {
+                0 => "Inventory",
+                1 => "InventoryLarge",
+                2 => "InventoryExpansion",
+                _ => throw new ArgumentOutOfRangeException(),
+            },
+            OnSetup = OnInventorySetup,
+            OnFinalize = OnInventoryFinalize,
+        };
+
+        inventoryController.Enable();
     }
 
     private unsafe void OnInventorySetup(AtkUnitBase* addon) {
