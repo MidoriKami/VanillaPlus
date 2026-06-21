@@ -7,8 +7,33 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace VanillaPlus.Extensions;
 
+/// <summary>
+/// Extensions for Dalamud's <see cref="IAddonLifecycle"/> service for triggering events for native window events.
+/// </summary>
 public static class AddonLifecycleExtensions {
     extension(IAddonLifecycle addonLifecycle) {
+
+        /// <summary>
+        /// Logs the specified event for all addons.
+        /// </summary>
+        public void LogAll(params AddonEvent[] addonEvents) {
+            foreach (var addonEvent in addonEvents) {
+                addonLifecycle.RegisterListener(addonEvent, string.Empty, LogEventMessage);
+            }
+        }
+
+        /// <summary>
+        /// Disables global logging for the specified events.
+        /// </summary>
+        public void UnlogAll(params AddonEvent[] addonEvents) {
+            foreach (var addonEvent in addonEvents) {
+                addonLifecycle.UnregisterListener(addonEvent, string.Empty, LogEventMessage);
+            }
+        }
+
+        /// <summary>
+        /// Logs the specified events for the specified addon. Logs a standard set of events if none provided.
+        /// </summary>
         public void LogAddon(string addonName, params AddonEvent[] loggedEvents) {
             if (loggedEvents.Length is 0) {
                 loggedEvents = [
@@ -30,6 +55,9 @@ public static class AddonLifecycleExtensions {
             }
         }
 
+        /// <summary>
+        /// Disables logging for the specified addon, only disables events from <see cref="LogAddon"/>
+        /// </summary>
         public void UnLogAddon(string addonName) {
             if (!ActiveLoggers.TryGetValue(addonName, out var loggedModules)) return;
 
