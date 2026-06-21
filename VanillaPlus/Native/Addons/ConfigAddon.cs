@@ -26,6 +26,7 @@ public class ConfigAddon : NativeAddon {
         configurationListNode = new ScrollingNode<TabbedVerticalListNode> {
             ContentNode = {
                 FitContents = true,
+                FitWidth = true,
                 NavIndex = 1,
             },
             AutoHideScrollBar = true,

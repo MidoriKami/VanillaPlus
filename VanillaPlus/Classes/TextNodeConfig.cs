@@ -4,7 +4,6 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addons;
 using KamiToolKit.Nodes;
-using KamiToolKit.Nodes.Simplified;
 using VanillaPlus.Native.Nodes;
 
 namespace VanillaPlus.Classes;
@@ -55,8 +54,8 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
         if (Options.HasFlag(TextNodeConfigOptions.TextAlignment)) container.AddNode(BuildTextAlignment());
     }
 
-    private SimpleComponentNode? BuildTextColor() {
-        var container = new SimpleComponentNode {
+    private ResNode? BuildTextColor() {
+        var container = new ResNode {
             Height = 28.0f,
         };
 
@@ -96,8 +95,8 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
         return container;
     }
 
-    private SimpleComponentNode? BuildTextOutlineColor() {
-        var container = new SimpleComponentNode {
+    private ResNode? BuildTextOutlineColor() {
+        var container = new ResNode {
             Height = 28.0f,
         };
 
