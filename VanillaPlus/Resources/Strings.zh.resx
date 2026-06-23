@@ -1635,10 +1635,10 @@ ID：{0}</value>
     <value>全部</value>
   </data>
   <data name="ModificationBrowser_TabEnabled" xml:space="preserve">
-    <value>Enabled</value>
+    <value>已启用</value>
   </data>
   <data name="ModificationBrowser_TabDisabled" xml:space="preserve">
-    <value>Disabled</value>
+    <value>已禁用</value>
   </data>
   <data name="ModificationBrowser_CategoryWindow" xml:space="preserve">
     <value>窗口</value>
@@ -1693,21 +1693,21 @@ ID：{0}</value>
     <value>在战斗中禁用快捷键</value>
   </data>
   <data name="ModificationDisplay_FancyLoadingScreens" xml:space="preserve">
-    <value>Fancy Loading Screens</value>
+    <value>美化加载画面</value>
   </data>
   <data name="ModificationDescription_FancyLoadingScreens" xml:space="preserve">
-    <value>Replaces the loading screen artwork with the destination zone's full-size loading image.</value>
+    <value>将加载画面替换为目标区域的完整尺寸加载插图。</value>
   </data>
   <data name="FancyLoadingScreens_ConfigTitle" xml:space="preserve">
-    <value>Fancy Loading Screens</value>
+    <value>美化加载画面</value>
   </data>
   <data name="FancyLoadingScreens_CategoryGeneral" xml:space="preserve">
-    <value>General</value>
+    <value>通用</value>
   </data>
   <data name="FancyLoadingScreens_LabelInstancedLoad" xml:space="preserve">
-    <value>Show artwork on instance loads</value>
+    <value>加载副本时显示插图</value>
   </data>
   <data name="FancyLoadingScreens_LabelInstancedLoadNote" xml:space="preserve">
-    <value>Shows the destination artwork when switching instanced areas (duties, housing, etc.). Note: the artwork covers the chat box, so you cannot chat while loading.</value>
+    <value>切换副本区域（副本、房屋等）时显示目标地区插图。注意：插图会覆盖聊天框，加载期间无法聊天。</value>
   </data>
 </root>
