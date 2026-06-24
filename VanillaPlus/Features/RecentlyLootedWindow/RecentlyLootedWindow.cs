@@ -83,6 +83,7 @@ public class RecentlyLootedWindow : GameModification {
     }
 
     private void OnAddonConfigChanged(AddonConfig addonConfig) {
+        addonRecentlyLooted?.Size = addonConfig.GetWindowSizeWithDefault(new Vector2(250.0f, 350.0f));
         keybindListener?.IsEnabled = addonConfig.KeybindEnabled;
         keybindListener?.Keybind = addonConfig.Keybind;
     }

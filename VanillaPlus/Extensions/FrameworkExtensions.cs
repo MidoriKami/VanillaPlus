@@ -5,7 +5,7 @@ using Dalamud.Plugin.Services;
 namespace VanillaPlus.Extensions;
 
 /// <summary>
-/// Extensions for dalamuds IFramework service class.
+/// Extensions for dalamud's IFramework service class.
 /// </summary>
 public static class FrameworkExtensions {
     extension(IFramework framework) {

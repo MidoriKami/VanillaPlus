@@ -84,6 +84,7 @@ public class QuestListWindow : GameModification {
     }
 
     private void OnAddonConfigChanged(AddonConfig addonConfig) {
+        questListAddon?.Size = addonConfig.GetWindowSizeWithDefault(new Vector2(300.0f, 400.0f));
         keybindListener?.IsEnabled = addonConfig.KeybindEnabled;
         keybindListener?.Keybind = addonConfig.Keybind;
     }
