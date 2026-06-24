@@ -11,7 +11,7 @@ public class TwelveZoneLines : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_TwelveZoneLines,
         Description = Strings.ModificationDescription_TwelveZoneLines,
-        Type = ModificationType.UserInterface,
+        Type = ModificationType.NewOverlay,
         Authors = ["Abyeon"],
     };
 
