@@ -1,16 +1,7 @@
-﻿using System.Globalization;
-using System.Linq;
-using System.Numerics;
-using System.Threading.Tasks;
-using Dalamud.Game.ClientState.Objects.Types;
-using FFXIVClientStructs.FFXIV.Component.GUI;
-using KamiToolKit.Classes;
-using KamiToolKit.Controllers;
-using KamiToolKit.Nodes;
+﻿using System.Threading.Tasks;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Native.Addons;
-using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.TargetCastBarCountdown;
 
@@ -23,18 +14,10 @@ public class TargetCastBarCountdown : GameModification {
         CompatibilityModule = new SimpleTweaksCompatibilityModule("UiAdjustments@TargetCastbarCountdown"),
     };
 
-    private MultiAddonController? addonController;
-
-    private TextNode? primaryTargetTextNode;
-    private TextNode? primaryTargetAltTextNode;
-    private TextNode? focusTargetTextNode;
-
-    private TextNode?[]? castBarEnemyTextNode;
-
-    private TextNodeStyle? primaryTargetStyle;
-    private TextNodeStyle? primaryTargetAltStyle;
-    private TextNodeStyle? focusTargetStyle;
-    private TextNodeStyle? castBarEnemyStyle;
+    private PrimaryTargetCastbarController? primaryController;
+    private PrimaryTargetAltCastbarController? primaryAltController;
+    private FocusTargetCastbarController? focusController;
+    private NameplateCastbarController? nameplateController;
 
     private TargetCastBarCountdownConfig? config;
     private ConfigAddon? configAddon;
@@ -44,124 +27,10 @@ public class TargetCastBarCountdown : GameModification {
     public override async Task OnEnableAsync() {
         config = await TargetCastBarCountdownConfig.Load();
 
-        await LoadStyles();
-        LoadConfigWindow();
-
-        unsafe {
-            addonController = new MultiAddonController {
-                AddonNames = ["_TargetInfoCastBar", "_TargetInfo", "_FocusTargetInfo", "CastBarEnemy"],
-                OnSetup = SetupCastBar,
-                OnFinalize = FinalizeCastBar,
-                OnUpdate = UpdateCastBar,
-            };
-        }
-
-        await Services.Framework.RunSafely(addonController.Enable);
-    }
-
-    public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => addonController?.Dispose());
-        addonController = null;
-
-        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
-        configAddon = null;
-
-        castBarEnemyTextNode = null;
-    }
-
-    private async Task LoadStyles() {
-        const string primaryTargetPath = "TargetCastBarCountdown.PrimaryTarget.style.json";
-        const string primaryTargetAltPath = "TargetCastBarCountdown.PrimaryTargetAlt.style.json";
-        const string focusTargetPath = "TargetCastBarCountdown.FocusTarget.style.json";
-        const string castBarEnemyPath = "TargetCastBarCountdown.CastBarEnemy.style.json";
-
-        var defaultPrimaryTargetStyle = new TextNodeStyle {
-            Position = new Vector2(0.0f, 16.0f),
-            TextColor = ColorHelper.GetColor(1),
-            TextOutlineColor = ColorHelper.GetColor(54),
-            FontSize = 20,
-            FontType = FontType.Miedinger,
-            AlignmentType = AlignmentType.Right,
-        };
-
-        var defaultPrimaryTargetAltStyle = new TextNodeStyle {
-            Position = new Vector2(0.0f, -16.0f),
-            TextColor = ColorHelper.GetColor(1),
-            TextOutlineColor = ColorHelper.GetColor(54),
-            FontSize = 20,
-            FontType = FontType.Miedinger,
-            AlignmentType = AlignmentType.Right,
-        };
-
-        var defaultFocusTargetStyle = new TextNodeStyle {
-            Position = new Vector2(0.0f, -16.0f),
-            TextColor = ColorHelper.GetColor(1),
-            TextOutlineColor = ColorHelper.GetColor(54),
-            FontSize = 20,
-            FontType = FontType.Miedinger,
-            AlignmentType = AlignmentType.Right,
-        };
-
-        var defaultCastBarEnemyStyle = new TextNodeStyle {
-            Position = new Vector2(0.0f, -12.0f),
-            TextColor = ColorHelper.GetColor(1),
-            TextOutlineColor = ColorHelper.GetColor(54),
-            FontSize = 12,
-            FontType = FontType.Miedinger,
-            AlignmentType = AlignmentType.BottomRight,
-        };
-
-        primaryTargetStyle = await Config.LoadConfig(primaryTargetPath, defaultPrimaryTargetStyle);
-        if (primaryTargetStyle.TextColor == Vector4.Zero) {
-            primaryTargetStyle = defaultPrimaryTargetStyle;
-            await primaryTargetStyle.Save(primaryTargetPath);
-        }
-
-        primaryTargetAltStyle = await Config.LoadConfig(primaryTargetAltPath, defaultPrimaryTargetAltStyle);
-        if (primaryTargetAltStyle.TextColor == Vector4.Zero) {
-            primaryTargetAltStyle = defaultPrimaryTargetAltStyle;
-            await primaryTargetAltStyle.Save(primaryTargetAltPath);
-        }
-
-        focusTargetStyle = await Config.LoadConfig(focusTargetPath, defaultFocusTargetStyle);
-        if (focusTargetStyle.TextColor == Vector4.Zero) {
-            focusTargetStyle = defaultFocusTargetStyle;
-            await focusTargetStyle.Save(focusTargetPath);
-        }
-
-        castBarEnemyStyle = await Config.LoadConfig(castBarEnemyPath, defaultCastBarEnemyStyle);
-        if (castBarEnemyStyle.TextColor == Vector4.Zero) {
-            castBarEnemyStyle = defaultCastBarEnemyStyle;
-            await castBarEnemyStyle.Save(castBarEnemyPath);
-        }
-
-        primaryTargetStyle.StyleChanged += styleObj => {
-            _ = styleObj.Save(primaryTargetPath);
-            primaryTargetStyle.ApplyStyle(primaryTargetTextNode);
-        };
-
-        primaryTargetAltStyle.StyleChanged += styleObj => {
-            _ = styleObj.Save(primaryTargetAltPath);
-            primaryTargetAltStyle.ApplyStyle(primaryTargetAltTextNode);
-        };
-
-        focusTargetStyle.StyleChanged += styleObj => {
-            _ = styleObj.Save(focusTargetPath);
-            focusTargetStyle.ApplyStyle(focusTargetTextNode);
-        };
-
-        castBarEnemyStyle.StyleChanged += styleObj => {
-            _ = styleObj.Save(castBarEnemyPath);
-            castBarEnemyStyle.ApplyStyle(castBarEnemyTextNode);
-        };
-    }
-
-    private void LoadConfigWindow() {
-        if (config is null) return;
-        if (primaryTargetStyle is null) return;
-        if (primaryTargetAltStyle is null) return;
-        if (focusTargetStyle is null) return;
-        if (castBarEnemyStyle is null) return;
+        primaryController = new PrimaryTargetCastbarController(config);
+        primaryAltController = new PrimaryTargetAltCastbarController(config);
+        focusController = new FocusTargetCastbarController(config);
+        nameplateController = new NameplateCastbarController(config);
 
         configAddon = new ConfigAddon {
             InternalName = "TargetCastBarConfig",
@@ -174,149 +43,41 @@ public class TargetCastBarCountdown : GameModification {
             .AddCheckbox(Strings.TargetCastBarCountdown_CheckboxFocus, nameof(config.FocusTarget));
 
         configAddon.AddCategory(Strings.TargetCastBarCountdown_CategoryPrimaryStyle)
-            .AddNodeConfig(primaryTargetStyle, TextNodeConfigOptions.TextAlignment);
+            .AddNodeConfig(primaryController.LoadedStyle, TextNodeConfigOptions.TextAlignment);
 
         configAddon.AddCategory(Strings.TargetCastBarCountdown_CategoryPrimaryAltStyle)
-            .AddNodeConfig(primaryTargetAltStyle, TextNodeConfigOptions.TextAlignment);
+            .AddNodeConfig(primaryAltController.LoadedStyle, TextNodeConfigOptions.TextAlignment);
 
         configAddon.AddCategory(Strings.TargetCastBarCountdown_CategoryFocusStyle)
-            .AddNodeConfig(focusTargetStyle, TextNodeConfigOptions.TextAlignment);
+            .AddNodeConfig(focusController.LoadedStyle, TextNodeConfigOptions.TextAlignment);
 
         configAddon.AddCategory(Strings.TargetCastBarCountdown_CategoryNameplateStyle)
-            .AddNodeConfig(castBarEnemyStyle, TextNodeConfigOptions.TextAlignment);
+            .AddNodeConfig(nameplateController.LoadedStyle, TextNodeConfigOptions.TextAlignment);
 
         OpenConfigAction = configAddon.Toggle;
+
+        await Services.Framework.RunSafely(() => {
+            primaryController.Enable();
+            primaryAltController.Enable();
+            focusController.Enable();
+            nameplateController.Enable();
+        });
     }
 
-    private static TextNode BuildTextNode(Vector2 position) => new() {
-        Size = new Vector2(82.0f, 22.0f),
-        Position = position,
-        FontSize = 20,
-        TextFlags = TextFlags.Edge,
-        TextColor = ColorHelper.GetColor(1),
-        TextOutlineColor = ColorHelper.GetColor(23),
-        FontType = FontType.Miedinger,
-        AlignmentType = AlignmentType.Center,
-    };
+    public override async Task OnDisableAsync() {
+        await Services.Framework.RunSafely(() => {
+            primaryController?.Dispose();
+            primaryAltController?.Dispose();
+            focusController?.Dispose();
+            nameplateController?.Dispose();
+        });
 
-    private unsafe void SetupCastBar(AtkUnitBase* addon) {
-        switch (addon->NameString) {
-            case "_TargetInfoCastBar":
-                primaryTargetTextNode = BuildTextNode(new Vector2(0.0f, 16.0f));
-                primaryTargetStyle?.ApplyStyle(primaryTargetTextNode);
-                primaryTargetTextNode.AttachNode(addon->GetNodeById(7));
-                break;
+        primaryController = null;
+        primaryAltController = null;
+        focusController = null;
+        nameplateController = null;
 
-            case "_TargetInfo":
-                primaryTargetAltTextNode = BuildTextNode(new Vector2(0.0f, -16.0f));
-                primaryTargetAltStyle?.ApplyStyle(primaryTargetAltTextNode);
-                primaryTargetAltTextNode.AttachNode(addon->GetNodeById(15));
-                break;
-
-            case "_FocusTargetInfo":
-                focusTargetTextNode = BuildTextNode(new Vector2(0.0f, -16.0f));
-                focusTargetStyle?.ApplyStyle(focusTargetTextNode);
-                focusTargetTextNode.AttachNode(addon->GetNodeById(8));
-                break;
-
-            case "CastBarEnemy":
-                var castBarAddon = (AddonCastBarEnemy*)addon;
-                castBarEnemyTextNode = new TextNode[10];
-
-                foreach (var index in Enumerable.Range(0, 10)) {
-                    ref var info = ref castBarAddon->CastBarNodes[index];
-
-                    var newNode = BuildTextNode(new Vector2(0.0f, -12.0f));
-
-                    newNode.Size = new Vector2(82.0f, 24.0f);
-                    newNode.AlignmentType = AlignmentType.BottomRight;
-                    newNode.FontSize = 12;
-
-                    castBarEnemyTextNode[index] = newNode;
-                    castBarEnemyStyle?.ApplyStyle(newNode);
-
-                    var castBarNode = (AtkComponentNode*)info.CastBarNode;
-                    newNode.AttachNode(castBarNode->SearchNodeById<AtkResNode>(7));
-                }
-                break;
-        }
+        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        configAddon = null;
     }
-
-    private unsafe void FinalizeCastBar(AtkUnitBase* addon) {
-        switch (addon->NameString) {
-            case "_TargetInfoCastBar":
-                primaryTargetTextNode?.Dispose();
-                primaryTargetTextNode = null;
-                break;
-
-            case "_TargetInfo":
-                primaryTargetAltTextNode?.Dispose();
-                primaryTargetAltTextNode = null;
-                break;
-
-            case "_FocusTargetInfo":
-                focusTargetTextNode?.Dispose();
-                focusTargetTextNode = null;
-                break;
-
-            case "CastBarEnemy":
-                foreach (var node in castBarEnemyTextNode ?? []) {
-                    node?.Dispose();
-                }
-                castBarEnemyTextNode = null;
-                break;
-        }
-    }
-
-    private unsafe void UpdateCastBar(AtkUnitBase* addon) {
-        if (config is null) return;
-
-        if (Services.ClientState.IsPvP) {
-            primaryTargetTextNode?.String = string.Empty;
-            primaryTargetAltTextNode?.String = string.Empty;
-            focusTargetTextNode?.String = string.Empty;
-            foreach (var node in castBarEnemyTextNode ?? []) {
-                node?.String = string.Empty;
-            }
-            return;
-        }
-
-        switch (addon->NameString) {
-            case "_TargetInfoCastBar" when primaryTargetTextNode is not null:
-                primaryTargetTextNode.String = GetCastTime(Services.TargetManager.GetTarget(), config.PrimaryTarget);
-                break;
-
-            case "_TargetInfo" when primaryTargetAltTextNode is not null:
-                primaryTargetAltTextNode.String = GetCastTime(Services.TargetManager.GetTarget(), config.PrimaryTarget);
-                break;
-
-            case "_FocusTargetInfo" when focusTargetTextNode is not null:
-                focusTargetTextNode.String = GetCastTime(Services.TargetManager.GetFocusTarget(), config.FocusTarget);
-                break;
-
-            case "CastBarEnemy" when castBarEnemyTextNode is not null:
-                var castBarAddon = (AddonCastBarEnemy*)addon;
-
-                foreach (var index in Enumerable.Range(0, 10)) {
-                    var info = castBarAddon->CastBarInfo[index];
-                    var node = castBarEnemyTextNode[index];
-
-                    node?.String = GetCastTime(GetEntity(info.ObjectId.ObjectId), true);
-                }
-                break;
-        }
-    }
-
-    private static string GetCastTime(IBattleChara? target, bool enabled) {
-        if (!enabled) return string.Empty;
-        if (target is null) return string.Empty;
-        if (!target.IsValid()) return string.Empty;
-        if (target.EntityId == 0xE0000000) return string.Empty;
-        if (target.CurrentCastTime >= target.TotalCastTime) return string.Empty;
-
-        return (target.TotalCastTime - target.CurrentCastTime).ToString("00.00", CultureInfo.InvariantCulture);
-    }
-
-    private static IBattleChara? GetEntity(uint entityId)
-        => Services.ObjectTable.CharacterManagerObjects.FirstOrDefault(obj => obj.EntityId == entityId) as IBattleChara;
 }
