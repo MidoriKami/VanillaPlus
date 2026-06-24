@@ -2,36 +2,22 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using Dalamud.Hooking;
-using Dalamud.Utility.Signatures;
+using System.Threading.Tasks;
+using Dalamud.Game.ClientState;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.LayoutEngine;
 using FFXIVClientStructs.FFXIV.Client.LayoutEngine.Layer;
 
-namespace VanillaPlus.Features.TwelveZoneLines;
+namespace VanillaPlus.Features.ZoneTransitionLabels;
 
-public unsafe class ZoneWatcher : IDisposable
+public class ZoneWatcher : IDisposable
 {
     public List<ZoneExit> ZoneExits = [];
-    public ZoneExit? ClosestExit;
-
-    public delegate void TerritoryLoadedDelegate();
-
-    // ty winter
-    [Signature("48 8b 05 ?? ?? ?? 02 c6 40 0a 01", DetourName = nameof(TerritoryLoaded))]
-    private readonly Hook<TerritoryLoadedDelegate>? territoryLoadedHook = null; // Technically related to CullingManager doesnt matter
 
     public ZoneWatcher()
     {
         Services.ClientState.Login += OnLogin;
-        UpdateExits();
-
-        Services.GameInteropProvider.InitializeFromAttributes(this);
-        territoryLoadedHook?.Enable();
-    }
-
-    public void TerritoryLoaded()
-    {
-        territoryLoadedHook!.Original.Invoke();
+        Services.ClientState.ZoneInit += OnZoneInit;
         UpdateExits();
     }
 
@@ -59,29 +45,36 @@ public unsafe class ZoneWatcher : IDisposable
     }
 
     private void OnLogin() => UpdateExits();
+    private void OnZoneInit(ZoneInitEventArgs obj) => UpdateExits();
 
     private void UpdateExits()
     {
         ZoneExits.Clear();
-        if (TryBuildAssociations(out var exits))
-        {
-            ZoneExits = exits;
-        }
+
+        Task.Run(async () => {
+            uint loadState;
+
+            unsafe {
+                loadState = GameMain.Instance()->TerritoryLoadState;
+            }
+
+            while (loadState is not 2) {
+                await Task.Delay(16);
+                unsafe {
+                    loadState = GameMain.Instance()->TerritoryLoadState;
+                }
+            }
+
+            await BuildAssociations();
+        });
     }
 
     /// <summary>
     /// Combines LineVfx instances and their closest ExitRange neighbor.
     /// </summary>
-    /// <param name="exits">Associated instances</param>
-    /// <returns>True if successful</returns>
-    public static bool TryBuildAssociations(out List<ZoneExit> exits)
+    private unsafe Task BuildAssociations()
     {
-        exits = [];
-        var world = LayoutWorld.Instance();
-        if (world == null) return false;
-
-        var active = world->ActiveLayout;
-        if (active == null) return false;
+        var active = LayoutWorld.Instance()->ActiveLayout;
 
         List<IntPtr> exitRangeInstances = [];
         List<IntPtr> lineVfxInstances = [];
@@ -135,17 +128,16 @@ public unsafe class ZoneWatcher : IDisposable
 
             if (closest != null)
             {
-                exits.Add(new ZoneExit(line, closest));
+                ZoneExits.Add(new ZoneExit(line, closest));
             }
         }
 
-        return true;
+        return Task.CompletedTask;
     }
 
     public void Dispose()
     {
         Services.ClientState.Login -= OnLogin;
-
-        territoryLoadedHook?.Dispose();
+        Services.ClientState.ZoneInit -= OnZoneInit;
     }
 }
