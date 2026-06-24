@@ -85,13 +85,13 @@ public class ZoneLabelNode : WorldOverlayNode
         closestPoint = state != MovementStateOptions.Normal ? closestPoint : exit.GetClosestGroundPoint(playerPos);
         closestPoint.Y += 1;
 
-        // Lerp to current location (maybe should be toggleable)
-        closestPoint = Vector3.Lerp(previousLocation, closestPoint, deltaTime * 30f);
-        previousLocation = closestPoint;
-
         // Check distance
         var dist = Vector3.DistanceSquared(playerPos, closestPoint);
         if (!(dist < MaxDistance)) return false;
+
+        // Lerp to current location (maybe should be toggleable)
+        if (IsVisible) closestPoint = Vector3.Lerp(previousLocation, closestPoint, deltaTime * 30f);
+        previousLocation = closestPoint;
         Position = closestPoint;
 
         // Adjust scale (farther = smaller)
