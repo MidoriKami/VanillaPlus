@@ -132,11 +132,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Additional Options.
+        /// </summary>
+        internal static string AddonConfig_AdditionalOptions {
+            get {
+                return ResourceManager.GetString("AddonConfig_AdditionalOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change Keybind.
         /// </summary>
         internal static string AddonConfig_ChangeKeybind {
             get {
                 return ResourceManager.GetString("AddonConfig_ChangeKeybind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable Keybind in Combat.
+        /// </summary>
+        internal static string AddonConfig_DisableKeybindInCombat {
+            get {
+                return ResourceManager.GetString("AddonConfig_DisableKeybindInCombat", resourceCulture);
             }
         }
         
@@ -272,6 +290,78 @@ namespace Resources {
         internal static string BetterCursor_OnlyShowInDuties {
             get {
                 return ResourceManager.GetString("BetterCursor_OnlyShowInDuties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        internal static string BetterTeleportWindow_ModeAll {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_ModeAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cities.
+        /// </summary>
+        internal static string BetterTeleportWindow_ModeCities {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_ModeCities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Favorites.
+        /// </summary>
+        internal static string BetterTeleportWindow_ModeFavorites {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_ModeFavorites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to History.
+        /// </summary>
+        internal static string BetterTeleportWindow_ModeHistory {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_ModeHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Aetherytes Match Search.
+        /// </summary>
+        internal static string BetterTeleportWindow_NoResults {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_NoResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename Teleport.
+        /// </summary>
+        internal static string BetterTeleportWindow_RenameTitle {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_RenameTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Auto Focus Searchbar.
+        /// </summary>
+        internal static string BetterTeleportWindow_TooltipAutoFocus {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_TooltipAutoFocus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Teleport.
+        /// </summary>
+        internal static string BetterTeleportWindow_WindowTitle {
+            get {
+                return ResourceManager.GetString("BetterTeleportWindow_WindowTitle", resourceCulture);
             }
         }
         
@@ -1254,6 +1344,42 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        internal static string FancyLoadingScreens_CategoryGeneral {
+            get {
+                return ResourceManager.GetString("FancyLoadingScreens_CategoryGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fancy Loading Screens.
+        /// </summary>
+        internal static string FancyLoadingScreens_ConfigTitle {
+            get {
+                return ResourceManager.GetString("FancyLoadingScreens_ConfigTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show artwork on instance loads.
+        /// </summary>
+        internal static string FancyLoadingScreens_LabelInstancedLoad {
+            get {
+                return ResourceManager.GetString("FancyLoadingScreens_LabelInstancedLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shows the destination artwork when switching instanced areas (duties, housing, etc.). Note: the artwork covers the chat box, so you cannot chat while loading..
+        /// </summary>
+        internal static string FancyLoadingScreens_LabelInstancedLoadNote {
+            get {
+                return ResourceManager.GetString("FancyLoadingScreens_LabelInstancedLoadNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Faster Scrollbars Config.
         /// </summary>
         internal static string FasterScroll_ConfigTitle {
@@ -1974,6 +2100,105 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Behavior.
+        /// </summary>
+        internal static string ModificationBrowser_CategoryBehavior {
+            get {
+                return ResourceManager.GetString("ModificationBrowser_CategoryBehavior", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes how parts of the game work.
+        /// </summary>
+        internal static string ModificationBrowser_CategoryBehaviorTooltip {
+            get {
+                return ResourceManager.GetString("ModificationBrowser_CategoryBehaviorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UI.
+        /// </summary>
+        internal static string ModificationBrowser_CategoryUi {
+            get {
+                return ResourceManager.GetString("ModificationBrowser_CategoryUi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modifies existing game UI.
+        /// </summary>
+        internal static string ModificationBrowser_CategoryUiTooltip {
+            get {
+                return ResourceManager.GetString("ModificationBrowser_CategoryUiTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Window.
+        /// </summary>
+        internal static string ModificationBrowser_CategoryWindow {
+            get {
+                return ResourceManager.GetString("ModificationBrowser_CategoryWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Windows or Overlays.
+        /// </summary>
+        internal static string ModificationBrowser_CategoryWindowTooltip {
+            get {
+                return ResourceManager.GetString("ModificationBrowser_CategoryWindowTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Results Match Search.
+        /// </summary>
+        internal static string ModificationBrowser_NoResults {
+            get {
+                return ResourceManager.GetString("ModificationBrowser_NoResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Persist Search Between Sessions.
+        /// </summary>
+        internal static string ModificationBrowser_PersistSearchTooltip {
+            get {
+                return ResourceManager.GetString("ModificationBrowser_PersistSearchTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        internal static string ModificationBrowser_TabAll {
+            get {
+                return ResourceManager.GetString("ModificationBrowser_TabAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable.
+        /// </summary>
+        internal static string ModificationBrowser_TabDisabled {
+            get {
+                return ResourceManager.GetString("ModificationBrowser_TabDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable.
+        /// </summary>
+        internal static string ModificationBrowser_TabEnabled {
+            get {
+                return ResourceManager.GetString("ModificationBrowser_TabEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vanilla Plus Modification Browser.
         /// </summary>
         internal static string ModificationBrowserTitle {
@@ -2035,6 +2260,24 @@ namespace Resources {
         internal static string ModificationDescription_BetterSelectString {
             get {
                 return ResourceManager.GetString("ModificationDescription_BetterSelectString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replaces the games Teleport window with a better custom made version..
+        /// </summary>
+        internal static string ModificationDescription_BetterTeleportWindow {
+            get {
+                return ResourceManager.GetString("ModificationDescription_BetterTeleportWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removes the letterboxing in cutscenes when using ultrawide displays..
+        /// </summary>
+        internal static string ModificationDescription_BorderlessCutscenes {
+            get {
+                return ResourceManager.GetString("ModificationDescription_BorderlessCutscenes", resourceCulture);
             }
         }
         
@@ -2140,6 +2383,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Raises certain duty-related interaction nameplates to improve visibility when crowded by player nameplates..
+        /// </summary>
+        internal static string ModificationDescription_DutyPortalNameplateOffset {
+            get {
+                return ResourceManager.GetString("ModificationDescription_DutyPortalNameplateOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to When completing a duty, prints the time the duty took to chat..
         /// </summary>
         internal static string ModificationDescription_DutyTimer {
@@ -2183,6 +2435,15 @@ namespace Resources {
         internal static string ModificationDescription_FadeUnavailableActions {
             get {
                 return ResourceManager.GetString("ModificationDescription_FadeUnavailableActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replaces the loading screen artwork with the destination zone&apos;s full-size loading image..
+        /// </summary>
+        internal static string ModificationDescription_FancyLoadingScreens {
+            get {
+                return ResourceManager.GetString("ModificationDescription_FancyLoadingScreens", resourceCulture);
             }
         }
         
@@ -2620,6 +2881,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Completely suppresses any shared Strategy Board..
+        /// </summary>
+        internal static string ModificationDescription_SuppressSharedBoards {
+            get {
+                return ResourceManager.GetString("ModificationDescription_SuppressSharedBoards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adds a search bar to System Configuration Windows.
         /// </summary>
         internal static string ModificationDescription_SystemConfigSearchBar {
@@ -2634,6 +2904,15 @@ namespace Resources {
         internal static string ModificationDescription_TargetCastBarCountdown {
             get {
                 return ResourceManager.GetString("ModificationDescription_TargetCastBarCountdown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adds labels to zone lines to indicate where they lead. Designed to look like FFXII..
+        /// </summary>
+        internal static string ModificationDescription_TwelveZoneLines {
+            get {
+                return ResourceManager.GetString("ModificationDescription_TwelveZoneLines", resourceCulture);
             }
         }
         
@@ -2708,6 +2987,24 @@ namespace Resources {
         internal static string ModificationDisplay_BetterSelectString {
             get {
                 return ResourceManager.GetString("ModificationDisplay_BetterSelectString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Better Teleport Window.
+        /// </summary>
+        internal static string ModificationDisplay_BetterTeleportWindow {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_BetterTeleportWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Borderless Cutscenes.
+        /// </summary>
+        internal static string ModificationDisplay_BorderlessCutscenes {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_BorderlessCutscenes", resourceCulture);
             }
         }
         
@@ -2811,6 +3108,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Raise Duty Portal Nameplates.
+        /// </summary>
+        internal static string ModificationDisplay_DutyPortalNameplateOffset {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_DutyPortalNameplateOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duty Timer.
         /// </summary>
         internal static string ModificationDisplay_DutyTimer {
@@ -2852,6 +3158,15 @@ namespace Resources {
         internal static string ModificationDisplay_FadeUnavailableActions {
             get {
                 return ResourceManager.GetString("ModificationDisplay_FadeUnavailableActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fancy Loading Screens.
+        /// </summary>
+        internal static string ModificationDisplay_FancyLoadingScreens {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_FancyLoadingScreens", resourceCulture);
             }
         }
         
@@ -3279,6 +3594,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Suppress Shared Strategy Boards.
+        /// </summary>
+        internal static string ModificationDisplay_SuppressSharedBoards {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_SuppressSharedBoards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to System Configuration Search Bar.
         /// </summary>
         internal static string ModificationDisplay_SystemConfigSearchBar {
@@ -3293,6 +3617,15 @@ namespace Resources {
         internal static string ModificationDisplay_TargetCastBarCountdown {
             get {
                 return ResourceManager.GetString("ModificationDisplay_TargetCastBarCountdown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Twelve Zone Lines.
+        /// </summary>
+        internal static string ModificationDisplay_TwelveZoneLines {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_TwelveZoneLines", resourceCulture);
             }
         }
         
@@ -3347,6 +3680,15 @@ namespace Resources {
         internal static string ModificationType_NewWindow {
             get {
                 return ResourceManager.GetString("ModificationType_NewWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seasonal.
+        /// </summary>
+        internal static string ModificationType_Seasonal {
+            get {
+                return ResourceManager.GetString("ModificationType_Seasonal", resourceCulture);
             }
         }
         
@@ -3927,6 +4269,61 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It&apos;s that time of year again! There is a seasonal event happening right now!
+        ///To join in the festivities, check out the Seasonal section in VanillaPlus!.
+        /// </summary>
+        internal static string SeasonEventNotice_Body {
+            get {
+                return ResourceManager.GetString("SeasonEventNotice_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go Away.
+        /// </summary>
+        internal static string SeasonEventNotice_ButtonDismiss {
+            get {
+                return ResourceManager.GetString("SeasonEventNotice_ButtonDismiss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open VanillaPlus.
+        /// </summary>
+        internal static string SeasonEventNotice_ButtonOpen {
+            get {
+                return ResourceManager.GetString("SeasonEventNotice_ButtonOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will only show once on each day a seasonal event occurs.
+        /// </summary>
+        internal static string SeasonEventNotice_DailyHint {
+            get {
+                return ResourceManager.GetString("SeasonEventNotice_DailyHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seasonal Event.
+        /// </summary>
+        internal static string SeasonEventNotice_Heading {
+            get {
+                return ResourceManager.GetString("SeasonEventNotice_Heading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seasonal Event Notice.
+        /// </summary>
+        internal static string SeasonEventNotice_Title {
+            get {
+                return ResourceManager.GetString("SeasonEventNotice_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select an option on the left.
         /// </summary>
         internal static string SelectionPrompt {
@@ -4384,384 +4781,6 @@ namespace Resources {
         internal static string WondrousTailsProbabilities_ShuffleAverageLabel {
             get {
                 return ResourceManager.GetString("WondrousTailsProbabilities_ShuffleAverageLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Better Teleport Window.
-        /// </summary>
-        internal static string ModificationDisplay_BetterTeleportWindow {
-            get {
-                return ResourceManager.GetString("ModificationDisplay_BetterTeleportWindow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Replaces the games Teleport window with a better custom made version..
-        /// </summary>
-        internal static string ModificationDescription_BetterTeleportWindow {
-            get {
-                return ResourceManager.GetString("ModificationDescription_BetterTeleportWindow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Teleport.
-        /// </summary>
-        internal static string BetterTeleportWindow_WindowTitle {
-            get {
-                return ResourceManager.GetString("BetterTeleportWindow_WindowTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rename Teleport.
-        /// </summary>
-        internal static string BetterTeleportWindow_RenameTitle {
-            get {
-                return ResourceManager.GetString("BetterTeleportWindow_RenameTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Toggle Auto Focus Searchbar.
-        /// </summary>
-        internal static string BetterTeleportWindow_TooltipAutoFocus {
-            get {
-                return ResourceManager.GetString("BetterTeleportWindow_TooltipAutoFocus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Aetherytes Match Search.
-        /// </summary>
-        internal static string BetterTeleportWindow_NoResults {
-            get {
-                return ResourceManager.GetString("BetterTeleportWindow_NoResults", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to All.
-        /// </summary>
-        internal static string BetterTeleportWindow_ModeAll {
-            get {
-                return ResourceManager.GetString("BetterTeleportWindow_ModeAll", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to History.
-        /// </summary>
-        internal static string BetterTeleportWindow_ModeHistory {
-            get {
-                return ResourceManager.GetString("BetterTeleportWindow_ModeHistory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Favorites.
-        /// </summary>
-        internal static string BetterTeleportWindow_ModeFavorites {
-            get {
-                return ResourceManager.GetString("BetterTeleportWindow_ModeFavorites", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cities.
-        /// </summary>
-        internal static string BetterTeleportWindow_ModeCities {
-            get {
-                return ResourceManager.GetString("BetterTeleportWindow_ModeCities", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Borderless Cutscenes.
-        /// </summary>
-        internal static string ModificationDisplay_BorderlessCutscenes {
-            get {
-                return ResourceManager.GetString("ModificationDisplay_BorderlessCutscenes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Removes the letterboxing in cutscenes when using ultrawide displays..
-        /// </summary>
-        internal static string ModificationDescription_BorderlessCutscenes {
-            get {
-                return ResourceManager.GetString("ModificationDescription_BorderlessCutscenes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Suppress Shared Strategy Boards.
-        /// </summary>
-        internal static string ModificationDisplay_SuppressSharedBoards {
-            get {
-                return ResourceManager.GetString("ModificationDisplay_SuppressSharedBoards", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Completely suppresses any shared Strategy Board..
-        /// </summary>
-        internal static string ModificationDescription_SuppressSharedBoards {
-            get {
-                return ResourceManager.GetString("ModificationDescription_SuppressSharedBoards", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Raise Duty Portal Nameplates.
-        /// </summary>
-        internal static string ModificationDisplay_DutyPortalNameplateOffset {
-            get {
-                return ResourceManager.GetString("ModificationDisplay_DutyPortalNameplateOffset", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Raises certain duty-related interaction nameplates to improve visibility when crowded by player nameplates..
-        /// </summary>
-        internal static string ModificationDescription_DutyPortalNameplateOffset {
-            get {
-                return ResourceManager.GetString("ModificationDescription_DutyPortalNameplateOffset", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to All.
-        /// </summary>
-        internal static string ModificationBrowser_TabAll {
-            get {
-                return ResourceManager.GetString("ModificationBrowser_TabAll", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enable.
-        /// </summary>
-        internal static string ModificationBrowser_TabEnabled {
-            get {
-                return ResourceManager.GetString("ModificationBrowser_TabEnabled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Disable.
-        /// </summary>
-        internal static string ModificationBrowser_TabDisabled {
-            get {
-                return ResourceManager.GetString("ModificationBrowser_TabDisabled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Window.
-        /// </summary>
-        internal static string ModificationBrowser_CategoryWindow {
-            get {
-                return ResourceManager.GetString("ModificationBrowser_CategoryWindow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New Windows or Overlays.
-        /// </summary>
-        internal static string ModificationBrowser_CategoryWindowTooltip {
-            get {
-                return ResourceManager.GetString("ModificationBrowser_CategoryWindowTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to UI.
-        /// </summary>
-        internal static string ModificationBrowser_CategoryUi {
-            get {
-                return ResourceManager.GetString("ModificationBrowser_CategoryUi", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Modifies existing game UI.
-        /// </summary>
-        internal static string ModificationBrowser_CategoryUiTooltip {
-            get {
-                return ResourceManager.GetString("ModificationBrowser_CategoryUiTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Behavior.
-        /// </summary>
-        internal static string ModificationBrowser_CategoryBehavior {
-            get {
-                return ResourceManager.GetString("ModificationBrowser_CategoryBehavior", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Changes how parts of the game work.
-        /// </summary>
-        internal static string ModificationBrowser_CategoryBehaviorTooltip {
-            get {
-                return ResourceManager.GetString("ModificationBrowser_CategoryBehaviorTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Persist Search Between Sessions.
-        /// </summary>
-        internal static string ModificationBrowser_PersistSearchTooltip {
-            get {
-                return ResourceManager.GetString("ModificationBrowser_PersistSearchTooltip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Results Match Search.
-        /// </summary>
-        internal static string ModificationBrowser_NoResults {
-            get {
-                return ResourceManager.GetString("ModificationBrowser_NoResults", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Seasonal.
-        /// </summary>
-        internal static string ModificationType_Seasonal {
-            get {
-                return ResourceManager.GetString("ModificationType_Seasonal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Seasonal Event Notice.
-        /// </summary>
-        internal static string SeasonEventNotice_Title {
-            get {
-                return ResourceManager.GetString("SeasonEventNotice_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Seasonal Event.
-        /// </summary>
-        internal static string SeasonEventNotice_Heading {
-            get {
-                return ResourceManager.GetString("SeasonEventNotice_Heading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to It's that time of year again! There is a seasonal event happening right now!.
-        /// </summary>
-        internal static string SeasonEventNotice_Body {
-            get {
-                return ResourceManager.GetString("SeasonEventNotice_Body", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This will only show once on each day a seasonal event occurs.
-        /// </summary>
-        internal static string SeasonEventNotice_DailyHint {
-            get {
-                return ResourceManager.GetString("SeasonEventNotice_DailyHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Go Away.
-        /// </summary>
-        internal static string SeasonEventNotice_ButtonDismiss {
-            get {
-                return ResourceManager.GetString("SeasonEventNotice_ButtonDismiss", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open VanillaPlus.
-        /// </summary>
-        internal static string SeasonEventNotice_ButtonOpen {
-            get {
-                return ResourceManager.GetString("SeasonEventNotice_ButtonOpen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Additional Options.
-        /// </summary>
-        internal static string AddonConfig_AdditionalOptions {
-            get {
-                return ResourceManager.GetString("AddonConfig_AdditionalOptions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Disable Keybind in Combat.
-        /// </summary>
-        internal static string AddonConfig_DisableKeybindInCombat {
-            get {
-                return ResourceManager.GetString("AddonConfig_DisableKeybindInCombat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fancy Loading Screens.
-        /// </summary>
-        internal static string ModificationDisplay_FancyLoadingScreens {
-            get {
-                return ResourceManager.GetString("ModificationDisplay_FancyLoadingScreens", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Replaces the loading screen artwork with the destination zone's full-size loading image..
-        /// </summary>
-        internal static string ModificationDescription_FancyLoadingScreens {
-            get {
-                return ResourceManager.GetString("ModificationDescription_FancyLoadingScreens", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fancy Loading Screens.
-        /// </summary>
-        internal static string FancyLoadingScreens_ConfigTitle {
-            get {
-                return ResourceManager.GetString("FancyLoadingScreens_ConfigTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to General.
-        /// </summary>
-        internal static string FancyLoadingScreens_CategoryGeneral {
-            get {
-                return ResourceManager.GetString("FancyLoadingScreens_CategoryGeneral", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show artwork on instance loads.
-        /// </summary>
-        internal static string FancyLoadingScreens_LabelInstancedLoad {
-            get {
-                return ResourceManager.GetString("FancyLoadingScreens_LabelInstancedLoad", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Shows the destination artwork when switching instanced areas (duties, housing, etc.). Note: the artwork covers the chat box, so you cannot chat while loading.
-        /// </summary>
-        internal static string FancyLoadingScreens_LabelInstancedLoadNote {
-            get {
-                return ResourceManager.GetString("FancyLoadingScreens_LabelInstancedLoadNote", resourceCulture);
             }
         }
     }
