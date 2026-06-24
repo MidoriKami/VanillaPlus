@@ -1,18 +1,16 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
-using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
+using KamiToolKit.UiOverlay;
 using VanillaPlus.Utilities;
 
-namespace VanillaPlus.Features.TwelveZoneLines.Nodes;
+namespace VanillaPlus.Features.ZoneTransitionLabels.Nodes;
 
-public class ZoneLabelNode : WorldOverlayNode
+public class ZoneLabelNode : OverlayNode
 {
-    public override Vector3 Position { get; set; }
     public override OverlayLayer OverlayLayer => OverlayLayer.Background;
 
     private readonly TextNode labelNode;
@@ -38,7 +36,7 @@ public class ZoneLabelNode : WorldOverlayNode
         imageNode = new ImGuiImageNode
         {
             Position = new Vector2(-30, 0),
-            TexturePath = Assets.GetAssetPath("XIITravelIcon.png"),
+            TexturePath = Assets.GetAssetPath("ZoneTransitionLabels/OverworldIcon.png"),
             Size = new Vector2(20, 20),
             FitTexture = true,
         };
@@ -55,9 +53,9 @@ public class ZoneLabelNode : WorldOverlayNode
         Origin = new Vector2(Width / 2, Height / 2);
     }
 
-    protected override void OnUpdate(float deltaTime)
+    protected override void OnUpdate()
     {
-        IsVisible = TryUpdateLabel(deltaTime);
+        IsVisible = TryUpdateLabel();
     }
 
     private Vector3 previousLocation = Vector3.Zero;
@@ -68,7 +66,7 @@ public class ZoneLabelNode : WorldOverlayNode
     private readonly Vector2 minScale = new(0.5f, 0.5f);
     private readonly Vector2 maxScale = new(1.0f, 1.0f);
 
-    private unsafe bool TryUpdateLabel(float deltaTime)
+    private unsafe bool TryUpdateLabel()
     {
         if (Services.ObjectTable.LocalPlayer is not { } playerCharacter) return false;
         var player = (BattleChara*)playerCharacter.Address;
@@ -90,9 +88,14 @@ public class ZoneLabelNode : WorldOverlayNode
         if (!(dist < MaxDistance)) return false;
 
         // Lerp to current location (maybe should be toggleable)
+        var deltaTime = (float)Services.Framework.UpdateDelta.TotalSeconds;
+
         if (IsVisible) closestPoint = Vector3.Lerp(previousLocation, closestPoint, deltaTime * 30f);
         previousLocation = closestPoint;
-        Position = closestPoint;
+
+        // Update screen position
+        if (!Services.GameGui.WorldToScreenAdjusted(closestPoint, out var screenPos)) return false;
+        Position = screenPos - Origin;
 
         // Adjust scale (farther = smaller)
         var s = ( dist - MinDistance ) / ( MaxDistance - MinDistance );

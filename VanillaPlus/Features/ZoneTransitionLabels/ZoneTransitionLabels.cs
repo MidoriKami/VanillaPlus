@@ -3,19 +3,19 @@ using System.Threading.Tasks;
 using KamiToolKit.UiOverlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
-using VanillaPlus.Features.TwelveZoneLines.Nodes;
+using VanillaPlus.Features.ZoneTransitionLabels.Nodes;
 
-namespace VanillaPlus.Features.TwelveZoneLines;
+namespace VanillaPlus.Features.ZoneTransitionLabels;
 
-public class TwelveZoneLines : GameModification {
+public class ZoneTransitionLabels : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = Strings.ModificationDisplay_TwelveZoneLines,
-        Description = Strings.ModificationDescription_TwelveZoneLines,
+        DisplayName = Strings.ModificationDisplay_ZoneTransitionLabels,
+        Description = Strings.ModificationDescription_ZoneTransitionLabels,
         Type = ModificationType.NewOverlay,
         Authors = ["Abyeon"],
     };
 
-    public override string ImageName => "TwelveZoneLines.png";
+    public override string ImageName => "ZoneTransitionLabels/ZoneTransitionLabels.png";
 
     // public override bool IsExperimental => true;
 

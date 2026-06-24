@@ -2180,7 +2180,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disable.
+        ///   Looks up a localized string similar to Disabled.
         /// </summary>
         internal static string ModificationBrowser_TabDisabled {
             get {
@@ -2189,7 +2189,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable.
+        ///   Looks up a localized string similar to Enabled.
         /// </summary>
         internal static string ModificationBrowser_TabEnabled {
             get {
@@ -2927,6 +2927,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adds labels to zone lines to indicate where they lead. Designed to look like FFXII..
+        /// </summary>
+        internal static string ModificationDescription_ZoneTransitionLabels {
+            get {
+                return ResourceManager.GetString("ModificationDescription_ZoneTransitionLabels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aetherwell Progress.
         /// </summary>
         internal static string ModificationDisplay_AetherwellProgress {
@@ -3625,6 +3634,15 @@ namespace Resources {
         internal static string ModificationDisplay_WondrousTailsProbabilities {
             get {
                 return ResourceManager.GetString("ModificationDisplay_WondrousTailsProbabilities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zone Transition Labels.
+        /// </summary>
+        internal static string ModificationDisplay_ZoneTransitionLabels {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_ZoneTransitionLabels", resourceCulture);
             }
         }
         

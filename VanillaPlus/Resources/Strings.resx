@@ -1709,10 +1709,10 @@ To join in the festivities, check out the Seasonal section in VanillaPlus!</valu
   <data name="FancyLoadingScreens_LabelInstancedLoadNote" xml:space="preserve">
     <value>Shows the destination artwork when switching instanced areas (duties, housing, etc.). Note: the artwork covers the chat box, so you cannot chat while loading.</value>
   </data>
-  <data name="ModificationDisplay_TwelveZoneLines" xml:space="preserve">
-      <value>Twelve Zone Lines</value>
+  <data name="ModificationDisplay_ZoneTransitionLabels" xml:space="preserve">
+      <value>Zone Transition Labels</value>
   </data>
-  <data name="ModificationDescription_TwelveZoneLines" xml:space="preserve">
+  <data name="ModificationDescription_ZoneTransitionLabels" xml:space="preserve">
       <value>Adds labels to zone lines to indicate where they lead. Designed to look like FFXII.</value>
   </data>
 </root>

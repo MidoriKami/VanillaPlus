@@ -8,7 +8,7 @@ using FFXIVClientStructs.Interop;
 using Lumina.Excel;
 using Lumina.Excel.Sheets;
 
-namespace VanillaPlus.Features.TwelveZoneLines;
+namespace VanillaPlus.Features.ZoneTransitionLabels;
 
 /// <summary>
 /// Combines ExitRanges and LineVfx into one
