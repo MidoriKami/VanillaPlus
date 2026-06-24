@@ -36,7 +36,7 @@ public class InventorySearchBar : GameModification {
 
     public override async Task OnEnableAsync() {
         if (Services.ClientState.IsLoggedIn) {
-            await Services.Framework.Run(ReinitializeController);
+            await Services.Framework.RunSafely(ReinitializeController);
         }
 
         keybindListener = new KeybindListener {
