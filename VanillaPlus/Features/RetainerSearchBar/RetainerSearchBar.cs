@@ -68,7 +68,7 @@ public class RetainerSearchBar : GameModification {
     }
 
     private unsafe void ReinitializeController() {
-        if (!Services.GameConfig.TryGet(UiConfigOption.ItemInventryRetainerWindowSizeType, out uint inventoryType)) return;
+        if (!Services.GameConfig.UiConfig.TryGet("ItemInventryRetainerWindowSizeType", out uint inventoryType)) return;
 
         inventoryController?.Dispose();
 

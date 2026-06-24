@@ -73,7 +73,7 @@ public class InventorySearchBar : GameModification {
     }
 
     private unsafe void ReinitializeController() {
-        if (!Services.GameConfig.TryGet(UiConfigOption.ItemInventryWindowSizeType, out uint inventoryType)) return;
+        if (!Services.GameConfig.UiConfig.TryGet("ItemInventryWindowSizeType", out uint inventoryType)) return;
 
         inventoryController?.Dispose();
 
