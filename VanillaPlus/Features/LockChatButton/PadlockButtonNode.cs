@@ -24,6 +24,8 @@ public class PadlockButtonNode : TextureButtonNode {
     public bool IsLocked {
         get;
         set {
+            if (field == value) return;
+
             field = value;
             TextureCoordinates = value ? lockedCoordinate : unlockedCoordinate;
         }
