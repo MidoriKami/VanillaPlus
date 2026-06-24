@@ -2181,7 +2181,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disable.
+        ///   Looks up a localized string similar to Disabled.
         /// </summary>
         internal static string ModificationBrowser_TabDisabled {
             get {
@@ -2190,7 +2190,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable.
+        ///   Looks up a localized string similar to Enabled.
         /// </summary>
         internal static string ModificationBrowser_TabEnabled {
             get {
