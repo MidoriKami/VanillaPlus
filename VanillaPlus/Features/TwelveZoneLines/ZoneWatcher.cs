@@ -70,7 +70,7 @@ public unsafe class ZoneWatcher : IDisposable
     }
 
     /// <summary>
-    /// Combines LineVfx instances and their closest ZoneExit neighbor.
+    /// Combines LineVfx instances and their closest ExitRange neighbor.
     /// </summary>
     /// <param name="exits">Associated instances</param>
     /// <returns>True if successful</returns>
