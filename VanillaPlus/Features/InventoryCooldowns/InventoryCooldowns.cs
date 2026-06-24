@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Game.Config;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
@@ -27,27 +28,48 @@ public class InventoryCooldowns : GameModification {
 
     private readonly Dictionary<string, Dictionary<int, InventoryCooldownTextNode>> addonNodeCache = [];
 
-    private MultiAddonController? controller;
+    private AddonController? inventoryController;
 
     public override async Task OnEnableAsync() {
-        unsafe {
-            controller = new MultiAddonController {
-                AddonNames = ["InventoryExpansion", "InventoryLarge", "Inventory"],
-                OnUpdate = UpdateInventory,
-                OnFinalize = FinalizeInventory,
-            };
+        if (Services.ClientState.IsLoggedIn) {
+            await Services.Framework.RunSafely(ReinitializeController);
         }
 
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, ["InventoryExpansion", "InventoryLarge", "Inventory"], OnPostReceiveEvent);
-
-        await Services.Framework.RunSafely(controller.Enable);
+        Services.GameConfig.UiConfigChanged += OnUiConfigChanged;
     }
 
     public override async Task OnDisableAsync() {
+        Services.GameConfig.UiConfigChanged -= OnUiConfigChanged;
         Services.AddonLifecycle.UnregisterListener(OnPostReceiveEvent);
 
-        await Services.Framework.RunSafely(() => controller?.Dispose());
-        controller = null;
+        await Services.Framework.RunSafely(() => inventoryController?.Dispose());
+        inventoryController = null;
+    }
+
+    private  void OnUiConfigChanged(object? sender, ConfigChangeEvent e) {
+        if (e.Option is not UiConfigOption.ItemInventryWindowSizeType) return;
+
+        ReinitializeController();
+    }
+
+    private unsafe void ReinitializeController() {
+        if (!Services.GameConfig.UiConfig.TryGet("ItemInventryWindowSizeType", out uint inventoryType)) return;
+
+        inventoryController?.Dispose();
+
+        inventoryController = new AddonController {
+            AddonName = inventoryType switch {
+                0 => "Inventory",
+                1 => "InventoryLarge",
+                2 => "InventoryExpansion",
+                _ => throw new ArgumentOutOfRangeException(),
+            },
+            OnUpdate = UpdateInventory,
+            OnFinalize = FinalizeInventory,
+        };
+
+        inventoryController.Enable();
     }
 
     public void RemoveNodeFromCache(TextNode node) {
