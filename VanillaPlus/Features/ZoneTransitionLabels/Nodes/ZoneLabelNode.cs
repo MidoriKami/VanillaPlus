@@ -101,12 +101,18 @@ public class ZoneLabelNode : OverlayNode
         var s = ( dist - MinDistance ) / ( MaxDistance - MinDistance );
         Scale = Vector2.Lerp(maxScale, minScale, s);
 
-        // Update the name if it's not the same
+        // Update the text / icon
         var name = exit.Name;
         if (labelNode.String != name)
         {
             labelNode.String = name;
             Size = labelNode.Size with { Y = Height };
+            imageNode.TexturePath = exit.TerritoryType.Value.TerritoryIntendedUse.RowId switch {
+                0 => Assets.GetAssetPath("ZoneTransitionLabels/CityIcon.png"),      // City
+                1 => Assets.GetAssetPath("ZoneTransitionLabels/OverworldIcon.png"), // Overworld
+                13 => Assets.GetAssetPath("ZoneTransitionLabels/HousingIcon.png"),  // Housing ward
+                _ => Assets.GetAssetPath("ZoneTransitionLabels/OverworldIcon.png")  // Shouldn't occur, but just in case
+            };
         }
 
         return true;
