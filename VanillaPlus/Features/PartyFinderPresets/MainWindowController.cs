@@ -16,7 +16,7 @@ public unsafe class MainWindowController : IDisposable {
     private readonly PartyFinderPresetConfig config;
 
     private AddonController<AddonLookingForGroup>? mainWindowController;
-    internal static TextDropDownNode? PresetDropDownNode;
+    internal static StringDropDownNode? PresetDropDownNode;
 
     public MainWindowController(PartyFinderPresetConfig config) {
         this.config = config;
@@ -43,7 +43,7 @@ public unsafe class MainWindowController : IDisposable {
 
     private void OnAddonSetup(AddonLookingForGroup* addon) {
         PresetDropDownNode?.Dispose();
-        PresetDropDownNode = new TextDropDownNode {
+        PresetDropDownNode = new StringDropDownNode {
             Position = new Vector2(185.0f, 636.0f),
             Size = new Vector2(200.0f, 25.0f),
             MaxListOptions = 10,
