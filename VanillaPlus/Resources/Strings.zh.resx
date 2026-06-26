@@ -444,8 +444,7 @@ ID：{0}</value>
     <value>未选择选项</value>
   </data>
   <data name="HUDPresets_DeleteTooltip" xml:space="preserve">
-    <value>功能开发中
-请暂时手动删除预设文件</value>
+    <value>Deletes selected preset</value>
   </data>
   <data name="HUDPresets_DropdownTooltip" xml:space="preserve">
     <value>选择 HUD 布局预设</value>

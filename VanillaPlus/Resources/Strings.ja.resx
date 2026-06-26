@@ -444,8 +444,7 @@ Data will be updated as it becomes available, do not request data updates.</valu
     <value>未選択</value>
   </data>
   <data name="HUDPresets_DeleteTooltip" xml:space="preserve">
-    <value>開発中
-プリセットファイルは手動で削除してください</value>
+    <value>Deletes selected preset</value>
   </data>
   <data name="HUDPresets_DropdownTooltip" xml:space="preserve">
     <value>HUDレイアウトプリセットを選択</value>

@@ -444,8 +444,7 @@ Les données seront mises à jour dès qu'elles seront disponibles, veuillez ne 
     <value>Aucune option sélectionnée</value>
   </data>
   <data name="HUDPresets_DeleteTooltip" xml:space="preserve">
-    <value>En Cours de Développement
-Supprimez manuellement les fichiers pour l'instant</value>
+    <value>Deletes selected preset</value>
   </data>
   <data name="HUDPresets_DropdownTooltip" xml:space="preserve">
     <value>Sélectionner un préréglage d'ATH</value>
