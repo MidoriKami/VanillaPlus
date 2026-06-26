@@ -73,16 +73,7 @@ public struct ZoneExit
     public Vector3 GetClosestGroundPoint(Vector3 target)
     {
         var closest = GetClosestPoint(target);
-        var point = closest;
-
-        if (BGCollisionModule.RaycastMaterialFilter(point, Vector3.UnitY, out var hit1))
-        {
-            point.Y = hit1.Point.Y - 1f;
-        }
-        else
-        {
-            point.Y = Transform.Translation.Y + (Transform.Scale.Y * 2);
-        }
+        var point = closest with { Y = Transform.Translation.Y + (Transform.Scale.Y * 0.5f) };
 
         if (BGCollisionModule.RaycastMaterialFilter(point, -Vector3.UnitY, out var hit2))
         {
