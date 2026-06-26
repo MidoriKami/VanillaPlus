@@ -5,7 +5,6 @@ using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Hooking;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Enums;
@@ -41,6 +40,7 @@ public class FancyLoadingScreens : GameModification {
             locationTitleController = new AddonController {
                 AddonName = "_LocationTitle",
                 OnSetup = OnLocationTitleSetup,
+                OnDraw = OnLocationTitleDraw,
                 OnFinalize = OnLocationTitleFinalize,
             };
         }
@@ -90,6 +90,15 @@ public class FancyLoadingScreens : GameModification {
         artworkImageNode.AttachNode(addon, NodePosition.AsFirstChild);
     }
 
+    private unsafe void OnLocationTitleDraw(AtkUnitBase* addon) {
+        var screenSize = (Vector2) AtkStage.Instance()->ScreenSize;
+        var rootScale = addon->RootNode->Scale;
+
+        artworkImageNode?.Position = -addon->RootNode->Position / rootScale;
+        artworkImageNode?.Size = screenSize / rootScale;
+        artworkImageNode?.ContentNode.Origin = screenSize / rootScale / 2.0f;
+    }
+
     private unsafe void OnLocationTitleFinalize(AtkUnitBase* addon) {
         artworkImageNode?.Dispose();
         artworkImageNode = null;
@@ -104,22 +113,10 @@ public class FancyLoadingScreens : GameModification {
     private void SetLoadingScreenImage(uint territoryId) {
         if (artworkImageNode is null) return;
 
-        unsafe {
-            var parentAddon = RaptureAtkUnitManager.Instance()->GetAddonByNode(artworkImageNode);
-            if (parentAddon is null) return;
-
-            var screenSize = (Vector2) AtkStage.Instance()->ScreenSize;
-            var rootScale = parentAddon->RootNode->Scale;
-
-            artworkImageNode.Position = -parentAddon->RootNode->Position / rootScale;
-            artworkImageNode.Size = screenSize / rootScale;
-            artworkImageNode.ContentNode.Origin = screenSize / rootScale / 2.0f;
-
-            if (!Services.DataManager.GetExcelSheet<TerritoryType>().TryGetRow(territoryId, out var territory)) return;
-            artworkImageNode?.ContentNode.TexturePath = territory.LoadingImagePath;
-            artworkImageNode?.Timeline?.PlayAnimation(1, true);
-            artworkImageNode?.IsVisible = true;
-        }
+        if (!Services.DataManager.GetExcelSheet<TerritoryType>().TryGetRow(territoryId, out var territory)) return;
+        artworkImageNode?.ContentNode.TexturePath = territory.LoadingImagePath;
+        artworkImageNode?.Timeline?.PlayAnimation(1, true);
+        artworkImageNode?.IsVisible = true;
     }
 
     private void OnLoadingScreenHide(AddonEvent type, AddonArgs args) {
