@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using FFXIVClientStructs.FFXIV.Client.LayoutEngine;
@@ -73,11 +74,11 @@ public struct ZoneExit
     public Vector3 GetClosestGroundPoint(Vector3 target)
     {
         var closest = GetClosestPoint(target);
-        var point = closest with { Y = Transform.Translation.Y + (Transform.Scale.Y * 0.5f) };
+        var point = closest with { Y = Transform.Translation.Y + Transform.Scale.Y };
 
-        if (BGCollisionModule.RaycastMaterialFilter(point, -Vector3.UnitY, out var hit2))
-        {
-            point.Y = hit2.Point.Y;
+        if (BGCollisionModule.RaycastMaterialFilter(point, -Vector3.UnitY, out var hit)) {
+            var bottom = Transform.Translation.Y - Transform.Scale.Y;
+            point.Y = Math.Clamp(hit.Point.Y, bottom, point.Y);
         }
         else
         {
