@@ -17,7 +17,7 @@ public class DropDownConfig : BaseConfigEntry {
             ItemSpacing = 10.0f,
         };
 
-        var dropdown = new TextDropDownNode {
+        var dropdown = new StringDropDownNode {
             Size = new Vector2(175.0f, 28.0f),
             Options = Options.Keys.ToList(),
             SelectedOption = Options.FirstOrDefault(x => x.Value.Equals(InitialValue)).Key ?? string.Empty,
@@ -28,7 +28,7 @@ public class DropDownConfig : BaseConfigEntry {
                     Task.Run(Config.Save);
                 }
             },
-            // MaxListOptions = 20,
+            MaxListOptions = 20,
         };
 
         layoutNode.AddNode(dropdown);

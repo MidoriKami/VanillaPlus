@@ -174,9 +174,9 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
         };
         container.AddNode(labelNode);
 
-        var dropdown = new TextDropDownNode {
+        var dropdown = new StringDropDownNode {
             Height = 28.0f,
-            // MaxListOptions = 10,
+            MaxListOptions = 10,
             Options = Enum.GetValues<FontType>().Select(value => value.ToString()).ToList(),
             SelectedOption = StyleObject.FontType.ToString(),
             OnOptionSelected = newValue => {
@@ -202,9 +202,9 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
         };
         container.AddNode(labelNode);
 
-        var dropdown = new TextDropDownNode {
+        var dropdown = new StringDropDownNode {
             Height = 28.0f,
-            // MaxListOptions = 10,
+            MaxListOptions = 10,
             Options = Enum.GetValues<AlignmentType>().Select(value => value.ToString()).ToList(),
             SelectedOption = StyleObject.AlignmentType.ToString(),
             OnOptionSelected = newValue => {
