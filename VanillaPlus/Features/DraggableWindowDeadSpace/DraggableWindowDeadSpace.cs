@@ -22,6 +22,8 @@ public class DraggableWindowDeadSpace : GameModification {
         Authors = ["MidoriKami"],
     };
 
+    public override bool IsExperimental => true;
+
     private ViewportEventListener? cursorEventListener;
 
     private Dictionary<string, ResNode>? windowInteractionNodes;
