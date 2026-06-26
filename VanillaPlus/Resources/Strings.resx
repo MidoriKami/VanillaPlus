@@ -444,8 +444,7 @@ Data will be updated as it becomes available, do not request data updates.</valu
     <value>No Option Selected</value>
   </data>
   <data name="HUDPresets_DeleteTooltip" xml:space="preserve">
-    <value>Work in Progress
-Manually delete preset files for now</value>
+    <value>Deletes selected preset</value>
   </data>
   <data name="HUDPresets_DropdownTooltip" xml:space="preserve">
     <value>Select a HUD Layout Preset</value>

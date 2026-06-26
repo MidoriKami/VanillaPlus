@@ -1677,8 +1677,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Work in Progress
-        ///Manually delete preset files for now.
+        ///   Looks up a localized string similar to Deletes selected preset.
         /// </summary>
         internal static string HUDPresets_DeleteTooltip {
             get {
