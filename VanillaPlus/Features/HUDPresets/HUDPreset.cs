@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -21,7 +22,7 @@ public class HUDPresets : GameModification {
     public override string ImageName => "HUDPresets.png";
 
     private AddonController? hudLayoutController;
-    private TextDropDownNode? presetDropdownNode;
+    private StringDropDownNode? presetDropdownNode;
 
     private TextNode? labelNode;
     private TextButtonNode? loadButtonNode;
@@ -62,8 +63,16 @@ public class HUDPresets : GameModification {
     private unsafe void SetupHudLayoutWindow(AtkUnitBase* addon) {
         addon->Resize(addon->Size + new Vector2(0.0f, 95.0f));
 
+        // Move down all nodes [11, 16] inclusive.
+        foreach (uint nodeId in Enumerable.Range(11, 6)) {
+            var node = addon->GetNodeById<AtkResNode>(nodeId);
+            if (node is not null) {
+                node->Position += new Vector2(0.0f, 95.0f);
+            }
+        }
+
         labelNode = new CategoryTextNode {
-            Position = new Vector2(16.0f, 215.0f),
+            Position = new Vector2(16.0f, 120.0f),
             AlignmentType = AlignmentType.Left,
             FontSize = 12,
             FontType = FontType.Axis,
@@ -73,8 +82,8 @@ public class HUDPresets : GameModification {
         };
         labelNode.AttachNode(addon);
 
-        presetDropdownNode = new TextDropDownNode {
-            Position = new Vector2(16.0f, 235.0f),
+        presetDropdownNode = new StringDropDownNode {
+            Position = new Vector2(16.0f, 140.0f),
             Size = new Vector2(addon->Size.X - 32.0f, 24.0f),
             MaxListOptions = 10,
             Options = HUDPresetManager.GetPresetNames(),
@@ -84,7 +93,7 @@ public class HUDPresets : GameModification {
         presetDropdownNode.AttachNode(addon);
 
         loadButtonNode = new TextButtonNode {
-            Position = new Vector2(32.0f, 269.0f),
+            Position = new Vector2(32.0f, 174.0f),
             Size = new Vector2(100.0f, 28.0f),
             String = Strings.HUDPresets_ButtonLoad,
             TextTooltip = Strings.HUDPresets_ButtonLoadTooltip,
@@ -94,7 +103,7 @@ public class HUDPresets : GameModification {
         loadButtonNode.AttachNode(addon);
 
         overwriteButtonNode = new TextButtonNode {
-            Position = new Vector2(144.0f, 269.0f),
+            Position = new Vector2(144.0f, 174.0f),
             Size = new Vector2(100.0f, 28.0f),
             String = Strings.HUDPresets_ButtonOverwrite,
             TextTooltip = Strings.HUDPresets_ButtonOverwriteTooltip,
@@ -104,18 +113,17 @@ public class HUDPresets : GameModification {
         overwriteButtonNode.AttachNode(addon);
 
         deleteButtonNode = new TextButtonNode {
-            Position = new Vector2(256.0f, 269.0f),
+            Position = new Vector2(256.0f, 174.0f),
             Size = new Vector2(100.0f, 28.0f),
             String = Strings.HUDPresets_ButtonDelete,
-            // TooltipString = "Delete selected preset",
+            TextTooltip = Strings.HUDPresets_DeleteTooltip,
             IsEnabled = false,
-            // OnClick = DeleteSelectedPreset,
+            OnClick = DeleteSelectedPreset,
         };
-        deleteButtonNode.CollisionNode.TextTooltip = Strings.HUDPresets_DeleteTooltip;
         deleteButtonNode.AttachNode(addon);
 
         saveButtonNode = new TextButtonNode {
-            Position = new Vector2(368.0f, 269.0f),
+            Position = new Vector2(368.0f, 174.0f),
             Size = new Vector2(100.0f, 28.0f),
             String = Strings.HUDPresets_ButtonSave,
             OnClick = SaveCurrentLayout,
@@ -144,6 +152,14 @@ public class HUDPresets : GameModification {
 
     private unsafe void FinalizeHudLayoutWindow(AtkUnitBase* addon) {
         addon->Resize(addon->Size - new Vector2(0.0f, 95.0f));
+
+        // Move back up all nodes [11, 16] inclusive.
+        foreach (uint nodeId in Enumerable.Range(11, 6)) {
+            var node = addon->GetNodeById<AtkResNode>(nodeId);
+            if (node is not null) {
+                node->Position -= new Vector2(0.0f, 95.0f);
+            }
+        }
 
         presetDropdownNode?.Dispose();
         presetDropdownNode = null;
@@ -183,9 +199,7 @@ public class HUDPresets : GameModification {
         renameAddon.DefaultString = string.Empty;
         renameAddon.OnRenameComplete = newName => {
             HUDPresetManager.SavePreset(newName.ToString());
-            if (presetDropdownNode?.Options is not null) {
-                presetDropdownNode.Options.Add(newName.ToString());
-            }
+            presetDropdownNode?.Options = HUDPresetManager.GetPresetNames();
         };
 
         renameAddon.Toggle();
@@ -198,20 +212,17 @@ public class HUDPresets : GameModification {
         HUDPresetManager.SavePreset(presetDropdownNode.SelectedOption);
     }
 
-    // Work in Progress. There are issues with dropdowns that make the user experience poor for now.
-    // private void DeleteSelectedPreset() {
-    //     if (presetDropdownNode is null) return;
-    //     if (presetDropdownNode.SelectedOption is null) return;
-    //     if (presetDropdownNode.SelectedOption == HUDPresetManager.DefaultOption) return;
-    //     if (presetDropdownNode.Options is null) return;
-    //
-    //     HUDPresetManager.DeletePreset(presetDropdownNode.SelectedOption);
-    //     presetDropdownNode.Options.Remove(presetDropdownNode.SelectedOption);
-    //     presetDropdownNode.RecalculateScrollParams();
-    //
-    //     presetDropdownNode.SelectedOption = HUDPresetManager.DefaultOption;
-    //     presetDropdownNode.LabelNode.String = HUDPresetManager.DefaultOption;
-    // }
+    private void DeleteSelectedPreset() {
+        if (presetDropdownNode is null) return;
+        if (presetDropdownNode.SelectedOption is null) return;
+        if (presetDropdownNode.SelectedOption == HUDPresetManager.DefaultOption) return;
+
+        HUDPresetManager.DeletePreset(presetDropdownNode.SelectedOption);
+        presetDropdownNode.Options = HUDPresetManager.GetPresetNames();
+
+        presetDropdownNode.SelectedOption = HUDPresetManager.DefaultOption;
+        presetDropdownNode.LabelNode.String = HUDPresetManager.DefaultOption;
+    }
 
     private void UpdateButtonLocks(string selection) {
         if (loadButtonNode is null) return;
@@ -221,8 +232,6 @@ public class HUDPresets : GameModification {
 
         loadButtonNode.IsEnabled = selection != HUDPresetManager.DefaultOption;
         overwriteButtonNode.IsEnabled = selection != HUDPresetManager.DefaultOption;
-
-        // Work in Progress. There are issues with dropdowns that make the user experience poor for now.
-        // deleteButtonNode.IsEnabled = selection != HUDPresetManager.DefaultOption;
+        deleteButtonNode.IsEnabled = selection != HUDPresetManager.DefaultOption;
     }
 }
