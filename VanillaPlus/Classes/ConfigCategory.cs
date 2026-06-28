@@ -62,6 +62,30 @@ public class ConfigCategory : IDisposable {
         return this;
     }
 
+    public ConfigCategory AddCheckboxWithWarningIcon(
+        string label,
+        string memberName,
+        uint warningIconId,
+        string warningTooltip,
+        Action<bool>? onToggle = null) {
+        var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
+        if (memberInfo is null) return this;
+
+        var initialValue = memberInfo.GetValue<bool>(ConfigObject);
+
+        configEntries.Add(new WarningCheckBoxConfig {
+            Label = label,
+            MemberInfo = memberInfo,
+            Config = ConfigObject,
+            InitialState = initialValue,
+            ToggleAction = onToggle,
+            WarningIconId = warningIconId,
+            WarningTooltip = warningTooltip,
+        });
+
+        return this;
+    }
+
     public ConfigCategory AddIntSlider(string label, int min, int max, string memberName) {
         var memberInfo = ConfigObject.GetType().GetMember(memberName).FirstOrDefault();
         if (memberInfo is null) return this;

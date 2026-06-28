@@ -53,6 +53,24 @@ public static unsafe class AtkStageExtensions {
             );
         }
 
+        public void ShowAnchoredTextTooltip(AtkResNode* node, string? text) {
+            if (string.IsNullOrEmpty(text)) return;
+
+            using var stringBuffer = new Utf8String();
+            stringBuffer.SetString(text);
+
+            var tooltipType = AtkTooltipType.Text;
+            var tooltipArgs = stackalloc AtkTooltipManager.AtkTooltipArgs[1];
+            tooltipArgs->Ctor();
+            tooltipArgs->TextArgs.AtkArrayType = 0;
+            tooltipArgs->TextArgs.Text = stringBuffer.StringPtr;
+
+            var addon = RaptureAtkUnitManager.Instance()->GetAddonByNode(node);
+            if (addon is null) return;
+
+            stage.TooltipManager.ShowTooltip(tooltipType, addon->Id, node, tooltipArgs);
+        }
+
         public void ShowInventoryItemTooltip(AtkResNode* node, InventoryType container, short slot) {
             var tooltipArgs = stackalloc AtkTooltipManager.AtkTooltipArgs[1];
             tooltipArgs->Ctor();

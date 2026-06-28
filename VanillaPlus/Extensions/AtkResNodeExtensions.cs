@@ -9,5 +9,11 @@ public static unsafe class AtkResNodeExtensions {
                 AtkStage.Instance()->ShowActionTooltip(nodePointer, actionId, textLabel);
             }
         }
+
+        public void ShowAnchoredTextTooltip(string? text) {
+            fixed (AtkResNode* nodePointer = &node) {
+                AtkStage.Instance()->ShowAnchoredTextTooltip(nodePointer, text);
+            }
+        }
     }
 }
