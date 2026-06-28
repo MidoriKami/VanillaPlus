@@ -105,7 +105,7 @@ public class ZoneLabelNode : OverlayNode {
         if (labelNode.String != name) {
             labelNode.String = name;
 
-            Size = new Vector2(labelNode.TextNode.GetTextDrawSize().X + Height * 2.0f, Height);
+            Size = new Vector2(labelNode.TextNode.GetTextDrawSize(false).X + Height * 2.0f, Height);
             Origin = Size / 2.0f;
 
             imageNode.TexturePath = exit.TerritoryType.Value.TerritoryIntendedUse.RowId switch {
