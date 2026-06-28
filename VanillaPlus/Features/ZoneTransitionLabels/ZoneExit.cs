@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 using FFXIVClientStructs.FFXIV.Client.LayoutEngine;
 using FFXIVClientStructs.FFXIV.Client.LayoutEngine.Layer;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
@@ -14,10 +12,7 @@ namespace VanillaPlus.Features.ZoneTransitionLabels;
 /// <summary>
 /// Combines ExitRanges and LineVfx into one
 /// </summary>
-public struct ZoneExit
-{
-    public Pointer<LineVfxLayoutInstance> Line;
-    public Pointer<ExitRangeLayoutInstance> Exit;
+public struct ZoneExit {
 
     public RowRef<TerritoryType> TerritoryType;
     public Transform Transform;
@@ -28,19 +23,12 @@ public struct ZoneExit
     private readonly Vector3 up;
     private readonly Vector3 right;
 
-    public ZoneExit(Pointer<LineVfxLayoutInstance> line, Pointer<ExitRangeLayoutInstance> exit)
-    {
-        Line = line;
-        Exit = exit;
+    public unsafe ZoneExit(Pointer<LineVfxLayoutInstance> line, Pointer<ExitRangeLayoutInstance> exit) {
+        TerritoryType = new RowRef<TerritoryType>(Services.DataManager.Excel, exit.Value->TerritoryType);
+        Transform = line.Value->Transform;
 
-        unsafe
-        {
-            TerritoryType = new RowRef<TerritoryType>(Services.DataManager.Excel, exit.Value->TerritoryType);
-            Transform = line.Value->Transform;
-
-            up = Vector3.Transform(Vector3.UnitY, Transform.Rotation);
-            right = Vector3.Transform(Vector3.UnitX, Transform.Rotation);
-        }
+        up = Vector3.Transform(Vector3.UnitY, Transform.Rotation);
+        right = Vector3.Transform(Vector3.UnitX, Transform.Rotation);
     }
 
     /// <summary>
@@ -48,9 +36,7 @@ public struct ZoneExit
     /// </summary>
     /// <param name="target">Target point to search from</param>
     /// <returns>Closest point on the plane</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector3 GetClosestPoint(Vector3 target)
-    {
+    public Vector3 GetClosestPoint(Vector3 target) {
         var pos = Transform.Translation;
         var scale = Transform.Scale;
 
@@ -62,7 +48,7 @@ public struct ZoneExit
         var clampedX = Math.Clamp(localX, -scale.X, scale.X);
         var clampedY = Math.Clamp(localY, -scale.Y, scale.Y);
 
-        return pos + (right * clampedX) + (up * clampedY);
+        return pos + right * clampedX + up * clampedY;
     }
 
     /// <summary>
@@ -70,9 +56,7 @@ public struct ZoneExit
     /// </summary>
     /// <param name="target">Target point to search from</param>
     /// <returns>Closest point on the plane, adjusted towards the ground.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector3 GetClosestGroundPoint(Vector3 target)
-    {
+    public Vector3 GetClosestGroundPoint(Vector3 target) {
         var closest = GetClosestPoint(target);
         var point = closest with { Y = Transform.Translation.Y + Transform.Scale.Y };
 
@@ -80,8 +64,7 @@ public struct ZoneExit
             var bottom = Transform.Translation.Y - Transform.Scale.Y;
             point.Y = Math.Clamp(hit.Point.Y, bottom, point.Y);
         }
-        else
-        {
+        else {
             point.Y = closest.Y;
         }
 

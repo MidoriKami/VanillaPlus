@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Dalamud.Game.ClientState;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -10,31 +10,31 @@ using FFXIVClientStructs.FFXIV.Client.LayoutEngine.Layer;
 
 namespace VanillaPlus.Features.ZoneTransitionLabels;
 
-public class ZoneWatcher : IDisposable
-{
+public class ZoneWatcher : IDisposable {
     public List<ZoneExit> ZoneExits = [];
+    private readonly CancellationTokenSource tokenSource = new();
 
-    public ZoneWatcher()
-    {
+    public ZoneWatcher() {
         Services.ClientState.Login += OnLogin;
         Services.ClientState.ZoneInit += OnZoneInit;
         UpdateExits();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ZoneExit GetClosestExit(Vector3 target, out Vector3 closestPoint)
-    {
+    public void Dispose() {
+        Services.ClientState.Login -= OnLogin;
+        Services.ClientState.ZoneInit -= OnZoneInit;
+    }
+
+    public ZoneExit GetClosestExit(Vector3 target, out Vector3 closestPoint) {
         ZoneExit exit = default;
         closestPoint = Vector3.Zero;
 
         var closestDistance = float.MaxValue;
-        foreach (var zoneExit in ZoneExits)
-        {
+        foreach (var zoneExit in ZoneExits) {
             var point = zoneExit.GetClosestPoint(target);
             var distSq = Vector3.DistanceSquared(target, point);
 
-            if (distSq < closestDistance)
-            {
+            if (distSq < closestDistance) {
                 exit = zoneExit;
                 closestPoint = point;
                 closestDistance = distSq;
@@ -45,10 +45,10 @@ public class ZoneWatcher : IDisposable
     }
 
     private void OnLogin() => UpdateExits();
+
     private void OnZoneInit(ZoneInitEventArgs obj) => UpdateExits();
 
-    private void UpdateExits()
-    {
+    private void UpdateExits() {
         ZoneExits.Clear();
 
         Task.Run(async () => {
@@ -59,6 +59,7 @@ public class ZoneWatcher : IDisposable
             }
 
             while (loadState is not 2) {
+                if (tokenSource.IsCancellationRequested) return;
                 await Task.Delay(16);
                 unsafe {
                     loadState = GameMain.Instance()->TerritoryLoadState;
@@ -66,29 +67,25 @@ public class ZoneWatcher : IDisposable
             }
 
             await BuildAssociations();
-        });
+        }, tokenSource.Token);
     }
 
     /// <summary>
     /// Combines LineVfx instances and their closest ExitRange neighbor.
     /// </summary>
-    private unsafe Task BuildAssociations()
-    {
+    private unsafe Task BuildAssociations() {
         var active = LayoutWorld.Instance()->ActiveLayout;
 
         List<IntPtr> exitRangeInstances = [];
         List<IntPtr> lineVfxInstances = [];
 
-        foreach (var (_, layer) in active->Layers)
-        {
+        foreach (var layer in active->Layers.Values) {
             if (layer.IsNull) continue;
 
-            foreach (var (_, instance) in layer.Value->Instances)
-            {
+            foreach (var instance in layer.Value->Instances.Values) {
                 if (instance.IsNull) continue;
 
-                switch (instance.Value->Id.Type)
-                {
+                switch (instance.Value->Id.Type) {
                     case InstanceType.ExitRange:
                         exitRangeInstances.Add((IntPtr)instance.Value);
                         continue;
@@ -101,16 +98,14 @@ public class ZoneWatcher : IDisposable
             }
         }
 
-        foreach (var ptr in lineVfxInstances)
-        {
+        foreach (var ptr in lineVfxInstances) {
             var line = (LineVfxLayoutInstance*)ptr;
 
             var line2D = new Vector2(line->Transform.Translation.X, line->Transform.Translation.Y);
 
             var smallestDistance = float.MaxValue;
             ExitRangeLayoutInstance* closest = null;
-            foreach (var rangePtr in exitRangeInstances)
-            {
+            foreach (var rangePtr in exitRangeInstances) {
                 var range = (ExitRangeLayoutInstance*)rangePtr;
                 if (range->ExitType != ExitRangeType.ZoneLine) continue;
 
@@ -119,25 +114,17 @@ public class ZoneWatcher : IDisposable
                 var range2D = new Vector2(transform.Translation.X, transform.Translation.Y);
                 var dist = Vector2.DistanceSquared(line2D, range2D);
 
-                if (dist < smallestDistance)
-                {
+                if (dist < smallestDistance) {
                     smallestDistance = dist;
                     closest = range;
                 }
             }
 
-            if (closest != null)
-            {
+            if (closest != null) {
                 ZoneExits.Add(new ZoneExit(line, closest));
             }
         }
 
         return Task.CompletedTask;
-    }
-
-    public void Dispose()
-    {
-        Services.ClientState.Login -= OnLogin;
-        Services.ClientState.ZoneInit -= OnZoneInit;
     }
 }

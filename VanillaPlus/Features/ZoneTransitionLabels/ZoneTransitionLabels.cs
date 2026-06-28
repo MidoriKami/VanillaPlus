@@ -17,8 +17,6 @@ public class ZoneTransitionLabels : GameModification {
 
     public override string ImageName => "ZoneTransitionLabels/ZoneTransitionLabels.png";
 
-    // public override bool IsExperimental => true;
-
     private OverlayController? overlayController;
     private ZoneWatcher? zoneWatcher;
 
@@ -28,7 +26,7 @@ public class ZoneTransitionLabels : GameModification {
         await Services.Framework.RunSafely(() => {
             overlayController = new OverlayController();
             overlayController.AddNode(new ZoneLabelNode(zoneWatcher) {
-                Size = new Vector2(30, 30)
+                Size = new Vector2(300.0f, 30.0f),
             });
         });
     }

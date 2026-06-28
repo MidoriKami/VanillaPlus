@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -9,52 +10,48 @@ using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.ZoneTransitionLabels.Nodes;
 
-public class ZoneLabelNode : OverlayNode
-{
+public class ZoneLabelNode : OverlayNode {
+
     public override OverlayLayer OverlayLayer => OverlayLayer.Background;
 
-    private readonly TextNode labelNode;
+    private readonly TextNineGridNode labelNode;
     private readonly ImGuiImageNode imageNode;
 
     private readonly ZoneWatcher watcher;
 
-    public ZoneLabelNode(ZoneWatcher zoneWatcher)
-    {
+    public ZoneLabelNode(ZoneWatcher zoneWatcher) {
         watcher = zoneWatcher;
 
-        labelNode = new TextNode
-        {
-            TextFlags = TextFlags.AutoAdjustNodeSize | TextFlags.Edge,
-            TextColor = ColorHelper.GetColor(2),
-            TextOutlineColor = new Vector4(0, 0, 0, 1),
-            FontSize = 20,
+        labelNode = new TextNineGridNode {
+            TextColor = ColorHelper.GetColor(1),
+            FontSize = 22,
             FontType = FontType.Axis,
-            AlignmentType = AlignmentType.Left,
+            AlignmentType = AlignmentType.Center,
         };
         labelNode.AttachNode(this);
 
-        imageNode = new ImGuiImageNode
-        {
-            Position = new Vector2(-30, 0),
+        imageNode = new ImGuiImageNode {
+            Position = new Vector2(-30.0f, 0.0f),
             TexturePath = Assets.GetAssetPath("ZoneTransitionLabels/OverworldIcon.png"),
-            Size = new Vector2(20, 20),
+            Size = new Vector2(20.0f, 20.0f),
             FitTexture = true,
         };
         imageNode.AttachNode(this);
     }
 
-    protected override void OnSizeChanged()
-    {
+    protected override void OnSizeChanged() {
         base.OnSizeChanged();
 
-        labelNode.Size = Size;
-        imageNode.Size = new Vector2(Size.Y);
+        imageNode.Size = new Vector2(Height, Height);
+        imageNode.Position = new Vector2(0.0f, 0.0f);
 
-        Origin = new Vector2(Width / 2, Height / 2);
+        labelNode.Size = new Vector2(Width - Height - 4.0f, Height);
+        labelNode.Position = new Vector2(imageNode.Bounds.Right + 4.0f, 0.0f);
+
+        Origin = Size / 2.0f;
     }
 
-    protected override void OnUpdate()
-    {
+    protected override void OnUpdate() {
         IsVisible = TryUpdateLabel();
     }
 
@@ -66,13 +63,12 @@ public class ZoneLabelNode : OverlayNode
     private readonly Vector2 minScale = new(0.5f, 0.5f);
     private readonly Vector2 maxScale = new(1.0f, 1.0f);
 
-    private unsafe bool TryUpdateLabel()
-    {
+    private unsafe bool TryUpdateLabel() {
         if (Services.ObjectTable.LocalPlayer is not { } playerCharacter) return false;
         var player = (BattleChara*)playerCharacter.Address;
 
         if (player == null) return false;
-        if (watcher.ZoneExits.Count == 0) return false;
+        if (watcher.ZoneExits.Count is 0) return false;
 
         // Get the closest exit
         Vector3 playerPos = player->Position;
@@ -84,29 +80,34 @@ public class ZoneLabelNode : OverlayNode
         closestPoint.Y += 1;
 
         // Check distance
-        var dist = Vector3.DistanceSquared(playerPos, closestPoint);
-        if (!(dist < MaxDistance)) return false;
+        var distance = Vector3.DistanceSquared(playerPos, closestPoint);
+        if (distance >= MaxDistance) return false;
 
         // Lerp to current location (maybe should be toggleable)
-        var deltaTime = (float)Services.Framework.UpdateDelta.TotalSeconds;
+        var deltaTime = (float) Services.Framework.UpdateDelta.TotalSeconds;
 
-        if (IsVisible) closestPoint = Vector3.Lerp(previousLocation, closestPoint, deltaTime * 30f);
+        if (IsVisible) {
+            closestPoint = Vector3.Lerp(previousLocation, closestPoint, deltaTime * 30f);
+        }
+
         previousLocation = closestPoint;
 
         // Update screen position
-        if (!Services.GameGui.WorldToScreenAdjusted(closestPoint, out var screenPos)) return false;
+        if (!IGameGui.WorldToScreenAdjusted(closestPoint, out var screenPos)) return false;
         Position = screenPos - Origin;
 
         // Adjust scale (farther = smaller)
-        var s = ( dist - MinDistance ) / ( MaxDistance - MinDistance );
-        Scale = Vector2.Lerp(maxScale, minScale, s);
+        var scale = ( distance - MinDistance ) / ( MaxDistance - MinDistance );
+        Scale = Vector2.Lerp(maxScale, minScale, scale);
 
         // Update the text / icon
         var name = exit.Name;
-        if (labelNode.String != name)
-        {
+        if (labelNode.String != name) {
             labelNode.String = name;
-            Size = labelNode.Size with { Y = Height };
+
+            Size = new Vector2(labelNode.TextNode.GetTextDrawSize().X + Height * 2.0f, Height);
+            Origin = Size / 2.0f;
+
             imageNode.TexturePath = exit.TerritoryType.Value.TerritoryIntendedUse.RowId switch {
                 0 => Assets.GetAssetPath("ZoneTransitionLabels/CityIcon.png"),      // City
                 1 => Assets.GetAssetPath("ZoneTransitionLabels/OverworldIcon.png"), // Overworld
