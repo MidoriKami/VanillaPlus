@@ -6,8 +6,16 @@ using KamiToolKit.Nodes;
 
 namespace VanillaPlus.Features.InventoryCooldowns;
 
-public unsafe class InventoryCooldownTextNode(InventoryCooldowns feature) : TextNode {
+public unsafe class InventoryCooldownTextNode : TextNode {
     public required AtkComponentDragDrop* Slot;
+    public required int SlotIndex;
+
+    protected override void Dispose(bool disposing, bool isNativeDestructor) {
+        SetImageMultiply(100);
+        Slot = null;
+
+        base.Dispose(disposing, isNativeDestructor);
+    }
 
     public void Update(InventoryItem* item) {
         if (Slot is null) return;
@@ -34,10 +42,14 @@ public unsafe class InventoryCooldownTextNode(InventoryCooldowns feature) : Text
 
         var actionManager = ActionManager.Instance();
         var actionType = ItemUtil.IsEventItem(itemId) ? ActionType.EventItem : ActionType.Item;
-        var isActive = actionManager->IsRecastTimerActive(actionType, itemId);
-        var timeLeft = actionManager->GetRecastTimeLeft(actionType, itemId);
 
-        if (!isActive || timeLeft < 0.1f) {
+        if (!actionManager->IsRecastTimerActive(actionType, itemId)) {
+            Hide();
+            return;
+        }
+
+        var timeLeft = actionManager->GetRecastTimeLeft(actionType, itemId);
+        if (timeLeft < 0.1f) {
             Hide();
             return;
         }
@@ -70,13 +82,5 @@ public unsafe class InventoryCooldownTextNode(InventoryCooldowns feature) : Text
         imageNode->MultiplyBlue = multiply;
         imageNode->MultiplyRed = multiply;
         imageNode->MultiplyGreen = multiply;
-    }
-
-    protected override void Dispose(bool disposing, bool isNativeDestructor) {
-        SetImageMultiply(100);
-        Slot = null;
-        feature.RemoveNodeFromCache(this);
-
-        base.Dispose(disposing, isNativeDestructor);
     }
 }
