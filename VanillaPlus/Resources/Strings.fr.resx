@@ -1709,4 +1709,10 @@ Pour participer aux festivités, rendez-vous dans la section « Saison » de Van
   <data name="FancyLoadingScreens_LabelInstancedLoadNote" xml:space="preserve">
     <value>Affiche l'illustration de la destination lors du passage d'une zone instanciée à une autre (missions, logement, etc.). Remarque : l'illustration recouvre la fenêtre de discussion, vous ne pouvez donc pas discuter pendant le chargement.</value>
   </data>
+  <data name="ModificationDisplay_ZoneTransitionLabels" xml:space="preserve">
+      <value>Zone Transition Labels</value>
+  </data>
+  <data name="ModificationDescription_ZoneTransitionLabels" xml:space="preserve">
+      <value>Adds labels to zone lines to indicate where they lead. Designed to look like FFXII.</value>
+  </data>
 </root>
