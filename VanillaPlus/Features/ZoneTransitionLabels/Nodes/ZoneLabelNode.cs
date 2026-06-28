@@ -105,14 +105,14 @@ public class ZoneLabelNode : OverlayNode {
         if (labelNode.String != name) {
             labelNode.String = name;
 
-            Size = new Vector2(labelNode.TextNode.GetTextDrawSize().X + Height * 2.0f, Height);
+            Size = new Vector2(labelNode.TextNode.GetTextDrawSize(false).X + Height * 2.0f, Height);
             Origin = Size / 2.0f;
 
             imageNode.TexturePath = exit.TerritoryType.Value.TerritoryIntendedUse.RowId switch {
                 0 => Assets.GetAssetPath("ZoneTransitionLabels/CityIcon.png"),      // City
                 1 => Assets.GetAssetPath("ZoneTransitionLabels/OverworldIcon.png"), // Overworld
                 13 => Assets.GetAssetPath("ZoneTransitionLabels/HousingIcon.png"),  // Housing ward
-                _ => Assets.GetAssetPath("ZoneTransitionLabels/OverworldIcon.png")  // Shouldn't occur, but just in case
+                _ => Assets.GetAssetPath("ZoneTransitionLabels/OverworldIcon.png"),  // Shouldn't occur, but just in case
             };
         }
 
