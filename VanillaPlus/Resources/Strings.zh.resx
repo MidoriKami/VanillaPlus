@@ -1709,4 +1709,10 @@ ID：{0}</value>
   <data name="FancyLoadingScreens_LabelInstancedLoadNote" xml:space="preserve">
     <value>切换副本区域（副本、房屋等）时显示目标地区插图。注意：插图会覆盖聊天框，加载期间无法聊天。</value>
   </data>
+  <data name="ModificationDisplay_ZoneTransitionLabels" xml:space="preserve">
+      <value>Zone Transition Labels</value>
+  </data>
+  <data name="ModificationDescription_ZoneTransitionLabels" xml:space="preserve">
+      <value>Adds labels to zone lines to indicate where they lead. Designed to look like FFXII.</value>
+  </data>
 </root>
