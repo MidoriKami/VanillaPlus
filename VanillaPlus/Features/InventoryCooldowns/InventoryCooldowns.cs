@@ -65,7 +65,7 @@ public class InventoryCooldowns : GameModification {
                 2 => "InventoryExpansion",
                 _ => throw new ArgumentOutOfRangeException(),
             },
-            OnUpdate = UpdateInventory,
+            OnDraw = UpdateInventory,
             OnFinalize = FinalizeInventory,
         };
 
