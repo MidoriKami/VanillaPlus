@@ -444,7 +444,7 @@ ID：{0}</value>
     <value>未选择选项</value>
   </data>
   <data name="HUDPresets_DeleteTooltip" xml:space="preserve">
-    <value>Deletes selected preset</value>
+    <value>删除所选预设</value>
   </data>
   <data name="HUDPresets_DropdownTooltip" xml:space="preserve">
     <value>选择 HUD 布局预设</value>
@@ -1710,9 +1710,9 @@ ID：{0}</value>
     <value>切换副本区域（副本、房屋等）时显示目标地区插图。注意：插图会覆盖聊天框，加载期间无法聊天。</value>
   </data>
   <data name="ModificationDisplay_ZoneTransitionLabels" xml:space="preserve">
-      <value>Zone Transition Labels</value>
+      <value>区域切换标签</value>
   </data>
   <data name="ModificationDescription_ZoneTransitionLabels" xml:space="preserve">
-      <value>Adds labels to zone lines to indicate where they lead. Designed to look like FFXII.</value>
+      <value>在区域边界添加指示通往何处的标签。设计风格仿照《最终幻想XII》。</value>
   </data>
 </root>
