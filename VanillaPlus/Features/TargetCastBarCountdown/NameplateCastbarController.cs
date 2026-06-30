@@ -50,7 +50,7 @@ public class NameplateCastbarController : IDisposable {
             AddonName = "CastBarEnemy",
             OnSetup = OnAddonSetup,
             OnFinalize = OnAddonFinalize,
-            OnPreRefresh = OnAddonRefresh,
+            OnPreUpdate = OnAddonRefresh,
         };
     }
 

@@ -47,7 +47,7 @@ public class FocusTargetCastbarController : IDisposable {
             AddonName = "_FocusTargetInfo",
             OnSetup = OnAddonSetup,
             OnFinalize = OnAddonFinalize,
-            OnPreRefresh = OnAddonRefresh,
+            OnPreUpdate = OnAddonRefresh,
         };
     }
 

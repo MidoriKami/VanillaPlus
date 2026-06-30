@@ -46,7 +46,7 @@ public class PrimaryTargetAltCastbarController {
             AddonName = "_TargetInfo",
             OnSetup = OnAddonSetup,
             OnFinalize = OnAddonFinalize,
-            OnPreRefresh = OnAddonRefresh,
+            OnPreUpdate = OnAddonRefresh,
         };
     }
 

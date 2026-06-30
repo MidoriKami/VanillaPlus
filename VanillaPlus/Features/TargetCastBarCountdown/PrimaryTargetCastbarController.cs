@@ -46,7 +46,7 @@ public class PrimaryTargetCastbarController {
             AddonName = "_TargetInfoCastBar",
             OnSetup = OnAddonSetup,
             OnFinalize = OnAddonFinalize,
-            OnPreRefresh = OnAddonRefresh,
+            OnPreUpdate = OnAddonRefresh,
         };
     }
 
