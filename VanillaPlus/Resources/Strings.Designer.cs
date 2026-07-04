@@ -809,6 +809,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Highlights the recommended tiles to reveal in the Faux Hollows weekly puzzle, using community-sourced board patterns to omit impossible locations and mark possible chest, sword, and fox tiles.
+        /// </summary>
+        internal static string ModificationDescription_FauxHollowsHelper {
+            get {
+                return ResourceManager.GetString("ModificationDescription_FauxHollowsHelper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Faux Hollows Helper.
+        /// </summary>
+        internal static string ModificationDisplay_FauxHollowsHelper {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_FauxHollowsHelper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Button.
         /// </summary>
         internal static string ConfigLabel_ButtonColor {

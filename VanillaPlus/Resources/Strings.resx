@@ -1715,4 +1715,10 @@ To join in the festivities, check out the Seasonal section in VanillaPlus!</valu
   <data name="ModificationDescription_ZoneTransitionLabels" xml:space="preserve">
       <value>Adds labels to zone lines to indicate where they lead. Designed to look like FFXII.</value>
   </data>
+  <data name="ModificationDescription_FauxHollowsHelper" xml:space="preserve">
+    <value>Highlights the recommended tiles to reveal in the Faux Hollows weekly puzzle, using community-sourced board patterns to omit impossible locations and mark possible chest, sword, and fox tiles.</value>
+  </data>
+  <data name="ModificationDisplay_FauxHollowsHelper" xml:space="preserve">
+    <value>Faux Hollows Helper</value>
+  </data>
 </root>
