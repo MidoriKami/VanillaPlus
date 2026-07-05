@@ -74,8 +74,8 @@ public class HUDCoordinates : GameModification {
             var textNode = componentNode->Component->GetTextNodeById(100);
             if (textNode is null) continue;
 
-            var textNodeSizeOffset = new Vector2(node.Value->Width, node.Value->Height) / 2.0f - new Vector2(90.0f, 22.0f) / 2.0f;
-            var textNodeCenter = new Vector2(node.Value->X, node.Value->Y) + new Vector2(node.Value->Width, node.Value->Height) / 2.0f;
+            var textNodeSizeOffset = node.Value->Size / 2.0f - textNode->AtkResNode.Size / 2.0f;
+            var textNodeCenter = node.Value->Position + node.Value->Size / 2.0f;
 
             textNode->SetPositionFloat(textNodeSizeOffset.X, textNodeSizeOffset.Y);
             textNode->SetText(textNodeCenter.ToString());
