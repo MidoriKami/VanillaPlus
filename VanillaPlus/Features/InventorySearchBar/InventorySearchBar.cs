@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
@@ -116,16 +115,12 @@ public class InventorySearchBar : GameModification {
     private unsafe void OnInventoryUpdate(AtkUnitBase* atkUnitBase) {
         if (searchInputNode is null) return;
 
-        // Uses hardcoded offsets to tab index because square can't do anything consistently.
-        // Pending removal if this causes too many headaches.
         var tabIndex = atkUnitBase->NameString switch {
-            "Inventory" => Marshal.ReadInt32((nint)atkUnitBase, 0x334),
-            "InventoryLarge" => Marshal.ReadInt32((nint)atkUnitBase, 0x338),
-            "InventoryExpansion" => -1,
+            "Inventory" => ((AddonInventory*)atkUnitBase)->TabIndex,
+            "InventoryLarge" => ((AddonInventoryLarge*)atkUnitBase)->TabIndex,
+            "InventoryExpansion" => ((AddonInventoryExpansion*)atkUnitBase)->TabIndex,
             _ => throw new ArgumentOutOfRangeException(),
         };
-
-        if (tabIndex is -1) return;
 
         if (lastSelectedTab != tabIndex) {
             Inventory.FadeInventoryNodes(atkUnitBase, searchInputNode.SearchString.ToString());
