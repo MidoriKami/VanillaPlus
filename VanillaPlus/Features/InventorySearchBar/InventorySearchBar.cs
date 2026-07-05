@@ -49,6 +49,7 @@ public class InventorySearchBar : GameModification {
         };
 
         Services.GameGui.AgentUpdate += OnAgentUpdate;
+        Services.ClientState.Login += OnLogin;
         Services.Framework.Update += OnFrameworkUpdate;
         Services.GameConfig.UiConfigChanged += OnUiConfigChanged;
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostHide, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnInventoryHide);
@@ -57,6 +58,7 @@ public class InventorySearchBar : GameModification {
     public override async Task OnDisableAsync() {
         Services.AddonLifecycle.UnregisterListener(OnInventoryHide);
         Services.GameConfig.UiConfigChanged -= OnUiConfigChanged;
+        Services.ClientState.Login -= OnLogin;
         Services.GameGui.AgentUpdate -= OnAgentUpdate;
         Services.Framework.Update -= OnFrameworkUpdate;
 
@@ -69,6 +71,10 @@ public class InventorySearchBar : GameModification {
     private  void OnUiConfigChanged(object? sender, ConfigChangeEvent e) {
         if (e.Option is not UiConfigOption.ItemInventryWindowSizeType) return;
 
+        ReinitializeController();
+    }
+
+    private void OnLogin() {
         ReinitializeController();
     }
 
