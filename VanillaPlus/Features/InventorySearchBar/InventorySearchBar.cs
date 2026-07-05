@@ -115,16 +115,11 @@ public class InventorySearchBar : GameModification {
     private unsafe void OnInventoryUpdate(AtkUnitBase* atkUnitBase) {
         if (searchInputNode is null) return;
 
-        var tabIndex = atkUnitBase->NameString switch {
-            "Inventory" => ((AddonInventory*)atkUnitBase)->TabIndex,
-            "InventoryLarge" => ((AddonInventoryLarge*)atkUnitBase)->TabIndex,
-            "InventoryExpansion" => ((AddonInventoryExpansion*)atkUnitBase)->TabIndex,
-            _ => throw new ArgumentOutOfRangeException(),
-        };
+        var currentTabIndex = Inventory.GetTabForInventory(atkUnitBase);
 
-        if (lastSelectedTab != tabIndex) {
+        if (lastSelectedTab != currentTabIndex) {
             Inventory.FadeInventoryNodes(atkUnitBase, searchInputNode.SearchString.ToString());
-            lastSelectedTab = tabIndex;
+            lastSelectedTab = currentTabIndex;
         }
     }
 
