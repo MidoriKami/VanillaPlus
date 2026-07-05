@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
@@ -30,7 +31,7 @@ public class InventorySearchBar : GameModification {
 
     public override string ImageName => "InventorySearchBar.png";
 
-    private AddonController<AddonInventory>? inventoryController;
+    private AddonController? inventoryController;
     private KeybindListener? keybindListener;
     private TextInputWithHintNode? searchInputNode;
 
@@ -85,7 +86,7 @@ public class InventorySearchBar : GameModification {
 
         inventoryController?.Dispose();
 
-        inventoryController = new AddonController<AddonInventory> {
+        inventoryController = new AddonController {
             AddonName = inventoryType switch {
                 0 => "Inventory",
                 1 => "InventoryLarge",
@@ -100,8 +101,8 @@ public class InventorySearchBar : GameModification {
         inventoryController.Enable();
     }
 
-    private unsafe void OnInventorySetup(AddonInventory* addon) {
-        var size = new Vector2(addon->AtkUnitBase.Size.X / 2.0f, 28.0f);
+    private unsafe void OnInventorySetup(AtkUnitBase* addon) {
+        var size = new Vector2(addon->Size.X / 2.0f, 28.0f);
         var headerSize = new Vector2(addon->WindowHeaderCollisionNode->Width, addon->WindowHeaderCollisionNode->Height);
 
         searchInputNode = new TextInputWithHintNode {
@@ -109,19 +110,30 @@ public class InventorySearchBar : GameModification {
             Size = size,
             OnInputReceived = searchString => OnSearchInputChanged(addon, searchString),
         };
-        searchInputNode.AttachNode(&addon->AtkUnitBase);
+        searchInputNode.AttachNode(addon);
     }
 
-    private unsafe void OnInventoryUpdate(AddonInventory* addon) {
+    private unsafe void OnInventoryUpdate(AtkUnitBase* atkUnitBase) {
         if (searchInputNode is null) return;
 
-        if (lastSelectedTab != addon->TabIndex) {
-            Inventory.FadeInventoryNodes(&addon->AtkUnitBase, searchInputNode.SearchString.ToString());
-            lastSelectedTab = addon->TabIndex;
+        // Uses hardcoded offsets to tab index because square can't do anything consistently.
+        // Pending removal if this causes too many headaches.
+        var tabIndex = atkUnitBase->NameString switch {
+            "Inventory" => Marshal.ReadInt32((nint)atkUnitBase, 0x334),
+            "InventoryLarge" => Marshal.ReadInt32((nint)atkUnitBase, 0x338),
+            "InventoryExpansion" => -1,
+            _ => throw new ArgumentOutOfRangeException(),
+        };
+
+        if (tabIndex is -1) return;
+
+        if (lastSelectedTab != tabIndex) {
+            Inventory.FadeInventoryNodes(atkUnitBase, searchInputNode.SearchString.ToString());
+            lastSelectedTab = tabIndex;
         }
     }
 
-    private unsafe void OnInventoryFinalize(AddonInventory* addonInventory) {
+    private unsafe void OnInventoryFinalize(AtkUnitBase* addon) {
         searchInputNode?.Dispose();
         searchInputNode = null;
     }
@@ -149,8 +161,8 @@ public class InventorySearchBar : GameModification {
         Inventory.FadeInventoryNodes(inventoryAddon, searchInputNode.SearchString.ToString());
     }
 
-    private static unsafe void OnSearchInputChanged(AddonInventory* addon, ReadOnlySeString searchString) {
-        Inventory.FadeInventoryNodes(&addon->AtkUnitBase, searchString.ToString());
+    private static unsafe void OnSearchInputChanged(AtkUnitBase* addon, ReadOnlySeString searchString) {
+        Inventory.FadeInventoryNodes(addon, searchString.ToString());
     }
 
     private unsafe void OnKeybindPressed(ref bool isHandled) {
