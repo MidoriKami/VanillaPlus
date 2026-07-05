@@ -25,6 +25,8 @@ public class FasterScroll : GameModification {
     public override async Task OnEnableAsync() {
         config = await FasterScrollConfig.Load();
 
+        config.SpeedMultiplier = MathF.Round(config.SpeedMultiplier, 1);
+
         configWindow = new ConfigAddon {
             Size = new Vector2(400.0f, 125.0f),
             InternalName = "FasterScrollConfig",
@@ -33,7 +35,7 @@ public class FasterScroll : GameModification {
         };
 
         configWindow.AddCategory(Strings.Settings)
-            .AddFloatSlider(Strings.FasterScroll_LabelSpeedMultiplier, 0.5f, 4.0f, 0.05f, nameof(config.SpeedMultiplier));
+            .AddFloatSlider(Strings.FasterScroll_LabelSpeedMultiplier, 0.5f, 4.0f, 0.1f, nameof(config.SpeedMultiplier));
 
         OpenConfigAction = configWindow.Toggle;
 
