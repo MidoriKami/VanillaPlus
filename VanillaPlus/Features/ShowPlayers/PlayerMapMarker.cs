@@ -30,11 +30,11 @@ public sealed unsafe class PlayerMapMarker : MapMarkerNode {
         if (battleChara->IsPartyMember) return;
         if (!battleChara->GetIsTargetable()) return;
 
+        if (Vector3.Distance(battleChara->Position, localChara->Position) > 150.0f) return;
+
         var objectPosition = new Vector2(battleChara->Position.X, battleChara->Position.Z);
         var objectName = battleChara->NameString;
         var objectLevel = battleChara->Level.ToString();
-
-        if (Vector3.Distance(battleChara->Position, localChara->Position) > 150.0f) return;
 
         if (battleChara->IsFriend) {
             MultiplyColor = KnownColor.Orange.Vector3();
