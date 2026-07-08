@@ -2808,7 +2808,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shows icons for enemies players on the map..
+        ///   Looks up a localized string similar to Shows icons for enemies on the map..
         /// </summary>
         internal static string ModificationDescription_ShowEnemies {
             get {
