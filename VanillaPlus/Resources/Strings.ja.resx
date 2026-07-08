@@ -1541,7 +1541,7 @@ Data will be updated as it becomes available, do not request data updates.</valu
     <value>Show Enemies</value>
   </data>
   <data name="ModificationDescription_ShowEnemies" xml:space="preserve">
-    <value>Shows icons for enemies players on the map.</value>
+    <value>Shows icons for enemies on the map.</value>
   </data>
   <data name="ModificationDisplay_ShowGatheringPoints" xml:space="preserve">
     <value>Show Gathering Points</value>
