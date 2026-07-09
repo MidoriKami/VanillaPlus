@@ -1541,7 +1541,7 @@ ID：{0}</value>
     <value>显示敌人</value>
   </data>
   <data name="ModificationDescription_ShowEnemies" xml:space="preserve">
-    <value>Shows icons for enemies on the map.</value>
+    <value>在地图上显示敌对目标图标。</value>
   </data>
   <data name="ModificationDisplay_ShowGatheringPoints" xml:space="preserve">
     <value>显示采集点</value>
