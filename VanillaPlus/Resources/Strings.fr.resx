@@ -1541,7 +1541,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Affiche les ennemis</value>
   </data>
   <data name="ModificationDescription_ShowEnemies" xml:space="preserve">
-    <value>Shows icons for enemies on the map.</value>
+    <value>Affiche les icônes des ennemis sur la carte.</value>
   </data>
   <data name="ModificationDisplay_ShowGatheringPoints" xml:space="preserve">
     <value>Affiche les points de récolte</value>
