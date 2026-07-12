@@ -52,8 +52,8 @@ public class InventorySearchBar : GameModification {
 
         Services.GameGui.AgentUpdate += OnAgentUpdate;
         Services.ClientState.Login += OnLogin;
+        Services.ClientState.Logout += OnLogout;
         Services.Framework.Update += OnFrameworkUpdate;
-        Services.GameConfig.UiConfigChanged += OnUiConfigChanged;
         Services.AddonLifecycle.RegisterListener(AddonEvent.PostHide, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnInventoryHide);
     }
 
@@ -61,6 +61,7 @@ public class InventorySearchBar : GameModification {
         Services.AddonLifecycle.UnregisterListener(OnInventoryHide);
         Services.GameConfig.UiConfigChanged -= OnUiConfigChanged;
         Services.ClientState.Login -= OnLogin;
+        Services.ClientState.Logout -= OnLogout;
         Services.GameGui.AgentUpdate -= OnAgentUpdate;
         Services.Framework.Update -= OnFrameworkUpdate;
 
@@ -70,7 +71,7 @@ public class InventorySearchBar : GameModification {
         searchInputNode = null;
     }
 
-    private  void OnUiConfigChanged(object? sender, ConfigChangeEvent e) {
+    private void OnUiConfigChanged(object? sender, ConfigChangeEvent e) {
         if (e.Option is not UiConfigOption.ItemInventryWindowSizeType) return;
 
         ReinitializeController();
@@ -78,6 +79,12 @@ public class InventorySearchBar : GameModification {
 
     private void OnLogin() {
         ReinitializeController();
+
+        Services.GameConfig.UiConfigChanged += OnUiConfigChanged;
+    }
+
+    private void OnLogout(int type, int code) {
+        Services.GameConfig.UiConfigChanged -= OnUiConfigChanged;
     }
 
     private unsafe void ReinitializeController() {
