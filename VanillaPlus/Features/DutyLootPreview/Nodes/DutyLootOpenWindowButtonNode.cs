@@ -66,12 +66,12 @@ public class DutyLootOpenWindowButtonNode : SimpleComponentNode {
         OnDataLoaderStateChanged();
     }
 
-    protected override void Dispose(bool disposing, bool isNativeDestructor) {
-        if (disposing && !IsDisposed) {
-            dataLoader.OnChanged -= OnDataLoaderStateChanged;
-        }
+    protected override void Dispose(bool isNativeDestructor) {
+        if (IsDisposed) return;
 
-        base.Dispose(disposing, isNativeDestructor);
+        dataLoader.OnChanged -= OnDataLoaderStateChanged;
+
+        base.Dispose(isNativeDestructor);
     }
 
     private void OnDataLoaderStateChanged() {

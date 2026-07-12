@@ -60,11 +60,13 @@ public sealed class PresetControlNode : SimpleComponentNode {
         buttonContainer.AttachNode(this);
     }
 
-    protected override void Dispose(bool disposing, bool isNativeDestructor) {
+    protected override void Dispose(bool isNativeDestructor) {
+        if (IsDisposed) return;
+
         renameAddon?.Dispose();
         renameAddon = null;
 
-        base.Dispose(disposing, isNativeDestructor);
+        base.Dispose(isNativeDestructor);
     }
 
     protected override void OnSizeChanged() {

@@ -10,11 +10,13 @@ public unsafe class InventoryCooldownTextNode : TextNode {
     public required AtkComponentDragDrop* Slot;
     public required int SlotIndex;
 
-    protected override void Dispose(bool disposing, bool isNativeDestructor) {
+    protected override void Dispose(bool isNativeDestructor) {
+        if (IsDisposed) return;
+
         SetImageMultiply(100);
         Slot = null;
 
-        base.Dispose(disposing, isNativeDestructor);
+        base.Dispose(isNativeDestructor);
     }
 
     public void Update(InventoryItem* item) {

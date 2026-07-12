@@ -45,11 +45,13 @@ public unsafe class TeleportListItemNode : ListItemNode<IAetheryteEntry>, IListI
         AddEvent(AtkEventType.MouseClick, OnClicked);
     }
 
-    protected override void Dispose(bool disposing, bool isNativeDestructor) {
-        base.Dispose(disposing, isNativeDestructor);
+    protected override void Dispose(bool isNativeDestructor) {
+        if (IsDisposed) return;
 
         renameAddon?.Dispose();
         renameAddon = null;
+
+        base.Dispose(isNativeDestructor);
     }
 
     private void OnMouseOver()
