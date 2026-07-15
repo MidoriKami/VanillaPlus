@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using KamiToolKit.MapOverlay;
@@ -16,7 +17,7 @@ public sealed unsafe class TreasureChestMapMarker : MapMarkerNode {
     protected override void OnUpdate() {
         IsVisible = false;
 
-        var localChara = Services.ObjectTable.LocalPlayer;
+        var localChara = Services.GetService<IObjectTable>().LocalPlayer;
         if (localChara is null) return;
 
         var treasureObject = EventObjectManager.Instance()->EventObjects[ObjectIndex].Value;

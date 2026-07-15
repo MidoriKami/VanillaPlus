@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using KamiToolKit.MapOverlay;
 using VanillaPlus.Classes;
@@ -24,7 +25,7 @@ public class ShowTreasureChests : GameModification {
     public override async Task OnEnableAsync() {
         mapOverlayController = new MapOverlayController();
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             unsafe {
                 foreach (var index in Enumerable.Range(0, EventObjectManager.Instance()->EventObjects.Length)) {
                     mapOverlayController.AddMarker(new TreasureChestMapMarker {
@@ -38,7 +39,7 @@ public class ShowTreasureChests : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => mapOverlayController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => mapOverlayController?.Dispose());
         mapOverlayController = null;
     }
 }

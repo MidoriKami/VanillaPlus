@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
@@ -37,7 +38,7 @@ public class HideUnwantedBanners : GameModification {
         OpenConfigAction = configWindow.Toggle;
 
         unsafe {
-            setImageTextureHook = Services.Hooker.HookFromAddress<AddonImage.Delegates.SetImage>(AddonImage.Addresses.SetImage.Value, OnSetImageTexture);
+            setImageTextureHook = Services.GetService<IGameInteropProvider>().HookFromAddress<AddonImage.Delegates.SetImage>(AddonImage.Addresses.SetImage.Value, OnSetImageTexture);
             setImageTextureHook?.Enable();
         }
     }

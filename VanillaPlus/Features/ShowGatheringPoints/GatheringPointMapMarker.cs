@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using KamiToolKit.MapOverlay;
@@ -34,8 +35,8 @@ public unsafe class GatheringPointMapMarker : MapMarkerNode {
     }
 
     private uint GetIconId(uint gatheringPointId) {
-        var gatheringPoint = Services.DataManager.GetExcelSheet<GatheringPoint>().GetRow(gatheringPointId);
-        var gatheringPointBase = Services.DataManager.GetExcelSheet<GatheringPointBase>().GetRow(gatheringPoint.GatheringPointBase.RowId);
+        var gatheringPoint = Services.GetService<IDataManager>().GetExcelSheet<GatheringPoint>().GetRow(gatheringPointId);
+        var gatheringPointBase = Services.GetService<IDataManager>().GetExcelSheet<GatheringPointBase>().GetRow(gatheringPoint.GatheringPointBase.RowId);
 
         return gatheringPointBase.GatheringType.RowId switch {
             0 => 60438,

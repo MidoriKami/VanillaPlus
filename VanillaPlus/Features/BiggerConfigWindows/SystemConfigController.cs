@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 
@@ -31,7 +32,7 @@ public class SystemConfigController : IDisposable {
 
     private unsafe void SetupConfigSystem(AtkUnitBase* addon) {
         if (AtkStage.Instance()->ScreenSize.Height < addon->Size.Y + Config.SystemConfigAdditionalHeight) {
-            Services.ChatGui.PrintError("[BiggerConfigWindow] Unable to resize config window, height would be too big.", "VanillaPlus");
+            Services.GetService<IChatGui>().PrintError("[BiggerConfigWindow] Unable to resize config window, height would be too big.", "VanillaPlus");
             Services.PluginLog.Warning("Unable to resize config window, height would be too big.", "BiggerConfigWindow");
             return;
         }

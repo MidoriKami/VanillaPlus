@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Dalamud.Game.Config;
 using Dalamud.Game.Gui.ContextMenu;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -23,13 +24,13 @@ public class PetSizeContextMenu : GameModification {
     public override string ImageName => "PetSizeContextMenu.png";
 
     public override Task OnEnableAsync() {
-        Services.ContextMenu.OnMenuOpened += OnMenuOpened;
+        Services.GetService<IContextMenu>().OnMenuOpened += OnMenuOpened;
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.ContextMenu.OnMenuOpened -= OnMenuOpened;
+        Services.GetService<IContextMenu>().OnMenuOpened -= OnMenuOpened;
 
         return Task.CompletedTask;
     }
@@ -72,13 +73,13 @@ public class PetSizeContextMenu : GameModification {
 
     private void SetPetSize(uint size) {
         foreach (var configEntry in configEntries) {
-            Services.GameConfig.Set(configEntry, size);
+            Services.GetService<IGameConfig>().Set(configEntry, size);
         }
     }
 
     private uint? GetPetSize()
         => configEntries
-            .Select(configKey => Services.GameConfig.TryGet(configKey, out uint value) ? value : 0)
+            .Select(configKey => Services.GetService<IGameConfig>().TryGet(configKey, out uint value) ? value : 0)
             .GroupBy(configValue => configValue)
             .MaxBy(group => group.Count())?
             .Key;

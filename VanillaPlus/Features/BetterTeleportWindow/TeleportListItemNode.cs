@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Aetherytes;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -91,7 +92,7 @@ public unsafe class TeleportListItemNode : ListItemNode<IAetheryteEntry>, IListI
             var isFavorite = config.FavoriteAetherytes.Contains(ItemData.AetheryteId);
 
             contextMenu.AddItem(new ContextMenuItem {
-                Name = Services.DataManager.GetAddonText(8441), // Open Map
+                Name = Services.GetService<IDataManager>().GetAddonText(8441), // Open Map
                 OnClick = () => {
                     AgentTeleport.Instance()->AgentInterface.SendCommand(2, [1, ItemData.EntryIndex, 0]);
                     AgentTeleport.Instance()->AgentInterface.SendCommand(4, [0, 0, 0, 0, 0]);
@@ -100,8 +101,8 @@ public unsafe class TeleportListItemNode : ListItemNode<IAetheryteEntry>, IListI
 
             contextMenu.AddItem(new ContextMenuItem {
                 Name = isFavorite
-                           ? Services.DataManager.GetAddonText(8324)  // Remove from Favorites
-                           : Services.DataManager.GetAddonText(8323), // Add to Favorites
+                           ? Services.GetService<IDataManager>().GetAddonText(8324)  // Remove from Favorites
+                           : Services.GetService<IDataManager>().GetAddonText(8323), // Add to Favorites
                 OnClick = () => {
                     if (isFavorite) {
                         config.FavoriteAetherytes.Remove(ItemData.AetheryteId);
@@ -114,7 +115,7 @@ public unsafe class TeleportListItemNode : ListItemNode<IAetheryteEntry>, IListI
             });
 
             contextMenu.AddItem(new ContextMenuItem {
-                Name = Services.DataManager.GetAddonText(14511), // Rename
+                Name = Services.GetService<IDataManager>().GetAddonText(14511), // Rename
                 OnClick = () => {
                     renameAddon?.Dispose();
                     renameAddon = new RenameAddon {

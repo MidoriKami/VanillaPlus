@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
@@ -49,11 +50,11 @@ public class HUDPresets : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(hudLayoutController.Enable);
+        await Services.GetService<IFramework>().RunSafely(hudLayoutController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => hudLayoutController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => hudLayoutController?.Dispose());
         hudLayoutController = null;
 
         await Task.WhenAll(renameAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
@@ -186,7 +187,7 @@ public class HUDPresets : GameModification {
 
         HUDPresetManager.LoadPreset(presetDropdownNode.SelectedOption);
 
-        var screenAddon = Services.GameGui.GetAddonByName<AtkUnitBase>("_HudLayoutScreen");
+        var screenAddon = Services.GetService<IGameGui>().GetAddonByName<AtkUnitBase>("_HudLayoutScreen");
         if (screenAddon is not null) {
             screenAddon->OnScreenSizeChange(AtkStage.Instance()->ScreenSize.Width, AtkStage.Instance()->ScreenSize.Height);
         }

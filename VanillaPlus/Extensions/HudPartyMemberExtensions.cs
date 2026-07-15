@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+﻿using Dalamud.Plugin.Services;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.Sheets;
 
 namespace VanillaPlus.Extensions;
@@ -19,7 +20,7 @@ public static class HudPartyMemberExtensions {
         private unsafe ClassJob? GetClassJob() {
             if (hudMember.Object is null) return null;
 
-            return Services.DataManager.GetClassJobById(hudMember.Object->ClassJob);
+            return Services.GetService<IDataManager>().GetClassJobById(hudMember.Object->ClassJob);
         }
     }
 }

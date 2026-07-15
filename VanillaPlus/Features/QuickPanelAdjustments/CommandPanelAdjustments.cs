@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using VanillaPlus.Classes;
@@ -51,11 +52,11 @@ public class CommandPanelAdjustments : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(quickPanelController.Enable);
+        await Services.GetService<IFramework>().RunSafely(quickPanelController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => quickPanelController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => quickPanelController?.Dispose());
         quickPanelController = null;
 
         await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);

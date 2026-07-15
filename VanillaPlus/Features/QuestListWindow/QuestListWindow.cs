@@ -49,15 +49,15 @@ public class QuestListWindow : GameModification {
 
         OpenConfigAction = keybindConfigAddon.Open;
 
-        Services.CommandManager.AddHandler("/questlist", new CommandInfo(OnQuestListCommand) {
+        Services.GetService<ICommandManager>().AddHandler("/questlist", new CommandInfo(OnQuestListCommand) {
             HelpMessage = "Opens Quest List Window",
         });
-        Services.Framework.Update += OnFrameworkUpdate;
+        Services.GetService<IFramework>().Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
-        Services.Framework.Update -= OnFrameworkUpdate;
-        Services.CommandManager.RemoveHandler("/questlist");
+        Services.GetService<IFramework>().Update -= OnFrameworkUpdate;
+        Services.GetService<ICommandManager>().RemoveHandler("/questlist");
 
         await Task.WhenAll(
             questListAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
@@ -78,7 +78,7 @@ public class QuestListWindow : GameModification {
         => questListAddon?.Toggle();
 
     private void OnKeybindPressed(ref bool isHandled) {
-        Services.Framework.RunSafely(() => questListAddon?.Toggle());
+        Services.GetService<IFramework>().RunSafely(() => questListAddon?.Toggle());
 
         isHandled = true;
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
@@ -21,7 +22,7 @@ public unsafe class BetterQuestMapLink : GameModification {
     private Hook<AgentMap.Delegates.OpenMap>? openMapHook;
 
     public override Task OnEnableAsync() {
-        openMapHook = Services.Hooker.HookFromAddress<AgentMap.Delegates.OpenMap>(AgentMap.MemberFunctionPointers.OpenMap, OnOpenMap);
+        openMapHook = Services.GetService<IGameInteropProvider>().HookFromAddress<AgentMap.Delegates.OpenMap>(AgentMap.MemberFunctionPointers.OpenMap, OnOpenMap);
         openMapHook?.Enable();
 
         return Task.CompletedTask;
@@ -38,7 +39,7 @@ public unsafe class BetterQuestMapLink : GameModification {
         openMapHook!.Original(agent, data);
 
         try {
-            if (!Services.DataManager.GetExcelSheet<Map>().TryGetRow(data->MapId, out var mapData)) return;
+            if (!Services.GetService<IDataManager>().GetExcelSheet<Map>().TryGetRow(data->MapId, out var mapData)) return;
 
             // Disable in Cosmic Zones
             if (mapData.TerritoryType.ValueNullable?.TerritoryIntendedUse.RowId is 60) return;

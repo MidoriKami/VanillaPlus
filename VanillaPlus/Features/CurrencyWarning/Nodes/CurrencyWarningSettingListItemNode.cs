@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
@@ -13,7 +14,7 @@ public class CurrencyWarningSettingListItemNode : ListItemWithFocusNav<CurrencyW
 
     /// <inheritdoc/>
     protected override void SetNodeData(CurrencyWarningSetting itemData) {
-        if (!Services.DataManager.GetExcelSheet<Item>().TryGetRow(itemData.ItemId, out var item)) return;
+        if (!Services.GetService<IDataManager>().GetExcelSheet<Item>().TryGetRow(itemData.ItemId, out var item)) return;
 
         iconNode.IconId = item.Icon;
         labelTextNode.String = item.Name.ToString();

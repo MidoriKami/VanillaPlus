@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -17,19 +18,19 @@ public class OpenGlamourDresserToCurrentJob : GameModification {
     };
 
     public override Task OnEnableAsync() {
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreSetup, "MiragePrismPrismBox", OnGlamourDresserSetup);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PreSetup, "MiragePrismPrismBox", OnGlamourDresserSetup);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnGlamourDresserSetup);
+        Services.GetService<IAddonLifecycle>().UnregisterListener(OnGlamourDresserSetup);
 
         return Task.CompletedTask;
     }
 
     private void OnGlamourDresserSetup(AddonEvent type, AddonArgs args) {
-        if (Services.ObjectTable is { LocalPlayer.ClassJob.RowId: var playerJob }) {
+        if (Services.GetService<IObjectTable>() is { LocalPlayer.ClassJob.RowId: var playerJob }) {
             Marshal.WriteByte(args.Addon, 0x1A8, (byte)playerJob);
         }
     }

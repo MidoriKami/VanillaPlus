@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -61,7 +62,7 @@ public class InventoryItemNode : ListItemNode<ItemStack>, IListItemNode {
     }
 
     protected override void SetNodeData(ItemStack itemData) {
-        if (!Services.DataManager.GetExcelSheet<Item>().TryGetRow(itemData.Item.ItemId, out var luminaData)) return;
+        if (!Services.GetService<IDataManager>().GetExcelSheet<Item>().TryGetRow(itemData.Item.ItemId, out var luminaData)) return;
 
         iconNode.IconId = luminaData.Icon;
         itemNameTextNode.String = luminaData.Name;

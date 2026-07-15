@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -36,7 +37,7 @@ public class LockChatButton : GameModification {
         data = await LockChatButtonData.Load();
 
         unsafe {
-            moveDeltaHook = Services.Hooker.HookFromAddress<AtkUnitBase.Delegates.MoveDelta>(AtkUnitBase.MemberFunctionPointers.MoveDelta, OnMoveDelta);
+            moveDeltaHook = Services.GetService<IGameInteropProvider>().HookFromAddress<AtkUnitBase.Delegates.MoveDelta>(AtkUnitBase.MemberFunctionPointers.MoveDelta, OnMoveDelta);
             moveDeltaHook?.Enable();
 
             chatLogController = new AddonController<AddonChatLog> {
@@ -51,7 +52,7 @@ public class LockChatButton : GameModification {
             thirdPanelController = new ChatPanelController(data, "ChatLogPanel_3");
         }
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             chatLogController.Enable();
             firstPanelController.Enable();
             secondPanelController.Enable();
@@ -63,7 +64,7 @@ public class LockChatButton : GameModification {
         addonControlHook?.Dispose();
         addonControlHook = null;
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             chatLogController?.Dispose();
             firstPanelController?.Dispose();
             secondPanelController?.Dispose();
@@ -82,7 +83,7 @@ public class LockChatButton : GameModification {
     }
 
     private unsafe void SetupChatLog(AddonChatLog* addon) {
-        addonControlHook = Services.Hooker.HookFromAddress<AtkEventListener.Delegates.ReceiveEvent>(
+        addonControlHook = Services.GetService<IGameInteropProvider>().HookFromAddress<AtkEventListener.Delegates.ReceiveEvent>(
             addon->AddonControl.AtkEventListener.VirtualTable->ReceiveEvent,
             OnAddonControl
         );

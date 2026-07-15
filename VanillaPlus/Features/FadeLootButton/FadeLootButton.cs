@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -46,11 +47,11 @@ public class FadeLootButton : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(notificationLootController.Enable);
+        await Services.GetService<IFramework>().RunSafely(notificationLootController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => notificationLootController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => notificationLootController?.Dispose());
         notificationLootController = null;
 
         await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);

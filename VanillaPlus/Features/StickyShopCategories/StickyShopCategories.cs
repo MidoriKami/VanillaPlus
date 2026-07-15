@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
@@ -21,12 +22,12 @@ public class StickyShopCategories : GameModification {
     public override async Task OnEnableAsync() {
         config = await StickyShopCategoriesData.Load();
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "InclusionShop", OnInclusionShopSetup);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, "InclusionShop", OnInclusionShopFinalize);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostSetup, "InclusionShop", OnInclusionShopSetup);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PreFinalize, "InclusionShop", OnInclusionShopFinalize);
     }
 
     public override async Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnInclusionShopFinalize, OnInclusionShopSetup);
+        Services.GetService<IAddonLifecycle>().UnregisterListener(OnInclusionShopFinalize, OnInclusionShopSetup);
 
         if (config is not null) {
             await config.Save();

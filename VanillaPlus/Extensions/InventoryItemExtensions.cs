@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Lumina.Excel.Sheets;
 using Lumina.Text.ReadOnly;
@@ -42,7 +43,7 @@ public static class InventoryItemExtensions {
             var baseItemId = item.GetBaseItemId();
 
             if (ItemUtil.IsNormalItem(baseItemId) &&
-                Services.DataManager.GetExcelSheet<Item>().TryGetRow(baseItemId, out var baseItem)) {
+                Services.GetService<IDataManager>().GetExcelSheet<Item>().TryGetRow(baseItemId, out var baseItem)) {
                 return baseItem;
             }
 
@@ -53,7 +54,7 @@ public static class InventoryItemExtensions {
             var baseItemId = item.GetBaseItemId();
 
             if (ItemUtil.IsEventItem(baseItemId) &&
-                Services.DataManager.GetExcelSheet<EventItem>().TryGetRow(baseItemId, out var eventItem)) {
+                Services.GetService<IDataManager>().GetExcelSheet<EventItem>().TryGetRow(baseItemId, out var eventItem)) {
                 return eventItem;
             }
 
@@ -74,14 +75,14 @@ public static class InventoryItemExtensions {
                 var regex = new Regex(searchString, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
                 if (ItemUtil.IsEventItem(item.GetBaseItemId())) {
-                    if (!Services.DataManager.GetExcelSheet<EventItem>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
+                    if (!Services.GetService<IDataManager>().GetExcelSheet<EventItem>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
 
                     if (regex.IsMatch(item.ItemId.ToString())) return true;
                     if (regex.IsMatch(itemData.Name.ToString())) return true;
                 }
 
                 else if (ItemUtil.IsNormalItem(item.GetBaseItemId())) {
-                    if (!Services.DataManager.GetExcelSheet<Item>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
+                    if (!Services.GetService<IDataManager>().GetExcelSheet<Item>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
 
                     if (regex.IsMatch(item.ItemId.ToString())) return true;
                     if (regex.IsMatch(itemData.Name.ToString())) return true;

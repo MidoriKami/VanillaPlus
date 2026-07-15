@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Game.Gui.ContextMenu;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -47,10 +48,10 @@ public class InstancedWaymarks : GameModification {
             AutoSelectAll = true,
         };
 
-        Services.ClientState.TerritoryChanged += OnTerritoryChanged;
-        Services.ContextMenu.OnMenuOpened += OnMenuOpened;
+        Services.GetService<IClientState>().TerritoryChanged += OnTerritoryChanged;
+        Services.GetService<IContextMenu>().OnMenuOpened += OnMenuOpened;
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreDraw, "FieldMarker", OnFieldMarkerDraw);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PreDraw, "FieldMarker", OnFieldMarkerDraw);
 
         SaveWaymarks(0);
 
@@ -64,9 +65,9 @@ public class InstancedWaymarks : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnFieldMarkerDraw);
-        Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
-        Services.ContextMenu.OnMenuOpened -= OnMenuOpened;
+        Services.GetService<IAddonLifecycle>().UnregisterListener(OnFieldMarkerDraw);
+        Services.GetService<IClientState>().TerritoryChanged -= OnTerritoryChanged;
+        Services.GetService<IContextMenu>().OnMenuOpened -= OnMenuOpened;
 
         LoadWaymarks(0);
 
@@ -136,7 +137,7 @@ public class InstancedWaymarks : GameModification {
             defaultName = name;
         }
         else {
-            defaultName = Services.DataManager.GetExcelSheet<ContentFinderCondition>().GetRow(cfc).Name.ToString();
+            defaultName = Services.GetService<IDataManager>().GetExcelSheet<ContentFinderCondition>().GetRow(cfc).Name.ToString();
         }
 
         renameWindow.OnRenameComplete = newString => {

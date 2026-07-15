@@ -1,3 +1,4 @@
+using System;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
@@ -10,40 +11,18 @@ namespace VanillaPlus;
 /// </summary>
 public class Services {
     [PluginService] public static IDalamudPluginInterface PluginInterface { get; set; } = null!;
-    [PluginService] public static IClientState ClientState { get; set; } = null!;
-    [PluginService] private static IPluginLog Log { get; set; } = null!;
-    [PluginService] public static IAddonLifecycle AddonLifecycle { get; set; } = null!;
-    [PluginService] public static IAgentLifecycle AgentLifecycle { get; set; } = null!;
-    [PluginService] public static IDutyState DutyState { get; set; } = null!;
-    [PluginService] public static IChatGui ChatGui { get; set; } = null!;
-    [PluginService] public static ICommandManager CommandManager { get; set; } = null!;
-    [PluginService] public static IFramework Framework { get; set; } = null!;
-    [PluginService] public static IDataManager DataManager { get; set; } = null!;
-    [PluginService] public static IGameInteropProvider GameInteropProvider { get; set; } = null!;
-    [PluginService] public static IGameConfig GameConfig { get; set; } = null!;
-    [PluginService] public static ITextureProvider TextureProvider { get; set; } = null!;
-    [PluginService] public static IGameGui GameGui { get; set; } = null!;
-    [PluginService] public static ITargetManager TargetManager { get; set; } = null!;
-    [PluginService] public static IGameInventory GameInventory { get; set; } = null!;
-    [PluginService] public static IFateTable FateTable { get; set; } = null!;
-    [PluginService] public static IKeyState KeyState { get; set; } = null!;
-    [PluginService] public static ICondition Condition { get; set; } = null!;
-    [PluginService] public static ISeStringEvaluator SeStringEvaluator { get; set; } = null!;
-    [PluginService] public static IDtrBar DtrBar { get; set; } = null!;
-    [PluginService] public static IContextMenu ContextMenu { get; set; } = null!;
-    [PluginService] public static IObjectTable ObjectTable { get; set; } = null!;
-    [PluginService] public static IAddonEventManager AddonEventManager { get; set; } = null!;
-    [PluginService] public static IPlayerState PlayerState { get; set; } = null!;
-    [PluginService] public static IUnlockState UnlockState { get; set; } = null!;
-    [PluginService] public static INamePlateGui NamePlateGui { get; set; } = null!;
-    [PluginService] public static IReliableFileStorage ReliableFileStorage { get; set; } = null!;
-    [PluginService] public static IFlyTextGui FlyTextGui { get; set; } = null!;
-    [PluginService] public static IAetheryteList AetheryteList { get; set; } = null!;
 
-    // I dislike the name GameInteropProvider, so this is my mini rebellion on a bad name.
-    // It's just an alias, use whichever you want.
-    public static IGameInteropProvider Hooker => GameInteropProvider;
+    /// <summary>
+    /// Gets any available dalamud service via interface typename, for example AddonLifecycle is accessed via IAddonLifecycle.
+    /// </summary>
+    public static T GetService<T>() where T : class, IDalamudService {
+        if (typeof(T) == typeof(IPluginLog)) {
+            throw new Exception("Unable to get IPluginLog from GetService, use Services.PluginLog directly instead.");
+        }
+
+        return PluginInterface.GetService(typeof(T)) as T ?? throw new InvalidOperationException($"Service {typeof(T).Name} not found.");
+    }
 
     // Wrapper around PluginLog to make module-tagged logging more natural.
-    public static PluginLog PluginLog => new(Log);
+    public static PluginLog PluginLog => new(GetService<IPluginLog>());
 }

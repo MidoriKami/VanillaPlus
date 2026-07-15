@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -60,11 +61,11 @@ public class EnhancedLootWindow : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(needGreedController.Enable);
+        await Services.GetService<IFramework>().RunSafely(needGreedController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => needGreedController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => needGreedController?.Dispose());
         needGreedController = null;
 
         await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
@@ -141,7 +142,7 @@ public class EnhancedLootWindow : GameModification {
             var adjustedItemId = itemInfo.ItemId > 1_000_000 ? itemInfo.ItemId - 1_000_000 : itemInfo.ItemId;
 
             // If we can't match the item in lumina, skip.
-            var itemData = Services.DataManager.GetExcelSheet<Item>().GetRowOrDefault(adjustedItemId);
+            var itemData = Services.GetService<IDataManager>().GetExcelSheet<Item>().GetRowOrDefault(adjustedItemId);
             if (itemData is null) continue;
 
             var crossNode = crossNodes[index];

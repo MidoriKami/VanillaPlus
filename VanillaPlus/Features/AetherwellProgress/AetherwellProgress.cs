@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Enums;
@@ -41,11 +42,11 @@ public class AetherwellProgress : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(addonController.Enable);
+        await Services.GetService<IFramework>().RunSafely(addonController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => addonController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => addonController?.Dispose());
         addonController = null;
 
         nodes = null;

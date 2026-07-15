@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility.Signatures;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -20,7 +21,7 @@ public class DisableTitleScreenMovie : GameModification {
     private MemoryReplacement? jumpPatch;
 
     public override async Task OnEnableAsync() {
-        Services.GameInteropProvider.InitializeFromAttributes(this);
+        Services.GetService<IGameInteropProvider>().InitializeFromAttributes(this);
 
         // Convert the jnz instruction to a unconditional jmp instruction,
         // but keeps the same address and replace the last byte with nop
@@ -39,7 +40,7 @@ public class DisableTitleScreenMovie : GameModification {
                 ]);
             }
 
-            await Services.Framework.RunSafely(jumpPatch.Enable);
+            await Services.GetService<IFramework>().RunSafely(jumpPatch.Enable);
         }
     }
 

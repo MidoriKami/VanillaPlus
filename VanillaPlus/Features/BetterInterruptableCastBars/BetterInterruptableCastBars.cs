@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -33,7 +34,7 @@ public class BetterInterruptableCastBars : GameModification {
 
     public override async Task OnEnableAsync() {
         unsafe {
-            antsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnAntsCheck);
+            antsHook = Services.GetService<IGameInteropProvider>().HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnAntsCheck);
             antsHook?.Enable();
 
             targetInfoCastbarController = new AddonController {
@@ -43,11 +44,11 @@ public class BetterInterruptableCastBars : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(targetInfoCastbarController.Enable);
+        await Services.GetService<IFramework>().RunSafely(targetInfoCastbarController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => targetInfoCastbarController?.Disable() );
+        await Services.GetService<IFramework>().RunSafely(() => targetInfoCastbarController?.Disable() );
         targetInfoCastbarController = null;
 
         antsHook?.Dispose();
@@ -88,7 +89,7 @@ public class BetterInterruptableCastBars : GameModification {
 
     private unsafe bool OnAntsCheck(ActionManager* thisPtr, ActionType actionType, uint actionId) {
         try {
-            if (Services.TargetManager.GetTarget() is { } target) {
+            if (Services.GetService<ITargetManager>().GetTarget() is { } target) {
                 if (actionId is 7538 or 7551 && target is { IsCasting: true, IsCastInterruptible: true }) {
                     return true;
                 }

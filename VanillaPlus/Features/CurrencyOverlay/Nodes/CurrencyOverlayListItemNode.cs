@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
@@ -12,7 +13,7 @@ public class CurrencyOverlayListItemNode : ListItemWithFocusNav<CurrencySetting>
 
     /// <inheritdoc/>
     protected override void SetNodeData(CurrencySetting itemData) {
-        var item = Services.DataManager.GetItem(itemData.ItemId);
+        var item = Services.GetService<IDataManager>().GetItem(itemData.ItemId);
 
         iconNode.IconId = item.Icon;
         labelTextNode.String = item.Name.ToString();

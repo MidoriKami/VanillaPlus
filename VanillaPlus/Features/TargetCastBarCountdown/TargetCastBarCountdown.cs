@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Native.Addons;
@@ -56,7 +57,7 @@ public class TargetCastBarCountdown : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             primaryController.Enable();
             primaryAltController.Enable();
             focusController.Enable();
@@ -65,7 +66,7 @@ public class TargetCastBarCountdown : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             primaryController?.Dispose();
             primaryAltController?.Dispose();
             focusController?.Dispose();

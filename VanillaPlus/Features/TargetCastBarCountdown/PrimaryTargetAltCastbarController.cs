@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
@@ -78,12 +79,12 @@ public class PrimaryTargetAltCastbarController {
     }
 
     private unsafe void OnAddonRefresh(AtkUnitBase* addon) {
-        if (Services.ClientState.IsPvP || !config.PrimaryTarget) {
+        if (Services.GetService<IClientState>().IsPvP || !config.PrimaryTarget) {
             textNode?.String = string.Empty;
             return;
         }
 
-        textNode?.String = Services.TargetManager.GetTarget()?.GetCastTimeString;
+        textNode?.String = Services.GetService<ITargetManager>().GetTarget()?.GetCastTimeString;
     }
 
     private unsafe void OnAddonFinalize(AtkUnitBase* addon) {

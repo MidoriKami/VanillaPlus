@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
@@ -17,13 +18,13 @@ public class SkipLoginConfirm : GameModification {
     };
 
     public override Task OnEnableAsync() {
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(SelectYesNoHandler);
+        Services.GetService<IAddonLifecycle>().UnregisterListener(SelectYesNoHandler);
 
         return Task.CompletedTask;
     }

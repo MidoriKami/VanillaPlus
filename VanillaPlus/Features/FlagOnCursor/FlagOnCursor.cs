@@ -1,6 +1,7 @@
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Game.Command;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using VanillaPlus.Classes;
@@ -19,7 +20,7 @@ public class FlagOnCursor : GameModification {
     private const string CommandName = "/flagthere";
 
     public override Task OnEnableAsync() {
-        Services.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand) {
+        Services.GetService<ICommandManager>().AddHandler(CommandName, new CommandInfo(OnCommand) {
             HelpMessage = Strings.FlagOnCursor_CommandHelpMessage,
             ShowInHelp = true,
         });
@@ -28,7 +29,7 @@ public class FlagOnCursor : GameModification {
     }
 
     public override Task OnDisableAsync() {
-        Services.CommandManager.RemoveHandler(CommandName);
+        Services.GetService<ICommandManager>().RemoveHandler(CommandName);
 
         return Task.CompletedTask;
     }
@@ -37,13 +38,13 @@ public class FlagOnCursor : GameModification {
         ref var cursorData = ref UIInputData.Instance()->UIFilteredCursorInputs;
         var position = new Vector2(cursorData.PositionX, cursorData.PositionY);
 
-        if (Services.GameGui.ScreenToWorld(position, out var mouseWorldPos)) {
+        if (Services.GetService<IGameGui>().ScreenToWorld(position, out var mouseWorldPos)) {
             var agentMap = AgentMap.Instance();
 
             agentMap->FlagMarkerCount = 0;
             agentMap->SetFlagMapMarker(agentMap->CurrentTerritoryId, agentMap->CurrentMapId, mouseWorldPos);
 
-            Services.Framework.RunOnTick(() => {
+            Services.GetService<IFramework>().RunOnTick(() => {
                 AgentChatLog.Instance()->InsertTextCommandParam(1048, false);
             });
         }

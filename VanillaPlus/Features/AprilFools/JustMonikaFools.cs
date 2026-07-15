@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
@@ -38,13 +39,13 @@ public class JustMonikaFools : FoolsModule {
             Size = new Vector2(650.0f, 350.0f),
         };
 
-        Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+        Services.GetService<IClientState>().TerritoryChanged += OnTerritoryChanged;
 
         return Task.CompletedTask;
     }
 
     protected override async Task OnDisable() {
-        Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
+        Services.GetService<IClientState>().TerritoryChanged -= OnTerritoryChanged;
 
         await Task.WhenAll(monikaAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         monikaAddon = null;

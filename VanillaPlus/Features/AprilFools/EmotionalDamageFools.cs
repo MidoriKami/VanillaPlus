@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Dalamud.Game.Gui.FlyText;
 using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Plugin.Services;
 
 namespace VanillaPlus.Features.AprilFools;
 
@@ -12,13 +13,13 @@ public class EmotionalDamageFools : FoolsModule {
         => Config.EmotionalDamage;
 
     protected override Task OnEnable() {
-        Services.FlyTextGui.FlyTextCreated += OnFlyText;
+        Services.GetService<IFlyTextGui>().FlyTextCreated += OnFlyText;
 
         return Task.CompletedTask;
     }
 
     protected override Task OnDisable() {
-        Services.FlyTextGui.FlyTextCreated -= OnFlyText;
+        Services.GetService<IFlyTextGui>().FlyTextCreated -= OnFlyText;
 
         return Task.CompletedTask;
     }
@@ -26,7 +27,7 @@ public class EmotionalDamageFools : FoolsModule {
     private static void OnFlyText(ref FlyTextKind kind, ref int val1, ref int val2, ref SeString text1, ref SeString text2, ref uint color, ref uint icon, ref uint damageTypeIcon, ref float yOffset, ref bool handled) {
         if (kind is FlyTextKind.Damage) return;
 
-        Services.FlyTextGui.AddFlyText(
+        Services.GetService<IFlyTextGui>().AddFlyText(
             FlyTextKind.Damage,
             0,
             67,

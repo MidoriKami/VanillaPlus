@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -106,15 +107,15 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
 
         if (item.CanTryOn) {
             contextMenu.AddItem(
-                Services.DataManager.GetAddonText(2426), // Try On
+                Services.GetService<IDataManager>().GetAddonText(2426), // Try On
                 () => AgentTryon.TryOn(0, item.ItemId));
         }
 
         var isFavorite = config.FavoriteItems.Contains(item.ItemId);
         contextMenu.AddItem(new ContextMenuItem {
             Name = isFavorite
-                       ? Services.DataManager.GetAddonText(8324)  // Remove from Favorites
-                       : Services.DataManager.GetAddonText(8323), // Add to Favorites
+                       ? Services.GetService<IDataManager>().GetAddonText(8324)  // Remove from Favorites
+                       : Services.GetService<IDataManager>().GetAddonText(8323), // Add to Favorites
             OnClick = () => {
                 if (isFavorite) {
                     config.FavoriteItems.Remove(item.ItemId);
@@ -128,15 +129,15 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
         });
 
         contextMenu.AddItem(
-            Services.DataManager.GetAddonText(4379), // Search for Item
+            Services.GetService<IDataManager>().GetAddonText(4379), // Search for Item
             () => ItemFinderModule.Instance()->SearchForItem(item.ItemId));
 
         contextMenu.AddItem(
-            Services.DataManager.GetAddonText(4697), // Link
+            Services.GetService<IDataManager>().GetAddonText(4697), // Link
             () => AgentChatLog.Instance()->LinkItem(item.ItemId));
 
         contextMenu.AddItem(
-            Services.DataManager.GetAddonText(13439), // Search Recipes Using This Material
+            Services.GetService<IDataManager>().GetAddonText(13439), // Search Recipes Using This Material
             () => AgentRecipeProductList.Instance()->SearchForRecipesUsingItem(item.ItemId));
 
         contextMenu.Open();

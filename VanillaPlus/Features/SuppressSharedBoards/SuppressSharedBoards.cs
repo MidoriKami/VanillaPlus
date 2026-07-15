@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -18,12 +19,12 @@ public unsafe class SuppressSharedBoards : GameModification {
     private Hook<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>? saveBoardAndPlaySoundHook;
 
     public override Task OnEnableAsync() {
-        showSharedNotificationHook = Services.Hooker.HookFromAddress<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>(
+        showSharedNotificationHook = Services.GetService<IGameInteropProvider>().HookFromAddress<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>(
             TofuHelper.TofuHelperData.MemberFunctionPointers.ShowSharedNotification,
             (_, _, _) => { }
         );
 
-        saveBoardAndPlaySoundHook = Services.Hooker.HookFromAddress<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>(
+        saveBoardAndPlaySoundHook = Services.GetService<IGameInteropProvider>().HookFromAddress<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>(
             TofuHelper.TofuHelperData.MemberFunctionPointers.SaveBoardAndPlaySound,
             (_, _, _, _, _) => { }
         );

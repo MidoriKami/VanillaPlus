@@ -4,6 +4,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Interface;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -50,11 +51,11 @@ public class WondrousTailsProbabilities : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(weeklyBingoController.Enable);
+        await Services.GetService<IFramework>().RunSafely(weeklyBingoController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => weeklyBingoController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => weeklyBingoController?.Dispose());
         weeklyBingoController = null;
 
         perfectTails = null;
@@ -174,7 +175,7 @@ public class WondrousTailsProbabilities : GameModification {
 
     private unsafe void AdjustCurrentDutyIndicator(AddonWeeklyBingo* addon) {
         if (animationContainer is null || currentDutyNode is null) return;
-        if (GetTaskForCurrentTerritory(Services.ClientState.TerritoryType) is { } dutySlot) {
+        if (GetTaskForCurrentTerritory(Services.GetService<IClientState>().TerritoryType) is { } dutySlot) {
             var nativeDutySlot = addon->DutySlotList[dutySlot].DutyButton->OwnerNode;
             var nativeDutySlotPosition = new Vector2(nativeDutySlot->X, nativeDutySlot->Y - 2.0f);
 
@@ -189,7 +190,7 @@ public class WondrousTailsProbabilities : GameModification {
 
     private static unsafe int? GetTaskForCurrentTerritory(uint territory) {
         foreach (var index in Enumerable.Range(0, 16)) {
-            var territoriesForSlot = Services.DataManager.GetTerritoriesForOrderData(PlayerState.Instance()->WeeklyBingoOrderData[index]);
+            var territoriesForSlot = Services.GetService<IDataManager>().GetTerritoriesForOrderData(PlayerState.Instance()->WeeklyBingoOrderData[index]);
 
             if (territoriesForSlot.Any(terr => terr.RowId == territory)) {
                 return index;

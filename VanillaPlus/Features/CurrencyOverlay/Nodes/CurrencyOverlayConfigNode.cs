@@ -1,5 +1,6 @@
 using System;
 using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Components.Configuration;
 using KamiToolKit.Components.ConfigurationNodes;
@@ -122,7 +123,7 @@ public class CurrencyOverlayConfigNode : EntryConfigurationNode<CurrencySetting>
     }
 
     protected override void PopulateEntryData(CurrencySetting entry) {
-        var itemInfo = Services.DataManager.GetItem(entry.ItemId);
+        var itemInfo = Services.GetService<IDataManager>().GetItem(entry.ItemId);
 
         iconImageNode.IconId = itemInfo.Icon;
         iconImageNode.IsVisible = iconImageNode.IconId is not 0;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
@@ -31,11 +32,11 @@ public class IndecisiveFools : FoolsModule {
             };
         }
 
-        await Services.Framework.RunSafely(addonController.Enable);
+        await Services.GetService<IFramework>().RunSafely(addonController.Enable);
     }
 
     protected override async Task OnDisable() {
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             foreach (var textButton in textButtons ?? []) {
                 textButton.Dispose();
             }

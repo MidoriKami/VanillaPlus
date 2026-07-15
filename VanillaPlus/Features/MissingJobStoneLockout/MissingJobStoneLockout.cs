@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -42,11 +43,11 @@ public class MissingJobStoneLockout : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(contentsFinderController.Enable);
+        await Services.GetService<IFramework>().RunSafely(contentsFinderController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => contentsFinderController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => contentsFinderController?.Dispose());
         contentsFinderController = null;
     }
 
@@ -128,7 +129,7 @@ public class MissingJobStoneLockout : GameModification {
         var currentLevel = PlayerState.Instance()->CurrentLevel;
         if (currentJob is 0) return false;
 
-        var job = Services.DataManager
+        var job = Services.GetService<IDataManager>()
             .GetExcelSheet<ClassJob>()
             .Where(classJob => classJob.ClassJobParent.RowId != classJob.RowId)
             .FirstOrDefault(classJob => classJob.ClassJobParent.RowId == currentJob);

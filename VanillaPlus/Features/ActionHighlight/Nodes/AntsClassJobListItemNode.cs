@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
@@ -14,7 +15,7 @@ public class AntsClassJobListItemNode : ListItemWithFocusNav<AntsClassJobConfig>
     /// <inheritdoc/>
     protected override void SetNodeData(AntsClassJobConfig itemData) {
         classJobIconNode.IconId = 62000 + itemData.ClassJobId;
-        classJobNameTextNode.String = Services.SeStringEvaluator.EvaluateFromAddon(698, [itemData.ClassJobId]);
+        classJobNameTextNode.String = Services.GetService<ISeStringEvaluator>().EvaluateFromAddon(698, [itemData.ClassJobId]);
     }
 
     public AntsClassJobListItemNode() {

@@ -4,6 +4,7 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Dalamud.Game.ClientState;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.LayoutEngine;
 using FFXIVClientStructs.FFXIV.Client.LayoutEngine.Layer;
@@ -15,14 +16,14 @@ public class ZoneWatcher : IDisposable {
     private readonly CancellationTokenSource tokenSource = new();
 
     public ZoneWatcher() {
-        Services.ClientState.Login += OnLogin;
-        Services.ClientState.ZoneInit += OnZoneInit;
+        Services.GetService<IClientState>().Login += OnLogin;
+        Services.GetService<IClientState>().ZoneInit += OnZoneInit;
         UpdateExits();
     }
 
     public void Dispose() {
-        Services.ClientState.Login -= OnLogin;
-        Services.ClientState.ZoneInit -= OnZoneInit;
+        Services.GetService<IClientState>().Login -= OnLogin;
+        Services.GetService<IClientState>().ZoneInit -= OnZoneInit;
     }
 
     public ZoneExit GetClosestExit(Vector3 target, out Vector3 closestPoint) {

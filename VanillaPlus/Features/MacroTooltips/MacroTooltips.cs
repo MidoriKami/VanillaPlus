@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -25,7 +26,7 @@ public unsafe class MacroTooltips : GameModification {
     public override string ImageName => "MacroTooltips.png";
 
     public override Task OnEnableAsync() {
-        showTooltipHook = Services.Hooker.HookFromAddress<AddonActionBarBase.Delegates.ShowTooltip>(AddonActionBarBase.MemberFunctionPointers.ShowTooltip, OnShowMacroTooltip);
+        showTooltipHook = Services.GetService<IGameInteropProvider>().HookFromAddress<AddonActionBarBase.Delegates.ShowTooltip>(AddonActionBarBase.MemberFunctionPointers.ShowTooltip, OnShowMacroTooltip);
         showTooltipHook?.Enable();
 
         return Task.CompletedTask;

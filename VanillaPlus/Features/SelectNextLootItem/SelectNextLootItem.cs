@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
@@ -19,14 +20,14 @@ public class SelectNextLootItem : GameModification {
     };
 
     public override Task OnEnableAsync() {
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "NeedGreed", OnNeedGreedSetup);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostReceiveEvent, "NeedGreed", OnNeedGreedEvent);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostSetup, "NeedGreed", OnNeedGreedSetup);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostReceiveEvent, "NeedGreed", OnNeedGreedEvent);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnNeedGreedSetup, OnNeedGreedEvent);
+        Services.GetService<IAddonLifecycle>().UnregisterListener(OnNeedGreedSetup, OnNeedGreedEvent);
 
         return Task.CompletedTask;
     }

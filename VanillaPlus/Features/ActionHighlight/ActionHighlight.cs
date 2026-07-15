@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using KamiToolKit.Components.Search;
 using Lumina.Excel.Sheets;
@@ -44,7 +45,7 @@ public class ActionHighlight : GameModification {
             InternalName = "ClassJobSearch",
             Title = "Class Job Search",
             Size = new Vector2(300.0f, 535.0f),
-            OptionsList = Services.DataManager.GetExcelSheet<ClassJob>()
+            OptionsList = Services.GetService<IDataManager>().GetExcelSheet<ClassJob>()
                 .Where(job => job is { RowId: not 0, Name.IsEmpty: false, IsCrafter: false, IsGatherer: false })
                 .ToList(),
             AllowMultiselect = true,
@@ -56,7 +57,7 @@ public class ActionHighlight : GameModification {
             Title = Strings.ActionHighlight_Configuration,
             OptionsList = [],
             SaveConfig = () => Task.Run(Config.Save),
-            GetEntrySearchString = entry => Services.DataManager.GetExcelSheet<ClassJob>().GetRow(entry.ClassJobId).Name.ToString(),
+            GetEntrySearchString = entry => Services.GetService<IDataManager>().GetExcelSheet<ClassJob>().GetRow(entry.ClassJobId).Name.ToString(),
             AddClicked = OnAddClicked,
             RemoveClicked = OnRemoveClicked,
         };
@@ -66,7 +67,7 @@ public class ActionHighlight : GameModification {
         OpenConfigAction = configAddon.Toggle;
 
         unsafe {
-            onAntsHook = Services.Hooker.HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
+            onAntsHook = Services.GetService<IGameInteropProvider>().HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
             onAntsHook?.Enable();
         }
     }
@@ -111,17 +112,17 @@ public class ActionHighlight : GameModification {
     }
 
     private unsafe bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {
-        if (Services.ObjectTable.LocalPlayer is not { Level: var playerLevel, GameObjectId: var playerId, ClassJob: var classJob }) return false;
+        if (Services.GetService<IObjectTable>().LocalPlayer is not { Level: var playerLevel, GameObjectId: var playerId, ClassJob: var classJob }) return false;
         if (Config is null) return false;
 
         var original = onAntsHook!.Original(actionManager, actionType, actionId);
         if (original) return original;
         if (actionType is not ActionType.Action) return original;
 
-        if (Config.ShowOnlyInCombat && !Services.Condition.IsInCombat) return original;
+        if (Config.ShowOnlyInCombat && !Services.GetService<ICondition>().IsInCombat) return original;
         if (actionManager->GetActionStatus(actionType, actionId, playerId, false) != 0) return original;
 
-        var action = Services.DataManager.GetExcelSheet<Action>().GetRow(actionId);
+        var action = Services.GetService<IDataManager>().GetExcelSheet<Action>().GetRow(actionId);
 
         if (Config.ShowOnlyUsableActions && action.ClassJobLevel > playerLevel) return original;
 
@@ -174,10 +175,10 @@ public class ActionHighlight : GameModification {
         Task.Run(() => {
             var results = Config.ClassJobConfigs
                 .Where(entry => entry.ClassJobId is not 0)
-                .OrderBy(entry => Services.SeStringEvaluator.EvaluateFromAddon(981, [entry.ClassJobId]).ToString())
+                .OrderBy(entry => Services.GetService<ISeStringEvaluator>().EvaluateFromAddon(981, [entry.ClassJobId]).ToString())
                 .ToList();
 
-            Services.Framework.RunSafely(() => {
+            Services.GetService<IFramework>().RunSafely(() => {
                 configAddon.OptionsList = results;
             });
         });
@@ -187,7 +188,7 @@ public class ActionHighlight : GameModification {
     /// Gets all valid actions for the specified ClassJob.
     /// </summary>
     public static List<Action> GetClassActions(ClassJob classJob)
-        => Services.DataManager.GetExcelSheet<Action>()
+        => Services.GetService<IDataManager>().GetExcelSheet<Action>()
             .Where(action => IsValidAction(action, classJob))
             .DistinctBy(action => action.RowId)
             .ToList();

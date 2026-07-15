@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Dalamud.Game.Gui;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -29,8 +30,8 @@ public class DutyLootDataLoader : IAsyncDisposable {
     private AddonController<AddonRaidFinder>? raidFinder;
 
     public async Task EnableAsync() {
-        Services.ClientState.TerritoryChanged += OnTerritoryChanged;
-        Services.GameGui.AgentUpdate += OnAgentUpdate;
+        Services.GetService<IClientState>().TerritoryChanged += OnTerritoryChanged;
+        Services.GetService<IGameGui>().AgentUpdate += OnAgentUpdate;
 
         unsafe {
             contentsFinder = new AddonController<AddonContentsFinder> {
@@ -48,7 +49,7 @@ public class DutyLootDataLoader : IAsyncDisposable {
             };
         }
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             contentsFinder.Enable();
             raidFinder.Enable();
         });
@@ -59,7 +60,7 @@ public class DutyLootDataLoader : IAsyncDisposable {
     }
 
     public async ValueTask DisposeAsync() {
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             contentsFinder?.Dispose();
             raidFinder?.Dispose();
         });
@@ -67,8 +68,8 @@ public class DutyLootDataLoader : IAsyncDisposable {
         contentsFinder = null;
         raidFinder = null;
 
-        Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
-        Services.GameGui.AgentUpdate -= OnAgentUpdate;
+        Services.GetService<IClientState>().TerritoryChanged -= OnTerritoryChanged;
+        Services.GetService<IGameGui>().AgentUpdate -= OnAgentUpdate;
 
         dutyLootDataCache.OnChanged -= OnCacheChanged;
         dutyLootDataCache.Dispose();
@@ -106,7 +107,7 @@ public class DutyLootDataLoader : IAsyncDisposable {
         if (content.ContentType != ContentsType.Regular)
             return false;
 
-        if (!Services.DataManager.GetExcelSheet<ContentFinderCondition>().TryGetRow(content.Id, out var cfc))
+        if (!Services.GetService<IDataManager>().GetExcelSheet<ContentFinderCondition>().TryGetRow(content.Id, out var cfc))
             return false;
 
         // Not for Guildhests (3), PvP (6), Gold Saucer (19)

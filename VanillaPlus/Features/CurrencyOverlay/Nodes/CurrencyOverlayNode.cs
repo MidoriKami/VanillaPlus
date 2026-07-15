@@ -1,4 +1,5 @@
 using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
@@ -65,7 +66,7 @@ public unsafe class CurrencyOverlayNode : OverlayNode {
         get;
         init {
             field = value;
-            iconImageNode.IconId = Services.DataManager.GetItem(Currency.ItemId).Icon;
+            iconImageNode.IconId = Services.GetService<IDataManager>().GetItem(Currency.ItemId).Icon;
 
             countNode.Size = new Vector2(128.0f, 22.0f);
             countNode.Origin = countNode.Size / 2.0f;

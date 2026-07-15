@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -22,7 +23,7 @@ public sealed unsafe class EnemyMapMarker : MapMarkerNode {
         var battleChara = CharacterManager.Instance()->BattleCharas[ObjectIndex].Value;
         if (battleChara is null) return;
 
-        var localChara = Services.ObjectTable.LocalPlayer;
+        var localChara = Services.GetService<IObjectTable>().LocalPlayer;
         if (localChara is null) return;
 
         if (battleChara->ObjectKind is not ObjectKind.BattleNpc) return;

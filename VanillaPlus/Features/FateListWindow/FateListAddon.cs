@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Dalamud.Game.ClientState.Fates;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
@@ -24,7 +25,7 @@ public class FateListAddon : NativeAddon {
     protected override unsafe void OnUpdate(AtkUnitBase* addon) {
         base.OnUpdate(addon);
 
-        fateListNode?.OptionsList = Services.FateTable
+        fateListNode?.OptionsList = Services.GetService<IFateTable>()
             .Where(fate => fate is { State: FateState.Running or FateState.Preparing })
             .OrderBy(fate => fate.TimeRemaining)
             .ToList();

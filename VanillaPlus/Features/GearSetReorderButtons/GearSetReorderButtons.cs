@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -43,14 +44,14 @@ public class GearSetReorderButtons : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             gearSetsAddonController.Enable();
             gearSetsListController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             foreach (var (_, node) in reorderButtonNodes ?? []) {
                 node.Dispose();
             }

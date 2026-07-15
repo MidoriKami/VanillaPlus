@@ -1,6 +1,7 @@
 ﻿  using System;
 using System.Linq;
 using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Components.ConfigurationNodes;
@@ -118,7 +119,7 @@ public class GearsetEntryConfigNode : EntryConfigurationNode<GearsetRedirectionE
 
             if (regex.IsMatch(targetGearset->NameString)) return true;
 
-            var territory = Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(entry.TerritoryType);
+            var territory = Services.GetService<IDataManager>().GetExcelSheet<TerritoryType>().GetRow(entry.TerritoryType);
             var territoryName = territory.PlaceName.ValueNullable?.Name.ToString();
             if (territoryName is not null && regex.IsMatch(territoryName)) return true;
 

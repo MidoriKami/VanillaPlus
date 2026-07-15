@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 
@@ -39,7 +40,7 @@ public class CharacterConfigController : IDisposable {
     }
 
     public void Dispose() {
-        Services.Framework.RunSafely(() => {
+        Services.GetService<IFramework>().RunSafely(() => {
             characterConfigController?.Dispose();
             childAddonController?.Dispose();
         });
@@ -50,7 +51,7 @@ public class CharacterConfigController : IDisposable {
 
     private unsafe void SetupConfigCharacter(AtkUnitBase* addon) {
         if (AtkStage.Instance()->ScreenSize.Height < addon->Size.Y + Config.SystemConfigAdditionalHeight) {
-            Services.ChatGui.PrintError("[BiggerConfigWindow] Unable to resize config window, height would be too big.", "VanillaPlus");
+            Services.GetService<IChatGui>().PrintError("[BiggerConfigWindow] Unable to resize config window, height would be too big.", "VanillaPlus");
             Services.PluginLog.Warning("Unable to resize config window, height would be too big.", "BiggerConfigWindow");
             return;
         }

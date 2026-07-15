@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Plugin.Services;
 using Lumina.Excel.Sheets;
 using Newtonsoft.Json.Linq;
 using VanillaPlus.Classes;
@@ -31,7 +32,7 @@ public class AntsConfig : GameModificationConfig<AntsConfig> {
                 var actionSettingsObj = jObject["ActionSettings"]?.ToObject<JObject>();
                 if (actionSettingsObj is null) return false;
 
-                var classJobs = Services.DataManager.GetExcelSheet<ClassJob>()
+                var classJobs = Services.GetService<IDataManager>().GetExcelSheet<ClassJob>()
                     .Where(job => job is { RowId: not 0, Name.IsEmpty: false, IsCrafter: false, IsGatherer: false })
                     .ToList();
 
@@ -43,7 +44,7 @@ public class AntsConfig : GameModificationConfig<AntsConfig> {
                     var actionSettings = property.Value.ToObject<AntsActionSetting>();
                     if (actionSettings is null) continue;
 
-                    var action = Services.DataManager.GetExcelSheet<Action>().GetRow(actionId);
+                    var action = Services.GetService<IDataManager>().GetExcelSheet<Action>().GetRow(actionId);
 
                     foreach (var classJob in classJobs) {
                         if (!ActionHighlight.IsValidAction(action, classJob) && !ActionHighlight.IsValidRoleAction(action, classJob)) continue;

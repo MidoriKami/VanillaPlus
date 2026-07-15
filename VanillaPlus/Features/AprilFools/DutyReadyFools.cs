@@ -15,13 +15,13 @@ public unsafe class DutyReadyFools : FoolsModule {
         => Config.DutyPop;
 
     protected override Task OnEnable() {
-        Services.Framework.Update += OnFrameworkUpdate;
+        Services.GetService<IFramework>().Update += OnFrameworkUpdate;
 
         return Task.CompletedTask;
     }
 
     protected override Task OnDisable() {
-        Services.Framework.Update -= OnFrameworkUpdate;
+        Services.GetService<IFramework>().Update -= OnFrameworkUpdate;
 
         return Task.CompletedTask;
     }
@@ -30,7 +30,7 @@ public unsafe class DutyReadyFools : FoolsModule {
         if (lastAfkState != IsPlayerAfk) {
             if (IsPlayerAfk) {
                 UIGlobals.PlaySoundEffect(67); // hehe, six seven.
-                Services.ChatGui.Print("Oh, sorry, did you think a duty popped? Must have been the wind.", "VanillaPlus");
+                Services.GetService<IChatGui>().Print("Oh, sorry, did you think a duty popped? Must have been the wind.", "VanillaPlus");
             }
 
             lastAfkState = IsPlayerAfk;
@@ -38,5 +38,5 @@ public unsafe class DutyReadyFools : FoolsModule {
     }
 
     private static bool IsPlayerAfk
-        => Services.ObjectTable.LocalPlayer?.OnlineStatus.RowId is 17;
+        => Services.GetService<IObjectTable>().LocalPlayer?.OnlineStatus.RowId is 17;
 }

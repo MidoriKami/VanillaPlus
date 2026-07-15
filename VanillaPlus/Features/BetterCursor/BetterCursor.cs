@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Threading.Tasks;
 using Dalamud.Interface;
+using Dalamud.Plugin.Services;
 using KamiToolKit.UiOverlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -50,7 +51,7 @@ public class BetterCursor : GameModification {
         OpenConfigAction = configWindow.Toggle;
 
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             overlayController = new OverlayController();
             overlayController.AddNode(new CursorImageNode {
                 Config = config,
@@ -59,7 +60,7 @@ public class BetterCursor : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => overlayController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => overlayController?.Dispose());
         overlayController = null;
 
         await (configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
