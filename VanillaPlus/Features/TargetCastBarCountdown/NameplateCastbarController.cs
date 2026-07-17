@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -10,6 +10,8 @@ using KamiToolKit.Nodes;
 using VanillaPlus.Classes;
 using VanillaPlus.Utilities;
 
+using NewAddonCastBarEnemy = FFXIVClientStructs.FFXIV.Client.UI.AddonCastBarEnemy;
+
 namespace VanillaPlus.Features.TargetCastBarCountdown;
 
 public class NameplateCastbarController : IDisposable {
@@ -20,7 +22,7 @@ public class NameplateCastbarController : IDisposable {
 
     private const string StylePath = "TargetCastBarCountdown.CastBarEnemy.style.json";
 
-    private readonly AddonController<AddonCastBarEnemy> addonController;
+    private readonly AddonController<NewAddonCastBarEnemy> addonController;
 
     public unsafe NameplateCastbarController(TargetCastBarCountdownConfig config) {
         this.config = config;
@@ -47,7 +49,7 @@ public class NameplateCastbarController : IDisposable {
             }
         };
 
-        addonController = new AddonController<AddonCastBarEnemy> {
+        addonController = new AddonController<NewAddonCastBarEnemy> {
             AddonName = "CastBarEnemy",
             OnSetup = OnAddonSetup,
             OnFinalize = OnAddonFinalize,
@@ -63,7 +65,7 @@ public class NameplateCastbarController : IDisposable {
         addonController.Dispose();
     }
 
-    private unsafe void OnAddonSetup(AddonCastBarEnemy* addonCastBarEnemy) {
+    private unsafe void OnAddonSetup(NewAddonCastBarEnemy* addonCastBarEnemy) {
         textNodes = new TextNode[10];
 
         foreach (var index in Enumerable.Range(0, 10)) {
@@ -88,7 +90,7 @@ public class NameplateCastbarController : IDisposable {
         }
     }
 
-    private unsafe void OnAddonRefresh(AddonCastBarEnemy* addonCastBarEnemy) {
+    private unsafe void OnAddonRefresh(NewAddonCastBarEnemy* addonCastBarEnemy) {
         if (Services.GetService<IClientState>().IsPvP || !config.PrimaryTarget) {
             foreach (var node in textNodes ?? []) {
                 node.String = string.Empty;
@@ -98,13 +100,13 @@ public class NameplateCastbarController : IDisposable {
 
         foreach (var index in Enumerable.Range(0, 10)) {
             var info = addonCastBarEnemy->CastBarInfo[index];
-            var battleChara = Services.GetService<IObjectTable>().GetBattleChara(info.ObjectId.ObjectId);
+            var battleChara = Services.GetService<IObjectTable>().GetBattleChara(info.EntityId);
 
             textNodes?[index].String = battleChara?.GetCastTimeString;
         }
     }
 
-    private unsafe void OnAddonFinalize(AddonCastBarEnemy* addonCastBarEnemy) {
+    private unsafe void OnAddonFinalize(NewAddonCastBarEnemy* addonCastBarEnemy) {
         foreach (var node in textNodes ?? []) {
             node.Dispose();
         }
