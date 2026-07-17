@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.LayoutEngine;
 using FFXIVClientStructs.FFXIV.Client.LayoutEngine.Layer;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
@@ -24,7 +25,7 @@ public struct ZoneExit {
     private readonly Vector3 right;
 
     public unsafe ZoneExit(Pointer<LineVfxLayoutInstance> line, Pointer<ExitRangeLayoutInstance> exit) {
-        TerritoryType = new RowRef<TerritoryType>(Services.DataManager.Excel, exit.Value->TerritoryType);
+        TerritoryType = new RowRef<TerritoryType>(Services.GetService<IDataManager>().Excel, exit.Value->TerritoryType);
         Transform = line.Value->Transform;
 
         up = Vector3.Transform(Vector3.UnitY, Transform.Rotation);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace VanillaPlus.Features.AprilFools;
@@ -20,7 +21,7 @@ public class ScrollingFools : FoolsModule {
 
     protected override Task OnEnable() {
         unsafe {
-            scrollBarReceiveEventHook = Services.Hooker.HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
+            scrollBarReceiveEventHook = Services.GetService<IGameInteropProvider>().HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
             scrollBarReceiveEventHook?.Enable();
         }
 

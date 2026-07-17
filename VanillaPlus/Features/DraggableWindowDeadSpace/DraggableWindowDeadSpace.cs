@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dalamud.Game.Addon.Events;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -33,20 +34,20 @@ public class DraggableWindowDeadSpace : GameModification {
     public override async Task OnEnableAsync() {
         windowInteractionNodes = [];
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             unsafe {
                 cursorEventListener = new ViewportEventListener(OnViewportEvent);
             }
         });
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, string.Empty, OnAddonSetup);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreFinalize, string.Empty, OnAddonFinalize);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostSetup, string.Empty, OnAddonSetup);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PreFinalize, string.Empty, OnAddonFinalize);
     }
 
     public override async Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnAddonSetup, OnAddonFinalize);
+        Services.GetService<IAddonLifecycle>().UnregisterListener(OnAddonSetup, OnAddonFinalize);
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             cursorEventListener?.Dispose();
 
             foreach (var (_, node) in windowInteractionNodes ?? []) {
@@ -61,7 +62,7 @@ public class DraggableWindowDeadSpace : GameModification {
     }
 
     private unsafe void OnAddonSetup(AddonEvent type, AddonArgs args) {
-        if (!Services.ClientState.IsLoggedIn) return;
+        if (!Services.GetService<IClientState>().IsLoggedIn) return;
         if (windowInteractionNodes is null) return;
 
         var addon = (AtkUnitBase*)args.Addon.Address;
@@ -75,18 +76,18 @@ public class DraggableWindowDeadSpace : GameModification {
                     };
 
                     newInteractionNode.AddEvent(AtkEventType.MouseOver, () => {
-                        Services.AddonEventManager.SetCursor(AddonCursorType.Hand);
+                        Services.GetService<IAddonEventManager>().SetCursor(AddonCursorType.Hand);
                     });
 
                     newInteractionNode.AddEvent(AtkEventType.MouseOut, () => {
                         if (!isDragging) {
-                            Services.AddonEventManager.ResetCursor();
+                            Services.GetService<IAddonEventManager>().ResetCursor();
                         }
                     });
 
                     newInteractionNode.AddEvent(AtkEventType.MouseClick, () => {
                         if (!isDragging) {
-                            Services.AddonEventManager.SetCursor(AddonCursorType.Hand);
+                            Services.GetService<IAddonEventManager>().SetCursor(AddonCursorType.Hand);
                         }
                     });
 
@@ -112,7 +113,7 @@ public class DraggableWindowDeadSpace : GameModification {
             if (isDragging) {
                 cursorEventListener?.RemoveEvent(AtkEventType.MouseMove);
                 cursorEventListener?.RemoveEvent(AtkEventType.MouseUp);
-                Services.AddonEventManager.ResetCursor();
+                Services.GetService<IAddonEventManager>().ResetCursor();
                 isDragging = false;
             }
 
@@ -138,7 +139,7 @@ public class DraggableWindowDeadSpace : GameModification {
 
         if (!isDragging) {
             dragStart = atkEventData->MousePosition;
-            Services.AddonEventManager.SetCursor(AddonCursorType.Grab);
+            Services.GetService<IAddonEventManager>().SetCursor(AddonCursorType.Grab);
             cursorEventListener?.AddEvent(AtkEventType.MouseMove, (AtkResNode*)atkEvent->Target);
             cursorEventListener?.AddEvent(AtkEventType.MouseUp, (AtkResNode*)atkEvent->Target);
             isDragging = true;
@@ -167,7 +168,7 @@ public class DraggableWindowDeadSpace : GameModification {
             case AtkEventType.MouseUp:
                 cursorEventListener?.RemoveEvent(AtkEventType.MouseMove);
                 cursorEventListener?.RemoveEvent(AtkEventType.MouseUp);
-                Services.AddonEventManager.ResetCursor();
+                Services.GetService<IAddonEventManager>().ResetCursor();
                 isDragging = false;
                 break;
         }

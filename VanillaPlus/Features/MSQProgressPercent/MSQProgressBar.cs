@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Interface;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Enums;
@@ -39,9 +40,9 @@ public class MSQProgressBar : GameModification {
 
         expansionRanges = [];
 
-        foreach (var expansion in Services.DataManager.GetExcelSheet<ExVersion>()) {
-            var scenarioTreesForExpansion = Services.DataManager.GetExcelSheet<ScenarioTree>()
-                .Where(scenarioTree => Services.DataManager.GetExcelSheet<Quest>().GetRowOrDefault(scenarioTree.RowId)?.Expansion.RowId == expansion.RowId)
+        foreach (var expansion in Services.GetService<IDataManager>().GetExcelSheet<ExVersion>()) {
+            var scenarioTreesForExpansion = Services.GetService<IDataManager>().GetExcelSheet<ScenarioTree>()
+                .Where(scenarioTree => Services.GetService<IDataManager>().GetExcelSheet<Quest>().GetRowOrDefault(scenarioTree.RowId)?.Expansion.RowId == expansion.RowId)
                 .ToList();
 
             var min = scenarioTreesForExpansion.Min(entry => entry.Unknown2);
@@ -76,11 +77,11 @@ public class MSQProgressBar : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(scenarioTreeAddonController.Enable);
+        await Services.GetService<IFramework>().RunSafely(scenarioTreeAddonController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => scenarioTreeAddonController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => scenarioTreeAddonController?.Dispose());
         scenarioTreeAddonController = null;
 
         await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);

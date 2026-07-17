@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
@@ -35,11 +36,11 @@ public class HUDCoordinates : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(hudLayoutScreenController.Enable);
+        await Services.GetService<IFramework>().RunSafely(hudLayoutScreenController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => hudLayoutScreenController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => hudLayoutScreenController?.Dispose());
         hudLayoutScreenController = null;
 
         textNodes?.Clear();

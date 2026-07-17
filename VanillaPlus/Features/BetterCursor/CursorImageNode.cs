@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.System.Input;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -69,8 +70,8 @@ public unsafe class CursorImageNode : OverlayNode {
 
         if (Config is { OnlyShowInCombat: true } or { OnlyShowInDuties: true }) {
             var shouldShow = true;
-            shouldShow &= !Config.OnlyShowInCombat || Services.Condition.IsInCombat;
-            shouldShow &= !Config.OnlyShowInDuties || Services.Condition.IsBoundByDuty;
+            shouldShow &= !Config.OnlyShowInCombat || Services.GetService<ICondition>().IsInCombat;
+            shouldShow &= !Config.OnlyShowInDuties || Services.GetService<ICondition>().IsBoundByDuty;
             shouldShow &= !Config.HideOnCameraMove || (!isLeftHeld && !isRightHeld);
 
             IsVisible = shouldShow;

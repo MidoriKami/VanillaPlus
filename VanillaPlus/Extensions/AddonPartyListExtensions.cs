@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Arrays;
@@ -54,7 +55,7 @@ public unsafe class PartyListHudData {
     public required PartyListNumberArray.PartyListMemberNumberArray* NumberArrayData { get; init; }
 
     public bool IsSelf() {
-        if (Services.ObjectTable.LocalPlayer is not { EntityId: var playerId }) return false;
+        if (Services.GetService<IObjectTable>().LocalPlayer is not { EntityId: var playerId }) return false;
 
         return HudMember->EntityId == playerId;
     }

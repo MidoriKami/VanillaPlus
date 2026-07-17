@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility.Signatures;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -20,11 +21,11 @@ public class FastMouseClick : GameModification {
     private MemoryReplacement? memoryPatch;
 
     public override async Task OnEnableAsync() {
-        Services.GameInteropProvider.InitializeFromAttributes(this);
+        Services.GetService<IGameInteropProvider>().InitializeFromAttributes(this);
 
         if (memoryAddress is { } address && memoryAddress != nint.Zero) {
             memoryPatch = new MemoryReplacement(address, [0x90, 0x90]);
-            await Services.Framework.RunSafely(memoryPatch.Enable);
+            await Services.GetService<IFramework>().RunSafely(memoryPatch.Enable);
         }
     }
 

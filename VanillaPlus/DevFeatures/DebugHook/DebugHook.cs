@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility.Signatures;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -26,7 +27,7 @@ public unsafe class DebugHook : GameModification {
     private Hook<HookDelegate>? hook;
 
     public override Task OnEnableAsync() {
-        Services.GameInteropProvider.InitializeFromAttributes(this);
+        Services.GetService<IGameInteropProvider>().InitializeFromAttributes(this);
 
         hook?.Enable();
 

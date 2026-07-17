@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Components.Configuration;
 using KamiToolKit.Components.Search;
@@ -41,7 +42,7 @@ public class CurrencyOverlay : GameModification {
             Title = "Currency Search",
             Size = new Vector2(350.0f, 500.0f),
             AllowMultiselect = true,
-            OptionsList = Services.DataManager.GetCurrencyItems().ToList(),
+            OptionsList = Services.GetService<IDataManager>().GetCurrencyItems().ToList(),
         };
 
         configAddon = new ConfigurationAddon<CurrencySetting, CurrencyOverlayListItemNode, CurrencyOverlayConfigNode> {
@@ -49,7 +50,7 @@ public class CurrencyOverlay : GameModification {
             InternalName = "CurrencyOverlayConfig",
             Title = Strings.CurrencyOverlay_ConfigTitle,
             OptionsList = config.Currencies,
-            GetEntrySearchString = entry => Services.DataManager.GetExcelSheet<Item>().GetRow(entry.ItemId).Name.ToString(),
+            GetEntrySearchString = entry => Services.GetService<IDataManager>().GetExcelSheet<Item>().GetRow(entry.ItemId).Name.ToString(),
             AddClicked = OnAddButtonClicked,
             RemoveClicked = OnRemoveButtonClicked,
             SaveConfig = () => Task.Run(config.Save),
@@ -57,7 +58,7 @@ public class CurrencyOverlay : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             overlayController = new OverlayController();
 
             foreach (var currencySetting in config.Currencies) {
@@ -69,7 +70,7 @@ public class CurrencyOverlay : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => overlayController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => overlayController?.Dispose());
         overlayController = null;
 
         await Task.WhenAll(

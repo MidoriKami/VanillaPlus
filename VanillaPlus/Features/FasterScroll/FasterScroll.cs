@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -40,7 +41,7 @@ public class FasterScroll : GameModification {
         OpenConfigAction = configWindow.Toggle;
 
         unsafe {
-            scrollBarReceiveEventHook = Services.Hooker.HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
+            scrollBarReceiveEventHook = Services.GetService<IGameInteropProvider>().HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
             scrollBarReceiveEventHook?.Enable();
         }
     }

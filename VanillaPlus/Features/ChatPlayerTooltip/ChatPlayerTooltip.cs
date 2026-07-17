@@ -7,6 +7,7 @@ using Lumina.Text.ReadOnly;
 using System;
 using System.Threading.Tasks;
 using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -31,15 +32,15 @@ public class ChatPlayerTooltip : GameModification {
     ];
 
     public override Task OnEnableAsync() {
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, addonNames, PreReceiveEvent);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PreReceiveEvent, addonNames, PreReceiveEvent);
 
         return Task.CompletedTask;
     }
 
     public override async Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(PreReceiveEvent);
+        Services.GetService<IAddonLifecycle>().UnregisterListener(PreReceiveEvent);
 
-        await Services.Framework.RunSafely(HideTooltip);
+        await Services.GetService<IFramework>().RunSafely(HideTooltip);
     }
 
     private unsafe void PreReceiveEvent(AddonEvent type, AddonArgs args) {
@@ -66,7 +67,7 @@ public class ChatPlayerTooltip : GameModification {
                 if (!worldExpression.TryGetUInt(out var worldId)) return;
                 if (worldId is 0) return;
                 if (!nameExpression.TryGetString(out var playerName)) return;
-                if (!Services.DataManager.GetExcelSheet<World>().TryGetRow(worldId, out var worldData)) return;
+                if (!Services.GetService<IDataManager>().GetExcelSheet<World>().TryGetRow(worldId, out var worldData)) return;
 
                 var addon = args.GetAddon<AtkUnitBase>();
                 using var rentedStringBuilder = new RentedSeStringBuilder();

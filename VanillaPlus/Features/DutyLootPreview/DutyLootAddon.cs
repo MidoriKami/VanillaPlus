@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Features.DutyLootPreview.Data;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
@@ -111,7 +112,7 @@ public class DutyLootPreviewAddon : NativeAddon {
             ))
             .ToList();
 
-        await Services.Framework.RunSafely(() => listNode.OptionsList = viewModels);
+        await Services.GetService<IFramework>().RunSafely(() => listNode.OptionsList = viewModels);
         listNode.ResetScroll();
 
         var hasData = items.Count != 0;

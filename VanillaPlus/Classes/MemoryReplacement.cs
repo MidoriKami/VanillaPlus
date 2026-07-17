@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dalamud.Memory;
+using Dalamud.Plugin.Services;
 
 namespace VanillaPlus.Classes;
 
@@ -22,7 +23,7 @@ public class MemoryReplacement(nint address, byte[] replacementBytes) : IDisposa
     }
 
     public async Task EnableAsync()
-        => await Services.Framework.RunSafely(Enable);
+        => await Services.GetService<IFramework>().RunSafely(Enable);
 
     public void Disable() {
         ThreadSafety.AssertMainThread();
@@ -35,7 +36,7 @@ public class MemoryReplacement(nint address, byte[] replacementBytes) : IDisposa
     }
 
     public async Task DisableAsync()
-        => await Services.Framework.RunSafely(Disable);
+        => await Services.GetService<IFramework>().RunSafely(Disable);
 
     public void Dispose()
         => Disable();

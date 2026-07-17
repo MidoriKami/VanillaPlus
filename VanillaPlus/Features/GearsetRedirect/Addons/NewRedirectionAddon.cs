@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Components.Search;
@@ -144,7 +145,7 @@ public class NewRedirectionAddon : NativeAddon {
         Size = new Vector2(450.0f, 530.0f),
         InternalName = "TerritorySearch",
         Title = Strings.SearchAddon_TerritoryTitle,
-        OptionsList = Services.DataManager.GetTerritoryTypes().ToList(),
+        OptionsList = Services.GetService<IDataManager>().GetTerritoryTypes().ToList(),
         AllowMultiselect = false,
     };
 }

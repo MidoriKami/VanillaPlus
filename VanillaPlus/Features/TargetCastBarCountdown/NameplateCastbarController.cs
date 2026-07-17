@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Controllers;
@@ -90,7 +91,7 @@ public class NameplateCastbarController : IDisposable {
     }
 
     private unsafe void OnAddonRefresh(NewAddonCastBarEnemy* addonCastBarEnemy) {
-        if (Services.ClientState.IsPvP || !config.PrimaryTarget) {
+        if (Services.GetService<IClientState>().IsPvP || !config.PrimaryTarget) {
             foreach (var node in textNodes ?? []) {
                 node.String = string.Empty;
             }
@@ -99,7 +100,7 @@ public class NameplateCastbarController : IDisposable {
 
         foreach (var index in Enumerable.Range(0, 10)) {
             var info = addonCastBarEnemy->CastBarInfo[index];
-            var battleChara = Services.ObjectTable.GetBattleChara(info.EntityId);
+            var battleChara = Services.GetService<IObjectTable>().GetBattleChara(info.EntityId);
 
             textNodes?[index].String = battleChara?.GetCastTimeString;
         }

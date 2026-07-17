@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dalamud.Game.Gui.NamePlate;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -22,13 +23,13 @@ public class DutyPortalNameplateOffset : GameModification {
     private const float RaisedNameplateY = 3.1f;
 
     public override Task OnEnableAsync() {
-        Services.NamePlateGui.OnDataUpdate += OnNamePlateUpdate;
+        Services.GetService<INamePlateGui>().OnDataUpdate += OnNamePlateUpdate;
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.NamePlateGui.OnDataUpdate -= OnNamePlateUpdate;
+        Services.GetService<INamePlateGui>().OnDataUpdate -= OnNamePlateUpdate;
 
         return Task.CompletedTask;
     }

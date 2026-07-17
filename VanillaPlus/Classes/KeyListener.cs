@@ -10,19 +10,19 @@ public class KeyListener : IDisposable {
     private readonly Dictionary<VirtualKey, bool> virtualKeyMap = [];
 
     public KeyListener() {
-        foreach (var value in Services.KeyState.GetValidVirtualKeys()) {
+        foreach (var value in Services.GetService<IKeyState>().GetValidVirtualKeys()) {
             virtualKeyMap.TryAdd(value, false);
         }
 
-        Services.Framework.Update += OnFrameworkUpdate;
+        Services.GetService<IFramework>().Update += OnFrameworkUpdate;
     }
 
     public void Dispose()
-        => Services.Framework.Update -= OnFrameworkUpdate;
+        => Services.GetService<IFramework>().Update -= OnFrameworkUpdate;
 
     private void OnFrameworkUpdate(IFramework framework) {
         foreach (var pair in virtualKeyMap) {
-            var newState = Services.KeyState[(int)pair.Key];
+            var newState = Services.GetService<IKeyState>()[(int)pair.Key];
 
             if (virtualKeyMap[pair.Key] != newState) {
                 OnKeyPressed?.Invoke(pair.Key, newState);

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
@@ -34,11 +35,11 @@ public class SuppressDialogueAdvance : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "Talk", OnTalkReceiveEvent);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PreReceiveEvent, "Talk", OnTalkReceiveEvent);
     }
 
     public override async Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnTalkReceiveEvent);
+        Services.GetService<IAddonLifecycle>().UnregisterListener(OnTalkReceiveEvent);
 
         await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configWindow = null;
@@ -48,7 +49,7 @@ public class SuppressDialogueAdvance : GameModification {
 
     private unsafe void OnTalkReceiveEvent(AddonEvent type, AddonArgs args) {
         if (args is not AddonReceiveEventArgs eventArgs) return;
-        if ((config?.ApplyOnlyInCutscenes ?? false) && !Services.Condition.IsInCutscene) return;
+        if ((config?.ApplyOnlyInCutscenes ?? false) && !Services.GetService<ICondition>().IsInCutscene) return;
 
         if ((AtkEventType)eventArgs.AtkEventType is AtkEventType.MouseClick) {
             var addon = args.GetAddon<AddonTalk>();

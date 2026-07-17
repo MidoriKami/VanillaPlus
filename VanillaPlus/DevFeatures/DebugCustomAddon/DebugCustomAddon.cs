@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using KamiToolKit.BaseTypes;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -29,7 +30,7 @@ public class DebugCustomAddon : GameModification {
 
         OpenConfigAction = debugAddon.Toggle;
 
-        await Services.Framework.RunSafely(debugAddon.Open);
+        await Services.GetService<IFramework>().RunSafely(debugAddon.Open);
     }
 
     public override async Task OnDisableAsync() {

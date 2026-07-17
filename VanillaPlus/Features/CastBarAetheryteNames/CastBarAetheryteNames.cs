@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.Sheets;
@@ -27,19 +28,19 @@ public class CastBarAetheryteNames : GameModification {
 
     public override Task OnEnableAsync() {
         unsafe {
-            teleportHook = Services.GameInteropProvider.HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
+            teleportHook = Services.GetService<IGameInteropProvider>().HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
             teleportHook?.Enable();
         }
 
-        Services.ClientState.TerritoryChanged += OnTerritoryChanged;
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "_CastBar", OnCastBarRefresh);
+        Services.GetService<IClientState>().TerritoryChanged += OnTerritoryChanged;
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostRefresh, "_CastBar", OnCastBarRefresh);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnCastBarRefresh);
-        Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
+        Services.GetService<IAddonLifecycle>().UnregisterListener(OnCastBarRefresh);
+        Services.GetService<IClientState>().TerritoryChanged -= OnTerritoryChanged;
 
         teleportHook?.Dispose();
         teleportHook = null;
@@ -54,20 +55,20 @@ public class CastBarAetheryteNames : GameModification {
 
     private unsafe void OnCastBarRefresh(AddonEvent type, AddonArgs args) {
         if (teleportInfo is not { } info) return;
-        if (Services.ObjectTable.LocalPlayer is not { IsCasting: true, CastActionId: 5 }) return;
+        if (Services.GetService<IObjectTable>().LocalPlayer is not { IsCasting: true, CastActionId: 5 }) return;
 
         var textNode = args.GetAddon<AddonCastBar>()->GetTextNodeById(4);
         if (textNode == null) return;
 
-        var aetheryte = Services.DataManager.GetExcelSheet<Aetheryte>().GetRow(info.AetheryteId);
+        var aetheryte = Services.GetService<IDataManager>().GetExcelSheet<Aetheryte>().GetRow(info.AetheryteId);
 
         switch (info) {
             case { IsApartment: true }:
-                textNode->SetText(Services.DataManager.GetAddonText(8518));
+                textNode->SetText(Services.GetService<IDataManager>().GetAddonText(8518));
                 break;
 
             case { IsSharedHouse: true }:
-                textNode->SetText(Services.SeStringEvaluator.EvaluateFromAddon(8519, [(uint)info.Ward, (uint)info.Plot]));
+                textNode->SetText(Services.GetService<ISeStringEvaluator>().EvaluateFromAddon(8519, [(uint)info.Ward, (uint)info.Plot]));
                 break;
 
             case { } when aetheryte.PlaceName.IsValid:

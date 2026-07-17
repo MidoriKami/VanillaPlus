@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using Dalamud.Game.ClientState.Objects.Enums;
+using Dalamud.Plugin.Services;
 using Lumina.Text.ReadOnly;
 using LuminaSupplemental.Excel.Model;
 using LuminaSupplemental.Excel.Services;
@@ -89,7 +90,7 @@ public class DutyLootDataCache : IDisposable {
         var boss = GetDungeonBoss(cfcId, fightNo);
         if (boss == null) return;
 
-        var bossName = Services.SeStringEvaluator.EvaluateObjStr(ObjectKind.BattleNpc, boss.BNpcNameId);
+        var bossName = Services.GetService<ISeStringEvaluator>().EvaluateObjStr(ObjectKind.BattleNpc, boss.BNpcNameId);
         if (string.IsNullOrEmpty(bossName)) return;
 
         var dutyLootData = dutyLootByContentId.GetOrAdd(cfcId, DutyLootData.Empty(cfcId));
@@ -138,7 +139,7 @@ public class DutyLootDataCache : IDisposable {
         includesHeaders: false,
         out _,
         out _,
-        Services.DataManager.GameData,
-        Services.DataManager.GameData.Options.DefaultExcelLanguage
+        Services.GetService<IDataManager>().GameData,
+        Services.GetService<IDataManager>().GameData.Options.DefaultExcelLanguage
     );
 }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.Sheets;
@@ -29,23 +30,23 @@ public static unsafe class MarkerInfoExtensions {
 
         public uint IconId => markerInfo.MarkerData.First->IconId;
 
-        public uint ClassJobLevel => Services.DataManager.GetExcelSheet<Quest>().GetRow(markerInfo.ObjectiveId + ushort.MaxValue + 1).ClassJobLevel.First();
+        public uint ClassJobLevel => Services.GetService<IDataManager>().GetExcelSheet<Quest>().GetRow(markerInfo.ObjectiveId + ushort.MaxValue + 1).ClassJobLevel.First();
 
         public float Distance {
             get {
                 if (markerInfo.MarkerData.Count <= 0) return 0;
 
-                return Vector3.Distance(Services.ObjectTable.LocalPlayer?.Position ?? Vector3.Zero, markerInfo.MarkerData.First->Position);
+                return Vector3.Distance(Services.GetService<IObjectTable>().LocalPlayer?.Position ?? Vector3.Zero, markerInfo.MarkerData.First->Position);
             }
         }
 
         public string IssuerName
-            => Services.DataManager.GetExcelSheet<Quest>().GetRow(markerInfo.ObjectiveId + ushort.MaxValue + 1)
+            => Services.GetService<IDataManager>().GetExcelSheet<Quest>().GetRow(markerInfo.ObjectiveId + ushort.MaxValue + 1)
                    .IssuerStart.GetValueOrDefault<ENpcResident>()?.Singular.ToString() ?? string.Empty;
     }
 
     public static bool IsRegexMatch(MarkerInfo marker, string searchString) {
-        if (!Services.DataManager.GetExcelSheet<Quest>().TryGetRow(marker.ObjectiveId + ushort.MaxValue + 1, out var questInfo)) return false;
+        if (!Services.GetService<IDataManager>().GetExcelSheet<Quest>().TryGetRow(marker.ObjectiveId + ushort.MaxValue + 1, out var questInfo)) return false;
         if (questInfo.RowId is 0) return false;
 
         var regex = new Regex(searchString, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);

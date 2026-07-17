@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility.Signatures;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -20,11 +21,11 @@ public class BorderlessCutscenes : GameModification {
     private MemoryReplacement? jumpPatch;
 
     public override async Task OnEnableAsync() {
-        Services.GameInteropProvider.InitializeFromAttributes(this);
+        Services.GetService<IGameInteropProvider>().InitializeFromAttributes(this);
 
         if (memoryAddress is { } address && memoryAddress != nint.Zero) {
             jumpPatch = new MemoryReplacement(address, [0x00]);
-            await Services.Framework.RunSafely(jumpPatch.Enable);
+            await Services.GetService<IFramework>().RunSafely(jumpPatch.Enable);
         }
     }
 

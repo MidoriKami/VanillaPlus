@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using KamiToolKit.Controllers;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -33,11 +34,11 @@ public class BetterTeleportWindow : GameModification {
             },
         };
 
-        await Services.Framework.RunSafely(teleportFactoryController.Enable);
+        await Services.GetService<IFramework>().RunSafely(teleportFactoryController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => teleportFactoryController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => teleportFactoryController?.Dispose());
         teleportFactoryController = null;
     }
 }

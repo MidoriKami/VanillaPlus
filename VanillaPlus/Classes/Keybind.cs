@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Game.ClientState.Keys;
+using Dalamud.Plugin.Services;
 
 namespace VanillaPlus.Classes;
 
@@ -9,10 +10,10 @@ public class Keybind {
     public HashSet<VirtualKey> Modifiers { get; init; } = [];
 
     public bool IsPressed()
-        => Key is not VirtualKey.NO_KEY && Services.KeyState.IsKeybindPressed(Modifiers.Append(Key));
+        => Key is not VirtualKey.NO_KEY && Services.GetService<IKeyState>().IsKeybindPressed(Modifiers.Append(Key));
 
     public void Reset()
-        => Services.KeyState.ResetKeyCombo([Key]);
+        => Services.GetService<IKeyState>().ResetKeyCombo([Key]);
 
     public override string ToString()
         => string.Join(" + ", Modifiers.Append(Key));

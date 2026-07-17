@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Components.Search;
 using KamiToolKit.UiOverlay;
@@ -48,7 +49,7 @@ public class CurrencyWarning : GameModification {
             Title = Strings.CurrencyWarning_ItemSearchTitle,
             Size = new Vector2(350.0f, 500.0f),
             AllowMultiselect = true,
-            OptionsList = Services.DataManager.GetCurrencyItems().ToList(),
+            OptionsList = Services.GetService<IDataManager>().GetCurrencyItems().ToList(),
         };
 
         configAddon = new CurrencyWarningConfigAddon {
@@ -56,7 +57,7 @@ public class CurrencyWarning : GameModification {
             Title = Strings.CurrencyWarning_ListTitle,
             Size = new Vector2(700.0f, 500.0f),
             OptionsList = Config.WarningSettings,
-            GetEntrySearchString = entry => Services.DataManager.GetExcelSheet<Item>().GetRow(entry.ItemId).Name.ToString(),
+            GetEntrySearchString = entry => Services.GetService<IDataManager>().GetExcelSheet<Item>().GetRow(entry.ItemId).Name.ToString(),
             AddClicked = OnAddClicked,
             RemoveClicked = OnRemoveClicked,
             SaveConfig = () => Task.Run(Config.Save),
@@ -64,7 +65,7 @@ public class CurrencyWarning : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             overlayController = new OverlayController();
 
             var tooltipNode = new CurrencyTooltipNode {
@@ -91,7 +92,7 @@ public class CurrencyWarning : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             overlayController?.Dispose();
         });
         overlayController = null;

@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Aetherytes;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
@@ -93,7 +94,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
                         listNode = new ListNode<IAetheryteEntry, TeleportListItemNode> { // Results
                             Height = ContentSize.Y - 28.0f - itemSpacing * 2.0f,
                             ItemSpacing = itemSpacing * 1.5f,
-                            OptionsList = Services.AetheryteList.ToList(),
+                            OptionsList = Services.GetService<IAetheryteList>().ToList(),
                             NoResultsString = Strings.BetterTeleportWindow_NoResults,
                         },
                     ],
@@ -133,7 +134,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
             Size = new Vector2(28.0f, 28.0f),
             Position = new Vector2(ContentSize.X - 36.0f, 6.0f),
             Icon = CircleButtonIcon.GearCog,
-            TextTooltip = Services.DataManager.GetAddonText(8515), // "Open Teleport Settings"
+            TextTooltip = Services.GetService<IDataManager>().GetAddonText(8515), // "Open Teleport Settings"
             OnClick = () => AgentTeleport.Instance()->AgentInterface.SendCommand(2, [3, 0, 0]),
         };
         ticketConfigButton.AttachNode(this);
@@ -202,7 +203,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
     }
 
     private List<NodeBase> GetRegionNodes() {
-        var regionNodes = Services.AetheryteList
+        var regionNodes = Services.GetService<IAetheryteList>()
             .DistinctBy(entry => entry.RegionId)
             .Select(entry => new SelectableTextNode {
                 Height = 24.0f,
@@ -236,11 +237,11 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
 
     private void OnSearchBoxInputReceived(ReadOnlySeString searchString) {
         listNode?.OptionsList = currentMode switch {
-            ListMode.All => Services.AetheryteList.Where(entry => IsMatch(entry, searchString)).ToList(),
-            ListMode.Region => Services.AetheryteList.Where(entry => entry.RegionId == currentRegionId && IsMatch(entry, searchString)).ToList(),
-            ListMode.Cities => Services.AetheryteList.Where(entry => entry.AetheryteData.ValueNullable?.AethernetGroup is not 0 && IsMatch(entry, searchString)).ToList(),
-            ListMode.Favorites => Services.AetheryteList.Where(entry => config.FavoriteAetherytes.Contains(entry.AetheryteId) && IsMatch(entry, searchString)).ToList(),
-            _ => Services.AetheryteList.Where(entry => IsMatch(entry, searchString)).ToList(),
+            ListMode.All => Services.GetService<IAetheryteList>().Where(entry => IsMatch(entry, searchString)).ToList(),
+            ListMode.Region => Services.GetService<IAetheryteList>().Where(entry => entry.RegionId == currentRegionId && IsMatch(entry, searchString)).ToList(),
+            ListMode.Cities => Services.GetService<IAetheryteList>().Where(entry => entry.AetheryteData.ValueNullable?.AethernetGroup is not 0 && IsMatch(entry, searchString)).ToList(),
+            ListMode.Favorites => Services.GetService<IAetheryteList>().Where(entry => config.FavoriteAetherytes.Contains(entry.AetheryteId) && IsMatch(entry, searchString)).ToList(),
+            _ => Services.GetService<IAetheryteList>().Where(entry => IsMatch(entry, searchString)).ToList(),
         };
 
         if (listNode?.OptionsList.Count > 0) {

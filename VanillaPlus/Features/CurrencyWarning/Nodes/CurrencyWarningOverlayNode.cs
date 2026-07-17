@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -50,16 +51,16 @@ public unsafe class CurrencyWarningOverlayNode : OverlayNode {
             var isHigh = setting.Mode == WarningMode.Above && count >= setting.Limit;
 
             if (isLow || isHigh) {
-                var item = Services.DataManager.GetItem(setting.ItemId);
+                var item = Services.GetService<IDataManager>().GetItem(setting.ItemId);
                 ActiveWarnings.Add(new WarningInfo(item.Icon, item.Name.ToString(), count, isHigh, setting.Limit));
                 if (isHigh) hasHigh = true;
             }
         }
 
         var shouldShow = ActiveWarnings.Count > 0 || Config.IsMoveable;
-        var shouldDisableInDuty = Config.HideInDuties && Services.Condition.IsBoundByDuty;
+        var shouldDisableInDuty = Config.HideInDuties && Services.GetService<ICondition>().IsBoundByDuty;
 
-        IsVisible = shouldShow && !(shouldDisableInDuty || Services.Condition.IsInCutsceneOrQuestEvent);
+        IsVisible = shouldShow && !(shouldDisableInDuty || Services.GetService<ICondition>().IsInCutsceneOrQuestEvent);
 
         if (ActiveWarnings.Count > 0) {
             iconNode.IconId = hasHigh ? Config.HighIcon : Config.LowIcon;

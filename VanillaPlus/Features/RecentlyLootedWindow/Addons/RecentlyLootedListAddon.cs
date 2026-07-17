@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dalamud.Game.Inventory.InventoryEventArgTypes;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
@@ -34,19 +35,19 @@ public class RecentlyLootedListAddon : NativeAddon {
     // as this is where the data is consumed,
     // so it doesn't have to be passed back and forth with the module.
     public RecentlyLootedListAddon() {
-        enableTracking = Services.ClientState.IsLoggedIn;
+        enableTracking = Services.GetService<IClientState>().IsLoggedIn;
 
-        Services.GameInventory.InventoryChanged += OnRawItemAdded;
-        Services.ClientState.Login += OnLogin;
-        Services.ClientState.Logout += OnLogout;
+        Services.GetService<IGameInventory>().InventoryChanged += OnRawItemAdded;
+        Services.GetService<IClientState>().Login += OnLogin;
+        Services.GetService<IClientState>().Logout += OnLogout;
     }
 
     public override async ValueTask DisposeAsync() {
         enableTracking = false;
 
-        Services.GameInventory.InventoryChanged -= OnRawItemAdded;
-        Services.ClientState.Login -= OnLogin;
-        Services.ClientState.Logout -= OnLogout;
+        Services.GetService<IGameInventory>().InventoryChanged -= OnRawItemAdded;
+        Services.GetService<IClientState>().Login -= OnLogin;
+        Services.GetService<IClientState>().Logout -= OnLogout;
 
         await base.DisposeAsync();
     }
@@ -65,7 +66,7 @@ public class RecentlyLootedListAddon : NativeAddon {
         foreach (var eventData in events) {
             if (!Inventory.StandardInventories.Contains(eventData.Item.ContainerType)) continue;
 
-            if (!Services.ClientState.IsLoggedIn) break;
+            if (!Services.GetService<IClientState>().IsLoggedIn) break;
             if (eventData is not (InventoryItemAddedArgs or InventoryItemChangedArgs)) break;
             if (eventData is InventoryItemChangedArgs changedArgs && changedArgs.OldItemState.Quantity >= changedArgs.Item.Quantity) break;
 

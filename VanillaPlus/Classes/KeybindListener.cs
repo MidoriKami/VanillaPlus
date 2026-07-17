@@ -47,7 +47,7 @@ public class KeybindListener {
     /// </summary>
     public unsafe void Update() {
         if (!IsEnabled) return;
-        if (DisableInCombat && Services.Condition.IsInCombat) return;
+        if (DisableInCombat && Services.GetService<ICondition>().IsInCombat) return;
 
         // Don't process keybinds if any input text is active
         if (RaptureAtkModule.Instance()->IsTextInputActive()) return;

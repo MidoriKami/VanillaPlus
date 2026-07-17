@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Dalamud.Game.Gui;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
@@ -37,13 +38,13 @@ public class InventoryListAddon : NativeAddon {
 
         UpdateItemsList();
 
-        Services.GameGui.AgentUpdate += OnAgentUpdate;
+        Services.GetService<IGameGui>().AgentUpdate += OnAgentUpdate;
     }
 
     protected override unsafe void OnFinalize(AtkUnitBase* addon) {
         base.OnFinalize(addon);
 
-        Services.GameGui.AgentUpdate -= OnAgentUpdate;
+        Services.GetService<IGameGui>().AgentUpdate -= OnAgentUpdate;
 
         listNode = null;
     }

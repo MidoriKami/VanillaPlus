@@ -1,5 +1,6 @@
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Features.DutyLootPreview.Data;
 using VanillaPlus.Enums;
@@ -46,14 +47,14 @@ public class DutyLootPreview : GameModification {
             OnButtonClicked = addonDutyLoot.Toggle,
         };
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             journalUiController.Enable();
             inDutyUiController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             journalUiController?.Dispose();
             inDutyUiController?.Dispose();
         });

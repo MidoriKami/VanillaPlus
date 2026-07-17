@@ -37,8 +37,8 @@ public class InventorySearchBar : GameModification {
     private int lastSelectedTab;
 
     public override async Task OnEnableAsync() {
-        if (Services.ClientState.IsLoggedIn) {
-            await Services.Framework.RunSafely(ReinitializeController);
+        if (Services.GetService<IClientState>().IsLoggedIn) {
+            await Services.GetService<IFramework>().RunSafely(ReinitializeController);
         }
 
         keybindListener = new KeybindListener {
@@ -50,22 +50,22 @@ public class InventorySearchBar : GameModification {
             Callback = OnKeybindPressed,
         };
 
-        Services.GameGui.AgentUpdate += OnAgentUpdate;
-        Services.ClientState.Login += OnLogin;
-        Services.ClientState.Logout += OnLogout;
-        Services.Framework.Update += OnFrameworkUpdate;
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostHide, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnInventoryHide);
+        Services.GetService<IGameGui>().AgentUpdate += OnAgentUpdate;
+        Services.GetService<IClientState>().Login += OnLogin;
+        Services.GetService<IClientState>().Logout += OnLogout;
+        Services.GetService<IFramework>().Update += OnFrameworkUpdate;
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostHide, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnInventoryHide);
     }
 
     public override async Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnInventoryHide);
-        Services.GameConfig.UiConfigChanged -= OnUiConfigChanged;
-        Services.ClientState.Login -= OnLogin;
-        Services.ClientState.Logout -= OnLogout;
-        Services.GameGui.AgentUpdate -= OnAgentUpdate;
-        Services.Framework.Update -= OnFrameworkUpdate;
+        Services.GetService<IAddonLifecycle>().UnregisterListener(OnInventoryHide);
+        Services.GetService<IGameConfig>().UiConfigChanged -= OnUiConfigChanged;
+        Services.GetService<IClientState>().Login -= OnLogin;
+        Services.GetService<IClientState>().Logout -= OnLogout;
+        Services.GetService<IGameGui>().AgentUpdate -= OnAgentUpdate;
+        Services.GetService<IFramework>().Update -= OnFrameworkUpdate;
 
-        await Services.Framework.RunSafely(() => inventoryController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => inventoryController?.Dispose());
         inventoryController = null;
         keybindListener = null;
         searchInputNode = null;
@@ -80,15 +80,15 @@ public class InventorySearchBar : GameModification {
     private void OnLogin() {
         ReinitializeController();
 
-        Services.GameConfig.UiConfigChanged += OnUiConfigChanged;
+        Services.GetService<IGameConfig>().UiConfigChanged += OnUiConfigChanged;
     }
 
     private void OnLogout(int type, int code) {
-        Services.GameConfig.UiConfigChanged -= OnUiConfigChanged;
+        Services.GetService<IGameConfig>().UiConfigChanged -= OnUiConfigChanged;
     }
 
     private unsafe void ReinitializeController() {
-        if (!Services.GameConfig.UiConfig.TryGet("ItemInventryWindowSizeType", out uint inventoryType)) return;
+        if (!Services.GetService<IGameConfig>().UiConfig.TryGet("ItemInventryWindowSizeType", out uint inventoryType)) return;
 
         inventoryController?.Dispose();
 
@@ -141,7 +141,7 @@ public class InventorySearchBar : GameModification {
 
     private void OnInventoryHide(AddonEvent type, AddonArgs args) {
         // Delay clearing it until its no longer visible.
-        Services.Framework.RunOnTick(() => {
+        Services.GetService<IFramework>().RunOnTick(() => {
             searchInputNode?.SearchString = string.Empty;
         }, delayTicks: 6);
     }

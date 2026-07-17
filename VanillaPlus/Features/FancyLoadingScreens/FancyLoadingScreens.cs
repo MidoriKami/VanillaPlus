@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -34,7 +35,7 @@ public class FancyLoadingScreens : GameModification {
 
     public override async Task OnEnableAsync() {
         unsafe {
-            teleportHook = Services.Hooker.HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
+            teleportHook = Services.GetService<IGameInteropProvider>().HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
             teleportHook?.Enable();
 
             locationTitleController = new AddonController {
@@ -45,20 +46,20 @@ public class FancyLoadingScreens : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(() => locationTitleController.Enable());
+        await Services.GetService<IFramework>().RunSafely(() => locationTitleController.Enable());
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostHide, "_LocationTitle", OnLoadingScreenHide);
-        Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostHide, "_LocationTitle", OnLoadingScreenHide);
+        Services.GetService<IClientState>().TerritoryChanged += OnTerritoryChanged;
     }
 
     public override async Task OnDisableAsync() {
-        Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
-        Services.AddonLifecycle.UnregisterListener(OnLoadingScreenHide);
+        Services.GetService<IClientState>().TerritoryChanged -= OnTerritoryChanged;
+        Services.GetService<IAddonLifecycle>().UnregisterListener(OnLoadingScreenHide);
 
         teleportHook?.Dispose();
         teleportHook = null;
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             locationTitleController?.Dispose();
         });
         locationTitleController = null;
@@ -113,7 +114,7 @@ public class FancyLoadingScreens : GameModification {
     private void SetLoadingScreenImage(uint territoryId) {
         if (artworkImageNode is null) return;
 
-        if (!Services.DataManager.GetExcelSheet<TerritoryType>().TryGetRow(territoryId, out var territory)) return;
+        if (!Services.GetService<IDataManager>().GetExcelSheet<TerritoryType>().TryGetRow(territoryId, out var territory)) return;
         artworkImageNode?.ContentNode.TexturePath = territory.LoadingImagePath;
         artworkImageNode?.Timeline?.PlayAnimation(1, true);
         artworkImageNode?.IsVisible = true;
@@ -128,7 +129,7 @@ public class FancyLoadingScreens : GameModification {
         var accepted = teleportHook!.Original(thisPtr, aetheryteId, subIndex);
 
         try {
-            if (accepted && Services.DataManager.GetExcelSheet<Aetheryte>().TryGetRow(aetheryteId, out var aetheryte)) {
+            if (accepted && Services.GetService<IDataManager>().GetExcelSheet<Aetheryte>().TryGetRow(aetheryteId, out var aetheryte)) {
                 isTeleporting = true;
                 SetLoadingScreenImage(aetheryte.Territory.RowId);
             }

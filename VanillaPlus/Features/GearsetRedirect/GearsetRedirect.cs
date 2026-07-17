@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using KamiToolKit.Components.Configuration;
 using KamiToolKit.Components.Search;
@@ -58,12 +59,12 @@ public class GearsetRedirect : GameModification {
                 RemoveClicked = OnRemoveClicked,
             };
 
-            gearsetChangedHook = Services.Hooker.HookFromAddress<RaptureGearsetModule.Delegates.EquipGearset>(RaptureGearsetModule.Addresses.EquipGearset.Value, OnGearsetChanged);
+            gearsetChangedHook = Services.GetService<IGameInteropProvider>().HookFromAddress<RaptureGearsetModule.Delegates.EquipGearset>(RaptureGearsetModule.Addresses.EquipGearset.Value, OnGearsetChanged);
             gearsetChangedHook?.Enable();
         }
 
         OpenConfigAction = () => {
-            if (Services.ClientState.IsLoggedIn) {
+            if (Services.GetService<IClientState>().IsLoggedIn) {
                 configWindow.Toggle();
             }
         };
@@ -114,7 +115,7 @@ public class GearsetRedirect : GameModification {
     private unsafe int OnGearsetChanged(RaptureGearsetModule* thisPtr, int gearsetId, byte glamourPlateId) {
         try {
             if (config?.GearsetEntries.FirstOrDefault(entry => entry.TargetGearsetId == gearsetId) is { } redirection) {
-                var targetRedirection = redirection.Redirections.FirstOrDefault(info => Services.ClientState.TerritoryType == info.TerritoryType);
+                var targetRedirection = redirection.Redirections.FirstOrDefault(info => Services.GetService<IClientState>().TerritoryType == info.TerritoryType);
                 if (targetRedirection is not null) {
                     gearsetId = targetRedirection.AlternateGearsetId;
                 }

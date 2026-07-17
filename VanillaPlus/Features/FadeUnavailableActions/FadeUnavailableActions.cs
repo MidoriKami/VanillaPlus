@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Arrays.Common;
@@ -56,7 +57,7 @@ public class FadeUnavailableActions : GameModification {
         OpenConfigAction = configWindow.Toggle;
 
         unsafe {
-            onHotBarSlotUpdateHook = Services.Hooker.HookFromAddress<AddonActionBarBase.Delegates.UpdateHotbarSlot>(AddonActionBarBase.MemberFunctionPointers.UpdateHotbarSlot, OnHotBarSlotUpdate);
+            onHotBarSlotUpdateHook = Services.GetService<IGameInteropProvider>().HookFromAddress<AddonActionBarBase.Delegates.UpdateHotbarSlot>(AddonActionBarBase.MemberFunctionPointers.UpdateHotbarSlot, OnHotBarSlotUpdate);
             onHotBarSlotUpdateHook?.Enable();
         }
     }
@@ -70,7 +71,7 @@ public class FadeUnavailableActions : GameModification {
 
         actionCache = null;
 
-        await Services.Framework.RunSafely(ResetAllHotbars);
+        await Services.GetService<IFramework>().RunSafely(ResetAllHotbars);
     }
 
     private unsafe void OnHotBarSlotUpdate(AddonActionBarBase* addon, ActionBarSlot* hotBarSlotData, NumberArrayData* numberArray, StringArrayData* stringArray, int numberArrayIndex, int stringArrayIndex) {
@@ -86,7 +87,7 @@ public class FadeUnavailableActions : GameModification {
 
     private unsafe void ProcessHotBarSlot(ActionBarSlot* hotBarSlotData, NumberArrayData* numberArray, int numberArrayIndex) {
         if (config is null) return;
-        if (Services.ObjectTable.LocalPlayer is { IsCasting: true }) return;
+        if (Services.GetService<IObjectTable>().LocalPlayer is { IsCasting: true }) return;
 
         var numberArrayData = (ActionBarSlotNumberArray*)(&numberArray->IntArray[numberArrayIndex]);
 
@@ -99,7 +100,7 @@ public class FadeUnavailableActions : GameModification {
             var action = GetAction(numberArrayData->ActionId);
 
             var actionLevel = action?.ClassJobLevel ?? 0;
-            var playerLevel = Services.ObjectTable.LocalPlayer?.Level ?? 0;
+            var playerLevel = Services.GetService<IObjectTable>().LocalPlayer?.Level ?? 0;
 
             switch (action) {
                 case null:
@@ -125,7 +126,7 @@ public class FadeUnavailableActions : GameModification {
 
         if (actionCache?.TryGetValue(adjustedActionId, out var action) ?? false) return action;
 
-        action = Services.DataManager.GetExcelSheet<Action>().GetRowOrDefault(adjustedActionId);
+        action = Services.GetService<IDataManager>().GetExcelSheet<Action>().GetRowOrDefault(adjustedActionId);
         actionCache?.Add(adjustedActionId, action);
         return action;
     }

@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using KamiToolKit.UiOverlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -23,7 +24,7 @@ public class ZoneTransitionLabels : GameModification {
     public override async Task OnEnableAsync() {
         zoneWatcher = new ZoneWatcher();
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             overlayController = new OverlayController();
             overlayController.AddNode(new ZoneLabelNode(zoneWatcher) {
                 Size = new Vector2(300.0f, 30.0f),
@@ -32,7 +33,7 @@ public class ZoneTransitionLabels : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             overlayController?.Dispose();
             zoneWatcher?.Dispose();
         });

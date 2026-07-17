@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Interface;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Enums;
@@ -73,14 +74,14 @@ public class MiniCactpotHelper : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(lotteryDailyController.Enable);
+        await Services.GetService<IFramework>().RunSafely(lotteryDailyController.Enable);
     }
 
     public override async Task OnDisableAsync() {
         gameTask?.Dispose();
         gameTask = null;
 
-        await Services.Framework.RunSafely(() => lotteryDailyController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => lotteryDailyController?.Dispose());
         lotteryDailyController = null;
 
         await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Game.ClientState.Keys;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.System.Input;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -125,8 +126,8 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         if (!isPressed) return;
 
         combo.Clear();
-        foreach (var key in Services.KeyState.GetValidVirtualKeys()) {
-            if (Services.KeyState[(int)key]) {
+        foreach (var key in Services.GetService<IKeyState>().GetValidVirtualKeys()) {
+            if (Services.GetService<IKeyState>()[(int)key]) {
                 combo.Add(key);
             }
         }
@@ -159,7 +160,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         verticalListNode.RecalculateLayout();
         conflictsScrollableAreaNode.RecalculateSizes();
 
-        Services.KeyState.ResetKeyCombo(combo);
+        Services.GetService<IKeyState>().ResetKeyCombo(combo);
     }
 
     protected override void OnFinalize(AtkUnitBase* addon)

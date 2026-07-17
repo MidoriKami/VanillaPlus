@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using Dalamud.Game.Text;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -33,7 +34,7 @@ public class RedirectionEntryListItemNode : ListItemWithFocusNav<RedirectionConf
 
         gearsetNameTextNode.String = targetGearset->Name;
 
-        var territoryInfo = Services.DataManager.GetExcelSheet<TerritoryType>().GetRow(itemData.TerritoryType);
+        var territoryInfo = Services.GetService<IDataManager>().GetExcelSheet<TerritoryType>().GetRow(itemData.TerritoryType);
         territoryNameTextNode.String = $"When in {SeIconChar.ArrowRight.ToIconString()} {territoryInfo.PlaceName.ValueNullable?.Name.ToString() ?? string.Empty}";
     }
 

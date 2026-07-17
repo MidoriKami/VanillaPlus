@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Keys;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -54,14 +55,14 @@ public class BetterSelectString : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             selectStringController.Enable();
             selectStringListController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             selectStringController?.Dispose();
             selectStringListController?.Dispose();
         });
@@ -84,10 +85,10 @@ public class BetterSelectString : GameModification {
             var keyIndex = (index + 1) % 10;
 
             var topRowKey = VirtualKey.KEY_0 + (ushort)keyIndex;
-            var isTopRowKeyPressed = Services.KeyState.IsVirtualKeyValid(topRowKey) && Services.KeyState[(int)topRowKey];
+            var isTopRowKeyPressed = Services.GetService<IKeyState>().IsVirtualKeyValid(topRowKey) && Services.GetService<IKeyState>()[(int)topRowKey];
 
             if (isTopRowKeyPressed) {
-                Services.KeyState[(int)topRowKey] = false;
+                Services.GetService<IKeyState>()[(int)topRowKey] = false;
 
                 atkEventData->ListItemData.SelectedIndex = index;
                 addon->PopupMenu.ReceiveEvent(AtkEventType.ListItemClick, 0, atkEvent, atkEventData);
@@ -95,10 +96,10 @@ public class BetterSelectString : GameModification {
             }
 
             var numpadKey = VirtualKey.NUMPAD0 + (ushort)keyIndex;
-            var isNumpadKeyPressed = Services.KeyState.IsVirtualKeyValid(numpadKey) && Services.KeyState[(int)numpadKey];
+            var isNumpadKeyPressed = Services.GetService<IKeyState>().IsVirtualKeyValid(numpadKey) && Services.GetService<IKeyState>()[(int)numpadKey];
 
             if (isNumpadKeyPressed) {
-                Services.KeyState[(int)numpadKey] = false;
+                Services.GetService<IKeyState>()[(int)numpadKey] = false;
 
                 atkEventData->ListItemData.SelectedIndex = index;
                 addon->PopupMenu.ReceiveEvent(AtkEventType.ListItemClick, 0, atkEvent, atkEventData);

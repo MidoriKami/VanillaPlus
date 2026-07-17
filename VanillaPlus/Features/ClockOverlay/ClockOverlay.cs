@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.UiOverlay;
 using VanillaPlus.Classes;
@@ -49,7 +50,7 @@ public class ClockOverlay : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             overlayController = new OverlayController();
             overlayController.AddNode(new ClockOverlayNode {
                 Config = config,
@@ -64,7 +65,7 @@ public class ClockOverlay : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => overlayController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => overlayController?.Dispose());
         overlayController = null;
 
         await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Dalamud.Game.Agent;
 using Dalamud.Game.Agent.AgentArgTypes;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.System.Input;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -23,14 +24,14 @@ public class ShowAetherytesOnTop : GameModification {
     private KeyStateFlags controlPreState;
 
     public override Task OnEnableAsync() {
-        Services.AgentLifecycle.RegisterListener(AgentEvent.PreUpdate, AgentId.Map, OnMapPreUpdate);
-        Services.AgentLifecycle.RegisterListener(AgentEvent.PostUpdate, AgentId.Map, OnMapPostUpdate);
+        Services.GetService<IAgentLifecycle>().RegisterListener(AgentEvent.PreUpdate, AgentId.Map, OnMapPreUpdate);
+        Services.GetService<IAgentLifecycle>().RegisterListener(AgentEvent.PostUpdate, AgentId.Map, OnMapPostUpdate);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.AgentLifecycle.UnregisterListener(OnMapPreUpdate, OnMapPostUpdate);
+        Services.GetService<IAgentLifecycle>().UnregisterListener(OnMapPreUpdate, OnMapPostUpdate);
 
         // What's the worst that could happen ...
         unsafe {

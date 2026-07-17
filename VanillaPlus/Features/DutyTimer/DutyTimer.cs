@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dalamud.Game.DutyState;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -18,17 +19,17 @@ public class DutyTimer : GameModification {
     private DateTime startTimestamp;
 
     public override Task OnEnableAsync() {
-        Services.DutyState.DutyStarted += OnDutyStarted;
-        Services.DutyState.DutyCompleted += OnDutyCompleted;
-        Services.ClientState.TerritoryChanged += OnTerritoryChanged;
+        Services.GetService<IDutyState>().DutyStarted += OnDutyStarted;
+        Services.GetService<IDutyState>().DutyCompleted += OnDutyCompleted;
+        Services.GetService<IClientState>().TerritoryChanged += OnTerritoryChanged;
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.DutyState.DutyStarted -= OnDutyStarted;
-        Services.DutyState.DutyCompleted -= OnDutyCompleted;
-        Services.ClientState.TerritoryChanged -= OnTerritoryChanged;
+        Services.GetService<IDutyState>().DutyStarted -= OnDutyStarted;
+        Services.GetService<IDutyState>().DutyCompleted -= OnDutyCompleted;
+        Services.GetService<IClientState>().TerritoryChanged -= OnTerritoryChanged;
 
         return Task.CompletedTask;
     }
@@ -39,7 +40,7 @@ public class DutyTimer : GameModification {
     private void OnDutyCompleted(IDutyStateEventArgs args) {
         var duration = DateTime.UtcNow - startTimestamp;
         var formattedDuration = duration.ToString(@"hh\:mm\:ss\.ffff");
-        Services.ChatGui.Print(Strings.DutyTimer_CompletedMessage.Format(formattedDuration));
+        Services.GetService<IChatGui>().Print(Strings.DutyTimer_CompletedMessage.Format(formattedDuration));
     }
 
     private void OnTerritoryChanged(uint u)

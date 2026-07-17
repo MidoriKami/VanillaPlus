@@ -5,6 +5,7 @@ using System.Numerics;
 using Dalamud.Game.Addon.Events;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -27,13 +28,13 @@ public unsafe class MainWindowController : IDisposable {
         };
         mainWindowController.Enable(); // todo: make this a passthrough enable
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "LookingForGroup", OnLookingForGroupEvent);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PreReceiveEvent, "LookingForGroup", OnLookingForGroupEvent);
 
         config.OnSave += UpdatePresets;
     }
 
     public void Dispose() {
-        Services.AddonLifecycle.UnregisterListener(OnLookingForGroupEvent);
+        Services.GetService<IAddonLifecycle>().UnregisterListener(OnLookingForGroupEvent);
 
         mainWindowController?.Dispose();
         mainWindowController = null;

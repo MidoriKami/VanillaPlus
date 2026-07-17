@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -17,20 +18,20 @@ public class CommandPanelSync : GameModification {
     private const int CurrentVersion = 2;
 
     public override async Task OnEnableAsync() {
-        Services.ClientState.Login += OnLogin;
-        Services.ClientState.Logout += OnLogout;
+        Services.GetService<IClientState>().Login += OnLogin;
+        Services.GetService<IClientState>().Logout += OnLogout;
 
-        if (Services.ClientState.IsLoggedIn) {
-            await Services.Framework.RunSafely(ApplySharedQuickPanel);
+        if (Services.GetService<IClientState>().IsLoggedIn) {
+            await Services.GetService<IFramework>().RunSafely(ApplySharedQuickPanel);
         }
     }
 
     public override async Task OnDisableAsync() {
-        Services.ClientState.Login -= OnLogin;
-        Services.ClientState.Logout -= OnLogout;
+        Services.GetService<IClientState>().Login -= OnLogin;
+        Services.GetService<IClientState>().Logout -= OnLogout;
 
-        if (Services.ClientState.IsLoggedIn) {
-            await Services.Framework.RunSafely(RestoreOriginalQuickPanel);
+        if (Services.GetService<IClientState>().IsLoggedIn) {
+            await Services.GetService<IFramework>().RunSafely(RestoreOriginalQuickPanel);
         }
     }
 

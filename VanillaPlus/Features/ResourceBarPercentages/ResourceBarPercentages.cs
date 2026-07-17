@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
@@ -70,17 +71,17 @@ public class ResourceBarPercentages : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_ParameterWidget", OnParameterDraw);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostRequestedUpdate, "_ParameterWidget", OnParameterDraw);
 
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "_PartyList", OnPartyListDraw);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostDraw, "_PartyList", OnPartyListDraw);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
     }
 
     public override async Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnParameterDraw, OnPartyListDraw);
+        Services.GetService<IAddonLifecycle>().UnregisterListener(OnParameterDraw, OnPartyListDraw);
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             OnParameterDisable();
             OnPartyListDisable();
         });
@@ -108,7 +109,7 @@ public class ResourceBarPercentages : GameModification {
         if (!config.ParameterWidgetEnabled) return;
 
         var addon = args.GetAddon<AddonParameterWidget>();
-        if (Services.ObjectTable.LocalPlayer is not { } localPlayer) return;
+        if (Services.GetService<IObjectTable>().LocalPlayer is not { } localPlayer) return;
 
         addon->HealthAmount->SetText(GetCorrectHpText(localPlayer.CurrentHp, localPlayer.MaxHp, config.ParameterHpEnabled));
 
@@ -130,7 +131,7 @@ public class ResourceBarPercentages : GameModification {
     }
 
     private unsafe void OnPartyListDisable() {
-        var addon = Services.GameGui.GetAddonByName<AddonPartyList>("_PartyList");
+        var addon = Services.GetService<IGameGui>().GetAddonByName<AddonPartyList>("_PartyList");
         if (addon is null) return;
 
         foreach (var member in addon->HudMembers) {
@@ -193,9 +194,9 @@ public class ResourceBarPercentages : GameModification {
     }
 
     private unsafe void OnParameterDisable() {
-        var addon = Services.GameGui.GetAddonByName<AddonParameterWidget>("_ParameterWidget");
+        var addon = Services.GetService<IGameGui>().GetAddonByName<AddonParameterWidget>("_ParameterWidget");
         if (addon is null) return;
-        if (Services.ObjectTable.LocalPlayer is not { } localPlayer) return;
+        if (Services.GetService<IObjectTable>().LocalPlayer is not { } localPlayer) return;
 
         var activeResource = GetActiveResource(localPlayer);
 

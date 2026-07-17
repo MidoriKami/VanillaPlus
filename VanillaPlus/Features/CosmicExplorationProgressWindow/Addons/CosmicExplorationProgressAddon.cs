@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.WKS;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -33,7 +34,7 @@ public class CosmicExplorationProgressAddon : NativeAddon {
         listNode = new ListNode<Progress, WksProgressListItemNode> {
             Position = ContentStartPosition,
             Size = ContentSize,
-            OptionsList = allOptions.Where(entry => entry.JobId == Services.PlayerState.ClassJob.Value.RowId - 7).ToList(),
+            OptionsList = allOptions.Where(entry => entry.JobId == Services.GetService<IPlayerState>().ClassJob.Value.RowId - 7).ToList(),
             ItemSpacing = 0.0f,
         };
         listNode.AttachNode(this);
@@ -66,8 +67,8 @@ public class CosmicExplorationProgressAddon : NativeAddon {
         var research = WKSManager.Instance()->ResearchModule;
         if (research is null) return;
 
-        if (lastClassJob != Services.PlayerState.ClassJob.Value.RowId) {
-            lastClassJob = Services.PlayerState.ClassJob.Value.RowId;
+        if (lastClassJob != Services.GetService<IPlayerState>().ClassJob.Value.RowId) {
+            lastClassJob = Services.GetService<IPlayerState>().ClassJob.Value.RowId;
             listNode.OptionsList = allOptions.Where(entry => entry.JobId == lastClassJob - 7).ToList();
         }
 
@@ -86,7 +87,7 @@ public class CosmicExplorationProgressAddon : NativeAddon {
     private static List<Progress> GetInitialProgressList() {
         List<Progress> researchProgress = [];
 
-        var toolSheet = Services.DataManager.Excel.GetSheet<WKSCosmoToolClass>();
+        var toolSheet = Services.GetService<IDataManager>().Excel.GetSheet<WKSCosmoToolClass>();
         foreach (var toolClassRow in toolSheet.Where(row => row.RowId is not 0)) {
             var jobId = (byte)toolClassRow.RowId;
 

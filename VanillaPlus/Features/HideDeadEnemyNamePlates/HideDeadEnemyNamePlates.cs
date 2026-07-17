@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dalamud.Game.Gui.NamePlate;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -15,13 +16,13 @@ public class HideDeadEnemyNamePlates : GameModification {
     };
 
     public override Task OnEnableAsync() {
-        Services.NamePlateGui.OnDataUpdate += OnNamePlateUpdate;
+        Services.GetService<INamePlateGui>().OnDataUpdate += OnNamePlateUpdate;
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.NamePlateGui.OnDataUpdate -= OnNamePlateUpdate;
+        Services.GetService<INamePlateGui>().OnDataUpdate -= OnNamePlateUpdate;
 
         return Task.CompletedTask;
     }

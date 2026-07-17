@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 
 namespace VanillaPlus.Utilities;
 
@@ -16,7 +17,7 @@ public static class FileHelpers {
         var fileInfo = new FileInfo(filePath);
         if (fileInfo is { Exists: true }) {
             try {
-                var fileText = await Services.ReliableFileStorage.ReadAllTextAsync(fileInfo.FullName);
+                var fileText = await Services.GetService<IReliableFileStorage>().ReadAllTextAsync(fileInfo.FullName);
                 var dataObject = JsonSerializer.Deserialize<T>(fileText, SerializerOptions);
 
                 // If deserialize result is null, create a new instance instead and save it.
@@ -49,7 +50,7 @@ public static class FileHelpers {
             }
 
             var fileText = JsonSerializer.Serialize(file, file.GetType(), SerializerOptions);
-            await Services.ReliableFileStorage.WriteAllTextAsync(filePath, fileText);
+            await Services.GetService<IReliableFileStorage>().WriteAllTextAsync(filePath, fileText);
         }
         catch (Exception e) {
             Services.PluginLog.InternalError(e, $"Error trying to save file {filePath}");
@@ -60,7 +61,7 @@ public static class FileHelpers {
         var fileInfo = new FileInfo(filePath);
         if (fileInfo is { Exists: true }) {
             try {
-                var dataObject = await Services.ReliableFileStorage.ReadAllBytesAsync(fileInfo.FullName);
+                var dataObject = await Services.GetService<IReliableFileStorage>().ReadAllBytesAsync(fileInfo.FullName);
 
                 // If deserialize result is null, create a new instance instead and save it.
                 if (dataObject.Length != length) {
@@ -86,7 +87,7 @@ public static class FileHelpers {
 
     public static async Task SaveBinaryFile(byte[] data, string filePath) {
         try {
-            await Services.ReliableFileStorage.WriteAllBytesAsync(filePath, data);
+            await Services.GetService<IReliableFileStorage>().WriteAllBytesAsync(filePath, data);
         }
         catch (Exception e) {
             Services.PluginLog.InternalError(e, $"Error trying to save binary data {filePath}");
@@ -97,7 +98,7 @@ public static class FileHelpers {
         try {
             var managedArray = new byte[size];
             Marshal.Copy(pointer, managedArray, 0, size);
-            await Services.ReliableFileStorage.WriteAllBytesAsync(filePath, managedArray);
+            await Services.GetService<IReliableFileStorage>().WriteAllBytesAsync(filePath, managedArray);
         }
         catch (Exception e) {
             Services.PluginLog.InternalError(e, $"Error trying to save binary data {filePath}");
@@ -118,10 +119,10 @@ public static class FileHelpers {
     }
 
     public static string GetCharacterPath() {
-        if (!Services.ClientState.IsLoggedIn) {
+        if (!Services.GetService<IClientState>().IsLoggedIn) {
             throw new Exception("Character is not logged in.");
         }
 
-        return Services.PlayerState.ContentId.ToString("X");
+        return Services.GetService<IPlayerState>().ContentId.ToString("X");
     }
 }

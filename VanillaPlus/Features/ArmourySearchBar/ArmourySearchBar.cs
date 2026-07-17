@@ -54,17 +54,17 @@ public class ArmourySearchBar : GameModification {
             Callback = OnKeybindPressed,
         };
 
-        await Services.Framework.RunSafely(inventoryController.Enable);
+        await Services.GetService<IFramework>().RunSafely(inventoryController.Enable);
 
-        Services.GameGui.AgentUpdate += OnAgentUpdate;
-        Services.Framework.Update += OnFrameworkUpdate;
+        Services.GetService<IGameGui>().AgentUpdate += OnAgentUpdate;
+        Services.GetService<IFramework>().Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
-        Services.Framework.Update -= OnFrameworkUpdate;
-        Services.GameGui.AgentUpdate -= OnAgentUpdate;
+        Services.GetService<IFramework>().Update -= OnFrameworkUpdate;
+        Services.GetService<IGameGui>().AgentUpdate -= OnAgentUpdate;
 
-        await Services.Framework.RunSafely(() => inventoryController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => inventoryController?.Dispose());
         inventoryController = null;
     }
 
@@ -119,17 +119,17 @@ public class ArmourySearchBar : GameModification {
 
     private void OnPreSearch(string searchString) {
         if (configFadeUnusable is null) {
-            Services.GameConfig.TryGet(UiConfigOption.ItemNoArmoryMaskOff, out bool value);
+            Services.GetService<IGameConfig>().TryGet(UiConfigOption.ItemNoArmoryMaskOff, out bool value);
             configFadeUnusable = value;
         }
 
         if (!searchString.IsNullOrEmpty() && !searchStarted) {
-            Services.GameConfig.Set(UiConfigOption.ItemNoArmoryMaskOff, true);
+            Services.GetService<IGameConfig>().Set(UiConfigOption.ItemNoArmoryMaskOff, true);
             searchStarted = true;
         }
 
         if (searchStarted && searchString.IsNullOrEmpty()) {
-            Services.GameConfig.Set(UiConfigOption.ItemNoArmoryMaskOff, configFadeUnusable.Value);
+            Services.GetService<IGameConfig>().Set(UiConfigOption.ItemNoArmoryMaskOff, configFadeUnusable.Value);
             searchStarted = false;
         }
     }

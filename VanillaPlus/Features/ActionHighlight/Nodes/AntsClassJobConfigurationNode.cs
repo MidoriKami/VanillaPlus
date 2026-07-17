@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using Dalamud.Plugin.Services;
 using KamiToolKit.Components.ConfigurationNodes;
 using KamiToolKit.Nodes;
 using Lumina.Data.Parsing.Uld;
@@ -30,13 +31,13 @@ public class AntsClassJobConfigurationNode : EntryConfigurationNode<AntsClassJob
     /// <inheritdoc/>
     protected override void PopulateEntryData(AntsClassJobConfig entry) {
         ClassJobConfig = entry;
-        var classJob = Services.DataManager.GetExcelSheet<ClassJob>().GetRow(entry.ClassJobId);
+        var classJob = Services.GetService<IDataManager>().GetExcelSheet<ClassJob>().GetRow(entry.ClassJobId);
 
         backgroundImageNode.IconId = 62000 + entry.ClassJobId;
 
         actionsListNode.OptionsList = ActionHighlight.GetClassActions(classJob);
 
-        rolesListNode.OptionsList = Services.DataManager.GetExcelSheet<Action>()
+        rolesListNode.OptionsList = Services.GetService<IDataManager>().GetExcelSheet<Action>()
             .Where(action => action.ClassJobCategory.Value.ClassesJobs[(int) entry.ClassJobId])
             .Where(action => action is { IsRoleAction: true, IsPvP: false })
             .ToList();

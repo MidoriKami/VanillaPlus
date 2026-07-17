@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.System.Scheduler;
 using FFXIVClientStructs.FFXIV.Client.System.Scheduler.Base;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -71,12 +72,12 @@ public class ForcedCutsceneSounds : GameModification {
         OpenConfigAction = configWindow.Toggle;
 
         unsafe {
-            createCutSceneControllerHook = Services.GameInteropProvider.HookFromAddress<ScheduleManagement.Delegates.CreateCutSceneController>(
+            createCutSceneControllerHook = Services.GetService<IGameInteropProvider>().HookFromAddress<ScheduleManagement.Delegates.CreateCutSceneController>(
                 ScheduleManagement.MemberFunctionPointers.CreateCutSceneController,
                 CreateCutSceneControllerDetour);
             createCutSceneControllerHook.Enable();
 
-            cutSceneControllerDtorHook = Services.GameInteropProvider.HookFromVTable<CutSceneControllerDtorDelegate>(
+            cutSceneControllerDtorHook = Services.GetService<IGameInteropProvider>().HookFromVTable<CutSceneControllerDtorDelegate>(
                 CutSceneController.StaticVirtualTablePointer, 0,
                 CutSceneControllerDtorDetour);
             cutSceneControllerDtorHook.Enable();
@@ -107,12 +108,12 @@ public class ForcedCutsceneSounds : GameModification {
             if (wasMuted is null || id is 0) return result;
 
             foreach (var optionName in ConfigOptions) {
-                var isMuted = Services.GameConfig.System.TryGet(optionName, out bool value) && value;
+                var isMuted = Services.GetService<IGameConfig>().System.TryGet(optionName, out bool value) && value;
 
                 wasMuted[optionName] = isMuted;
 
                 if (ShouldHandle(optionName) && isMuted) {
-                    Services.GameConfig.System.Set(optionName, false);
+                    Services.GetService<IGameConfig>().System.Set(optionName, false);
                 }
             }
 
@@ -135,7 +136,7 @@ public class ForcedCutsceneSounds : GameModification {
             if (config.Restore && cutsceneId is not 0) { // ignore title screen cutscene
                 foreach (var optionName in ConfigOptions) {
                     if (ShouldHandle(optionName) && (wasMuted?.TryGetValue(optionName, out var value) ?? false) && value) {
-                        Services.GameConfig.System.Set(optionName, value);
+                        Services.GetService<IGameConfig>().System.Set(optionName, value);
                     }
                 }
             }

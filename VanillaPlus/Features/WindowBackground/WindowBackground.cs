@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Components.Configuration;
@@ -46,7 +47,7 @@ public class WindowBackground : GameModification {
             AllowMultiselect = true,
         };
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             unsafe {
                 overlayController = new OverlayController();
 
@@ -76,7 +77,7 @@ public class WindowBackground : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             dynamicAddonController?.Dispose();
             overlayController?.Dispose();
         });

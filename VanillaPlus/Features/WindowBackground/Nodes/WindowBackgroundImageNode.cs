@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Component.GUI;
+﻿using Dalamud.Plugin.Services;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.UiOverlay;
@@ -29,7 +30,7 @@ public unsafe class WindowBackgroundImageNode : OverlayNode {
     }
 
     protected override void OnUpdate() {
-        var addon = Services.GameGui.GetAddonByName<AtkUnitBase>(Settings.AddonName);
+        var addon = Services.GetService<IGameGui>().GetAddonByName<AtkUnitBase>(Settings.AddonName);
         colorImageNode.IsVisible = addon is not null && addon->IsActuallyVisible;
 
         if (addon is not null) {

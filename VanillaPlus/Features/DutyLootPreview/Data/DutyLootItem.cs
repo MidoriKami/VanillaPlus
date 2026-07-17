@@ -2,6 +2,7 @@ using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using Lumina.Excel.Sheets;
@@ -25,15 +26,15 @@ public class DutyLootItem : IComparable {
     public required List<ReadOnlySeString> Sources { get; init; }
 
     private static readonly Lazy<FrozenDictionary<uint, uint>> CabinetLookup = new(()
-        => Services.DataManager.Excel.GetSheet<CabinetSheet>()
+        => Services.GetService<IDataManager>().Excel.GetSheet<CabinetSheet>()
             .Where(row => row.RowId >= 1048 && row.Item.RowId != 0)
             .ToFrozenDictionary(row => row.Item.RowId, row => row.RowId));
 
     public static DutyLootItem? FromItemId(uint itemId) {
-        var item = Services.DataManager.GetItem(itemId);
+        var item = Services.GetService<IDataManager>().GetItem(itemId);
         if (item.Icon is 0 || item.Name.IsEmpty) return null;
 
-        var isUnlockable = Services.UnlockState.IsItemUnlockable(item);
+        var isUnlockable = Services.GetService<IUnlockState>().IsItemUnlockable(item);
         var isStorableInCabinet = CabinetLookup.Value.ContainsKey(item.RowId);
 
         return new DutyLootItem {
@@ -44,7 +45,7 @@ public class DutyLootItem : IComparable {
             OrderMajor = item.ItemUICategory.ValueNullable?.OrderMajor ?? 0,
             OrderMinor = item.ItemUICategory.ValueNullable?.OrderMinor ?? 0,
             IsUnlockable = isUnlockable,
-            IsUnlocked = isUnlockable && Services.UnlockState.IsItemUnlocked(item),
+            IsUnlocked = isUnlockable && Services.GetService<IUnlockState>().IsItemUnlocked(item),
             IsStorableInCabinet = isStorableInCabinet,
             IsStoredInCabinet = isStorableInCabinet && IsInCabinet(item),
             CanTryOn = CheckCanTryOn(item),
@@ -65,7 +66,7 @@ public class DutyLootItem : IComparable {
 
         // use cached data
         var itemFinderModule = ItemFinderModule.Instance();
-        (var byteIndex, var bitOffset) = Math.DivRem(cabinetRowId - 1048, 32);
+        var (byteIndex, bitOffset) = Math.DivRem(cabinetRowId - 1048, 32);
         if (itemFinderModule->CabinetItemUnlockBits.Length >= byteIndex)
             return (itemFinderModule->CabinetItemUnlockBits[(int)byteIndex] & (1 << (int)bitOffset)) != 0;
 
@@ -82,7 +83,7 @@ public class DutyLootItem : IComparable {
         if (item.EquipSlotCategory.RowId is 2 && item.FilterGroup != 3) // 3 = Shield
             return false;
 
-        var race = (int)Services.PlayerState.Race.RowId;
+        var race = (int)Services.GetService<IPlayerState>().Race.RowId;
         if (race is 0) return false;
 
         return true;

@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
@@ -96,7 +97,7 @@ public class ImageDescriptionInfoNode : ResNode {
             Task.Run(async () => {
                 imageContainerNode.IsVisible = false;
 
-                var texture = await Services.TextureProvider.GetFromFile(Assets.GetAssetPath(imageName)).RentAsync();
+                var texture = await Services.GetService<ITextureProvider>().GetFromFile(Assets.GetAssetPath(imageName)).RentAsync();
                 imageNode.LoadTexture(texture);
                 imageNode.TextureSize = texture.Size;
 

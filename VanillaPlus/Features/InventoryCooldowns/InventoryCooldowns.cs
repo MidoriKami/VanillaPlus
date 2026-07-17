@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Dalamud.Game.Config;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -21,17 +22,17 @@ public class InventoryCooldowns : GameModification {
     private NormalInventoryController? normalInventoryController;
 
     public override async Task OnEnableAsync() {
-        if (Services.ClientState.IsLoggedIn) {
-            await Services.Framework.RunSafely(ReinitializeController);
+        if (Services.GetService<IClientState>().IsLoggedIn) {
+            await Services.GetService<IFramework>().RunSafely(ReinitializeController);
         }
 
-        Services.GameConfig.UiConfigChanged += OnUiConfigChanged;
+        Services.GetService<IGameConfig>().UiConfigChanged += OnUiConfigChanged;
     }
 
     public override async Task OnDisableAsync() {
-        Services.GameConfig.UiConfigChanged -= OnUiConfigChanged;
+        Services.GetService<IGameConfig>().UiConfigChanged -= OnUiConfigChanged;
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             expandedInventoryController?.Dispose();
             largeInventoryController?.Dispose();
             normalInventoryController?.Dispose();
@@ -48,7 +49,7 @@ public class InventoryCooldowns : GameModification {
     }
 
     private void ReinitializeController() {
-        if (!Services.GameConfig.UiConfig.TryGet("ItemInventryWindowSizeType", out uint inventoryType)) return;
+        if (!Services.GetService<IGameConfig>().UiConfig.TryGet("ItemInventryWindowSizeType", out uint inventoryType)) return;
 
         expandedInventoryController?.Dispose();
         expandedInventoryController = null;

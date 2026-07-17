@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
@@ -23,14 +24,14 @@ public class PersistentRetainerGil : GameModification {
     private bool isProcessing;
 
     public override Task OnEnableAsync() {
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PreReceiveEvent, "Bank", OnBankEvent);
-        Services.AddonLifecycle.RegisterListener(AddonEvent.PostRefresh, "Bank", OnBankRefreshEvent);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PreReceiveEvent, "Bank", OnBankEvent);
+        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostRefresh, "Bank", OnBankRefreshEvent);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.AddonLifecycle.UnregisterListener(OnBankEvent, OnBankRefreshEvent);
+        Services.GetService<IAddonLifecycle>().UnregisterListener(OnBankEvent, OnBankRefreshEvent);
 
         previousGil = 0;
         needsUpdate = false;

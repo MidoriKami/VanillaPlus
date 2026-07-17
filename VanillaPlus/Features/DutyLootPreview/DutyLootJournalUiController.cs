@@ -1,5 +1,6 @@
 using System;
 using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Enums;
@@ -79,7 +80,7 @@ public class DutyLootJournalUiController : IDisposable {
     private unsafe void OnDataChanged() {
         if (lootButtonNode == null) return;
 
-        var addon = Services.GameGui.GetAddonByName<AddonJournalDetail>("JournalDetail");
+        var addon = Services.GetService<IGameGui>().GetAddonByName<AddonJournalDetail>("JournalDetail");
         if (addon == null) return;
 
         lootButtonNode.IsVisible = ShouldShow();

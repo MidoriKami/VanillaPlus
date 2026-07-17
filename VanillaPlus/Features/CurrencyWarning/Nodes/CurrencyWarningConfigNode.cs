@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Components.ConfigurationNodes;
@@ -46,7 +47,7 @@ public class CurrencyWarningConfigNode : EntryConfigurationNode<CurrencyWarningS
     }
 
     protected override void PopulateEntryData(CurrencyWarningSetting entry) {
-        var item = Services.DataManager.GetItem(entry.ItemId);
+        var item = Services.GetService<IDataManager>().GetItem(entry.ItemId);
         itemNameTextNode.String = item.Name.ToString();
         iconImageNode.IconId = item.Icon;
 

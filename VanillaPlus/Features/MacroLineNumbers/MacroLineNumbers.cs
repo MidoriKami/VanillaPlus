@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
@@ -37,11 +38,11 @@ public class MacroLineNumbers : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(macroAddonController.Enable);
+        await Services.GetService<IFramework>().RunSafely(macroAddonController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => macroAddonController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => macroAddonController?.Dispose());
         macroAddonController = null;
 
         textNodes?.Clear();

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Native.Addons;
@@ -44,14 +45,14 @@ public class BiggerConfigWindows : GameModification {
             Config = config,
         };
 
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             systemConfigController.Enable();
             characterConfigController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => {
+        await Services.GetService<IFramework>().RunSafely(() => {
             systemConfigController?.Dispose();
             characterConfigController?.Dispose();
         });

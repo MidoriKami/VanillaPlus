@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Dalamud.Game.ClientState.Aetherytes;
 using Dalamud.Game.Text;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Text.ReadOnly;
@@ -10,12 +11,12 @@ namespace VanillaPlus.Extensions;
 public static unsafe class AetheryteEntryExtensions {
     extension(IAetheryteEntry entry) {
         public ReadOnlySeString AetheryteName => entry switch {
-            { IsSharedHouse: true } => Services.SeStringEvaluator.EvaluateFromAddon(6724, [
+            { IsSharedHouse: true } => Services.GetService<ISeStringEvaluator>().EvaluateFromAddon(6724, [
                 entry.AetheryteData.Value.PlaceName.RowId,
                 (uint)entry.Ward,
                 (uint)entry.Plot,
             ]),
-            { IsApartment: true } => Services.DataManager.GetAddonText(6710),
+            { IsApartment: true } => Services.GetService<IDataManager>().GetAddonText(6710),
             _ => entry.AetheryteData.ValueNullable?.PlaceName.ValueNullable?.Name ?? "Unable to read Name",
         };
 
@@ -32,7 +33,7 @@ public static unsafe class AetheryteEntryExtensions {
             => $"{entry.GilCost}{SeIconChar.Gil.ToIconString()}";
 
         public int EntryIndex
-            => Services.AetheryteList.ToList().IndexOf(entry);
+            => Services.GetService<IAetheryteList>().ToList().IndexOf(entry);
 
         public string MapTexturePath
             => entry.AetheryteData.ValueNullable is { Map.ValueNullable.Id: var mapId }

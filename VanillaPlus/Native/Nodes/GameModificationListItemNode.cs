@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Enums;
@@ -98,7 +99,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
                     refreshCompatabilityButton?.IsEnabled = true;
 
                     if (ItemData is not null) {
-                        await Services.Framework.RunSafely(() => {
+                        await Services.GetService<IFramework>().RunSafely(() => {
                             SetNodeData(ItemData);
                             Addon.UpdateCollisionForNode(this);
                         });
@@ -252,7 +253,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
 
         Task.Run(async () => {
             await ModificationManager.TryToggleModification(ItemData);
-            await Services.Framework.RunSafely(() => SetNodeData(ItemData));
+            await Services.GetService<IFramework>().RunSafely(() => SetNodeData(ItemData));
         });
     }
 }

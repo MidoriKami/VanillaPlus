@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Dalamud.Game.Addon.Events;
 using Dalamud.Game.Addon.Events.EventDataTypes;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -30,11 +31,11 @@ public class ClearFlag : GameModification {
             };
         }
 
-        await Services.Framework.RunSafely(minimapController.Enable);
+        await Services.GetService<IFramework>().RunSafely(minimapController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.Framework.RunSafely(() => minimapController?.Dispose());
+        await Services.GetService<IFramework>().RunSafely(() => minimapController?.Dispose());
         minimapMouseClick = null;
     }
 
@@ -44,11 +45,11 @@ public class ClearFlag : GameModification {
 
         collisionNode->DrawFlags |= (uint)DrawFlags.ClickableCursor;
 
-        minimapMouseClick = Services.AddonEventManager.AddEvent((nint)addon, (nint)collisionNode, AddonEventType.MouseClick, OnMiniMapMouseClick);
+        minimapMouseClick = Services.GetService<IAddonEventManager>().AddEvent((nint)addon, (nint)collisionNode, AddonEventType.MouseClick, OnMiniMapMouseClick);
     }
 
     private unsafe void NaviMapFinalize(AtkUnitBase* addon) {
-        Services.AddonEventManager.RemoveEventNullable(minimapMouseClick);
+        Services.GetService<IAddonEventManager>().RemoveEventNullable(minimapMouseClick);
 
         var collisionNode = addon->GetNodeById<AtkCollisionNode>(19);
         if (collisionNode is null) return;
