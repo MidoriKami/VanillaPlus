@@ -42,7 +42,7 @@ public class GearsetEntryListItemNode : ListItemWithFocusNav<GearsetRedirectionE
     protected override unsafe void SetNodeData(GearsetRedirectionEntry itemData) {
         var gearsetInfo = RaptureGearsetModule.Instance()->GetGearset(itemData.TargetGearsetId);
         if (gearsetInfo is null) {
-            Service<IPluginLog>.Get().Warning("Attempted to populate null gearset entry.", "GearsetRedirect");
+            IPluginLog.Get().Warning("Attempted to populate null gearset entry.", "GearsetRedirect");
             return;
         }
 

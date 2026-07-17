@@ -145,7 +145,7 @@ public class NewRedirectionAddon : NativeAddon {
         Size = new Vector2(450.0f, 530.0f),
         InternalName = "TerritorySearch",
         Title = Strings.SearchAddon_TerritoryTitle,
-        OptionsList = Service<IDataManager>.Get().GetTerritoryTypes().ToList(),
+        OptionsList = IDataManager.Get().GetTerritoryTypes().ToList(),
         AllowMultiselect = false,
     };
 }

@@ -24,7 +24,7 @@ public class ZoneTransitionLabels : GameModification {
     public override async Task OnEnableAsync() {
         zoneWatcher = new ZoneWatcher();
 
-        await Service<IFramework>.Get().RunSafely(() => {
+        await IFramework.Get().RunSafely(() => {
             overlayController = new OverlayController();
             overlayController.AddNode(new ZoneLabelNode(zoneWatcher) {
                 Size = new Vector2(300.0f, 30.0f),
@@ -33,7 +33,7 @@ public class ZoneTransitionLabels : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Service<IFramework>.Get().RunSafely(() => {
+        await IFramework.Get().RunSafely(() => {
             overlayController?.Dispose();
             zoneWatcher?.Dispose();
         });

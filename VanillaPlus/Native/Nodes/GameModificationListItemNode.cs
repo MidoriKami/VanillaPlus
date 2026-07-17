@@ -99,7 +99,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
                     refreshCompatabilityButton?.IsEnabled = true;
 
                     if (ItemData is not null) {
-                        await Service<IFramework>.Get().RunSafely(() => {
+                        await IFramework.Get().RunSafely(() => {
                             SetNodeData(ItemData);
                             Addon.UpdateCollisionForNode(this);
                         });
@@ -190,7 +190,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
                         Task.Run((Func<Task?>) openConfigAsync);
                     }
                     catch (Exception e) {
-                        Service<IPluginLog>.Get().Exception(e);
+                        IPluginLog.Get().Exception(e);
                     }
                 };
                 openConfigButton.IsVisible = true;
@@ -253,7 +253,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
 
         Task.Run(async () => {
             await ModificationManager.TryToggleModification(ItemData);
-            await Service<IFramework>.Get().RunSafely(() => SetNodeData(ItemData));
+            await IFramework.Get().RunSafely(() => SetNodeData(ItemData));
         });
     }
 }

@@ -32,11 +32,11 @@ public class IndecisiveFools : FoolsModule {
             };
         }
 
-        await Service<IFramework>.Get().RunSafely(addonController.Enable);
+        await IFramework.Get().RunSafely(addonController.Enable);
     }
 
     protected override async Task OnDisable() {
-        await Service<IFramework>.Get().RunSafely(() => {
+        await IFramework.Get().RunSafely(() => {
             foreach (var textButton in textButtons ?? []) {
                 textButton.Dispose();
             }

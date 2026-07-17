@@ -20,13 +20,13 @@ public class ResetInventoryTab : GameModification {
     };
 
     public override Task OnEnableAsync() {
-        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PreRefresh, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnPreRefresh);
+        IAddonLifecycle.Get().RegisterListener(AddonEvent.PreRefresh, ["Inventory", "InventoryLarge", "InventoryExpansion"], OnPreRefresh);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Service<IAddonLifecycle>.Get().UnregisterListener(OnPreRefresh);
+        IAddonLifecycle.Get().UnregisterListener(OnPreRefresh);
 
         return Task.CompletedTask;
     }

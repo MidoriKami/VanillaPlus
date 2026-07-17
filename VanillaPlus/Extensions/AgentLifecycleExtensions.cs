@@ -73,6 +73,6 @@ public static unsafe class AgentLifecycleExtensions {
                 break;
         }
 
-        Service<IPluginLog>.Get().Info(logString);
+        IPluginLog.Get().Info(logString);
     }
 }

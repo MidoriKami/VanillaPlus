@@ -38,7 +38,7 @@ public class HideUnwantedBanners : GameModification {
         OpenConfigAction = configWindow.Toggle;
 
         unsafe {
-            setImageTextureHook = Service<IGameInteropProvider>.Get().HookFromAddress<AddonImage.Delegates.SetImage>(AddonImage.Addresses.SetImage.Value, OnSetImageTexture);
+            setImageTextureHook = IGameInteropProvider.Get().HookFromAddress<AddonImage.Delegates.SetImage>(AddonImage.Addresses.SetImage.Value, OnSetImageTexture);
             setImageTextureHook?.Enable();
         }
     }
@@ -72,7 +72,7 @@ public class HideUnwantedBanners : GameModification {
             }
         }
         catch (Exception e) {
-            Service<IPluginLog>.Get().Exception(e);
+            IPluginLog.Get().Exception(e);
         }
 
         setImageTextureHook!.Original(addon, bannerId, language, soundEffectId);

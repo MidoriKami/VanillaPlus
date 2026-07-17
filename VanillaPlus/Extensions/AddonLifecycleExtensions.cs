@@ -117,6 +117,6 @@ public static class AddonLifecycleExtensions {
                 break;
         }
 
-        Service<IPluginLog>.Get().Info(logString.Trim());
+        IPluginLog.Get().Info(logString.Trim());
     }
 }

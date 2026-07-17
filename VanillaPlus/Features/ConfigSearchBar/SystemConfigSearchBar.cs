@@ -53,11 +53,11 @@ public class SystemConfigSearchBar : GameModification {
             };
         }
 
-        await Service<IFramework>.Get().RunSafely(systemConfigController.Enable);
+        await IFramework.Get().RunSafely(systemConfigController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Service<IFramework>.Get().RunSafely(() => systemConfigController?.Dispose());
+        await IFramework.Get().RunSafely(() => systemConfigController?.Dispose());
         systemConfigController = null;
 
         await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);

@@ -66,7 +66,7 @@ public unsafe class CurrencyOverlayNode : OverlayNode {
         get;
         init {
             field = value;
-            iconImageNode.IconId = Service<IDataManager>.Get().GetItem(Currency.ItemId).Icon;
+            iconImageNode.IconId = IDataManager.Get().GetItem(Currency.ItemId).Icon;
 
             countNode.Size = new Vector2(128.0f, 22.0f);
             countNode.Origin = countNode.Size / 2.0f;

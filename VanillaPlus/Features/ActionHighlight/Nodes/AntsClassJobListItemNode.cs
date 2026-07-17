@@ -15,7 +15,7 @@ public class AntsClassJobListItemNode : ListItemWithFocusNav<AntsClassJobConfig>
     /// <inheritdoc/>
     protected override void SetNodeData(AntsClassJobConfig itemData) {
         classJobIconNode.IconId = 62000 + itemData.ClassJobId;
-        classJobNameTextNode.String = Service<ISeStringEvaluator>.Get().EvaluateFromAddon(698, [itemData.ClassJobId]);
+        classJobNameTextNode.String = ISeStringEvaluator.Get().EvaluateFromAddon(698, [itemData.ClassJobId]);
     }
 
     public AntsClassJobListItemNode() {

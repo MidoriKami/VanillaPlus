@@ -30,23 +30,23 @@ public static unsafe class MarkerInfoExtensions {
 
         public uint IconId => markerInfo.MarkerData.First->IconId;
 
-        public uint ClassJobLevel => Service<IDataManager>.Get().GetExcelSheet<Quest>().GetRow(markerInfo.ObjectiveId + ushort.MaxValue + 1).ClassJobLevel.First();
+        public uint ClassJobLevel => IDataManager.Get().GetExcelSheet<Quest>().GetRow(markerInfo.ObjectiveId + ushort.MaxValue + 1).ClassJobLevel.First();
 
         public float Distance {
             get {
                 if (markerInfo.MarkerData.Count <= 0) return 0;
 
-                return Vector3.Distance(Service<IObjectTable>.Get().LocalPlayer?.Position ?? Vector3.Zero, markerInfo.MarkerData.First->Position);
+                return Vector3.Distance(IObjectTable.Get().LocalPlayer?.Position ?? Vector3.Zero, markerInfo.MarkerData.First->Position);
             }
         }
 
         public string IssuerName
-            => Service<IDataManager>.Get().GetExcelSheet<Quest>().GetRow(markerInfo.ObjectiveId + ushort.MaxValue + 1)
+            => IDataManager.Get().GetExcelSheet<Quest>().GetRow(markerInfo.ObjectiveId + ushort.MaxValue + 1)
                    .IssuerStart.GetValueOrDefault<ENpcResident>()?.Singular.ToString() ?? string.Empty;
     }
 
     public static bool IsRegexMatch(MarkerInfo marker, string searchString) {
-        if (!Service<IDataManager>.Get().GetExcelSheet<Quest>().TryGetRow(marker.ObjectiveId + ushort.MaxValue + 1, out var questInfo)) return false;
+        if (!IDataManager.Get().GetExcelSheet<Quest>().TryGetRow(marker.ObjectiveId + ushort.MaxValue + 1, out var questInfo)) return false;
         if (questInfo.RowId is 0) return false;
 
         var regex = new Regex(searchString, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);

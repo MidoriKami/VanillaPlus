@@ -123,7 +123,7 @@ public class CurrencyOverlayConfigNode : EntryConfigurationNode<CurrencySetting>
     }
 
     protected override void PopulateEntryData(CurrencySetting entry) {
-        var itemInfo = Service<IDataManager>.Get().GetItem(entry.ItemId);
+        var itemInfo = IDataManager.Get().GetItem(entry.ItemId);
 
         iconImageNode.IconId = itemInfo.Icon;
         iconImageNode.IsVisible = iconImageNode.IconId is not 0;

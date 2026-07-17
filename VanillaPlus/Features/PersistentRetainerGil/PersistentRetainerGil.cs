@@ -24,14 +24,14 @@ public class PersistentRetainerGil : GameModification {
     private bool isProcessing;
 
     public override Task OnEnableAsync() {
-        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PreReceiveEvent, "Bank", OnBankEvent);
-        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PostRefresh, "Bank", OnBankRefreshEvent);
+        IAddonLifecycle.Get().RegisterListener(AddonEvent.PreReceiveEvent, "Bank", OnBankEvent);
+        IAddonLifecycle.Get().RegisterListener(AddonEvent.PostRefresh, "Bank", OnBankRefreshEvent);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Service<IAddonLifecycle>.Get().UnregisterListener(OnBankEvent, OnBankRefreshEvent);
+        IAddonLifecycle.Get().UnregisterListener(OnBankEvent, OnBankRefreshEvent);
 
         previousGil = 0;
         needsUpdate = false;

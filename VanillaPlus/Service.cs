@@ -4,15 +4,23 @@ using Dalamud.Plugin.Services;
 namespace VanillaPlus;
 
 /// <summary>
-/// Generic service getter, allows you to get any dalamud service you need via the interface typename, for example IAddonLifecycle or IPluginLog.
+/// Extension provider for IDalamudService, to add a .Get() method to get an instance of any dalamud service directly from typename.
 /// </summary>
-public static class Service<T> where T : class, IDalamudService {
-    private static T? ServiceInstance
-        => field ??= VanillaPlus.PluginInterface.GetService(typeof(T)) as T;
+/// <code>
+/// IPluginLog.Get().Debug(...);
+/// </code>
+public static class ServiceExtension {
+    /// <summary>
+    /// Static class to hold the instance reference.
+    /// </summary>
+    private static class ServiceInstance<T> where T : class, IDalamudService {
+        public static T? Instance => field ??= VanillaPlus.PluginInterface.GetService(typeof(T)) as T;
+    }
 
     /// <summary>
-    /// Gets a reference to the dalamud service via type.
+    /// Extension provider to allow you to .Get() from the interface type.
     /// </summary>
-    public static T Get()
-        => ServiceInstance ?? throw new InvalidOperationException($"Service {typeof(T).Name} not found.");
+    extension<T>(T) where T : class, IDalamudService {
+        public static T Get() => ServiceInstance<T>.Instance ?? throw new InvalidOperationException($"Service {typeof(T).Name} not found.");
+    }
 }

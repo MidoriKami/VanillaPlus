@@ -78,7 +78,7 @@ public class AprilFools : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Service<IFramework>.Get().RunSafely(() => {
+        await IFramework.Get().RunSafely(() => {
             configAddon?.Dispose();
             configAddon = null;
         });

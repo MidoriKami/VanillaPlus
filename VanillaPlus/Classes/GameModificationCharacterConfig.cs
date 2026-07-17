@@ -13,13 +13,13 @@ public abstract class GameModificationCharacterConfig<T> where T : GameModificat
 
     public static async Task<T> Load() {
         var fileName = new T().FileName;
-        Service<IPluginLog>.Get().Debug($"Loading Character Config {fileName}");
+        IPluginLog.Get().Debug($"Loading Character Config {fileName}");
 
         return await Config.LoadCharacterConfig<T>(fileName);
     }
 
     public async Task Save() {
-        Service<IPluginLog>.Get().Debug($"Saving Character Config {FileName}");
+        IPluginLog.Get().Debug($"Saving Character Config {FileName}");
         await Config.SaveCharacterConfig(this, FileName);
     }
 }

@@ -51,11 +51,11 @@ public class WondrousTailsProbabilities : GameModification {
             };
         }
 
-        await Service<IFramework>.Get().RunSafely(weeklyBingoController.Enable);
+        await IFramework.Get().RunSafely(weeklyBingoController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Service<IFramework>.Get().RunSafely(() => weeklyBingoController?.Dispose());
+        await IFramework.Get().RunSafely(() => weeklyBingoController?.Dispose());
         weeklyBingoController = null;
 
         perfectTails = null;
@@ -175,7 +175,7 @@ public class WondrousTailsProbabilities : GameModification {
 
     private unsafe void AdjustCurrentDutyIndicator(AddonWeeklyBingo* addon) {
         if (animationContainer is null || currentDutyNode is null) return;
-        if (GetTaskForCurrentTerritory(Service<IClientState>.Get().TerritoryType) is { } dutySlot) {
+        if (GetTaskForCurrentTerritory(IClientState.Get().TerritoryType) is { } dutySlot) {
             var nativeDutySlot = addon->DutySlotList[dutySlot].DutyButton->OwnerNode;
             var nativeDutySlotPosition = new Vector2(nativeDutySlot->X, nativeDutySlot->Y - 2.0f);
 
@@ -190,7 +190,7 @@ public class WondrousTailsProbabilities : GameModification {
 
     private static unsafe int? GetTaskForCurrentTerritory(uint territory) {
         foreach (var index in Enumerable.Range(0, 16)) {
-            var territoriesForSlot = Service<IDataManager>.Get().GetTerritoriesForOrderData(PlayerState.Instance()->WeeklyBingoOrderData[index]);
+            var territoriesForSlot = IDataManager.Get().GetTerritoriesForOrderData(PlayerState.Instance()->WeeklyBingoOrderData[index]);
 
             if (territoriesForSlot.Any(terr => terr.RowId == territory)) {
                 return index;

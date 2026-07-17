@@ -126,8 +126,8 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         if (!isPressed) return;
 
         combo.Clear();
-        foreach (var key in Service<IKeyState>.Get().GetValidVirtualKeys()) {
-            if (Service<IKeyState>.Get()[(int)key]) {
+        foreach (var key in IKeyState.Get().GetValidVirtualKeys()) {
+            if (IKeyState.Get()[(int)key]) {
                 combo.Add(key);
             }
         }
@@ -160,7 +160,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
         verticalListNode.RecalculateLayout();
         conflictsScrollableAreaNode.RecalculateSizes();
 
-        Service<IKeyState>.Get().ResetKeyCombo(combo);
+        IKeyState.Get().ResetKeyCombo(combo);
     }
 
     protected override void OnFinalize(AtkUnitBase* addon)

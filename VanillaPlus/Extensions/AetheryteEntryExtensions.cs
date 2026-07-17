@@ -11,12 +11,12 @@ namespace VanillaPlus.Extensions;
 public static unsafe class AetheryteEntryExtensions {
     extension(IAetheryteEntry entry) {
         public ReadOnlySeString AetheryteName => entry switch {
-            { IsSharedHouse: true } => Service<ISeStringEvaluator>.Get().EvaluateFromAddon(6724, [
+            { IsSharedHouse: true } => ISeStringEvaluator.Get().EvaluateFromAddon(6724, [
                 entry.AetheryteData.Value.PlaceName.RowId,
                 (uint)entry.Ward,
                 (uint)entry.Plot,
             ]),
-            { IsApartment: true } => Service<IDataManager>.Get().GetAddonText(6710),
+            { IsApartment: true } => IDataManager.Get().GetAddonText(6710),
             _ => entry.AetheryteData.ValueNullable?.PlaceName.ValueNullable?.Name ?? "Unable to read Name",
         };
 
@@ -33,7 +33,7 @@ public static unsafe class AetheryteEntryExtensions {
             => $"{entry.GilCost}{SeIconChar.Gil.ToIconString()}";
 
         public int EntryIndex
-            => Service<IAetheryteList>.Get().ToList().IndexOf(entry);
+            => IAetheryteList.Get().ToList().IndexOf(entry);
 
         public string MapTexturePath
             => entry.AetheryteData.ValueNullable is { Map.ValueNullable.Id: var mapId }

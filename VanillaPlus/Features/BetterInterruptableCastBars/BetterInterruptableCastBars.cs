@@ -34,7 +34,7 @@ public class BetterInterruptableCastBars : GameModification {
 
     public override async Task OnEnableAsync() {
         unsafe {
-            antsHook = Service<IGameInteropProvider>.Get().HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnAntsCheck);
+            antsHook = IGameInteropProvider.Get().HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnAntsCheck);
             antsHook?.Enable();
 
             targetInfoCastbarController = new AddonController {
@@ -44,11 +44,11 @@ public class BetterInterruptableCastBars : GameModification {
             };
         }
 
-        await Service<IFramework>.Get().RunSafely(targetInfoCastbarController.Enable);
+        await IFramework.Get().RunSafely(targetInfoCastbarController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Service<IFramework>.Get().RunSafely(() => targetInfoCastbarController?.Disable() );
+        await IFramework.Get().RunSafely(() => targetInfoCastbarController?.Disable() );
         targetInfoCastbarController = null;
 
         antsHook?.Dispose();
@@ -89,14 +89,14 @@ public class BetterInterruptableCastBars : GameModification {
 
     private unsafe bool OnAntsCheck(ActionManager* thisPtr, ActionType actionType, uint actionId) {
         try {
-            if (Service<ITargetManager>.Get().GetTarget() is { } target) {
+            if (ITargetManager.Get().GetTarget() is { } target) {
                 if (actionId is 7538 or 7551 && target is { IsCasting: true, IsCastInterruptible: true }) {
                     return true;
                 }
             }
         }
         catch (Exception e) {
-            Service<IPluginLog>.Get().Exception(e);
+            IPluginLog.Get().Exception(e);
         }
 
         return antsHook!.Original(thisPtr, actionType, actionId);

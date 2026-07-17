@@ -27,7 +27,7 @@ public unsafe class DebugHook : GameModification {
     private Hook<HookDelegate>? hook;
 
     public override Task OnEnableAsync() {
-        Service<IGameInteropProvider>.Get().InitializeFromAttributes(this);
+        IGameInteropProvider.Get().InitializeFromAttributes(this);
 
         hook?.Enable();
 

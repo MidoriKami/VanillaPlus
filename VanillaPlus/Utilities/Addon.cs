@@ -5,12 +5,10 @@ using KamiToolKit.BaseTypes;
 namespace VanillaPlus.Utilities;
 
 public static unsafe class Addon {
-    public static void UpdateCollisionForNode(NodeBase node) {
-        Service<IFramework>.Get().RunOnFrameworkThread(() => {
-            var addon = RaptureAtkUnitManager.Instance()->GetAddonByNode(node);
-            if (addon is not null) {
-                addon->UpdateCollisionNodeList(false);
-            }
-        });
-    }
+    public static void UpdateCollisionForNode(NodeBase node) => IFramework.Get().RunOnFrameworkThread(() => {
+        var addon = RaptureAtkUnitManager.Instance()->GetAddonByNode(node);
+        if (addon is not null) {
+            addon->UpdateCollisionNodeList(false);
+        }
+    });
 }

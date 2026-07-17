@@ -30,8 +30,8 @@ public class DutyLootDataLoader : IAsyncDisposable {
     private AddonController<AddonRaidFinder>? raidFinder;
 
     public async Task EnableAsync() {
-        Service<IClientState>.Get().TerritoryChanged += OnTerritoryChanged;
-        Service<IGameGui>.Get().AgentUpdate += OnAgentUpdate;
+        IClientState.Get().TerritoryChanged += OnTerritoryChanged;
+        IGameGui.Get().AgentUpdate += OnAgentUpdate;
 
         unsafe {
             contentsFinder = new AddonController<AddonContentsFinder> {
@@ -49,7 +49,7 @@ public class DutyLootDataLoader : IAsyncDisposable {
             };
         }
 
-        await Service<IFramework>.Get().RunSafely(() => {
+        await IFramework.Get().RunSafely(() => {
             contentsFinder.Enable();
             raidFinder.Enable();
         });
@@ -60,7 +60,7 @@ public class DutyLootDataLoader : IAsyncDisposable {
     }
 
     public async ValueTask DisposeAsync() {
-        await Service<IFramework>.Get().RunSafely(() => {
+        await IFramework.Get().RunSafely(() => {
             contentsFinder?.Dispose();
             raidFinder?.Dispose();
         });
@@ -68,8 +68,8 @@ public class DutyLootDataLoader : IAsyncDisposable {
         contentsFinder = null;
         raidFinder = null;
 
-        Service<IClientState>.Get().TerritoryChanged -= OnTerritoryChanged;
-        Service<IGameGui>.Get().AgentUpdate -= OnAgentUpdate;
+        IClientState.Get().TerritoryChanged -= OnTerritoryChanged;
+        IGameGui.Get().AgentUpdate -= OnAgentUpdate;
 
         dutyLootDataCache.OnChanged -= OnCacheChanged;
         dutyLootDataCache.Dispose();
@@ -107,7 +107,7 @@ public class DutyLootDataLoader : IAsyncDisposable {
         if (content.ContentType != ContentsType.Regular)
             return false;
 
-        if (!Service<IDataManager>.Get().GetExcelSheet<ContentFinderCondition>().TryGetRow(content.Id, out var cfc))
+        if (!IDataManager.Get().GetExcelSheet<ContentFinderCondition>().TryGetRow(content.Id, out var cfc))
             return false;
 
         // Not for Guildhests (3), PvP (6), Gold Saucer (19)

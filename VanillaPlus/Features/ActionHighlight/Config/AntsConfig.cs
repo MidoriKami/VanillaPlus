@@ -32,7 +32,7 @@ public class AntsConfig : GameModificationConfig<AntsConfig> {
                 var actionSettingsObj = jObject["ActionSettings"]?.ToObject<JObject>();
                 if (actionSettingsObj is null) return false;
 
-                var classJobs = Service<IDataManager>.Get().GetExcelSheet<ClassJob>()
+                var classJobs = IDataManager.Get().GetExcelSheet<ClassJob>()
                     .Where(job => job is { RowId: not 0, Name.IsEmpty: false, IsCrafter: false, IsGatherer: false })
                     .ToList();
 
@@ -44,7 +44,7 @@ public class AntsConfig : GameModificationConfig<AntsConfig> {
                     var actionSettings = property.Value.ToObject<AntsActionSetting>();
                     if (actionSettings is null) continue;
 
-                    var action = Service<IDataManager>.Get().GetExcelSheet<Action>().GetRow(actionId);
+                    var action = IDataManager.Get().GetExcelSheet<Action>().GetRow(actionId);
 
                     foreach (var classJob in classJobs) {
                         if (!ActionHighlight.IsValidAction(action, classJob) && !ActionHighlight.IsValidRoleAction(action, classJob)) continue;

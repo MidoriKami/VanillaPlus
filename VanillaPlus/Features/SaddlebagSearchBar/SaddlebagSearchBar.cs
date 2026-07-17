@@ -48,17 +48,17 @@ public class SaddlebagSearchBar : GameModification {
             Callback = OnKeybindPressed,
         };
 
-        await Service<IFramework>.Get().RunSafely(inventoryController.Enable);
+        await IFramework.Get().RunSafely(inventoryController.Enable);
 
-        Service<IGameGui>.Get().AgentUpdate += OnAgentUpdate;
-        Service<IFramework>.Get().Update += OnFrameworkUpdate;
+        IGameGui.Get().AgentUpdate += OnAgentUpdate;
+        IFramework.Get().Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
-        Service<IFramework>.Get().Update -= OnFrameworkUpdate;
-        Service<IGameGui>.Get().AgentUpdate -= OnAgentUpdate;
+        IFramework.Get().Update -= OnFrameworkUpdate;
+        IGameGui.Get().AgentUpdate -= OnAgentUpdate;
 
-        await Service<IFramework>.Get().RunSafely(() => inventoryController?.Dispose());
+        await IFramework.Get().RunSafely(() => inventoryController?.Dispose());
         inventoryController = null;
     }
 

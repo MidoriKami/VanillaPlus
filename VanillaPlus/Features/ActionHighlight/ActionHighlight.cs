@@ -45,7 +45,7 @@ public class ActionHighlight : GameModification {
             InternalName = "ClassJobSearch",
             Title = "Class Job Search",
             Size = new Vector2(300.0f, 535.0f),
-            OptionsList = Service<IDataManager>.Get().GetExcelSheet<ClassJob>()
+            OptionsList = IDataManager.Get().GetExcelSheet<ClassJob>()
                 .Where(job => job is { RowId: not 0, Name.IsEmpty: false, IsCrafter: false, IsGatherer: false })
                 .ToList(),
             AllowMultiselect = true,
@@ -57,7 +57,7 @@ public class ActionHighlight : GameModification {
             Title = Strings.ActionHighlight_Configuration,
             OptionsList = [],
             SaveConfig = () => Task.Run(Config.Save),
-            GetEntrySearchString = entry => Service<IDataManager>.Get().GetExcelSheet<ClassJob>().GetRow(entry.ClassJobId).Name.ToString(),
+            GetEntrySearchString = entry => IDataManager.Get().GetExcelSheet<ClassJob>().GetRow(entry.ClassJobId).Name.ToString(),
             AddClicked = OnAddClicked,
             RemoveClicked = OnRemoveClicked,
         };
@@ -67,7 +67,7 @@ public class ActionHighlight : GameModification {
         OpenConfigAction = configAddon.Toggle;
 
         unsafe {
-            onAntsHook = Service<IGameInteropProvider>.Get().HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
+            onAntsHook = IGameInteropProvider.Get().HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
             onAntsHook?.Enable();
         }
     }
@@ -112,17 +112,17 @@ public class ActionHighlight : GameModification {
     }
 
     private unsafe bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {
-        if (Service<IObjectTable>.Get().LocalPlayer is not { Level: var playerLevel, GameObjectId: var playerId, ClassJob: var classJob }) return false;
+        if (IObjectTable.Get().LocalPlayer is not { Level: var playerLevel, GameObjectId: var playerId, ClassJob: var classJob }) return false;
         if (Config is null) return false;
 
         var original = onAntsHook!.Original(actionManager, actionType, actionId);
         if (original) return original;
         if (actionType is not ActionType.Action) return original;
 
-        if (Config.ShowOnlyInCombat && !Service<ICondition>.Get().IsInCombat) return original;
+        if (Config.ShowOnlyInCombat && !ICondition.Get().IsInCombat) return original;
         if (actionManager->GetActionStatus(actionType, actionId, playerId, false) != 0) return original;
 
-        var action = Service<IDataManager>.Get().GetExcelSheet<Action>().GetRow(actionId);
+        var action = IDataManager.Get().GetExcelSheet<Action>().GetRow(actionId);
 
         if (Config.ShowOnlyUsableActions && action.ClassJobLevel > playerLevel) return original;
 
@@ -175,10 +175,10 @@ public class ActionHighlight : GameModification {
         Task.Run(() => {
             var results = Config.ClassJobConfigs
                 .Where(entry => entry.ClassJobId is not 0)
-                .OrderBy(entry => Service<ISeStringEvaluator>.Get().EvaluateFromAddon(981, [entry.ClassJobId]).ToString())
+                .OrderBy(entry => ISeStringEvaluator.Get().EvaluateFromAddon(981, [entry.ClassJobId]).ToString())
                 .ToList();
 
-            Service<IFramework>.Get().RunSafely(() => {
+            IFramework.Get().RunSafely(() => {
                 configAddon.OptionsList = results;
             });
         });
@@ -188,7 +188,7 @@ public class ActionHighlight : GameModification {
     /// Gets all valid actions for the specified ClassJob.
     /// </summary>
     public static List<Action> GetClassActions(ClassJob classJob)
-        => Service<IDataManager>.Get().GetExcelSheet<Action>()
+        => IDataManager.Get().GetExcelSheet<Action>()
             .Where(action => IsValidAction(action, classJob))
             .DistinctBy(action => action.RowId)
             .ToList();

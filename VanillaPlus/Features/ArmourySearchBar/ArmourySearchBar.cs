@@ -54,17 +54,17 @@ public class ArmourySearchBar : GameModification {
             Callback = OnKeybindPressed,
         };
 
-        await Service<IFramework>.Get().RunSafely(inventoryController.Enable);
+        await IFramework.Get().RunSafely(inventoryController.Enable);
 
-        Service<IGameGui>.Get().AgentUpdate += OnAgentUpdate;
-        Service<IFramework>.Get().Update += OnFrameworkUpdate;
+        IGameGui.Get().AgentUpdate += OnAgentUpdate;
+        IFramework.Get().Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
-        Service<IFramework>.Get().Update -= OnFrameworkUpdate;
-        Service<IGameGui>.Get().AgentUpdate -= OnAgentUpdate;
+        IFramework.Get().Update -= OnFrameworkUpdate;
+        IGameGui.Get().AgentUpdate -= OnAgentUpdate;
 
-        await Service<IFramework>.Get().RunSafely(() => inventoryController?.Dispose());
+        await IFramework.Get().RunSafely(() => inventoryController?.Dispose());
         inventoryController = null;
     }
 
@@ -119,17 +119,17 @@ public class ArmourySearchBar : GameModification {
 
     private void OnPreSearch(string searchString) {
         if (configFadeUnusable is null) {
-            Service<IGameConfig>.Get().TryGet(UiConfigOption.ItemNoArmoryMaskOff, out bool value);
+            IGameConfig.Get().TryGet(UiConfigOption.ItemNoArmoryMaskOff, out bool value);
             configFadeUnusable = value;
         }
 
         if (!searchString.IsNullOrEmpty() && !searchStarted) {
-            Service<IGameConfig>.Get().Set(UiConfigOption.ItemNoArmoryMaskOff, true);
+            IGameConfig.Get().Set(UiConfigOption.ItemNoArmoryMaskOff, true);
             searchStarted = true;
         }
 
         if (searchStarted && searchString.IsNullOrEmpty()) {
-            Service<IGameConfig>.Get().Set(UiConfigOption.ItemNoArmoryMaskOff, configFadeUnusable.Value);
+            IGameConfig.Get().Set(UiConfigOption.ItemNoArmoryMaskOff, configFadeUnusable.Value);
             searchStarted = false;
         }
     }

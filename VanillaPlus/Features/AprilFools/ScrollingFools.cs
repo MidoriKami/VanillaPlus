@@ -21,7 +21,7 @@ public class ScrollingFools : FoolsModule {
 
     protected override Task OnEnable() {
         unsafe {
-            scrollBarReceiveEventHook = Service<IGameInteropProvider>.Get().HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
+            scrollBarReceiveEventHook = IGameInteropProvider.Get().HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
             scrollBarReceiveEventHook?.Enable();
         }
 
@@ -41,7 +41,7 @@ public class ScrollingFools : FoolsModule {
             scrollBarReceiveEventHook!.Original(thisPtr, type, param, eventPointer, dataPointer);
         }
         catch (Exception e) {
-            Service<IPluginLog>.Get().Exception(e);
+            IPluginLog.Get().Exception(e);
         }
     }
 }

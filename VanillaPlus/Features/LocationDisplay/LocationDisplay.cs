@@ -58,18 +58,18 @@ public class LocationDisplay : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        dtrBarEntry = Service<IDtrBar>.Get().Get(Strings.LocationDisplay_DtrEntryName);
+        dtrBarEntry = IDtrBar.Get().Get(Strings.LocationDisplay_DtrEntryName);
         dtrBarEntry.OnClick = _ => configWindow.Toggle();
 
         locationChanged = true;
 
-        Service<IFramework>.Get().Update += OnFrameworkUpdate;
-        Service<IClientState>.Get().TerritoryChanged += OnZoneChange;
+        IFramework.Get().Update += OnFrameworkUpdate;
+        IClientState.Get().TerritoryChanged += OnZoneChange;
     }
 
     public override async Task OnDisableAsync() {
-        Service<IFramework>.Get().Update -= OnFrameworkUpdate;
-        Service<IClientState>.Get().TerritoryChanged -= OnZoneChange;
+        IFramework.Get().Update -= OnFrameworkUpdate;
+        IClientState.Get().TerritoryChanged -= OnZoneChange;
 
         await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configWindow = null;
@@ -85,7 +85,7 @@ public class LocationDisplay : GameModification {
 
     private void OnFrameworkUpdate(IFramework framework) {
         if (config is null) return;
-        if (Service<IObjectTable>.Get().LocalPlayer is null) return;
+        if (IObjectTable.Get().LocalPlayer is null) return;
 
         UpdateRegion();
         UpdateSubArea();
@@ -171,8 +171,8 @@ public class LocationDisplay : GameModification {
     }
 
     private void UpdateTerritory() {
-        if (lastTerritory != Service<IClientState>.Get().TerritoryType) {
-            lastTerritory = Service<IClientState>.Get().TerritoryType;
+        if (lastTerritory != IClientState.Get().TerritoryType) {
+            lastTerritory = IClientState.Get().TerritoryType;
             var territory = GetCurrentTerritory();
 
             currentTerritory = territory.PlaceName.Value;
@@ -276,14 +276,14 @@ public class LocationDisplay : GameModification {
     }
 
     private static PlaceName GetPlaceName(uint row)
-        => Service<IDataManager>.Get().GetExcelSheet<PlaceName>().GetRow(row);
+        => IDataManager.Get().GetExcelSheet<PlaceName>().GetRow(row);
 
     private static unsafe TerritoryType GetCurrentTerritory() {
         if (HousingInfo is not null && HousingInfo->IsInside()) {
-            return Service<IDataManager>.Get().GetExcelSheet<TerritoryType>().GetRow(HousingManager.GetOriginalHouseTerritoryTypeId());
+            return IDataManager.Get().GetExcelSheet<TerritoryType>().GetRow(HousingManager.GetOriginalHouseTerritoryTypeId());
         }
         else {
-            return Service<IDataManager>.Get().GetExcelSheet<TerritoryType>().GetRow(Service<IClientState>.Get().TerritoryType);
+            return IDataManager.Get().GetExcelSheet<TerritoryType>().GetRow(IClientState.Get().TerritoryType);
         }
     }
 }

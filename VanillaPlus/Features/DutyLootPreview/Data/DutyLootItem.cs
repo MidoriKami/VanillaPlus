@@ -26,15 +26,15 @@ public class DutyLootItem : IComparable {
     public required List<ReadOnlySeString> Sources { get; init; }
 
     private static readonly Lazy<FrozenDictionary<uint, uint>> CabinetLookup = new(()
-        => Service<IDataManager>.Get().Excel.GetSheet<CabinetSheet>()
+        => IDataManager.Get().Excel.GetSheet<CabinetSheet>()
             .Where(row => row.RowId >= 1048 && row.Item.RowId != 0)
             .ToFrozenDictionary(row => row.Item.RowId, row => row.RowId));
 
     public static DutyLootItem? FromItemId(uint itemId) {
-        var item = Service<IDataManager>.Get().GetItem(itemId);
+        var item = IDataManager.Get().GetItem(itemId);
         if (item.Icon is 0 || item.Name.IsEmpty) return null;
 
-        var isUnlockable = Service<IUnlockState>.Get().IsItemUnlockable(item);
+        var isUnlockable = IUnlockState.Get().IsItemUnlockable(item);
         var isStorableInCabinet = CabinetLookup.Value.ContainsKey(item.RowId);
 
         return new DutyLootItem {
@@ -45,7 +45,7 @@ public class DutyLootItem : IComparable {
             OrderMajor = item.ItemUICategory.ValueNullable?.OrderMajor ?? 0,
             OrderMinor = item.ItemUICategory.ValueNullable?.OrderMinor ?? 0,
             IsUnlockable = isUnlockable,
-            IsUnlocked = isUnlockable && Service<IUnlockState>.Get().IsItemUnlocked(item),
+            IsUnlocked = isUnlockable && IUnlockState.Get().IsItemUnlocked(item),
             IsStorableInCabinet = isStorableInCabinet,
             IsStoredInCabinet = isStorableInCabinet && IsInCabinet(item),
             CanTryOn = CheckCanTryOn(item),
@@ -83,7 +83,7 @@ public class DutyLootItem : IComparable {
         if (item.EquipSlotCategory.RowId is 2 && item.FilterGroup != 3) // 3 = Shield
             return false;
 
-        var race = (int)Service<IPlayerState>.Get().Race.RowId;
+        var race = (int)IPlayerState.Get().Race.RowId;
         if (race is 0) return false;
 
         return true;

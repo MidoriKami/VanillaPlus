@@ -79,12 +79,12 @@ public class PrimaryTargetCastbarController {
     }
 
     private unsafe void OnAddonRefresh(AtkUnitBase* addon) {
-        if (Service<IClientState>.Get().IsPvP || !config.PrimaryTarget) {
+        if (IClientState.Get().IsPvP || !config.PrimaryTarget) {
             textNode?.String = string.Empty;
             return;
         }
 
-        textNode?.String = Service<ITargetManager>.Get().GetTarget()?.GetCastTimeString;
+        textNode?.String = ITargetManager.Get().GetTarget()?.GetCastTimeString;
     }
 
     private unsafe void OnAddonFinalize(AtkUnitBase* addon) {

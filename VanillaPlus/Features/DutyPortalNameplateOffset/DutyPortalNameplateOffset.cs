@@ -23,13 +23,13 @@ public class DutyPortalNameplateOffset : GameModification {
     private const float RaisedNameplateY = 3.1f;
 
     public override Task OnEnableAsync() {
-        Service<INamePlateGui>.Get().OnDataUpdate += OnNamePlateUpdate;
+        INamePlateGui.Get().OnDataUpdate += OnNamePlateUpdate;
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Service<INamePlateGui>.Get().OnDataUpdate -= OnNamePlateUpdate;
+        INamePlateGui.Get().OnDataUpdate -= OnNamePlateUpdate;
 
         return Task.CompletedTask;
     }

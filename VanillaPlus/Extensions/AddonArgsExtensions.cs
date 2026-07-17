@@ -27,7 +27,7 @@ public static unsafe class AddonArgsExtensions {
                 ref var value = ref atkValues[index];
                 if (value.Type is 0) continue;
 
-                Service<IPluginLog>.Get().Debug($"[{index,4}]{value.GetValueAsString()}");
+                IPluginLog.Get().Debug($"[{index,4}]{value.GetValueAsString()}");
             }
         }
 

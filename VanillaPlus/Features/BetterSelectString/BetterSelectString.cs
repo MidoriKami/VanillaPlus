@@ -55,14 +55,14 @@ public class BetterSelectString : GameModification {
             };
         }
 
-        await Service<IFramework>.Get().RunSafely(() => {
+        await IFramework.Get().RunSafely(() => {
             selectStringController.Enable();
             selectStringListController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await Service<IFramework>.Get().RunSafely(() => {
+        await IFramework.Get().RunSafely(() => {
             selectStringController?.Dispose();
             selectStringListController?.Dispose();
         });
@@ -85,10 +85,10 @@ public class BetterSelectString : GameModification {
             var keyIndex = (index + 1) % 10;
 
             var topRowKey = VirtualKey.KEY_0 + (ushort)keyIndex;
-            var isTopRowKeyPressed = Service<IKeyState>.Get().IsVirtualKeyValid(topRowKey) && Service<IKeyState>.Get()[(int)topRowKey];
+            var isTopRowKeyPressed = IKeyState.Get().IsVirtualKeyValid(topRowKey) && IKeyState.Get()[(int)topRowKey];
 
             if (isTopRowKeyPressed) {
-                Service<IKeyState>.Get()[(int)topRowKey] = false;
+                IKeyState.Get()[(int)topRowKey] = false;
 
                 atkEventData->ListItemData.SelectedIndex = index;
                 addon->PopupMenu.ReceiveEvent(AtkEventType.ListItemClick, 0, atkEvent, atkEventData);
@@ -96,10 +96,10 @@ public class BetterSelectString : GameModification {
             }
 
             var numpadKey = VirtualKey.NUMPAD0 + (ushort)keyIndex;
-            var isNumpadKeyPressed = Service<IKeyState>.Get().IsVirtualKeyValid(numpadKey) && Service<IKeyState>.Get()[(int)numpadKey];
+            var isNumpadKeyPressed = IKeyState.Get().IsVirtualKeyValid(numpadKey) && IKeyState.Get()[(int)numpadKey];
 
             if (isNumpadKeyPressed) {
-                Service<IKeyState>.Get()[(int)numpadKey] = false;
+                IKeyState.Get()[(int)numpadKey] = false;
 
                 atkEventData->ListItemData.SelectedIndex = index;
                 addon->PopupMenu.ReceiveEvent(AtkEventType.ListItemClick, 0, atkEvent, atkEventData);

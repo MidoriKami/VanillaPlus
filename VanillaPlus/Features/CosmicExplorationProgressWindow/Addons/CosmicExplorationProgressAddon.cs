@@ -34,7 +34,7 @@ public class CosmicExplorationProgressAddon : NativeAddon {
         listNode = new ListNode<Progress, WksProgressListItemNode> {
             Position = ContentStartPosition,
             Size = ContentSize,
-            OptionsList = allOptions.Where(entry => entry.JobId == Service<IPlayerState>.Get().ClassJob.Value.RowId - 7).ToList(),
+            OptionsList = allOptions.Where(entry => entry.JobId == IPlayerState.Get().ClassJob.Value.RowId - 7).ToList(),
             ItemSpacing = 0.0f,
         };
         listNode.AttachNode(this);
@@ -67,8 +67,8 @@ public class CosmicExplorationProgressAddon : NativeAddon {
         var research = WKSManager.Instance()->ResearchModule;
         if (research is null) return;
 
-        if (lastClassJob != Service<IPlayerState>.Get().ClassJob.Value.RowId) {
-            lastClassJob = Service<IPlayerState>.Get().ClassJob.Value.RowId;
+        if (lastClassJob != IPlayerState.Get().ClassJob.Value.RowId) {
+            lastClassJob = IPlayerState.Get().ClassJob.Value.RowId;
             listNode.OptionsList = allOptions.Where(entry => entry.JobId == lastClassJob - 7).ToList();
         }
 
@@ -87,7 +87,7 @@ public class CosmicExplorationProgressAddon : NativeAddon {
     private static List<Progress> GetInitialProgressList() {
         List<Progress> researchProgress = [];
 
-        var toolSheet = Service<IDataManager>.Get().Excel.GetSheet<WKSCosmoToolClass>();
+        var toolSheet = IDataManager.Get().Excel.GetSheet<WKSCosmoToolClass>();
         foreach (var toolClassRow in toolSheet.Where(row => row.RowId is not 0)) {
             var jobId = (byte)toolClassRow.RowId;
 

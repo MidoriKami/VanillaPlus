@@ -32,15 +32,15 @@ public class ChatPlayerTooltip : GameModification {
     ];
 
     public override Task OnEnableAsync() {
-        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PreReceiveEvent, addonNames, PreReceiveEvent);
+        IAddonLifecycle.Get().RegisterListener(AddonEvent.PreReceiveEvent, addonNames, PreReceiveEvent);
 
         return Task.CompletedTask;
     }
 
     public override async Task OnDisableAsync() {
-        Service<IAddonLifecycle>.Get().UnregisterListener(PreReceiveEvent);
+        IAddonLifecycle.Get().UnregisterListener(PreReceiveEvent);
 
-        await Service<IFramework>.Get().RunSafely(HideTooltip);
+        await IFramework.Get().RunSafely(HideTooltip);
     }
 
     private unsafe void PreReceiveEvent(AddonEvent type, AddonArgs args) {
@@ -67,7 +67,7 @@ public class ChatPlayerTooltip : GameModification {
                 if (!worldExpression.TryGetUInt(out var worldId)) return;
                 if (worldId is 0) return;
                 if (!nameExpression.TryGetString(out var playerName)) return;
-                if (!Service<IDataManager>.Get().GetExcelSheet<World>().TryGetRow(worldId, out var worldData)) return;
+                if (!IDataManager.Get().GetExcelSheet<World>().TryGetRow(worldId, out var worldData)) return;
 
                 var addon = args.GetAddon<AtkUnitBase>();
                 using var rentedStringBuilder = new RentedSeStringBuilder();

@@ -19,17 +19,17 @@ public class DutyTimer : GameModification {
     private DateTime startTimestamp;
 
     public override Task OnEnableAsync() {
-        Service<IDutyState>.Get().DutyStarted += OnDutyStarted;
-        Service<IDutyState>.Get().DutyCompleted += OnDutyCompleted;
-        Service<IClientState>.Get().TerritoryChanged += OnTerritoryChanged;
+        IDutyState.Get().DutyStarted += OnDutyStarted;
+        IDutyState.Get().DutyCompleted += OnDutyCompleted;
+        IClientState.Get().TerritoryChanged += OnTerritoryChanged;
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Service<IDutyState>.Get().DutyStarted -= OnDutyStarted;
-        Service<IDutyState>.Get().DutyCompleted -= OnDutyCompleted;
-        Service<IClientState>.Get().TerritoryChanged -= OnTerritoryChanged;
+        IDutyState.Get().DutyStarted -= OnDutyStarted;
+        IDutyState.Get().DutyCompleted -= OnDutyCompleted;
+        IClientState.Get().TerritoryChanged -= OnTerritoryChanged;
 
         return Task.CompletedTask;
     }
@@ -40,7 +40,7 @@ public class DutyTimer : GameModification {
     private void OnDutyCompleted(IDutyStateEventArgs args) {
         var duration = DateTime.UtcNow - startTimestamp;
         var formattedDuration = duration.ToString(@"hh\:mm\:ss\.ffff");
-        Service<IChatGui>.Get().Print(Strings.DutyTimer_CompletedMessage.Format(formattedDuration));
+        IChatGui.Get().Print(Strings.DutyTimer_CompletedMessage.Format(formattedDuration));
     }
 
     private void OnTerritoryChanged(uint u)

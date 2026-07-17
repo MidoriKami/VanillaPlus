@@ -22,7 +22,7 @@ public unsafe class BetterQuestMapLink : GameModification {
     private Hook<AgentMap.Delegates.OpenMap>? openMapHook;
 
     public override Task OnEnableAsync() {
-        openMapHook = Service<IGameInteropProvider>.Get().HookFromAddress<AgentMap.Delegates.OpenMap>(AgentMap.MemberFunctionPointers.OpenMap, OnOpenMap);
+        openMapHook = IGameInteropProvider.Get().HookFromAddress<AgentMap.Delegates.OpenMap>(AgentMap.MemberFunctionPointers.OpenMap, OnOpenMap);
         openMapHook?.Enable();
 
         return Task.CompletedTask;
@@ -39,7 +39,7 @@ public unsafe class BetterQuestMapLink : GameModification {
         openMapHook!.Original(agent, data);
 
         try {
-            if (!Service<IDataManager>.Get().GetExcelSheet<Map>().TryGetRow(data->MapId, out var mapData)) return;
+            if (!IDataManager.Get().GetExcelSheet<Map>().TryGetRow(data->MapId, out var mapData)) return;
 
             // Disable in Cosmic Zones
             if (mapData.TerritoryType.ValueNullable?.TerritoryIntendedUse.RowId is 60) return;
@@ -51,7 +51,7 @@ public unsafe class BetterQuestMapLink : GameModification {
             }
         }
         catch (Exception e) {
-            Service<IPluginLog>.Get().Exception(e);
+            IPluginLog.Get().Exception(e);
         }
     }
 }

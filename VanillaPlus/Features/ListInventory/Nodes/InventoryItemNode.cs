@@ -62,7 +62,7 @@ public class InventoryItemNode : ListItemNode<ItemStack>, IListItemNode {
     }
 
     protected override void SetNodeData(ItemStack itemData) {
-        if (!Service<IDataManager>.Get().GetExcelSheet<Item>().TryGetRow(itemData.Item.ItemId, out var luminaData)) return;
+        if (!IDataManager.Get().GetExcelSheet<Item>().TryGetRow(itemData.Item.ItemId, out var luminaData)) return;
 
         iconNode.IconId = luminaData.Icon;
         itemNameTextNode.String = luminaData.Name;

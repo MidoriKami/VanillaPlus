@@ -20,14 +20,14 @@ public class SelectNextLootItem : GameModification {
     };
 
     public override Task OnEnableAsync() {
-        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PostSetup, "NeedGreed", OnNeedGreedSetup);
-        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PostReceiveEvent, "NeedGreed", OnNeedGreedEvent);
+        IAddonLifecycle.Get().RegisterListener(AddonEvent.PostSetup, "NeedGreed", OnNeedGreedSetup);
+        IAddonLifecycle.Get().RegisterListener(AddonEvent.PostReceiveEvent, "NeedGreed", OnNeedGreedEvent);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Service<IAddonLifecycle>.Get().UnregisterListener(OnNeedGreedSetup, OnNeedGreedEvent);
+        IAddonLifecycle.Get().UnregisterListener(OnNeedGreedSetup, OnNeedGreedEvent);
 
         return Task.CompletedTask;
     }

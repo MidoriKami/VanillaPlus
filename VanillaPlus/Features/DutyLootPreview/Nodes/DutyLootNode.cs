@@ -107,15 +107,15 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
 
         if (item.CanTryOn) {
             contextMenu.AddItem(
-                Service<IDataManager>.Get().GetAddonText(2426), // Try On
+                IDataManager.Get().GetAddonText(2426), // Try On
                 () => AgentTryon.TryOn(0, item.ItemId));
         }
 
         var isFavorite = config.FavoriteItems.Contains(item.ItemId);
         contextMenu.AddItem(new ContextMenuItem {
             Name = isFavorite
-                       ? Service<IDataManager>.Get().GetAddonText(8324)  // Remove from Favorites
-                       : Service<IDataManager>.Get().GetAddonText(8323), // Add to Favorites
+                       ? IDataManager.Get().GetAddonText(8324)  // Remove from Favorites
+                       : IDataManager.Get().GetAddonText(8323), // Add to Favorites
             OnClick = () => {
                 if (isFavorite) {
                     config.FavoriteItems.Remove(item.ItemId);
@@ -129,15 +129,15 @@ public unsafe class DutyLootNode : ListItemNode<DutyLootItemView>, IListItemNode
         });
 
         contextMenu.AddItem(
-            Service<IDataManager>.Get().GetAddonText(4379), // Search for Item
+            IDataManager.Get().GetAddonText(4379), // Search for Item
             () => ItemFinderModule.Instance()->SearchForItem(item.ItemId));
 
         contextMenu.AddItem(
-            Service<IDataManager>.Get().GetAddonText(4697), // Link
+            IDataManager.Get().GetAddonText(4697), // Link
             () => AgentChatLog.Instance()->LinkItem(item.ItemId));
 
         contextMenu.AddItem(
-            Service<IDataManager>.Get().GetAddonText(13439), // Search Recipes Using This Material
+            IDataManager.Get().GetAddonText(13439), // Search Recipes Using This Material
             () => AgentRecipeProductList.Instance()->SearchForRecipesUsingItem(item.ItemId));
 
         contextMenu.Open();

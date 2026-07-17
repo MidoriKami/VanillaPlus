@@ -119,7 +119,7 @@ public class GearsetEntryConfigNode : EntryConfigurationNode<GearsetRedirectionE
 
             if (regex.IsMatch(targetGearset->NameString)) return true;
 
-            var territory = Service<IDataManager>.Get().GetExcelSheet<TerritoryType>().GetRow(entry.TerritoryType);
+            var territory = IDataManager.Get().GetExcelSheet<TerritoryType>().GetRow(entry.TerritoryType);
             var territoryName = territory.PlaceName.ValueNullable?.Name.ToString();
             if (territoryName is not null && regex.IsMatch(territoryName)) return true;
 

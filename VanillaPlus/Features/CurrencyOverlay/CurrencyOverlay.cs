@@ -42,7 +42,7 @@ public class CurrencyOverlay : GameModification {
             Title = "Currency Search",
             Size = new Vector2(350.0f, 500.0f),
             AllowMultiselect = true,
-            OptionsList = Service<IDataManager>.Get().GetCurrencyItems().ToList(),
+            OptionsList = IDataManager.Get().GetCurrencyItems().ToList(),
         };
 
         configAddon = new ConfigurationAddon<CurrencySetting, CurrencyOverlayListItemNode, CurrencyOverlayConfigNode> {
@@ -50,7 +50,7 @@ public class CurrencyOverlay : GameModification {
             InternalName = "CurrencyOverlayConfig",
             Title = Strings.CurrencyOverlay_ConfigTitle,
             OptionsList = config.Currencies,
-            GetEntrySearchString = entry => Service<IDataManager>.Get().GetExcelSheet<Item>().GetRow(entry.ItemId).Name.ToString(),
+            GetEntrySearchString = entry => IDataManager.Get().GetExcelSheet<Item>().GetRow(entry.ItemId).Name.ToString(),
             AddClicked = OnAddButtonClicked,
             RemoveClicked = OnRemoveButtonClicked,
             SaveConfig = () => Task.Run(config.Save),
@@ -58,7 +58,7 @@ public class CurrencyOverlay : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        await Service<IFramework>.Get().RunSafely(() => {
+        await IFramework.Get().RunSafely(() => {
             overlayController = new OverlayController();
 
             foreach (var currencySetting in config.Currencies) {
@@ -70,7 +70,7 @@ public class CurrencyOverlay : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Service<IFramework>.Get().RunSafely(() => overlayController?.Dispose());
+        await IFramework.Get().RunSafely(() => overlayController?.Dispose());
         overlayController = null;
 
         await Task.WhenAll(

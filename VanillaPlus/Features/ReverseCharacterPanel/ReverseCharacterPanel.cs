@@ -30,11 +30,11 @@ public class ReverseCharacterPanel : GameModification {
             };
         }
 
-        await Service<IFramework>.Get().RunSafely(characterController.Enable);
+        await IFramework.Get().RunSafely(characterController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Service<IFramework>.Get().RunSafely(() => characterController?.Dispose());
+        await IFramework.Get().RunSafely(() => characterController?.Dispose());
         characterController = null;
     }
 

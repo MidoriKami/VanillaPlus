@@ -37,7 +37,7 @@ public class LockChatButton : GameModification {
         data = await LockChatButtonData.Load();
 
         unsafe {
-            moveDeltaHook = Service<IGameInteropProvider>.Get().HookFromAddress<AtkUnitBase.Delegates.MoveDelta>(AtkUnitBase.MemberFunctionPointers.MoveDelta, OnMoveDelta);
+            moveDeltaHook = IGameInteropProvider.Get().HookFromAddress<AtkUnitBase.Delegates.MoveDelta>(AtkUnitBase.MemberFunctionPointers.MoveDelta, OnMoveDelta);
             moveDeltaHook?.Enable();
 
             chatLogController = new AddonController<AddonChatLog> {
@@ -52,7 +52,7 @@ public class LockChatButton : GameModification {
             thirdPanelController = new ChatPanelController(data, "ChatLogPanel_3");
         }
 
-        await Service<IFramework>.Get().RunSafely(() => {
+        await IFramework.Get().RunSafely(() => {
             chatLogController.Enable();
             firstPanelController.Enable();
             secondPanelController.Enable();
@@ -64,7 +64,7 @@ public class LockChatButton : GameModification {
         addonControlHook?.Dispose();
         addonControlHook = null;
 
-        await Service<IFramework>.Get().RunSafely(() => {
+        await IFramework.Get().RunSafely(() => {
             chatLogController?.Dispose();
             firstPanelController?.Dispose();
             secondPanelController?.Dispose();
@@ -83,7 +83,7 @@ public class LockChatButton : GameModification {
     }
 
     private unsafe void SetupChatLog(AddonChatLog* addon) {
-        addonControlHook = Service<IGameInteropProvider>.Get().HookFromAddress<AtkEventListener.Delegates.ReceiveEvent>(
+        addonControlHook = IGameInteropProvider.Get().HookFromAddress<AtkEventListener.Delegates.ReceiveEvent>(
             addon->AddonControl.AtkEventListener.VirtualTable->ReceiveEvent,
             OnAddonControl
         );
@@ -141,7 +141,7 @@ public class LockChatButton : GameModification {
             }
         }
         catch (Exception e) {
-            Service<IPluginLog>.Get().Exception(e);
+            IPluginLog.Get().Exception(e);
         }
 
         addonControlHook!.Original(thisPtr, eventType, eventParam, atkEvent, atkEventData);
@@ -156,7 +156,7 @@ public class LockChatButton : GameModification {
             }
         }
         catch (Exception e) {
-            Service<IPluginLog>.Get().Exception(e);
+            IPluginLog.Get().Exception(e);
         }
 
         return moveDeltaHook!.Original(thisPtr, xDelta, yDelta);

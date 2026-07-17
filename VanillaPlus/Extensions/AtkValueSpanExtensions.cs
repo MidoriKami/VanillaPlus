@@ -11,7 +11,7 @@ public static class AtkValueSpanExtensions {
             foreach (var index in Enumerable.Range(0, values.Length)) {
                 ref var value = ref values[index];
 
-                Service<IPluginLog>.Get().Debug($"{new string(' ', indentSpaces)}[{index}] [{value.Type}] {value.GetValueAsString()}");
+                IPluginLog.Get().Debug($"{new string(' ', indentSpaces)}[{index}] [{value.Type}] {value.GetValueAsString()}");
             }
         }
     }

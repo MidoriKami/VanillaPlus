@@ -43,7 +43,7 @@ public static class InventoryItemExtensions {
             var baseItemId = item.GetBaseItemId();
 
             if (ItemUtil.IsNormalItem(baseItemId) &&
-                Service<IDataManager>.Get().GetExcelSheet<Item>().TryGetRow(baseItemId, out var baseItem)) {
+                IDataManager.Get().GetExcelSheet<Item>().TryGetRow(baseItemId, out var baseItem)) {
                 return baseItem;
             }
 
@@ -54,7 +54,7 @@ public static class InventoryItemExtensions {
             var baseItemId = item.GetBaseItemId();
 
             if (ItemUtil.IsEventItem(baseItemId) &&
-                Service<IDataManager>.Get().GetExcelSheet<EventItem>().TryGetRow(baseItemId, out var eventItem)) {
+                IDataManager.Get().GetExcelSheet<EventItem>().TryGetRow(baseItemId, out var eventItem)) {
                 return eventItem;
             }
 
@@ -75,14 +75,14 @@ public static class InventoryItemExtensions {
                 var regex = new Regex(searchString, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
                 if (ItemUtil.IsEventItem(item.GetBaseItemId())) {
-                    if (!Service<IDataManager>.Get().GetExcelSheet<EventItem>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
+                    if (!IDataManager.Get().GetExcelSheet<EventItem>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
 
                     if (regex.IsMatch(item.ItemId.ToString())) return true;
                     if (regex.IsMatch(itemData.Name.ToString())) return true;
                 }
 
                 else if (ItemUtil.IsNormalItem(item.GetBaseItemId())) {
-                    if (!Service<IDataManager>.Get().GetExcelSheet<Item>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
+                    if (!IDataManager.Get().GetExcelSheet<Item>().TryGetRow(item.GetBaseItemId(), out var itemData)) return false;
 
                     if (regex.IsMatch(item.ItemId.ToString())) return true;
                     if (regex.IsMatch(itemData.Name.ToString())) return true;

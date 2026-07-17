@@ -41,7 +41,7 @@ public class FasterScroll : GameModification {
         OpenConfigAction = configWindow.Toggle;
 
         unsafe {
-            scrollBarReceiveEventHook = Service<IGameInteropProvider>.Get().HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
+            scrollBarReceiveEventHook = IGameInteropProvider.Get().HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
             scrollBarReceiveEventHook?.Enable();
         }
     }
@@ -68,7 +68,7 @@ public class FasterScroll : GameModification {
             thisPtr->MouseWheelSpeed = (short)(thisPtr->MouseWheelSpeed / config.SpeedMultiplier);
         }
         catch (Exception e) {
-            Service<IPluginLog>.Get().Exception(e);
+            IPluginLog.Get().Exception(e);
         }
     }
 }

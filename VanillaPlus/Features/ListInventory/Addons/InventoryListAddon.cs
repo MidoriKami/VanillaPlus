@@ -38,13 +38,13 @@ public class InventoryListAddon : NativeAddon {
 
         UpdateItemsList();
 
-        Service<IGameGui>.Get().AgentUpdate += OnAgentUpdate;
+        IGameGui.Get().AgentUpdate += OnAgentUpdate;
     }
 
     protected override unsafe void OnFinalize(AtkUnitBase* addon) {
         base.OnFinalize(addon);
 
-        Service<IGameGui>.Get().AgentUpdate -= OnAgentUpdate;
+        IGameGui.Get().AgentUpdate -= OnAgentUpdate;
 
         listNode = null;
     }

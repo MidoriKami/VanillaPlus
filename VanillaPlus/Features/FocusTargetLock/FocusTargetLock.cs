@@ -20,17 +20,17 @@ public class FocusTargetLock : GameModification {
     private uint? targetEntityId;
 
     public override Task OnEnableAsync() {
-        Service<IDutyState>.Get().DutyWiped += OnDutyWiped;
-        Service<IDutyState>.Get().DutyRecommenced += OnDutyRecommenced;
-        Service<IClientState>.Get().TerritoryChanged += OnTerritoryChanged;
+        IDutyState.Get().DutyWiped += OnDutyWiped;
+        IDutyState.Get().DutyRecommenced += OnDutyRecommenced;
+        IClientState.Get().TerritoryChanged += OnTerritoryChanged;
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Service<IDutyState>.Get().DutyWiped -= OnDutyWiped;
-        Service<IDutyState>.Get().DutyRecommenced -= OnDutyRecommenced;
-        Service<IClientState>.Get().TerritoryChanged -= OnTerritoryChanged;
+        IDutyState.Get().DutyWiped -= OnDutyWiped;
+        IDutyState.Get().DutyRecommenced -= OnDutyRecommenced;
+        IClientState.Get().TerritoryChanged -= OnTerritoryChanged;
 
         return Task.CompletedTask;
     }
@@ -42,20 +42,20 @@ public class FocusTargetLock : GameModification {
 
         // BaseId works well for reacquiring bosses, but doesn't work for other players.
         if (targetBaseId is not 0) {
-            targetObject = Service<IObjectTable>.Get().CharacterManagerObjects.FirstOrDefault(obj => obj.BaseId == targetBaseId);
+            targetObject = IObjectTable.Get().CharacterManagerObjects.FirstOrDefault(obj => obj.BaseId == targetBaseId);
         }
 
         // Player EntityId's never change once in an instance, but enemies do, so this works to reacquire players.
         else {
-            targetObject = Service<IObjectTable>.Get().CharacterManagerObjects.FirstOrDefault(obj => obj.EntityId == targetEntityId);
+            targetObject = IObjectTable.Get().CharacterManagerObjects.FirstOrDefault(obj => obj.EntityId == targetEntityId);
         }
 
-        Service<ITargetManager>.Get().FocusTarget = targetObject;
+        ITargetManager.Get().FocusTarget = targetObject;
     }
 
     private void OnDutyWiped(IDutyStateEventArgs args) {
-        targetBaseId = Service<ITargetManager>.Get().FocusTarget?.BaseId;
-        targetEntityId = Service<ITargetManager>.Get().FocusTarget?.EntityId;
+        targetBaseId = ITargetManager.Get().FocusTarget?.BaseId;
+        targetEntityId = ITargetManager.Get().FocusTarget?.EntityId;
     }
 
     private void OnTerritoryChanged(uint u) {

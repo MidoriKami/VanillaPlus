@@ -48,11 +48,11 @@ public class ResetDummyEnmity : GameModification {
         resetButtons = new CircleButtonNode?[MaxEnemyCount];
         buttonTargets = new IBattleChara?[MaxEnemyCount];
 
-        await Service<IFramework>.Get().RunSafely(enemyListController.Enable);
+        await IFramework.Get().RunSafely(enemyListController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Service<IFramework>.Get().RunSafely(() => {
+        await IFramework.Get().RunSafely(() => {
             enemyListController?.Dispose();
         });
 
@@ -110,7 +110,7 @@ public class ResetDummyEnmity : GameModification {
             if (index < enemyCount && entry.ActiveInList) {
                 var matchingDummy = GetDummyByEntityId((uint)entry.EntityId);
                 if (matchingDummy is { NameId: StrikingDummyNameId }) {
-                    shouldBeVisible = Service<ICondition>.Get()[ConditionFlag.InCombat];
+                    shouldBeVisible = ICondition.Get()[ConditionFlag.InCombat];
                     buttonTargets[index] = matchingDummy;
                 }
             }
@@ -139,15 +139,15 @@ public class ResetDummyEnmity : GameModification {
         var dummy = buttonTargets?[buttonIndex];
         if (dummy is not { NameId: StrikingDummyNameId }) return;
         if (!dummy.IsValid()) return;
-        if (!Service<ICondition>.Get()[ConditionFlag.InCombat]) return;
+        if (!ICondition.Get()[ConditionFlag.InCombat]) return;
         if (!TargetMatchesEntityId(dummy.EntityId)) return;
 
         GameMain.ExecuteCommand(319, (int)dummy.GameObjectId);
     }
 
     private static IBattleChara? GetDummyByEntityId(uint entityId)
-        => Service<IObjectTable>.Get().CharacterManagerObjects.FirstOrDefault(obj => obj.EntityId == entityId) as IBattleChara;
+        => IObjectTable.Get().CharacterManagerObjects.FirstOrDefault(obj => obj.EntityId == entityId) as IBattleChara;
 
     private static bool TargetMatchesEntityId(uint entityId) =>
-        Service<ITargetManager>.Get().GetTarget() is { } target && target.EntityId == entityId;
+        ITargetManager.Get().GetTarget() is { } target && target.EntityId == entityId;
 }

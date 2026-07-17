@@ -57,7 +57,7 @@ public class FadeUnavailableActions : GameModification {
         OpenConfigAction = configWindow.Toggle;
 
         unsafe {
-            onHotBarSlotUpdateHook = Service<IGameInteropProvider>.Get().HookFromAddress<AddonActionBarBase.Delegates.UpdateHotbarSlot>(AddonActionBarBase.MemberFunctionPointers.UpdateHotbarSlot, OnHotBarSlotUpdate);
+            onHotBarSlotUpdateHook = IGameInteropProvider.Get().HookFromAddress<AddonActionBarBase.Delegates.UpdateHotbarSlot>(AddonActionBarBase.MemberFunctionPointers.UpdateHotbarSlot, OnHotBarSlotUpdate);
             onHotBarSlotUpdateHook?.Enable();
         }
     }
@@ -71,7 +71,7 @@ public class FadeUnavailableActions : GameModification {
 
         actionCache = null;
 
-        await Service<IFramework>.Get().RunSafely(ResetAllHotbars);
+        await IFramework.Get().RunSafely(ResetAllHotbars);
     }
 
     private unsafe void OnHotBarSlotUpdate(AddonActionBarBase* addon, ActionBarSlot* hotBarSlotData, NumberArrayData* numberArray, StringArrayData* stringArray, int numberArrayIndex, int stringArrayIndex) {
@@ -79,7 +79,7 @@ public class FadeUnavailableActions : GameModification {
             ProcessHotBarSlot(hotBarSlotData, numberArray, numberArrayIndex);
         }
         catch (Exception e) {
-            Service<IPluginLog>.Get().Exception(e);
+            IPluginLog.Get().Exception(e);
         } finally {
             onHotBarSlotUpdateHook!.Original(addon, hotBarSlotData, numberArray, stringArray, numberArrayIndex, stringArrayIndex);
         }
@@ -87,7 +87,7 @@ public class FadeUnavailableActions : GameModification {
 
     private unsafe void ProcessHotBarSlot(ActionBarSlot* hotBarSlotData, NumberArrayData* numberArray, int numberArrayIndex) {
         if (config is null) return;
-        if (Service<IObjectTable>.Get().LocalPlayer is { IsCasting: true }) return;
+        if (IObjectTable.Get().LocalPlayer is { IsCasting: true }) return;
 
         var numberArrayData = (ActionBarSlotNumberArray*)(&numberArray->IntArray[numberArrayIndex]);
 
@@ -100,7 +100,7 @@ public class FadeUnavailableActions : GameModification {
             var action = GetAction(numberArrayData->ActionId);
 
             var actionLevel = action?.ClassJobLevel ?? 0;
-            var playerLevel = Service<IObjectTable>.Get().LocalPlayer?.Level ?? 0;
+            var playerLevel = IObjectTable.Get().LocalPlayer?.Level ?? 0;
 
             switch (action) {
                 case null:
@@ -126,7 +126,7 @@ public class FadeUnavailableActions : GameModification {
 
         if (actionCache?.TryGetValue(adjustedActionId, out var action) ?? false) return action;
 
-        action = Service<IDataManager>.Get().GetExcelSheet<Action>().GetRowOrDefault(adjustedActionId);
+        action = IDataManager.Get().GetExcelSheet<Action>().GetRowOrDefault(adjustedActionId);
         actionCache?.Add(adjustedActionId, action);
         return action;
     }

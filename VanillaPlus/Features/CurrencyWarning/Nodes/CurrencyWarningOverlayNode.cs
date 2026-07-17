@@ -51,16 +51,16 @@ public unsafe class CurrencyWarningOverlayNode : OverlayNode {
             var isHigh = setting.Mode == WarningMode.Above && count >= setting.Limit;
 
             if (isLow || isHigh) {
-                var item = Service<IDataManager>.Get().GetItem(setting.ItemId);
+                var item = IDataManager.Get().GetItem(setting.ItemId);
                 ActiveWarnings.Add(new WarningInfo(item.Icon, item.Name.ToString(), count, isHigh, setting.Limit));
                 if (isHigh) hasHigh = true;
             }
         }
 
         var shouldShow = ActiveWarnings.Count > 0 || Config.IsMoveable;
-        var shouldDisableInDuty = Config.HideInDuties && Service<ICondition>.Get().IsBoundByDuty;
+        var shouldDisableInDuty = Config.HideInDuties && ICondition.Get().IsBoundByDuty;
 
-        IsVisible = shouldShow && !(shouldDisableInDuty || Service<ICondition>.Get().IsInCutsceneOrQuestEvent);
+        IsVisible = shouldShow && !(shouldDisableInDuty || ICondition.Get().IsInCutsceneOrQuestEvent);
 
         if (ActiveWarnings.Count > 0) {
             iconNode.IconId = hasHigh ? Config.HighIcon : Config.LowIcon;

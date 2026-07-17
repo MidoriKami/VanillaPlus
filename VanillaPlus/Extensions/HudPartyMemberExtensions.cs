@@ -20,7 +20,7 @@ public static class HudPartyMemberExtensions {
         private unsafe ClassJob? GetClassJob() {
             if (hudMember.Object is null) return null;
 
-            return Service<IDataManager>.Get().GetClassJobById(hudMember.Object->ClassJob);
+            return IDataManager.Get().GetClassJobById(hudMember.Object->ClassJob);
         }
     }
 }

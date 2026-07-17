@@ -47,15 +47,15 @@ public class FateListWindow : GameModification {
 
         OpenConfigAction = keybindConfigAddon.Open;
 
-        Service<ICommandManager>.Get().AddHandler("/fatelist", new CommandInfo(OnFateListCommand) {
+        ICommandManager.Get().AddHandler("/fatelist", new CommandInfo(OnFateListCommand) {
             HelpMessage = "Opens Fate List Window",
         });
-        Service<IFramework>.Get().Update += OnFrameworkUpdate;
+        IFramework.Get().Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
-        Service<IFramework>.Get().Update -= OnFrameworkUpdate;
-        Service<ICommandManager>.Get().RemoveHandler("/fatelist");
+        IFramework.Get().Update -= OnFrameworkUpdate;
+        ICommandManager.Get().RemoveHandler("/fatelist");
 
         await Task.WhenAll(
             addonFateList?.DisposeAsync().AsTask() ?? Task.CompletedTask,
@@ -76,7 +76,7 @@ public class FateListWindow : GameModification {
         => addonFateList?.Toggle();
 
     private void OnKeybindPressed(ref bool isHandled) {
-        Service<IFramework>.Get().RunSafely(() => addonFateList?.Toggle());
+        IFramework.Get().RunSafely(() => addonFateList?.Toggle());
 
         isHandled = true;
     }

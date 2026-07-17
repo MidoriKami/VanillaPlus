@@ -48,15 +48,15 @@ public class ListInventory : GameModification {
 
         OpenConfigAction = keybindConfigAddon.Toggle;
 
-        Service<ICommandManager>.Get().AddHandler("/listinventory", new CommandInfo(OnListInventoryCommand) {
+        ICommandManager.Get().AddHandler("/listinventory", new CommandInfo(OnListInventoryCommand) {
             HelpMessage = "Opens Inventory List Window",
         });
-        Service<IFramework>.Get().Update += OnFrameworkUpdate;
+        IFramework.Get().Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
-        Service<IFramework>.Get().Update -= OnFrameworkUpdate;
-        Service<ICommandManager>.Get().RemoveHandler("/listinventory");
+        IFramework.Get().Update -= OnFrameworkUpdate;
+        ICommandManager.Get().RemoveHandler("/listinventory");
 
         await Task.WhenAll(inventoryListAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
             keybindConfigAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
@@ -76,7 +76,7 @@ public class ListInventory : GameModification {
         => inventoryListAddon?.Toggle();
 
     private void OnKeybindPressed(ref bool isHandled) {
-        Service<IFramework>.Get().RunSafely(() => inventoryListAddon?.Toggle());
+        IFramework.Get().RunSafely(() => inventoryListAddon?.Toggle());
 
         isHandled = true;
     }

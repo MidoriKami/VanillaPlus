@@ -33,7 +33,7 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
     }
 
     protected override void OnUpdate() {
-        var dutyInfoAddon = Service<IGameGui>.Get().GetAddonByName<AddonToDoList>("_ToDoList");
+        var dutyInfoAddon = IGameGui.Get().GetAddonByName<AddonToDoList>("_ToDoList");
         var dutyInfoPos = dutyInfoAddon->AtkUnitBase.Position;
         var dutyInfoScale = dutyInfoAddon->AtkUnitBase.Scale;
 
@@ -56,7 +56,7 @@ public unsafe class DutyLootInDutyButtonNode : OverlayNode {
             return;
         }
 
-        var dutyInfoAddon = Service<IGameGui>.Get().GetAddonByName<AddonToDoList>("_ToDoList");
+        var dutyInfoAddon = IGameGui.Get().GetAddonByName<AddonToDoList>("_ToDoList");
         if (!dutyInfoAddon->AtkUnitBase.IsActuallyVisible) {
             IsVisible = false;
             return;

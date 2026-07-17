@@ -64,7 +64,7 @@ public class ZoneLabelNode : OverlayNode {
     private readonly Vector2 maxScale = new(1.0f, 1.0f);
 
     private unsafe bool TryUpdateLabel() {
-        if (Service<IObjectTable>.Get().LocalPlayer is not { } playerCharacter) return false;
+        if (IObjectTable.Get().LocalPlayer is not { } playerCharacter) return false;
         var player = (BattleChara*)playerCharacter.Address;
 
         if (player == null) return false;
@@ -84,7 +84,7 @@ public class ZoneLabelNode : OverlayNode {
         if (distance >= MaxDistance) return false;
 
         // Lerp to current location (maybe should be toggleable)
-        var deltaTime = (float) Service<IFramework>.Get().UpdateDelta.TotalSeconds;
+        var deltaTime = (float) IFramework.Get().UpdateDelta.TotalSeconds;
 
         if (IsVisible) {
             closestPoint = Vector3.Lerp(previousLocation, closestPoint, deltaTime * 30f);

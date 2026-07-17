@@ -50,11 +50,11 @@ public class HUDPresets : GameModification {
             };
         }
 
-        await Service<IFramework>.Get().RunSafely(hudLayoutController.Enable);
+        await IFramework.Get().RunSafely(hudLayoutController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Service<IFramework>.Get().RunSafely(() => hudLayoutController?.Dispose());
+        await IFramework.Get().RunSafely(() => hudLayoutController?.Dispose());
         hudLayoutController = null;
 
         await Task.WhenAll(renameAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
@@ -187,7 +187,7 @@ public class HUDPresets : GameModification {
 
         HUDPresetManager.LoadPreset(presetDropdownNode.SelectedOption);
 
-        var screenAddon = Service<IGameGui>.Get().GetAddonByName<AtkUnitBase>("_HudLayoutScreen");
+        var screenAddon = IGameGui.Get().GetAddonByName<AtkUnitBase>("_HudLayoutScreen");
         if (screenAddon is not null) {
             screenAddon->OnScreenSizeChange(AtkStage.Instance()->ScreenSize.Width, AtkStage.Instance()->ScreenSize.Height);
         }

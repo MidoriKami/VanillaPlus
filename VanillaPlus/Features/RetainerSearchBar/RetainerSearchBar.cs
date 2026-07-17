@@ -33,8 +33,8 @@ public class RetainerSearchBar : GameModification {
     private TextInputWithHintNode? searchInputNode;
 
     public override async Task OnEnableAsync() {
-        if (Service<IClientState>.Get().IsLoggedIn) {
-            await Service<IFramework>.Get().Run(ReinitializeController);
+        if (IClientState.Get().IsLoggedIn) {
+            await IFramework.Get().Run(ReinitializeController);
         }
 
         keybindListener = new KeybindListener {
@@ -46,17 +46,17 @@ public class RetainerSearchBar : GameModification {
             Callback = OnKeybindPressed,
         };
 
-        Service<IGameGui>.Get().AgentUpdate += OnAgentUpdate;
-        Service<IFramework>.Get().Update += OnFrameworkUpdate;
-        Service<IGameConfig>.Get().UiConfigChanged += OnUiConfigChanged;
+        IGameGui.Get().AgentUpdate += OnAgentUpdate;
+        IFramework.Get().Update += OnFrameworkUpdate;
+        IGameConfig.Get().UiConfigChanged += OnUiConfigChanged;
     }
 
     public override async Task OnDisableAsync() {
-        Service<IGameConfig>.Get().UiConfigChanged -= OnUiConfigChanged;
-        Service<IFramework>.Get().Update -= OnFrameworkUpdate;
-        Service<IGameGui>.Get().AgentUpdate -= OnAgentUpdate;
+        IGameConfig.Get().UiConfigChanged -= OnUiConfigChanged;
+        IFramework.Get().Update -= OnFrameworkUpdate;
+        IGameGui.Get().AgentUpdate -= OnAgentUpdate;
 
-        await Service<IFramework>.Get().RunSafely(() => inventoryController?.Dispose());
+        await IFramework.Get().RunSafely(() => inventoryController?.Dispose());
         keybindListener = null;
         inventoryController = null;
     }
@@ -68,7 +68,7 @@ public class RetainerSearchBar : GameModification {
     }
 
     private unsafe void ReinitializeController() {
-        if (!Service<IGameConfig>.Get().UiConfig.TryGet("ItemInventryRetainerWindowSizeType", out uint inventoryType)) return;
+        if (!IGameConfig.Get().UiConfig.TryGet("ItemInventryRetainerWindowSizeType", out uint inventoryType)) return;
 
         inventoryController?.Dispose();
 

@@ -59,12 +59,12 @@ public class GearsetRedirect : GameModification {
                 RemoveClicked = OnRemoveClicked,
             };
 
-            gearsetChangedHook = Service<IGameInteropProvider>.Get().HookFromAddress<RaptureGearsetModule.Delegates.EquipGearset>(RaptureGearsetModule.Addresses.EquipGearset.Value, OnGearsetChanged);
+            gearsetChangedHook = IGameInteropProvider.Get().HookFromAddress<RaptureGearsetModule.Delegates.EquipGearset>(RaptureGearsetModule.Addresses.EquipGearset.Value, OnGearsetChanged);
             gearsetChangedHook?.Enable();
         }
 
         OpenConfigAction = () => {
-            if (Service<IClientState>.Get().IsLoggedIn) {
+            if (IClientState.Get().IsLoggedIn) {
                 configWindow.Toggle();
             }
         };
@@ -115,14 +115,14 @@ public class GearsetRedirect : GameModification {
     private unsafe int OnGearsetChanged(RaptureGearsetModule* thisPtr, int gearsetId, byte glamourPlateId) {
         try {
             if (config?.GearsetEntries.FirstOrDefault(entry => entry.TargetGearsetId == gearsetId) is { } redirection) {
-                var targetRedirection = redirection.Redirections.FirstOrDefault(info => Service<IClientState>.Get().TerritoryType == info.TerritoryType);
+                var targetRedirection = redirection.Redirections.FirstOrDefault(info => IClientState.Get().TerritoryType == info.TerritoryType);
                 if (targetRedirection is not null) {
                     gearsetId = targetRedirection.AlternateGearsetId;
                 }
             }
         }
         catch (Exception e) {
-            Service<IPluginLog>.Get().Exception(e);
+            IPluginLog.Get().Exception(e);
         }
 
         return gearsetChangedHook!.Original(thisPtr, gearsetId, glamourPlateId);

@@ -18,13 +18,13 @@ public class SkipLoginConfirm : GameModification {
     };
 
     public override Task OnEnableAsync() {
-        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
+        IAddonLifecycle.Get().RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Service<IAddonLifecycle>.Get().UnregisterListener(SelectYesNoHandler);
+        IAddonLifecycle.Get().UnregisterListener(SelectYesNoHandler);
 
         return Task.CompletedTask;
     }

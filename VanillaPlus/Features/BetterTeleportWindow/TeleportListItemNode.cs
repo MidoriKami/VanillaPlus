@@ -92,7 +92,7 @@ public unsafe class TeleportListItemNode : ListItemNode<IAetheryteEntry>, IListI
             var isFavorite = config.FavoriteAetherytes.Contains(ItemData.AetheryteId);
 
             contextMenu.AddItem(new ContextMenuItem {
-                Name = Service<IDataManager>.Get().GetAddonText(8441), // Open Map
+                Name = IDataManager.Get().GetAddonText(8441), // Open Map
                 OnClick = () => {
                     AgentTeleport.Instance()->AgentInterface.SendCommand(2, [1, ItemData.EntryIndex, 0]);
                     AgentTeleport.Instance()->AgentInterface.SendCommand(4, [0, 0, 0, 0, 0]);
@@ -101,8 +101,8 @@ public unsafe class TeleportListItemNode : ListItemNode<IAetheryteEntry>, IListI
 
             contextMenu.AddItem(new ContextMenuItem {
                 Name = isFavorite
-                           ? Service<IDataManager>.Get().GetAddonText(8324)  // Remove from Favorites
-                           : Service<IDataManager>.Get().GetAddonText(8323), // Add to Favorites
+                           ? IDataManager.Get().GetAddonText(8324)  // Remove from Favorites
+                           : IDataManager.Get().GetAddonText(8323), // Add to Favorites
                 OnClick = () => {
                     if (isFavorite) {
                         config.FavoriteAetherytes.Remove(ItemData.AetheryteId);
@@ -115,7 +115,7 @@ public unsafe class TeleportListItemNode : ListItemNode<IAetheryteEntry>, IListI
             });
 
             contextMenu.AddItem(new ContextMenuItem {
-                Name = Service<IDataManager>.Get().GetAddonText(14511), // Rename
+                Name = IDataManager.Get().GetAddonText(14511), // Rename
                 OnClick = () => {
                     renameAddon?.Dispose();
                     renameAddon = new RenameAddon {

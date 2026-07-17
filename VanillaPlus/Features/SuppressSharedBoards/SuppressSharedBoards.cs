@@ -19,12 +19,12 @@ public unsafe class SuppressSharedBoards : GameModification {
     private Hook<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>? saveBoardAndPlaySoundHook;
 
     public override Task OnEnableAsync() {
-        showSharedNotificationHook = Service<IGameInteropProvider>.Get().HookFromAddress<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>(
+        showSharedNotificationHook = IGameInteropProvider.Get().HookFromAddress<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>(
             TofuHelper.TofuHelperData.MemberFunctionPointers.ShowSharedNotification,
             (_, _, _) => { }
         );
 
-        saveBoardAndPlaySoundHook = Service<IGameInteropProvider>.Get().HookFromAddress<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>(
+        saveBoardAndPlaySoundHook = IGameInteropProvider.Get().HookFromAddress<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>(
             TofuHelper.TofuHelperData.MemberFunctionPointers.SaveBoardAndPlaySound,
             (_, _, _, _, _) => { }
         );

@@ -36,11 +36,11 @@ public class HUDCoordinates : GameModification {
             };
         }
 
-        await Service<IFramework>.Get().RunSafely(hudLayoutScreenController.Enable);
+        await IFramework.Get().RunSafely(hudLayoutScreenController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Service<IFramework>.Get().RunSafely(() => hudLayoutScreenController?.Dispose());
+        await IFramework.Get().RunSafely(() => hudLayoutScreenController?.Dispose());
         hudLayoutScreenController = null;
 
         textNodes?.Clear();

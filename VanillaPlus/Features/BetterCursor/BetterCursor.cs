@@ -51,7 +51,7 @@ public class BetterCursor : GameModification {
         OpenConfigAction = configWindow.Toggle;
 
 
-        await Service<IFramework>.Get().RunSafely(() => {
+        await IFramework.Get().RunSafely(() => {
             overlayController = new OverlayController();
             overlayController.AddNode(new CursorImageNode {
                 Config = config,
@@ -60,7 +60,7 @@ public class BetterCursor : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Service<IFramework>.Get().RunSafely(() => overlayController?.Dispose());
+        await IFramework.Get().RunSafely(() => overlayController?.Dispose());
         overlayController = null;
 
         await (configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);

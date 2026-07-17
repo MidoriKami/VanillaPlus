@@ -91,7 +91,7 @@ public class NameplateCastbarController : IDisposable {
     }
 
     private unsafe void OnAddonRefresh(NewAddonCastBarEnemy* addonCastBarEnemy) {
-        if (Service<IClientState>.Get().IsPvP || !config.PrimaryTarget) {
+        if (IClientState.Get().IsPvP || !config.PrimaryTarget) {
             foreach (var node in textNodes ?? []) {
                 node.String = string.Empty;
             }
@@ -100,7 +100,7 @@ public class NameplateCastbarController : IDisposable {
 
         foreach (var index in Enumerable.Range(0, 10)) {
             var info = addonCastBarEnemy->CastBarInfo[index];
-            var battleChara = Service<IObjectTable>.Get().GetBattleChara(info.EntityId);
+            var battleChara = IObjectTable.Get().GetBattleChara(info.EntityId);
 
             textNodes?[index].String = battleChara?.GetCastTimeString;
         }

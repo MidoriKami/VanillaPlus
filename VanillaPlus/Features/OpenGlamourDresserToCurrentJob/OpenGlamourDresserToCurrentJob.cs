@@ -18,19 +18,19 @@ public class OpenGlamourDresserToCurrentJob : GameModification {
     };
 
     public override Task OnEnableAsync() {
-        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PreSetup, "MiragePrismPrismBox", OnGlamourDresserSetup);
+        IAddonLifecycle.Get().RegisterListener(AddonEvent.PreSetup, "MiragePrismPrismBox", OnGlamourDresserSetup);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Service<IAddonLifecycle>.Get().UnregisterListener(OnGlamourDresserSetup);
+        IAddonLifecycle.Get().UnregisterListener(OnGlamourDresserSetup);
 
         return Task.CompletedTask;
     }
 
     private void OnGlamourDresserSetup(AddonEvent type, AddonArgs args) {
-        if (Service<IObjectTable>.Get() is { LocalPlayer.ClassJob.RowId: var playerJob }) {
+        if (IObjectTable.Get() is { LocalPlayer.ClassJob.RowId: var playerJob }) {
             Marshal.WriteByte(args.Addon, 0x1A8, (byte)playerJob);
         }
     }

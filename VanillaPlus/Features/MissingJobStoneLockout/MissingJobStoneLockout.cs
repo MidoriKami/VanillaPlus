@@ -43,11 +43,11 @@ public class MissingJobStoneLockout : GameModification {
             };
         }
 
-        await Service<IFramework>.Get().RunSafely(contentsFinderController.Enable);
+        await IFramework.Get().RunSafely(contentsFinderController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Service<IFramework>.Get().RunSafely(() => contentsFinderController?.Dispose());
+        await IFramework.Get().RunSafely(() => contentsFinderController?.Dispose());
         contentsFinderController = null;
     }
 
@@ -129,7 +129,7 @@ public class MissingJobStoneLockout : GameModification {
         var currentLevel = PlayerState.Instance()->CurrentLevel;
         if (currentJob is 0) return false;
 
-        var job = Service<IDataManager>.Get()
+        var job = IDataManager.Get()
             .GetExcelSheet<ClassJob>()
             .Where(classJob => classJob.ClassJobParent.RowId != classJob.RowId)
             .FirstOrDefault(classJob => classJob.ClassJobParent.RowId == currentJob);

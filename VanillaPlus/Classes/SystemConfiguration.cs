@@ -17,12 +17,12 @@ public class SystemConfiguration {
     public bool SafeMode = false;
 
     public static async Task<SystemConfiguration> Load() {
-        Service<IPluginLog>.Get().Debug("Loading system.config.json");
+        IPluginLog.Get().Debug("Loading system.config.json");
         return await Config.LoadConfig<SystemConfiguration>("system.config.json");
     }
 
     public async Task Save() {
-        Service<IPluginLog>.Get().Debug("Saving system.config.json");
+        IPluginLog.Get().Debug("Saving system.config.json");
         await Config.SaveConfig(this, "system.config.json");
     }
 }

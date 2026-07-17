@@ -22,12 +22,12 @@ public class StickyShopCategories : GameModification {
     public override async Task OnEnableAsync() {
         config = await StickyShopCategoriesData.Load();
 
-        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PostSetup, "InclusionShop", OnInclusionShopSetup);
-        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PreFinalize, "InclusionShop", OnInclusionShopFinalize);
+        IAddonLifecycle.Get().RegisterListener(AddonEvent.PostSetup, "InclusionShop", OnInclusionShopSetup);
+        IAddonLifecycle.Get().RegisterListener(AddonEvent.PreFinalize, "InclusionShop", OnInclusionShopFinalize);
     }
 
     public override async Task OnDisableAsync() {
-        Service<IAddonLifecycle>.Get().UnregisterListener(OnInclusionShopFinalize, OnInclusionShopSetup);
+        IAddonLifecycle.Get().UnregisterListener(OnInclusionShopFinalize, OnInclusionShopSetup);
 
         if (config is not null) {
             await config.Save();
@@ -68,7 +68,7 @@ public class StickyShopCategories : GameModification {
             });
         }
 
-        Service<IPluginLog>.Get().Debug($"Saving Values: {dropDownCategoryIndex}, {dropDownSubCategoryIndex}", "StickyShopCategories");
+        IPluginLog.Get().Debug($"Saving Values: {dropDownCategoryIndex}, {dropDownSubCategoryIndex}", "StickyShopCategories");
 
         Task.Run(config.Save);
     }
