@@ -13,13 +13,13 @@ public class EmotionalDamageFools : FoolsModule {
         => Config.EmotionalDamage;
 
     protected override Task OnEnable() {
-        Services.GetService<IFlyTextGui>().FlyTextCreated += OnFlyText;
+        Service<IFlyTextGui>.Get().FlyTextCreated += OnFlyText;
 
         return Task.CompletedTask;
     }
 
     protected override Task OnDisable() {
-        Services.GetService<IFlyTextGui>().FlyTextCreated -= OnFlyText;
+        Service<IFlyTextGui>.Get().FlyTextCreated -= OnFlyText;
 
         return Task.CompletedTask;
     }
@@ -27,7 +27,7 @@ public class EmotionalDamageFools : FoolsModule {
     private static void OnFlyText(ref FlyTextKind kind, ref int val1, ref int val2, ref SeString text1, ref SeString text2, ref uint color, ref uint icon, ref uint damageTypeIcon, ref float yOffset, ref bool handled) {
         if (kind is FlyTextKind.Damage) return;
 
-        Services.GetService<IFlyTextGui>().AddFlyText(
+        Service<IFlyTextGui>.Get().AddFlyText(
             FlyTextKind.Damage,
             0,
             67,

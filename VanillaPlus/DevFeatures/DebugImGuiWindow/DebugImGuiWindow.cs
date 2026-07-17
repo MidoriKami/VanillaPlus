@@ -30,13 +30,13 @@ public class DebugImGuiWindow : GameModification {
 
         OpenConfigAction = debugWindow.Toggle;
 
-        Services.PluginInterface.UiBuilder.Draw += DrawImGui;
+        VanillaPlus.PluginInterface.UiBuilder.Draw += DrawImGui;
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.PluginInterface.UiBuilder.Draw -= DrawImGui;
+        VanillaPlus.PluginInterface.UiBuilder.Draw -= DrawImGui;
 
         windowSystem?.RemoveAllWindows();
         windowSystem = null;

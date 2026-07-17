@@ -10,10 +10,10 @@ public class Keybind {
     public HashSet<VirtualKey> Modifiers { get; init; } = [];
 
     public bool IsPressed()
-        => Key is not VirtualKey.NO_KEY && Services.GetService<IKeyState>().IsKeybindPressed(Modifiers.Append(Key));
+        => Key is not VirtualKey.NO_KEY && Service<IKeyState>.Get().IsKeybindPressed(Modifiers.Append(Key));
 
     public void Reset()
-        => Services.GetService<IKeyState>().ResetKeyCombo([Key]);
+        => Service<IKeyState>.Get().ResetKeyCombo([Key]);
 
     public override string ToString()
         => string.Join(" + ", Modifiers.Append(Key));

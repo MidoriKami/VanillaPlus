@@ -74,14 +74,14 @@ public class MiniCactpotHelper : GameModification {
             };
         }
 
-        await Services.GetService<IFramework>().RunSafely(lotteryDailyController.Enable);
+        await Service<IFramework>.Get().RunSafely(lotteryDailyController.Enable);
     }
 
     public override async Task OnDisableAsync() {
         gameTask?.Dispose();
         gameTask = null;
 
-        await Services.GetService<IFramework>().RunSafely(() => lotteryDailyController?.Dispose());
+        await Service<IFramework>.Get().RunSafely(() => lotteryDailyController?.Dispose());
         lotteryDailyController = null;
 
         await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
@@ -153,7 +153,7 @@ public class MiniCactpotHelper : GameModification {
             }
             catch (OperationCanceledException) { }
             catch (Exception ex) {
-                Services.PluginLog.Exception(ex);
+                Service<IPluginLog>.Get().Exception(ex);
             }
         }
 

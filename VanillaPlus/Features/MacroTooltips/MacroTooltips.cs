@@ -26,7 +26,7 @@ public unsafe class MacroTooltips : GameModification {
     public override string ImageName => "MacroTooltips.png";
 
     public override Task OnEnableAsync() {
-        showTooltipHook = Services.GetService<IGameInteropProvider>().HookFromAddress<AddonActionBarBase.Delegates.ShowTooltip>(AddonActionBarBase.MemberFunctionPointers.ShowTooltip, OnShowMacroTooltip);
+        showTooltipHook = Service<IGameInteropProvider>.Get().HookFromAddress<AddonActionBarBase.Delegates.ShowTooltip>(AddonActionBarBase.MemberFunctionPointers.ShowTooltip, OnShowMacroTooltip);
         showTooltipHook?.Enable();
 
         return Task.CompletedTask;
@@ -60,7 +60,7 @@ public unsafe class MacroTooltips : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Exception(e);
+            Service<IPluginLog>.Get().Exception(e);
         }
 
         showTooltipHook!.Original(a1, macroResNode, numberArray, stringArray, numberArrayIndex, stringArrayIndex);

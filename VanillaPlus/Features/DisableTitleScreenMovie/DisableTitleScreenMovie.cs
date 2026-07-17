@@ -21,7 +21,7 @@ public class DisableTitleScreenMovie : GameModification {
     private MemoryReplacement? jumpPatch;
 
     public override async Task OnEnableAsync() {
-        Services.GetService<IGameInteropProvider>().InitializeFromAttributes(this);
+        Service<IGameInteropProvider>.Get().InitializeFromAttributes(this);
 
         // Convert the jnz instruction to a unconditional jmp instruction,
         // but keeps the same address and replace the last byte with nop
@@ -40,7 +40,7 @@ public class DisableTitleScreenMovie : GameModification {
                 ]);
             }
 
-            await Services.GetService<IFramework>().RunSafely(jumpPatch.Enable);
+            await Service<IFramework>.Get().RunSafely(jumpPatch.Enable);
         }
     }
 

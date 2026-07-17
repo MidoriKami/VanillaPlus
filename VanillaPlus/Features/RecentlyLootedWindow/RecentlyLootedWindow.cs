@@ -48,15 +48,15 @@ public class RecentlyLootedWindow : GameModification {
 
         OpenConfigAction = keybindConfigAddon.Open;
 
-        Services.GetService<ICommandManager>().AddHandler("/recentloot", new CommandInfo(OnFateListCommand) {
+        Service<ICommandManager>.Get().AddHandler("/recentloot", new CommandInfo(OnFateListCommand) {
             HelpMessage = "Opens Recently Looted Items window",
         });
-        Services.GetService<IFramework>().Update += OnFrameworkUpdate;
+        Service<IFramework>.Get().Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
-        Services.GetService<IFramework>().Update -= OnFrameworkUpdate;
-        Services.GetService<ICommandManager>().RemoveHandler("/recentloot");
+        Service<IFramework>.Get().Update -= OnFrameworkUpdate;
+        Service<ICommandManager>.Get().RemoveHandler("/recentloot");
 
         await Task.WhenAll(
             addonRecentlyLooted?.DisposeAsync().AsTask() ?? Task.CompletedTask,
@@ -77,7 +77,7 @@ public class RecentlyLootedWindow : GameModification {
         => addonRecentlyLooted?.Toggle();
 
     private void OnKeybindPressed(ref bool isHandled) {
-        Services.GetService<IFramework>().RunSafely(() => addonRecentlyLooted?.Toggle());
+        Service<IFramework>.Get().RunSafely(() => addonRecentlyLooted?.Toggle());
 
         isHandled = true;
     }

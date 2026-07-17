@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using Newtonsoft.Json.Linq;
 using VanillaPlus.Utilities;
 
@@ -14,7 +15,7 @@ public abstract class GameModificationConfig<T> : ISavable where T : GameModific
     public static async Task<T> Load() {
         var configFileName = new T().FileName;
 
-        Services.PluginLog.InternalDebug($"Loading Config {configFileName}.config.json");
+        Service<IPluginLog>.Get().Debug($"Loading Config {configFileName}.config.json");
         var loadedConfig = await Config.LoadConfig<T>($"{configFileName}.config.json");
 
         try {
@@ -30,19 +31,19 @@ public abstract class GameModificationConfig<T> : ISavable where T : GameModific
             var version = jObject[nameof(Version)]?.ToObject<int>();
 
             if (loadedConfig.TryMigrateConfig(version, jObject)) {
-                Services.PluginLog.InternalDebug($"Successfully migrated $\"{configFileName}.config.json\" to {loadedConfig.Version}");
+                Service<IPluginLog>.Get().Debug($"Successfully migrated $\"{configFileName}.config.json\" to {loadedConfig.Version}");
                 await Config.SaveConfig(loadedConfig, $"{configFileName}.config.json");
             }
         }
         catch (Exception e) {
-            Services.PluginLog.InternalError(e, $"Failed to migrate config file for {configFileName}, loading default config.");
+            Service<IPluginLog>.Get().Error(e, $"Failed to migrate config file for {configFileName}, loading default config.");
         }
 
         return loadedConfig;
     }
 
     public async Task Save() {
-        Services.PluginLog.InternalDebug($"Saving Config {FileName}.config.json");
+        Service<IPluginLog>.Get().Debug($"Saving Config {FileName}.config.json");
         await Config.SaveConfig(this, $"{FileName}.config.json");
         OnSave?.Invoke();
     }

@@ -54,17 +54,17 @@ public class ArmourySearchBar : GameModification {
             Callback = OnKeybindPressed,
         };
 
-        await Services.GetService<IFramework>().RunSafely(inventoryController.Enable);
+        await Service<IFramework>.Get().RunSafely(inventoryController.Enable);
 
-        Services.GetService<IGameGui>().AgentUpdate += OnAgentUpdate;
-        Services.GetService<IFramework>().Update += OnFrameworkUpdate;
+        Service<IGameGui>.Get().AgentUpdate += OnAgentUpdate;
+        Service<IFramework>.Get().Update += OnFrameworkUpdate;
     }
 
     public override async Task OnDisableAsync() {
-        Services.GetService<IFramework>().Update -= OnFrameworkUpdate;
-        Services.GetService<IGameGui>().AgentUpdate -= OnAgentUpdate;
+        Service<IFramework>.Get().Update -= OnFrameworkUpdate;
+        Service<IGameGui>.Get().AgentUpdate -= OnAgentUpdate;
 
-        await Services.GetService<IFramework>().RunSafely(() => inventoryController?.Dispose());
+        await Service<IFramework>.Get().RunSafely(() => inventoryController?.Dispose());
         inventoryController = null;
     }
 
@@ -119,17 +119,17 @@ public class ArmourySearchBar : GameModification {
 
     private void OnPreSearch(string searchString) {
         if (configFadeUnusable is null) {
-            Services.GetService<IGameConfig>().TryGet(UiConfigOption.ItemNoArmoryMaskOff, out bool value);
+            Service<IGameConfig>.Get().TryGet(UiConfigOption.ItemNoArmoryMaskOff, out bool value);
             configFadeUnusable = value;
         }
 
         if (!searchString.IsNullOrEmpty() && !searchStarted) {
-            Services.GetService<IGameConfig>().Set(UiConfigOption.ItemNoArmoryMaskOff, true);
+            Service<IGameConfig>.Get().Set(UiConfigOption.ItemNoArmoryMaskOff, true);
             searchStarted = true;
         }
 
         if (searchStarted && searchString.IsNullOrEmpty()) {
-            Services.GetService<IGameConfig>().Set(UiConfigOption.ItemNoArmoryMaskOff, configFadeUnusable.Value);
+            Service<IGameConfig>.Get().Set(UiConfigOption.ItemNoArmoryMaskOff, configFadeUnusable.Value);
             searchStarted = false;
         }
     }

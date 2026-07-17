@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Numerics;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace VanillaPlus.Extensions;
@@ -26,7 +27,7 @@ public static unsafe class AddonArgsExtensions {
                 ref var value = ref atkValues[index];
                 if (value.Type is 0) continue;
 
-                Services.PluginLog.InternalDebug($"[{index,4}]{value.GetValueAsString()}");
+                Service<IPluginLog>.Get().Debug($"[{index,4}]{value.GetValueAsString()}");
             }
         }
 

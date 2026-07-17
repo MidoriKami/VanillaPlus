@@ -31,13 +31,13 @@ public class AntsClassJobConfigurationNode : EntryConfigurationNode<AntsClassJob
     /// <inheritdoc/>
     protected override void PopulateEntryData(AntsClassJobConfig entry) {
         ClassJobConfig = entry;
-        var classJob = Services.GetService<IDataManager>().GetExcelSheet<ClassJob>().GetRow(entry.ClassJobId);
+        var classJob = Service<IDataManager>.Get().GetExcelSheet<ClassJob>().GetRow(entry.ClassJobId);
 
         backgroundImageNode.IconId = 62000 + entry.ClassJobId;
 
         actionsListNode.OptionsList = ActionHighlight.GetClassActions(classJob);
 
-        rolesListNode.OptionsList = Services.GetService<IDataManager>().GetExcelSheet<Action>()
+        rolesListNode.OptionsList = Service<IDataManager>.Get().GetExcelSheet<Action>()
             .Where(action => action.ClassJobCategory.Value.ClassesJobs[(int) entry.ClassJobId])
             .Where(action => action is { IsRoleAction: true, IsPvP: false })
             .ToList();

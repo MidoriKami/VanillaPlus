@@ -55,7 +55,7 @@ public unsafe class PartyListHudData {
     public required PartyListNumberArray.PartyListMemberNumberArray* NumberArrayData { get; init; }
 
     public bool IsSelf() {
-        if (Services.GetService<IObjectTable>().LocalPlayer is not { EntityId: var playerId }) return false;
+        if (Service<IObjectTable>.Get().LocalPlayer is not { EntityId: var playerId }) return false;
 
         return HudMember->EntityId == playerId;
     }

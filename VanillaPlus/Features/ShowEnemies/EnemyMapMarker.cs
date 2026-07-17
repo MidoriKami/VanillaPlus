@@ -23,7 +23,7 @@ public sealed unsafe class EnemyMapMarker : MapMarkerNode {
         var battleChara = CharacterManager.Instance()->BattleCharas[ObjectIndex].Value;
         if (battleChara is null) return;
 
-        var localChara = Services.GetService<IObjectTable>().LocalPlayer;
+        var localChara = Service<IObjectTable>.Get().LocalPlayer;
         if (localChara is null) return;
 
         if (battleChara->ObjectKind is not ObjectKind.BattleNpc) return;

@@ -55,14 +55,14 @@ public class BetterSelectString : GameModification {
             };
         }
 
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             selectStringController.Enable();
             selectStringListController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             selectStringController?.Dispose();
             selectStringListController?.Dispose();
         });
@@ -85,10 +85,10 @@ public class BetterSelectString : GameModification {
             var keyIndex = (index + 1) % 10;
 
             var topRowKey = VirtualKey.KEY_0 + (ushort)keyIndex;
-            var isTopRowKeyPressed = Services.GetService<IKeyState>().IsVirtualKeyValid(topRowKey) && Services.GetService<IKeyState>()[(int)topRowKey];
+            var isTopRowKeyPressed = Service<IKeyState>.Get().IsVirtualKeyValid(topRowKey) && Service<IKeyState>.Get()[(int)topRowKey];
 
             if (isTopRowKeyPressed) {
-                Services.GetService<IKeyState>()[(int)topRowKey] = false;
+                Service<IKeyState>.Get()[(int)topRowKey] = false;
 
                 atkEventData->ListItemData.SelectedIndex = index;
                 addon->PopupMenu.ReceiveEvent(AtkEventType.ListItemClick, 0, atkEvent, atkEventData);
@@ -96,10 +96,10 @@ public class BetterSelectString : GameModification {
             }
 
             var numpadKey = VirtualKey.NUMPAD0 + (ushort)keyIndex;
-            var isNumpadKeyPressed = Services.GetService<IKeyState>().IsVirtualKeyValid(numpadKey) && Services.GetService<IKeyState>()[(int)numpadKey];
+            var isNumpadKeyPressed = Service<IKeyState>.Get().IsVirtualKeyValid(numpadKey) && Service<IKeyState>.Get()[(int)numpadKey];
 
             if (isNumpadKeyPressed) {
-                Services.GetService<IKeyState>()[(int)numpadKey] = false;
+                Service<IKeyState>.Get()[(int)numpadKey] = false;
 
                 atkEventData->ListItemData.SelectedIndex = index;
                 addon->PopupMenu.ReceiveEvent(AtkEventType.ListItemClick, 0, atkEvent, atkEventData);

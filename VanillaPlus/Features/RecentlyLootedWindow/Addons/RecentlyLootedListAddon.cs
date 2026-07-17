@@ -35,19 +35,19 @@ public class RecentlyLootedListAddon : NativeAddon {
     // as this is where the data is consumed,
     // so it doesn't have to be passed back and forth with the module.
     public RecentlyLootedListAddon() {
-        enableTracking = Services.GetService<IClientState>().IsLoggedIn;
+        enableTracking = Service<IClientState>.Get().IsLoggedIn;
 
-        Services.GetService<IGameInventory>().InventoryChanged += OnRawItemAdded;
-        Services.GetService<IClientState>().Login += OnLogin;
-        Services.GetService<IClientState>().Logout += OnLogout;
+        Service<IGameInventory>.Get().InventoryChanged += OnRawItemAdded;
+        Service<IClientState>.Get().Login += OnLogin;
+        Service<IClientState>.Get().Logout += OnLogout;
     }
 
     public override async ValueTask DisposeAsync() {
         enableTracking = false;
 
-        Services.GetService<IGameInventory>().InventoryChanged -= OnRawItemAdded;
-        Services.GetService<IClientState>().Login -= OnLogin;
-        Services.GetService<IClientState>().Logout -= OnLogout;
+        Service<IGameInventory>.Get().InventoryChanged -= OnRawItemAdded;
+        Service<IClientState>.Get().Login -= OnLogin;
+        Service<IClientState>.Get().Logout -= OnLogout;
 
         await base.DisposeAsync();
     }
@@ -66,7 +66,7 @@ public class RecentlyLootedListAddon : NativeAddon {
         foreach (var eventData in events) {
             if (!Inventory.StandardInventories.Contains(eventData.Item.ContainerType)) continue;
 
-            if (!Services.GetService<IClientState>().IsLoggedIn) break;
+            if (!Service<IClientState>.Get().IsLoggedIn) break;
             if (eventData is not (InventoryItemAddedArgs or InventoryItemChangedArgs)) break;
             if (eventData is InventoryItemChangedArgs changedArgs && changedArgs.OldItemState.Quantity >= changedArgs.Item.Quantity) break;
 

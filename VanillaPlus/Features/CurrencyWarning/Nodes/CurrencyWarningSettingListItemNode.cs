@@ -14,7 +14,7 @@ public class CurrencyWarningSettingListItemNode : ListItemWithFocusNav<CurrencyW
 
     /// <inheritdoc/>
     protected override void SetNodeData(CurrencyWarningSetting itemData) {
-        if (!Services.GetService<IDataManager>().GetExcelSheet<Item>().TryGetRow(itemData.ItemId, out var item)) return;
+        if (!Service<IDataManager>.Get().GetExcelSheet<Item>().TryGetRow(itemData.ItemId, out var item)) return;
 
         iconNode.IconId = item.Icon;
         labelTextNode.String = item.Name.ToString();

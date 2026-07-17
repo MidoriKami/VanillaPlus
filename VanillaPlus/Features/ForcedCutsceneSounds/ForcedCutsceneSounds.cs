@@ -72,12 +72,12 @@ public class ForcedCutsceneSounds : GameModification {
         OpenConfigAction = configWindow.Toggle;
 
         unsafe {
-            createCutSceneControllerHook = Services.GetService<IGameInteropProvider>().HookFromAddress<ScheduleManagement.Delegates.CreateCutSceneController>(
+            createCutSceneControllerHook = Service<IGameInteropProvider>.Get().HookFromAddress<ScheduleManagement.Delegates.CreateCutSceneController>(
                 ScheduleManagement.MemberFunctionPointers.CreateCutSceneController,
                 CreateCutSceneControllerDetour);
             createCutSceneControllerHook.Enable();
 
-            cutSceneControllerDtorHook = Services.GetService<IGameInteropProvider>().HookFromVTable<CutSceneControllerDtorDelegate>(
+            cutSceneControllerDtorHook = Service<IGameInteropProvider>.Get().HookFromVTable<CutSceneControllerDtorDelegate>(
                 CutSceneController.StaticVirtualTablePointer, 0,
                 CutSceneControllerDtorDetour);
             cutSceneControllerDtorHook.Enable();
@@ -108,18 +108,18 @@ public class ForcedCutsceneSounds : GameModification {
             if (wasMuted is null || id is 0) return result;
 
             foreach (var optionName in ConfigOptions) {
-                var isMuted = Services.GetService<IGameConfig>().System.TryGet(optionName, out bool value) && value;
+                var isMuted = Service<IGameConfig>.Get().System.TryGet(optionName, out bool value) && value;
 
                 wasMuted[optionName] = isMuted;
 
                 if (ShouldHandle(optionName) && isMuted) {
-                    Services.GetService<IGameConfig>().System.Set(optionName, false);
+                    Service<IGameConfig>.Get().System.Set(optionName, false);
                 }
             }
 
         }
         catch (Exception e) {
-            Services.PluginLog.Exception(e);
+            Service<IPluginLog>.Get().Exception(e);
         }
 
         return result;
@@ -136,13 +136,13 @@ public class ForcedCutsceneSounds : GameModification {
             if (config.Restore && cutsceneId is not 0) { // ignore title screen cutscene
                 foreach (var optionName in ConfigOptions) {
                     if (ShouldHandle(optionName) && (wasMuted?.TryGetValue(optionName, out var value) ?? false) && value) {
-                        Services.GetService<IGameConfig>().System.Set(optionName, value);
+                        Service<IGameConfig>.Get().System.Set(optionName, value);
                     }
                 }
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Exception(e);
+            Service<IPluginLog>.Get().Exception(e);
         }
 
         return cutSceneControllerDtorHook!.Original(self, freeFlags);

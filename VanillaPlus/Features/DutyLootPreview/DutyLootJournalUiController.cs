@@ -80,7 +80,7 @@ public class DutyLootJournalUiController : IDisposable {
     private unsafe void OnDataChanged() {
         if (lootButtonNode == null) return;
 
-        var addon = Services.GetService<IGameGui>().GetAddonByName<AddonJournalDetail>("JournalDetail");
+        var addon = Service<IGameGui>.Get().GetAddonByName<AddonJournalDetail>("JournalDetail");
         if (addon == null) return;
 
         lootButtonNode.IsVisible = ShouldShow();

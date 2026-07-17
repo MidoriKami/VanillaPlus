@@ -43,7 +43,7 @@ public class HaselTweaksCompatibilityModule(string moduleName) : CompatibilityMo
         => IsPluginLoaded("HaselTweaks");
 
     private static string GetConfigFilePath()
-        => Path.Combine(Services.PluginInterface.GetPluginConfigDirectory().Replace("VanillaPlus", "HaselTweaks.json"));
+        => Path.Combine(VanillaPlus.PluginInterface.GetPluginConfigDirectory().Replace("VanillaPlus", "HaselTweaks.json"));
 
     private static FileInfo GetConfigFileInfo()
         => new(GetConfigFilePath());

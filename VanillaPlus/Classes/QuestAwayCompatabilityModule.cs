@@ -36,7 +36,7 @@ public class QuestAwayCompatabilityModule : CompatibilityModule {
     }
 
     private static string GetConfigFilePath()
-        => Path.Combine(Services.PluginInterface.GetPluginConfigDirectory().Replace("VanillaPlus", "QuestAWAY.json"));
+        => Path.Combine(VanillaPlus.PluginInterface.GetPluginConfigDirectory().Replace("VanillaPlus", "QuestAWAY.json"));
 
     private static FileInfo GetConfigFileInfo()
         => new(GetConfigFilePath());

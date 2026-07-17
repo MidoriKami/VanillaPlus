@@ -24,14 +24,14 @@ public class ShowAetherytesOnTop : GameModification {
     private KeyStateFlags controlPreState;
 
     public override Task OnEnableAsync() {
-        Services.GetService<IAgentLifecycle>().RegisterListener(AgentEvent.PreUpdate, AgentId.Map, OnMapPreUpdate);
-        Services.GetService<IAgentLifecycle>().RegisterListener(AgentEvent.PostUpdate, AgentId.Map, OnMapPostUpdate);
+        Service<IAgentLifecycle>.Get().RegisterListener(AgentEvent.PreUpdate, AgentId.Map, OnMapPreUpdate);
+        Service<IAgentLifecycle>.Get().RegisterListener(AgentEvent.PostUpdate, AgentId.Map, OnMapPostUpdate);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.GetService<IAgentLifecycle>().UnregisterListener(OnMapPreUpdate, OnMapPostUpdate);
+        Service<IAgentLifecycle>.Get().UnregisterListener(OnMapPreUpdate, OnMapPostUpdate);
 
         // What's the worst that could happen ...
         unsafe {

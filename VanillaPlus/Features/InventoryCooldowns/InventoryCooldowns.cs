@@ -22,17 +22,17 @@ public class InventoryCooldowns : GameModification {
     private NormalInventoryController? normalInventoryController;
 
     public override async Task OnEnableAsync() {
-        if (Services.GetService<IClientState>().IsLoggedIn) {
-            await Services.GetService<IFramework>().RunSafely(ReinitializeController);
+        if (Service<IClientState>.Get().IsLoggedIn) {
+            await Service<IFramework>.Get().RunSafely(ReinitializeController);
         }
 
-        Services.GetService<IGameConfig>().UiConfigChanged += OnUiConfigChanged;
+        Service<IGameConfig>.Get().UiConfigChanged += OnUiConfigChanged;
     }
 
     public override async Task OnDisableAsync() {
-        Services.GetService<IGameConfig>().UiConfigChanged -= OnUiConfigChanged;
+        Service<IGameConfig>.Get().UiConfigChanged -= OnUiConfigChanged;
 
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             expandedInventoryController?.Dispose();
             largeInventoryController?.Dispose();
             normalInventoryController?.Dispose();
@@ -49,7 +49,7 @@ public class InventoryCooldowns : GameModification {
     }
 
     private void ReinitializeController() {
-        if (!Services.GetService<IGameConfig>().UiConfig.TryGet("ItemInventryWindowSizeType", out uint inventoryType)) return;
+        if (!Service<IGameConfig>.Get().UiConfig.TryGet("ItemInventryWindowSizeType", out uint inventoryType)) return;
 
         expandedInventoryController?.Dispose();
         expandedInventoryController = null;

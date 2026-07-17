@@ -42,11 +42,11 @@ public class AetherwellProgress : GameModification {
             };
         }
 
-        await Services.GetService<IFramework>().RunSafely(addonController.Enable);
+        await Service<IFramework>.Get().RunSafely(addonController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.GetService<IFramework>().RunSafely(() => addonController?.Dispose());
+        await Service<IFramework>.Get().RunSafely(() => addonController?.Dispose());
         addonController = null;
 
         nodes = null;

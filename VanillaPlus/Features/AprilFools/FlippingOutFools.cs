@@ -24,11 +24,11 @@ public class FlippingOutFools : FoolsModule {
             };
         }
 
-        await Services.GetService<IFramework>().RunSafely(locationTitleController.Enable);
+        await Service<IFramework>.Get().RunSafely(locationTitleController.Enable);
     }
 
     protected override async Task OnDisable() {
-        await Services.GetService<IFramework>().RunSafely(() => locationTitleController?.Dispose());
+        await Service<IFramework>.Get().RunSafely(() => locationTitleController?.Dispose());
         locationTitleController = null;
     }
 

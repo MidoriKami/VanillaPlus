@@ -28,13 +28,13 @@ public unsafe class MainWindowController : IDisposable {
         };
         mainWindowController.Enable(); // todo: make this a passthrough enable
 
-        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PreReceiveEvent, "LookingForGroup", OnLookingForGroupEvent);
+        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PreReceiveEvent, "LookingForGroup", OnLookingForGroupEvent);
 
         config.OnSave += UpdatePresets;
     }
 
     public void Dispose() {
-        Services.GetService<IAddonLifecycle>().UnregisterListener(OnLookingForGroupEvent);
+        Service<IAddonLifecycle>.Get().UnregisterListener(OnLookingForGroupEvent);
 
         mainWindowController?.Dispose();
         mainWindowController = null;

@@ -35,8 +35,8 @@ public unsafe class GatheringPointMapMarker : MapMarkerNode {
     }
 
     private uint GetIconId(uint gatheringPointId) {
-        var gatheringPoint = Services.GetService<IDataManager>().GetExcelSheet<GatheringPoint>().GetRow(gatheringPointId);
-        var gatheringPointBase = Services.GetService<IDataManager>().GetExcelSheet<GatheringPointBase>().GetRow(gatheringPoint.GatheringPointBase.RowId);
+        var gatheringPoint = Service<IDataManager>.Get().GetExcelSheet<GatheringPoint>().GetRow(gatheringPointId);
+        var gatheringPointBase = Service<IDataManager>.Get().GetExcelSheet<GatheringPointBase>().GetRow(gatheringPoint.GatheringPointBase.RowId);
 
         return gatheringPointBase.GatheringType.RowId switch {
             0 => 60438,

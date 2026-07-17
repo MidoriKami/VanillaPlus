@@ -47,7 +47,7 @@ public class CurrencyWarningConfigNode : EntryConfigurationNode<CurrencyWarningS
     }
 
     protected override void PopulateEntryData(CurrencyWarningSetting entry) {
-        var item = Services.GetService<IDataManager>().GetItem(entry.ItemId);
+        var item = Service<IDataManager>.Get().GetItem(entry.ItemId);
         itemNameTextNode.String = item.Name.ToString();
         iconImageNode.IconId = item.Icon;
 

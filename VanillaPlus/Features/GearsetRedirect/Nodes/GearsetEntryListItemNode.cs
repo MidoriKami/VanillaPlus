@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using Dalamud.Game.Text;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
@@ -41,7 +42,7 @@ public class GearsetEntryListItemNode : ListItemWithFocusNav<GearsetRedirectionE
     protected override unsafe void SetNodeData(GearsetRedirectionEntry itemData) {
         var gearsetInfo = RaptureGearsetModule.Instance()->GetGearset(itemData.TargetGearsetId);
         if (gearsetInfo is null) {
-            Services.PluginLog.Warning("Attempted to populate null gearset entry.", "GearsetRedirect");
+            Service<IPluginLog>.Get().Warning("Attempted to populate null gearset entry.", "GearsetRedirect");
             return;
         }
 

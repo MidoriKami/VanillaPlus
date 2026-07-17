@@ -31,11 +31,11 @@ public class ClearFlag : GameModification {
             };
         }
 
-        await Services.GetService<IFramework>().RunSafely(minimapController.Enable);
+        await Service<IFramework>.Get().RunSafely(minimapController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.GetService<IFramework>().RunSafely(() => minimapController?.Dispose());
+        await Service<IFramework>.Get().RunSafely(() => minimapController?.Dispose());
         minimapMouseClick = null;
     }
 
@@ -45,11 +45,11 @@ public class ClearFlag : GameModification {
 
         collisionNode->DrawFlags |= (uint)DrawFlags.ClickableCursor;
 
-        minimapMouseClick = Services.GetService<IAddonEventManager>().AddEvent((nint)addon, (nint)collisionNode, AddonEventType.MouseClick, OnMiniMapMouseClick);
+        minimapMouseClick = Service<IAddonEventManager>.Get().AddEvent((nint)addon, (nint)collisionNode, AddonEventType.MouseClick, OnMiniMapMouseClick);
     }
 
     private unsafe void NaviMapFinalize(AtkUnitBase* addon) {
-        Services.GetService<IAddonEventManager>().RemoveEventNullable(minimapMouseClick);
+        Service<IAddonEventManager>.Get().RemoveEventNullable(minimapMouseClick);
 
         var collisionNode = addon->GetNodeById<AtkCollisionNode>(19);
         if (collisionNode is null) return;

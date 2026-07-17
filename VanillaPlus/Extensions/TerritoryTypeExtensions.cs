@@ -7,7 +7,7 @@ public static class TerritoryTypeExtensions {
     extension(TerritoryType territoryType) {
         public string LoadingImagePath {
             get {
-                if (!Services.GetService<IDataManager>().GetExcelSheet<LoadingImage>().TryGetRow(territoryType.LoadingImage.RowId, out var loadingImage)) return string.Empty;
+                if (!Service<IDataManager>.Get().GetExcelSheet<LoadingImage>().TryGetRow(territoryType.LoadingImage.RowId, out var loadingImage)) return string.Empty;
 
                 var imageName = loadingImage.FileName.ExtractText();
                 if (string.IsNullOrEmpty(imageName)) return string.Empty;

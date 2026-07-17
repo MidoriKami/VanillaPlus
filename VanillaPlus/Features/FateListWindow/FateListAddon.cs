@@ -25,7 +25,7 @@ public class FateListAddon : NativeAddon {
     protected override unsafe void OnUpdate(AtkUnitBase* addon) {
         base.OnUpdate(addon);
 
-        fateListNode?.OptionsList = Services.GetService<IFateTable>()
+        fateListNode?.OptionsList = Service<IFateTable>.Get()
             .Where(fate => fate is { State: FateState.Running or FateState.Preparing })
             .OrderBy(fate => fate.TimeRemaining)
             .ToList();

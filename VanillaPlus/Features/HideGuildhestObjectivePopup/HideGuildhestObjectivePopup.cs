@@ -21,19 +21,19 @@ public class HideGuildhestObjectivePopup : GameModification {
     public override string ImageName => "HideGuildhestObjective.png";
 
     public override Task OnEnableAsync() {
-        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PreSetup, "JournalAccept", OnJournalAcceptOpen);
+        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PreSetup, "JournalAccept", OnJournalAcceptOpen);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.GetService<IAddonLifecycle>().UnregisterListener(OnJournalAcceptOpen);
+        Service<IAddonLifecycle>.Get().UnregisterListener(OnJournalAcceptOpen);
 
         return Task.CompletedTask;
     }
 
     private static unsafe void OnJournalAcceptOpen(AddonEvent type, AddonArgs args) {
-        if (Services.GetService<IDataManager>().GetExcelSheet<TerritoryType>().GetRow(Services.GetService<IClientState>().TerritoryType) is not { TerritoryIntendedUse.RowId: 3 }) return;
+        if (Service<IDataManager>.Get().GetExcelSheet<TerritoryType>().GetRow(Service<IClientState>.Get().TerritoryType) is not { TerritoryIntendedUse.RowId: 3 }) return;
 
         // todo: figure out how to use the agent to do this.
         args.GetAddon<AtkUnitBase>()->Hide(false, false, 1);

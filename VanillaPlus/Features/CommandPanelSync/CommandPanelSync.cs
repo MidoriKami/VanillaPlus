@@ -18,20 +18,20 @@ public class CommandPanelSync : GameModification {
     private const int CurrentVersion = 2;
 
     public override async Task OnEnableAsync() {
-        Services.GetService<IClientState>().Login += OnLogin;
-        Services.GetService<IClientState>().Logout += OnLogout;
+        Service<IClientState>.Get().Login += OnLogin;
+        Service<IClientState>.Get().Logout += OnLogout;
 
-        if (Services.GetService<IClientState>().IsLoggedIn) {
-            await Services.GetService<IFramework>().RunSafely(ApplySharedQuickPanel);
+        if (Service<IClientState>.Get().IsLoggedIn) {
+            await Service<IFramework>.Get().RunSafely(ApplySharedQuickPanel);
         }
     }
 
     public override async Task OnDisableAsync() {
-        Services.GetService<IClientState>().Login -= OnLogin;
-        Services.GetService<IClientState>().Logout -= OnLogout;
+        Service<IClientState>.Get().Login -= OnLogin;
+        Service<IClientState>.Get().Logout -= OnLogout;
 
-        if (Services.GetService<IClientState>().IsLoggedIn) {
-            await Services.GetService<IFramework>().RunSafely(RestoreOriginalQuickPanel);
+        if (Service<IClientState>.Get().IsLoggedIn) {
+            await Service<IFramework>.Get().RunSafely(RestoreOriginalQuickPanel);
         }
     }
 

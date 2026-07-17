@@ -28,19 +28,19 @@ public class CastBarAetheryteNames : GameModification {
 
     public override Task OnEnableAsync() {
         unsafe {
-            teleportHook = Services.GetService<IGameInteropProvider>().HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
+            teleportHook = Service<IGameInteropProvider>.Get().HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
             teleportHook?.Enable();
         }
 
-        Services.GetService<IClientState>().TerritoryChanged += OnTerritoryChanged;
-        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostRefresh, "_CastBar", OnCastBarRefresh);
+        Service<IClientState>.Get().TerritoryChanged += OnTerritoryChanged;
+        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PostRefresh, "_CastBar", OnCastBarRefresh);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.GetService<IAddonLifecycle>().UnregisterListener(OnCastBarRefresh);
-        Services.GetService<IClientState>().TerritoryChanged -= OnTerritoryChanged;
+        Service<IAddonLifecycle>.Get().UnregisterListener(OnCastBarRefresh);
+        Service<IClientState>.Get().TerritoryChanged -= OnTerritoryChanged;
 
         teleportHook?.Dispose();
         teleportHook = null;
@@ -55,20 +55,20 @@ public class CastBarAetheryteNames : GameModification {
 
     private unsafe void OnCastBarRefresh(AddonEvent type, AddonArgs args) {
         if (teleportInfo is not { } info) return;
-        if (Services.GetService<IObjectTable>().LocalPlayer is not { IsCasting: true, CastActionId: 5 }) return;
+        if (Service<IObjectTable>.Get().LocalPlayer is not { IsCasting: true, CastActionId: 5 }) return;
 
         var textNode = args.GetAddon<AddonCastBar>()->GetTextNodeById(4);
         if (textNode == null) return;
 
-        var aetheryte = Services.GetService<IDataManager>().GetExcelSheet<Aetheryte>().GetRow(info.AetheryteId);
+        var aetheryte = Service<IDataManager>.Get().GetExcelSheet<Aetheryte>().GetRow(info.AetheryteId);
 
         switch (info) {
             case { IsApartment: true }:
-                textNode->SetText(Services.GetService<IDataManager>().GetAddonText(8518));
+                textNode->SetText(Service<IDataManager>.Get().GetAddonText(8518));
                 break;
 
             case { IsSharedHouse: true }:
-                textNode->SetText(Services.GetService<ISeStringEvaluator>().EvaluateFromAddon(8519, [(uint)info.Ward, (uint)info.Plot]));
+                textNode->SetText(Service<ISeStringEvaluator>.Get().EvaluateFromAddon(8519, [(uint)info.Ward, (uint)info.Plot]));
                 break;
 
             case { } when aetheryte.PlaceName.IsValid:
@@ -93,7 +93,7 @@ public class CastBarAetheryteNames : GameModification {
             }
         }
         catch (Exception e) {
-            Services.PluginLog.Exception(e);
+            Service<IPluginLog>.Get().Exception(e);
         }
 
         return teleportHook!.Original(thisPtr, aetheryteId, subIndex);

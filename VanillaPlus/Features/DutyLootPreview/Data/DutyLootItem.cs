@@ -26,15 +26,15 @@ public class DutyLootItem : IComparable {
     public required List<ReadOnlySeString> Sources { get; init; }
 
     private static readonly Lazy<FrozenDictionary<uint, uint>> CabinetLookup = new(()
-        => Services.GetService<IDataManager>().Excel.GetSheet<CabinetSheet>()
+        => Service<IDataManager>.Get().Excel.GetSheet<CabinetSheet>()
             .Where(row => row.RowId >= 1048 && row.Item.RowId != 0)
             .ToFrozenDictionary(row => row.Item.RowId, row => row.RowId));
 
     public static DutyLootItem? FromItemId(uint itemId) {
-        var item = Services.GetService<IDataManager>().GetItem(itemId);
+        var item = Service<IDataManager>.Get().GetItem(itemId);
         if (item.Icon is 0 || item.Name.IsEmpty) return null;
 
-        var isUnlockable = Services.GetService<IUnlockState>().IsItemUnlockable(item);
+        var isUnlockable = Service<IUnlockState>.Get().IsItemUnlockable(item);
         var isStorableInCabinet = CabinetLookup.Value.ContainsKey(item.RowId);
 
         return new DutyLootItem {
@@ -45,7 +45,7 @@ public class DutyLootItem : IComparable {
             OrderMajor = item.ItemUICategory.ValueNullable?.OrderMajor ?? 0,
             OrderMinor = item.ItemUICategory.ValueNullable?.OrderMinor ?? 0,
             IsUnlockable = isUnlockable,
-            IsUnlocked = isUnlockable && Services.GetService<IUnlockState>().IsItemUnlocked(item),
+            IsUnlocked = isUnlockable && Service<IUnlockState>.Get().IsItemUnlocked(item),
             IsStorableInCabinet = isStorableInCabinet,
             IsStoredInCabinet = isStorableInCabinet && IsInCabinet(item),
             CanTryOn = CheckCanTryOn(item),
@@ -83,7 +83,7 @@ public class DutyLootItem : IComparable {
         if (item.EquipSlotCategory.RowId is 2 && item.FilterGroup != 3) // 3 = Shield
             return false;
 
-        var race = (int)Services.GetService<IPlayerState>().Race.RowId;
+        var race = (int)Service<IPlayerState>.Get().Race.RowId;
         if (race is 0) return false;
 
         return true;

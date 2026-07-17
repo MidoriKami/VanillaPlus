@@ -71,17 +71,17 @@ public class ResourceBarPercentages : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);
-        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostRequestedUpdate, "_ParameterWidget", OnParameterDraw);
+        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PostDraw, "_ParameterWidget", OnParameterDraw);
+        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PostRequestedUpdate, "_ParameterWidget", OnParameterDraw);
 
-        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostDraw, "_PartyList", OnPartyListDraw);
-        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
+        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PostDraw, "_PartyList", OnPartyListDraw);
+        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PostRequestedUpdate, "_PartyList", OnPartyListDraw);
     }
 
     public override async Task OnDisableAsync() {
-        Services.GetService<IAddonLifecycle>().UnregisterListener(OnParameterDraw, OnPartyListDraw);
+        Service<IAddonLifecycle>.Get().UnregisterListener(OnParameterDraw, OnPartyListDraw);
 
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             OnParameterDisable();
             OnPartyListDisable();
         });
@@ -109,7 +109,7 @@ public class ResourceBarPercentages : GameModification {
         if (!config.ParameterWidgetEnabled) return;
 
         var addon = args.GetAddon<AddonParameterWidget>();
-        if (Services.GetService<IObjectTable>().LocalPlayer is not { } localPlayer) return;
+        if (Service<IObjectTable>.Get().LocalPlayer is not { } localPlayer) return;
 
         addon->HealthAmount->SetText(GetCorrectHpText(localPlayer.CurrentHp, localPlayer.MaxHp, config.ParameterHpEnabled));
 
@@ -131,7 +131,7 @@ public class ResourceBarPercentages : GameModification {
     }
 
     private unsafe void OnPartyListDisable() {
-        var addon = Services.GetService<IGameGui>().GetAddonByName<AddonPartyList>("_PartyList");
+        var addon = Service<IGameGui>.Get().GetAddonByName<AddonPartyList>("_PartyList");
         if (addon is null) return;
 
         foreach (var member in addon->HudMembers) {
@@ -194,9 +194,9 @@ public class ResourceBarPercentages : GameModification {
     }
 
     private unsafe void OnParameterDisable() {
-        var addon = Services.GetService<IGameGui>().GetAddonByName<AddonParameterWidget>("_ParameterWidget");
+        var addon = Service<IGameGui>.Get().GetAddonByName<AddonParameterWidget>("_ParameterWidget");
         if (addon is null) return;
-        if (Services.GetService<IObjectTable>().LocalPlayer is not { } localPlayer) return;
+        if (Service<IObjectTable>.Get().LocalPlayer is not { } localPlayer) return;
 
         var activeResource = GetActiveResource(localPlayer);
 

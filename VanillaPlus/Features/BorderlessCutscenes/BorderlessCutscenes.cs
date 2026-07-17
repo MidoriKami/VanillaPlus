@@ -21,11 +21,11 @@ public class BorderlessCutscenes : GameModification {
     private MemoryReplacement? jumpPatch;
 
     public override async Task OnEnableAsync() {
-        Services.GetService<IGameInteropProvider>().InitializeFromAttributes(this);
+        Service<IGameInteropProvider>.Get().InitializeFromAttributes(this);
 
         if (memoryAddress is { } address && memoryAddress != nint.Zero) {
             jumpPatch = new MemoryReplacement(address, [0x00]);
-            await Services.GetService<IFramework>().RunSafely(jumpPatch.Enable);
+            await Service<IFramework>.Get().RunSafely(jumpPatch.Enable);
         }
     }
 

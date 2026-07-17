@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Classes;
@@ -12,13 +13,13 @@ public abstract class GameModificationCharacterConfig<T> where T : GameModificat
 
     public static async Task<T> Load() {
         var fileName = new T().FileName;
-        Services.PluginLog.InternalDebug($"Loading Character Config {fileName}");
+        Service<IPluginLog>.Get().Debug($"Loading Character Config {fileName}");
 
         return await Config.LoadCharacterConfig<T>(fileName);
     }
 
     public async Task Save() {
-        Services.PluginLog.InternalDebug($"Saving Character Config {FileName}");
+        Service<IPluginLog>.Get().Debug($"Saving Character Config {FileName}");
         await Config.SaveCharacterConfig(this, FileName);
     }
 }

@@ -6,7 +6,7 @@ public abstract class CompatibilityModule(string? allowedVersion = null) {
     public abstract bool ShouldLoadGameModification();
 
     protected bool IsPluginLoaded(string internalName) {
-        foreach (var installedPlugin in Services.PluginInterface.InstalledPlugins) {
+        foreach (var installedPlugin in VanillaPlus.PluginInterface.InstalledPlugins) {
             if (!installedPlugin.IsLoaded) continue;
             if (installedPlugin.InternalName != internalName) continue;
 

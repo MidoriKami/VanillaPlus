@@ -21,11 +21,11 @@ public class FastMouseClick : GameModification {
     private MemoryReplacement? memoryPatch;
 
     public override async Task OnEnableAsync() {
-        Services.GetService<IGameInteropProvider>().InitializeFromAttributes(this);
+        Service<IGameInteropProvider>.Get().InitializeFromAttributes(this);
 
         if (memoryAddress is { } address && memoryAddress != nint.Zero) {
             memoryPatch = new MemoryReplacement(address, [0x90, 0x90]);
-            await Services.GetService<IFramework>().RunSafely(memoryPatch.Enable);
+            await Service<IFramework>.Get().RunSafely(memoryPatch.Enable);
         }
     }
 

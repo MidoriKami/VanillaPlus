@@ -6,7 +6,7 @@ namespace VanillaPlus.Utilities;
 
 public static unsafe class Addon {
     public static void UpdateCollisionForNode(NodeBase node) {
-        Services.GetService<IFramework>().RunOnFrameworkThread(() => {
+        Service<IFramework>.Get().RunOnFrameworkThread(() => {
             var addon = RaptureAtkUnitManager.Instance()->GetAddonByNode(node);
             if (addon is not null) {
                 addon->UpdateCollisionNodeList(false);

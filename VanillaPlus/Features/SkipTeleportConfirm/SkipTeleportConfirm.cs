@@ -18,13 +18,13 @@ public class SkipTeleportConfirm : GameModification {
     };
 
     public override Task OnEnableAsync() {
-        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
+        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PostSetup, "SelectYesno", SelectYesNoHandler);
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.GetService<IAddonLifecycle>().UnregisterListener(SelectYesNoHandler);
+        Service<IAddonLifecycle>.Get().UnregisterListener(SelectYesNoHandler);
 
         return Task.CompletedTask;
     }

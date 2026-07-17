@@ -40,9 +40,9 @@ public class MSQProgressBar : GameModification {
 
         expansionRanges = [];
 
-        foreach (var expansion in Services.GetService<IDataManager>().GetExcelSheet<ExVersion>()) {
-            var scenarioTreesForExpansion = Services.GetService<IDataManager>().GetExcelSheet<ScenarioTree>()
-                .Where(scenarioTree => Services.GetService<IDataManager>().GetExcelSheet<Quest>().GetRowOrDefault(scenarioTree.RowId)?.Expansion.RowId == expansion.RowId)
+        foreach (var expansion in Service<IDataManager>.Get().GetExcelSheet<ExVersion>()) {
+            var scenarioTreesForExpansion = Service<IDataManager>.Get().GetExcelSheet<ScenarioTree>()
+                .Where(scenarioTree => Service<IDataManager>.Get().GetExcelSheet<Quest>().GetRowOrDefault(scenarioTree.RowId)?.Expansion.RowId == expansion.RowId)
                 .ToList();
 
             var min = scenarioTreesForExpansion.Min(entry => entry.Unknown2);
@@ -50,7 +50,7 @@ public class MSQProgressBar : GameModification {
 
             expansionRanges.TryAdd(expansion, min..max);
 
-            Services.PluginLog.Debug($"Range for {expansion.Name}: {min}..{max}", "MSQProgressBar");
+            Service<IPluginLog>.Get().Debug($"Range for {expansion.Name}: {min}..{max}", "MSQProgressBar");
         }
 
         configAddon = new ConfigAddon {
@@ -77,11 +77,11 @@ public class MSQProgressBar : GameModification {
             };
         }
 
-        await Services.GetService<IFramework>().RunSafely(scenarioTreeAddonController.Enable);
+        await Service<IFramework>.Get().RunSafely(scenarioTreeAddonController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.GetService<IFramework>().RunSafely(() => scenarioTreeAddonController?.Dispose());
+        await Service<IFramework>.Get().RunSafely(() => scenarioTreeAddonController?.Dispose());
         scenarioTreeAddonController = null;
 
         await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);

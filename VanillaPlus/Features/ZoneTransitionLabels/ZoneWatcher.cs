@@ -16,14 +16,14 @@ public class ZoneWatcher : IDisposable {
     private readonly CancellationTokenSource tokenSource = new();
 
     public ZoneWatcher() {
-        Services.GetService<IClientState>().Login += OnLogin;
-        Services.GetService<IClientState>().ZoneInit += OnZoneInit;
+        Service<IClientState>.Get().Login += OnLogin;
+        Service<IClientState>.Get().ZoneInit += OnZoneInit;
         UpdateExits();
     }
 
     public void Dispose() {
-        Services.GetService<IClientState>().Login -= OnLogin;
-        Services.GetService<IClientState>().ZoneInit -= OnZoneInit;
+        Service<IClientState>.Get().Login -= OnLogin;
+        Service<IClientState>.Get().ZoneInit -= OnZoneInit;
     }
 
     public ZoneExit GetClosestExit(Vector3 target, out Vector3 closestPoint) {

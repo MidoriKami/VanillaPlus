@@ -57,7 +57,7 @@ public class TargetCastBarCountdown : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             primaryController.Enable();
             primaryAltController.Enable();
             focusController.Enable();
@@ -66,7 +66,7 @@ public class TargetCastBarCountdown : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             primaryController?.Dispose();
             primaryAltController?.Dispose();
             focusController?.Dispose();

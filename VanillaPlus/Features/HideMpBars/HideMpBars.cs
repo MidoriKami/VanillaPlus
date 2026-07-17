@@ -48,7 +48,7 @@ public class HideMpBars : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        manaUsingClassJobs = Services.GetService<IDataManager>().GetManaUsingClassJobs().ToList();
+        manaUsingClassJobs = Service<IDataManager>.Get().GetManaUsingClassJobs().ToList();
 
         unsafe {
             partyListController = new AddonController<AddonPartyList> {
@@ -64,14 +64,14 @@ public class HideMpBars : GameModification {
             };
         }
 
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             partyListController.Enable();
             paramController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             partyListController?.Dispose();
             paramController?.Dispose();
         });
@@ -87,9 +87,9 @@ public class HideMpBars : GameModification {
     }
 
     private unsafe void UpdatePartyList(AddonPartyList* addon) {
-        if (Services.GetService<IClientState>().IsPvP) return;
+        if (Service<IClientState>.Get().IsPvP) return;
         if (manaUsingClassJobs is null) return;
-        if (Services.GetService<IObjectTable>().LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob }, EntityId: var playerId } localPlayer) return;
+        if (Service<IObjectTable>.Get().LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob }, EntityId: var playerId } localPlayer) return;
 
         var isEnabled = config is { HidePartyList: true };
 
@@ -110,9 +110,9 @@ public class HideMpBars : GameModification {
     }
 
     private unsafe void UpdateParamWidget(AddonParameterWidget* addon) {
-        if (Services.GetService<IClientState>().IsPvP) return;
+        if (Service<IClientState>.Get().IsPvP) return;
         if (manaUsingClassJobs is null) return;
-        if (Services.GetService<IObjectTable>().LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob } }) return;
+        if (Service<IObjectTable>.Get().LocalPlayer is not { ClassJob: { IsValid: true, Value: var classJob } }) return;
 
         var isEnabled = config is { HideParamWidget: true };
 
@@ -124,7 +124,7 @@ public class HideMpBars : GameModification {
 
     private static unsafe void ResetPartyList(AddonPartyList* addon = null) {
         if (addon is null) {
-            addon = Services.GetService<IGameGui>().GetAddonByName<AddonPartyList>("_PartyList");
+            addon = Service<IGameGui>.Get().GetAddonByName<AddonPartyList>("_PartyList");
         }
         if (addon is null) return;
 
@@ -135,7 +135,7 @@ public class HideMpBars : GameModification {
 
     private static unsafe void ResetParamWidget(AddonParameterWidget* addon = null) {
         if (addon is null) {
-            addon = Services.GetService<IGameGui>().GetAddonByName<AddonParameterWidget>("_ParameterWidget");
+            addon = Service<IGameGui>.Get().GetAddonByName<AddonParameterWidget>("_ParameterWidget");
         }
         if (addon is null) return;
 

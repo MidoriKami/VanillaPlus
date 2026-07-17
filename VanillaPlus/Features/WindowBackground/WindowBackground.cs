@@ -47,7 +47,7 @@ public class WindowBackground : GameModification {
             AllowMultiselect = true,
         };
 
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             unsafe {
                 overlayController = new OverlayController();
 
@@ -77,7 +77,7 @@ public class WindowBackground : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             dynamicAddonController?.Dispose();
             overlayController?.Dispose();
         });

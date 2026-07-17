@@ -20,7 +20,7 @@ public class FlagOnCursor : GameModification {
     private const string CommandName = "/flagthere";
 
     public override Task OnEnableAsync() {
-        Services.GetService<ICommandManager>().AddHandler(CommandName, new CommandInfo(OnCommand) {
+        Service<ICommandManager>.Get().AddHandler(CommandName, new CommandInfo(OnCommand) {
             HelpMessage = Strings.FlagOnCursor_CommandHelpMessage,
             ShowInHelp = true,
         });
@@ -29,7 +29,7 @@ public class FlagOnCursor : GameModification {
     }
 
     public override Task OnDisableAsync() {
-        Services.GetService<ICommandManager>().RemoveHandler(CommandName);
+        Service<ICommandManager>.Get().RemoveHandler(CommandName);
 
         return Task.CompletedTask;
     }
@@ -38,13 +38,13 @@ public class FlagOnCursor : GameModification {
         ref var cursorData = ref UIInputData.Instance()->UIFilteredCursorInputs;
         var position = new Vector2(cursorData.PositionX, cursorData.PositionY);
 
-        if (Services.GetService<IGameGui>().ScreenToWorld(position, out var mouseWorldPos)) {
+        if (Service<IGameGui>.Get().ScreenToWorld(position, out var mouseWorldPos)) {
             var agentMap = AgentMap.Instance();
 
             agentMap->FlagMarkerCount = 0;
             agentMap->SetFlagMapMarker(agentMap->CurrentTerritoryId, agentMap->CurrentMapId, mouseWorldPos);
 
-            Services.GetService<IFramework>().RunOnTick(() => {
+            Service<IFramework>.Get().RunOnTick(() => {
                 AgentChatLog.Instance()->InsertTextCommandParam(1048, false);
             });
         }

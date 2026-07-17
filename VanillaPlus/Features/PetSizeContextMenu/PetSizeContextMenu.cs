@@ -24,13 +24,13 @@ public class PetSizeContextMenu : GameModification {
     public override string ImageName => "PetSizeContextMenu.png";
 
     public override Task OnEnableAsync() {
-        Services.GetService<IContextMenu>().OnMenuOpened += OnMenuOpened;
+        Service<IContextMenu>.Get().OnMenuOpened += OnMenuOpened;
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.GetService<IContextMenu>().OnMenuOpened -= OnMenuOpened;
+        Service<IContextMenu>.Get().OnMenuOpened -= OnMenuOpened;
 
         return Task.CompletedTask;
     }
@@ -73,13 +73,13 @@ public class PetSizeContextMenu : GameModification {
 
     private void SetPetSize(uint size) {
         foreach (var configEntry in configEntries) {
-            Services.GetService<IGameConfig>().Set(configEntry, size);
+            Service<IGameConfig>.Get().Set(configEntry, size);
         }
     }
 
     private uint? GetPetSize()
         => configEntries
-            .Select(configKey => Services.GetService<IGameConfig>().TryGet(configKey, out uint value) ? value : 0)
+            .Select(configKey => Service<IGameConfig>.Get().TryGet(configKey, out uint value) ? value : 0)
             .GroupBy(configValue => configValue)
             .MaxBy(group => group.Count())?
             .Key;

@@ -16,13 +16,13 @@ public class HideDeadEnemyNamePlates : GameModification {
     };
 
     public override Task OnEnableAsync() {
-        Services.GetService<INamePlateGui>().OnDataUpdate += OnNamePlateUpdate;
+        Service<INamePlateGui>.Get().OnDataUpdate += OnNamePlateUpdate;
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        Services.GetService<INamePlateGui>().OnDataUpdate -= OnNamePlateUpdate;
+        Service<INamePlateGui>.Get().OnDataUpdate -= OnNamePlateUpdate;
 
         return Task.CompletedTask;
     }

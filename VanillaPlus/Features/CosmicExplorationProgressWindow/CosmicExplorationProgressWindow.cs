@@ -43,11 +43,11 @@ public class CosmicExplorationProgressWindow : GameModification {
             };
         }
 
-        await Services.GetService<IFramework>().RunSafely(wksHudController.Enable);
+        await Service<IFramework>.Get().RunSafely(wksHudController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             wksHudController?.Dispose();
             hudShowNode?.Dispose();
         });

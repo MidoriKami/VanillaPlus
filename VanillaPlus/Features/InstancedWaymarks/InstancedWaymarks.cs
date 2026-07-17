@@ -48,10 +48,10 @@ public class InstancedWaymarks : GameModification {
             AutoSelectAll = true,
         };
 
-        Services.GetService<IClientState>().TerritoryChanged += OnTerritoryChanged;
-        Services.GetService<IContextMenu>().OnMenuOpened += OnMenuOpened;
+        Service<IClientState>.Get().TerritoryChanged += OnTerritoryChanged;
+        Service<IContextMenu>.Get().OnMenuOpened += OnMenuOpened;
 
-        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PreDraw, "FieldMarker", OnFieldMarkerDraw);
+        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PreDraw, "FieldMarker", OnFieldMarkerDraw);
 
         SaveWaymarks(0);
 
@@ -65,9 +65,9 @@ public class InstancedWaymarks : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        Services.GetService<IAddonLifecycle>().UnregisterListener(OnFieldMarkerDraw);
-        Services.GetService<IClientState>().TerritoryChanged -= OnTerritoryChanged;
-        Services.GetService<IContextMenu>().OnMenuOpened -= OnMenuOpened;
+        Service<IAddonLifecycle>.Get().UnregisterListener(OnFieldMarkerDraw);
+        Service<IClientState>.Get().TerritoryChanged -= OnTerritoryChanged;
+        Service<IContextMenu>.Get().OnMenuOpened -= OnMenuOpened;
 
         LoadWaymarks(0);
 
@@ -137,7 +137,7 @@ public class InstancedWaymarks : GameModification {
             defaultName = name;
         }
         else {
-            defaultName = Services.GetService<IDataManager>().GetExcelSheet<ContentFinderCondition>().GetRow(cfc).Name.ToString();
+            defaultName = Service<IDataManager>.Get().GetExcelSheet<ContentFinderCondition>().GetRow(cfc).Name.ToString();
         }
 
         renameWindow.OnRenameComplete = newString => {
@@ -152,7 +152,7 @@ public class InstancedWaymarks : GameModification {
     }
 
     private static unsafe void SaveWaymarks(uint contentFinderCondition) {
-        Services.PluginLog.Debug($"Saving Waymarks for Duty: {contentFinderCondition}", "InstancedWaymarks");
+        Service<IPluginLog>.Get().Debug($"Saving Waymarks for Duty: {contentFinderCondition}", "InstancedWaymarks");
 
         var address = Unsafe.AsPointer(ref FieldMarkerModule.Instance()->Presets[0]);
         var size = sizeof(FieldMarkerPreset) * FieldMarkerModule.Instance()->Presets.Length;
@@ -164,7 +164,7 @@ public class InstancedWaymarks : GameModification {
     }
 
     private static unsafe void LoadWaymarks(uint contentFinderCondition) {
-        Services.PluginLog.Debug($"Loading Waymarks for Duty: {contentFinderCondition}", "InstancedWaymarks");
+        Service<IPluginLog>.Get().Debug($"Loading Waymarks for Duty: {contentFinderCondition}", "InstancedWaymarks");
 
         var address = Unsafe.AsPointer(ref FieldMarkerModule.Instance()->Presets[0]);
         var size = sizeof(FieldMarkerPreset) * FieldMarkerModule.Instance()->Presets.Length;
@@ -173,7 +173,7 @@ public class InstancedWaymarks : GameModification {
         var result = File.ReadAllBytes(dataFilePath);
 
         if (result.Length < size) {
-            Services.PluginLog.Debug("No data to load, creating new file.", "InstancedWaymarks");
+            Service<IPluginLog>.Get().Debug("No data to load, creating new file.", "InstancedWaymarks");
             result = new byte[size];
             FilesystemUtil.WriteAllBytesSafe(dataFilePath, result);
         }

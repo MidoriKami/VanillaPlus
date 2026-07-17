@@ -39,13 +39,13 @@ public class JustMonikaFools : FoolsModule {
             Size = new Vector2(650.0f, 350.0f),
         };
 
-        Services.GetService<IClientState>().TerritoryChanged += OnTerritoryChanged;
+        Service<IClientState>.Get().TerritoryChanged += OnTerritoryChanged;
 
         return Task.CompletedTask;
     }
 
     protected override async Task OnDisable() {
-        Services.GetService<IClientState>().TerritoryChanged -= OnTerritoryChanged;
+        Service<IClientState>.Get().TerritoryChanged -= OnTerritoryChanged;
 
         await Task.WhenAll(monikaAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         monikaAddon = null;

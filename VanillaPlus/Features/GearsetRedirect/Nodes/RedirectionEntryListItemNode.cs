@@ -34,7 +34,7 @@ public class RedirectionEntryListItemNode : ListItemWithFocusNav<RedirectionConf
 
         gearsetNameTextNode.String = targetGearset->Name;
 
-        var territoryInfo = Services.GetService<IDataManager>().GetExcelSheet<TerritoryType>().GetRow(itemData.TerritoryType);
+        var territoryInfo = Service<IDataManager>.Get().GetExcelSheet<TerritoryType>().GetRow(itemData.TerritoryType);
         territoryNameTextNode.String = $"When in {SeIconChar.ArrowRight.ToIconString()} {territoryInfo.PlaceName.ValueNullable?.Name.ToString() ?? string.Empty}";
     }
 

@@ -35,11 +35,11 @@ public class SuppressDialogueAdvance : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PreReceiveEvent, "Talk", OnTalkReceiveEvent);
+        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PreReceiveEvent, "Talk", OnTalkReceiveEvent);
     }
 
     public override async Task OnDisableAsync() {
-        Services.GetService<IAddonLifecycle>().UnregisterListener(OnTalkReceiveEvent);
+        Service<IAddonLifecycle>.Get().UnregisterListener(OnTalkReceiveEvent);
 
         await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configWindow = null;
@@ -49,7 +49,7 @@ public class SuppressDialogueAdvance : GameModification {
 
     private unsafe void OnTalkReceiveEvent(AddonEvent type, AddonArgs args) {
         if (args is not AddonReceiveEventArgs eventArgs) return;
-        if ((config?.ApplyOnlyInCutscenes ?? false) && !Services.GetService<ICondition>().IsInCutscene) return;
+        if ((config?.ApplyOnlyInCutscenes ?? false) && !Service<ICondition>.Get().IsInCutscene) return;
 
         if ((AtkEventType)eventArgs.AtkEventType is AtkEventType.MouseClick) {
             var addon = args.GetAddon<AddonTalk>();

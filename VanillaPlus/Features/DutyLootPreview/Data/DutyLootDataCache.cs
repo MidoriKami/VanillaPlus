@@ -77,7 +77,7 @@ public class DutyLootDataCache : IDisposable {
             State = CacheState.Loaded;
         }
         catch (Exception ex) {
-            Services.PluginLog.Exception(ex);
+            Service<IPluginLog>.Get().Exception(ex);
             State = CacheState.Empty;
         } finally {
             OnChanged?.Invoke();
@@ -90,7 +90,7 @@ public class DutyLootDataCache : IDisposable {
         var boss = GetDungeonBoss(cfcId, fightNo);
         if (boss == null) return;
 
-        var bossName = Services.GetService<ISeStringEvaluator>().EvaluateObjStr(ObjectKind.BattleNpc, boss.BNpcNameId);
+        var bossName = Service<ISeStringEvaluator>.Get().EvaluateObjStr(ObjectKind.BattleNpc, boss.BNpcNameId);
         if (string.IsNullOrEmpty(bossName)) return;
 
         var dutyLootData = dutyLootByContentId.GetOrAdd(cfcId, DutyLootData.Empty(cfcId));
@@ -139,7 +139,7 @@ public class DutyLootDataCache : IDisposable {
         includesHeaders: false,
         out _,
         out _,
-        Services.GetService<IDataManager>().GameData,
-        Services.GetService<IDataManager>().GameData.Options.DefaultExcelLanguage
+        Service<IDataManager>.Get().GameData,
+        Service<IDataManager>.Get().GameData.Options.DefaultExcelLanguage
     );
 }

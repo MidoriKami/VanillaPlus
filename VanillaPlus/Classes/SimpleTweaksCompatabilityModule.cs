@@ -44,7 +44,7 @@ public class SimpleTweaksCompatibilityModule(string targetModuleName, string? al
     }
 
     private static string GetConfigFilePath()
-        => Path.Combine(Services.PluginInterface.GetPluginConfigDirectory().Replace("VanillaPlus", "SimpleTweaksPlugin.json"));
+        => Path.Combine(VanillaPlus.PluginInterface.GetPluginConfigDirectory().Replace("VanillaPlus", "SimpleTweaksPlugin.json"));
 
     private static FileInfo GetConfigFileInfo()
         => new(GetConfigFilePath());

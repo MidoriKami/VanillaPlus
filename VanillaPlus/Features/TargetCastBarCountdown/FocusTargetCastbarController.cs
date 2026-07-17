@@ -80,12 +80,12 @@ public class FocusTargetCastbarController : IDisposable {
     }
 
     private unsafe void OnAddonRefresh(AtkUnitBase* addon) {
-        if (Services.GetService<IClientState>().IsPvP || !config.PrimaryTarget) {
+        if (Service<IClientState>.Get().IsPvP || !config.PrimaryTarget) {
             textNode?.String = string.Empty;
             return;
         }
 
-        textNode?.String = Services.GetService<ITargetManager>().GetTarget()?.GetCastTimeString;
+        textNode?.String = Service<ITargetManager>.Get().GetTarget()?.GetCastTimeString;
     }
 
     private unsafe void OnAddonFinalize(AtkUnitBase* addon) {

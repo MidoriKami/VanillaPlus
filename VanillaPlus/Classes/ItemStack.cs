@@ -18,7 +18,7 @@ public record ItemStack(InventoryItem Item, int Quantity) {
 
         var regex = new Regex(searchTerms, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
-        var itemInfo = Services.GetService<IDataManager>().GetItem(itemStack.Item.ItemId);
+        var itemInfo = Service<IDataManager>.Get().GetItem(itemStack.Item.ItemId);
 
         if (regex.IsMatch(itemInfo.Name.ToString())) return true;
         if (regex.IsMatch(itemInfo.LevelEquip.ToString())) return true;

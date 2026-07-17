@@ -49,7 +49,7 @@ public class CurrencyWarning : GameModification {
             Title = Strings.CurrencyWarning_ItemSearchTitle,
             Size = new Vector2(350.0f, 500.0f),
             AllowMultiselect = true,
-            OptionsList = Services.GetService<IDataManager>().GetCurrencyItems().ToList(),
+            OptionsList = Service<IDataManager>.Get().GetCurrencyItems().ToList(),
         };
 
         configAddon = new CurrencyWarningConfigAddon {
@@ -57,7 +57,7 @@ public class CurrencyWarning : GameModification {
             Title = Strings.CurrencyWarning_ListTitle,
             Size = new Vector2(700.0f, 500.0f),
             OptionsList = Config.WarningSettings,
-            GetEntrySearchString = entry => Services.GetService<IDataManager>().GetExcelSheet<Item>().GetRow(entry.ItemId).Name.ToString(),
+            GetEntrySearchString = entry => Service<IDataManager>.Get().GetExcelSheet<Item>().GetRow(entry.ItemId).Name.ToString(),
             AddClicked = OnAddClicked,
             RemoveClicked = OnRemoveClicked,
             SaveConfig = () => Task.Run(Config.Save),
@@ -65,7 +65,7 @@ public class CurrencyWarning : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             overlayController = new OverlayController();
 
             var tooltipNode = new CurrencyTooltipNode {
@@ -92,7 +92,7 @@ public class CurrencyWarning : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             overlayController?.Dispose();
         });
         overlayController = null;

@@ -33,8 +33,8 @@ public class RetainerSearchBar : GameModification {
     private TextInputWithHintNode? searchInputNode;
 
     public override async Task OnEnableAsync() {
-        if (Services.GetService<IClientState>().IsLoggedIn) {
-            await Services.GetService<IFramework>().Run(ReinitializeController);
+        if (Service<IClientState>.Get().IsLoggedIn) {
+            await Service<IFramework>.Get().Run(ReinitializeController);
         }
 
         keybindListener = new KeybindListener {
@@ -46,17 +46,17 @@ public class RetainerSearchBar : GameModification {
             Callback = OnKeybindPressed,
         };
 
-        Services.GetService<IGameGui>().AgentUpdate += OnAgentUpdate;
-        Services.GetService<IFramework>().Update += OnFrameworkUpdate;
-        Services.GetService<IGameConfig>().UiConfigChanged += OnUiConfigChanged;
+        Service<IGameGui>.Get().AgentUpdate += OnAgentUpdate;
+        Service<IFramework>.Get().Update += OnFrameworkUpdate;
+        Service<IGameConfig>.Get().UiConfigChanged += OnUiConfigChanged;
     }
 
     public override async Task OnDisableAsync() {
-        Services.GetService<IGameConfig>().UiConfigChanged -= OnUiConfigChanged;
-        Services.GetService<IFramework>().Update -= OnFrameworkUpdate;
-        Services.GetService<IGameGui>().AgentUpdate -= OnAgentUpdate;
+        Service<IGameConfig>.Get().UiConfigChanged -= OnUiConfigChanged;
+        Service<IFramework>.Get().Update -= OnFrameworkUpdate;
+        Service<IGameGui>.Get().AgentUpdate -= OnAgentUpdate;
 
-        await Services.GetService<IFramework>().RunSafely(() => inventoryController?.Dispose());
+        await Service<IFramework>.Get().RunSafely(() => inventoryController?.Dispose());
         keybindListener = null;
         inventoryController = null;
     }
@@ -68,7 +68,7 @@ public class RetainerSearchBar : GameModification {
     }
 
     private unsafe void ReinitializeController() {
-        if (!Services.GetService<IGameConfig>().UiConfig.TryGet("ItemInventryRetainerWindowSizeType", out uint inventoryType)) return;
+        if (!Service<IGameConfig>.Get().UiConfig.TryGet("ItemInventryRetainerWindowSizeType", out uint inventoryType)) return;
 
         inventoryController?.Dispose();
 

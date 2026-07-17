@@ -23,7 +23,7 @@ public class MemoryReplacement(nint address, byte[] replacementBytes) : IDisposa
     }
 
     public async Task EnableAsync()
-        => await Services.GetService<IFramework>().RunSafely(Enable);
+        => await Service<IFramework>.Get().RunSafely(Enable);
 
     public void Disable() {
         ThreadSafety.AssertMainThread();
@@ -36,7 +36,7 @@ public class MemoryReplacement(nint address, byte[] replacementBytes) : IDisposa
     }
 
     public async Task DisableAsync()
-        => await Services.GetService<IFramework>().RunSafely(Disable);
+        => await Service<IFramework>.Get().RunSafely(Disable);
 
     public void Dispose()
         => Disable();

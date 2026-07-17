@@ -25,7 +25,7 @@ public class ShowPlayersOnMap : GameModification {
     public override async Task OnEnableAsync() {
         mapOverlayController = new MapOverlayController();
 
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             unsafe {
                 foreach (var index in Enumerable.Range(0, CharacterManager.Instance()->BattleCharas.Length)) {
                     mapOverlayController.AddMarker(new PlayerMapMarker {
@@ -39,7 +39,7 @@ public class ShowPlayersOnMap : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Services.GetService<IFramework>().RunSafely(() => mapOverlayController?.Dispose());
+        await Service<IFramework>.Get().RunSafely(() => mapOverlayController?.Dispose());
         mapOverlayController = null;
     }
 }

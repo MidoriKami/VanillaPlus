@@ -61,11 +61,11 @@ public class EnhancedLootWindow : GameModification {
             };
         }
 
-        await Services.GetService<IFramework>().RunSafely(needGreedController.Enable);
+        await Service<IFramework>.Get().RunSafely(needGreedController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.GetService<IFramework>().RunSafely(() => needGreedController?.Dispose());
+        await Service<IFramework>.Get().RunSafely(() => needGreedController?.Dispose());
         needGreedController = null;
 
         await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
@@ -142,7 +142,7 @@ public class EnhancedLootWindow : GameModification {
             var adjustedItemId = itemInfo.ItemId > 1_000_000 ? itemInfo.ItemId - 1_000_000 : itemInfo.ItemId;
 
             // If we can't match the item in lumina, skip.
-            var itemData = Services.GetService<IDataManager>().GetExcelSheet<Item>().GetRowOrDefault(adjustedItemId);
+            var itemData = Service<IDataManager>.Get().GetExcelSheet<Item>().GetRowOrDefault(adjustedItemId);
             if (itemData is null) continue;
 
             var crossNode = crossNodes[index];

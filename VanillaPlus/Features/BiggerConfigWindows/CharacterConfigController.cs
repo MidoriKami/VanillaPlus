@@ -40,7 +40,7 @@ public class CharacterConfigController : IDisposable {
     }
 
     public void Dispose() {
-        Services.GetService<IFramework>().RunSafely(() => {
+        Service<IFramework>.Get().RunSafely(() => {
             characterConfigController?.Dispose();
             childAddonController?.Dispose();
         });
@@ -51,8 +51,8 @@ public class CharacterConfigController : IDisposable {
 
     private unsafe void SetupConfigCharacter(AtkUnitBase* addon) {
         if (AtkStage.Instance()->ScreenSize.Height < addon->Size.Y + Config.SystemConfigAdditionalHeight) {
-            Services.GetService<IChatGui>().PrintError("[BiggerConfigWindow] Unable to resize config window, height would be too big.", "VanillaPlus");
-            Services.PluginLog.Warning("Unable to resize config window, height would be too big.", "BiggerConfigWindow");
+            Service<IChatGui>.Get().PrintError("[BiggerConfigWindow] Unable to resize config window, height would be too big.", "VanillaPlus");
+            Service<IPluginLog>.Get().Warning("Unable to resize config window, height would be too big.", "BiggerConfigWindow");
             return;
         }
 

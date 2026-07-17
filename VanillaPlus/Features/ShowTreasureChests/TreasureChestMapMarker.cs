@@ -17,7 +17,7 @@ public sealed unsafe class TreasureChestMapMarker : MapMarkerNode {
     protected override void OnUpdate() {
         IsVisible = false;
 
-        var localChara = Services.GetService<IObjectTable>().LocalPlayer;
+        var localChara = Service<IObjectTable>.Get().LocalPlayer;
         if (localChara is null) return;
 
         var treasureObject = EventObjectManager.Instance()->EventObjects[ObjectIndex].Value;

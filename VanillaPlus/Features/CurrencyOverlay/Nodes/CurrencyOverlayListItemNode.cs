@@ -13,7 +13,7 @@ public class CurrencyOverlayListItemNode : ListItemWithFocusNav<CurrencySetting>
 
     /// <inheritdoc/>
     protected override void SetNodeData(CurrencySetting itemData) {
-        var item = Services.GetService<IDataManager>().GetItem(itemData.ItemId);
+        var item = Service<IDataManager>.Get().GetItem(itemData.ItemId);
 
         iconNode.IconId = item.Icon;
         labelTextNode.String = item.Name.ToString();

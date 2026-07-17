@@ -48,11 +48,11 @@ public class ResetDummyEnmity : GameModification {
         resetButtons = new CircleButtonNode?[MaxEnemyCount];
         buttonTargets = new IBattleChara?[MaxEnemyCount];
 
-        await Services.GetService<IFramework>().RunSafely(enemyListController.Enable);
+        await Service<IFramework>.Get().RunSafely(enemyListController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await Services.GetService<IFramework>().RunSafely(() => {
+        await Service<IFramework>.Get().RunSafely(() => {
             enemyListController?.Dispose();
         });
 
@@ -110,7 +110,7 @@ public class ResetDummyEnmity : GameModification {
             if (index < enemyCount && entry.ActiveInList) {
                 var matchingDummy = GetDummyByEntityId((uint)entry.EntityId);
                 if (matchingDummy is { NameId: StrikingDummyNameId }) {
-                    shouldBeVisible = Services.GetService<ICondition>()[ConditionFlag.InCombat];
+                    shouldBeVisible = Service<ICondition>.Get()[ConditionFlag.InCombat];
                     buttonTargets[index] = matchingDummy;
                 }
             }
@@ -139,15 +139,15 @@ public class ResetDummyEnmity : GameModification {
         var dummy = buttonTargets?[buttonIndex];
         if (dummy is not { NameId: StrikingDummyNameId }) return;
         if (!dummy.IsValid()) return;
-        if (!Services.GetService<ICondition>()[ConditionFlag.InCombat]) return;
+        if (!Service<ICondition>.Get()[ConditionFlag.InCombat]) return;
         if (!TargetMatchesEntityId(dummy.EntityId)) return;
 
         GameMain.ExecuteCommand(319, (int)dummy.GameObjectId);
     }
 
     private static IBattleChara? GetDummyByEntityId(uint entityId)
-        => Services.GetService<IObjectTable>().CharacterManagerObjects.FirstOrDefault(obj => obj.EntityId == entityId) as IBattleChara;
+        => Service<IObjectTable>.Get().CharacterManagerObjects.FirstOrDefault(obj => obj.EntityId == entityId) as IBattleChara;
 
     private static bool TargetMatchesEntityId(uint entityId) =>
-        Services.GetService<ITargetManager>().GetTarget() is { } target && target.EntityId == entityId;
+        Service<ITargetManager>.Get().GetTarget() is { } target && target.EntityId == entityId;
 }

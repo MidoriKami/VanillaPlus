@@ -39,11 +39,11 @@ public class ClearSelectedDuties : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        Services.GetService<IAddonLifecycle>().RegisterListener(AddonEvent.PostSetup, "ContentsFinder", OnContentsFinderSetup);
+        Service<IAddonLifecycle>.Get().RegisterListener(AddonEvent.PostSetup, "ContentsFinder", OnContentsFinderSetup);
     }
 
     public override async Task OnDisableAsync() {
-        Services.GetService<IAddonLifecycle>().UnregisterListener(OnContentsFinderSetup);
+        Service<IAddonLifecycle>.Get().UnregisterListener(OnContentsFinderSetup);
 
         await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
         configWindow = null;

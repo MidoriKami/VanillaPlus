@@ -17,7 +17,7 @@ public static class FileHelpers {
         var fileInfo = new FileInfo(filePath);
         if (fileInfo is { Exists: true }) {
             try {
-                var fileText = await Services.GetService<IReliableFileStorage>().ReadAllTextAsync(fileInfo.FullName);
+                var fileText = await Service<IReliableFileStorage>.Get().ReadAllTextAsync(fileInfo.FullName);
                 var dataObject = JsonSerializer.Deserialize<T>(fileText, SerializerOptions);
 
                 // If deserialize result is null, create a new instance instead and save it.
@@ -30,7 +30,7 @@ public static class FileHelpers {
             }
             catch (Exception e) {
                 // If there is any kind of error loading the file, generate a new one instead and save it.
-                Services.PluginLog.InternalError(e, $"Error trying to load file {filePath}, creating a new one instead.");
+                Service<IPluginLog>.Get().Error(e, $"Error trying to load file {filePath}, creating a new one instead.");
 
                 await SaveFile(defaultObject ?? new T(), filePath);
             }
@@ -45,15 +45,15 @@ public static class FileHelpers {
     public static async Task SaveFile<T>(T? file, string filePath) {
         try {
             if (file is null) {
-                Services.PluginLog.InternalError("Null file provided.");
+                Service<IPluginLog>.Get().Error("Null file provided.");
                 return;
             }
 
             var fileText = JsonSerializer.Serialize(file, file.GetType(), SerializerOptions);
-            await Services.GetService<IReliableFileStorage>().WriteAllTextAsync(filePath, fileText);
+            await Service<IReliableFileStorage>.Get().WriteAllTextAsync(filePath, fileText);
         }
         catch (Exception e) {
-            Services.PluginLog.InternalError(e, $"Error trying to save file {filePath}");
+            Service<IPluginLog>.Get().Error(e, $"Error trying to save file {filePath}");
         }
     }
 
@@ -61,7 +61,7 @@ public static class FileHelpers {
         var fileInfo = new FileInfo(filePath);
         if (fileInfo is { Exists: true }) {
             try {
-                var dataObject = await Services.GetService<IReliableFileStorage>().ReadAllBytesAsync(fileInfo.FullName);
+                var dataObject = await Service<IReliableFileStorage>.Get().ReadAllBytesAsync(fileInfo.FullName);
 
                 // If deserialize result is null, create a new instance instead and save it.
                 if (dataObject.Length != length) {
@@ -73,7 +73,7 @@ public static class FileHelpers {
             }
             catch (Exception e) {
                 // If there is any kind of error loading the file, generate a new one instead and save it.
-                Services.PluginLog.InternalError(e, $"Error trying to load file {filePath}, creating a new one instead.");
+                Service<IPluginLog>.Get().Error(e, $"Error trying to load file {filePath}, creating a new one instead.");
 
                 await SaveFile(new byte[length], filePath);
             }
@@ -87,10 +87,10 @@ public static class FileHelpers {
 
     public static async Task SaveBinaryFile(byte[] data, string filePath) {
         try {
-            await Services.GetService<IReliableFileStorage>().WriteAllBytesAsync(filePath, data);
+            await Service<IReliableFileStorage>.Get().WriteAllBytesAsync(filePath, data);
         }
         catch (Exception e) {
-            Services.PluginLog.InternalError(e, $"Error trying to save binary data {filePath}");
+            Service<IPluginLog>.Get().Error(e, $"Error trying to save binary data {filePath}");
         }
     }
 
@@ -98,15 +98,15 @@ public static class FileHelpers {
         try {
             var managedArray = new byte[size];
             Marshal.Copy(pointer, managedArray, 0, size);
-            await Services.GetService<IReliableFileStorage>().WriteAllBytesAsync(filePath, managedArray);
+            await Service<IReliableFileStorage>.Get().WriteAllBytesAsync(filePath, managedArray);
         }
         catch (Exception e) {
-            Services.PluginLog.InternalError(e, $"Error trying to save binary data {filePath}");
+            Service<IPluginLog>.Get().Error(e, $"Error trying to save binary data {filePath}");
         }
     }
 
     public static FileInfo GetFileInfo(params string[] path) {
-        var directory = Services.PluginInterface.ConfigDirectory;
+        var directory = VanillaPlus.PluginInterface.ConfigDirectory;
 
         for (var index = 0; index < path.Length - 1; index++) {
             directory = new DirectoryInfo(Path.Combine(directory.FullName, path[index]));
@@ -119,10 +119,10 @@ public static class FileHelpers {
     }
 
     public static string GetCharacterPath() {
-        if (!Services.GetService<IClientState>().IsLoggedIn) {
+        if (!Service<IClientState>.Get().IsLoggedIn) {
             throw new Exception("Character is not logged in.");
         }
 
-        return Services.GetService<IPlayerState>().ContentId.ToString("X");
+        return Service<IPlayerState>.Get().ContentId.ToString("X");
     }
 }
