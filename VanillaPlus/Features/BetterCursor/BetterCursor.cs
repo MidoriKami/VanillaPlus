@@ -50,7 +50,6 @@ public class BetterCursor : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-
         await IFramework.Get().RunSafely(() => {
             overlayController = new OverlayController();
             overlayController.AddNode(new CursorImageNode {
