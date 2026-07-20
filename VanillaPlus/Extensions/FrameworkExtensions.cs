@@ -12,7 +12,18 @@ public static class FrameworkExtensions {
         /// <summary>
         /// Helper method for calling Framework.Run in a safe way that does nothing in the case of a game shutdown.
         /// </summary>
-        public Task RunSafely(Action runAction)
-            => framework.IsFrameworkUnloading ? Task.CompletedTask : framework.Run(runAction);
+        public Task RunSafely(Action runAction) {
+            // If we are unloading the game, do nothing and return completed.
+            if (framework.IsFrameworkUnloading) return Task.CompletedTask;
+
+            // If we are already on the main thread, run it and then return completed.
+            if (ThreadSafety.IsMainThread) {
+                runAction();
+                return Task.CompletedTask;
+            }
+
+            // Else, queue it for running.
+            return framework.Run(runAction);
+        }
     }
 }
