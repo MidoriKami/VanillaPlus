@@ -9,7 +9,7 @@ namespace VanillaPlus.Native.Nodes;
 
 public class TextInputWithHintNode : ResNode {
     private readonly TextInputNode textInputNode;
-    private readonly ImageNode helpNode;
+    private readonly SimpleImageNode helpNode;
 
     public unsafe AtkResNode* FocusNode => textInputNode.FocusNode;
 
