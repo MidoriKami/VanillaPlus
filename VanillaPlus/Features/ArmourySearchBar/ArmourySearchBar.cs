@@ -78,9 +78,13 @@ public class ArmourySearchBar : GameModification {
             OnInputReceived = searchString => OnSearchInputChanged(addon, searchString),
         };
         searchInputNode.AttachNode(addon);
+
+        keybindListener?.IsEnabled = true;
     }
 
     private unsafe void OnArmouryFinalize(AtkUnitBase* addon) {
+        keybindListener?.IsEnabled = false;
+
         searchInputNode?.Dispose();
         searchInputNode = null;
     }
@@ -113,25 +117,24 @@ public class ArmourySearchBar : GameModification {
     }
 
     private unsafe void OnSearchInputChanged(AtkUnitBase* addon, ReadOnlySeString searchString) {
-        OnPreSearch(searchString.ToString());
-        Inventory.FadeInventoryNodes(addon, searchString.ToString());
-    }
-
-    private void OnPreSearch(string searchString) {
         if (configFadeUnusable is null) {
             IGameConfig.Get().TryGet(UiConfigOption.ItemNoArmoryMaskOff, out bool value);
             configFadeUnusable = value;
         }
 
-        if (!searchString.IsNullOrEmpty() && !searchStarted) {
+        var search = searchString.ToString();
+
+        if (!search.IsNullOrEmpty() && !searchStarted) {
             IGameConfig.Get().Set(UiConfigOption.ItemNoArmoryMaskOff, true);
             searchStarted = true;
         }
 
-        if (searchStarted && searchString.IsNullOrEmpty()) {
+        if (searchStarted && search.IsNullOrEmpty()) {
             IGameConfig.Get().Set(UiConfigOption.ItemNoArmoryMaskOff, configFadeUnusable.Value);
             searchStarted = false;
         }
+
+        Inventory.FadeInventoryNodes(addon, searchString.ToString());
     }
 
     private unsafe void OnKeybindPressed(ref bool isHandled) {
