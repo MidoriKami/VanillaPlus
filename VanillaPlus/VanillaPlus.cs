@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Numerics;
 using System.Threading;
@@ -16,6 +16,35 @@ namespace VanillaPlus;
 
 public sealed class VanillaPlus : IAsyncDalamudPlugin {
     [PluginService] internal static IDalamudPluginInterface PluginInterface { get; set; } = null!;
+    [PluginService] private static IClientState ClientState { get; set; } = null!;
+    [PluginService] private static IPluginLog Log { get; set; } = null!;
+    [PluginService] private static IAddonLifecycle AddonLifecycle { get; set; } = null!;
+    [PluginService] private static IAgentLifecycle AgentLifecycle { get; set; } = null!;
+    [PluginService] private static IDutyState DutyState { get; set; } = null!;
+    [PluginService] private static IChatGui ChatGui { get; set; } = null!;
+    [PluginService] private static ICommandManager CommandManager { get; set; } = null!;
+    [PluginService] private static IFramework Framework { get; set; } = null!;
+    [PluginService] private static IDataManager DataManager { get; set; } = null!;
+    [PluginService] private static IGameInteropProvider GameInteropProvider { get; set; } = null!;
+    [PluginService] private static IGameConfig GameConfig { get; set; } = null!;
+    [PluginService] private static ITextureProvider TextureProvider { get; set; } = null!;
+    [PluginService] private static IGameGui GameGui { get; set; } = null!;
+    [PluginService] private static ITargetManager TargetManager { get; set; } = null!;
+    [PluginService] private static IGameInventory GameInventory { get; set; } = null!;
+    [PluginService] private static IFateTable FateTable { get; set; } = null!;
+    [PluginService] private static IKeyState KeyState { get; set; } = null!;
+    [PluginService] private static ICondition Condition { get; set; } = null!;
+    [PluginService] private static ISeStringEvaluator SeStringEvaluator { get; set; } = null!;
+    [PluginService] private static IDtrBar DtrBar { get; set; } = null!;
+    [PluginService] private static IContextMenu ContextMenu { get; set; } = null!;
+    [PluginService] private static IObjectTable ObjectTable { get; set; } = null!;
+    [PluginService] private static IAddonEventManager AddonEventManager { get; set; } = null!;
+    [PluginService] private static IPlayerState PlayerState { get; set; } = null!;
+    [PluginService] private static IUnlockState UnlockState { get; set; } = null!;
+    [PluginService] private static INamePlateGui NamePlateGui { get; set; } = null!;
+    [PluginService] private static IReliableFileStorage ReliableFileStorage { get; set; } = null!;
+    [PluginService] private static IFlyTextGui FlyTextGui { get; set; } = null!;
+    [PluginService] private static IAetheryteList AetheryteList { get; set; } = null!;
 
     public async Task LoadAsync(CancellationToken cancellationToken) {
         System.SystemConfig = await SystemConfiguration.Load();
