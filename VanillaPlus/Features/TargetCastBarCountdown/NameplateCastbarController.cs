@@ -91,7 +91,7 @@ public class NameplateCastbarController : IDisposable {
     }
 
     private unsafe void OnAddonRefresh(NewAddonCastBarEnemy* addonCastBarEnemy) {
-        if (IClientState.Get().IsPvP || !config.PrimaryTarget) {
+        if (IClientState.Get().IsPvP) {
             foreach (var node in textNodes ?? []) {
                 node.String = string.Empty;
             }
