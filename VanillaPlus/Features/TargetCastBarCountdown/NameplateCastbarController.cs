@@ -17,16 +17,13 @@ namespace VanillaPlus.Features.TargetCastBarCountdown;
 public class NameplateCastbarController : IDisposable {
     public TextNodeStyle LoadedStyle { get; }
 
-    private readonly TargetCastBarCountdownConfig config;
     private TextNode[]? textNodes;
 
     private const string StylePath = "TargetCastBarCountdown.CastBarEnemy.style.json";
 
     private readonly AddonController<NewAddonCastBarEnemy> addonController;
 
-    public unsafe NameplateCastbarController(TargetCastBarCountdownConfig config) {
-        this.config = config;
-
+    public unsafe NameplateCastbarController() {
         var defaultStyle = new TextNodeStyle {
             Position = new Vector2(8.0f, -4.0f),
             FontSize = 12,

@@ -31,7 +31,7 @@ public class TargetCastBarCountdown : GameModification {
         primaryController = new PrimaryTargetCastbarController(config);
         primaryAltController = new PrimaryTargetAltCastbarController(config);
         focusController = new FocusTargetCastbarController(config);
-        nameplateController = new NameplateCastbarController(config);
+        nameplateController = new NameplateCastbarController();
 
         configAddon = new ConfigAddon {
             InternalName = "TargetCastBarConfig",
