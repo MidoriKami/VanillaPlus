@@ -158,16 +158,16 @@ public class CurrencyOverlayConfigNode : EntryConfigurationNode<CurrencySetting>
             SaveConfig?.Invoke();
         };
 
-        reverseTextCheckbox.OnClick = null;
+        reverseIconCheckbox.OnClick = null;
         reverseIconCheckbox.IsChecked = entry.IconReversed;
         reverseIconCheckbox.OnClick = newValue => {
             entry.IconReversed = newValue;
             SaveConfig?.Invoke();
         };
 
-        reverseIconCheckbox.OnClick = null;
+        reverseTextCheckbox.OnClick = null;
         reverseTextCheckbox.IsChecked = entry.TextReversed;
-        reverseIconCheckbox.OnClick = newValue => {
+        reverseTextCheckbox.OnClick = newValue => {
             entry.TextReversed = newValue;
             SaveConfig?.Invoke();
         };
