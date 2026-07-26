@@ -420,7 +420,7 @@ ID：{0}</value>
     <value>等级 ???</value>
   </data>
   <data name="FateListWindow_Title" xml:space="preserve">
-    <value>Fate列表</value>
+    <value>FATE列表</value>
   </data>
   <data name="HUDPresets_ButtonDelete" xml:space="preserve">
     <value>删除</value>
@@ -530,13 +530,13 @@ ID：{0}</value>
     <value>缺少灵魂水晶！</value>
   </data>
   <data name="ModificationDescription_ArmourySearchBar" xml:space="preserve">
-    <value>在军需品箱窗口添加搜索栏。</value>
+    <value>在兵装库窗口中添加搜索栏。</value>
   </data>
   <data name="ModificationDescription_ClearFlag" xml:space="preserve">
     <value>允许右键点击小地图以清除当前的旗标。</value>
   </data>
   <data name="ModificationDescription_ClearSelectedDuties" xml:space="preserve">
-    <value>打开任务搜寻器时，自动取消所有已选任务。</value>
+    <value>打开任务搜索器时，自动取消所有已选任务。</value>
   </data>
   <data name="ModificationDescription_ClearTextInputs" xml:space="preserve">
     <value>允许右键点击文本输入框以清除内容。</value>
@@ -590,7 +590,7 @@ ID：{0}</value>
     <value>显示当前区域所有可接任务的列表。</value>
   </data>
   <data name="ModificationDescription_OpenGlamourDresserToCurrentJob" xml:space="preserve">
-    <value>打开幻化柜时自动选择当前职业的分页。</value>
+    <value>打开投影台时自动选择当前职业的分页。</value>
   </data>
   <data name="ModificationDescription_HideGuildhestObjectivePopup" xml:space="preserve">
     <value>开始行会令时阻止显示流程说明弹窗。
@@ -624,7 +624,7 @@ ID：{0}</value>
     <value>在用户宏窗口中显示行号。</value>
   </data>
   <data name="ModificationDescription_MacroTooltips" xml:space="preserve">
-    <value>宏中使用 "/macroicon" 并引用动作时，鼠标悬停显示该动作的提示。</value>
+    <value>在宏中用 "/macroicon" 链接了技能时，鼠标悬停在宏上会显示该技能的提示。</value>
   </data>
   <data name="ModificationDescription_DebugCustomAddon" xml:space="preserve">
     <value>用于试验与测试 VanillaPlus 功能的模块</value>
@@ -641,13 +641,13 @@ ID：{0}</value>
   <data name="ModificationDescription_BetterInterruptableCastBars" xml:space="preserve">
     <value>让敌方可打断的咏唱条更加显眼。
 
-同时在热键栏上标出可打断该技能的动作。</value>
+同时在热键栏上高亮可用于打断的技能。</value>
   </data>
   <data name="ModificationDescription_BetterQuestMapLink" xml:space="preserve">
     <value>点击任务链接时，直接打开该任务所在的地图。</value>
   </data>
   <data name="ModificationDescription_CastBarAetheryteNames" xml:space="preserve">
-    <value>将 "传送" 动作的名称替换为目的地以太水晶名称。</value>
+    <value>将 "传送" 技能的名称替换为目的地的以太之光的名称。</value>
   </data>
   <data name="ModificationDescription_CurrencyOverlay" xml:space="preserve">
     <value>允许在 UI 叠加层中显示更多货币。
@@ -670,9 +670,9 @@ ID：{0}</value>
     <value>当全部战利品都已掷点时，让战利品按钮变淡。</value>
   </data>
   <data name="ModificationDescription_FadeUnavailableActions" xml:space="preserve">
-    <value>当动作因资源不足、距离过远或冷却中无法使用时，让热键槽渐隐。
+    <value>当技能因资源不足、距离过远或冷却中而无法使用时，让其所在的热键槽淡化。
 
-同步降级导致不可用的动作也会变淡。</value>
+因等级同步而不可用的技能也会变淡。</value>
   </data>
   <data name="ModificationDescription_FasterScroll" xml:space="preserve">
     <value>提升所有滚动条的速度。</value>
@@ -683,7 +683,7 @@ ID：{0}</value>
 此功能会在触发双击时同时补发一次单击事件。</value>
   </data>
   <data name="ModificationDescription_FocusTargetLock" xml:space="preserve">
-    <value>职责重新开始时，恢复之前的焦点目标。</value>
+    <value>副本任务重新挑战时，恢复之前的焦点目标。</value>
   </data>
   <data name="ModificationDescription_ForcedCutsceneSounds" xml:space="preserve">
     <value>在过场动画中自动取消所选声音频道的静音。</value>
@@ -692,7 +692,7 @@ ID：{0}</value>
     <value>允许保存并加载无限数量的 HUD 布局。</value>
   </data>
   <data name="ModificationDescription_FateListWindow" xml:space="preserve">
-    <value>显示当前区域内所有正在进行的命运之战。</value>
+    <value>显示当前区域内所有正在进行的危命任务。</value>
   </data>
   <data name="ModificationDescription_PetSizeContextMenu" xml:space="preserve">
     <value>右键点击召唤兽或拥有召唤兽的玩家时，可在菜单中调整召唤兽大小。</value>
@@ -704,7 +704,7 @@ ID：{0}</value>
     <value>根据所在区域，为装备套装指定替代套装。</value>
   </data>
   <data name="ModificationDisplay_ArmourySearchBar" xml:space="preserve">
-    <value>军需品箱搜索栏</value>
+    <value>兵装库搜索栏</value>
   </data>
   <data name="ModificationDisplay_ClearFlag" xml:space="preserve">
     <value>清除旗标</value>
@@ -857,7 +857,7 @@ ID：{0}</value>
     <value>任务列表窗口</value>
   </data>
   <data name="ModificationDisplay_OpenGlamourDresserToCurrentJob" xml:space="preserve">
-    <value>幻化柜自动切换当前职业</value>
+    <value>投影台自动切换当前职业</value>
   </data>
   <data name="ModificationDisplay_HideGuildhestObjectivePopup" xml:space="preserve">
     <value>隐藏行会令提示弹窗</value>
@@ -908,7 +908,7 @@ ID：{0}</value>
     <value>优化任务地图链接</value>
   </data>
   <data name="ModificationDisplay_CastBarAetheryteNames" xml:space="preserve">
-    <value>咏唱条显示以太水晶名称</value>
+    <value>传送咏唱条显示目的地名称</value>
   </data>
   <data name="ModificationDisplay_CurrencyOverlay" xml:space="preserve">
     <value>货币叠加层</value>
@@ -929,7 +929,7 @@ ID：{0}</value>
     <value>战利品按钮渐隐</value>
   </data>
   <data name="ModificationDisplay_FadeUnavailableActions" xml:space="preserve">
-    <value>无法施放动作渐隐</value>
+    <value>淡化不可用的技能</value>
   </data>
   <data name="ModificationDisplay_FasterScroll" xml:space="preserve">
     <value>快速滚动条</value>
@@ -947,7 +947,7 @@ ID：{0}</value>
     <value>HUD 预设</value>
   </data>
   <data name="ModificationDisplay_FateListWindow" xml:space="preserve">
-    <value>Fate列表窗口</value>
+    <value>FATE列表窗口</value>
   </data>
   <data name="ModificationDisplay_PetSizeContextMenu" xml:space="preserve">
     <value>召唤兽尺寸菜单</value>
@@ -995,13 +995,13 @@ ID：{0}</value>
     <value>样式设置</value>
   </data>
   <data name="FadeUnavailableActions_ConfigTitle" xml:space="preserve">
-    <value>无法施放动作渐隐配置</value>
+    <value>淡化不可用的技能配置</value>
   </data>
   <data name="FadeUnavailableActions_LabelApplyToFrame" xml:space="preserve">
     <value>同时应用于外框</value>
   </data>
   <data name="FadeUnavailableActions_LabelApplyToSync" xml:space="preserve">
-    <value>仅作用于因同步限制的动作</value>
+    <value>仅作用于因等级同步限制的技能</value>
   </data>
   <data name="FadeUnavailableActions_LabelFadePercentage" xml:space="preserve">
     <value>渐隐百分比</value>
@@ -1514,7 +1514,7 @@ ID：{0}</value>
     <value>文本选择增强</value>
   </data>
   <data name="ModificationDescription_BetterSelectString" xml:space="preserve">
-    <value>支持使用数字键快速选择多行文本。</value>
+    <value>允许你用数字键来选择对话选项。</value>
   </data>
   <data name="ModificationDisplay_FlagOnCursor" xml:space="preserve">
     <value>在光标位置放置标记</value>
