@@ -18,8 +18,6 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
     [PluginService] internal static IDalamudPluginInterface PluginInterface { get; set; } = null!;
 
     public async Task LoadAsync(CancellationToken cancellationToken) {
-        ServiceExtension.InitializeAllServices();
-
         System.SystemConfig = await SystemConfiguration.Load();
         if (System.SystemConfig.SafeMode) {
             IPluginLog.Get().Warning("VanillaPlus is in safe mode. Modules will be loaded sequentially.");
