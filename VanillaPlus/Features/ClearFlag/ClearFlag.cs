@@ -31,11 +31,11 @@ public class ClearFlag : GameModification {
             };
         }
 
-        await IFramework.Get().RunSafely(minimapController.Enable);
+        await IFramework.Get().Run(minimapController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().RunSafely(() => minimapController?.Dispose());
+        await IFramework.Get().Run(() => minimapController?.Dispose());
         minimapMouseClick = null;
     }
 

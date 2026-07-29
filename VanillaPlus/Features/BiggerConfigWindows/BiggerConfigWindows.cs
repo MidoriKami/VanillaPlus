@@ -45,14 +45,14 @@ public class BiggerConfigWindows : GameModification {
             Config = config,
         };
 
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             systemConfigController.Enable();
             characterConfigController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             systemConfigController?.Dispose();
             characterConfigController?.Dispose();
         });

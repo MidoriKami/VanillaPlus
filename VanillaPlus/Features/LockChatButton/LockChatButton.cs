@@ -52,7 +52,7 @@ public class LockChatButton : GameModification {
             thirdPanelController = new ChatPanelController(data, "ChatLogPanel_3");
         }
 
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             chatLogController.Enable();
             firstPanelController.Enable();
             secondPanelController.Enable();
@@ -64,7 +64,7 @@ public class LockChatButton : GameModification {
         addonControlHook?.Dispose();
         addonControlHook = null;
 
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             chatLogController?.Dispose();
             firstPanelController?.Dispose();
             secondPanelController?.Dispose();

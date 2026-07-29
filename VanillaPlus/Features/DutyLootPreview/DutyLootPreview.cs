@@ -47,14 +47,14 @@ public class DutyLootPreview : GameModification {
             OnButtonClicked = addonDutyLoot.Toggle,
         };
 
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             journalUiController.Enable();
             inDutyUiController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             journalUiController?.Dispose();
             inDutyUiController?.Dispose();
         });

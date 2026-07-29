@@ -36,11 +36,11 @@ public class EnhancedWardNavigation : GameModification {
             };
         }
 
-        await IFramework.Get().RunSafely(housingAddonController.Enable);
+        await IFramework.Get().Run(housingAddonController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().RunSafely(() => housingAddonController?.Dispose());
+        await IFramework.Get().Run(() => housingAddonController?.Dispose());
         housingAddonController = null;
     }
 

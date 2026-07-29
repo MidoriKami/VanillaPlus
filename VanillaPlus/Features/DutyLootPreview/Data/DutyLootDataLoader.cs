@@ -49,7 +49,7 @@ public class DutyLootDataLoader : IAsyncDisposable {
             };
         }
 
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             contentsFinder.Enable();
             raidFinder.Enable();
         });
@@ -60,7 +60,7 @@ public class DutyLootDataLoader : IAsyncDisposable {
     }
 
     public async ValueTask DisposeAsync() {
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             contentsFinder?.Dispose();
             raidFinder?.Dispose();
         });

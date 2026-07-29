@@ -47,11 +47,11 @@ public class FadeLootButton : GameModification {
             };
         }
 
-        await IFramework.Get().RunSafely(notificationLootController.Enable);
+        await IFramework.Get().Run(notificationLootController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().RunSafely(() => notificationLootController?.Dispose());
+        await IFramework.Get().Run(() => notificationLootController?.Dispose());
         notificationLootController = null;
 
         await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);

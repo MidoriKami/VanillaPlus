@@ -178,7 +178,7 @@ public class ActionHighlight : GameModification {
                 .OrderBy(entry => ISeStringEvaluator.Get().EvaluateFromAddon(981, [entry.ClassJobId]).ToString())
                 .ToList();
 
-            IFramework.Get().RunSafely(() => {
+            IFramework.Get().Run(() => {
                 configAddon.OptionsList = results;
             });
         });

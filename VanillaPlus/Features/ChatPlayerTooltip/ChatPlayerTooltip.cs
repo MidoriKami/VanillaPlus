@@ -40,7 +40,7 @@ public class ChatPlayerTooltip : GameModification {
     public override async Task OnDisableAsync() {
         IAddonLifecycle.Get().UnregisterListener(PreReceiveEvent);
 
-        await IFramework.Get().RunSafely(HideTooltip);
+        await IFramework.Get().Run(HideTooltip);
     }
 
     private unsafe void PreReceiveEvent(AddonEvent type, AddonArgs args) {

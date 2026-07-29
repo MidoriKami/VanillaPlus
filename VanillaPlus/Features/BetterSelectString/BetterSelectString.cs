@@ -55,14 +55,14 @@ public class BetterSelectString : GameModification {
             };
         }
 
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             selectStringController.Enable();
             selectStringListController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             selectStringController?.Dispose();
             selectStringListController?.Dispose();
         });

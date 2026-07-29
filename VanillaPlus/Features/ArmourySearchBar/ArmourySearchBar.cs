@@ -54,7 +54,7 @@ public class ArmourySearchBar : GameModification {
             Callback = OnKeybindPressed,
         };
 
-        await IFramework.Get().RunSafely(inventoryController.Enable);
+        await IFramework.Get().Run(inventoryController.Enable);
 
         IGameGui.Get().AgentUpdate += OnAgentUpdate;
         IFramework.Get().Update += OnFrameworkUpdate;
@@ -64,7 +64,7 @@ public class ArmourySearchBar : GameModification {
         IFramework.Get().Update -= OnFrameworkUpdate;
         IGameGui.Get().AgentUpdate -= OnAgentUpdate;
 
-        await IFramework.Get().RunSafely(() => inventoryController?.Dispose());
+        await IFramework.Get().Run(() => inventoryController?.Dispose());
         inventoryController = null;
     }
 

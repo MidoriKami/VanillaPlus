@@ -22,7 +22,7 @@ public class CommandPanelSync : GameModification {
         IClientState.Get().Logout += OnLogout;
 
         if (IClientState.Get().IsLoggedIn) {
-            await IFramework.Get().RunSafely(ApplySharedQuickPanel);
+            await IFramework.Get().Run(ApplySharedQuickPanel);
         }
     }
 
@@ -31,7 +31,7 @@ public class CommandPanelSync : GameModification {
         IClientState.Get().Logout -= OnLogout;
 
         if (IClientState.Get().IsLoggedIn) {
-            await IFramework.Get().RunSafely(RestoreOriginalQuickPanel);
+            await IFramework.Get().Run(RestoreOriginalQuickPanel);
         }
     }
 

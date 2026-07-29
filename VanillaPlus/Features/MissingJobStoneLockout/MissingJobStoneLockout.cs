@@ -43,11 +43,11 @@ public class MissingJobStoneLockout : GameModification {
             };
         }
 
-        await IFramework.Get().RunSafely(contentsFinderController.Enable);
+        await IFramework.Get().Run(contentsFinderController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().RunSafely(() => contentsFinderController?.Dispose());
+        await IFramework.Get().Run(() => contentsFinderController?.Dispose());
         contentsFinderController = null;
     }
 

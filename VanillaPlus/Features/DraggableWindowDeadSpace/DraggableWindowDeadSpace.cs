@@ -34,7 +34,7 @@ public class DraggableWindowDeadSpace : GameModification {
     public override async Task OnEnableAsync() {
         windowInteractionNodes = [];
 
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             unsafe {
                 cursorEventListener = new ViewportEventListener(OnViewportEvent);
             }
@@ -47,7 +47,7 @@ public class DraggableWindowDeadSpace : GameModification {
     public override async Task OnDisableAsync() {
         IAddonLifecycle.Get().UnregisterListener(OnAddonSetup, OnAddonFinalize);
 
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             cursorEventListener?.Dispose();
 
             foreach (var (_, node) in windowInteractionNodes ?? []) {

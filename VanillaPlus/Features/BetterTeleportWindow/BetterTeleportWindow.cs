@@ -34,11 +34,11 @@ public class BetterTeleportWindow : GameModification {
             },
         };
 
-        await IFramework.Get().RunSafely(teleportFactoryController.Enable);
+        await IFramework.Get().Run(teleportFactoryController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().RunSafely(() => teleportFactoryController?.Dispose());
+        await IFramework.Get().Run(() => teleportFactoryController?.Dispose());
         teleportFactoryController = null;
     }
 }

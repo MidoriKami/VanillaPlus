@@ -81,7 +81,7 @@ public class ResourceBarPercentages : GameModification {
     public override async Task OnDisableAsync() {
         IAddonLifecycle.Get().UnregisterListener(OnParameterDraw, OnPartyListDraw);
 
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             OnParameterDisable();
             OnPartyListDisable();
         });

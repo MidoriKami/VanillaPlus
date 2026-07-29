@@ -30,7 +30,7 @@ public class DebugCustomAddon : GameModification {
 
         OpenConfigAction = debugAddon.Toggle;
 
-        await IFramework.Get().RunSafely(debugAddon.Open);
+        await IFramework.Get().Run(debugAddon.Open);
     }
 
     public override async Task OnDisableAsync() {

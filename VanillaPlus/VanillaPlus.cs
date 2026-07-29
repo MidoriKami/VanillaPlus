@@ -97,7 +97,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
     private static void AutoOpenBrowser(bool enabled) {
         if (!enabled) return;
 
-        IFramework.Get().RunSafely(System.ModificationBrowserAddon.Open);
+        IFramework.Get().Run(System.ModificationBrowserAddon.Open);
     }
 
     private static void CommandHandler(string command, string arguments) {

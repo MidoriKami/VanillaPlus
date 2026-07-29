@@ -40,7 +40,7 @@ public class CharacterConfigController : IDisposable {
     }
 
     public void Dispose() {
-        IFramework.Get().RunSafely(() => {
+        IFramework.Get().Run(() => {
             characterConfigController?.Dispose();
             childAddonController?.Dispose();
         });

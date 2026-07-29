@@ -38,7 +38,7 @@ public class InventorySearchBar : GameModification {
 
     public override async Task OnEnableAsync() {
         if (IClientState.Get().IsLoggedIn) {
-            await IFramework.Get().RunSafely(ReinitializeController);
+            await IFramework.Get().Run(ReinitializeController);
         }
 
         keybindListener = new KeybindListener {
@@ -65,7 +65,7 @@ public class InventorySearchBar : GameModification {
         IGameGui.Get().AgentUpdate -= OnAgentUpdate;
         IFramework.Get().Update -= OnFrameworkUpdate;
 
-        await IFramework.Get().RunSafely(() => inventoryController?.Dispose());
+        await IFramework.Get().Run(() => inventoryController?.Dispose());
         inventoryController = null;
         keybindListener = null;
         searchInputNode = null;

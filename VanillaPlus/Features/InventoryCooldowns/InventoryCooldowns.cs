@@ -23,7 +23,7 @@ public class InventoryCooldowns : GameModification {
 
     public override async Task OnEnableAsync() {
         if (IClientState.Get().IsLoggedIn) {
-            await IFramework.Get().RunSafely(ReinitializeController);
+            await IFramework.Get().Run(ReinitializeController);
         }
 
         IGameConfig.Get().UiConfigChanged += OnUiConfigChanged;
@@ -32,7 +32,7 @@ public class InventoryCooldowns : GameModification {
     public override async Task OnDisableAsync() {
         IGameConfig.Get().UiConfigChanged -= OnUiConfigChanged;
 
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             expandedInventoryController?.Dispose();
             largeInventoryController?.Dispose();
             normalInventoryController?.Dispose();

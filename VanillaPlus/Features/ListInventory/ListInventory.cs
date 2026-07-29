@@ -76,7 +76,7 @@ public class ListInventory : GameModification {
         => inventoryListAddon?.Toggle();
 
     private void OnKeybindPressed(ref bool isHandled) {
-        IFramework.Get().RunSafely(() => inventoryListAddon?.Toggle());
+        IFramework.Get().Run(() => inventoryListAddon?.Toggle());
 
         isHandled = true;
     }

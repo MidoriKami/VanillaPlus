@@ -40,7 +40,7 @@ public class DisableTitleScreenMovie : GameModification {
                 ]);
             }
 
-            await IFramework.Get().RunSafely(jumpPatch.Enable);
+            await IFramework.Get().Run(jumpPatch.Enable);
         }
     }
 

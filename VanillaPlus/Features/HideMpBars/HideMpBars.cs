@@ -64,14 +64,14 @@ public class HideMpBars : GameModification {
             };
         }
 
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             partyListController.Enable();
             paramController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             partyListController?.Dispose();
             paramController?.Dispose();
         });

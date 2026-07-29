@@ -44,14 +44,14 @@ public class GearSetReorderButtons : GameModification {
             };
         }
 
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             gearSetsAddonController.Enable();
             gearSetsListController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             foreach (var (_, node) in reorderButtonNodes ?? []) {
                 node.Dispose();
             }

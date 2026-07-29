@@ -50,11 +50,11 @@ public class HUDPresets : GameModification {
             };
         }
 
-        await IFramework.Get().RunSafely(hudLayoutController.Enable);
+        await IFramework.Get().Run(hudLayoutController.Enable);
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().RunSafely(() => hudLayoutController?.Dispose());
+        await IFramework.Get().Run(() => hudLayoutController?.Dispose());
         hudLayoutController = null;
 
         await Task.WhenAll(renameAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);

@@ -46,7 +46,7 @@ public class FancyLoadingScreens : GameModification {
             };
         }
 
-        await IFramework.Get().RunSafely(() => locationTitleController.Enable());
+        await IFramework.Get().Run(() => locationTitleController.Enable());
 
         IAddonLifecycle.Get().RegisterListener(AddonEvent.PostHide, "_LocationTitle", OnLoadingScreenHide);
         IClientState.Get().TerritoryChanged += OnTerritoryChanged;
@@ -59,7 +59,7 @@ public class FancyLoadingScreens : GameModification {
         teleportHook?.Dispose();
         teleportHook = null;
 
-        await IFramework.Get().RunSafely(() => {
+        await IFramework.Get().Run(() => {
             locationTitleController?.Dispose();
         });
         locationTitleController = null;
