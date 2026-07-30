@@ -95,7 +95,6 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
                             Height = ContentSize.Y - 28.0f - itemSpacing * 2.0f,
                             ItemSpacing = itemSpacing * 1.5f,
                             OptionsList = IAetheryteList.Get().ToList(),
-                            NoResultsString = Strings.BetterTeleportWindow_NoResults,
                         },
                     ],
                 },

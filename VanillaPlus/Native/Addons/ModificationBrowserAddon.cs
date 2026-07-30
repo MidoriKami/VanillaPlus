@@ -101,7 +101,6 @@ public class ModificationBrowserAddon : NativeAddon {
                                     NavUp = 6,
                                     NavRight = 100,
                                     OptionsList = GetModifications(),
-                                    NoResultsString = Strings.ModificationBrowser_NoResults,
                                     OnItemSelected = selectedItem
                                         => modificationInfoNode?.SetDisplayedGameModification(selectedItem),
                                 },
