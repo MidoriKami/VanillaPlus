@@ -1,8 +1,8 @@
-﻿using System.Runtime.InteropServices;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Plugin.Services;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -29,9 +29,10 @@ public class OpenGlamourDresserToCurrentJob : GameModification {
         return Task.CompletedTask;
     }
 
-    private void OnGlamourDresserSetup(AddonEvent type, AddonArgs args) {
+    private unsafe void OnGlamourDresserSetup(AddonEvent type, AddonArgs args) {
         if (IObjectTable.Get() is { LocalPlayer.ClassJob.RowId: var playerJob }) {
-            Marshal.WriteByte(args.Addon, 0x1A8, (byte)playerJob);
+            var addon = args.GetAddon<AddonMiragePrismPrismBox>();
+            addon->Param = (int) playerJob;
         }
     }
 }
