@@ -2503,7 +2503,7 @@ namespace Resources {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Adds a text command for changing game configuration options..
+        ///   Looks up a localized string similar to Adds the /gameconfig command for changing game configuration options..
         /// </summary>
         internal static string ModificationDescription_GameConfigCommand {
             get {

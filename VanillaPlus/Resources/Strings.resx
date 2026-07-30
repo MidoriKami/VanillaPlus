@@ -1719,6 +1719,6 @@ To join in the festivities, check out the Seasonal section in VanillaPlus!</valu
     <value>Game Config Command</value>
   </data>
   <data name="ModificationDescription_GameConfigCommand" xml:space="preserve">
-    <value>Adds a text command for changing game configuration options.</value>
+    <value>Adds the /gameconfig command for changing game configuration options.</value>
   </data>
 </root>
