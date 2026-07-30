@@ -22,7 +22,7 @@ public class GameConfigCommand : GameModification {
     };
 
     private const string CommandName = "/gameconfig";
-    private const string Usage = "Usage: /gameconfig [system|ui|control] <option> <value>";
+    private const string Usage = "Usage: /gameconfig <system|ui|control> <option> <value>";
 
     private static readonly ConfigOption[] ConfigOptions = [
         .. GetConfigOptions<SystemConfigOption>(ConfigSection.System),
@@ -47,37 +47,28 @@ public class GameConfigCommand : GameModification {
 
     private static void OnCommand(string command, string arguments) {
         var remainingArguments = arguments.Trim();
-        var optionName = TakeArgument(ref remainingArguments);
-        ConfigSection? requestedSection = null;
+        var sectionName = TakeArgument(ref remainingArguments);
 
-        if (TryParseSection(optionName, out var section)) {
-            requestedSection = section;
-            optionName = TakeArgument(ref remainingArguments);
+        if (!TryParseSection(sectionName, out var section)) {
+            IChatGui.Get().PrintError(Usage);
+            return;
         }
+
+        var optionName = TakeArgument(ref remainingArguments);
 
         if (optionName.Length is 0 || remainingArguments.Length is 0) {
             IChatGui.Get().PrintError(Usage);
             return;
         }
 
-        var matches = ConfigOptions
-            .Where(option => requestedSection is null || option.Section == requestedSection)
-            .Where(option => option.Name.Equals(optionName, StringComparison.OrdinalIgnoreCase)
-                || option.EnumName.Equals(optionName, StringComparison.OrdinalIgnoreCase))
-            .ToList();
+        var configOption = ConfigOptions.FirstOrDefault(option => option.Section == section
+            && (option.Name.Equals(optionName, StringComparison.OrdinalIgnoreCase)
+                || option.EnumName.Equals(optionName, StringComparison.OrdinalIgnoreCase)));
 
-        if (matches.Count is 0) {
-            IChatGui.Get().PrintError($"Unknown game configuration option: {optionName}");
+        if (configOption is null) {
+            IChatGui.Get().PrintError($"Unknown {GetSectionArgument(section)} configuration option: {optionName}");
             return;
         }
-
-        if (matches.Count > 1) {
-            var sections = string.Join(", ", matches.Select(option => GetSectionArgument(option.Section)));
-            IChatGui.Get().PrintError($"{optionName} exists in multiple sections ({sections}). Specify a section.");
-            return;
-        }
-
-        var configOption = matches[0];
 
         if (!configOption.Settable) {
             IChatGui.Get().PrintError($"{configOption.Name} cannot be changed while the game is running.");
