@@ -14,7 +14,7 @@ public class ZoneLabelNode : OverlayNode {
 
     public override OverlayLayer OverlayLayer => OverlayLayer.Background;
 
-    private readonly TextNineGridNode labelNode;
+    private readonly BackgroundTextNode labelNode;
     private readonly ImGuiImageNode imageNode;
 
     private readonly ZoneWatcher watcher;
@@ -22,11 +22,11 @@ public class ZoneLabelNode : OverlayNode {
     public ZoneLabelNode(ZoneWatcher zoneWatcher) {
         watcher = zoneWatcher;
 
-        labelNode = new TextNineGridNode {
+        labelNode = new BackgroundTextNode {
             TextColor = ColorHelper.GetColor(1),
             FontSize = 22,
             FontType = FontType.Axis,
-            AlignmentType = AlignmentType.Center,
+            NodeFlags = NodeFlags.Visible,
         };
         labelNode.AttachNode(this);
 
