@@ -2501,7 +2501,16 @@ namespace Resources {
                 return ResourceManager.GetString("ModificationDescription_ForcedCutsceneSounds", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Adds the /gameconfig command for changing game configuration options..
+        /// </summary>
+        internal static string ModificationDescription_GameConfigCommand {
+            get {
+                return ResourceManager.GetString("ModificationDescription_GameConfigCommand", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to When equipping gearsets, set alternative sets to load depending on what zone you are in..
         /// </summary>
@@ -3222,7 +3231,16 @@ namespace Resources {
                 return ResourceManager.GetString("ModificationDisplay_ForcedCutsceneSounds", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Game Config Command.
+        /// </summary>
+        internal static string ModificationDisplay_GameConfigCommand {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_GameConfigCommand", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Gearset Redirect.
         /// </summary>
