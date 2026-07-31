@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Aetherytes;
 using Dalamud.Plugin.Services;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
@@ -24,6 +25,8 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
     private SimpleImageNode? mapPreviewNode;
     private TextNineGridNode? mapLabelNode;
     private CircleButtonNode? ticketConfigButton;
+    private CounterNode? gilCounter;
+    private CounterNode? ticketCounter;
 
     private ListMode currentMode = ListMode.All;
     private uint currentRegionId;
@@ -94,7 +97,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
                         listNode = new ListNode<IAetheryteEntry, TeleportListItemNode> { // Results
                             Height = ContentSize.Y - 28.0f - itemSpacing * 2.0f,
                             ItemSpacing = itemSpacing * 1.5f,
-                            OptionsList = IAetheryteList.Get().ToList(),
+                            OptionsList = [ .. IAetheryteList.Get() ],
                         },
                     ],
                 },
@@ -138,12 +141,52 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
         };
         ticketConfigButton.AttachNode(this);
 
+        gilCounter = new CounterNode {
+            Size = new Vector2(100.0f, 24.0f),
+            Position = new Vector2(200.0f, 12.0f),
+            Scale = new Vector2(0.75f, 0.75f),
+            TextAlignment = AlignmentType.Right,
+            Font = CounterFont.Emj,
+        };
+        gilCounter.AttachNode(this);
+
+        new IconImageNode {
+            Size = new Vector2(24.0f, 24.0f),
+            Position = new Vector2(gilCounter.Bounds.Right - 24.0f, 8.0f),
+            IconId = 65002, // Gil
+            FitTexture = true,
+            TextTooltip = IDataManager.Get().GetAddonText(830), // Gil
+        }.AttachNode(this);
+
+        ticketCounter = new CounterNode {
+            Size = new Vector2(50.0f, 24.0f),
+            Position = new Vector2(375.0f, 12.0f),
+            Scale = new Vector2(0.75f, 0.75f),
+            Font = CounterFont.Emj,
+        };
+        ticketCounter.AttachNode(this);
+
+        new IconImageNode {
+            Size = new Vector2(24.0f, 24.0f),
+            Position = new Vector2(ticketCounter.Bounds.Right - 8.0f, 8.0f),
+            IconId = 25918, // Aetheryte Ticket.
+            FitTexture = true,
+            TextTooltip = IDataManager.Get().GetAddonText(9297),
+        }.AttachNode(this);
+
         currentMode = config.LastListMode;
         OnSearchBoxInputReceived(string.Empty);
 
         if (config.AutoFocusSearch) {
             textInputNode?.SetFocus();
         }
+    }
+
+    protected override unsafe void OnUpdate(AtkUnitBase* addon) {
+        base.OnUpdate(addon);
+
+        gilCounter?.Number = (int) InventoryManager.Instance()->GetGil();
+        ticketCounter?.Number = InventoryManager.Instance()->GetInventoryItemCount(7569);
     }
 
     private void OnSearchBoxReturnPressed(ReadOnlySeString obj)
