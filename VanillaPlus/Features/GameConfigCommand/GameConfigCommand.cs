@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Dalamud.Game.Command;
 using Dalamud.Game.Config;
 using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
-using VanillaPlus.Extensions;
 
 namespace VanillaPlus.Features.GameConfigCommand;
 
@@ -18,194 +15,148 @@ public class GameConfigCommand : GameModification {
         DisplayName = Strings.ModificationDisplay_GameConfigCommand,
         Description = Strings.ModificationDescription_GameConfigCommand,
         Type = ModificationType.GameBehavior,
-        Authors = ["Ren"],
+        Authors = [ "Ren" ],
     };
 
-    private const string CommandName = "/gameconfig";
-    private const string Usage = "Usage: /gameconfig <system|ui|control> <option> <value>";
-
-    private static readonly ConfigOption[] ConfigOptions = [
-        .. GetConfigOptions<SystemConfigOption>(ConfigSection.System),
-        .. GetConfigOptions<UiConfigOption>(ConfigSection.UiConfig),
-        .. GetConfigOptions<UiControlOption>(ConfigSection.UiControl),
-    ];
+    private static Dictionary<ConfigSection, Dictionary<string, GameConfigOptionAttribute>>? configMapping;
 
     public override Task OnEnableAsync() {
-        ICommandManager.Get().AddHandler(CommandName, new CommandInfo(OnCommand) {
-            HelpMessage = Usage,
+        ICommandManager.Get().AddHandler("/gameconfig", new CommandInfo(OnCommand) {
+            HelpMessage = "Usage: /gameconfig <system|ui|control> <option> <value>",
             ShowInHelp = true,
         });
+
+        configMapping = new Dictionary<ConfigSection, Dictionary<string, GameConfigOptionAttribute>> {
+            [ConfigSection.System] =
+                Enum.GetValues<SystemConfigOption>()
+                    .Select(option => option.GetAttribute<GameConfigOptionAttribute>())
+                    .OfType<GameConfigOptionAttribute>()
+                    .ToDictionary(key => key.Name.ToLowerInvariant(), value => value),
+
+            [ConfigSection.UiConfig] =
+                Enum.GetValues<UiConfigOption>()
+                    .Select(option => option.GetAttribute<GameConfigOptionAttribute>())
+                    .OfType<GameConfigOptionAttribute>()
+                    .ToDictionary(key => key.Name.ToLowerInvariant(), value => value),
+
+            [ConfigSection.UiControl] =
+                Enum.GetValues<UiControlOption>()
+                    .Select(option => option.GetAttribute<GameConfigOptionAttribute>())
+                    .OfType<GameConfigOptionAttribute>()
+                    .ToDictionary(key => key.Name.ToLowerInvariant(), value => value),
+        };
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        ICommandManager.Get().RemoveHandler(CommandName);
+        ICommandManager.Get().RemoveHandler("/gameconfig");
+
+        configMapping = null;
 
         return Task.CompletedTask;
     }
 
     private static void OnCommand(string command, string arguments) {
-        var remainingArguments = arguments.Trim();
-        var sectionName = TakeArgument(ref remainingArguments);
-
-        if (!TryParseSection(sectionName, out var section)) {
-            IChatGui.Get().PrintError(Usage);
-            return;
-        }
-
-        var optionName = TakeArgument(ref remainingArguments);
-
-        if (optionName.Length is 0 || remainingArguments.Length is 0) {
-            IChatGui.Get().PrintError(Usage);
-            return;
-        }
-
-        var configOption = ConfigOptions.FirstOrDefault(option => option.Section == section
-            && (option.Name.Equals(optionName, StringComparison.OrdinalIgnoreCase)
-                || option.EnumName.Equals(optionName, StringComparison.OrdinalIgnoreCase)));
-
-        if (configOption is null) {
-            IChatGui.Get().PrintError($"Unknown {GetSectionArgument(section)} configuration option: {optionName}");
-            return;
-        }
-
-        if (!configOption.Settable) {
-            IChatGui.Get().PrintError($"{configOption.Name} cannot be changed while the game is running.");
-            return;
-        }
+        if (command is not "/gameconfig") return;
 
         if (ICondition.Get().IsInCombat) {
-            IChatGui.Get().PrintError("Game configuration cannot be changed while in combat.");
+            IChatGui.Get().PrintError("Game configuration cannot be changed while in combat.", "VanillaPlus");
             return;
         }
 
-        try {
-            SetValue(configOption, remainingArguments);
-        }
-        catch (Exception exception) {
-            IPluginLog.Get().Error(exception, $"Failed to update {configOption.Section}.{configOption.Name}");
-            IChatGui.Get().PrintError($"Failed to update {configOption.Name}.");
-        }
-    }
-
-    private static void SetValue(ConfigOption option, string valueText) {
-        var section = GetConfigSection(option.Section);
-
-        switch (option.Type) {
-            case ConfigType.UInt:
-                if (!uint.TryParse(valueText, NumberStyles.Integer, CultureInfo.InvariantCulture, out var uintValue)) {
-                    IChatGui.Get().PrintError($"{option.Name} requires an unsigned integer value.");
-                    return;
+        switch (arguments.ToLowerInvariant().Split(' ')) {
+            case ["system", { Length: > 0 } option, { Length: > 0 } value]: {
+                if (configMapping?[ConfigSection.System].TryGetValue(option.ToLowerInvariant(), out var optionAttribute) ?? false) {
+                    SetConfigOption(ConfigSection.System, optionAttribute, value);
                 }
-
-                if (section.TryGetProperties(option.Name, out UIntConfigProperties? uintProperties)
-                    && uintProperties is not null
-                    && (uintValue < uintProperties.Minimum || uintValue > uintProperties.Maximum)) {
-                    IChatGui.Get().PrintError($"{option.Name} must be between {uintProperties.Minimum} and {uintProperties.Maximum}.");
-                    return;
-                }
-
-                section.Set(option.Name, uintValue);
                 break;
+            }
 
-            case ConfigType.Float:
-                if (!float.TryParse(valueText, NumberStyles.Float, CultureInfo.InvariantCulture, out var floatValue)
-                    || !float.IsFinite(floatValue)) {
-                    IChatGui.Get().PrintError($"{option.Name} requires a decimal value.");
-                    return;
+            case ["ui", { Length: > 0 } option, { Length: > 0 } value]: {
+                if (configMapping?[ConfigSection.UiConfig].TryGetValue(option.ToLowerInvariant(), out var optionAttribute) ?? false) {
+                    SetConfigOption(ConfigSection.UiConfig, optionAttribute, value);
                 }
+                break;
+            }
 
-                if (section.TryGetProperties(option.Name, out FloatConfigProperties? floatProperties)
-                    && floatProperties is not null
-                    && (floatValue < floatProperties.Minimum || floatValue > floatProperties.Maximum)) {
-                    IChatGui.Get().PrintError($"{option.Name} must be between {floatProperties.Minimum} and {floatProperties.Maximum}.");
-                    return;
+            case ["control", { Length: > 0 } option, { Length: > 0 } value]: {
+                if (configMapping?[ConfigSection.UiControl].TryGetValue(option.ToLowerInvariant(), out var optionAttribute) ?? false) {
+                    SetConfigOption(ConfigSection.UiControl, optionAttribute, value);
                 }
-
-                section.Set(option.Name, floatValue);
                 break;
-
-            case ConfigType.String:
-                section.Set(option.Name, valueText);
-                break;
+            }
 
             default:
-                IChatGui.Get().PrintError($"{option.Name} uses an unsupported configuration type.");
-                return;
+                IChatGui.Get().PrintError(
+                    $"Error processing command for {command} {arguments}, check the arguments and try again.\n" +
+                    $"Usage: /gameconfig <system|ui|control> <option> <value>", "VanillaPlus"
+                );
+                break;
         }
-
-        IChatGui.Get().Print($"Updated {GetSectionArgument(option.Section)}.{option.Name}.");
     }
 
-    private static GameConfigSection GetConfigSection(ConfigSection section) => section switch {
-        ConfigSection.System => IGameConfig.Get().System,
-        ConfigSection.UiConfig => IGameConfig.Get().UiConfig,
-        ConfigSection.UiControl => IGameConfig.Get().UiControl,
-        _ => throw new ArgumentOutOfRangeException(nameof(section), section, null),
-    };
+    private static void SetConfigOption(ConfigSection section, GameConfigOptionAttribute option, string valueString) {
+        if (option is { Settable: false }) {
+            IChatGui.Get().PrintError($"Config option {option.Name} is not allowed to be set.", "VanillaPlus");
+            return;
+        }
 
-    private static IEnumerable<ConfigOption> GetConfigOptions<TEnum>(ConfigSection section) where TEnum : struct, Enum {
-        foreach (var option in Enum.GetValues<TEnum>()) {
-            var enumName = option.ToString();
-            var attribute = typeof(TEnum).GetField(enumName)?.GetCustomAttribute<GameConfigOptionAttribute>();
+        var configSection = section switch {
+            ConfigSection.System => IGameConfig.Get().System,
+            ConfigSection.UiConfig => IGameConfig.Get().UiConfig,
+            ConfigSection.UiControl => IGameConfig.Get().UiControl,
+            _ => null,
+        };
 
-            if (attribute is not null) {
-                yield return new ConfigOption(section, enumName, attribute.Name, attribute.Type, attribute.Settable);
+        if (configSection is null) return;
+
+        try {
+            switch (option) {
+                case { Type: ConfigType.UInt, Name: var name } when uint.TryParse(valueString, out var uintValue):
+
+                    if (configSection.TryGetProperties(name, out UIntConfigProperties? uintProperties) && uintProperties is not null) {
+                        if (uintValue < uintProperties.Minimum || uintValue > uintProperties.Maximum) {
+                            IChatGui.Get().PrintError($"Argument for {option.Name} must be between {uintProperties.Minimum} and {uintProperties.Maximum}.", "VanillaPlus");
+                            return;
+                        }
+                    }
+
+                    configSection.Set(name, uintValue);
+                    IChatGui.Get().Print($"Updated {section.Description}.{option.Name}.");
+                    return;
+
+                case { Type: ConfigType.Float, Name: var name } when float.TryParse(valueString, out var floatValue):
+
+                    if (!float.IsFinite(floatValue)) {
+                        IChatGui.Get().PrintError($"{option.Name} requires a decimal value.", "VanillaPlus");
+                        return;
+                    }
+
+                    if (configSection.TryGetProperties(name, out FloatConfigProperties? floatProperties) && floatProperties is not null) {
+                        if (floatValue < floatProperties.Minimum || floatValue > floatProperties.Maximum) {
+                            IChatGui.Get().PrintError($"{option.Name} must be between {floatProperties.Minimum} and {floatProperties.Maximum}.", "VanillaPlus");
+                            return;
+                        }
+                    }
+
+                    configSection.Set(name, floatValue);
+                    IChatGui.Get().Print($"Updated {section.Description}.{option.Name}.");
+                    return;
+
+                case { Type: ConfigType.String, Name: var name }:
+                    configSection.Set(name, valueString);
+                    IChatGui.Get().Print($"Updated {section.Description}.{option.Name}.");
+                    return;
+
+                default:
+                    IChatGui.Get().PrintError($"Error processing command for {option.Name}, check the arguments and try again.", "VanillaPlus");
+                    return;
             }
         }
-    }
-
-    private static string TakeArgument(ref string arguments) {
-        arguments = arguments.TrimStart();
-
-        var separatorIndex = arguments.IndexOf(' ');
-        if (separatorIndex is -1) {
-            var argument = arguments;
-            arguments = string.Empty;
-            return argument;
-        }
-
-        var result = arguments[..separatorIndex];
-        arguments = arguments[(separatorIndex + 1)..].TrimStart();
-        return result;
-    }
-
-    private static bool TryParseSection(string argument, out ConfigSection section) {
-        switch (argument.ToLowerInvariant()) {
-            case "system":
-                section = ConfigSection.System;
-                return true;
-            case "ui":
-                section = ConfigSection.UiConfig;
-                return true;
-            case "control":
-                section = ConfigSection.UiControl;
-                return true;
-            default:
-                section = default;
-                return false;
+        catch (Exception e) {
+            IChatGui.Get().PrintError($"Error processing command for {option.Name}, check the arguments and try again.", "VanillaPlus");
+            IPluginLog.Get().Exception(e);
         }
     }
-
-    private static string GetSectionArgument(ConfigSection section) => section switch {
-        ConfigSection.System => "system",
-        ConfigSection.UiConfig => "ui",
-        ConfigSection.UiControl => "control",
-        _ => throw new ArgumentOutOfRangeException(nameof(section), section, null),
-    };
-
-    private enum ConfigSection {
-        System,
-        UiConfig,
-        UiControl,
-    }
-
-    private sealed record ConfigOption(
-        ConfigSection Section,
-        string EnumName,
-        string Name,
-        ConfigType Type,
-        bool Settable
-    );
 }
