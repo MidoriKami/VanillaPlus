@@ -16,7 +16,7 @@ public class RightClickMapNav : GameModification {
         Description = "Allows you to navigate 'up' a layer by right clicking on the map.\n\n" +
                       "Must hold shift while right clicking to nav up.",
         Type = ModificationType.GameBehavior,
-        Authors = ["MidoriKami"],
+        Authors = [ "MidoriKami" ],
     };
 
     public override Task OnEnableAsync() {
