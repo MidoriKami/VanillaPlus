@@ -31,7 +31,7 @@ public class RightClickMapNav : GameModification {
         return Task.CompletedTask;
     }
 
-    private unsafe void OnAreaMapReceiveEvent(AddonEvent type, AddonArgs args) {
+    private static unsafe void OnAreaMapReceiveEvent(AddonEvent type, AddonArgs args) {
         if (args is not AddonReceiveEventArgs receiveEventArgs) return;
 
         var addon = args.GetAddon<AddonAreaMap>();
