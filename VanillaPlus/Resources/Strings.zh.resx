@@ -1715,4 +1715,10 @@ ID：{0}</value>
   <data name="ModificationDescription_ZoneTransitionLabels" xml:space="preserve">
       <value>在区域边界添加指示通往何处的标签。设计风格仿照《最终幻想XII》。</value>
   </data>
+  <data name="ModificationDisplay_GameConfigCommand" xml:space="preserve">
+    <value>Game Config Command</value>
+  </data>
+  <data name="ModificationDescription_GameConfigCommand" xml:space="preserve">
+    <value>Adds the /gameconfig command for changing game configuration options.</value>
+  </data>
 </root>

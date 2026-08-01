@@ -1715,4 +1715,10 @@ To join in the festivities, check out the Seasonal section in VanillaPlus!</valu
   <data name="ModificationDescription_ZoneTransitionLabels" xml:space="preserve">
       <value>Adds labels to zone lines to indicate where they lead. Designed to look like FFXII.</value>
   </data>
+  <data name="ModificationDisplay_GameConfigCommand" xml:space="preserve">
+    <value>Game Config Command</value>
+  </data>
+  <data name="ModificationDescription_GameConfigCommand" xml:space="preserve">
+    <value>Adds the /gameconfig command for changing game configuration options.</value>
+  </data>
 </root>
