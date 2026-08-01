@@ -7,7 +7,6 @@ using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
-using AgentId = Dalamud.Game.Agent.AgentId;
 
 namespace VanillaPlus.Features.RightClickMapNav;
 
@@ -21,8 +20,6 @@ public class RightClickMapNav : GameModification {
 
     public override Task OnEnableAsync() {
         IAddonLifecycle.Get().RegisterListener(AddonEvent.PreReceiveEvent, "AreaMap", OnAreaMapReceiveEvent);
-
-        IAgentLifecycle.Get().LogAgent(AgentId.Map);
 
         return Task.CompletedTask;
     }
