@@ -13,7 +13,8 @@ namespace VanillaPlus.Features.RightClickMapNav;
 public class RightClickMapNav : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Right-Click Map Nav",
-        Description = "Allows you to navigate 'up' a layer by right clicking on the map.",
+        Description = "Allows you to navigate 'up' a layer by right clicking on the map.\n\n" +
+                      "Must hold shift while right clicking to nav up.",
         Type = ModificationType.GameBehavior,
         Authors = ["MidoriKami"],
     };
@@ -30,7 +31,7 @@ public class RightClickMapNav : GameModification {
         return Task.CompletedTask;
     }
 
-    private static unsafe void OnAreaMapReceiveEvent(AddonEvent type, AddonArgs args) {
+    private unsafe void OnAreaMapReceiveEvent(AddonEvent type, AddonArgs args) {
         if (args is not AddonReceiveEventArgs receiveEventArgs) return;
 
         var addon = args.GetAddon<AddonAreaMap>();
@@ -38,6 +39,7 @@ public class RightClickMapNav : GameModification {
 
         var eventData = (AtkEventData*)receiveEventArgs.AtkEventData;
         if (!eventData->IsRightClick) return;
+        if (!eventData->IsShiftHeld) return;
 
         AgentMap.Instance()->AgentInterface.SendCommand(0, [5]);
 
