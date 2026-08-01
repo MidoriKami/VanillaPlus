@@ -24,7 +24,7 @@ public class SystemConfigSearchBar : GameModification {
     public override string ImageName => "SystemConfigSearchBar.png";
 
     private AddonController? systemConfigController;
-    private TextInputNode? systemConfigInput;
+    private SearchInputNode? systemConfigInput;
     private List<TabEntry>? systemConfigTabs;
 
     private ConfigSearchBarConfig? config;
@@ -83,7 +83,7 @@ public class SystemConfigSearchBar : GameModification {
         var size = new Vector2(addon->Size.X / 2.0f, 28.0f);
 
         var headerSize = new Vector2(addon->WindowHeaderCollisionNode->Width, addon->WindowHeaderCollisionNode->Height);
-        systemConfigInput = new TextInputNode {
+        systemConfigInput = new SearchInputNode {
             Position = headerSize / 2.0f - size / 2.0f + new Vector2(25.0f, 5.0f),
             Size = size,
             OnInputReceived = searchString => {
@@ -91,7 +91,6 @@ public class SystemConfigSearchBar : GameModification {
                     entry.TryMatchString(searchString.ToString());
                 }
             },
-            PlaceholderString = Strings.SearchPlaceholder,
         };
 
         systemConfigInput.AttachNode(addon);
