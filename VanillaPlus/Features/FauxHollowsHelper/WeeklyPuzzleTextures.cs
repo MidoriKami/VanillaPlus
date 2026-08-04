@@ -1,13 +1,13 @@
 namespace VanillaPlus.Features.FauxHollowsHelper;
 
-// NodeList[3] PartIds adapted from https://github.com/Glorou/EzFauxHollows.
+// Background node PartIds adapted from https://github.com/Glorou/EzFauxHollows.
 internal enum WeeklyPuzzleTexture {
     Hidden = 5,
     Blank = 6,
     Blocked = 9,
 }
 
-// NodeList[6] icon PartIds.
+// Icon node PartIds.
 internal enum WeeklyPuzzlePrizeTexture {
     TinyBox = 0,
     TinySwords = 1,
