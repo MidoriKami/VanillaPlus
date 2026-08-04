@@ -1715,4 +1715,10 @@ Pour participer aux festivités, rendez-vous dans la section « Saison » de Van
   <data name="ModificationDescription_ZoneTransitionLabels" xml:space="preserve">
       <value>Ajoute des étiquettes aux lignes de zone pour indiquer où elles mènent. Conçu pour ressembler à FFXII.</value>
   </data>
+  <data name="ModificationDisplay_GameConfigCommand" xml:space="preserve">
+    <value>Commande "Game Config"</value>
+  </data>
+  <data name="ModificationDescription_GameConfigCommand" xml:space="preserve">
+    <value>Ajoute la commande /gameconfig permettant de modifier les options de configuration du jeu.</value>
+  </data>
 </root>
