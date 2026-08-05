@@ -1,17 +1,23 @@
 ﻿using System;
+using System.Drawing;
 using System.Numerics;
 using Dalamud.Game.ClientState.Fates;
 using Dalamud.Game.Text;
+using Dalamud.Interface;
+using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
+using KamiToolKit.Nodes.Simplified;
 using KamiToolKit.Timelines;
+using FateState = Dalamud.Game.ClientState.Fates.FateState;
 
 namespace VanillaPlus.Features.FateListWindow;
 
 public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
     public static float ItemHeight => 53.0f;
 
+    private readonly NineGridNode activeBackgroundNode;
     private readonly IconImageNode iconNode;
     private readonly IconImageNode expBonusIconNode;
     private readonly TextNode nameNode;
@@ -21,6 +27,18 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
     private readonly TextNode progressTextNode;
 
     public FateListItemNode() {
+        activeBackgroundNode = new SimpleNineGridNode {
+            TexturePath = "ui/uld/ListItemA.tex",
+            TextureCoordinates = new Vector2(0.0f, 0.0f),
+            TextureSize = new Vector2(64.0f, 22.0f),
+            TopOffset = 6,
+            BottomOffset = 6,
+            LeftOffset = 16,
+            RightOffset = 1,
+            IsVisible = false,
+        };
+        activeBackgroundNode.AttachNode(this);
+
         iconNode = new IconImageNode {
             FitTexture = true,
         };
@@ -84,6 +102,9 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
 
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
+        activeBackgroundNode.Size = Size + new Vector2(6.0f, 6.0f);
+        activeBackgroundNode.Position = new Vector2(-3.0f, -3.0f);
+
         iconNode.Position = new Vector2(2.0f, 2.0f);
         iconNode.Size = new Vector2(48.0f, 48.0f);
 
@@ -107,6 +128,11 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
     }
 
     protected override void SetNodeData(IFate itemData) {
+        unsafe {
+            var fateManager = FateManager.Instance();
+            activeBackgroundNode.IsVisible = fateManager->CurrentFate != null && fateManager->CurrentFate->FateId == itemData.FateId;
+        }
+
         iconNode.IconId = itemData.MapIconId;
         nameNode.String = itemData.NameString;
 
