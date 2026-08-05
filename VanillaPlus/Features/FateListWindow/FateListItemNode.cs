@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using System.Numerics;
 using Dalamud.Game.ClientState.Fates;
 using Dalamud.Game.Text;
-using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Interfaces;
@@ -127,11 +125,9 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
         nameNode.Position = new Vector2(iconNode.Width + 4.0f, 0.0f);
     }
 
-    protected override void SetNodeData(IFate itemData) {
-        unsafe {
-            var fateManager = FateManager.Instance();
-            activeBackgroundNode.IsVisible = fateManager->CurrentFate != null && fateManager->CurrentFate->FateId == itemData.FateId;
-        }
+    protected override unsafe void SetNodeData(IFate itemData) {
+        var fateManager = FateManager.Instance();
+        activeBackgroundNode.IsVisible = fateManager->CurrentFate != null && fateManager->CurrentFate->FateId == itemData.FateId;
 
         iconNode.IconId = itemData.MapIconId;
         nameNode.String = itemData.NameString;
