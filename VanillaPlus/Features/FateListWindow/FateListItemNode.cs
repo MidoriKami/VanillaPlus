@@ -29,14 +29,13 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
     public FateListItemNode() {
         activeBackgroundNode = new SimpleNineGridNode {
             TexturePath = "ui/uld/ListItemA.tex",
-            TextureCoordinates = new Vector2(0.0f, 22.0f),
+            TextureCoordinates = new Vector2(0.0f, 0.0f),
             TextureSize = new Vector2(64.0f, 22.0f),
             TopOffset = 6,
             BottomOffset = 6,
             LeftOffset = 16,
             RightOffset = 1,
             IsVisible = false,
-            Color = KnownColor.Orange.Vector(),
         };
         activeBackgroundNode.AttachNode(this);
 
