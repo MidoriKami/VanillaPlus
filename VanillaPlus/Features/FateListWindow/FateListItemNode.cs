@@ -4,7 +4,6 @@ using System.Numerics;
 using Dalamud.Game.ClientState.Fates;
 using Dalamud.Game.Text;
 using Dalamud.Interface;
-using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Interfaces;
