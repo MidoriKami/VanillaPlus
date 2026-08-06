@@ -1,5 +1,4 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -171,7 +170,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
             collisionUpdateNeeded = true;
         }
 
-        var wantsConfigButton = itemData.Modification is { OpenConfigAction: not null } or { OpenConfigAsync: not null };
+        var wantsConfigButton = itemData.Modification is { OpenConfigAction: not null };
         var hasConfigButton = openConfigButton.IsVisible;
 
         if (wantsConfigButton && !hasConfigButton) {
@@ -181,18 +180,6 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
         switch (itemData.State) {
             case LoadedState.Enabled when itemData.Modification.OpenConfigAction is { } openConfig:
                 openConfigButton.OnClick = () => openConfig();
-                openConfigButton.IsVisible = true;
-                break;
-
-            case LoadedState.Enabled when itemData.Modification.OpenConfigAsync is { } openConfigAsync:
-                openConfigButton.OnClick = () => {
-                    try {
-                        Task.Run((Func<Task?>) openConfigAsync);
-                    }
-                    catch (Exception e) {
-                        IPluginLog.Get().Exception(e);
-                    }
-                };
                 openConfigButton.IsVisible = true;
                 break;
 
