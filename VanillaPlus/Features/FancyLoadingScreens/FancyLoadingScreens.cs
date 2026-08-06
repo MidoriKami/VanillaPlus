@@ -59,9 +59,7 @@ public class FancyLoadingScreens : GameModification {
         teleportHook?.Dispose();
         teleportHook = null;
 
-        await IFramework.Get().Run(() => {
-            locationTitleController?.Dispose();
-        });
+        await IFramework.Get().DisposeMainThreaded(locationTitleController);
         locationTitleController = null;
 
         artworkImageNode = null;

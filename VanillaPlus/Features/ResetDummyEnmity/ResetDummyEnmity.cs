@@ -52,10 +52,7 @@ public class ResetDummyEnmity : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => {
-            enemyListController?.Dispose();
-        });
-
+        await IFramework.Get().DisposeMainThreaded(enemyListController);
         enemyListController = null;
 
         resetButtons = null;

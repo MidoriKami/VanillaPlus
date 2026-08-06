@@ -40,7 +40,7 @@ public class HUDCoordinates : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => hudLayoutScreenController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(hudLayoutScreenController);
         hudLayoutScreenController = null;
 
         textNodes?.Clear();

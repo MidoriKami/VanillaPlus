@@ -66,19 +66,13 @@ public class TargetCastBarCountdown : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => {
-            primaryController?.Dispose();
-            primaryAltController?.Dispose();
-            focusController?.Dispose();
-            nameplateController?.Dispose();
-        });
-
+        await IFramework.Get().DisposeMainThreaded(primaryController, primaryAltController, focusController, nameplateController);
         primaryController = null;
         primaryAltController = null;
         focusController = null;
         nameplateController = null;
 
-        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(configAddon);
         configAddon = null;
     }
 }

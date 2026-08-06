@@ -71,15 +71,11 @@ public class HideMpBars : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => {
-            partyListController?.Dispose();
-            paramController?.Dispose();
-        });
-
+        await IFramework.Get().DisposeMainThreaded(partyListController, paramController);
         partyListController = null;
         paramController = null;
 
-        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(configAddon);
         configAddon = null;
 
         manaUsingClassJobs = null;

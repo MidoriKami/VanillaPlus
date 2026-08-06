@@ -54,19 +54,11 @@ public class DutyLootPreview : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => {
-            journalUiController?.Dispose();
-            inDutyUiController?.Dispose();
-        });
-
+        await IFramework.Get().DisposeMainThreaded(journalUiController, inDutyUiController);
         journalUiController = null;
         inDutyUiController = null;
 
-        await Task.WhenAll(
-            addonDutyLoot?.DisposeAsync().AsTask() ?? Task.CompletedTask,
-            dataLoader?.DisposeAsync().AsTask() ?? Task.CompletedTask
-        );
-
+        await Task.WhenAllDisposed(addonDutyLoot, dataLoader);
         addonDutyLoot = null;
         dataLoader = null;
 

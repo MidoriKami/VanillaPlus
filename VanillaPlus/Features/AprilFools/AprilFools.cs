@@ -78,10 +78,8 @@ public class AprilFools : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => {
-            configAddon?.Dispose();
-            configAddon = null;
-        });
+        await IFramework.Get().DisposeMainThreaded(configAddon);
+        configAddon = null;
 
         await Task.WhenAll(modules?.Select(module => module.DisableAsync()) ?? []);
 

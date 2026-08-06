@@ -40,7 +40,7 @@ public class EnhancedWardNavigation : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => housingAddonController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(housingAddonController);
         housingAddonController = null;
     }
 

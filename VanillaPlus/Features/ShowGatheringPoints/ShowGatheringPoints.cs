@@ -39,7 +39,7 @@ public class ShowGatheringPoints : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => mapOverlayController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(mapOverlayController);
         mapOverlayController = null;
     }
 }

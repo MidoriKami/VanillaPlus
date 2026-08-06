@@ -81,10 +81,10 @@ public class MiniCactpotHelper : GameModification {
         gameTask?.Dispose();
         gameTask = null;
 
-        await IFramework.Get().Run(() => lotteryDailyController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(lotteryDailyController);
         lotteryDailyController = null;
 
-        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(configAddon);
         configAddon = null;
 
         config = null;

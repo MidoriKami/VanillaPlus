@@ -34,7 +34,7 @@ public class ReverseCharacterPanel : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => characterController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(characterController);
         characterController = null;
     }
 

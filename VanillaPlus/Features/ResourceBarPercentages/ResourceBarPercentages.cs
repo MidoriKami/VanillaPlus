@@ -86,7 +86,7 @@ public class ResourceBarPercentages : GameModification {
             OnPartyListDisable();
         });
 
-        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(configWindow);
         configWindow = null;
 
         config = null;

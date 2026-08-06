@@ -71,7 +71,7 @@ public class InstancedWaymarks : GameModification {
 
         LoadWaymarks(0);
 
-        await Task.WhenAll(renameWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(renameWindow);
         renameWindow = null;
 
         config = null;

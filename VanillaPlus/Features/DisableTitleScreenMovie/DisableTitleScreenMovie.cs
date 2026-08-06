@@ -45,7 +45,7 @@ public class DisableTitleScreenMovie : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Task.WhenAll(jumpPatch?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(jumpPatch);
         jumpPatch = null;
 
         memoryAddress = null;

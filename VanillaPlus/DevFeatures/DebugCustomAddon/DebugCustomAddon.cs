@@ -34,7 +34,7 @@ public class DebugCustomAddon : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Task.WhenAll(debugAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(debugAddon);
         debugAddon = null;
     }
 }

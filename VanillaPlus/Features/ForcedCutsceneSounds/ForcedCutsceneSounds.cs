@@ -91,7 +91,7 @@ public class ForcedCutsceneSounds : GameModification {
         cutSceneControllerDtorHook?.Dispose();
         cutSceneControllerDtorHook = null;
 
-        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(configWindow);
         configWindow = null;
 
         config = null;

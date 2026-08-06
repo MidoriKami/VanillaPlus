@@ -33,11 +33,7 @@ public class ZoneTransitionLabels : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => {
-            overlayController?.Dispose();
-            zoneWatcher?.Dispose();
-        });
-
+        await IFramework.Get().DisposeMainThreaded(overlayController, zoneWatcher);
         overlayController = null;
         zoneWatcher = null;
     }

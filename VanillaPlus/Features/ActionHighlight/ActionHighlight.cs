@@ -45,9 +45,10 @@ public class ActionHighlight : GameModification {
             InternalName = "ClassJobSearch",
             Title = "Class Job Search",
             Size = new Vector2(300.0f, 535.0f),
-            OptionsList = IDataManager.Get().GetExcelSheet<ClassJob>()
-                .Where(job => job is { RowId: not 0, Name.IsEmpty: false, IsCrafter: false, IsGatherer: false })
-                .ToList(),
+            OptionsList = [..
+                IDataManager.Get().GetExcelSheet<ClassJob>()
+                    .Where(job => job is { RowId: not 0, Name.IsEmpty: false, IsCrafter: false, IsGatherer: false }),
+            ],
             AllowMultiselect = true,
         };
 
@@ -76,10 +77,7 @@ public class ActionHighlight : GameModification {
         onAntsHook?.Dispose();
         onAntsHook = null;
 
-        await Task.WhenAll(
-            configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
-            classJobSearchAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
-        );
+        await Task.WhenAllDisposed(configAddon, classJobSearchAddon);
         configAddon = null;
         classJobSearchAddon = null;
     }
@@ -104,7 +102,7 @@ public class ActionHighlight : GameModification {
         classJobSearchAddon?.Open();
     }
 
-    private void OnRemoveClicked(AntsClassJobConfig entry) {
+    private static void OnRemoveClicked(AntsClassJobConfig entry) {
         if (Config is null) return;
 
         Config.ClassJobConfigs.Remove(entry);
@@ -187,11 +185,11 @@ public class ActionHighlight : GameModification {
     /// <summary>
     /// Gets all valid actions for the specified ClassJob.
     /// </summary>
-    public static List<Action> GetClassActions(ClassJob classJob)
-        => IDataManager.Get().GetExcelSheet<Action>()
+    public static List<Action> GetClassActions(ClassJob classJob) => [
+        .. IDataManager.Get().GetExcelSheet<Action>()
             .Where(action => IsValidAction(action, classJob))
-            .DistinctBy(action => action.RowId)
-            .ToList();
+            .DistinctBy(action => action.RowId),
+    ];
 
     /// <summary>
     /// Returns true for actions that belong to the specified ClassJob <b>or its parent class</b>.

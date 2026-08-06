@@ -60,10 +60,7 @@ public class DutyLootDataLoader : IAsyncDisposable {
     }
 
     public async ValueTask DisposeAsync() {
-        await IFramework.Get().Run(() => {
-            contentsFinder?.Dispose();
-            raidFinder?.Dispose();
-        });
+        await IFramework.Get().DisposeMainThreaded(contentsFinder, raidFinder);
 
         contentsFinder = null;
         raidFinder = null;

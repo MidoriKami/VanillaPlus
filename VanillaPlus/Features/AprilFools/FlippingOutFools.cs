@@ -28,7 +28,7 @@ public class FlippingOutFools : FoolsModule {
     }
 
     protected override async Task OnDisable() {
-        await IFramework.Get().Run(() => locationTitleController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(locationTitleController);
         locationTitleController = null;
     }
 

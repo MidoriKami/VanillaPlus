@@ -59,10 +59,7 @@ public class QuestListWindow : GameModification {
         IFramework.Get().Update -= OnFrameworkUpdate;
         ICommandManager.Get().RemoveHandler("/questlist");
 
-        await Task.WhenAll(
-            questListAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
-            keybindConfigAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
-        );
+        await Task.WhenAllDisposed(questListAddon, keybindConfigAddon);
         questListAddon = null;
         keybindConfigAddon = null;
 

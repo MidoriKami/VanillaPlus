@@ -52,15 +52,12 @@ public class BiggerConfigWindows : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => {
-            systemConfigController?.Dispose();
-            characterConfigController?.Dispose();
-        });
+        await IFramework.Get().DisposeMainThreaded(systemConfigController, characterConfigController);
 
         systemConfigController = null;
         characterConfigController = null;
 
-        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(configAddon);
         configAddon = null;
 
         config = null;

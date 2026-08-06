@@ -47,7 +47,7 @@ public class MissingJobStoneLockout : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => contentsFinderController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(contentsFinderController);
         contentsFinderController = null;
     }
 

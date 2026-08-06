@@ -56,10 +56,10 @@ public class CommandPanelAdjustments : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => quickPanelController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(quickPanelController);
         quickPanelController = null;
 
-        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(configAddon);
         configAddon = null;
 
         config = null;

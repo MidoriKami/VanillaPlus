@@ -77,19 +77,11 @@ public class WindowBackground : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => {
-            dynamicAddonController?.Dispose();
-            overlayController?.Dispose();
-        });
-
+        await IFramework.Get().DisposeMainThreaded(dynamicAddonController, overlayController);
         dynamicAddonController = null;
         overlayController = null;
 
-        await Task.WhenAll(
-            addonSearchAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
-            configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
-        );
-
+        await Task.WhenAllDisposed(addonSearchAddon, configAddon);
         addonSearchAddon = null;
         configAddon = null;
 

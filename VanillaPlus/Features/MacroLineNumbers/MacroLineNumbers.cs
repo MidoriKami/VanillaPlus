@@ -42,7 +42,7 @@ public class MacroLineNumbers : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => macroAddonController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(macroAddonController);
         macroAddonController = null;
 
         textNodes?.Clear();

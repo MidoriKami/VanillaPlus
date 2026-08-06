@@ -44,7 +44,7 @@ public class HideUnwantedBanners : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(configWindow);
         configWindow = null;
 
         setImageTextureHook?.Dispose();

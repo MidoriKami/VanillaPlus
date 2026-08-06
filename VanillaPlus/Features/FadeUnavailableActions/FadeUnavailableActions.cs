@@ -66,7 +66,7 @@ public class FadeUnavailableActions : GameModification {
         onHotBarSlotUpdateHook?.Dispose();
         onHotBarSlotUpdateHook = null;
 
-        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(configWindow);
         configWindow = null;
 
         actionCache = null;

@@ -36,13 +36,7 @@ public class IndecisiveFools : FoolsModule {
     }
 
     protected override async Task OnDisable() {
-        await IFramework.Get().Run(() => {
-            foreach (var textButton in textButtons ?? []) {
-                textButton.Dispose();
-            }
-
-            addonController?.Dispose();
-        });
+        await IFramework.Get().DisposeMainThreaded(textButtons.AggregateToDisposable(), addonController);
 
         textButtons?.Clear();
         textButtons = null;

@@ -58,10 +58,7 @@ public class RecentlyLootedWindow : GameModification {
         IFramework.Get().Update -= OnFrameworkUpdate;
         ICommandManager.Get().RemoveHandler("/recentloot");
 
-        await Task.WhenAll(
-            addonRecentlyLooted?.DisposeAsync().AsTask() ?? Task.CompletedTask,
-            keybindConfigAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
-        );
+        await Task.WhenAllDisposed(addonRecentlyLooted, keybindConfigAddon);
         addonRecentlyLooted = null;
         keybindConfigAddon = null;
 

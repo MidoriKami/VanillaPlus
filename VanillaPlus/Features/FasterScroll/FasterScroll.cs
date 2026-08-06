@@ -50,7 +50,7 @@ public class FasterScroll : GameModification {
         scrollBarReceiveEventHook?.Dispose();
         scrollBarReceiveEventHook = null;
 
-        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(configWindow);
         configWindow = null;
 
         config = null;

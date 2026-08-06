@@ -57,10 +57,7 @@ public class FateListWindow : GameModification {
         IFramework.Get().Update -= OnFrameworkUpdate;
         ICommandManager.Get().RemoveHandler("/fatelist");
 
-        await Task.WhenAll(
-            addonFateList?.DisposeAsync().AsTask() ?? Task.CompletedTask,
-            keybindConfigAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
-        );
+        await Task.WhenAllDisposed(addonFateList, keybindConfigAddon);
         addonFateList = null;
         keybindConfigAddon = null;
 

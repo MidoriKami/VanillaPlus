@@ -62,10 +62,7 @@ public class BetterSelectString : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => {
-            selectStringController?.Dispose();
-            selectStringListController?.Dispose();
-        });
+        await IFramework.Get().DisposeMainThreaded(selectStringController, selectStringListController);
 
         selectStringController = null;
         selectStringListController = null;

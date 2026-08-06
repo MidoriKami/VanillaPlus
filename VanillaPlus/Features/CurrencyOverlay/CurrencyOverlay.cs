@@ -70,14 +70,10 @@ public class CurrencyOverlay : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => overlayController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(overlayController);
         overlayController = null;
 
-        await Task.WhenAll(
-            itemSearchAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
-            configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
-        );
-
+        await Task.WhenAllDisposed(itemSearchAddon, configAddon);
         itemSearchAddon = null;
         configAddon = null;
 

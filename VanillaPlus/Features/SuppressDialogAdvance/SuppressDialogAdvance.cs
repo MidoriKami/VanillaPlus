@@ -41,7 +41,7 @@ public class SuppressDialogueAdvance : GameModification {
     public override async Task OnDisableAsync() {
         IAddonLifecycle.Get().UnregisterListener(OnTalkReceiveEvent);
 
-        await Task.WhenAll(configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(configWindow);
         configWindow = null;
 
         config = null;

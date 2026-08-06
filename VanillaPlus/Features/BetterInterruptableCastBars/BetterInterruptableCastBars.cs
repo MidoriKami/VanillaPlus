@@ -48,7 +48,7 @@ public class BetterInterruptableCastBars : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => targetInfoCastbarController?.Disable() );
+        await IFramework.Get().DisposeMainThreaded(targetInfoCastbarController);
         targetInfoCastbarController = null;
 
         antsHook?.Dispose();

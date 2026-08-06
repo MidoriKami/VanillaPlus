@@ -35,7 +35,7 @@ public class ClearFlag : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => minimapController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(minimapController);
         minimapMouseClick = null;
     }
 

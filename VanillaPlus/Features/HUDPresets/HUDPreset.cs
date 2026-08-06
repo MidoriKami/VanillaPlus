@@ -54,10 +54,10 @@ public class HUDPresets : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => hudLayoutController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(hudLayoutController);
         hudLayoutController = null;
 
-        await Task.WhenAll(renameAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(renameAddon);
         renameAddon = null;
     }
 

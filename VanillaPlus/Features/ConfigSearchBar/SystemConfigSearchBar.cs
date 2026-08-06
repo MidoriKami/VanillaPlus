@@ -57,10 +57,10 @@ public class SystemConfigSearchBar : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => systemConfigController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(systemConfigController);
         systemConfigController = null;
 
-        await Task.WhenAll(configAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(configAddon);
         configAddon = null;
 
         config = null;

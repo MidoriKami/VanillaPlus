@@ -46,7 +46,7 @@ public class AetherwellProgress : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => addonController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(addonController);
         addonController = null;
 
         nodes = null;

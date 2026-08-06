@@ -65,7 +65,7 @@ public class InventorySearchBar : GameModification {
         IGameGui.Get().AgentUpdate -= OnAgentUpdate;
         IFramework.Get().Update -= OnFrameworkUpdate;
 
-        await IFramework.Get().Run(() => inventoryController?.Dispose());
+        await IFramework.Get().DisposeMainThreaded(inventoryController);
         inventoryController = null;
         keybindListener = null;
         searchInputNode = null;

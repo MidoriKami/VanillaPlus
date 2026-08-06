@@ -47,15 +47,11 @@ public class CosmicExplorationProgressWindow : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => {
-            wksHudController?.Dispose();
-            hudShowNode?.Dispose();
-        });
-
+        await IFramework.Get().DisposeMainThreaded(wksHudController, hudShowNode);
         wksHudController = null;
         hudShowNode = null;
 
-        await Task.WhenAll(progressAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask);
+        await Task.WhenAllDisposed(progressAddon);
         progressAddon = null;
     }
 
