@@ -106,7 +106,7 @@ public class CharacterConfigController : IDisposable {
     /// Applies manual adjustments to certain nodes because square has
     /// to be extra and do shit in a weird way.
     /// </summary>
-    private unsafe static void ApplyStupidFixes(AtkUnitBase* addon) {
+    private static unsafe void ApplyStupidFixes(AtkUnitBase* addon) {
         switch (addon->NameString) {
             case "ConfigCharaChatLogRing":
                 var realContentsNode = addon->GetNodeById(5);
