@@ -1,6 +1,11 @@
 ﻿// ReSharper disable RedundantUnsafeContext
 
+using System.Drawing;
 using System.Threading.Tasks;
+using Dalamud.Interface;
+using Dalamud.Plugin.Services;
+using KamiToolKit.Addons;
+using KamiToolKit.BaseTypes;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -10,7 +15,7 @@ namespace VanillaPlus.DevFeatures.DebugGameModification;
 /// <summary>
 /// Debug Game Modification for use with playing around with ideas, DO NOT commit changes to this file
 /// </summary>
-public unsafe class DebugGameModification : GameModification {
+public class DebugGameModification : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = "Debug Game Modification",
         Description = "A module for playing around and testing VanillaPlus features",
@@ -18,14 +23,22 @@ public unsafe class DebugGameModification : GameModification {
         Authors = ["YourNameHere"],
     };
 
-    public override Task OnEnableAsync() {
+    private NativeAddon? addon;
 
-        return Task.CompletedTask;
+    public override async Task OnEnableAsync() {
+
+        addon = new ColorPickerAddon {
+            InternalName = "ColorPicker",
+            Title = "Color Picker",
+            DefaultColor = KnownColor.Blue.Vector(),
+        };
+
+        await IFramework.Get().Run(addon.Toggle);
     }
 
-    public override Task OnDisableAsync() {
-
-        return Task.CompletedTask;
+    public override async Task OnDisableAsync() {
+        await Task.WhenAllDisposed(addon);
+        addon = null;
     }
 }
 #endif

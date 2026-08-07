@@ -4,6 +4,7 @@ using System.Numerics;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Addons;
 using KamiToolKit.Nodes;
+using Lumina.Data.Parsing.Uld;
 using VanillaPlus.Native.Nodes;
 
 namespace VanillaPlus.Classes;
@@ -143,7 +144,8 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
         };
 
         var labelNode = new LabelTextNode {
-            String = Strings.TextNodeConfig_FontSize,
+            TextId = 1203, // Font Size
+            SheetType = NodeData.SheetType.Addon,
             Size = new Vector2(100.0f, 28.0f),
         };
         container.AddNode(labelNode);
@@ -177,7 +179,9 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
         var dropdown = new StringDropDownNode {
             Height = 28.0f,
             MaxListOptions = 10,
-            Options = Enum.GetValues<FontType>().Select(value => value.ToString()).ToList(),
+            Options = [
+                .. Enum.GetValues<FontType>().Select(value => value.ToString()),
+            ],
             SelectedOption = StyleObject.FontType.ToString(),
             OnOptionSelected = newValue => {
                 var enumValue = Enum.Parse<FontType>(newValue);
@@ -205,7 +209,9 @@ public class TextNodeConfig : NodeConfig<TextNodeStyle> {
         var dropdown = new StringDropDownNode {
             Height = 28.0f,
             MaxListOptions = 10,
-            Options = Enum.GetValues<AlignmentType>().Select(value => value.ToString()).ToList(),
+            Options = [
+                .. Enum.GetValues<AlignmentType>().Select(value => value.ToString()),
+            ],
             SelectedOption = StyleObject.AlignmentType.ToString(),
             OnOptionSelected = newValue => {
                 var enumValue = Enum.Parse<AlignmentType>(newValue);

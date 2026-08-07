@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
@@ -28,7 +29,7 @@ public class Vector2EditWidget : SimpleComponentNode {
             TextColor = ColorHelper.GetColor(8),
             TextOutlineColor = ColorHelper.GetColor(7),
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
-            String = XLabel ?? "Width",
+            String = XLabel ?? IDataManager.Get().GetAddonText(4030), // "Width"
         };
         WidthTextNode.AttachNode(GridNode[0, 0]);
 
@@ -40,7 +41,7 @@ public class Vector2EditWidget : SimpleComponentNode {
             TextColor = ColorHelper.GetColor(8),
             TextOutlineColor = ColorHelper.GetColor(7),
             TextFlags = TextFlags.Edge | TextFlags.AutoAdjustNodeSize,
-            String = YLabel ?? "Height",
+            String = YLabel ?? IDataManager.Get().GetAddonText(4031), // "Height"
         };
         HeightTextNode.AttachNode(GridNode[1, 0]);
 

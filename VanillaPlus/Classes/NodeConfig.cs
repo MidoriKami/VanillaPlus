@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
+using Lumina.Data.Parsing.Uld;
 using VanillaPlus.Native.Nodes;
 
 namespace VanillaPlus.Classes;
@@ -36,7 +37,8 @@ public class NodeConfig<T> : IConfigEntry where T : NodeStyle, new() {
         };
 
         var labelNode = new LabelTextNode {
-            String = Strings.NodeStyle_PositionLabel,
+            TextId = 7676, // "Position"
+            SheetType = NodeData.SheetType.Addon,
             Size = new Vector2(ElementStartOffset, 28.0f),
         };
         container.AddNode(labelNode);
