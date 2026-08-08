@@ -82,7 +82,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
         await System.ModificationBrowserAddon.DisposeAsync();
         await System.SeasonEventAddon.DisposeAsync();
         await System.ModificationManager.DisposeAsync();
-        await IFramework.Get().RunOnFrameworkThread(KamiToolKitLibrary.Dispose);
+        await IFramework.Get().Run(KamiToolKitLibrary.Dispose);
     }
 
     private void OnLogin() {
