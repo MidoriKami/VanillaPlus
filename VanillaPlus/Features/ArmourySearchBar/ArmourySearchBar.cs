@@ -83,6 +83,8 @@ public class ArmourySearchBar : GameModification {
     }
 
     private unsafe void OnArmouryFinalize(AtkUnitBase* addon) {
+        Inventory.FadeInventoryNodes(addon, string.Empty);
+
         keybindListener?.IsEnabled = false;
 
         searchInputNode?.Dispose();

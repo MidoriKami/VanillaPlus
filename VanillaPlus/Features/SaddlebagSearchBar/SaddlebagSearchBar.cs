@@ -75,6 +75,8 @@ public class SaddlebagSearchBar : GameModification {
     }
 
     private unsafe void OnBuddyFinalize(AtkUnitBase* addon) {
+        Inventory.FadeInventoryNodes(addon, string.Empty);
+
         searchInputNode?.Dispose();
         searchInputNode = null;
     }

@@ -131,6 +131,8 @@ public class InventorySearchBar : GameModification {
     }
 
     private unsafe void OnInventoryFinalize(AtkUnitBase* addon) {
+        Inventory.FadeInventoryNodes(addon, string.Empty);
+
         searchInputNode?.Dispose();
         searchInputNode = null;
     }
