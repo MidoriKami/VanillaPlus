@@ -18,7 +18,7 @@ The purpose of this plugin is to enhance the game through quality of life featur
 
 This plugin is not intended to play the game for you, nor make any decisions on your behalf.
 
-### Game Behavior Modification
+## Game Behavior Modification
 
 These are modifications on how the game performs a task or function. The modifications can change or replace the behavior of certain parts of the game.
 
