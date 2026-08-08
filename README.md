@@ -70,3 +70,5 @@ You are welcome and encouraged to use multiple CS files to implement your game m
 > There are debug modules that you can use for easy prototyping in the `DevFeatures` folder
 >
 > Do not commit any modifications to any files in the `DevFeatures` folder
+>
+> When adding new string to localization, only add the default English values, other language files are handled automatically via Crowdin and GitHub Integrations.
