@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Plugin.Services;
@@ -26,6 +25,8 @@ public class NewRedirectionAddon : NativeAddon {
 
     protected override unsafe void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         base.OnSetup(addon, atkValueSpan);
+
+        newRedirectionConfig = new RedirectionConfig();
 
         new VerticalListNode {
             Position = ContentStartPosition,
@@ -86,10 +87,8 @@ public class NewRedirectionAddon : NativeAddon {
         }.AttachNode(this);
     }
 
-
-
     private void OnConfirmClicked() {
-        if (newRedirectionConfig is { TerritoryType: not 0, AlternateGearsetId: not 0 }) {
+        if (newRedirectionConfig is { TerritoryType: not 0 }) {
             OnSelectionConfirmed?.Invoke(newRedirectionConfig);
         }
         Close();
@@ -122,15 +121,11 @@ public class NewRedirectionAddon : NativeAddon {
     }
 
     public override async ValueTask DisposeAsync() {
-        await Task.WhenAll(
-            gearsetSearchAddon.DisposeAsync().AsTask(),
-            territorySearchAddon.DisposeAsync().AsTask()
-        );
-
+        await Task.WhenAllDisposed(gearsetSearchAddon, territorySearchAddon);
         await base.DisposeAsync();
     }
 
-    private readonly RedirectionConfig newRedirectionConfig = new();
+    private RedirectionConfig newRedirectionConfig = new();
     private TextButtonNode? gearsetButtonNode;
     private TextButtonNode? territoryButtonNode;
 
@@ -145,7 +140,7 @@ public class NewRedirectionAddon : NativeAddon {
         Size = new Vector2(450.0f, 530.0f),
         InternalName = "TerritorySearch",
         Title = Strings.SearchAddon_TerritoryTitle,
-        OptionsList = IDataManager.Get().GetTerritoryTypes().ToList(),
+        OptionsList = [.. IDataManager.Get().GetTerritoryTypes()],
         AllowMultiselect = false,
     };
 }

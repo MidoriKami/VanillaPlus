@@ -74,13 +74,10 @@ public class GearsetRedirect : GameModification {
         gearsetChangedHook?.Dispose();
         gearsetChangedHook = null;
 
-        await Task.WhenAll(
-            configWindow?.DisposeAsync().AsTask() ?? Task.CompletedTask,
-            gearsetSearchAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask,
-            CreateRedirectionAddon?.DisposeAsync().AsTask() ?? Task.CompletedTask
-        );
+        await Task.WhenAllDisposed(configWindow, gearsetSearchAddon, CreateRedirectionAddon);
         configWindow = null;
         gearsetSearchAddon = null;
+        CreateRedirectionAddon = null;
 
         config = null;
     }

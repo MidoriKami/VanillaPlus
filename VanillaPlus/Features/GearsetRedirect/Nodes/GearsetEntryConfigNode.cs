@@ -129,7 +129,7 @@ public class GearsetEntryConfigNode : EntryConfigurationNode<GearsetRedirectionE
 
     private void OnAddClicked() {
         GearsetRedirect.CreateRedirectionAddon?.OnSelectionConfirmed = newRedirection => {
-            if (newRedirection is { AlternateGearsetId: not 0, TerritoryType: not 0 }) {
+            if (newRedirection is { TerritoryType: not 0 }) {
                 redirectionEntry?.Redirections.Add(newRedirection);
                 redirectionsListNode.OptionsList = redirectionEntry?.Redirections ?? [];
                 SaveConfig?.Invoke();
