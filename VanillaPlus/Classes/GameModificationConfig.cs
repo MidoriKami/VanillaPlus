@@ -31,6 +31,8 @@ public abstract class GameModificationConfig<T> : ISavable where T : GameModific
             var jObject = JObject.Parse(fileText);
             var version = jObject[nameof(Version)]?.ToObject<int>();
 
+            // Note: This can only handle migrating one step, if v1 -> v2 -> v3 or more, migration is needed,
+            // then this would need to be reworked to loop through the versions and have a state based return.
             if (loadedConfig.TryMigrateConfig(version, jObject)) {
                 IPluginLog.Get().Debug($"Successfully migrated $\"{configFileName}.config.json\" to {loadedConfig.Version}");
                 await Config.SaveConfig(loadedConfig, $"{configFileName}.config.json");
