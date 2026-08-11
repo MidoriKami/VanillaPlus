@@ -53,7 +53,6 @@ public class BiggerConfigWindows : GameModification {
 
     public override async Task OnDisableAsync() {
         await IFramework.Get().DisposeMainThreaded(systemConfigController, characterConfigController);
-
         systemConfigController = null;
         characterConfigController = null;
 

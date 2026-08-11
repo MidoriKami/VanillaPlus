@@ -89,7 +89,7 @@ public class FadeUnavailableActions : GameModification {
         if (config is null) return;
         if (IObjectTable.Get().LocalPlayer is { IsCasting: true }) return;
 
-        var numberArrayData = (ActionBarSlotNumberArray*)(&numberArray->IntArray[numberArrayIndex]);
+        var numberArrayData = (ActionBarSlotNumberArray*)&numberArray->IntArray[numberArrayIndex];
 
         if ((NumberArrayActionType)numberArrayData->ActionType is not (NumberArrayActionType.Action or NumberArrayActionType.CraftAction)) {
             ApplyColoring(hotBarSlotData, false, false);

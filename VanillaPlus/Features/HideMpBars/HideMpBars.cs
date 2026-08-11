@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Group;
@@ -48,7 +47,7 @@ public class HideMpBars : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        manaUsingClassJobs = IDataManager.Get().GetManaUsingClassJobs().ToList();
+        manaUsingClassJobs = [.. IDataManager.Get().GetManaUsingClassJobs()];
 
         unsafe {
             partyListController = new AddonController<AddonPartyList> {

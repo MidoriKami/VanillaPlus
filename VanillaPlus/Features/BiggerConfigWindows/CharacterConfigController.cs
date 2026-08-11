@@ -99,7 +99,7 @@ public class CharacterConfigController : IDisposable {
         ApplyStupidFixes(addon);
     }
 
-    private unsafe AtkComponentScrollBar* GetScrollbarForChild(AtkUnitBase* addon)
+    private static unsafe AtkComponentScrollBar* GetScrollbarForChild(AtkUnitBase* addon)
         => (AtkComponentScrollBar*)Marshal.ReadIntPtr((nint)addon, sizeof(AtkUnitBase));
 
     /// <summary>

@@ -160,7 +160,7 @@ public class InstancedWaymarks : GameModification {
         var dataFilePath = GetDataFileInfo(contentFinderCondition).FullName;
         var dataSpan = new Span<byte>(address, size);
 
-        FilesystemUtil.WriteAllBytesSafe(dataFilePath, dataSpan.ToArray());
+        FilesystemUtil.WriteAllBytesSafe(dataFilePath, [.. dataSpan]);
     }
 
     private static unsafe void LoadWaymarks(uint contentFinderCondition) {

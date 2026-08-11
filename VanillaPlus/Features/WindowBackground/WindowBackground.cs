@@ -148,10 +148,11 @@ public class WindowBackground : GameModification {
         if (dynamicAddonController is null) return;
         if (addonSearchAddon is null) return;
 
-        addonSearchAddon.OptionsList = RaptureAtkUnitManager.Instance()->AllLoadedUnitsList.Entries
-            .ToArray()
-            .Where(option => option.Value is not null)
-            .ToList();
+        addonSearchAddon.OptionsList = [
+            .. RaptureAtkUnitManager.Instance()->AllLoadedUnitsList.Entries
+                .ToArray()
+                .Where(option => option.Value is not null),
+        ];
 
         addonSearchAddon.ConfirmedSelections = selectionResults => {
             foreach (var result in selectionResults) {

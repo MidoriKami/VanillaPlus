@@ -63,10 +63,11 @@ public class InventoryListAddon : NativeAddon {
     }
 
     private void UpdateItemsList()
-        => listNode?.OptionsList = Inventory.GetInventoryStacks()
-               .Where(item => ItemStack.IsMatch(item, lastSearchString))
-               .OrderBy(item => item.ItemName)
-               .ToList();
+        => listNode?.OptionsList = [
+            .. Inventory.GetInventoryStacks()
+                .Where(item => ItemStack.IsMatch(item, lastSearchString))
+                .OrderBy(item => item.ItemName),
+        ];
 
     private ListNode<ItemStack, InventoryItemNode>? listNode;
     private string lastSearchString = string.Empty;

@@ -33,5 +33,4 @@ public class WindowBackgroundSettingListItemNode : ListItemWithFocusNav<WindowBa
         AddonNameTextNode.Size = new Vector2(Width - 4.0f, Height);
         AddonNameTextNode.Position = new Vector2(4.0f, 0.0f);
     }
-
 }

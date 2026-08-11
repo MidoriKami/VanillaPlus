@@ -205,7 +205,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
         mapLabelNode?.IsVisible = true;
     }
 
-    public void ClearPreviewImage() {
+    private void ClearPreviewImage() {
         mapBackgroundNode?.IsVisible = false;
         mapPreviewNode?.IsVisible = false;
         mapLabelNode?.IsVisible = false;
@@ -255,7 +255,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
 
         selectableNodes.AddRange(regionNodes);
 
-        return regionNodes.Cast<NodeBase>().ToList();
+        return [.. regionNodes];
     }
 
     private void OnRegionEntryClicked(SelectableNode targetNode, uint regionId) {
@@ -278,11 +278,11 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
 
     private void OnSearchBoxInputReceived(ReadOnlySeString searchString) {
         listNode?.OptionsList = currentMode switch {
-            ListMode.All => IAetheryteList.Get().Where(entry => IsMatch(entry, searchString)).ToList(),
-            ListMode.Region => IAetheryteList.Get().Where(entry => entry.RegionId == currentRegionId && IsMatch(entry, searchString)).ToList(),
-            ListMode.Cities => IAetheryteList.Get().Where(entry => entry.AetheryteData.ValueNullable?.AethernetGroup is not 0 && IsMatch(entry, searchString)).ToList(),
-            ListMode.Favorites => IAetheryteList.Get().Where(entry => config.FavoriteAetherytes.Contains(entry.AetheryteId) && IsMatch(entry, searchString)).ToList(),
-            _ => IAetheryteList.Get().Where(entry => IsMatch(entry, searchString)).ToList(),
+            ListMode.All => [.. IAetheryteList.Get().Where(entry => IsMatch(entry, searchString))],
+            ListMode.Region => [.. IAetheryteList.Get().Where(entry => entry.RegionId == currentRegionId && IsMatch(entry, searchString))],
+            ListMode.Cities => [.. IAetheryteList.Get().Where(entry => entry.AetheryteData.ValueNullable?.AethernetGroup is not 0 && IsMatch(entry, searchString))],
+            ListMode.Favorites => [.. IAetheryteList.Get().Where(entry => config.FavoriteAetherytes.Contains(entry.AetheryteId) && IsMatch(entry, searchString))],
+            _ => [.. IAetheryteList.Get().Where(entry => IsMatch(entry, searchString))],
         };
 
         if (listNode?.OptionsList.Count > 0) {
