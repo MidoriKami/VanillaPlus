@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Dalamud.Game.ClientState.Aetherytes;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -89,7 +88,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
                                     TextTooltip = Strings.BetterTeleportWindow_TooltipAutoFocus,
                                     OnClick = newValue => {
                                         config.AutoFocusSearch = newValue;
-                                        Task.Run(config.Save);
+                                        config.Save();
                                     },
                                 },
                             ],
@@ -237,7 +236,7 @@ public class TeleportAddon(BetterTeleportWindowConfig config) : NativeAddon {
         targetNode.IsSelected = true;
         currentMode = premadeOption;
         config.LastListMode = currentMode;
-        Task.Run(config.Save);
+        config.Save();
 
         OnSearchBoxInputReceived(string.Empty);
         textInputNode?.ClearFocus();

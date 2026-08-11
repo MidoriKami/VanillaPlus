@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using System.Threading.Tasks;
 using KamiToolKit.Classes;
 using KamiToolKit.Nodes;
 
@@ -26,7 +25,7 @@ public class AntsGeneralConfigurationNode : ResNode {
                         IsChecked = ActionHighlight.Config.ShowOnlyInCombat,
                         OnClick = value => {
                             ActionHighlight.Config.ShowOnlyInCombat = value;
-                            Task.Run(ActionHighlight.Config.Save);
+                            ActionHighlight.Config.Save();
                         },
                         Size = new Vector2(300.0f, 24.0f),
                         String = Strings.ActionHighlight_ShowInCombat,
@@ -35,7 +34,7 @@ public class AntsGeneralConfigurationNode : ResNode {
                         IsChecked = ActionHighlight.Config.AntOnlyOnFinalStack,
                         OnClick = value => {
                             ActionHighlight.Config.AntOnlyOnFinalStack = value;
-                            Task.Run(ActionHighlight.Config.Save);
+                            ActionHighlight.Config.Save();
                         },
                         Size = new Vector2(300.0f, 24.0f),
                         String = Strings.ActionHighlight_AntOnlyOnFinalStack,
@@ -44,7 +43,7 @@ public class AntsGeneralConfigurationNode : ResNode {
                         IsChecked = ActionHighlight.Config.ShowOnlyUsableActions,
                         OnClick = value => {
                             ActionHighlight.Config.ShowOnlyUsableActions = value;
-                            Task.Run(ActionHighlight.Config.Save);
+                            ActionHighlight.Config.Save();
                         },
                         Size = new Vector2(300.0f, 24.0f),
                         String = Strings.ActionHighlight_ShowOnlyUsableActions,
@@ -53,7 +52,7 @@ public class AntsGeneralConfigurationNode : ResNode {
                         IsChecked = ActionHighlight.Config.UseGlocalPreAntMs,
                         OnClick = value => {
                             ActionHighlight.Config.UseGlocalPreAntMs = value;
-                            Task.Run(ActionHighlight.Config.Save);
+                            ActionHighlight.Config.Save();
                         },
                         Size = new Vector2(300.0f, 24.0f),
                         String = Strings.ActionHighlight_UseGlobalPreAntMs,
@@ -67,7 +66,7 @@ public class AntsGeneralConfigurationNode : ResNode {
                     Value = ActionHighlight.Config.PreAntTimeMs,
                     OnValueUpdate = newValue => {
                         ActionHighlight.Config.PreAntTimeMs = newValue;
-                        Task.Run(ActionHighlight.Config.Save);
+                        ActionHighlight.Config.Save();
                     },
                     Size = new Vector2(100.0f, 24.0f),
                 }),

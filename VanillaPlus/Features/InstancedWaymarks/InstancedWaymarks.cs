@@ -144,7 +144,7 @@ public class InstancedWaymarks : GameModification {
             config.NamedWaymarks.TryAdd(cfc, []);
             config.NamedWaymarks[cfc].TryAdd(slotClicked, newString.ToString());
             config.NamedWaymarks[cfc][slotClicked] = newString.ToString();
-            Task.Run(config.Save);
+            config.Save();
         };
 
         renameWindow.DefaultString = defaultName;

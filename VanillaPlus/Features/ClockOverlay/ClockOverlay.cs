@@ -58,7 +58,7 @@ public class ClockOverlay : GameModification {
                 Position = config.Position,
                 OnMoveComplete = thisNode => {
                     config.Position = thisNode.Position;
-                    Task.Run(config.Save);
+                    config.Save();
                 },
             });
         });

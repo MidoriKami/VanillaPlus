@@ -61,7 +61,7 @@ public class HideUnwantedBanners : GameModification {
                         BannerId = bannerId,
                         IsSuppressed = false,
                     });
-                    Task.Run(config.Save);
+                    config.Save();
                 }
                 else {
                     if (config.BannerSettings.FirstOrDefault(entry => entry.BannerId == bannerId) is { IsSuppressed: true }) {

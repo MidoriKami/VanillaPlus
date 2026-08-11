@@ -53,7 +53,7 @@ public class GearsetRedirect : GameModification {
                 InternalName = "GearsetRedirectConfig",
                 Title = Strings.GearsetRedirect_ConfigTitle,
                 OptionsList = config.GearsetEntries,
-                SaveConfig = () => Task.Run(config.Save),
+                SaveConfig = () => config.Save(),
                 GetEntrySearchString = entry => RaptureGearsetModule.Instance()->GetGearset(entry.TargetGearsetId)->NameString,
                 AddClicked = OnAddClicked,
                 RemoveClicked = OnRemoveClicked,
@@ -86,7 +86,7 @@ public class GearsetRedirect : GameModification {
         if (config is null) return;
 
         config.GearsetEntries.Remove(removedEntry);
-        Task.Run(config.Save);
+        config.Save();
     }
 
     private void OnAddClicked() {
@@ -103,7 +103,7 @@ public class GearsetRedirect : GameModification {
             }
 
             configWindow?.OptionsList = config.GearsetEntries;
-            Task.Run(config.Save);
+            config.Save();
         };
 
         gearsetSearchAddon?.Open();

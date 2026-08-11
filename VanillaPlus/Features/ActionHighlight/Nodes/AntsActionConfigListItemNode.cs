@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Numerics;
-using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Interfaces;
@@ -39,7 +38,7 @@ public class AntsActionConfigListItemNode : ListItemNode<Action>, IListItemNode 
                 };
                 classJobConfig.ActionSettings.Add(actionSetting);
             }
-            Task.Run(config.Save);
+            config.Save();
         };
 
         actionIconNode.IconId = itemData.Icon;
@@ -61,7 +60,7 @@ public class AntsActionConfigListItemNode : ListItemNode<Action>, IListItemNode 
                 };
                 classJobConfig.ActionSettings.Add(actionSetting);
             }
-            Task.Run(config.Save);
+            config.Save();
         };
 
         OnClick = _ => {
@@ -78,7 +77,7 @@ public class AntsActionConfigListItemNode : ListItemNode<Action>, IListItemNode 
             }
 
             checkboxNode.IsChecked = actionSetting.IsEnabled;
-            Task.Run(config.Save);
+            config.Save();
 
             IsSelected = false;
             IsHovered = true;

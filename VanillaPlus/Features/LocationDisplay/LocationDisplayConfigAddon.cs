@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Numerics;
-using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
@@ -62,7 +61,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
             OnInputReceived = newString => {
                 if (!BracesMismatched(newString.ToString())) {
                     Config.FormatString = newString.ToString();
-                    Task.Run(Config.Save);
+                    Config.Save();
                     entryInputNode!.IsError = false;
                 }
                 else {
@@ -79,7 +78,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
                 entryInputNode.IsError = false;
                 entryInputNode.String = Strings.LocationDisplay_DefaultEntryFormat;
                 Config.FormatString = Strings.LocationDisplay_DefaultEntryFormat;
-                Task.Run(Config.Save);
+                Config.Save();
             },
         };
         infoBarEntryLayoutNode.AddNode(resetEntryButtonNode);
@@ -103,7 +102,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
             OnInputReceived = newString => {
                 if (!BracesMismatched(newString.ToString())) {
                     Config.TooltipFormatString = newString.ToString();
-                    Task.Run(Config.Save);
+                    Config.Save();
                     tooltipInputNode!.IsError = false;
                 }
                 else {
@@ -120,7 +119,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
                 tooltipInputNode.IsError = false;
                 tooltipInputNode.String = Strings.LocationDisplay_DefaultTooltipFormat;
                 Config.TooltipFormatString = Strings.LocationDisplay_DefaultTooltipFormat;
-                Task.Run(Config.Save);
+                Config.Save();
             },
         };
         infoBarTooltipLayoutNode.AddNode(tooltipResetButtonNode);
@@ -132,7 +131,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
             IsChecked = Config.ShowInstanceNumber,
             OnClick = newValue => {
                 Config.ShowInstanceNumber = newValue;
-                Task.Run(Config.Save);
+                Config.Save();
             },
         };
         showInstanceNumberNode.AttachNode(this);
@@ -144,7 +143,7 @@ public class LocationDisplayConfigAddon : NativeAddon {
             IsChecked = Config.UsePreciseHousingLocation,
             OnClick = newValue => {
                 Config.UsePreciseHousingLocation = newValue;
-                Task.Run(Config.Save);
+                Config.Save();
             },
         };
         showPreciseHousingLocationNode.AttachNode(this);

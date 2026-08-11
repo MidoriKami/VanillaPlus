@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using System.Threading.Tasks;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
 
@@ -26,7 +25,7 @@ public class FloatInputConfig : BaseConfigEntry {
             OnValueUpdate = newValue => {
                 InitialValue = newValue;
                 MemberInfo.SetValue(Config, newValue);
-                Task.Run(Config.Save);
+                Config.Save();
             },
         };
 

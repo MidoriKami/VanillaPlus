@@ -17,10 +17,10 @@ public class StickyShopCategories : GameModification {
         Authors = ["Era"],
     };
 
-    private StickyShopCategoriesData? config;
+    private StickyShopCategoriesData? data;
 
     public override async Task OnEnableAsync() {
-        config = await StickyShopCategoriesData.Load();
+        data = await StickyShopCategoriesData.Load();
 
         IAddonLifecycle.Get().RegisterListener(AddonEvent.PostSetup, "InclusionShop", OnInclusionShopSetup);
         IAddonLifecycle.Get().RegisterListener(AddonEvent.PreFinalize, "InclusionShop", OnInclusionShopFinalize);
@@ -29,18 +29,18 @@ public class StickyShopCategories : GameModification {
     public override async Task OnDisableAsync() {
         IAddonLifecycle.Get().UnregisterListener(OnInclusionShopFinalize, OnInclusionShopSetup);
 
-        if (config is not null) {
-            await config.Save();
-            config = null;
+        if (data is not null) {
+            await data.Save();
+            data = null;
         }
     }
 
     private unsafe void OnInclusionShopSetup(AddonEvent type, AddonArgs args) {
-        if (config is null) return;
+        if (data is null) return;
 
         var shopId = args.ValueSpan[0].UInt;
 
-        if (config.ShopConfigs.TryGetValue(shopId, out var currentShopConfig)) {
+        if (data.ShopConfigs.TryGetValue(shopId, out var currentShopConfig)) {
             var categoryDropDown = GetCategoryDropDown(args);
             categoryDropDown->SelectItem(currentShopConfig.Category);
 
@@ -51,18 +51,18 @@ public class StickyShopCategories : GameModification {
     }
 
     private unsafe void OnInclusionShopFinalize(AddonEvent type, AddonArgs args) {
-        if (config is null) return;
+        if (data is null) return;
 
         var shopId = args.ValueSpan[0].UInt;
         var dropDownCategoryIndex = GetCategoryDropDown(args)->GetSelectedItemIndex();
         var dropDownSubCategoryIndex = GetSubCategoryDropDown(args)->GetSelectedItemIndex();
 
-        if (config.ShopConfigs.TryGetValue(shopId, out var shopConfig)) {
+        if (data.ShopConfigs.TryGetValue(shopId, out var shopConfig)) {
             shopConfig.Category = dropDownCategoryIndex;
             shopConfig.SubCategory = dropDownSubCategoryIndex;
         }
         else {
-            config.ShopConfigs.Add(shopId, new ShopConfig {
+            data.ShopConfigs.Add(shopId, new ShopConfig {
                 Category = dropDownCategoryIndex,
                 SubCategory = dropDownSubCategoryIndex,
             });
@@ -70,7 +70,7 @@ public class StickyShopCategories : GameModification {
 
         IPluginLog.Get().Debug($"Saving Values: {dropDownCategoryIndex}, {dropDownSubCategoryIndex}", "StickyShopCategories");
 
-        Task.Run(config.Save);
+        data.Save();
     }
 
     private static unsafe AtkComponentDropDownList* GetCategoryDropDown(AddonArgs args)

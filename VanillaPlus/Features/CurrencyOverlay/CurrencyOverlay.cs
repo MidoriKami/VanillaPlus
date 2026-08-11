@@ -42,7 +42,9 @@ public class CurrencyOverlay : GameModification {
             Title = "Currency Search",
             Size = new Vector2(350.0f, 500.0f),
             AllowMultiselect = true,
-            OptionsList = IDataManager.Get().GetCurrencyItems().ToList(),
+            OptionsList = [
+                .. IDataManager.Get().GetCurrencyItems(),
+            ],
         };
 
         configAddon = new ConfigurationAddon<CurrencySetting, CurrencyOverlayListItemNode, CurrencyOverlayConfigNode> {
@@ -53,7 +55,7 @@ public class CurrencyOverlay : GameModification {
             GetEntrySearchString = entry => IDataManager.Get().GetExcelSheet<Item>().GetRow(entry.ItemId).Name.ToString(),
             AddClicked = OnAddButtonClicked,
             RemoveClicked = OnRemoveButtonClicked,
-            SaveConfig = () => Task.Run(config.Save),
+            SaveConfig = () => config.Save(),
         };
 
         OpenConfigAction = configAddon.Toggle;
@@ -96,7 +98,7 @@ public class CurrencyOverlay : GameModification {
         }
 
         config.Currencies.Remove(currencySetting);
-        Task.Run(config.Save);
+        config.Save();
     }
 
     private void OnAddButtonClicked() {
@@ -118,7 +120,7 @@ public class CurrencyOverlay : GameModification {
             }
 
             configAddon?.OptionsList = config.Currencies;
-            Task.Run(config.Save);
+            config.Save();
         };
         itemSearchAddon.Toggle();
     }

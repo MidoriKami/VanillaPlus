@@ -128,7 +128,7 @@ public class LockChatButton : GameModification {
         if (data is null) return;
 
         data.IsLocked = !data.IsLocked;
-        Task.Run(data.Save);
+        data.Save();
 
         thisButton.TextTooltip = data.IsLocked ? Strings.LockChatButton_TooltipUnlock : Strings.LockChatButton_TooltipLock;
         thisButton.ShowTooltip();

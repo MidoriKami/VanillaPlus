@@ -57,7 +57,7 @@ public class ActionHighlight : GameModification {
             InternalName = "ActionHighlightConfig",
             Title = Strings.ActionHighlight_Configuration,
             OptionsList = [],
-            SaveConfig = () => Task.Run(Config.Save),
+            SaveConfig = () => Config.Save(),
             GetEntrySearchString = entry => IDataManager.Get().GetExcelSheet<ClassJob>().GetRow(entry.ClassJobId).Name.ToString(),
             AddClicked = OnAddClicked,
             RemoveClicked = OnRemoveClicked,
@@ -95,7 +95,7 @@ public class ActionHighlight : GameModification {
                 });
             }
 
-            Task.Run(Config.Save);
+            Config.Save();
             UpdateOptionsList();
         };
 
@@ -106,7 +106,7 @@ public class ActionHighlight : GameModification {
         if (Config is null) return;
 
         Config.ClassJobConfigs.Remove(entry);
-        Task.Run(Config.Save);
+        Config.Save();
     }
 
     private unsafe bool OnActionHighlighted(ActionManager* actionManager, ActionType actionType, uint actionId) {

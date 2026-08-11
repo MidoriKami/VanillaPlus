@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
@@ -29,7 +28,7 @@ public class HideUnwantedBannersAddon(HideUnwantedBannersConfig config) : Native
         base.OnFinalize(addon);
 
         listNode = null;
-        Task.Run(config.Save);
+        config.Save();
     }
 
     private ListNode<BannerConfig, BannerConfigListItemNode>? listNode;

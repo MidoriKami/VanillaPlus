@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -64,7 +63,7 @@ public class ChatPanelController : IDisposable {
 
     private void OnLockButtonClicked(PadlockButtonNode thisButton) {
         data.IsLocked = !data.IsLocked;
-        Task.Run(data.Save);
+        data.Save();
 
         thisButton.TextTooltip = data.IsLocked ? Strings.LockChatButton_TooltipUnlock : Strings.LockChatButton_TooltipLock;
         thisButton.ShowTooltip();

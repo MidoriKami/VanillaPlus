@@ -46,7 +46,7 @@ public class ModificationBrowserAddon : NativeAddon {
                             IsChecked = System.SystemConfig.PersistSearch,
                             OnClick = value => {
                                 System.SystemConfig.PersistSearch = value;
-                                Task.Run(System.SystemConfig.Save);
+                                System.SystemConfig.Save();
                             },
                         },
                         textInputNode = new TextInputNode { // Search Input
@@ -57,7 +57,7 @@ public class ModificationBrowserAddon : NativeAddon {
                             OnInputReceived = OnSearchInputReceived,
                             OnFocusLost = () => {
                                 if (System.SystemConfig.PersistSearch) {
-                                    Task.Run(System.SystemConfig.Save);
+                                    System.SystemConfig.Save();
                                 }
                             },
                         },

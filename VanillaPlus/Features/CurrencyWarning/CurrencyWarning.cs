@@ -41,7 +41,7 @@ public class CurrencyWarning : GameModification {
         if (!Config.IsConfigured) {
             Config.IsMoveable = true;
             Config.IsConfigured = true;
-            await Task.Run(Config.Save);
+            await Config.Save();
         }
 
         itemSearchAddon = new ItemSearchAddon {
@@ -60,7 +60,7 @@ public class CurrencyWarning : GameModification {
             GetEntrySearchString = entry => IDataManager.Get().GetExcelSheet<Item>().GetRow(entry.ItemId).Name.ToString(),
             AddClicked = OnAddClicked,
             RemoveClicked = OnRemoveClicked,
-            SaveConfig = () => Task.Run(Config.Save),
+            SaveConfig = () => Config.Save(),
         };
 
         OpenConfigAction = configAddon.Toggle;
@@ -81,7 +81,7 @@ public class CurrencyWarning : GameModification {
                     TooltipNode = tooltipNode,
                     OnMoveComplete = thisNode => {
                         Config.Position = thisNode.Position;
-                        Task.Run(Config.Save);
+                        Config.Save();
                     },
                     Position = Config.Position != Vector2.Zero ? Config.Position : (Vector2)AtkStage.Instance()->ScreenSize / 2.0f,
                 };
@@ -117,7 +117,7 @@ public class CurrencyWarning : GameModification {
             }
 
             configAddon?.OptionsList = Config.WarningSettings;
-            Task.Run(Config.Save);
+            Config.Save();
         };
         itemSearchAddon?.Toggle();
     }
@@ -126,6 +126,6 @@ public class CurrencyWarning : GameModification {
         if (Config is null) return;
 
         Config.WarningSettings.Remove(currencyWarningSetting);
-        Task.Run(Config.Save);
+        Config.Save();
     }
 }

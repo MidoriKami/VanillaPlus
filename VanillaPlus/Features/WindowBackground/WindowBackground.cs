@@ -69,7 +69,7 @@ public class WindowBackground : GameModification {
             OptionsList = config.Settings,
             AddClicked = OnAddClicked,
             RemoveClicked = OnRemoveClicked,
-            SaveConfig = () => Task.Run(config.Save),
+            SaveConfig = () => config.Save(),
             GetEntrySearchString = entry => entry.AddonName,
         };
 
@@ -165,7 +165,7 @@ public class WindowBackground : GameModification {
                 dynamicAddonController.AddAddon(result.Value->NameString);
             }
 
-            Task.Run(config.Save);
+            config.Save();
             configAddon?.OptionsList = config.Settings;
         };
 
@@ -177,7 +177,7 @@ public class WindowBackground : GameModification {
         if (dynamicAddonController is null) return;
 
         config.Settings.Remove(oldItem);
-        Task.Run(config.Save);
+        config.Save();
 
         dynamicAddonController.RemoveAddon(oldItem.AddonName);
 
