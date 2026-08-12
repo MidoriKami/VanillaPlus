@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 using Dalamud.Hooking;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
@@ -49,7 +48,6 @@ public class ForcedCutsceneSounds : GameModification {
         config = await ForcedCutsceneSoundsConfig.Load();
 
         configWindow = new ConfigAddon {
-            Size = new Vector2(330.0f, 385.0f),
             InternalName = "ForcedCutsceneConfig",
             Title = Strings.ForcedCutsceneSounds_ConfigTitle,
             Config = config,
@@ -102,7 +100,6 @@ public class ForcedCutsceneSounds : GameModification {
                     RestoreSoundSettings();
                     break;
             }
-
         }
         catch (Exception e)
         {
