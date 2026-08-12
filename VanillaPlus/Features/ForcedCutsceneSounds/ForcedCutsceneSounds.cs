@@ -98,7 +98,7 @@ public class ForcedCutsceneSounds : GameModification {
                     MuteSounds();
                     break;
 
-                case EventSceneTaskType.PostCutScene:
+                case EventSceneTaskType.PostCutScene when config.Restore:
                     UnmuteSounds();
                     break;
             }
