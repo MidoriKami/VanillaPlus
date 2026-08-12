@@ -95,11 +95,11 @@ public class ForcedCutsceneSounds : GameModification {
 
             switch (task->Type) {
                 case EventSceneTaskType.PrepareCutScene:
-                    MuteSounds();
+                    UnmuteSoundSettings();
                     break;
 
                 case EventSceneTaskType.PostCutScene when config.Restore:
-                    UnmuteSounds();
+                    RestoreSoundSettings();
                     break;
             }
 
@@ -110,7 +110,7 @@ public class ForcedCutsceneSounds : GameModification {
         }
     }
 
-    private void MuteSounds() {
+    private void UnmuteSoundSettings() {
         if (wasMuted is null) return;
 
         foreach (var optionName in ConfigOptions) {
@@ -125,7 +125,7 @@ public class ForcedCutsceneSounds : GameModification {
         }
     }
 
-    private void UnmuteSounds() {
+    private void RestoreSoundSettings() {
         if (wasMuted is null) return;
 
         foreach (var optionName in ConfigOptions) {
