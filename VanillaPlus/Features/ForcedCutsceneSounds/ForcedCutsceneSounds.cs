@@ -88,7 +88,7 @@ public class ForcedCutsceneSounds : GameModification {
         {
             addTaskHook!.Original(thisPtr, task);
 
-            IPluginLog.Get().Debug($"SceneTaskAdded, Type: {task->Type} with flags {task->Flags}");
+            IPluginLog.Get().Verbose($"SceneTaskAdded, Type: {task->Type} with flags {task->Flags}");
 
             if (config is null) return;
             if (config.DisableInMsqRoulette && AgentContentsFinder.Instance()->SelectedDuty is { ContentType: ContentsType.Roulette, Id: 3 }) return;
