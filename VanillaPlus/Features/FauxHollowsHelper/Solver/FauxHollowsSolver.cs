@@ -1,5 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using LuminaSupplemental.Excel.Model;
+using LuminaSupplemental.Excel.Services;
 
 namespace VanillaPlus.Features.FauxHollowsHelper.Solver;
 
@@ -9,6 +13,8 @@ internal static class FauxHollowsSolver {
     private const int SwordWeightFactor = 6;
     private const int DisambiguationFactor = 1_000;
     private const double SmartFillWeightValue = 1_000_000;
+
+    private static readonly IReadOnlyList<FauxHollowsIdentifierPatterns> identifiers = LoadIdentifiers();
 
     public static TileHint[] Solve(TileState[] board) {
         var solveState = CalculatedSolveState(board);
@@ -82,13 +88,13 @@ internal static class FauxHollowsSolver {
         return solveState.Finalize(mainShapesSolved ? SolveStep.SuggestFoxes : SolveStep.SuggestTiles);
     }
 
-    private static CommunityDataIdentifierPatterns? GetIdentifierCandidate(IReadOnlyCollection<int> blocked)
-        => CommunityData.Identifiers.FirstOrDefault(candidate =>
+    private static FauxHollowsIdentifierPatterns? GetIdentifierCandidate(IReadOnlyCollection<int> blocked)
+        => identifiers.FirstOrDefault(candidate =>
             candidate.Blocked.Count == blocked.Count &&
             candidate.Blocked.All(blocked.Contains));
 
     private sealed class ProcessedPattern {
-        public required CommunityDataPattern Pattern { get; init; }
+        public required FauxHollowsPattern Pattern { get; init; }
         public required BoundingBox PresentBox { get; init; }
         public required BoundingBox SwordBox { get; init; }
 
@@ -96,7 +102,7 @@ internal static class FauxHollowsSolver {
             => state == TileState.Sword ? SwordBox : PresentBox;
     }
 
-    private static SolveStep? CalculateStateCandidates(SolveState solveState, IReadOnlyList<CommunityDataPattern> patterns) {
+    private static SolveStep? CalculateStateCandidates(SolveState solveState, IReadOnlyList<FauxHollowsPattern> patterns) {
         var shapes = new[] {
             (
                 State: TileState.Sword,
@@ -201,7 +207,7 @@ internal static class FauxHollowsSolver {
         return null;
     }
 
-    private static void ApplyFoxSuggestions(IReadOnlyList<CommunityDataPattern> candidatePatterns, SolveState solveState) {
+    private static void ApplyFoxSuggestions(IReadOnlyList<FauxHollowsPattern> candidatePatterns, SolveState solveState) {
         if (solveState.UserStatesIndexList[TileState.Fox].Count != 0) return;
 
         foreach (var pattern in candidatePatterns) {
@@ -247,5 +253,30 @@ internal static class FauxHollowsSolver {
         var finalPresentWeight = suggestion.Present * PresentWeightFactor;
         var finalSwordWeight = suggestion.Sword * SwordWeightFactor;
         return (finalPresentWeight + finalSwordWeight) * (double)DisambiguationFactor + suggestion.Fox;
+    }
+
+    private static IReadOnlyList<FauxHollowsIdentifierPatterns> LoadIdentifiers() {
+        var patterns = CsvLoader.LoadResource<FauxHollowsPattern>(
+            CsvLoader.FauxHollowsPatternResourceName,
+            includesHeaders: true,
+            out var failedLines,
+            out var exceptions
+        );
+
+        if (failedLines.Count != 0 || exceptions.Count != 0 || patterns.Count == 0) {
+            throw new InvalidOperationException("Unable to load Faux Hollows pattern data from LuminaSupplemental.");
+        }
+
+        return patterns
+            .GroupBy(pattern => pattern.Identifier)
+            .Select(group => {
+                var first = group.First();
+                if (group.Any(pattern => !pattern.BlockedTiles.SequenceEqual(first.BlockedTiles))) {
+                    throw new InvalidOperationException($"Faux Hollows identifier '{group.Key}' has inconsistent blocked tiles.");
+                }
+
+                return new FauxHollowsIdentifierPatterns(group.Key, first.BlockedTiles, group.ToArray());
+            })
+            .ToArray();
     }
 }

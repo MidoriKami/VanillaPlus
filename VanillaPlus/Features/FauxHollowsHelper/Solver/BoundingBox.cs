@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using LuminaSupplemental.Excel.Model;
+
 namespace VanillaPlus.Features.FauxHollowsHelper.Solver;
 
 internal sealed class BoundingBox {
@@ -71,7 +73,7 @@ internal sealed class BoundingBox {
         return new BoundingBox(minX, minY, maxX - minX + 1, maxY - minY + 1);
     }
 
-    public static BoundingBox ForPattern(CommunityDataPattern pattern, TileState state) {
+    public static BoundingBox ForPattern(FauxHollowsPattern pattern, TileState state) {
         var index = state == TileState.Sword ? pattern.Sword : pattern.Present;
         var (x, y) = IndexToCoordinates(index);
 
