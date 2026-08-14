@@ -85,7 +85,6 @@ public class ForcedCutsceneSounds : GameModification {
         try
         {
             addTaskHook!.Original(thisPtr, task);
-
             IPluginLog.Get().Verbose($"SceneTaskAdded, Type: {task->Type} with flags {task->Flags}");
 
             if (config is null) return;
@@ -97,7 +96,7 @@ public class ForcedCutsceneSounds : GameModification {
                     break;
 
                 case EventSceneTaskType.PostCutScene when config.Restore:
-                    RestoreSoundSettings();
+                    IFramework.Get().RunOnTick(RestoreSoundSettings, TimeSpan.FromSeconds(1.5));
                     break;
             }
         }
