@@ -34,6 +34,7 @@ public class ForcedCutsceneSounds : GameModification {
 
     private ForcedCutsceneSoundsConfig? config;
     private ConfigAddon? configWindow;
+    private bool isRestoringSound;
 
     private Hook<EventSceneModuleTaskManager.Delegates.AddTask>? addTaskHook;
 
@@ -96,7 +97,12 @@ public class ForcedCutsceneSounds : GameModification {
                     break;
 
                 case EventSceneTaskType.PostCutScene when config.Restore:
-                    IFramework.Get().RunOnTick(RestoreSoundSettings, TimeSpan.FromSeconds(1.5));
+                    isRestoringSound = true;
+                    break;
+
+                case EventSceneTaskType.FinalizeScene when isRestoringSound:
+                    isRestoringSound = false;
+                    RestoreSoundSettings();
                     break;
             }
         }
