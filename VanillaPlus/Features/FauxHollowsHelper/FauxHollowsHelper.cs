@@ -35,6 +35,8 @@ public class FauxHollowsHelper : GameModification {
 
     private TileState[]? lastBoard;
     private List<RevealedTile>? lastReveals;
+    private TileHint[]? lastHints;
+    private bool updatePending;
 
     public override string ImageName => "FauxHollowsHelper.png";
 
@@ -44,7 +46,8 @@ public class FauxHollowsHelper : GameModification {
                 AddonName = "WeeklyPuzzle",
                 OnSetup = SetupWeeklyPuzzle,
                 OnFinalize = FinalizeWeeklyPuzzle,
-                OnRefresh = UpdateWeeklyPuzzle,
+                OnRefresh = RequestWeeklyPuzzleUpdate,
+                OnUpdate = UpdateWeeklyPuzzleIfPending,
             };
         }
 
@@ -57,13 +60,15 @@ public class FauxHollowsHelper : GameModification {
 
         lastBoard = null;
         lastReveals = null;
+        lastHints = null;
+        updatePending = false;
     }
 
     private unsafe void SetupWeeklyPuzzle(AddonWeeklyPuzzle* addon) {
         lastBoard = null;
         lastReveals = null;
-
-        UpdateWeeklyPuzzle(addon);
+        lastHints = null;
+        updatePending = true;
     }
 
     private unsafe void FinalizeWeeklyPuzzle(AddonWeeklyPuzzle* addon) {
@@ -71,6 +76,8 @@ public class FauxHollowsHelper : GameModification {
 
         lastBoard = null;
         lastReveals = null;
+        lastHints = null;
+        updatePending = false;
     }
 
     private unsafe void UpdateWeeklyPuzzle(AddonWeeklyPuzzle* addon) {
@@ -88,19 +95,30 @@ public class FauxHollowsHelper : GameModification {
                 }
             }
 
-            if (BoardsEqual(lastBoard, board) && RevealsEqual(lastReveals, reveals)) return;
-
-            var hints = FauxHollowsHints.Compute(board, reveals);
-            for (var i = 0; i < board.Length; i++) {
-                ApplyTint(addon, i, hints[i]);
+            if (!BoardsEqual(lastBoard, board) || !RevealsEqual(lastReveals, reveals)) {
+                lastHints = FauxHollowsHints.Compute(board, reveals);
+                lastBoard = board;
+                lastReveals = reveals;
             }
 
-            lastBoard = board;
-            lastReveals = reveals;
+            if (lastHints is null) return;
+            for (var i = 0; i < board.Length; i++) {
+                ApplyTint(addon, i, lastHints[i]);
+            }
+
+            updatePending = false;
         }
         catch (Exception ex) {
             IPluginLog.Get().Exception(ex);
         }
+    }
+
+    private unsafe void RequestWeeklyPuzzleUpdate(AddonWeeklyPuzzle* addon) {
+        updatePending = true;
+    }
+
+    private unsafe void UpdateWeeklyPuzzleIfPending(AddonWeeklyPuzzle* addon) {
+        if (updatePending) UpdateWeeklyPuzzle(addon);
     }
 
     private static bool BoardsEqual(TileState[]? left, TileState[] right) {
