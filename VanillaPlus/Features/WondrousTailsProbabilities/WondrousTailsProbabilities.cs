@@ -51,11 +51,11 @@ public class WondrousTailsProbabilities : GameModification {
             };
         }
 
-        await IFramework.Get().Run(weeklyBingoController.Enable);
+        await weeklyBingoController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(weeklyBingoController);
+        await weeklyBingoController.DisposeAsyncSafe();
         weeklyBingoController = null;
 
         perfectTails = null;

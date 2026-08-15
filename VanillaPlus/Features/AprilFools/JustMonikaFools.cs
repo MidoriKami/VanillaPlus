@@ -47,7 +47,7 @@ public class JustMonikaFools : FoolsModule {
     protected override async Task OnDisable() {
         IClientState.Get().TerritoryChanged -= OnTerritoryChanged;
 
-        await Task.WhenAllDisposed(monikaAddon);
+        await monikaAddon.DisposeAsyncSafe();
         monikaAddon = null;
     }
 

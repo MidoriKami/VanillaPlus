@@ -35,8 +35,11 @@ public class BetterInterruptableCastBars : GameModification {
     public override async Task OnEnableAsync() {
         unsafe {
             antsHook = IGameInteropProvider.Get().HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnAntsCheck);
-            antsHook?.Enable();
+        }
 
+        await antsHook.EnableAsync();
+
+        unsafe {
             targetInfoCastbarController = new AddonController {
                 AddonName = "_TargetInfoCastBar",
                 OnSetup = TargetInfoCastBarSetup,
@@ -44,14 +47,14 @@ public class BetterInterruptableCastBars : GameModification {
             };
         }
 
-        await IFramework.Get().Run(targetInfoCastbarController.Enable);
+        await targetInfoCastbarController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(targetInfoCastbarController);
+        await targetInfoCastbarController.DisposeAsyncSafe();
         targetInfoCastbarController = null;
 
-        antsHook?.Dispose();
+        await antsHook.DisposeAsync();
         antsHook = null;
     }
 

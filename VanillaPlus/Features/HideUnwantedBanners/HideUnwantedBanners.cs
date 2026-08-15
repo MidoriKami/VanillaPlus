@@ -39,15 +39,16 @@ public class HideUnwantedBanners : GameModification {
 
         unsafe {
             setImageTextureHook = IGameInteropProvider.Get().HookFromAddress<AddonImage.Delegates.SetImage>(AddonImage.Addresses.SetImage.Value, OnSetImageTexture);
-            setImageTextureHook?.Enable();
         }
+
+        await setImageTextureHook.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await Task.WhenAllDisposed(configWindow);
+        await configWindow.DisposeAsyncSafe();
         configWindow = null;
 
-        setImageTextureHook?.Dispose();
+        await setImageTextureHook.DisposeAsync();
         setImageTextureHook = null;
 
         config = null;

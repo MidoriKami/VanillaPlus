@@ -39,7 +39,7 @@ public class ShowPlayersOnMap : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(mapOverlayController);
+        await IFramework.Get().Run(() => mapOverlayController?.Dispose());
         mapOverlayController = null;
     }
 }

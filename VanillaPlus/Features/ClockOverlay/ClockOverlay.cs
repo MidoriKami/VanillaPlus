@@ -27,7 +27,6 @@ public class ClockOverlay : GameModification {
     public override async Task OnEnableAsync() {
         config = await ClockOverlayConfig.Load();
 
-
         configWindow = new ConfigAddon {
             InternalName = "ClockOverlayConfig",
             Title = Strings.ClockOverlay_ConfigurationTitle,
@@ -65,10 +64,10 @@ public class ClockOverlay : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(overlayController);
+        await IFramework.Get().Run(() => overlayController?.Dispose());
         overlayController = null;
 
-        await Task.WhenAllDisposed(configWindow);
+        await configWindow.DisposeAsyncSafe();
         configWindow = null;
 
         config = null;

@@ -18,6 +18,7 @@ public class DutyLootInDutyUiController : IDisposable {
     public Action? OnButtonClicked { get; init; }
 
     public void Enable() {
+        ThreadSafety.AssertMainThread();
         overlayController = new OverlayController();
 
         overlayController.AddNode(new DutyLootInDutyButtonNode(DataLoader) {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Numerics;
 using System.Threading.Tasks;
-using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -36,11 +35,11 @@ public class EnhancedWardNavigation : GameModification {
             };
         }
 
-        await IFramework.Get().Run(housingAddonController.Enable);
+        await housingAddonController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(housingAddonController);
+        await housingAddonController.DisposeAsyncSafe();
         housingAddonController = null;
     }
 

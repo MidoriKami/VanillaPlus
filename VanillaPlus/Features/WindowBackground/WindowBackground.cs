@@ -52,7 +52,9 @@ public class WindowBackground : GameModification {
                 overlayController = new OverlayController();
 
                 dynamicAddonController = new DynamicAddonController {
-                    AddonNames = config.Settings.Select(setting => setting.AddonName).ToList(),
+                    AddonNames = [
+                        .. config.Settings.Select(setting => setting.AddonName),
+                    ],
                     OnSetup = AttachNode,
                     OnFinalize = DetachNode,
                     OnUpdate = UpdateNode,
@@ -77,16 +79,17 @@ public class WindowBackground : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(dynamicAddonController, overlayController);
-        dynamicAddonController = null;
+        await IFramework.Get().Run(() => overlayController?.Dispose());
         overlayController = null;
 
-        await Task.WhenAllDisposed(addonSearchAddon, configAddon);
-        addonSearchAddon = null;
-        configAddon = null;
+        await IFramework.Get().Run(() => dynamicAddonController?.Dispose());
+        dynamicAddonController = null;
 
-        backgroundImageNodes?.Clear();
-        backgroundImageNodes = null;
+        await addonSearchAddon.DisposeAsyncSafe();
+        addonSearchAddon = null;
+
+        await configAddon.DisposeAsyncSafe();
+        configAddon = null;
 
         config = null;
     }

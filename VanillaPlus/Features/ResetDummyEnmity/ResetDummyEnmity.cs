@@ -45,22 +45,17 @@ public class ResetDummyEnmity : GameModification {
             };
         }
 
-        resetButtons = new CircleButtonNode?[MaxEnemyCount];
-        buttonTargets = new IBattleChara?[MaxEnemyCount];
-
-        await IFramework.Get().Run(enemyListController.Enable);
+        await enemyListController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(enemyListController);
+        await enemyListController.DisposeAsyncSafe();
         enemyListController = null;
-
-        resetButtons = null;
-        buttonTargets = null;
     }
 
     private unsafe void SetupEnemyList(AddonEnemyList* addon) {
-        if (resetButtons is null) return;
+        resetButtons = new CircleButtonNode?[MaxEnemyCount];
+        buttonTargets = new IBattleChara?[MaxEnemyCount];
 
         foreach (uint i in Enumerable.Range(0, MaxEnemyCount)) {
             if (resetButtons[i] is not null) continue;
@@ -122,14 +117,17 @@ public class ResetDummyEnmity : GameModification {
     }
 
     private unsafe void FinalizeEnemyList(AddonEnemyList* _) {
-        if (resetButtons == null) return;
-        if (buttonTargets == null) return;
+        if (resetButtons is null) return;
+        if (buttonTargets is null) return;
 
         for (var index = 0; index < resetButtons.Length; index++) {
             resetButtons[index]?.Dispose();
             resetButtons[index] = null;
             buttonTargets[index] = null;
         }
+
+        resetButtons = null;
+        buttonTargets = null;
     }
 
     private void ResetDummy(uint buttonIndex) {

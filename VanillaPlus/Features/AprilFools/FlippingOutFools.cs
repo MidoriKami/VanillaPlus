@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
-using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 
@@ -24,11 +23,11 @@ public class FlippingOutFools : FoolsModule {
             };
         }
 
-        await IFramework.Get().Run(locationTitleController.Enable);
+        await locationTitleController.EnableAsync();
     }
 
     protected override async Task OnDisable() {
-        await IFramework.Get().DisposeMainThreaded(locationTitleController);
+        await locationTitleController.DisposeAsyncSafe();
         locationTitleController = null;
     }
 

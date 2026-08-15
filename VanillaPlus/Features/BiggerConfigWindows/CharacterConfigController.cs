@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 
 namespace VanillaPlus.Features.BiggerConfigWindows;
 
-public class CharacterConfigController : IDisposable {
+public class CharacterConfigController : IAsyncDisposable {
     public required BiggerConfigWindowsConfig Config { get; init; }
 
     private AddonController? characterConfigController;
@@ -22,31 +23,34 @@ public class CharacterConfigController : IDisposable {
         "ConfigCharaChatLogDetail", "ConfigCharaChatLogRing",
     ];
 
-    public unsafe void Enable() {
-        characterConfigController = new AddonController {
-            AddonName = "ConfigCharacter",
-            OnSetup = SetupConfigCharacter,
-            OnFinalize = FinalizeConfigCharacter,
-        };
+    public async Task EnableAsync() {
+        unsafe {
+            characterConfigController = new AddonController {
+                AddonName = "ConfigCharacter",
+                OnSetup = SetupConfigCharacter,
+                OnFinalize = FinalizeConfigCharacter,
+            };
+        }
 
-        childAddonController = new DynamicAddonController {
-            AddonNames = childAddons,
-            OnSetup = SetupConfigCharacterChild,
-            OnFinalize = FinalizeConfigCharacterChild,
-        };
+        await characterConfigController.EnableAsync();
 
-        characterConfigController.Enable();
-        childAddonController.Enable();
+        unsafe {
+            childAddonController = new DynamicAddonController {
+                AddonNames = childAddons,
+                OnSetup = SetupConfigCharacterChild,
+                OnFinalize = FinalizeConfigCharacterChild,
+            };
+        }
+
+        await childAddonController.EnableAsync();
     }
 
-    public void Dispose() {
-        IFramework.Get().Run(() => {
-            characterConfigController?.Dispose();
-            childAddonController?.Dispose();
-        });
-
-        characterConfigController = null;
+    public async ValueTask DisposeAsync() {
+        await childAddonController.DisposeAsyncSafe();
         childAddonController = null;
+
+        await characterConfigController.DisposeAsyncSafe();
+        characterConfigController = null;
     }
 
     private unsafe void SetupConfigCharacter(AtkUnitBase* addon) {
@@ -79,7 +83,7 @@ public class CharacterConfigController : IDisposable {
         var scrollBarComponent = GetScrollbarForChild(addon);
         if (scrollBarComponent is null) return;
 
-        ResizeHelpers.ResizeScrollBarNode(scrollBarComponent, Config.CharacterConfigAdditionalHeight);
+        scrollBarComponent->ResizeHeight(Config.CharacterConfigAdditionalHeight);
 
         // Adjust list area stop, only visible in certain themes
         addon->GetNodeById(5)->Position += new Vector2(0.0f, Config.CharacterConfigAdditionalHeight);
@@ -91,7 +95,7 @@ public class CharacterConfigController : IDisposable {
         var scrollBarComponent = GetScrollbarForChild(addon);
         if (scrollBarComponent is null) return;
 
-        ResizeHelpers.ResizeScrollBarNode(scrollBarComponent, -Config.CharacterConfigAdditionalHeight);
+        scrollBarComponent->ResizeHeight(-Config.CharacterConfigAdditionalHeight);
 
         // Adjust list area stop, only visible in certain themes
         addon->GetNodeById(5)->Position -= new Vector2(0.0f, Config.CharacterConfigAdditionalHeight);

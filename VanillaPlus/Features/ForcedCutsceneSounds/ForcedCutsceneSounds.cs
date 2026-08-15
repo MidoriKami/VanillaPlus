@@ -41,7 +41,6 @@ public class ForcedCutsceneSounds : GameModification {
     public override async Task OnEnableAsync() {
         unsafe {
             addTaskHook = IGameInteropProvider.Get().HookFromAddress<EventSceneModuleTaskManager.Delegates.AddTask>(EventSceneModuleTaskManager.Addresses.AddTask.Value, OnTaskAdded);
-            addTaskHook?.Enable();
         }
 
         wasMuted = [];
@@ -70,14 +69,17 @@ public class ForcedCutsceneSounds : GameModification {
             .AddCheckbox(Strings.ForcedCutsceneSounds_DisableMsq, nameof(config.DisableInMsqRoulette));
 
         OpenConfigAction = configWindow.Toggle;
+
+        await addTaskHook.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(addTaskHook);
+        await addTaskHook.DisposeAsync();
         addTaskHook = null;
 
-        await Task.WhenAllDisposed(configWindow);
+        await configWindow.DisposeAsyncSafe();
         configWindow = null;
+
         config = null;
         wasMuted = null;
     }

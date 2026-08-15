@@ -11,7 +11,7 @@ using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.TargetCastBarCountdown;
 
-public class PrimaryTargetAltCastbarController : IDisposable {
+public class PrimaryTargetAltCastbarController : IAsyncDisposable {
     public TextNodeStyle LoadedStyle { get; }
 
     private readonly TargetCastBarCountdownConfig config;
@@ -52,13 +52,11 @@ public class PrimaryTargetAltCastbarController : IDisposable {
         };
     }
 
-    public void Enable() {
-        addonController.Enable();
-    }
+    public async Task EnableAsync()
+        => await addonController.EnableAsync();
 
-    public void Dispose() {
-        addonController.Dispose();
-    }
+    public async ValueTask DisposeAsync()
+        => await addonController.DisposeAsync();
 
     private unsafe void OnAddonSetup(AtkUnitBase* addon) {
         var targetNode = addon->GetNodeById(15);

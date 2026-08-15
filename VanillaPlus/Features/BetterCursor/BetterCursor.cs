@@ -59,10 +59,10 @@ public class BetterCursor : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(overlayController);
+        await IFramework.Get().Run(() => overlayController?.Dispose());
         overlayController = null;
 
-        await Task.WhenAllDisposed(configWindow);
+        await configWindow.DisposeAsyncSafe();
         configWindow = null;
 
         config = null;

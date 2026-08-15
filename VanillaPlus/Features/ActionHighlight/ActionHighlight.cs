@@ -69,17 +69,20 @@ public class ActionHighlight : GameModification {
 
         unsafe {
             onAntsHook = IGameInteropProvider.Get().HookFromAddress<ActionManager.Delegates.IsActionHighlighted>(ActionManager.MemberFunctionPointers.IsActionHighlighted, OnActionHighlighted);
-            onAntsHook?.Enable();
         }
+
+        await onAntsHook.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        onAntsHook?.Dispose();
+        await onAntsHook.DisposeAsync();
         onAntsHook = null;
 
-        await Task.WhenAllDisposed(configAddon, classJobSearchAddon);
-        configAddon = null;
+        await classJobSearchAddon.DisposeAsyncSafe();
         classJobSearchAddon = null;
+
+        await configAddon.DisposeAsyncSafe();
+        configAddon = null;
     }
 
     private void OnAddClicked() {

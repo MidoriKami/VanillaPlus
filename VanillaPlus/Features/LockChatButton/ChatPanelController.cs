@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Numerics;
+using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 
 namespace VanillaPlus.Features.LockChatButton;
 
-public class ChatPanelController : IDisposable {
+public class ChatPanelController : IAsyncDisposable {
     private readonly LockChatButtonData data;
     private readonly AddonController<AddonChatLogPanel> addonController;
 
@@ -23,13 +24,11 @@ public class ChatPanelController : IDisposable {
         };
     }
 
-    public void Enable() {
-        addonController.Enable();
-    }
+    public async Task EnableAsync()
+        => await addonController.EnableAsync();
 
-    public void Dispose() {
-        addonController.Dispose();
-    }
+    public async ValueTask DisposeAsync()
+        => await addonController.DisposeAsyncSafe();
 
     private unsafe void OnChatLogPanelSetup(AddonChatLogPanel* addon) {
         var positioningNode = addon->GetNodeById(6);

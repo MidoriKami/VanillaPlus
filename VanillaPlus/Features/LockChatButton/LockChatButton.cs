@@ -38,45 +38,48 @@ public class LockChatButton : GameModification {
 
         unsafe {
             moveDeltaHook = IGameInteropProvider.Get().HookFromAddress<AtkUnitBase.Delegates.MoveDelta>(AtkUnitBase.MemberFunctionPointers.MoveDelta, OnMoveDelta);
-            moveDeltaHook?.Enable();
+        }
 
+        await moveDeltaHook.EnableAsync();
+
+        unsafe {
             chatLogController = new AddonController<AddonChatLog> {
                 AddonName = "ChatLog",
                 OnSetup = SetupChatLog,
                 OnPreUpdate = UpdateChatLog,
                 OnFinalize = FinalizeChatLog,
             };
-
-            firstPanelController = new ChatPanelController(data, "ChatLogPanel_1");
-            secondPanelController = new ChatPanelController(data, "ChatLogPanel_2");
-            thirdPanelController = new ChatPanelController(data, "ChatLogPanel_3");
         }
 
-        await IFramework.Get().Run(() => {
-            chatLogController.Enable();
-            firstPanelController.Enable();
-            secondPanelController.Enable();
-            thirdPanelController.Enable();
-        });
+        await chatLogController.EnableAsync();
+
+        firstPanelController = new ChatPanelController(data, "ChatLogPanel_1");
+        await firstPanelController.EnableAsync();
+
+        secondPanelController = new ChatPanelController(data, "ChatLogPanel_2");
+        await secondPanelController.EnableAsync();
+
+        thirdPanelController = new ChatPanelController(data, "ChatLogPanel_3");
+        await thirdPanelController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        addonControlHook?.Dispose();
+        await addonControlHook.DisposeAsync();
         addonControlHook = null;
 
-        await IFramework.Get().Run(() => {
-            chatLogController?.Dispose();
-            firstPanelController?.Dispose();
-            secondPanelController?.Dispose();
-            thirdPanelController?.Dispose();
-        });
-
+        await chatLogController.DisposeAsyncSafe();
         chatLogController = null;
+
+        await firstPanelController.DisposeAsyncSafe();
         firstPanelController = null;
+
+        await secondPanelController.DisposeAsyncSafe();
         secondPanelController = null;
+
+        await thirdPanelController.DisposeAsyncSafe();
         thirdPanelController = null;
 
-        moveDeltaHook?.Dispose();
+        await moveDeltaHook.DisposeAsync();
         moveDeltaHook = null;
 
         data = null;

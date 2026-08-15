@@ -58,15 +58,16 @@ public class FadeUnavailableActions : GameModification {
 
         unsafe {
             onHotBarSlotUpdateHook = IGameInteropProvider.Get().HookFromAddress<AddonActionBarBase.Delegates.UpdateHotbarSlot>(AddonActionBarBase.MemberFunctionPointers.UpdateHotbarSlot, OnHotBarSlotUpdate);
-            onHotBarSlotUpdateHook?.Enable();
         }
+
+        await onHotBarSlotUpdateHook.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        onHotBarSlotUpdateHook?.Dispose();
+        await onHotBarSlotUpdateHook.DisposeAsync();
         onHotBarSlotUpdateHook = null;
 
-        await Task.WhenAllDisposed(configWindow);
+        await configWindow.DisposeAsyncSafe();
         configWindow = null;
 
         actionCache = null;

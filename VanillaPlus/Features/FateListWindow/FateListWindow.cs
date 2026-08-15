@@ -45,7 +45,7 @@ public class FateListWindow : GameModification {
             IsEnabled = fateListAddonSettings.KeybindEnabled,
         };
 
-        OpenConfigAction = keybindConfigAddon.Open;
+        OpenConfigAction = keybindConfigAddon.Toggle;
 
         ICommandManager.Get().AddHandler("/fatelist", new CommandInfo(OnFateListCommand) {
             HelpMessage = "Opens Fate List Window",
@@ -57,12 +57,13 @@ public class FateListWindow : GameModification {
         IFramework.Get().Update -= OnFrameworkUpdate;
         ICommandManager.Get().RemoveHandler("/fatelist");
 
-        await Task.WhenAllDisposed(addonFateList, keybindConfigAddon);
-        addonFateList = null;
+        await keybindConfigAddon.DisposeAsyncSafe();
         keybindConfigAddon = null;
 
-        keybindListener = null;
+        await addonFateList.DisposeAsyncSafe();
+        addonFateList = null;
 
+        keybindListener = null;
         fateListAddonSettings = null;
     }
 

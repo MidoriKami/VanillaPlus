@@ -13,7 +13,7 @@ namespace VanillaPlus.Features.MacroTooltips;
 /// <summary>
 /// Debug Game Modification for use with playing around with ideas, DO NOT commit changes to this file
 /// </summary>
-public unsafe class MacroTooltips : GameModification {
+public class MacroTooltips : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_MacroTooltips,
         Description = Strings.ModificationDescription_MacroTooltips,
@@ -25,21 +25,20 @@ public unsafe class MacroTooltips : GameModification {
 
     public override string ImageName => "MacroTooltips.png";
 
-    public override Task OnEnableAsync() {
-        showTooltipHook = IGameInteropProvider.Get().HookFromAddress<AddonActionBarBase.Delegates.ShowTooltip>(AddonActionBarBase.MemberFunctionPointers.ShowTooltip, OnShowMacroTooltip);
-        showTooltipHook?.Enable();
+    public override async Task OnEnableAsync() {
+        unsafe {
+            showTooltipHook = IGameInteropProvider.Get().HookFromAddress<AddonActionBarBase.Delegates.ShowTooltip>(AddonActionBarBase.MemberFunctionPointers.ShowTooltip, OnShowMacroTooltip);
+        }
 
-        return Task.CompletedTask;
+        await showTooltipHook.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        showTooltipHook?.Dispose();
+    public override async Task OnDisableAsync() {
+        await showTooltipHook.DisposeAsync();
         showTooltipHook = null;
-
-        return Task.CompletedTask;
     }
 
-    private void OnShowMacroTooltip(AddonActionBarBase* a1, AtkResNode* macroResNode, NumberArrayData* numberArray, StringArrayData* stringArray, int numberArrayIndex, int stringArrayIndex) {
+    private unsafe void OnShowMacroTooltip(AddonActionBarBase* a1, AtkResNode* macroResNode, NumberArrayData* numberArray, StringArrayData* stringArray, int numberArrayIndex, int stringArrayIndex) {
         try {
             // In ActionBarNumberArray, the first hotbar starts at index 15
             var realSlotId = (numberArrayIndex - 15) % 16;

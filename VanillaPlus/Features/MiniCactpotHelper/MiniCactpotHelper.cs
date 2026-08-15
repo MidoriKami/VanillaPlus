@@ -74,17 +74,17 @@ public class MiniCactpotHelper : GameModification {
             };
         }
 
-        await IFramework.Get().Run(lotteryDailyController.Enable);
+        await lotteryDailyController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
         gameTask?.Dispose();
         gameTask = null;
 
-        await IFramework.Get().DisposeMainThreaded(lotteryDailyController);
+        await lotteryDailyController.DisposeAsyncSafe();
         lotteryDailyController = null;
 
-        await Task.WhenAllDisposed(configAddon);
+        await configAddon.DisposeAsyncSafe();
         configAddon = null;
 
         config = null;

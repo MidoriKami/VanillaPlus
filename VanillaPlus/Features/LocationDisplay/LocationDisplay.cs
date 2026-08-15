@@ -71,7 +71,7 @@ public class LocationDisplay : GameModification {
         IFramework.Get().Update -= OnFrameworkUpdate;
         IClientState.Get().TerritoryChanged -= OnZoneChange;
 
-        await Task.WhenAllDisposed(configWindow);
+        await configWindow.DisposeAsyncSafe();
         configWindow = null;
 
         dtrBarEntry?.Remove();

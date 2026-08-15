@@ -24,7 +24,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
     private readonly IconImageNode erroringImageNode;
 
     private readonly TextNode titleTextNode;
-    private readonly IconImageNode experimentalImageNode;
+    private readonly IconImageNode warningImageNode;
 
     private readonly TextNode authorTextNode;
 
@@ -62,13 +62,12 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
         };
         titleTextNode.AttachNode(labelsContainerNode);
 
-        experimentalImageNode = new IconImageNode {
+        warningImageNode = new IconImageNode {
             IconId = 60073,
             FitTexture = true,
             IsVisible = false,
-            TextTooltip = Strings.Tooltip_ExperimentalFeature,
         };
-        experimentalImageNode.AttachNode(labelsContainerNode);
+        warningImageNode.AttachNode(labelsContainerNode);
 
         authorTextNode = new TextNode {
             FontType = FontType.Axis,
@@ -135,8 +134,8 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
         authorTextNode.Size = new Vector2(labelsContainerNode.Width - Height / 2.0f, Height / 2.0f);
         authorTextNode.Position = new Vector2(0.0f, Height / 2.0f);
 
-        experimentalImageNode.Size = new Vector2(Height / 3.0f, Height / 3.0f);
-        experimentalImageNode.Position = new Vector2(authorTextNode.Width + Height / 12.0f, Height / 2.0f + Height / 12.0f);
+        warningImageNode.Size = new Vector2(Height / 3.0f, Height / 3.0f);
+        warningImageNode.Position = new Vector2(authorTextNode.Width + Height / 12.0f, Height / 2.0f + Height / 12.0f);
 
         refreshCompatabilityButton.Size = new Vector2(Height * 2.0f / 3.0f, Height * 2.0f / 3.0f);
         refreshCompatabilityButton.Position = new Vector2(buttonsContainerNode.Width / 4.0f - refreshCompatabilityButton.Width / 2.0f, Height / 6.0f);
@@ -158,24 +157,17 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
 
         refreshCompatabilityButton.IsVisible = itemData.State is LoadedState.CompatError;
 
-        var collisionUpdateNeeded = false;
 
         if (erroringImageNode.TextTooltip != itemData.ErrorMessage) {
             erroringImageNode.TextTooltip = itemData.ErrorMessage;
-            collisionUpdateNeeded = true;
         }
 
-        if (experimentalImageNode.IsVisible != itemData.Modification.IsExperimental) {
-            experimentalImageNode.IsVisible = itemData.Modification.IsExperimental;
-            collisionUpdateNeeded = true;
-        }
-
-        var wantsConfigButton = itemData.Modification is { OpenConfigAction: not null };
-        var hasConfigButton = openConfigButton.IsVisible;
-
-        if (wantsConfigButton && !hasConfigButton) {
-            collisionUpdateNeeded = true;
-        }
+        warningImageNode.IsVisible = itemData.Modification.IsExperimental || itemData.Modification.WarningMessage is not null;
+        warningImageNode.TextTooltip = itemData.Modification switch {
+            { WarningMessage: { } warningMessage } => warningMessage,
+            { IsExperimental: true } => Strings.Tooltip_ExperimentalFeature,
+            _ => warningImageNode.TextTooltip,
+        };
 
         switch (itemData.State) {
             case LoadedState.Enabled when itemData.Modification.OpenConfigAction is { } openConfig:
@@ -192,11 +184,6 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
                 openConfigButton.OnClick = null;
                 openConfigButton.IsVisible = false;
                 break;
-        }
-
-        if (collisionUpdateNeeded) {
-            HideTooltip();
-            Addon.UpdateCollisionForNode(this);
         }
     }
 

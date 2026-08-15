@@ -58,9 +58,6 @@ public class GearsetRedirect : GameModification {
                 AddClicked = OnAddClicked,
                 RemoveClicked = OnRemoveClicked,
             };
-
-            gearsetChangedHook = IGameInteropProvider.Get().HookFromAddress<RaptureGearsetModule.Delegates.EquipGearset>(RaptureGearsetModule.Addresses.EquipGearset.Value, OnGearsetChanged);
-            gearsetChangedHook?.Enable();
         }
 
         OpenConfigAction = () => {
@@ -68,16 +65,26 @@ public class GearsetRedirect : GameModification {
                 configWindow.Toggle();
             }
         };
+
+        unsafe {
+            gearsetChangedHook = IGameInteropProvider.Get().HookFromAddress<RaptureGearsetModule.Delegates.EquipGearset>(RaptureGearsetModule.Addresses.EquipGearset.Value, OnGearsetChanged);
+        }
+
+        await gearsetChangedHook.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        gearsetChangedHook?.Dispose();
+        await gearsetChangedHook.DisposeAsync();
         gearsetChangedHook = null;
 
-        await Task.WhenAllDisposed(configWindow, gearsetSearchAddon, CreateRedirectionAddon);
-        configWindow = null;
-        gearsetSearchAddon = null;
+        await CreateRedirectionAddon.DisposeAsyncSafe();
         CreateRedirectionAddon = null;
+
+        await gearsetSearchAddon.DisposeAsyncSafe();
+        gearsetSearchAddon = null;
+
+        await configWindow.DisposeAsyncSafe();
+        configWindow = null;
 
         config = null;
     }

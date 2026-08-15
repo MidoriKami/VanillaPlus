@@ -31,6 +31,8 @@ public class HideMpBars : GameModification {
     private ConfigAddon? configAddon;
 
     public override async Task OnEnableAsync() {
+        manaUsingClassJobs = [.. IDataManager.Get().GetManaUsingClassJobs()];
+
         config = await HideMpBarsConfig.Load();
 
         configAddon = new ConfigAddon {
@@ -47,15 +49,17 @@ public class HideMpBars : GameModification {
 
         OpenConfigAction = configAddon.Toggle;
 
-        manaUsingClassJobs = [.. IDataManager.Get().GetManaUsingClassJobs()];
-
         unsafe {
             partyListController = new AddonController<AddonPartyList> {
                 AddonName = "_PartyList",
                 OnPreUpdate = UpdatePartyList,
                 OnFinalize = ResetPartyList,
             };
+        }
 
+        await partyListController.EnableAsync();
+
+        unsafe {
             paramController = new AddonController<AddonParameterWidget> {
                 AddonName = "_ParameterWidget",
                 OnPreUpdate = UpdateParamWidget,
@@ -63,18 +67,17 @@ public class HideMpBars : GameModification {
             };
         }
 
-        await IFramework.Get().Run(() => {
-            partyListController.Enable();
-            paramController.Enable();
-        });
+        await paramController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(partyListController, paramController);
+        await partyListController.DisposeAsyncSafe();
         partyListController = null;
+
+        await paramController.DisposeAsyncSafe();
         paramController = null;
 
-        await Task.WhenAllDisposed(configAddon);
+        await configAddon.DisposeAsyncSafe();
         configAddon = null;
 
         manaUsingClassJobs = null;
