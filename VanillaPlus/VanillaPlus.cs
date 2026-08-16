@@ -89,7 +89,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
         if (DateTime.Now.IsSeasonalEvent && DateTime.Now.Date > System.SystemConfig.LastSeasonalNotice.Date) {
             System.SeasonEventAddon.Open();
             System.SystemConfig.LastSeasonalNotice = DateTime.Now.Date;
-            Task.Run(System.SystemConfig.Save);
+            System.SystemConfig.Save();
         }
     }
 
@@ -112,7 +112,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
                 System.SystemConfig.IsDebugMode = !System.SystemConfig.IsDebugMode;
                 IChatGui.Get().Print($"Debug mode is now {(System.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}", "VanillaPlus");
                 IPluginLog.Get().Info($"Debug mode is now {(System.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}");
-                Task.Run(System.SystemConfig.Save);
+                System.SystemConfig.Save();
 
                 if (!System.ModificationBrowserAddon.IsOpen) {
                     System.ModificationBrowserAddon.Open();
@@ -123,7 +123,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
                 System.SystemConfig.SafeMode = !System.SystemConfig.SafeMode;
                 IChatGui.Get().Print($"Safemode is now {(System.SystemConfig.SafeMode ? "Enabled" : "Disabled")}", "VanillaPlus");
                 IPluginLog.Get().Info($"Safemode is now {(System.SystemConfig.SafeMode ? "Enabled" : "Disabled")}");
-                Task.Run(System.SystemConfig.Save);
+                System.SystemConfig.Save();
                 break;
         }
     }

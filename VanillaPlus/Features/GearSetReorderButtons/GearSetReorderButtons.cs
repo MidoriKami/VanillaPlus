@@ -36,7 +36,11 @@ public class GearSetReorderButtons : GameModification {
                 OnSetup = SetUpAddon,
                 OnFinalize = FinalizeAddon,
             };
+        }
 
+        await gearSetsAddonController.EnableAsync();
+
+        unsafe {
             gearSetsListController = new NativeListController<AddonGearSetList, GearSetListListItem> {
                 AddonName = "GearSetList",
                 GetPopulatorNode = GetPopulatorNode,
@@ -44,10 +48,7 @@ public class GearSetReorderButtons : GameModification {
             };
         }
 
-        await IFramework.Get().Run(() => {
-            gearSetsAddonController.Enable();
-            gearSetsListController.Enable();
-        });
+        await gearSetsListController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
@@ -55,15 +56,15 @@ public class GearSetReorderButtons : GameModification {
             foreach (var (_, node) in reorderButtonNodes ?? []) {
                 node.Dispose();
             }
-            reorderButtonNodes?.Clear();
-
-            gearSetsAddonController?.Dispose();
-            gearSetsListController?.Dispose();
         });
-
-        gearSetsAddonController = null;
-        gearSetsListController = null;
+        reorderButtonNodes?.Clear();
         reorderButtonNodes = null;
+
+        await gearSetsAddonController.DisposeAsyncSafe();
+        gearSetsAddonController = null;
+
+        await gearSetsListController.DisposeAsyncSafe();
+        gearSetsListController = null;
     }
 
     private unsafe void SetUpAddon(AddonGearSetList* addon) {

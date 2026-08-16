@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Native.Addons;
@@ -29,9 +28,16 @@ public class TargetCastBarCountdown : GameModification {
         config = await TargetCastBarCountdownConfig.Load();
 
         primaryController = new PrimaryTargetCastbarController(config);
+        await primaryController.EnableAsync();
+
         primaryAltController = new PrimaryTargetAltCastbarController(config);
+        await primaryAltController.EnableAsync();
+
         focusController = new FocusTargetCastbarController(config);
+        await focusController.EnableAsync();
+
         nameplateController = new NameplateCastbarController();
+        await nameplateController.EnableAsync();
 
         configAddon = new ConfigAddon {
             InternalName = "TargetCastBarConfig",
@@ -56,23 +62,22 @@ public class TargetCastBarCountdown : GameModification {
             .AddNodeConfig(nameplateController.LoadedStyle, TextNodeConfigOptions.TextAlignment);
 
         OpenConfigAction = configAddon.Toggle;
-
-        await IFramework.Get().Run(() => {
-            primaryController.Enable();
-            primaryAltController.Enable();
-            focusController.Enable();
-            nameplateController.Enable();
-        });
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(primaryController, primaryAltController, focusController, nameplateController);
+        await primaryController.DisposeAsyncSafe();
         primaryController = null;
+
+        await primaryAltController.DisposeAsyncSafe();
         primaryAltController = null;
+
+        await focusController.DisposeAsyncSafe();
         focusController = null;
+
+        await nameplateController.DisposeAsyncSafe();
         nameplateController = null;
 
-        await Task.WhenAllDisposed(configAddon);
+        await configAddon.DisposeAsyncSafe();
         configAddon = null;
     }
 }

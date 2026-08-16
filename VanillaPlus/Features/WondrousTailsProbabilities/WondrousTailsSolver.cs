@@ -212,6 +212,6 @@ public sealed unsafe partial class PerfectTails {
         return seString.Build().EncodeWithNullTerminator();
     }
 
-    private string[] StringFormatDoubles(IEnumerable<double> values)
-        => values.Select(v => $"{v * 100:F2}%").ToArray();
+    private static string[] StringFormatDoubles(IEnumerable<double> values)
+        => [.. values.Select(v => $"{v * 100:F2}%")];
 }

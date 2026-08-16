@@ -2,7 +2,6 @@
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Plugin.Services;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -21,7 +20,7 @@ public class HideGuildhestObjectivePopup : GameModification {
     public override string ImageName => "HideGuildhestObjective.png";
 
     public override Task OnEnableAsync() {
-        IAddonLifecycle.Get().RegisterListener(AddonEvent.PreSetup, "JournalAccept", OnJournalAcceptOpen);
+        IAddonLifecycle.Get().RegisterListener(AddonEvent.PreOpen, "JournalAccept", OnJournalAcceptOpen);
 
         return Task.CompletedTask;
     }
@@ -32,10 +31,9 @@ public class HideGuildhestObjectivePopup : GameModification {
         return Task.CompletedTask;
     }
 
-    private static unsafe void OnJournalAcceptOpen(AddonEvent type, AddonArgs args) {
+    private static void OnJournalAcceptOpen(AddonEvent type, AddonArgs args) {
         if (IDataManager.Get().GetExcelSheet<TerritoryType>().GetRow(IClientState.Get().TerritoryType) is not { TerritoryIntendedUse.RowId: 3 }) return;
 
-        // todo: figure out how to use the agent to do this.
-        args.GetAddon<AtkUnitBase>()->Hide(false, false, 1);
+        args.PreventOriginal();
     }
 }

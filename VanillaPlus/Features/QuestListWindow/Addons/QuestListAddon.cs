@@ -37,10 +37,11 @@ public class QuestListAddon : NativeAddon {
     protected override unsafe void OnUpdate(AtkUnitBase* addon) {
         base.OnUpdate(addon);
 
-        listNode?.OptionsList = Map.Instance()->UnacceptedQuestMarkers
-            .Where(item => lastSearchString == string.Empty || MarkerInfoExtensions.IsRegexMatch(item, lastSearchString))
-            .OrderBy(item => item.Distance)
-            .ToList();
+        listNode?.OptionsList = [
+            .. Map.Instance()->UnacceptedQuestMarkers
+                .Where(item => lastSearchString == string.Empty || MarkerInfoExtensions.IsRegexMatch(item, lastSearchString))
+                .OrderBy(item => item.Distance),
+        ];
 
         listNode?.Update();
     }

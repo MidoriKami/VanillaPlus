@@ -28,14 +28,15 @@ public class BetterSelectString : GameModification {
         unsafe {
             selectStringController = new AddonController<AddonSelectString> {
                 AddonName = "SelectString",
-                OnSetup = addon
-                    => addon->AtkUnitBase.Size += new Vector2(32.0f, 0.0f),
-                OnFinalize = addon
-                    => addon->AtkUnitBase.Size -= new Vector2(32.0f, 0.0f),
-
+                OnSetup = addon => addon->AtkUnitBase.Size += new Vector2(32.0f, 0.0f),
+                OnFinalize = addon => addon->AtkUnitBase.Size -= new Vector2(32.0f, 0.0f),
                 OnUpdate = UpdateSelectString,
             };
+        }
 
+        await selectStringController.EnableAsync();
+
+        unsafe {
             selectStringListController = new NativeListController<AddonSelectString> {
                 AddonName = "SelectString",
                 GetPopulatorNode = addon => addon->GetComponentListById(3)->GetComponentItemRendererById(5),
@@ -55,17 +56,15 @@ public class BetterSelectString : GameModification {
             };
         }
 
-        await IFramework.Get().Run(() => {
-            selectStringController.Enable();
-            selectStringListController.Enable();
-        });
+        await selectStringListController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(selectStringController, selectStringListController);
-
-        selectStringController = null;
+        await selectStringListController.DisposeAsyncSafe();
         selectStringListController = null;
+
+        await selectStringListController.DisposeAsyncSafe();
+        selectStringController = null;
     }
 
     private static unsafe void UpdateSelectString(AddonSelectString* addon) {

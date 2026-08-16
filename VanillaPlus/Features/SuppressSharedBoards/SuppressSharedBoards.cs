@@ -7,7 +7,7 @@ using VanillaPlus.Enums;
 
 namespace VanillaPlus.Features.SuppressSharedBoards;
 
-public unsafe class SuppressSharedBoards : GameModification {
+public class SuppressSharedBoards : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_SuppressSharedBoards,
         Description = Strings.ModificationDescription_SuppressSharedBoards,
@@ -18,30 +18,31 @@ public unsafe class SuppressSharedBoards : GameModification {
     private Hook<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>? showSharedNotificationHook;
     private Hook<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>? saveBoardAndPlaySoundHook;
 
-    public override Task OnEnableAsync() {
-        showSharedNotificationHook = IGameInteropProvider.Get().HookFromAddress<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>(
-            TofuHelper.TofuHelperData.MemberFunctionPointers.ShowSharedNotification,
-            (_, _, _) => { }
-        );
+    public override async Task OnEnableAsync() {
+        unsafe {
+            showSharedNotificationHook = IGameInteropProvider.Get().HookFromAddress<TofuHelper.TofuHelperData.Delegates.ShowSharedNotification>(
+                TofuHelper.TofuHelperData.MemberFunctionPointers.ShowSharedNotification,
+                (_, _, _) => { }
+            );
+        }
 
-        saveBoardAndPlaySoundHook = IGameInteropProvider.Get().HookFromAddress<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>(
-            TofuHelper.TofuHelperData.MemberFunctionPointers.SaveBoardAndPlaySound,
-            (_, _, _, _, _) => { }
-        );
+        await showSharedNotificationHook.EnableAsync();
 
-        showSharedNotificationHook?.Enable();
-        saveBoardAndPlaySoundHook?.Enable();
+        unsafe {
+            saveBoardAndPlaySoundHook = IGameInteropProvider.Get().HookFromAddress<TofuHelper.TofuHelperData.Delegates.SaveBoardAndPlaySound>(
+                TofuHelper.TofuHelperData.MemberFunctionPointers.SaveBoardAndPlaySound,
+                (_, _, _, _, _) => { }
+            );
+        }
 
-        return Task.CompletedTask;
+        await saveBoardAndPlaySoundHook.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        showSharedNotificationHook?.Dispose();
+    public override async Task OnDisableAsync() {
+        await showSharedNotificationHook.DisposeAsync();
         showSharedNotificationHook = null;
 
-        saveBoardAndPlaySoundHook?.Dispose();
+        await saveBoardAndPlaySoundHook.DisposeAsync();
         saveBoardAndPlaySoundHook = null;
-
-        return Task.CompletedTask;
     }
 }

@@ -25,15 +25,13 @@ public class FastMouseClick : GameModification {
 
         if (memoryAddress is { } address && memoryAddress != nint.Zero) {
             memoryPatch = new MemoryReplacement(address, [0x90, 0x90]);
-            await IFramework.Get().Run(memoryPatch.Enable);
+            await memoryPatch.EnableAsync();
         }
     }
 
     public override async Task OnDisableAsync() {
-        if (memoryPatch is not null) {
-            await memoryPatch.DisableAsync();
-            memoryPatch = null;
-        }
+        await memoryPatch.DisposeAsyncSafe();
+        memoryPatch = null;
 
         memoryAddress = null;
     }

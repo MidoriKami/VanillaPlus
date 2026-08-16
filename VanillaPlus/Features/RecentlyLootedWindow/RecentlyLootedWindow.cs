@@ -46,7 +46,7 @@ public class RecentlyLootedWindow : GameModification {
             IsEnabled = recentlyLootedAddonSettings.KeybindEnabled,
         };
 
-        OpenConfigAction = keybindConfigAddon.Open;
+        OpenConfigAction = keybindConfigAddon.Toggle;
 
         ICommandManager.Get().AddHandler("/recentloot", new CommandInfo(OnFateListCommand) {
             HelpMessage = "Opens Recently Looted Items window",
@@ -58,12 +58,13 @@ public class RecentlyLootedWindow : GameModification {
         IFramework.Get().Update -= OnFrameworkUpdate;
         ICommandManager.Get().RemoveHandler("/recentloot");
 
-        await Task.WhenAllDisposed(addonRecentlyLooted, keybindConfigAddon);
-        addonRecentlyLooted = null;
+        await keybindConfigAddon.DisposeAsyncSafe();
         keybindConfigAddon = null;
 
-        keybindListener = null;
+        await addonRecentlyLooted.DisposeAsyncSafe();
+        addonRecentlyLooted = null;
 
+        keybindListener = null;
         recentlyLootedAddonSettings = null;
     }
 

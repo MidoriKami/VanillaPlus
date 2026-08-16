@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
-using System.Threading.Tasks;
 using Dalamud.Hooking;
 using Dalamud.Plugin.Services;
-using FFXIVClientStructs.FFXIV.Client.System.Scheduler;
-using FFXIVClientStructs.FFXIV.Client.System.Scheduler.Base;
+using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Native.Addons;
+using Task = System.Threading.Tasks.Task;
 
 namespace VanillaPlus.Features.ForcedCutsceneSounds;
 
@@ -17,7 +15,7 @@ public class ForcedCutsceneSounds : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_ForcedCutsceneSounds,
         Description = Strings.ModificationDescription_ForcedCutsceneSounds,
-        Authors = ["Haselnussbomber"],
+        Authors = ["Haselnussbomber", "MidoriKami"],
         Type = ModificationType.GameBehavior,
         CompatibilityModule = new HaselTweaksCompatibilityModule("ForcedCutsceneMusic"),
     };
@@ -34,21 +32,22 @@ public class ForcedCutsceneSounds : GameModification {
 
     private Dictionary<string, bool>? wasMuted;
 
-    private unsafe delegate CutSceneController* CutSceneControllerDtorDelegate(CutSceneController* self, byte freeFlags);
-
-    private Hook<ScheduleManagement.Delegates.CreateCutSceneController>? createCutSceneControllerHook;
-    private Hook<CutSceneControllerDtorDelegate>? cutSceneControllerDtorHook;
-
     private ForcedCutsceneSoundsConfig? config;
     private ConfigAddon? configWindow;
+    private bool isRestoringSound;
+
+    private Hook<EventSceneModuleTaskManager.Delegates.AddTask>? addTaskHook;
 
     public override async Task OnEnableAsync() {
+        unsafe {
+            addTaskHook = IGameInteropProvider.Get().HookFromAddress<EventSceneModuleTaskManager.Delegates.AddTask>(EventSceneModuleTaskManager.Addresses.AddTask.Value, OnTaskAdded);
+        }
+
         wasMuted = [];
 
         config = await ForcedCutsceneSoundsConfig.Load();
 
         configWindow = new ConfigAddon {
-            Size = new Vector2(330.0f, 385.0f),
             InternalName = "ForcedCutsceneConfig",
             Title = Strings.ForcedCutsceneSounds_ConfigTitle,
             Config = config,
@@ -71,81 +70,75 @@ public class ForcedCutsceneSounds : GameModification {
 
         OpenConfigAction = configWindow.Toggle;
 
-        unsafe {
-            createCutSceneControllerHook = IGameInteropProvider.Get().HookFromAddress<ScheduleManagement.Delegates.CreateCutSceneController>(
-                ScheduleManagement.MemberFunctionPointers.CreateCutSceneController,
-                CreateCutSceneControllerDetour);
-            createCutSceneControllerHook.Enable();
-
-            cutSceneControllerDtorHook = IGameInteropProvider.Get().HookFromVTable<CutSceneControllerDtorDelegate>(
-                CutSceneController.StaticVirtualTablePointer, 0,
-                CutSceneControllerDtorDetour);
-            cutSceneControllerDtorHook.Enable();
-        }
+        await addTaskHook.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        createCutSceneControllerHook?.Dispose();
-        createCutSceneControllerHook = null;
+        await addTaskHook.DisposeAsync();
+        addTaskHook = null;
 
-        cutSceneControllerDtorHook?.Dispose();
-        cutSceneControllerDtorHook = null;
-
-        await Task.WhenAllDisposed(configWindow);
+        await configWindow.DisposeAsyncSafe();
         configWindow = null;
 
         config = null;
-
         wasMuted = null;
     }
 
-    private unsafe CutSceneController* CreateCutSceneControllerDetour(ScheduleManagement* thisPtr, byte* path, uint id, byte a4) {
-        var result = createCutSceneControllerHook!.Original(thisPtr, path, id, a4);
+    private unsafe void OnTaskAdded(EventSceneModuleTaskManager* thisPtr, EventSceneTaskInterface* task) {
+        try
+        {
+            addTaskHook!.Original(thisPtr, task);
+            IPluginLog.Get().Verbose($"SceneTaskAdded, Type: {task->Type} with flags {task->Flags}");
 
-        try {
-            if (config is null) return result;
-            if (config.DisableInMsqRoulette && AgentContentsFinder.Instance()->SelectedDuty is { ContentType: ContentsType.Roulette, Id: 3 }) return result;
-            if (wasMuted is null || id is 0) return result;
+            if (config is null) return;
+            if (config.DisableInMsqRoulette && AgentContentsFinder.Instance()->SelectedDuty is { ContentType: ContentsType.Roulette, Id: 3 }) return;
 
-            foreach (var optionName in ConfigOptions) {
-                var isMuted = IGameConfig.Get().System.TryGet(optionName, out bool value) && value;
+            switch (task->Type) {
+                case EventSceneTaskType.PrepareCutScene:
+                    UnmuteSoundSettings();
+                    break;
 
-                wasMuted[optionName] = isMuted;
+                case EventSceneTaskType.PostCutScene when config.Restore:
+                    isRestoringSound = true;
+                    break;
 
-                if (ShouldHandle(optionName) && isMuted) {
-                    IGameConfig.Get().System.Set(optionName, false);
-                }
+                case EventSceneTaskType.FinalizeScene when isRestoringSound:
+                    isRestoringSound = false;
+                    RestoreSoundSettings();
+                    break;
             }
-
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             IPluginLog.Get().Exception(e);
         }
-
-        return result;
     }
 
-    private unsafe CutSceneController* CutSceneControllerDtorDetour(CutSceneController* self, byte freeFlags) {
-        try {
-            if (config is null) {
-                return cutSceneControllerDtorHook!.Original(self, freeFlags);
-            }
+    private void UnmuteSoundSettings() {
+        if (wasMuted is null) return;
 
-            var cutsceneId = self->CutsceneId;
+        foreach (var optionName in ConfigOptions) {
+            var isMuted = IGameConfig.Get().System.TryGet(optionName, out bool value) && value;
 
-            if (config.Restore && cutsceneId is not 0) { // ignore title screen cutscene
-                foreach (var optionName in ConfigOptions) {
-                    if (ShouldHandle(optionName) && (wasMuted?.TryGetValue(optionName, out var value) ?? false) && value) {
-                        IGameConfig.Get().System.Set(optionName, value);
-                    }
-                }
-            }
+            wasMuted[optionName] = isMuted;
+
+            if (!ShouldHandle(optionName)) continue;
+            if (!isMuted) continue;
+
+            IGameConfig.Get().System.Set(optionName, false);
         }
-        catch (Exception e) {
-            IPluginLog.Get().Exception(e);
-        }
+    }
 
-        return cutSceneControllerDtorHook!.Original(self, freeFlags);
+    private void RestoreSoundSettings() {
+        if (wasMuted is null) return;
+
+        foreach (var optionName in ConfigOptions) {
+            if (!ShouldHandle(optionName)) continue;
+            if (!wasMuted.TryGetValue(optionName, out var previousMuteValue)) continue;
+            if (!previousMuteValue) continue;
+
+            IGameConfig.Get().System.Set(optionName, previousMuteValue);
+        }
     }
 
     private bool ShouldHandle(string optionName) {

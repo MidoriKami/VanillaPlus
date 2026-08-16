@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
@@ -22,8 +21,6 @@ public class IndecisiveFools : FoolsModule {
         => Config.Indecisive;
 
     protected override async Task OnEnable() {
-        textButtons = [];
-
         unsafe {
             addonController = new AddonController<AddonSelectYesno> {
                 AddonName = "SelectYesno",
@@ -32,20 +29,16 @@ public class IndecisiveFools : FoolsModule {
             };
         }
 
-        await IFramework.Get().Run(addonController.Enable);
+        await addonController.EnableAsync();
     }
 
     protected override async Task OnDisable() {
-        await IFramework.Get().DisposeMainThreaded(textButtons.AggregateToDisposable(), addonController);
-
-        textButtons?.Clear();
-        textButtons = null;
-
+        await addonController.DisposeAsyncSafe();
         addonController = null;
     }
 
     private unsafe void SetupSelectYesNo(AddonSelectYesno* addon) {
-        if (textButtons is null) return;
+        textButtons = [];
 
         addon->AtkUnitBase.Size += new Vector2(0.0f, 65.0f);
 
@@ -90,5 +83,6 @@ public class IndecisiveFools : FoolsModule {
             textButton.Dispose();
         }
         textButtons?.Clear();
+        textButtons = null;
     }
 }

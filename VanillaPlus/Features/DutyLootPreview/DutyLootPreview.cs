@@ -17,6 +17,8 @@ public class DutyLootPreview : GameModification {
 
     public override string ImageName => "DutyLootPreview.png";
 
+    public override string WarningMessage => "Pending Removal in Patch 7.56";
+
     private DutyLootPreviewConfig? config;
     private DutyLootDataLoader? dataLoader;
     private DutyLootJournalUiController? journalUiController;
@@ -42,24 +44,27 @@ public class DutyLootPreview : GameModification {
             OnButtonClicked = addonDutyLoot.Toggle,
         };
 
+        await journalUiController.EnableAsync();
+
         inDutyUiController = new DutyLootInDutyUiController {
             DataLoader = dataLoader,
             OnButtonClicked = addonDutyLoot.Toggle,
         };
 
         await IFramework.Get().Run(() => {
-            journalUiController.Enable();
             inDutyUiController.Enable();
         });
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(journalUiController, inDutyUiController);
+        await IFramework.Get().Run(() => inDutyUiController?.Dispose());
         journalUiController = null;
         inDutyUiController = null;
 
-        await Task.WhenAllDisposed(addonDutyLoot, dataLoader);
+        await addonDutyLoot.DisposeAsyncSafe();
         addonDutyLoot = null;
+
+        await dataLoader.DisposeAsyncSafe();
         dataLoader = null;
 
         config = null;

@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
-using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using KamiToolKit.Controllers;
 using VanillaPlus.Classes;
@@ -30,11 +29,11 @@ public class ReverseCharacterPanel : GameModification {
             };
         }
 
-        await IFramework.Get().Run(characterController.Enable);
+        await characterController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(characterController);
+        await characterController.DisposeAsyncSafe();
         characterController = null;
     }
 

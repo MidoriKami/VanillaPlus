@@ -71,7 +71,7 @@ public class InstancedWaymarks : GameModification {
 
         LoadWaymarks(0);
 
-        await Task.WhenAllDisposed(renameWindow);
+        await renameWindow.DisposeAsyncSafe();
         renameWindow = null;
 
         config = null;
@@ -144,7 +144,7 @@ public class InstancedWaymarks : GameModification {
             config.NamedWaymarks.TryAdd(cfc, []);
             config.NamedWaymarks[cfc].TryAdd(slotClicked, newString.ToString());
             config.NamedWaymarks[cfc][slotClicked] = newString.ToString();
-            Task.Run(config.Save);
+            config.Save();
         };
 
         renameWindow.DefaultString = defaultName;
@@ -160,7 +160,7 @@ public class InstancedWaymarks : GameModification {
         var dataFilePath = GetDataFileInfo(contentFinderCondition).FullName;
         var dataSpan = new Span<byte>(address, size);
 
-        FilesystemUtil.WriteAllBytesSafe(dataFilePath, dataSpan.ToArray());
+        FilesystemUtil.WriteAllBytesSafe(dataFilePath, [.. dataSpan]);
     }
 
     private static unsafe void LoadWaymarks(uint contentFinderCondition) {

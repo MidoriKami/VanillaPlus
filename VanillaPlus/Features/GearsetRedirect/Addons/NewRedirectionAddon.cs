@@ -121,7 +121,8 @@ public class NewRedirectionAddon : NativeAddon {
     }
 
     public override async ValueTask DisposeAsync() {
-        await Task.WhenAllDisposed(gearsetSearchAddon, territorySearchAddon);
+        await territorySearchAddon.DisposeAsyncSafe();
+        await gearsetSearchAddon.DisposeAsyncSafe();
         await base.DisposeAsync();
     }
 

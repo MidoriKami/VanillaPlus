@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
-using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Enums;
@@ -43,15 +42,14 @@ public class CosmicExplorationProgressWindow : GameModification {
             };
         }
 
-        await IFramework.Get().Run(wksHudController.Enable);
+        await wksHudController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(wksHudController, hudShowNode);
+        await wksHudController.DisposeAsyncSafe();
         wksHudController = null;
-        hudShowNode = null;
 
-        await Task.WhenAllDisposed(progressAddon);
+        await progressAddon.DisposeAsyncSafe();
         progressAddon = null;
     }
 

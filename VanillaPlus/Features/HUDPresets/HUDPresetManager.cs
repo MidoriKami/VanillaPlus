@@ -25,7 +25,7 @@ public static unsafe class HUDPresetManager {
             fileList.Add(rawName);
         }
 
-        return fileList.Prepend(DefaultOption).ToList();
+        return [.. fileList.Prepend(DefaultOption)];
     }
 
     private static DirectoryInfo GetPresetDirectory() {

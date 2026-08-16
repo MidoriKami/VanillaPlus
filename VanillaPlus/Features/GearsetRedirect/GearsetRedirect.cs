@@ -53,14 +53,11 @@ public class GearsetRedirect : GameModification {
                 InternalName = "GearsetRedirectConfig",
                 Title = Strings.GearsetRedirect_ConfigTitle,
                 OptionsList = config.GearsetEntries,
-                SaveConfig = () => Task.Run(config.Save),
+                SaveConfig = () => config.Save(),
                 GetEntrySearchString = entry => RaptureGearsetModule.Instance()->GetGearset(entry.TargetGearsetId)->NameString,
                 AddClicked = OnAddClicked,
                 RemoveClicked = OnRemoveClicked,
             };
-
-            gearsetChangedHook = IGameInteropProvider.Get().HookFromAddress<RaptureGearsetModule.Delegates.EquipGearset>(RaptureGearsetModule.Addresses.EquipGearset.Value, OnGearsetChanged);
-            gearsetChangedHook?.Enable();
         }
 
         OpenConfigAction = () => {
@@ -68,16 +65,26 @@ public class GearsetRedirect : GameModification {
                 configWindow.Toggle();
             }
         };
+
+        unsafe {
+            gearsetChangedHook = IGameInteropProvider.Get().HookFromAddress<RaptureGearsetModule.Delegates.EquipGearset>(RaptureGearsetModule.Addresses.EquipGearset.Value, OnGearsetChanged);
+        }
+
+        await gearsetChangedHook.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        gearsetChangedHook?.Dispose();
+        await gearsetChangedHook.DisposeAsync();
         gearsetChangedHook = null;
 
-        await Task.WhenAllDisposed(configWindow, gearsetSearchAddon, CreateRedirectionAddon);
-        configWindow = null;
-        gearsetSearchAddon = null;
+        await CreateRedirectionAddon.DisposeAsyncSafe();
         CreateRedirectionAddon = null;
+
+        await gearsetSearchAddon.DisposeAsyncSafe();
+        gearsetSearchAddon = null;
+
+        await configWindow.DisposeAsyncSafe();
+        configWindow = null;
 
         config = null;
     }
@@ -86,7 +93,7 @@ public class GearsetRedirect : GameModification {
         if (config is null) return;
 
         config.GearsetEntries.Remove(removedEntry);
-        Task.Run(config.Save);
+        config.Save();
     }
 
     private void OnAddClicked() {
@@ -103,7 +110,7 @@ public class GearsetRedirect : GameModification {
             }
 
             configWindow?.OptionsList = config.GearsetEntries;
-            Task.Run(config.Save);
+            config.Save();
         };
 
         gearsetSearchAddon?.Open();

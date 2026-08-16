@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Dalamud.Plugin.Services;
 using VanillaPlus.Utilities;
@@ -21,8 +22,34 @@ public class SystemConfiguration {
         return await Config.LoadConfig<SystemConfiguration>("system.config.json");
     }
 
-    public async Task Save() {
-        IPluginLog.Get().Debug("Saving system.config.json");
-        await Config.SaveConfig(this, "system.config.json");
+    private readonly SemaphoreSlim saveLock = new(1, 1);
+    private bool pendingSave;
+
+    public Task Save() {
+        IPluginLog.Get().Verbose("Queuing Save for system.config.json");
+
+        Interlocked.Exchange(ref pendingSave, true);
+
+        return Task.Run(SaveAsync);
+    }
+
+    private async Task SaveAsync() {
+        if (!await saveLock.WaitAsync(0)) {
+            IPluginLog.Get().Verbose("Save in progress for system.config.json, skipping save.");
+            return;
+        }
+
+        try {
+            while (Interlocked.Exchange(ref pendingSave, false)) {
+                IPluginLog.Get().Debug("Saving Config system.config.json");
+                await Config.SaveConfig(this, "system.config.json");
+            }
+        }
+        catch (Exception e) {
+            IPluginLog.Get().Error(e, "Failed to save system.config.json");
+        }
+        finally {
+            saveLock.Release();
+        }
     }
 }

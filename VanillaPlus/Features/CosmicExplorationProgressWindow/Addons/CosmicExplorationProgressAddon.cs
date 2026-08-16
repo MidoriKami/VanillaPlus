@@ -34,7 +34,7 @@ public class CosmicExplorationProgressAddon : NativeAddon {
         listNode = new ListNode<Progress, WksProgressListItemNode> {
             Position = ContentStartPosition,
             Size = ContentSize,
-            OptionsList = allOptions.Where(entry => entry.JobId == IPlayerState.Get().ClassJob.Value.RowId - 7).ToList(),
+            OptionsList = [.. allOptions.Where(entry => entry.JobId == IPlayerState.Get().ClassJob.Value.RowId - 7)],
             ItemSpacing = 0.0f,
         };
         listNode.AttachNode(this);
@@ -69,7 +69,7 @@ public class CosmicExplorationProgressAddon : NativeAddon {
 
         if (lastClassJob != IPlayerState.Get().ClassJob.Value.RowId) {
             lastClassJob = IPlayerState.Get().ClassJob.Value.RowId;
-            listNode.OptionsList = allOptions.Where(entry => entry.JobId == lastClassJob - 7).ToList();
+            listNode.OptionsList = [.. allOptions.Where(entry => entry.JobId == lastClassJob - 7)];
         }
 
         foreach (var progress in listNode.OptionsList) {

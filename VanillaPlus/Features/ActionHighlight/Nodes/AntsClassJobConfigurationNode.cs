@@ -37,10 +37,11 @@ public class AntsClassJobConfigurationNode : EntryConfigurationNode<AntsClassJob
 
         actionsListNode.OptionsList = ActionHighlight.GetClassActions(classJob);
 
-        rolesListNode.OptionsList = IDataManager.Get().GetExcelSheet<Action>()
-            .Where(action => action.ClassJobCategory.Value.ClassesJobs[(int) entry.ClassJobId])
-            .Where(action => action is { IsRoleAction: true, IsPvP: false })
-            .ToList();
+        rolesListNode.OptionsList = [
+            .. IDataManager.Get().GetExcelSheet<Action>()
+                .Where(action => action.ClassJobCategory.Value.ClassesJobs[(int)entry.ClassJobId])
+                .Where(action => action is { IsRoleAction: true, IsPvP: false }),
+        ];
     }
 
     public AntsClassJobConfigurationNode() {

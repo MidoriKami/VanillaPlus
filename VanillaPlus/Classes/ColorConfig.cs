@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using System.Threading.Tasks;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
 
@@ -17,7 +16,7 @@ public class ColorConfig : BaseConfigEntry {
         OnColorConfirmed = color => {
             Color = color;
             MemberInfo.SetValue(Config, color);
-            Task.Run(Config.Save);
+            Config.Save();
         },
     };
 }

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
@@ -28,8 +27,6 @@ public class MacroLineNumbers : GameModification {
     private List<TextNode>? textNodes;
 
     public override async Task OnEnableAsync() {
-        textNodes = [];
-
         unsafe {
             macroAddonController = new AddonController {
                 AddonName = "Macro",
@@ -38,19 +35,16 @@ public class MacroLineNumbers : GameModification {
             };
         }
 
-        await IFramework.Get().Run(macroAddonController.Enable);
+        await macroAddonController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(macroAddonController);
+        await macroAddonController.DisposeAsyncSafe();
         macroAddonController = null;
-
-        textNodes?.Clear();
-        textNodes = null;
     }
 
     private unsafe void MacroSetup(AtkUnitBase* addon) {
-        if (textNodes is null) return;
+        textNodes = [];
 
         var textInputNode = addon->GetNodeById<AtkComponentNode>(119);
         if (textInputNode is null) return;
@@ -83,6 +77,7 @@ public class MacroLineNumbers : GameModification {
         }
 
         textNodes.Clear();
+        textNodes = null;
     }
 
     private static unsafe void RepositionNode(AtkComponentNode* inputComponentNode, Vector2 offset) {

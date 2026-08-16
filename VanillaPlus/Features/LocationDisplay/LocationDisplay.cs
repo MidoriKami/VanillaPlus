@@ -71,7 +71,7 @@ public class LocationDisplay : GameModification {
         IFramework.Get().Update -= OnFrameworkUpdate;
         IClientState.Get().TerritoryChanged -= OnZoneChange;
 
-        await Task.WhenAllDisposed(configWindow);
+        await configWindow.DisposeAsyncSafe();
         configWindow = null;
 
         dtrBarEntry?.Remove();
@@ -247,18 +247,18 @@ public class LocationDisplay : GameModification {
         var strings = new List<string>();
 
         var ward = housingManager->GetCurrentWard() + 1;
-        if (ward == 0) return string.Empty;
+        if (ward is 0) return string.Empty;
 
         var plot = housingManager->GetCurrentPlot();
         var room = housingManager->GetCurrentRoom();
         var division = housingManager->GetCurrentDivision();
 
         strings.Add(Strings.LocationDisplay_WardFormat.Format(ward));
-        if (division == 2 || plot is >= 30 or -127) strings.Add(Strings.LocationDisplay_SubdivisionLabel);
+        if (division is 2 || plot is >= 30 or -127) strings.Add(Strings.LocationDisplay_SubdivisionLabel);
 
         switch (plot) {
             case < -1:
-                var apartmentValue = room == 0
+                var apartmentValue = room is 0
                                          ? Strings.LocationDisplay_ApartmentFormat.Format(Strings.LocationDisplay_ApartmentLobby)
                                          : Strings.LocationDisplay_ApartmentFormat.Format(room);
                 strings.Add(apartmentValue);

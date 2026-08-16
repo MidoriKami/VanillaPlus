@@ -10,7 +10,7 @@ using MapType = FFXIVClientStructs.FFXIV.Client.UI.Agent.MapType;
 
 namespace VanillaPlus.Features.BetterQuestMapLink;
 
-public unsafe class BetterQuestMapLink : GameModification {
+public class BetterQuestMapLink : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_BetterQuestMapLink,
         Description = Strings.ModificationDescription_BetterQuestMapLink,
@@ -21,21 +21,20 @@ public unsafe class BetterQuestMapLink : GameModification {
 
     private Hook<AgentMap.Delegates.OpenMap>? openMapHook;
 
-    public override Task OnEnableAsync() {
-        openMapHook = IGameInteropProvider.Get().HookFromAddress<AgentMap.Delegates.OpenMap>(AgentMap.MemberFunctionPointers.OpenMap, OnOpenMap);
-        openMapHook?.Enable();
+    public override async Task OnEnableAsync() {
+        unsafe {
+            openMapHook = IGameInteropProvider.Get().HookFromAddress<AgentMap.Delegates.OpenMap>(AgentMap.MemberFunctionPointers.OpenMap, OnOpenMap);
+        }
 
-        return Task.CompletedTask;
+        await openMapHook.EnableAsync();
     }
 
-    public override Task OnDisableAsync() {
-        openMapHook?.Dispose();
+    public override async Task OnDisableAsync() {
+        await openMapHook.DisposeAsync();
         openMapHook = null;
-
-        return Task.CompletedTask;
     }
 
-    private void OnOpenMap(AgentMap* agent, OpenMapInfo* data) {
+    private unsafe void OnOpenMap(AgentMap* agent, OpenMapInfo* data) {
         openMapHook!.Original(agent, data);
 
         try {

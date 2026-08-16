@@ -14,7 +14,7 @@ using NewAddonCastBarEnemy = FFXIVClientStructs.FFXIV.Client.UI.AddonCastBarEnem
 
 namespace VanillaPlus.Features.TargetCastBarCountdown;
 
-public class NameplateCastbarController : IDisposable {
+public class NameplateCastbarController : IAsyncDisposable {
     public TextNodeStyle LoadedStyle { get; }
 
     private TextNode[]? textNodes;
@@ -54,13 +54,11 @@ public class NameplateCastbarController : IDisposable {
         };
     }
 
-    public void Enable() {
-        addonController.Enable();
-    }
+    public async Task EnableAsync()
+        => await addonController.EnableAsync();
 
-    public void Dispose() {
-        addonController.Dispose();
-    }
+    public async ValueTask DisposeAsync()
+        => await addonController.DisposeAsync();
 
     private unsafe void OnAddonSetup(NewAddonCastBarEnemy* addonCastBarEnemy) {
         textNodes = new TextNode[10];

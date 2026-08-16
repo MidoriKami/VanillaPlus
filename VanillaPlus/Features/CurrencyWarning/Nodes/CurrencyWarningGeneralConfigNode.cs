@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using System.Threading.Tasks;
 using KamiToolKit.Classes;
 using KamiToolKit.Components.Icons;
 using KamiToolKit.Enums;
@@ -38,7 +37,7 @@ public class CurrencyWarningGeneralConfigNode : ResNode {
                                 IsChecked = config.IsMoveable,
                                 OnClick = newValue => {
                                     config.IsMoveable = newValue;
-                                    Task.Run(config.Save);
+                                    config.Save();
                                 },
                             },
                             new CheckboxNode {
@@ -47,7 +46,7 @@ public class CurrencyWarningGeneralConfigNode : ResNode {
                                 IsChecked = config.PlayAnimations,
                                 OnClick = newValue => {
                                     config.PlayAnimations = newValue;
-                                    Task.Run(config.Save);
+                                    config.Save();
                                 },
                             },
                             new CheckboxNode {
@@ -56,7 +55,7 @@ public class CurrencyWarningGeneralConfigNode : ResNode {
                                 IsChecked = config.HideInDuties,
                                 OnClick = newValue => {
                                     config.HideInDuties = newValue;
-                                    Task.Run(config.Save);
+                                    config.Save();
                                 },
                             },
                         ]),
@@ -71,7 +70,7 @@ public class CurrencyWarningGeneralConfigNode : ResNode {
                             Value = config.Scale,
                             OnValueChanged = newValue => {
                                 config.Scale = newValue;
-                                Task.Run(config.Save);
+                                config.Save();
                             },
                         }),
                     ],
@@ -89,7 +88,7 @@ public class CurrencyWarningGeneralConfigNode : ResNode {
                                 CurrentColor = config.LowColor,
                                 OnColorConfirmed = newColor => {
                                     config.LowColor = newColor;
-                                    Task.Run(config.Save);
+                                    config.Save();
                                 },
                             },
                             new IconSelectionNode([60073u, 60357u, 230402u]) {
@@ -97,7 +96,7 @@ public class CurrencyWarningGeneralConfigNode : ResNode {
                                 SelectedIcon = config.LowIcon,
                                 OnIconChanged = newIcon => {
                                     config.LowIcon = newIcon;
-                                    Task.Run(config.Save);
+                                    config.Save();
                                 },
                             },
                         ]),
@@ -112,7 +111,7 @@ public class CurrencyWarningGeneralConfigNode : ResNode {
                                 CurrentColor = config.HighColor,
                                 OnColorConfirmed = newColor => {
                                     config.HighColor = newColor;
-                                    Task.Run(config.Save);
+                                    config.Save();
                                 },
                             },
                             new IconSelectionNode([60074u, 63908u, 230403u]) {
@@ -120,7 +119,7 @@ public class CurrencyWarningGeneralConfigNode : ResNode {
                                 SelectedIcon = config.HighIcon,
                                 OnIconChanged = newIcon => {
                                     config.HighIcon = newIcon;
-                                    Task.Run(config.Save);
+                                    config.Save();
                                 },
                             },
                         ]),

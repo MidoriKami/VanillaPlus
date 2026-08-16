@@ -58,15 +58,16 @@ public class FadeUnavailableActions : GameModification {
 
         unsafe {
             onHotBarSlotUpdateHook = IGameInteropProvider.Get().HookFromAddress<AddonActionBarBase.Delegates.UpdateHotbarSlot>(AddonActionBarBase.MemberFunctionPointers.UpdateHotbarSlot, OnHotBarSlotUpdate);
-            onHotBarSlotUpdateHook?.Enable();
         }
+
+        await onHotBarSlotUpdateHook.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        onHotBarSlotUpdateHook?.Dispose();
+        await onHotBarSlotUpdateHook.DisposeAsync();
         onHotBarSlotUpdateHook = null;
 
-        await Task.WhenAllDisposed(configWindow);
+        await configWindow.DisposeAsyncSafe();
         configWindow = null;
 
         actionCache = null;
@@ -89,7 +90,7 @@ public class FadeUnavailableActions : GameModification {
         if (config is null) return;
         if (IObjectTable.Get().LocalPlayer is { IsCasting: true }) return;
 
-        var numberArrayData = (ActionBarSlotNumberArray*)(&numberArray->IntArray[numberArrayIndex]);
+        var numberArrayData = (ActionBarSlotNumberArray*)&numberArray->IntArray[numberArrayIndex];
 
         if ((NumberArrayActionType)numberArrayData->ActionType is not (NumberArrayActionType.Action or NumberArrayActionType.CraftAction)) {
             ApplyColoring(hotBarSlotData, false, false);

@@ -52,7 +52,9 @@ public class WindowBackground : GameModification {
                 overlayController = new OverlayController();
 
                 dynamicAddonController = new DynamicAddonController {
-                    AddonNames = config.Settings.Select(setting => setting.AddonName).ToList(),
+                    AddonNames = [
+                        .. config.Settings.Select(setting => setting.AddonName),
+                    ],
                     OnSetup = AttachNode,
                     OnFinalize = DetachNode,
                     OnUpdate = UpdateNode,
@@ -69,7 +71,7 @@ public class WindowBackground : GameModification {
             OptionsList = config.Settings,
             AddClicked = OnAddClicked,
             RemoveClicked = OnRemoveClicked,
-            SaveConfig = () => Task.Run(config.Save),
+            SaveConfig = () => config.Save(),
             GetEntrySearchString = entry => entry.AddonName,
         };
 
@@ -77,16 +79,17 @@ public class WindowBackground : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(dynamicAddonController, overlayController);
-        dynamicAddonController = null;
+        await IFramework.Get().Run(() => overlayController?.Dispose());
         overlayController = null;
 
-        await Task.WhenAllDisposed(addonSearchAddon, configAddon);
-        addonSearchAddon = null;
-        configAddon = null;
+        await IFramework.Get().Run(() => dynamicAddonController?.Dispose());
+        dynamicAddonController = null;
 
-        backgroundImageNodes?.Clear();
-        backgroundImageNodes = null;
+        await addonSearchAddon.DisposeAsyncSafe();
+        addonSearchAddon = null;
+
+        await configAddon.DisposeAsyncSafe();
+        configAddon = null;
 
         config = null;
     }
@@ -148,10 +151,11 @@ public class WindowBackground : GameModification {
         if (dynamicAddonController is null) return;
         if (addonSearchAddon is null) return;
 
-        addonSearchAddon.OptionsList = RaptureAtkUnitManager.Instance()->AllLoadedUnitsList.Entries
-            .ToArray()
-            .Where(option => option.Value is not null)
-            .ToList();
+        addonSearchAddon.OptionsList = [
+            .. RaptureAtkUnitManager.Instance()->AllLoadedUnitsList.Entries
+                .ToArray()
+                .Where(option => option.Value is not null),
+        ];
 
         addonSearchAddon.ConfirmedSelections = selectionResults => {
             foreach (var result in selectionResults) {
@@ -165,7 +169,7 @@ public class WindowBackground : GameModification {
                 dynamicAddonController.AddAddon(result.Value->NameString);
             }
 
-            Task.Run(config.Save);
+            config.Save();
             configAddon?.OptionsList = config.Settings;
         };
 
@@ -177,7 +181,7 @@ public class WindowBackground : GameModification {
         if (dynamicAddonController is null) return;
 
         config.Settings.Remove(oldItem);
-        Task.Run(config.Save);
+        config.Save();
 
         dynamicAddonController.RemoveAddon(oldItem.AddonName);
 

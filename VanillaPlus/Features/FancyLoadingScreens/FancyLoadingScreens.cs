@@ -36,8 +36,11 @@ public class FancyLoadingScreens : GameModification {
     public override async Task OnEnableAsync() {
         unsafe {
             teleportHook = IGameInteropProvider.Get().HookFromAddress<Telepo.Delegates.Teleport>(Telepo.MemberFunctionPointers.Teleport, OnTeleport);
-            teleportHook?.Enable();
+        }
 
+        await teleportHook.EnableAsync();
+
+        unsafe {
             locationTitleController = new AddonController {
                 AddonName = "_LocationTitle",
                 OnSetup = OnLocationTitleSetup,
@@ -46,7 +49,7 @@ public class FancyLoadingScreens : GameModification {
             };
         }
 
-        await IFramework.Get().Run(() => locationTitleController.Enable());
+        await locationTitleController.EnableAsync();
 
         IAddonLifecycle.Get().RegisterListener(AddonEvent.PostHide, "_LocationTitle", OnLoadingScreenHide);
         IClientState.Get().TerritoryChanged += OnTerritoryChanged;
@@ -56,13 +59,11 @@ public class FancyLoadingScreens : GameModification {
         IClientState.Get().TerritoryChanged -= OnTerritoryChanged;
         IAddonLifecycle.Get().UnregisterListener(OnLoadingScreenHide);
 
-        teleportHook?.Dispose();
+        await teleportHook.DisposeAsync();
         teleportHook = null;
 
-        await IFramework.Get().DisposeMainThreaded(locationTitleController);
+        await locationTitleController.DisposeAsyncSafe();
         locationTitleController = null;
-
-        artworkImageNode = null;
     }
 
     private unsafe void OnLocationTitleSetup(AtkUnitBase* addon) {

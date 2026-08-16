@@ -19,20 +19,17 @@ public class ScrollingFools : FoolsModule {
     public override bool IsEnabledByConfig
         => Config.InvertScroll;
 
-    protected override Task OnEnable() {
+    protected override async Task OnEnable() {
         unsafe {
             scrollBarReceiveEventHook = IGameInteropProvider.Get().HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
-            scrollBarReceiveEventHook?.Enable();
         }
 
-        return Task.CompletedTask;
+        await scrollBarReceiveEventHook.EnableAsync();
     }
 
-    protected override Task OnDisable() {
-        scrollBarReceiveEventHook?.Dispose();
+    protected override async Task OnDisable() {
+        await scrollBarReceiveEventHook.DisposeAsync();
         scrollBarReceiveEventHook = null;
-
-        return Task.CompletedTask;
     }
 
     private unsafe void AtkComponentScrollBarReceiveEvent(AtkComponentScrollBar* thisPtr, AtkEventType type, int param, AtkEvent* eventPointer, AtkEventData* dataPointer) {

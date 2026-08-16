@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
@@ -54,6 +53,6 @@ public class SelectIconConfig : BaseConfigEntry {
 
         InitialIcon = (uint)iconId;
         MemberInfo.SetValue(Config, (uint)iconId);
-        Task.Run(Config.Save);
+        Config.Save();
     }
 }

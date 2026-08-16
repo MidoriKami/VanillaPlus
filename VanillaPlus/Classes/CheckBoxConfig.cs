@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
 
@@ -22,6 +21,6 @@ public class CheckBoxConfig : BaseConfigEntry {
         InitialState = newValue;
         ToggleAction?.Invoke(newValue);
         MemberInfo.SetValue(Config, newValue);
-        Task.Run(Config.Save);
+        Config.Save();
     }
 }

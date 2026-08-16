@@ -45,7 +45,7 @@ public class ClearSelectedDuties : GameModification {
     public override async Task OnDisableAsync() {
         IAddonLifecycle.Get().UnregisterListener(OnContentsFinderSetup);
 
-        await Task.WhenAllDisposed(configWindow);
+        await configWindow.DisposeAsyncSafe();
         configWindow = null;
 
         config = null;

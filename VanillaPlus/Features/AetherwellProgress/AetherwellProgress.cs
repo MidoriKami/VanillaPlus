@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Enums;
@@ -31,8 +30,6 @@ public class AetherwellProgress : GameModification {
     private List<SimpleImageNode>? nodes;
 
     public override async Task OnEnableAsync() {
-        nodes = [];
-
         unsafe {
             addonController = new AddonController {
                 AddonName = "MKDRelicGrowth",
@@ -42,17 +39,17 @@ public class AetherwellProgress : GameModification {
             };
         }
 
-        await IFramework.Get().Run(addonController.Enable);
+        await addonController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(addonController);
+        await addonController.DisposeAsyncSafe();
         addonController = null;
-
-        nodes = null;
     }
 
     private unsafe void OnAddonSetup(AtkUnitBase* addon) {
+        nodes = [];
+
         foreach (var buttonId in (List<uint>) [2, 3, 4, 5]) {
             var buttonComponent = addon->GetComponentButtonById(buttonId);
             if (buttonComponent is null) return;
@@ -112,6 +109,7 @@ public class AetherwellProgress : GameModification {
             n.Dispose();
         }
         nodes?.Clear();
+        nodes = null;
 
         foreach (var buttonId in (List<uint>) [2, 3, 4, 5]) {
             var buttonComponent = addon->GetComponentButtonById(buttonId);

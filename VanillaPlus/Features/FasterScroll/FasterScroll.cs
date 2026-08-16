@@ -42,15 +42,16 @@ public class FasterScroll : GameModification {
 
         unsafe {
             scrollBarReceiveEventHook = IGameInteropProvider.Get().HookFromAddress<AtkComponentScrollBar.Delegates.ReceiveEvent>(AtkComponentScrollBar.StaticVirtualTablePointer->ReceiveEvent, AtkComponentScrollBarReceiveEvent);
-            scrollBarReceiveEventHook?.Enable();
         }
+
+        await scrollBarReceiveEventHook.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        scrollBarReceiveEventHook?.Dispose();
+        await scrollBarReceiveEventHook.DisposeAsync();
         scrollBarReceiveEventHook = null;
 
-        await Task.WhenAllDisposed(configWindow);
+        await configWindow.DisposeAsyncSafe();
         configWindow = null;
 
         config = null;

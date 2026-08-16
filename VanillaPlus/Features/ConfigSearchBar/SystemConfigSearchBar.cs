@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Interface;
-using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
@@ -53,14 +52,14 @@ public class SystemConfigSearchBar : GameModification {
             };
         }
 
-        await IFramework.Get().Run(systemConfigController.Enable);
+        await systemConfigController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().DisposeMainThreaded(systemConfigController);
+        await systemConfigController.DisposeAsyncSafe();
         systemConfigController = null;
 
-        await Task.WhenAllDisposed(configAddon);
+        await configAddon.DisposeAsyncSafe();
         configAddon = null;
 
         config = null;

@@ -18,6 +18,11 @@ public abstract class GameModification {
     public virtual bool IsExperimental => false;
 
     /// <summary>
+    /// Warning message to display similar to IsExperimental.
+    /// </summary>
+    public virtual string? WarningMessage => null;
+
+    /// <summary>
     /// Set this to the filename of an image in the Assets folder, the image must be square or it will render very weirdly.
     /// </summary>
     public virtual string? ImageName => null;

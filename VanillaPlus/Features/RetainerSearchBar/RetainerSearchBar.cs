@@ -56,9 +56,10 @@ public class RetainerSearchBar : GameModification {
         IFramework.Get().Update -= OnFrameworkUpdate;
         IGameGui.Get().AgentUpdate -= OnAgentUpdate;
 
-        await IFramework.Get().DisposeMainThreaded(inventoryController);
-        keybindListener = null;
+        await inventoryController.DisposeAsyncSafe();
         inventoryController = null;
+
+        keybindListener = null;
     }
 
     private void OnUiConfigChanged(object? sender, ConfigChangeEvent e) {

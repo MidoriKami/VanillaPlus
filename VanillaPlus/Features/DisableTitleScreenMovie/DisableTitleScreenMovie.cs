@@ -40,12 +40,12 @@ public class DisableTitleScreenMovie : GameModification {
                 ]);
             }
 
-            await IFramework.Get().Run(jumpPatch.Enable);
+            await jumpPatch.EnableAsync();
         }
     }
 
     public override async Task OnDisableAsync() {
-        await Task.WhenAllDisposed(jumpPatch);
+        await jumpPatch.DisposeAsyncSafe();
         jumpPatch = null;
 
         memoryAddress = null;

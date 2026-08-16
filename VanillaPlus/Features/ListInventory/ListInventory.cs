@@ -58,9 +58,11 @@ public class ListInventory : GameModification {
         IFramework.Get().Update -= OnFrameworkUpdate;
         ICommandManager.Get().RemoveHandler("/listinventory");
 
-        await Task.WhenAllDisposed(inventoryListAddon, keybindConfigAddon);
-        inventoryListAddon = null;
+        await keybindConfigAddon.DisposeAsyncSafe();
         keybindConfigAddon = null;
+
+        await inventoryListAddon.DisposeAsyncSafe();
+        inventoryListAddon = null;
 
         keybindListener = null;
 

@@ -25,10 +25,11 @@ public class FateListAddon : NativeAddon {
     protected override unsafe void OnUpdate(AtkUnitBase* addon) {
         base.OnUpdate(addon);
 
-        fateListNode?.OptionsList = IFateTable.Get()
-            .Where(fate => fate is { State: FateState.Running or FateState.Preparing })
-            .OrderBy(fate => fate.TimeRemaining)
-            .ToList();
+        fateListNode?.OptionsList = [
+            .. IFateTable.Get()
+                .Where(fate => fate is { State: FateState.Running or FateState.Preparing })
+                .OrderBy(fate => fate.TimeRemaining),
+        ];
     }
 
     private ListNode<IFate, FateListItemNode>? fateListNode;

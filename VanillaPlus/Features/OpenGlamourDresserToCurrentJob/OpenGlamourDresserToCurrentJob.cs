@@ -29,10 +29,9 @@ public class OpenGlamourDresserToCurrentJob : GameModification {
         return Task.CompletedTask;
     }
 
-    private unsafe void OnGlamourDresserSetup(AddonEvent type, AddonArgs args) {
+    private static unsafe void OnGlamourDresserSetup(AddonEvent type, AddonArgs args) {
         if (IObjectTable.Get() is { LocalPlayer.ClassJob.RowId: var playerJob }) {
-            var addon = args.GetAddon<AddonMiragePrismPrismBox>();
-            addon->Param = (int) playerJob;
+            args.GetAddon<AddonMiragePrismPrismBox>()->Param = (int) playerJob;
         }
     }
 }

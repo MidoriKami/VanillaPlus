@@ -47,7 +47,7 @@ public class QuestListWindow : GameModification {
             IsEnabled = questListAddonSettings.KeybindEnabled,
         };
 
-        OpenConfigAction = keybindConfigAddon.Open;
+        OpenConfigAction = keybindConfigAddon.Toggle;
 
         ICommandManager.Get().AddHandler("/questlist", new CommandInfo(OnQuestListCommand) {
             HelpMessage = "Opens Quest List Window",
@@ -59,12 +59,13 @@ public class QuestListWindow : GameModification {
         IFramework.Get().Update -= OnFrameworkUpdate;
         ICommandManager.Get().RemoveHandler("/questlist");
 
-        await Task.WhenAllDisposed(questListAddon, keybindConfigAddon);
-        questListAddon = null;
+        await keybindConfigAddon.DisposeAsyncSafe();
         keybindConfigAddon = null;
 
-        keybindListener = null;
+        await questListAddon.DisposeAsyncSafe();
+        questListAddon = null;
 
+        keybindListener = null;
         questListAddonSettings = null;
     }
 
