@@ -35,6 +35,7 @@ public class AprilFools : GameModification {
             new JustMonikaFools { Config = config },
             new DutyReadyFools { Config = config },
             new FlippingOutFools { Config = config },
+            new AreYouSureFools { Config = config },
         ];
 
         configAddon = new ConfigAddon {
@@ -60,7 +61,10 @@ public class AprilFools : GameModification {
             .AddTooltip("Queuing for lots of duties? They seem to be poppin a lot.")
 
             .AddCheckbox("Flipping Out", nameof(config.FlippingOut), enabled => Task.Run(() => modules[5].Toggle(enabled)))
-            .AddTooltip("Placeholder text, make CERTAIN to replace this before releasing or else you'll look really silly. \n    - MidoriKami");
+            .AddTooltip("Placeholder text, make CERTAIN to replace this before releasing or else you'll look really silly. \n    - MidoriKami")
+
+            .AddCheckbox("Are You Sure?", nameof(config.AreYouSure), enabled => Task.Run(() => modules[6].Toggle(enabled)))
+            .AddTooltip("Are you sure about that? Like really sure? Like super sure?");
 
         OpenConfigAction = configAddon.Toggle;
 
