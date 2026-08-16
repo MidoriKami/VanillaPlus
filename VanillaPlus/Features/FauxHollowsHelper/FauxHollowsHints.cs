@@ -3,8 +3,6 @@ using VanillaPlus.Features.FauxHollowsHelper.Solver;
 
 namespace VanillaPlus.Features.FauxHollowsHelper;
 
-internal readonly record struct RevealedTile(int Index, WeeklyPuzzlePrizeTexture Part, int Rotation);
-
 // Shape reconstruction adapted from https://github.com/Glorou/EzFauxHollows.
 internal static class FauxHollowsHints {
     private const int Width = BoundingBox.BoardWidth;
@@ -130,13 +128,5 @@ internal static class FauxHollowsHints {
         }
 
         return indices;
-    }
-
-    private enum Corner {
-        Invalid,
-        UpperLeft,
-        UpperRight,
-        LowerLeft,
-        LowerRight,
     }
 }

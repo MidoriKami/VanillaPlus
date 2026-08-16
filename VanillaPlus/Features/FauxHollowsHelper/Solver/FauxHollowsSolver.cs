@@ -8,13 +8,13 @@ using LuminaSupplemental.Excel.Services;
 namespace VanillaPlus.Features.FauxHollowsHelper.Solver;
 
 // Adapted from https://github.com/JoshuaEN/ffxiv-faux-hollows.
-internal static class FauxHollowsSolver {
+public static class FauxHollowsSolver {
     private const int PresentWeightFactor = 4;
     private const int SwordWeightFactor = 6;
     private const int DisambiguationFactor = 1_000;
     private const double SmartFillWeightValue = 1_000_000;
 
-    private static readonly IReadOnlyList<FauxHollowsIdentifierPatterns> identifiers = LoadIdentifiers();
+    private static readonly IReadOnlyList<FauxHollowsIdentifierPatterns> Identifiers = LoadIdentifiers();
 
     public static TileHint[] Solve(TileState[] board) {
         var solveState = CalculatedSolveState(board);
@@ -29,9 +29,7 @@ internal static class FauxHollowsSolver {
 
     private static TileHint ComputeHint(SolveState solveState, int index) {
         var userState = solveState.GetUserState(index);
-        if (userState != TileState.Unknown) {
-            return TileHint.None;
-        }
+        if (userState is not TileState.Unknown) return TileHint.None;
 
         var smartFill = solveState.GetSmartFill(index);
         if (smartFill is not null) {
@@ -47,21 +45,25 @@ internal static class FauxHollowsSolver {
                 var suggestion = solveState.GetSuggestion(index);
                 return suggestion is { Sword: > 0 } ? TileHint.Recommended : TileHint.None;
             }
+
             case SolveStep.FillPresent: {
                 var suggestion = solveState.GetSuggestion(index);
                 return suggestion is { Present: > 0 } ? TileHint.Recommended : TileHint.None;
             }
+
             case SolveStep.SuggestTiles: {
                 var finalWeight = solveState.GetFinalWeight(index);
-                if (finalWeight is not null && finalWeight.Value == solveState.MaxTileWeight && solveState.MaxTileWeight > 0.0) {
+                if (finalWeight is not null && Math.Abs(finalWeight.Value - solveState.MaxTileWeight) < 0.1f && solveState.MaxTileWeight > 0.0) {
                     return TileHint.Recommended;
                 }
 
                 return solveState.GetFoxOddsValue(index) > 0.249 ? TileHint.Fox : TileHint.None;
             }
+
             case SolveStep.SuggestFoxes: {
                 return solveState.GetConfirmedFoxes(index) > 0 ? TileHint.Fox : TileHint.None;
             }
+
             default:
                 return TileHint.None;
         }
@@ -89,18 +91,9 @@ internal static class FauxHollowsSolver {
     }
 
     private static FauxHollowsIdentifierPatterns? GetIdentifierCandidate(IReadOnlyCollection<int> blocked)
-        => identifiers.FirstOrDefault(candidate =>
+        => Identifiers.FirstOrDefault(candidate =>
             candidate.Blocked.Count == blocked.Count &&
             candidate.Blocked.All(blocked.Contains));
-
-    private sealed class ProcessedPattern {
-        public required FauxHollowsPattern Pattern { get; init; }
-        public required BoundingBox PresentBox { get; init; }
-        public required BoundingBox SwordBox { get; init; }
-
-        public BoundingBox BoxFor(TileState state)
-            => state == TileState.Sword ? SwordBox : PresentBox;
-    }
 
     private static SolveStep? CalculateStateCandidates(SolveState solveState, IReadOnlyList<FauxHollowsPattern> patterns) {
         var shapes = new[] {
@@ -122,7 +115,7 @@ internal static class FauxHollowsSolver {
             if (shape.Bounds is null) continue;
 
             if (shape.Bounds.ShortSide > shape.ShortSide || shape.Bounds.LongSide > shape.LongSide) {
-                return shape.State == TileState.Sword ? SolveStep.FillSword : SolveStep.FillPresent;
+                return shape.State is TileState.Sword ? SolveStep.FillSword : SolveStep.FillPresent;
             }
         }
 
@@ -160,9 +153,11 @@ internal static class FauxHollowsSolver {
         }
 
         var firstPattern = filteredPatterns[0].Pattern;
+
         var swordSolved = filteredPatterns.All(pattern =>
             pattern.Pattern.Sword == firstPattern.Sword &&
             pattern.Pattern.Sword3x2 == firstPattern.Sword3x2);
+
         var presentSolved = filteredPatterns.All(pattern =>
             pattern.Pattern.Present == firstPattern.Present);
 
@@ -200,6 +195,7 @@ internal static class FauxHollowsSolver {
         if (!swordSolved && solveState.UserStatesIndexList[TileState.Sword].Count > 0) {
             return SolveStep.FillSword;
         }
+
         if (!presentSolved && solveState.UserStatesIndexList[TileState.Present].Count > 0) {
             return SolveStep.FillPresent;
         }
@@ -226,10 +222,11 @@ internal static class FauxHollowsSolver {
 
         for (var index = 0; index < BoundingBox.BoardCells; index++) {
             var smartFill = solveState.GetSmartFill(index);
-            if (smartFill == TileState.Sword && incompleteSword) {
+
+            if (smartFill is TileState.Sword && incompleteSword) {
                 solveState.SetFinalWeight(index, SmartFillWeightValue);
             }
-            else if (smartFill == TileState.Present && incompletePresent) {
+            else if (smartFill is TileState.Present && incompletePresent) {
                 solveState.SetFinalWeight(index, SmartFillWeightValue);
             }
             else {
@@ -240,18 +237,24 @@ internal static class FauxHollowsSolver {
             }
         }
 
-        if (incompleteSword) solveState.ResetSmartFillFor(TileState.Sword);
-        if (incompletePresent) solveState.ResetSmartFillFor(TileState.Present);
+        if (incompleteSword) {
+            solveState.ResetSmartFillFor(TileState.Sword);
+        }
+
+        if (incompletePresent) {
+            solveState.ResetSmartFillFor(TileState.Present);
+        }
     }
 
     private static bool IsIncompleteSmartFill(SolveState solveState, TileState state)
         => !solveState.IsSolved(state) &&
            solveState.GetSmartFillReversedCount(state) > 0 &&
-           solveState.UserStatesIndexList[state].Count == 0;
+           solveState.UserStatesIndexList[state].Count is 0;
 
     private static double CalculateSuggestionWeight(TileSuggestion suggestion) {
         var finalPresentWeight = suggestion.Present * PresentWeightFactor;
         var finalSwordWeight = suggestion.Sword * SwordWeightFactor;
+
         return (finalPresentWeight + finalSwordWeight) * (double)DisambiguationFactor + suggestion.Fox;
     }
 
@@ -267,16 +270,17 @@ internal static class FauxHollowsSolver {
             throw new InvalidOperationException("Unable to load Faux Hollows pattern data from LuminaSupplemental.");
         }
 
-        return patterns
-            .GroupBy(pattern => pattern.Identifier)
-            .Select(group => {
-                var first = group.First();
-                if (group.Any(pattern => !pattern.BlockedTiles.SequenceEqual(first.BlockedTiles))) {
-                    throw new InvalidOperationException($"Faux Hollows identifier '{group.Key}' has inconsistent blocked tiles.");
-                }
+        return [
+            .. patterns
+                .GroupBy(pattern => pattern.Identifier)
+                .Select(group => {
+                    var first = group.First();
+                    if (group.Any(pattern => !pattern.BlockedTiles.SequenceEqual(first.BlockedTiles))) {
+                        throw new InvalidOperationException($"Faux Hollows identifier '{group.Key}' has inconsistent blocked tiles.");
+                    }
 
-                return new FauxHollowsIdentifierPatterns(group.Key, first.BlockedTiles, group.ToArray());
-            })
-            .ToArray();
+                    return new FauxHollowsIdentifierPatterns(first.BlockedTiles, [.. group]);
+                }),
+        ];
     }
 }

@@ -1,32 +1,22 @@
 using System;
 using System.Collections.Generic;
-
 using LuminaSupplemental.Excel.Model;
 
 namespace VanillaPlus.Features.FauxHollowsHelper.Solver;
 
-internal sealed class BoundingBox {
+public sealed class BoundingBox(int x, int y, int width, int height) {
     public const int BoardWidth = 6;
     public const int BoardHeight = 6;
     public const int BoardCells = BoardWidth * BoardHeight;
 
-    public int X { get; }
-    public int Y { get; }
-    public int Width { get; }
-    public int Height { get; }
-    public int ShortSide { get; }
-    public int LongSide { get; }
+    public int X { get; } = x;
+    public int Y { get; } = y;
+    public int Width { get; } = width;
+    public int Height { get; } = height;
+    public int ShortSide { get; } = Math.Min(width, height);
+    public int LongSide { get; } = Math.Max(width, height);
 
     private int[]? indexes;
-
-    public BoundingBox(int x, int y, int width, int height) {
-        X = x;
-        Y = y;
-        Width = width;
-        Height = height;
-        ShortSide = Math.Min(width, height);
-        LongSide = Math.Max(width, height);
-    }
 
     private static int CoordinatesToIndex(int x, int y)
         => x + BoardWidth * y;

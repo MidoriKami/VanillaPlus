@@ -2,27 +2,7 @@ using System.Collections.Generic;
 
 namespace VanillaPlus.Features.FauxHollowsHelper.Solver;
 
-internal enum SolveStep {
-    FillBlocked,
-    FillSword,
-    FillPresent,
-    SuggestTiles,
-    SuggestFoxes,
-    Done,
-}
-
-internal struct TileSuggestion {
-    public int Present;
-    public int Sword;
-    public int Fox;
-}
-
-internal struct FoxOdds {
-    public int ConfirmedFoxes;
-    public int TotalFoxesForPatterns;
-}
-
-internal sealed class SolveState {
+public class SolveState {
     private readonly TileState[] userStates;
 
     private readonly Dictionary<int, TileState> smartFills = [];
@@ -108,9 +88,17 @@ internal sealed class SolveState {
         var suggestion = suggestions.TryGetValue(index, out var existing) ? existing : new TileSuggestion();
 
         switch (state) {
-            case TileState.Present: suggestion.Present += value; break;
-            case TileState.Sword: suggestion.Sword += value; break;
-            case TileState.Fox: suggestion.Fox += value; break;
+            case TileState.Present:
+                suggestion.Present += value;
+                break;
+
+            case TileState.Sword:
+                suggestion.Sword += value;
+                break;
+
+            case TileState.Fox:
+                suggestion.Fox += value;
+                break;
         }
 
         suggestions[index] = suggestion;
@@ -120,6 +108,7 @@ internal sealed class SolveState {
         foreach (var index in smartFillsReverse[state]) {
             smartFills.Remove(index);
         }
+
         smartFillsReverse[state].Clear();
     }
 
@@ -128,6 +117,7 @@ internal sealed class SolveState {
 
     public void AddConfirmedFoxOdd(int index, int totalFoxesForPattern) {
         var previous = foxOdds.TryGetValue(index, out var existing) ? existing : new FoxOdds();
+
         foxOdds[index] = new FoxOdds {
             ConfirmedFoxes = previous.ConfirmedFoxes + 1,
             TotalFoxesForPatterns = previous.TotalFoxesForPatterns + totalFoxesForPattern,
@@ -143,7 +133,7 @@ internal sealed class SolveState {
 
         return userSetState == state ||
                smartFillState == state ||
-               (userSetState == TileState.Unknown && smartFillState is null);
+               userSetState is TileState.Unknown && smartFillState is null;
     }
 
     public double GetFoxOddsValue(int index) {
@@ -154,6 +144,7 @@ internal sealed class SolveState {
 
         var oddsOfPatternHavingFox = (double)foxesOnIndex / candidatePatternCount;
         var oddsOfTileHavingFox = (double)foxesOnIndex / details.TotalFoxesForPatterns;
+
         return oddsOfPatternHavingFox * oddsOfTileHavingFox;
     }
 
@@ -162,15 +153,17 @@ internal sealed class SolveState {
 
     public SolveState Finalize(SolveStep solveStep) {
         var maxWeight = 0.0;
+
         for (var index = 0; index < BoundingBox.BoardCells; index++) {
             var weight = GetFinalWeight(index);
-            if (weight is not null && weight.Value > maxWeight) {
+            if (weight > maxWeight) {
                 maxWeight = weight.Value;
             }
         }
 
         MaxTileWeight = maxWeight;
         SolveStep = solveStep;
+
         return this;
     }
 }

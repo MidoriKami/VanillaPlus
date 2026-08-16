@@ -8,7 +8,6 @@ using KamiToolKit.Controllers;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.FauxHollowsHelper.Solver;
-using Exception = System.Exception;
 
 namespace VanillaPlus.Features.FauxHollowsHelper;
 
@@ -24,12 +23,6 @@ public class FauxHollowsHelper : GameModification {
         ],
         CompatibilityModule = new PluginCompatibilityModule("ezFauxHollows", "FauxHollowsSolver"),
     };
-
-    private static readonly Vector4 RecommendedColor = new(0.125f, 0.561f, 0.180f, 1.0f);
-    private static readonly Vector4 KnownColor = new(0.125f, 0.314f, 0.627f, 1.0f);
-    private static readonly Vector4 FoxColor = new(0.706f, 0.471f, 0.0f, 1.0f);
-    private const uint BackgroundNodeId = 10;
-    private const uint IconNodeId = 8;
 
     private AddonController<AddonWeeklyPuzzle>? weeklyPuzzleController;
 
@@ -51,11 +44,11 @@ public class FauxHollowsHelper : GameModification {
             };
         }
 
-        await IFramework.Get().Run(weeklyPuzzleController.Enable);
+        await weeklyPuzzleController.EnableAsync();
     }
 
     public override async Task OnDisableAsync() {
-        await IFramework.Get().Run(() => weeklyPuzzleController?.Dispose());
+        await weeklyPuzzleController.DisposeAsyncSafe();
         weeklyPuzzleController = null;
 
         lastBoard = null;
@@ -83,34 +76,32 @@ public class FauxHollowsHelper : GameModification {
     private unsafe void UpdateWeeklyPuzzle(AddonWeeklyPuzzle* addon) {
         if (!addon->IsVisible || addon->UldManager.LoadedState != AtkLoadState.Loaded) return;
 
-        try {
-            var board = new TileState[BoundingBox.BoardCells];
-            var reveals = new List<RevealedTile>();
-            for (var i = 0; i < board.Length; i++) {
-                if (ReadTile(addon, i) is not { } state) return;
-                board[i] = state;
-                if (state is TileState.Present or TileState.Sword &&
-                    ReadPrizeReveal(addon, i) is { } reveal) {
-                    reveals.Add(reveal);
-                }
-            }
+        var board = new TileState[BoundingBox.BoardCells];
+        List<RevealedTile> reveals = [];
 
-            if (!BoardsEqual(lastBoard, board) || !RevealsEqual(lastReveals, reveals)) {
-                lastHints = FauxHollowsHints.Compute(board, reveals);
-                lastBoard = board;
-                lastReveals = reveals;
-            }
+        for (var i = 0; i < board.Length; i++) {
+            if (ReadTile(addon, i) is not { } state) return;
 
-            if (lastHints is null) return;
-            for (var i = 0; i < board.Length; i++) {
-                ApplyTint(addon, i, lastHints[i]);
-            }
+            board[i] = state;
 
-            updatePending = false;
+            if (state is TileState.Present or TileState.Sword && ReadPrizeReveal(addon, i) is { } reveal) {
+                reveals.Add(reveal);
+            }
         }
-        catch (Exception ex) {
-            IPluginLog.Get().Exception(ex);
+
+        if (!BoardsEqual(lastBoard, board) || !RevealsEqual(lastReveals, reveals)) {
+            lastHints = FauxHollowsHints.Compute(board, reveals);
+            lastBoard = board;
+            lastReveals = reveals;
         }
+
+        if (lastHints is null) return;
+
+        for (var i = 0; i < board.Length; i++) {
+            ApplyTint(addon, i, lastHints[i]);
+        }
+
+        updatePending = false;
     }
 
     private unsafe void RequestWeeklyPuzzleUpdate(AddonWeeklyPuzzle* addon) {
@@ -118,7 +109,9 @@ public class FauxHollowsHelper : GameModification {
     }
 
     private unsafe void UpdateWeeklyPuzzleIfPending(AddonWeeklyPuzzle* addon) {
-        if (updatePending) UpdateWeeklyPuzzle(addon);
+        if (!updatePending) return;
+
+        UpdateWeeklyPuzzle(addon);
     }
 
     private static bool BoardsEqual(TileState[]? left, TileState[] right) {
@@ -145,7 +138,7 @@ public class FauxHollowsHelper : GameModification {
         var button = addon->GameBoard[index / BoundingBox.BoardWidth][index % BoundingBox.BoardWidth].Button;
         if (button is null) return null;
 
-        var backgroundNode = (AtkImageNode*)button->GetNodeById(BackgroundNodeId);
+        var backgroundNode = (AtkImageNode*)button->GetNodeById(10);
         if (backgroundNode is null) return null;
 
         switch ((WeeklyPuzzleTexture)backgroundNode->PartId) {
@@ -156,14 +149,14 @@ public class FauxHollowsHelper : GameModification {
                 return TileState.Blocked;
 
             case WeeklyPuzzleTexture.Blank: {
-                    var iconNode = (AtkImageNode*)button->GetNodeById(IconNodeId);
-                    if (iconNode is null || !iconNode->IsVisible()) return TileState.Empty;
+                    var iconNode = (AtkImageNode*)button->GetNodeById(8);
+                    if (iconNode is null) return TileState.Empty;
+                    if (!iconNode->IsVisible()) return TileState.Empty;
 
                     return (WeeklyPuzzlePrizeTexture)iconNode->PartId switch {
                         >= WeeklyPuzzlePrizeTexture.BoxUpperLeft and <= WeeklyPuzzlePrizeTexture.ChestLowerRight => TileState.Present,
                         >= WeeklyPuzzlePrizeTexture.SwordsUpperLeft and <= WeeklyPuzzlePrizeTexture.SwordsLowerRight => TileState.Sword,
-                        WeeklyPuzzlePrizeTexture.TinyCommander
-                            or WeeklyPuzzlePrizeTexture.Commander => TileState.Fox,
+                        WeeklyPuzzlePrizeTexture.TinyCommander or WeeklyPuzzlePrizeTexture.Commander => TileState.Fox,
                         _ => null,
                     };
                 }
@@ -177,12 +170,12 @@ public class FauxHollowsHelper : GameModification {
         var button = addon->GameBoard[index / BoundingBox.BoardWidth][index % BoundingBox.BoardWidth].Button;
         if (button is null) return null;
 
-        var backgroundNode = (AtkImageNode*)button->GetNodeById(BackgroundNodeId);
+        var backgroundNode = (AtkImageNode*)button->GetNodeById(10);
         if (backgroundNode is null || (WeeklyPuzzleTexture)backgroundNode->PartId != WeeklyPuzzleTexture.Blank) {
             return null;
         }
 
-        var iconNode = (AtkImageNode*)button->GetNodeById(IconNodeId);
+        var iconNode = (AtkImageNode*)button->GetNodeById(8);
         if (iconNode is null || !iconNode->IsVisible()) return null;
 
         var part = (WeeklyPuzzlePrizeTexture)iconNode->PartId;
@@ -196,19 +189,16 @@ public class FauxHollowsHelper : GameModification {
         var button = addon->GameBoard[index / BoundingBox.BoardWidth][index % BoundingBox.BoardWidth].Button;
         if (button is null) return;
 
-        var backgroundNode = (AtkImageNode*)button->GetNodeById(BackgroundNodeId);
+        var backgroundNode = (AtkImageNode*)button->GetNodeById(10);
         if (backgroundNode is null) return;
 
-        var color = ResolveColor(hint);
-        backgroundNode->AddRed = (short)(color.X * 255.0f);
-        backgroundNode->AddGreen = (short)(color.Y * 255.0f);
-        backgroundNode->AddBlue = (short)(color.Z * 255.0f);
+        backgroundNode->AtkResNode.Color = ResolveColor(hint).ToByteColor();
     }
 
     private static Vector4 ResolveColor(TileHint hint) => hint switch {
-        TileHint.Recommended => RecommendedColor,
-        TileHint.Known => KnownColor,
-        TileHint.Fox => FoxColor,
+        TileHint.Recommended => new Vector4(0.125f, 0.561f, 0.180f, 1.0f),
+        TileHint.Known => new Vector4(0.125f, 0.314f, 0.627f, 1.0f),
+        TileHint.Fox => new Vector4(0.706f, 0.471f, 0.0f, 1.0f),
         _ => Vector4.Zero,
     };
 

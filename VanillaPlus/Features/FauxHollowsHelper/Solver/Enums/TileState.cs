@@ -9,10 +9,3 @@ public enum TileState {
     Sword,
     Fox,
 }
-
-public enum TileHint {
-    None,
-    Recommended,
-    Fox,
-    Known,
-}
