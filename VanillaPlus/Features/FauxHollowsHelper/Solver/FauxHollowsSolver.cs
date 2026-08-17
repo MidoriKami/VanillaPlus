@@ -14,7 +14,13 @@ public static class FauxHollowsSolver {
     private const int DisambiguationFactor = 1_000;
     private const double SmartFillWeightValue = 1_000_000;
 
-    private static readonly IReadOnlyList<FauxHollowsIdentifierPatterns> Identifiers = LoadIdentifiers();
+    private static IReadOnlyList<FauxHollowsIdentifierPatterns>? identifiers;
+
+    private static IReadOnlyList<FauxHollowsIdentifierPatterns> Identifiers
+        => identifiers ?? throw new InvalidOperationException("Faux Hollows solver has not been initialized.");
+
+    public static void Initialize()
+        => identifiers ??= LoadIdentifiers();
 
     public static TileHint[] Solve(TileState[] board) {
         var solveState = CalculatedSolveState(board);

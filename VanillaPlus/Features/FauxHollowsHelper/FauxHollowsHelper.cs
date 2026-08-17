@@ -34,6 +34,8 @@ public class FauxHollowsHelper : GameModification {
     public override string ImageName => "FauxHollowsHelper.png";
 
     public override async Task OnEnableAsync() {
+        FauxHollowsSolver.Initialize();
+
         unsafe {
             weeklyPuzzleController = new AddonController<AddonWeeklyPuzzle> {
                 AddonName = "WeeklyPuzzle",
