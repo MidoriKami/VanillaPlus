@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Game.Addon.Lifecycle;
+using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -36,6 +38,8 @@ public class FauxHollowsHelper : GameModification {
     public override async Task OnEnableAsync() {
         FauxHollowsSolver.Initialize();
 
+        IAddonLifecycle.Get().RegisterListener(AddonEvent.PostReceiveEvent, "WeeklyPuzzle", OnWeeklyPuzzleReceiveEvent);
+
         unsafe {
             weeklyPuzzleController = new AddonController<AddonWeeklyPuzzle> {
                 AddonName = "WeeklyPuzzle",
@@ -50,6 +54,8 @@ public class FauxHollowsHelper : GameModification {
     }
 
     public override async Task OnDisableAsync() {
+        IAddonLifecycle.Get().UnregisterListener(OnWeeklyPuzzleReceiveEvent);
+
         await weeklyPuzzleController.DisposeAsyncSafe();
         weeklyPuzzleController = null;
 
@@ -114,6 +120,13 @@ public class FauxHollowsHelper : GameModification {
         if (!updatePending) return;
 
         UpdateWeeklyPuzzle(addon);
+    }
+
+    private void OnWeeklyPuzzleReceiveEvent(AddonEvent type, AddonArgs args) {
+        if (args is not AddonReceiveEventArgs receiveEventArgs) return;
+        if ((AtkEventType)receiveEventArgs.AtkEventType is not AtkEventType.TimelineActiveLabelChanged) return;
+
+        updatePending = true;
     }
 
     private static bool BoardsEqual(TileState[]? left, TileState[] right) {
@@ -194,7 +207,10 @@ public class FauxHollowsHelper : GameModification {
         var backgroundNode = (AtkImageNode*)button->GetNodeById(10);
         if (backgroundNode is null) return;
 
-        backgroundNode->AtkResNode.Color = ResolveColor(hint).ToByteColor();
+        var color = ResolveColor(hint);
+        backgroundNode->AddRed = (short)(color.X * 255.0f);
+        backgroundNode->AddGreen = (short)(color.Y * 255.0f);
+        backgroundNode->AddBlue = (short)(color.Z * 255.0f);
     }
 
     private static Vector4 ResolveColor(TileHint hint) => hint switch {
