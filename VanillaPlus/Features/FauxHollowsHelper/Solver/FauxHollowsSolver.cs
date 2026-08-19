@@ -19,8 +19,11 @@ public static class FauxHollowsSolver {
     private static IReadOnlyList<FauxHollowsIdentifierPatterns> Identifiers
         => identifiers ?? throw new InvalidOperationException("Faux Hollows solver has not been initialized.");
 
-    public static void Initialize()
+    public static void LoadDate()
         => identifiers ??= LoadIdentifiers();
+
+    public static void UnloadData()
+        => identifiers = null;
 
     public static TileHint[] Solve(TileState[] board) {
         var solveState = CalculatedSolveState(board);

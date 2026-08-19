@@ -36,7 +36,7 @@ public class FauxHollowsHelper : GameModification {
     public override string ImageName => "FauxHollowsHelper.png";
 
     public override async Task OnEnableAsync() {
-        FauxHollowsSolver.Initialize();
+        FauxHollowsSolver.LoadDate();
 
         IAddonLifecycle.Get().RegisterListener(AddonEvent.PostReceiveEvent, "WeeklyPuzzle", OnWeeklyPuzzleReceiveEvent);
 
@@ -54,6 +54,8 @@ public class FauxHollowsHelper : GameModification {
     }
 
     public override async Task OnDisableAsync() {
+        FauxHollowsSolver.UnloadData();
+
         IAddonLifecycle.Get().UnregisterListener(OnWeeklyPuzzleReceiveEvent);
 
         await weeklyPuzzleController.DisposeAsyncSafe();
