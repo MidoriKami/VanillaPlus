@@ -207,10 +207,7 @@ public class FauxHollowsHelper : GameModification {
         var backgroundNode = (AtkImageNode*)button->GetNodeById(10);
         if (backgroundNode is null) return;
 
-        var color = ResolveColor(hint);
-        backgroundNode->AddRed = (short)(color.X * 255.0f);
-        backgroundNode->AddGreen = (short)(color.Y * 255.0f);
-        backgroundNode->AddBlue = (short)(color.Z * 255.0f);
+        backgroundNode->AtkResNode.AddColor = ResolveColor(hint).AsVector3Color();
     }
 
     private static Vector4 ResolveColor(TileHint hint) => hint switch {
