@@ -19,7 +19,7 @@ public static class FauxHollowsSolver {
     private static IReadOnlyList<FauxHollowsIdentifierPatterns> Identifiers
         => identifiers ?? throw new InvalidOperationException("Faux Hollows solver has not been initialized.");
 
-    public static void LoadDate()
+    public static void LoadData()
         => identifiers ??= LoadIdentifiers();
 
     public static void UnloadData()
