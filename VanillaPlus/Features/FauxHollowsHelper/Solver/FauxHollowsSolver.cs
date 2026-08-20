@@ -99,7 +99,7 @@ public static class FauxHollowsSolver {
         return solveState.Finalize(mainShapesSolved ? SolveStep.SuggestFoxes : SolveStep.SuggestTiles);
     }
 
-    private static FauxHollowsIdentifierPatterns? GetIdentifierCandidate(IReadOnlyCollection<int> blocked)
+    private static FauxHollowsIdentifierPatterns? GetIdentifierCandidate(HashSet<int> blocked)
         => Identifiers.FirstOrDefault(candidate =>
             candidate.Blocked.Count == blocked.Count &&
             candidate.Blocked.All(blocked.Contains));
@@ -157,7 +157,7 @@ public static class FauxHollowsSolver {
             }
         }
 
-        if (filteredPatterns.Count == 0) {
+        if (filteredPatterns.Count is 0) {
             return SolveStep.FillSword;
         }
 
@@ -275,7 +275,7 @@ public static class FauxHollowsSolver {
             out var exceptions
         );
 
-        if (failedLines.Count != 0 || exceptions.Count != 0 || patterns.Count == 0) {
+        if (failedLines.Count is not 0 || exceptions.Count is not 0 || patterns.Count is 0) {
             throw new InvalidOperationException("Unable to load Faux Hollows pattern data from LuminaSupplemental.");
         }
 
