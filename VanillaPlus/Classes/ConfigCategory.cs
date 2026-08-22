@@ -134,12 +134,15 @@ public class ConfigCategory : IDisposable {
         if (memberInfo is null) return this;
 
         var initialValue = memberInfo.GetValue<object>(ConfigObject);
+        var optionValues = Enum.GetValues<T>()
+            .Where(enumValue => !enumValue.IsObsolete())
+            .ToDictionary(enumValue => enumValue.Description, enumValue => (object)enumValue);
 
         configEntries.Add(new DropDownConfig {
             Label = label,
             MemberInfo = memberInfo,
             Config = ConfigObject,
-            Options = Enum.GetValues<T>().ToDictionary(enumValue => enumValue.Description, enumValue => (object)enumValue),
+            Options = optionValues,
             InitialValue = initialValue!,
         });
 
