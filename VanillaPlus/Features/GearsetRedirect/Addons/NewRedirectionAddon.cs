@@ -41,11 +41,11 @@ public class NewRedirectionAddon : NativeAddon {
                     InitialNodes = [
                         new TextNode {
                             Height = 26.0f,
-                            String = "Switch to Gearset",
+                            String = Strings.GearsetRedirect_LabelSwitchToGearset,
                         },
                         gearsetButtonNode = new TextButtonNode {
                             Height = 26.0f,
-                            String = "Select target Gearset",
+                            String = Strings.GearsetRedirect_ButtonSelectGearset,
                             OnClick = OnGearsetButtonClicked,
                         },
                     ],
@@ -56,11 +56,11 @@ public class NewRedirectionAddon : NativeAddon {
                     InitialNodes = [
                         new TextNode {
                             Height = 26.0f,
-                            String = "When in Zone",
+                            String = Strings.GearsetRedirect_LabelWhenInZone,
                         },
                         territoryButtonNode = new TextButtonNode {
                             Height = 26.0f,
-                            String = "Select target Zone",
+                            String = Strings.GearsetRedirect_ButtonSelectZone,
                             OnClick = OnTerritoryButtonClicked,
                         },
                     ],

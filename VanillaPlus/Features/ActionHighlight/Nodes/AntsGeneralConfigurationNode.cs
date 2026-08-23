@@ -18,7 +18,7 @@ public class AntsGeneralConfigurationNode : ResNode {
             ItemSpacing = 5.0f,
             InitialTabbedNodes = [
                 new TabbedListEntry(1, new CategoryTextNode {
-                    String = "General Settings",
+                    String = Strings.CurrencyWarning_CategoryGeneral,
                 }),
                 new TabbedListEntry(2, [
                     new CheckboxNode {

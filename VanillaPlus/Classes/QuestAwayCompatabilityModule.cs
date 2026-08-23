@@ -12,7 +12,7 @@ public class QuestAwayCompatabilityModule : CompatibilityModule {
     }
 
     public override string GetErrorMessage()
-        => "Not compatible with QuestAWAYS's 'Aetherytes always in front' feature";
+        => Strings.CompatibilityModule_QuestAwayAetherytesActive;
 
     private static bool IsAetheryteFeatureEnabled() {
         var configFileInfo = GetConfigFileInfo();

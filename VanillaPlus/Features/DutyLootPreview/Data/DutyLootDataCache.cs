@@ -23,7 +23,7 @@ public class DutyLootDataCache : IDisposable {
     private readonly ConcurrentDictionary<uint, DungeonChest> dungeonChestIndex = new();       // (cfcId, chest rowId)
     private readonly ConcurrentDictionary<uint, DutyLootData> dutyLootByContentId = new();
 
-    private static readonly ReadOnlySeString DungeonChestSource = "Dungeon Chest";
+    private static readonly ReadOnlySeString DungeonChestSource = Strings.DutyLootPreview_SourceDungeonChest;
 
     public void Dispose() => loadDebouncer.Dispose();
 

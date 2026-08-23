@@ -38,7 +38,7 @@ public class GearsetRedirect : GameModification {
             CreateRedirectionAddon = new NewRedirectionAddon {
                 Size = new Vector2(400.0f, 200.0f),
                 InternalName = "CreateGearsetRedirection",
-                Title = "New Gearset Redirection",
+                Title = Strings.GearsetRedirect_AddRedirectionTitle,
             };
 
             gearsetSearchAddon = new GearsetSearchAddon {

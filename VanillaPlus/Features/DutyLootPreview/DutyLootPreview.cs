@@ -17,7 +17,7 @@ public class DutyLootPreview : GameModification {
 
     public override string ImageName => "DutyLootPreview.png";
 
-    public override string WarningMessage => "Pending Removal in Patch 7.56";
+    public override string WarningMessage => Strings.DutyLootPreview_WarningPendingRemoval;
 
     private DutyLootPreviewConfig? config;
     private DutyLootDataLoader? dataLoader;

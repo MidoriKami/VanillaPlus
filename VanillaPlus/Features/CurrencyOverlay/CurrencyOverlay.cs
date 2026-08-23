@@ -39,7 +39,7 @@ public class CurrencyOverlay : GameModification {
 
         itemSearchAddon = new ItemSearchAddon {
             InternalName = "CurrencySearch",
-            Title = "Currency Search",
+            Title = Strings.CurrencyOverlay_CurrencySearchTitle,
             Size = new Vector2(350.0f, 500.0f),
             AllowMultiselect = true,
             OptionsList = [
