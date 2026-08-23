@@ -2232,6 +2232,15 @@ namespace Resources {
                 return ResourceManager.GetString("ModificationDescription_BetterCursor", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Improves the Emote window layout and previews targeted and untargeted emote text..
+        /// </summary>
+        internal static string ModificationDescription_BetterEmoteWindow {
+            get {
+                return ResourceManager.GetString("ModificationDescription_BetterEmoteWindow", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Makes enemy interruptable castbars much more noticeable.
@@ -2968,6 +2977,15 @@ namespace Resources {
         internal static string ModificationDisplay_BetterCursor {
             get {
                 return ResourceManager.GetString("ModificationDisplay_BetterCursor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Better Emote Window.
+        /// </summary>
+        internal static string ModificationDisplay_BetterEmoteWindow {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_BetterEmoteWindow", resourceCulture);
             }
         }
         

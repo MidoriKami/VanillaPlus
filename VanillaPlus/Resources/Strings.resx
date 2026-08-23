@@ -1721,4 +1721,10 @@ To join in the festivities, check out the Seasonal section in VanillaPlus!</valu
   <data name="ModificationDescription_GameConfigCommand" xml:space="preserve">
     <value>Adds the /gameconfig command for changing game configuration options.</value>
   </data>
+  <data name="ModificationDisplay_BetterEmoteWindow" xml:space="preserve">
+    <value>Better Emote Window</value>
+  </data>
+  <data name="ModificationDescription_BetterEmoteWindow" xml:space="preserve">
+    <value>Improves the Emote window layout and previews targeted and untargeted emote text.</value>
+  </data>
 </root>
