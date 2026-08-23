@@ -25,7 +25,7 @@ public class RedirectionEntryListItemNode : ListItemWithFocusNav<RedirectionConf
         var targetGearset = RaptureGearsetModule.Instance()->GetGearset(itemData.AlternateGearsetId);
         if (targetGearset is null) {
             gearsetIconNode.IsVisible = false;
-            gearsetNameTextNode.String = "Invalid Gearset Target";
+            gearsetNameTextNode.String = Strings.GearsetRedirect_InvalidGearsetTarget;
             return;
         }
 
@@ -35,7 +35,10 @@ public class RedirectionEntryListItemNode : ListItemWithFocusNav<RedirectionConf
         gearsetNameTextNode.String = targetGearset->Name;
 
         var territoryInfo = IDataManager.Get().GetExcelSheet<TerritoryType>().GetRow(itemData.TerritoryType);
-        territoryNameTextNode.String = $"When in {SeIconChar.ArrowRight.ToIconString()} {territoryInfo.PlaceName.ValueNullable?.Name.ToString() ?? string.Empty}";
+        territoryNameTextNode.String = Strings.GearsetRedirect_WhenInZoneFormat.Format(
+            SeIconChar.ArrowRight.ToIconString(),
+            territoryInfo.PlaceName.ValueNullable?.Name.ToString() ?? string.Empty
+        );
     }
 
     public RedirectionEntryListItemNode() {

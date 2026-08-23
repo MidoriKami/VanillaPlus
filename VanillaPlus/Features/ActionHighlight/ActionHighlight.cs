@@ -43,7 +43,7 @@ public class ActionHighlight : GameModification {
 
         classJobSearchAddon = new ClassJobSearchAddon {
             InternalName = "ClassJobSearch",
-            Title = "Class Job Search",
+            Title = Strings.ActionHighlight_ClassJobSearchTitle,
             Size = new Vector2(300.0f, 535.0f),
             OptionsList = [..
                 IDataManager.Get().GetExcelSheet<ClassJob>()

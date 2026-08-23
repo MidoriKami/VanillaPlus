@@ -14,7 +14,7 @@ public class HaselTweaksCompatibilityModule(string moduleName) : CompatibilityMo
     }
 
     public override string GetErrorMessage()
-        => $"The original version of this feature is already active in HaselTweaks Plugin.\n\nID: {moduleName}";
+        => Strings.CompatibilityModule_HaselTweaksActive.Format(moduleName);
 
     private static List<string> GetTargetPluginLoadedModules() {
         var configFileInfo = GetConfigFileInfo();

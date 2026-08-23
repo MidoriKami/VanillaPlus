@@ -34,7 +34,7 @@ public class FateListWindow : GameModification {
 
         keybindConfigAddon = new AddonConfigAddon {
             InternalName = "KeybindConfig",
-            Title = "Fate List Window Keybind",
+            Title = Strings.AddonConfig_KeybindWindowTitle,
             AddonConfig = fateListAddonSettings,
             OnConfigChanged = OnAddonConfigChanged,
         };
@@ -48,7 +48,7 @@ public class FateListWindow : GameModification {
         OpenConfigAction = keybindConfigAddon.Toggle;
 
         ICommandManager.Get().AddHandler("/fatelist", new CommandInfo(OnFateListCommand) {
-            HelpMessage = "Opens Fate List Window",
+            HelpMessage = Strings.NodeList_OpenCommandHelp.Format(Strings.FateListWindow_Title),
         });
         IFramework.Get().Update += OnFrameworkUpdate;
     }

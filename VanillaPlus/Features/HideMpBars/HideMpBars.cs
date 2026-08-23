@@ -38,13 +38,13 @@ public class HideMpBars : GameModification {
         configAddon = new ConfigAddon {
             Config = config,
             InternalName = "HideMpBarsConfig",
-            Title = "Hide MP Bars Config",
+            Title = Strings.HideMpBars_ConfigTitle,
         };
 
         unsafe {
-            configAddon.AddCategory("General")
-                .AddCheckbox("Hide in Party List", nameof(config.HidePartyList), _ => ResetPartyList())
-                .AddCheckbox("Hide in Parameter Widget", nameof(config.HideParamWidget), _ => ResetParamWidget());
+            configAddon.AddCategory(Strings.CurrencyWarning_CategoryGeneral)
+                .AddCheckbox(Strings.HideMpBars_LabelHidePartyList, nameof(config.HidePartyList), _ => ResetPartyList())
+                .AddCheckbox(Strings.HideMpBars_LabelHideParameterWidget, nameof(config.HideParamWidget), _ => ResetParamWidget());
         }
 
         OpenConfigAction = configAddon.Toggle;

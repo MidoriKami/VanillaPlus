@@ -50,7 +50,7 @@ public class CurrencyOverlayConfigNode : EntryConfigurationNode<CurrencySetting>
 
         layoutNode.AddNode(0, enableLowLimitCheckbox = new CheckboxNode {
             Height = 24.0f,
-            String = "Warn when below limit",
+            String = Strings.CurrencyOverlay_LabelWarnBelowLimit,
         });
 
         layoutNode.AddNode(1, lowLimitInputNode = new NumericInputNode {
@@ -59,7 +59,7 @@ public class CurrencyOverlayConfigNode : EntryConfigurationNode<CurrencySetting>
 
         layoutNode.AddNode(0, enableHighLimitCheckbox = new CheckboxNode {
             Height = 24.0f,
-            String = "Warn when above limit",
+            String = Strings.CurrencyOverlay_LabelWarnAboveLimit,
         });
 
         layoutNode.AddNode(1, highLimitInputNode = new NumericInputNode {
@@ -69,19 +69,19 @@ public class CurrencyOverlayConfigNode : EntryConfigurationNode<CurrencySetting>
         layoutNode.AddNode(0, [
             reverseIconCheckbox = new CheckboxNode {
                 Height = 24.0f,
-                String = "Reverse icon position",
+                String = Strings.CurrencyOverlay_LabelReverseIconPosition,
             },
             reverseTextCheckbox = new CheckboxNode {
                 Height = 24.0f,
-                String = "Reverse text position",
+                String = Strings.CurrencyOverlay_LabelReverseTextPosition,
             },
             allowMovingCheckbox = new CheckboxNode {
                 Height = 24.0f,
-                String = "Enable moving overlay element",
+                String = Strings.CurrencyOverlay_LabelEnableMoving,
             },
             new CategoryTextNode {
                 Height = 24.0f,
-                String = "Scale",
+                String = Strings.CurrencyOverlay_LabelScale,
             },
             scaleSliderNode = new FloatSliderNode {
                 Height = 24.0f,
@@ -90,7 +90,7 @@ public class CurrencyOverlayConfigNode : EntryConfigurationNode<CurrencySetting>
             },
             fadeIfNoWarningsCheckbox = new CheckboxNode {
                 Height = 24.0f,
-                String = "Fade if no warnings",
+                String = Strings.CurrencyOverlay_LabelFadeIfNoWarnings,
             },
             new CategoryTextNode {
                 Height = 24.0f,

@@ -144,7 +144,7 @@ public class ModificationManager : IAsyncDisposable {
         }
         catch (Exception e) {
             modification.State = LoadedState.Errored;
-            modification.ErrorMessage = "Failed to load, this module has been disabled.";
+            modification.ErrorMessage = Strings.Tooltip_ModificationFailedToLoad;
             IPluginLog.Get().Error(e, $"Error while enabling {modification.Name}, attempting to disable");
 
             try {
@@ -154,7 +154,7 @@ public class ModificationManager : IAsyncDisposable {
                 IPluginLog.Get().Info($"Successfully disabled erroring modification {modification.Name}");
             }
             catch (Exception fatal) {
-                modification.ErrorMessage = "Critical Error: Module failed to load, and errored again while unloading.";
+                modification.ErrorMessage = Strings.Error_CriticalUnloadFailed;
                 IPluginLog.Get().Error(fatal, $"Critical Error while trying to unload erroring modification: {modification.Name}");
             }
         }
