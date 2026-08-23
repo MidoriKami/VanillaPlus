@@ -51,7 +51,7 @@ public class CurrencyWarningGeneralConfigNode : ResNode {
                             },
                             new CheckboxNode {
                                 Size = new Vector2(200.0f, 26.0f),
-                                String = "Hide in Duties",
+                                String = Strings.CurrencyWarning_LabelHideInDuties,
                                 IsChecked = config.HideInDuties,
                                 OnClick = newValue => {
                                     config.HideInDuties = newValue;
@@ -61,7 +61,7 @@ public class CurrencyWarningGeneralConfigNode : ResNode {
                         ]),
                         new TabbedListEntry(1, new CategoryTextNode {
                             Size = new Vector2(200.0f, 26.0f),
-                            String = "Icon Scale",
+                            String = Strings.CurrencyWarning_IconScale,
                         }),
                         new TabbedListEntry(2, new FloatSliderNode {
                             Size = new Vector2(200.0f, 26.0f),
@@ -79,12 +79,12 @@ public class CurrencyWarningGeneralConfigNode : ResNode {
                     InitialTabbedNodes = [
                         new TabbedListEntry(1, new CategoryTextNode {
                             Size = new Vector2(200.0f, 26.0f),
-                            String = "Below Target Value Warning",
+                            String = Strings.CurrencyWarning_CategoryBelowTargetWarning,
                         }),
                         new TabbedListEntry(2, [
                             new ColorEditNode {
                                 Size = new Vector2(200.0f, 26.0f),
-                                String = "Tooltip Text Color",
+                                String = Strings.CurrencyWarning_LabelTooltipTextColor,
                                 CurrentColor = config.LowColor,
                                 OnColorConfirmed = newColor => {
                                     config.LowColor = newColor;
@@ -102,12 +102,12 @@ public class CurrencyWarningGeneralConfigNode : ResNode {
                         ]),
                         new TabbedListEntry(1, new CategoryTextNode {
                             Size = new Vector2(200.0f, 26.0f),
-                            String = "Above Target Value Warning",
+                            String = Strings.CurrencyWarning_CategoryAboveTargetWarning,
                         }),
                         new TabbedListEntry(2, [
                             new ColorEditNode {
                                 Size = new Vector2(200.0f, 26.0f),
-                                String = "Tooltip Text Color",
+                                String = Strings.CurrencyWarning_LabelTooltipTextColor,
                                 CurrentColor = config.HighColor,
                                 OnColorConfirmed = newColor => {
                                     config.HighColor = newColor;

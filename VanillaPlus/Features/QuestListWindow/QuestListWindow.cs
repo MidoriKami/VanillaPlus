@@ -36,7 +36,7 @@ public class QuestListWindow : GameModification {
 
         keybindConfigAddon = new AddonConfigAddon {
             InternalName = "KeybindConfig",
-            Title = "Fate List Window Keybind",
+            Title = Strings.AddonConfig_KeybindWindowTitle,
             AddonConfig = questListAddonSettings,
             OnConfigChanged = OnAddonConfigChanged,
         };
@@ -50,7 +50,7 @@ public class QuestListWindow : GameModification {
         OpenConfigAction = keybindConfigAddon.Toggle;
 
         ICommandManager.Get().AddHandler("/questlist", new CommandInfo(OnQuestListCommand) {
-            HelpMessage = "Opens Quest List Window",
+            HelpMessage = Strings.NodeList_OpenCommandHelp.Format(Strings.QuestListWindow_Title),
         });
         IFramework.Get().Update += OnFrameworkUpdate;
     }

@@ -4800,5 +4800,400 @@ namespace Resources {
                 return ResourceManager.GetString("WondrousTailsProbabilities_ShuffleAverageLabel", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string ActionHighlight_ClassJobSearchTitle {
+            get {
+                return ResourceManager.GetString("ActionHighlight_ClassJobSearchTitle", resourceCulture);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string BiggerConfigWindows_ErrorHeightTooBig {
+            get {
+                return ResourceManager.GetString("BiggerConfigWindows_ErrorHeightTooBig", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CompatibilityModule_HaselTweaksActive {
+            get {
+                return ResourceManager.GetString("CompatibilityModule_HaselTweaksActive", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CompatibilityModule_QuestAwayAetherytesActive {
+            get {
+                return ResourceManager.GetString("CompatibilityModule_QuestAwayAetherytesActive", resourceCulture);
+            }
+        }
+
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CurrencyOverlay_CurrencySearchTitle {
+            get {
+                return ResourceManager.GetString("CurrencyOverlay_CurrencySearchTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CurrencyOverlay_LabelWarnBelowLimit {
+            get {
+                return ResourceManager.GetString("CurrencyOverlay_LabelWarnBelowLimit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CurrencyOverlay_LabelWarnAboveLimit {
+            get {
+                return ResourceManager.GetString("CurrencyOverlay_LabelWarnAboveLimit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CurrencyOverlay_LabelReverseIconPosition {
+            get {
+                return ResourceManager.GetString("CurrencyOverlay_LabelReverseIconPosition", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CurrencyOverlay_LabelReverseTextPosition {
+            get {
+                return ResourceManager.GetString("CurrencyOverlay_LabelReverseTextPosition", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CurrencyOverlay_LabelEnableMoving {
+            get {
+                return ResourceManager.GetString("CurrencyOverlay_LabelEnableMoving", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CurrencyOverlay_LabelScale {
+            get {
+                return ResourceManager.GetString("CurrencyOverlay_LabelScale", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CurrencyOverlay_LabelFadeIfNoWarnings {
+            get {
+                return ResourceManager.GetString("CurrencyOverlay_LabelFadeIfNoWarnings", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CurrencyWarning_LabelHideInDuties {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_LabelHideInDuties", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CurrencyWarning_CategoryBelowTargetWarning {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_CategoryBelowTargetWarning", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CurrencyWarning_CategoryAboveTargetWarning {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_CategoryAboveTargetWarning", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string CurrencyWarning_LabelTooltipTextColor {
+            get {
+                return ResourceManager.GetString("CurrencyWarning_LabelTooltipTextColor", resourceCulture);
+            }
+        }
+
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string DutyLootPreview_WarningPendingRemoval {
+            get {
+                return ResourceManager.GetString("DutyLootPreview_WarningPendingRemoval", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string Error_CriticalUnloadFailed {
+            get {
+                return ResourceManager.GetString("Error_CriticalUnloadFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string FateEntry_StatusPending {
+            get {
+                return ResourceManager.GetString("FateEntry_StatusPending", resourceCulture);
+            }
+        }
+
+
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GameConfigCommand_CommandHelp {
+            get {
+                return ResourceManager.GetString("GameConfigCommand_CommandHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GameConfigCommand_ErrorInCombat {
+            get {
+                return ResourceManager.GetString("GameConfigCommand_ErrorInCombat", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GameConfigCommand_ErrorInvalidCommand {
+            get {
+                return ResourceManager.GetString("GameConfigCommand_ErrorInvalidCommand", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GameConfigCommand_ErrorNotSettable {
+            get {
+                return ResourceManager.GetString("GameConfigCommand_ErrorNotSettable", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GameConfigCommand_ErrorOutOfRange {
+            get {
+                return ResourceManager.GetString("GameConfigCommand_ErrorOutOfRange", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GameConfigCommand_UpdatedMessage {
+            get {
+                return ResourceManager.GetString("GameConfigCommand_UpdatedMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GameConfigCommand_ErrorDecimalRequired {
+            get {
+                return ResourceManager.GetString("GameConfigCommand_ErrorDecimalRequired", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GameConfigCommand_ErrorOption {
+            get {
+                return ResourceManager.GetString("GameConfigCommand_ErrorOption", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GearsetRedirect_LabelSwitchToGearset {
+            get {
+                return ResourceManager.GetString("GearsetRedirect_LabelSwitchToGearset", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GearsetRedirect_ButtonSelectGearset {
+            get {
+                return ResourceManager.GetString("GearsetRedirect_ButtonSelectGearset", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GearsetRedirect_LabelWhenInZone {
+            get {
+                return ResourceManager.GetString("GearsetRedirect_LabelWhenInZone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GearsetRedirect_ButtonSelectZone {
+            get {
+                return ResourceManager.GetString("GearsetRedirect_ButtonSelectZone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GearsetRedirect_InvalidGearsetTarget {
+            get {
+                return ResourceManager.GetString("GearsetRedirect_InvalidGearsetTarget", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string GearsetRedirect_WhenInZoneFormat {
+            get {
+                return ResourceManager.GetString("GearsetRedirect_WhenInZoneFormat", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string HideMpBars_ConfigTitle {
+            get {
+                return ResourceManager.GetString("HideMpBars_ConfigTitle", resourceCulture);
+            }
+        }
+
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string HideMpBars_LabelHidePartyList {
+            get {
+                return ResourceManager.GetString("HideMpBars_LabelHidePartyList", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string HideMpBars_LabelHideParameterWidget {
+            get {
+                return ResourceManager.GetString("HideMpBars_LabelHideParameterWidget", resourceCulture);
+            }
+        }
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string ModificationDisplay_RightClickMapNav {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_RightClickMapNav", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string ModificationDescription_RightClickMapNav {
+            get {
+                return ResourceManager.GetString("ModificationDescription_RightClickMapNav", resourceCulture);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        ///   Looks up a localized string.
+        /// </summary>
+        internal static string DutyLootPreview_SourceDungeonChest {
+            get {
+                return ResourceManager.GetString("DutyLootPreview_SourceDungeonChest", resourceCulture);
+            }
+        }
     }
 }

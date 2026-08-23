@@ -22,7 +22,7 @@ public class GameConfigCommand : GameModification {
 
     public override Task OnEnableAsync() {
         ICommandManager.Get().AddHandler("/gameconfig", new CommandInfo(OnCommand) {
-            HelpMessage = "Usage: /gameconfig <system|ui|control> <option> <value>",
+            HelpMessage = Strings.GameConfigCommand_CommandHelp,
             ShowInHelp = true,
         });
 
@@ -61,7 +61,7 @@ public class GameConfigCommand : GameModification {
         if (command is not "/gameconfig") return;
 
         if (ICondition.Get().IsInCombat) {
-            IChatGui.Get().PrintError("Game configuration cannot be changed while in combat.", "VanillaPlus");
+            IChatGui.Get().PrintError(Strings.GameConfigCommand_ErrorInCombat, "VanillaPlus");
             return;
         }
 
@@ -89,8 +89,7 @@ public class GameConfigCommand : GameModification {
 
             default:
                 IChatGui.Get().PrintError(
-                    $"Error processing command for {command} {arguments}, check the arguments and try again.\n" +
-                    $"Usage: /gameconfig <system|ui|control> <option> <value>", "VanillaPlus"
+                    Strings.GameConfigCommand_ErrorInvalidCommand.Format(command, arguments), "VanillaPlus"
                 );
                 break;
         }
@@ -98,7 +97,7 @@ public class GameConfigCommand : GameModification {
 
     private static void SetConfigOption(ConfigSection section, GameConfigOptionAttribute option, string valueString) {
         if (option is { Settable: false }) {
-            IChatGui.Get().PrintError($"Config option {option.Name} is not allowed to be set.", "VanillaPlus");
+            IChatGui.Get().PrintError(Strings.GameConfigCommand_ErrorNotSettable.Format(option.Name), "VanillaPlus");
             return;
         }
 
@@ -117,45 +116,45 @@ public class GameConfigCommand : GameModification {
 
                     if (configSection.TryGetProperties(name, out UIntConfigProperties? uintProperties) && uintProperties is not null) {
                         if (uintValue < uintProperties.Minimum || uintValue > uintProperties.Maximum) {
-                            IChatGui.Get().PrintError($"Argument for {option.Name} must be between {uintProperties.Minimum} and {uintProperties.Maximum}.", "VanillaPlus");
+                            IChatGui.Get().PrintError(Strings.GameConfigCommand_ErrorOutOfRange.Format(option.Name, uintProperties.Minimum, uintProperties.Maximum), "VanillaPlus");
                             return;
                         }
                     }
 
                     configSection.Set(name, uintValue);
-                    IChatGui.Get().Print($"Updated {section.Description}.{option.Name}.");
+                    IChatGui.Get().Print(Strings.GameConfigCommand_UpdatedMessage.Format(section.Description, option.Name));
                     return;
 
                 case { Type: ConfigType.Float, Name: var name } when float.TryParse(valueString, out var floatValue):
 
                     if (!float.IsFinite(floatValue)) {
-                        IChatGui.Get().PrintError($"{option.Name} requires a decimal value.", "VanillaPlus");
+                        IChatGui.Get().PrintError(Strings.GameConfigCommand_ErrorDecimalRequired.Format(option.Name), "VanillaPlus");
                         return;
                     }
 
                     if (configSection.TryGetProperties(name, out FloatConfigProperties? floatProperties) && floatProperties is not null) {
                         if (floatValue < floatProperties.Minimum || floatValue > floatProperties.Maximum) {
-                            IChatGui.Get().PrintError($"{option.Name} must be between {floatProperties.Minimum} and {floatProperties.Maximum}.", "VanillaPlus");
+                            IChatGui.Get().PrintError(Strings.GameConfigCommand_ErrorOutOfRange.Format(option.Name, floatProperties.Minimum, floatProperties.Maximum), "VanillaPlus");
                             return;
                         }
                     }
 
                     configSection.Set(name, floatValue);
-                    IChatGui.Get().Print($"Updated {section.Description}.{option.Name}.");
+                    IChatGui.Get().Print(Strings.GameConfigCommand_UpdatedMessage.Format(section.Description, option.Name));
                     return;
 
                 case { Type: ConfigType.String, Name: var name }:
                     configSection.Set(name, valueString);
-                    IChatGui.Get().Print($"Updated {section.Description}.{option.Name}.");
+                    IChatGui.Get().Print(Strings.GameConfigCommand_UpdatedMessage.Format(section.Description, option.Name));
                     return;
 
                 default:
-                    IChatGui.Get().PrintError($"Error processing command for {option.Name}, check the arguments and try again.", "VanillaPlus");
+                    IChatGui.Get().PrintError(Strings.GameConfigCommand_ErrorOption.Format(option.Name), "VanillaPlus");
                     return;
             }
         }
         catch (Exception e) {
-            IChatGui.Get().PrintError($"Error processing command for {option.Name}, check the arguments and try again.", "VanillaPlus");
+            IChatGui.Get().PrintError(Strings.GameConfigCommand_ErrorOption.Format(option.Name), "VanillaPlus");
             IPluginLog.Get().Exception(e);
         }
     }

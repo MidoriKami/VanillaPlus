@@ -12,9 +12,8 @@ namespace VanillaPlus.Features.RightClickMapNav;
 
 public class RightClickMapNav : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Right-Click Map Nav",
-        Description = "Allows you to navigate 'up' a layer by right clicking on the map.\n\n" +
-                      "Must hold shift while right clicking to nav up.",
+        DisplayName = Strings.ModificationDisplay_RightClickMapNav,
+        Description = Strings.ModificationDescription_RightClickMapNav,
         Type = ModificationType.GameBehavior,
         Authors = [ "MidoriKami" ],
     };

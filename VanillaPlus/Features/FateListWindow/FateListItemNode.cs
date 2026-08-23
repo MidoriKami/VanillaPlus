@@ -137,7 +137,7 @@ public class FateListItemNode : ListItemNode<IFate>, IListItemNode {
         switch (itemData.State) {
             case FateState.Preparing:
             case FateState.Running when itemData.TimeRemainingSpan <= TimeSpan.Zero:
-                timeRemainingNode.String = "Pending";
+                timeRemainingNode.String = Strings.FateEntry_StatusPending;
                 Timeline?.PlayAnimation(1);
                 break;
 
