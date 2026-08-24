@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Dalamud.Game.Text.Evaluator;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
@@ -38,25 +39,17 @@ public static class EmoteLogMessageFormatter {
         string targetName,
         byte targetSex
     ) {
-        const int LocalParameterCount = 67;
-        const int ViewerNameIndex = 0;
-        const int SourceNameIndex = 1;
-        const int TargetNameIndex = 2;
-        const int SourceSexIndex = 4;
-        const int TargetSexIndex = 5;
-        const int SourceStartsWithVowelIndex = 65;
-        const int TargetStartsWithVowelIndex = 66;
+        var parameters = new SeStringParameter[67]; // Highest used parameter is gnum67.
 
-        var parameters = new SeStringParameter[LocalParameterCount];
+        parameters[0] = string.Empty; // Viewer name; empty forces third-person grammar.
+        parameters[1] = playerName; // Source player name.
+        parameters[2] = targetName; // Target name.
+        parameters[4] = (uint)playerSex; // Source player sex.
+        parameters[5] = (uint)targetSex; // Target sex.
+        parameters[65] = StartsWithVowel(playerName); // Source name starts with a vowel.
+        parameters[66] = StartsWithVowel(targetName); // Target name starts with a vowel.
 
-        // Keep gstr1 distinct from gstr2/gstr3 so previews use character names instead of first-person pronouns.
-        parameters[ViewerNameIndex] = string.Empty;
-        parameters[SourceNameIndex] = playerName;
-        parameters[TargetNameIndex] = targetName;
-        parameters[SourceSexIndex] = (uint)playerSex;
-        parameters[TargetSexIndex] = (uint)targetSex;
-        parameters[SourceStartsWithVowelIndex] = StartsWithVowel(playerName);
-        parameters[TargetStartsWithVowelIndex] = StartsWithVowel(targetName);
+        // lnum7/8 remain zero so noun macros use the provided names instead of ObjStr rows.
 
         return parameters;
     }
@@ -64,13 +57,19 @@ public static class EmoteLogMessageFormatter {
     private static uint StartsWithVowel(string value) {
         if (string.IsNullOrEmpty(value)) return 0;
 
-        const string Vowels = "AEIOUYÀÂÄÉÈÊËÎÏÔÖÙÛÜŸŒÆ";
-        if (Vowels.Contains(char.ToUpperInvariant(value[0]))) return 1;
+        var firstCharacter = value[0];
+        if (firstCharacter is 'Æ' or 'æ' or 'Œ' or 'œ') return 1;
+
+        var normalized = firstCharacter.ToString().Normalize(NormalizationForm.FormD);
+        var baseCharacter = char.ToUpperInvariant(normalized[0]);
+        if (baseCharacter is 'A' or 'E' or 'I' or 'O' or 'U' or 'Y') return 1;
 
         return 0;
     }
 
     private static ReadOnlySeString RewriteGlobalParameters(ReadOnlySeString source) {
+        // Dalamud's evaluator reads gstr/gnum values from shared game state and cannot override them per call.
+        // Rewriting them to the same-numbered local parameters lets the preview supply isolated values instead.
         using var rentedStringBuilder = new RentedSeStringBuilder();
         RewriteSeString(rentedStringBuilder.Builder, source.AsSpan());
         return rentedStringBuilder.Builder.ToReadOnlySeString();
@@ -90,6 +89,8 @@ public static class EmoteLogMessageFormatter {
     }
 
     private static void RewriteExpression(SeStringBuilder builder, ReadOnlySeExpressionSpan source) {
+        // Only global parameter references change. Every containing expression is recursively rebuilt so nested
+        // conditionals, noun macros, strings, and comparisons retain the original language-specific grammar.
         if (source.TryGetParameterExpression(out var type, out var operand)) {
             var expressionType = (ExpressionType)type;
             if (expressionType is ExpressionType.GlobalNumber) expressionType = ExpressionType.LocalNumber;
