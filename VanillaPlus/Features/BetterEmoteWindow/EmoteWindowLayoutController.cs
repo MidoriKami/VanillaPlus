@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Game.Addon.Lifecycle;
+using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
-using KamiToolKit.Extensions;
 using VanillaPlus.Extensions;
 
 namespace VanillaPlus.Features.BetterEmoteWindow;
@@ -17,8 +18,11 @@ public class EmoteWindowLayoutController : IAsyncDisposable {
     private float hiddenCategoryDescriptionHeight;
     private bool categoryDescriptionWasVisible;
     private nint layoutAddonAddress;
+    private short nativeMainListRows;
 
     public async Task EnableAsync() {
+        IAddonLifecycle.Get().RegisterListener(AddonEvent.PreSetup, "Emote", OnEmotePreSetup);
+
         unsafe {
             emoteController = new AddonController {
                 AddonName = "Emote",
@@ -31,13 +35,21 @@ public class EmoteWindowLayoutController : IAsyncDisposable {
     }
 
     public async ValueTask DisposeAsync() {
+        IAddonLifecycle.Get().UnregisterListener(OnEmotePreSetup);
         await emoteController.DisposeAsyncSafe();
         emoteController = null;
         ClearLayoutSnapshot();
     }
 
+    private unsafe void OnEmotePreSetup(AddonEvent type, AddonArgs args) {
+        var list = ((AtkUnitBase*)args.Addon.Address)->GetComponentListById(4);
+        nativeMainListRows = list->NumVisibleRows;
+        list->SetVisibleRowCount((short)(nativeMainListRows + 3));
+    }
+
     private unsafe void ApplyLayout(AtkUnitBase* addon) {
         RestoreAppliedLayout(addon);
+        ApplyMainListRowCount(addon, true);
 
         var descriptionNode = CaptureLayoutSnapshot(addon);
         if (descriptionNode is null) return;
@@ -47,10 +59,24 @@ public class EmoteWindowLayoutController : IAsyncDisposable {
 
         foreach (var nodeId in new[] { 4u, 16u, 21u, 41u }) MoveCategoryNode(addon, nodeId);
         ResizeMainList(addon);
-        addon->Size = addon->Size;
+        addon->UpdateCollisionNodeList(false);
     }
 
-    private unsafe void FinalizeEmote(AtkUnitBase* addon) => RestoreAppliedLayout(addon);
+    private unsafe void FinalizeEmote(AtkUnitBase* addon) {
+        RestoreAppliedLayout(addon);
+        ApplyMainListRowCount(addon, false);
+        nativeMainListRows = 0;
+    }
+
+    private unsafe void ApplyMainListRowCount(AtkUnitBase* addon, bool expanded) {
+        if (nativeMainListRows <= 0) return;
+
+        var rowCount = nativeMainListRows;
+        if (expanded) rowCount += 3;
+
+        var list = addon->GetComponentListById(4);
+        if (list->NumVisibleRows != rowCount) list->SetVisibleRowCount(rowCount);
+    }
 
     private unsafe void MoveCategoryNode(AtkUnitBase* addon, uint nodeId) {
         var node = addon->GetNodeById(nodeId);
@@ -66,6 +92,10 @@ public class EmoteWindowLayoutController : IAsyncDisposable {
 
         var list = addon->GetComponentListById(4);
         if (list is null) return;
+
+        if (list->CollisionNode is not null && layout.CollisionSize != Vector2.Zero) {
+            ((AtkResNode*)list->CollisionNode)->Size = layout.CollisionSize + new Vector2(0.0f, hiddenCategoryDescriptionHeight);
+        }
 
         var targetListHeight = (ushort)Math.Max(0, (int)Math.Round(layout.ListHeight + hiddenCategoryDescriptionHeight));
         list->SetSize((ushort)Math.Max(0, (int)layout.ListWidth), targetListHeight);
@@ -86,9 +116,11 @@ public class EmoteWindowLayoutController : IAsyncDisposable {
 
         var list = addon->GetComponentListById(4);
         if (list is not null) {
+            var collisionNode = (AtkResNode*)list->CollisionNode;
             originalMainListLayout = new EmoteListLayoutState(
                 list->ListWidth,
-                list->ListHeight);
+                list->ListHeight,
+                collisionNode is null ? Vector2.Zero : collisionNode->Size);
         }
 
         categoryDescriptionWasVisible = descriptionNode->IsVisible();
@@ -106,6 +138,11 @@ public class EmoteWindowLayoutController : IAsyncDisposable {
 
         var list = addon->GetComponentListById(4);
         if (list is not null && originalMainListLayout is { } listLayout) {
+            var collisionNode = (AtkResNode*)list->CollisionNode;
+            if (collisionNode is not null && listLayout.CollisionSize != Vector2.Zero) {
+                collisionNode->Size = listLayout.CollisionSize;
+            }
+
             list->SetSize(
                 (ushort)Math.Max(0, (int)listLayout.ListWidth),
                 (ushort)Math.Max(0, (int)listLayout.ListHeight));
@@ -122,7 +159,7 @@ public class EmoteWindowLayoutController : IAsyncDisposable {
 
         var descriptionNode = addon->GetNodeById(11);
         if (descriptionNode is not null) descriptionNode->ToggleVisibility(categoryDescriptionWasVisible);
-        addon->Size = addon->Size;
+        addon->UpdateCollisionNodeList(false);
         ClearLayoutSnapshot();
     }
 

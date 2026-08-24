@@ -37,9 +37,10 @@ public class EmoteTooltipController : IAsyncDisposable {
 
             case AtkEventType.ListItemRollOver:
                 var listItemData = ((AtkEventData*)receiveEventArgs.AtkEventData)->ListItemData;
-                var emoteName = listItemData.ListItem->StringValues[0].ToString();
+                var addon = args.GetAddon<AtkUnitBase>();
+                var emoteName = GetRendererText(listItemData.ListItemRenderer);
                 var emoteRowId = ResolveEmoteRowId(emoteName);
-                ShowEmoteTooltip(args.GetAddon<AtkUnitBase>(), listItemData.ListItemRenderer, emoteRowId);
+                ShowEmoteTooltip(addon, listItemData.ListItemRenderer, emoteRowId);
                 return;
         }
     }
@@ -113,6 +114,33 @@ public class EmoteTooltipController : IAsyncDisposable {
     }
 
     private unsafe void OnEmoteFinalize(AddonEvent type, AddonArgs args) => HideEmoteTooltip();
+
+    private static unsafe string GetRendererText(AtkComponentListItemRenderer* renderer) {
+        if (renderer->ButtonTextNode is not null) {
+            var buttonText = renderer->ButtonTextNode->GetText().ToString();
+            if (!string.IsNullOrEmpty(buttonText)) return buttonText;
+        }
+
+        if (renderer->RowTemplateNodeList is not null) {
+            for (var index = 0; index < renderer->RowTemplateNodeCountByte; index++) {
+                var node = renderer->RowTemplateNodeList[index];
+                if (node is null || node->GetNodeType() is not NodeType.Text) continue;
+
+                var text = ((AtkTextNode*)node)->GetText().ToString();
+                if (!string.IsNullOrEmpty(text)) return text;
+            }
+        }
+
+        foreach (var nodePointer in renderer->UldManager.Nodes) {
+            var node = nodePointer.Value;
+            if (node is null || node->GetNodeType() is not NodeType.Text) continue;
+
+            var text = ((AtkTextNode*)node)->GetText().ToString();
+            if (!string.IsNullOrEmpty(text)) return text;
+        }
+
+        return string.Empty;
+    }
 
     private static uint ResolveEmoteRowId(string name) {
         if (string.IsNullOrEmpty(name)) return 0;
