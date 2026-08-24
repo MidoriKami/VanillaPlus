@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,8 +13,6 @@ using VanillaPlus.Extensions;
 namespace VanillaPlus.Features.BetterEmoteWindow;
 
 public class EmoteTooltipController : IAsyncDisposable {
-    private readonly Dictionary<uint, EmoteLogMessagePreview> emoteLogMessagePreviews = [];
-    private string? fallbackTargetText;
     private bool emoteTooltipActive;
     private ushort emoteTooltipAddonId;
 
@@ -28,9 +25,6 @@ public class EmoteTooltipController : IAsyncDisposable {
         IAddonLifecycle.Get().UnregisterListener(OnEmotePostReceiveEvent);
         IAddonLifecycle.Get().UnregisterListener(OnEmoteFinalize);
         await IFramework.Get().Run(HideEmoteTooltip);
-
-        emoteLogMessagePreviews.Clear();
-        fallbackTargetText = null;
     }
 
     private unsafe void OnEmotePostReceiveEvent(AddonEvent type, AddonArgs args) {
@@ -42,17 +36,10 @@ public class EmoteTooltipController : IAsyncDisposable {
                 return;
 
             case AtkEventType.ListItemRollOver:
-                if (receiveEventArgs.AtkEventData is 0) return;
-
-                var renderer = ((AtkEventData*)receiveEventArgs.AtkEventData)->ListItemData.ListItemRenderer;
-                if (renderer is null) {
-                    HideEmoteTooltip();
-                    return;
-                }
-
-                var emoteName = GetRendererText(renderer);
+                var listItemData = ((AtkEventData*)receiveEventArgs.AtkEventData)->ListItemData;
+                var emoteName = listItemData.ListItem->StringValues[0].ToString();
                 var emoteRowId = ResolveEmoteRowId(emoteName);
-                ShowEmoteTooltip(args.GetAddon<AtkUnitBase>(), renderer, emoteRowId);
+                ShowEmoteTooltip(args.GetAddon<AtkUnitBase>(), listItemData.ListItemRenderer, emoteRowId);
                 return;
         }
     }
@@ -72,8 +59,7 @@ public class EmoteTooltipController : IAsyncDisposable {
         var preview = GetEmoteLogMessagePreview(emoteRowId);
         var targetName = ITargetManager.Get().Target?.Name.ToString();
         if (string.IsNullOrEmpty(targetName)) {
-            fallbackTargetText ??= IDataManager.Get().GetExcelSheet<TextCommandParam>().GetRow(1001).Param.ToString();
-            targetName = fallbackTargetText;
+            targetName = IDataManager.Get().GetExcelSheet<TextCommandParam>().GetRow(1001).Param.ToString();
         }
 
         var untargeted = FormatEmoteLogMessage(preview.Untargeted, playerName, targetName);
@@ -83,11 +69,16 @@ public class EmoteTooltipController : IAsyncDisposable {
             return;
         }
 
-        var tooltip = string.IsNullOrEmpty(untargeted)
-            ? $"- {targeted}"
-            : string.IsNullOrEmpty(targeted) || targeted == untargeted
-                ? $"- {untargeted}"
-                : $"- {untargeted}\n- {targeted}";
+        string tooltip;
+        if (string.IsNullOrEmpty(untargeted)) {
+            tooltip = $"- {targeted}";
+        }
+        else if (string.IsNullOrEmpty(targeted) || targeted == untargeted) {
+            tooltip = $"- {untargeted}";
+        }
+        else {
+            tooltip = $"- {untargeted}\n- {targeted}";
+        }
 
         var tooltipText = Encoding.UTF8.GetBytes(tooltip);
         AtkStage.Instance()->TooltipManager.ShowTooltip(addon->Id, (AtkResNode*)renderer->OwnerNode, tooltipText);
@@ -96,17 +87,13 @@ public class EmoteTooltipController : IAsyncDisposable {
     }
 
     private EmoteLogMessagePreview GetEmoteLogMessagePreview(uint emoteRowId) {
-        if (emoteLogMessagePreviews.TryGetValue(emoteRowId, out var preview)) return preview;
-
         if (IDataManager.Get().GetExcelSheet<Emote>().GetRowOrDefault(emoteRowId) is not { } emote) {
             return default;
         }
 
-        preview = new EmoteLogMessagePreview(
+        return new EmoteLogMessagePreview(
             GetEmoteLogMessageTemplate(emote.LogMessageUntargeted),
             GetEmoteLogMessageTemplate(emote.LogMessageTargeted));
-        emoteLogMessagePreviews[emoteRowId] = preview;
-        return preview;
     }
 
     private static string GetEmoteLogMessageTemplate(RowRef<LogMessage> logMessage) {
@@ -130,33 +117,6 @@ public class EmoteTooltipController : IAsyncDisposable {
 
     private unsafe void OnEmoteFinalize(AddonEvent type, AddonArgs args) => HideEmoteTooltip();
 
-    private static unsafe string GetRendererText(AtkComponentListItemRenderer* renderer) {
-        if (renderer->ButtonTextNode is not null) {
-            var buttonText = renderer->ButtonTextNode->GetText().ToString();
-            if (!string.IsNullOrEmpty(buttonText)) return buttonText;
-        }
-
-        if (renderer->RowTemplateNodeList is not null) {
-            for (var index = 0; index < renderer->RowTemplateNodeCountByte; index++) {
-                var node = renderer->RowTemplateNodeList[index];
-                if (node is null || node->GetNodeType() is not NodeType.Text) continue;
-
-                var text = ((AtkTextNode*)node)->GetText().ToString();
-                if (!string.IsNullOrEmpty(text)) return text;
-            }
-        }
-
-        foreach (var nodePointer in renderer->UldManager.Nodes) {
-            var node = nodePointer.Value;
-            if (node is null || node->GetNodeType() is not NodeType.Text) continue;
-
-            var text = ((AtkTextNode*)node)->GetText().ToString();
-            if (!string.IsNullOrEmpty(text)) return text;
-        }
-
-        return string.Empty;
-    }
-
     private static uint ResolveEmoteRowId(string name) {
         if (string.IsNullOrEmpty(name)) return 0;
 
@@ -166,6 +126,4 @@ public class EmoteTooltipController : IAsyncDisposable {
             .Select(emote => emote.RowId)
             .FirstOrDefault();
     }
-
-    private readonly record struct EmoteLogMessagePreview(string Untargeted, string Targeted);
 }
