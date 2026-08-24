@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Plugin.Services;
+using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using Lumina.Excel;
 using Lumina.Excel.Sheets;
 using VanillaPlus.Extensions;
 
@@ -50,62 +50,59 @@ public class EmoteTooltipController : IAsyncDisposable {
             return;
         }
 
-        var playerName = IObjectTable.Get().LocalPlayer?.Name.ToString();
-        if (string.IsNullOrWhiteSpace(playerName)) {
+        var player = IObjectTable.Get().LocalPlayer;
+        if (player is null) {
             HideEmoteTooltip();
             return;
         }
 
-        var preview = GetEmoteLogMessagePreview(emoteRowId);
-        var targetName = ITargetManager.Get().Target?.Name.ToString();
+        var target = ITargetManager.Get().Target;
+        var targetName = target?.Name.ToString();
+        byte targetSex = 0;
+        if (target is ICharacter targetCharacter) targetSex = targetCharacter.CustomizeData.Sex;
+
         if (string.IsNullOrEmpty(targetName)) {
             targetName = IDataManager.Get().GetExcelSheet<TextCommandParam>().GetRow(1001).Param.ToString();
         }
 
-        var untargeted = FormatEmoteLogMessage(preview.Untargeted, playerName, targetName);
-        var targeted = FormatEmoteLogMessage(preview.Targeted, playerName, targetName);
-        if (string.IsNullOrEmpty(untargeted) && string.IsNullOrEmpty(targeted)) {
+        if (IDataManager.Get().GetExcelSheet<Emote>().GetRowOrDefault(emoteRowId) is not { } emote) {
             HideEmoteTooltip();
             return;
         }
 
-        string tooltip;
-        if (string.IsNullOrEmpty(untargeted)) {
-            tooltip = $"- {targeted}";
-        }
-        else if (string.IsNullOrEmpty(targeted) || targeted == untargeted) {
-            tooltip = $"- {untargeted}";
-        }
-        else {
-            tooltip = $"- {untargeted}\n- {targeted}";
+        var preview = EmoteLogMessageFormatter.Format(
+            emote,
+            player.Name.ToString(),
+            player.CustomizeData.Sex,
+            targetName,
+            targetSex);
+        if (preview.Untargeted.IsEmpty && preview.Targeted.IsEmpty) {
+            HideEmoteTooltip();
+            return;
         }
 
-        var tooltipText = Encoding.UTF8.GetBytes(tooltip);
-        AtkStage.Instance()->TooltipManager.ShowTooltip(addon->Id, (AtkResNode*)renderer->OwnerNode, tooltipText);
+        using var rentedStringBuilder = new RentedSeStringBuilder();
+        var stringBuilder = rentedStringBuilder.Builder;
+        if (preview.Untargeted.IsEmpty) {
+            stringBuilder.Append("- ").Append(preview.Targeted);
+        }
+        else if (preview.Targeted.IsEmpty || preview.Targeted == preview.Untargeted) {
+            stringBuilder.Append("- ").Append(preview.Untargeted);
+        }
+        else {
+            stringBuilder
+                .Append("- ").Append(preview.Untargeted)
+                .AppendNewLine()
+                .Append("- ").Append(preview.Targeted);
+        }
+
+        AtkStage.Instance()->TooltipManager.ShowTooltip(
+            addon->Id,
+            (AtkResNode*)renderer->OwnerNode,
+            stringBuilder.GetViewAsSpan());
         emoteTooltipAddonId = addon->Id;
         emoteTooltipActive = true;
     }
-
-    private EmoteLogMessagePreview GetEmoteLogMessagePreview(uint emoteRowId) {
-        if (IDataManager.Get().GetExcelSheet<Emote>().GetRowOrDefault(emoteRowId) is not { } emote) {
-            return default;
-        }
-
-        return new EmoteLogMessagePreview(
-            GetEmoteLogMessageTemplate(emote.LogMessageUntargeted),
-            GetEmoteLogMessageTemplate(emote.LogMessageTargeted));
-    }
-
-    private static string GetEmoteLogMessageTemplate(RowRef<LogMessage> logMessage) {
-        if (logMessage.RowId is 0 || !logMessage.IsValid) return string.Empty;
-
-        return logMessage.Value.Text.ToMacroString();
-    }
-
-    private static string FormatEmoteLogMessage(string template, string playerName, string targetName)
-        => template
-            .Replace("<if(gnum7,<sheet(ObjStr,gnum7,0)>,gstr2)>", playerName, StringComparison.Ordinal)
-            .Replace("<if(gnum8,<sheet(ObjStr,gnum8,0)>,gstr3)>", targetName, StringComparison.Ordinal);
 
     private unsafe void HideEmoteTooltip() {
         if (!emoteTooltipActive) return;
