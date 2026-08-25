@@ -1716,9 +1716,131 @@ ID：{0}</value>
       <value>在区域边界添加指示通往何处的标签。设计风格仿照《最终幻想XII》。</value>
   </data>
   <data name="ModificationDisplay_GameConfigCommand" xml:space="preserve">
-    <value>Game Config Command</value>
+    <value>游戏配置命令</value>
   </data>
   <data name="ModificationDescription_GameConfigCommand" xml:space="preserve">
-    <value>Adds the /gameconfig command for changing game configuration options.</value>
+    <value>添加 /gameconfig 命令，用于更改游戏配置选项。</value>
+  </data>
+  <data name="ActionHighlight_ClassJobSearchTitle" xml:space="preserve">
+    <value>职业搜索</value>
+  </data>
+  <data name="BiggerConfigWindows_ErrorHeightTooBig" xml:space="preserve">
+    <value>[BiggerConfigWindow] 无法调整配置窗口的大小，高度可能过大。</value>
+  </data>
+  <data name="CompatibilityModule_HaselTweaksActive" xml:space="preserve">
+    <value>该功能的原始版本已经在 HaselTweaks 插件中启用。
+
+ID：{0}</value>
+  </data>
+  <data name="CompatibilityModule_QuestAwayAetherytesActive" xml:space="preserve">
+    <value>不兼容 QuestAWAY 的"Aetherytes always in front"功能</value>
+  </data>
+  <data name="CurrencyOverlay_CurrencySearchTitle" xml:space="preserve">
+    <value>货币搜索</value>
+  </data>
+  <data name="CurrencyOverlay_LabelWarnBelowLimit" xml:space="preserve">
+    <value>低于限制时提醒</value>
+  </data>
+  <data name="CurrencyOverlay_LabelWarnAboveLimit" xml:space="preserve">
+    <value>高于限制时提醒</value>
+  </data>
+  <data name="CurrencyOverlay_LabelReverseIconPosition" xml:space="preserve">
+    <value>交换图标位置</value>
+  </data>
+  <data name="CurrencyOverlay_LabelReverseTextPosition" xml:space="preserve">
+    <value>交换文字位置</value>
+  </data>
+  <data name="CurrencyOverlay_LabelEnableMoving" xml:space="preserve">
+    <value>允许移动覆盖层元素</value>
+  </data>
+  <data name="CurrencyOverlay_LabelScale" xml:space="preserve">
+    <value>缩放</value>
+  </data>
+  <data name="CurrencyOverlay_LabelFadeIfNoWarnings" xml:space="preserve">
+    <value>没有提醒时淡化</value>
+  </data>
+  <data name="CurrencyWarning_LabelHideInDuties" xml:space="preserve">
+    <value>在副本中隐藏</value>
+  </data>
+  <data name="CurrencyWarning_CategoryBelowTargetWarning" xml:space="preserve">
+    <value>低于目标值时提醒</value>
+  </data>
+  <data name="CurrencyWarning_CategoryAboveTargetWarning" xml:space="preserve">
+    <value>高于目标值时提醒</value>
+  </data>
+  <data name="CurrencyWarning_LabelTooltipTextColor" xml:space="preserve">
+    <value>提示文本颜色</value>
+  </data>
+  <data name="DutyLootPreview_WarningPendingRemoval" xml:space="preserve">
+    <value>预计在7.56更新中移除</value>
+  </data>
+  <data name="Error_CriticalUnloadFailed" xml:space="preserve">
+    <value>严重错误：模块加载失败，且在卸载过程中再次报错。</value>
+  </data>
+  <data name="FateEntry_StatusPending" xml:space="preserve">
+    <value>等待中</value>
+  </data>
+  <data name="GameConfigCommand_CommandHelp" xml:space="preserve">
+    <value>用法：/gameconfig &lt;system|ui|control&gt; &lt;option&gt; &lt;value&gt;</value>
+  </data>
+  <data name="GameConfigCommand_ErrorInCombat" xml:space="preserve">
+    <value>在战斗中不能更改游戏设置。</value>
+  </data>
+  <data name="GameConfigCommand_ErrorInvalidCommand" xml:space="preserve">
+    <value>处理命令 {0} {1} 时失败，检查参数然后再试一次。
+用法: /gameconfig &lt;system|ui|control&gt; &lt;option&gt; &lt;value&gt;</value>
+  </data>
+  <data name="GameConfigCommand_ErrorNotSettable" xml:space="preserve">
+    <value>配置选项 {0} 不被允许设置。</value>
+  </data>
+  <data name="GameConfigCommand_ErrorOutOfRange" xml:space="preserve">
+    <value>{0} 的参数必须介于 {1} 和 {2} 之间。</value>
+  </data>
+  <data name="GameConfigCommand_UpdatedMessage" xml:space="preserve">
+    <value>已更新 {0}.{1}。</value>
+  </data>
+  <data name="GameConfigCommand_ErrorDecimalRequired" xml:space="preserve">
+    <value>{0} 需要一个小数。</value>
+  </data>
+  <data name="GameConfigCommand_ErrorOption" xml:space="preserve">
+    <value>处理命令 {0} 时失败，检查参数然后再试一次。</value>
+  </data>
+  <data name="GearsetRedirect_LabelSwitchToGearset" xml:space="preserve">
+    <value>切换到套装</value>
+  </data>
+  <data name="GearsetRedirect_ButtonSelectGearset" xml:space="preserve">
+    <value>选择目标套装</value>
+  </data>
+  <data name="GearsetRedirect_LabelWhenInZone" xml:space="preserve">
+    <value>在区域内时</value>
+  </data>
+  <data name="GearsetRedirect_ButtonSelectZone" xml:space="preserve">
+    <value>选择目标区域</value>
+  </data>
+  <data name="GearsetRedirect_InvalidGearsetTarget" xml:space="preserve">
+    <value>无效的套装目标</value>
+  </data>
+  <data name="GearsetRedirect_WhenInZoneFormat" xml:space="preserve">
+    <value>当在 {0} {1} 中</value>
+  </data>
+  <data name="HideMpBars_ConfigTitle" xml:space="preserve">
+    <value>隐藏MP条配置</value>
+  </data>
+  <data name="HideMpBars_LabelHidePartyList" xml:space="preserve">
+    <value>在小队列表隐藏</value>
+  </data>
+  <data name="HideMpBars_LabelHideParameterWidget" xml:space="preserve">
+    <value>在参数小部件中隐藏</value>
+  </data>
+  <data name="ModificationDisplay_RightClickMapNav" xml:space="preserve">
+    <value>右键地图导航</value>
+  </data>
+  <data name="ModificationDescription_RightClickMapNav" xml:space="preserve">
+    <value>允许通过在地图上点击鼠标右键向上导航一层。
+
+向上导航时，必须在点击鼠标右键的同时按住 Shift 键。</value>
+  </data>
+  <data name="DutyLootPreview_SourceDungeonChest" xml:space="preserve">
+    <value>副本宝箱</value>
   </data>
 </root>

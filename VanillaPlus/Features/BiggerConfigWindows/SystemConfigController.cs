@@ -33,7 +33,7 @@ public class SystemConfigController : IAsyncDisposable {
 
     private unsafe void SetupConfigSystem(AtkUnitBase* addon) {
         if (AtkStage.Instance()->ScreenSize.Height < addon->Size.Y + Config.SystemConfigAdditionalHeight) {
-            IChatGui.Get().PrintError("[BiggerConfigWindow] Unable to resize config window, height would be too big.", "VanillaPlus");
+            IChatGui.Get().PrintError(Strings.BiggerConfigWindows_ErrorHeightTooBig, "VanillaPlus");
             IPluginLog.Get().Warning("Unable to resize config window, height would be too big.", "BiggerConfigWindow");
             return;
         }

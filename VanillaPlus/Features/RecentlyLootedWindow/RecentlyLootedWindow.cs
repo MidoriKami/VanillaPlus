@@ -35,7 +35,7 @@ public class RecentlyLootedWindow : GameModification {
 
         keybindConfigAddon = new AddonConfigAddon {
             InternalName = "KeybindConfig",
-            Title = "Fate List Window Keybind",
+            Title = Strings.AddonConfig_KeybindWindowTitle,
             AddonConfig = recentlyLootedAddonSettings,
             OnConfigChanged = OnAddonConfigChanged,
         };
@@ -49,7 +49,7 @@ public class RecentlyLootedWindow : GameModification {
         OpenConfigAction = keybindConfigAddon.Toggle;
 
         ICommandManager.Get().AddHandler("/recentloot", new CommandInfo(OnFateListCommand) {
-            HelpMessage = "Opens Recently Looted Items window",
+            HelpMessage = Strings.NodeList_OpenCommandHelp.Format(Strings.RecentlyLootedWindow_Title),
         });
         IFramework.Get().Update += OnFrameworkUpdate;
     }

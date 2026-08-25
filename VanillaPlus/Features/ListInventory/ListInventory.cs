@@ -35,7 +35,7 @@ public class ListInventory : GameModification {
 
         keybindConfigAddon = new AddonConfigAddon {
             InternalName = "KeybindConfig",
-            Title = "List Inventory Window Keybind",
+            Title = Strings.AddonConfig_KeybindWindowTitle,
             AddonConfig = inventoryListAddonSettings,
             OnConfigChanged = OnAddonConfigChanged,
         };
@@ -49,7 +49,7 @@ public class ListInventory : GameModification {
         OpenConfigAction = keybindConfigAddon.Toggle;
 
         ICommandManager.Get().AddHandler("/listinventory", new CommandInfo(OnListInventoryCommand) {
-            HelpMessage = "Opens Inventory List Window",
+            HelpMessage = Strings.NodeList_OpenCommandHelp.Format(Strings.ListInventory_Title),
         });
         IFramework.Get().Update += OnFrameworkUpdate;
     }

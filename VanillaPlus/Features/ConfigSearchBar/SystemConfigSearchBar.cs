@@ -68,6 +68,8 @@ public class SystemConfigSearchBar : GameModification {
     private unsafe void SetupConfigSystem(AtkUnitBase* addon) {
         if (config is null) return;
 
+        addon->GetTextNodeById(3)->AtkResNode.Position -= new Vector2(0.0f, 28.0f);
+
         systemConfigTabs = [
             new TabEntry(addon, 7, 16, config),
             new TabEntry(addon, 8, 88, config),
@@ -95,7 +97,9 @@ public class SystemConfigSearchBar : GameModification {
         systemConfigInput.AttachNode(addon);
     }
 
-    private unsafe void FinalizeConfigSystem(AtkUnitBase* _) {
+    private unsafe void FinalizeConfigSystem(AtkUnitBase* addon) {
+        addon->GetTextNodeById(3)->AtkResNode.Position += new Vector2(0.0f, 28.0f);
+
         foreach (var entry in systemConfigTabs ?? []) {
             entry.Dispose();
         }
