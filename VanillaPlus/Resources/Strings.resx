@@ -1855,4 +1855,10 @@ Must hold shift while right clicking to nav up.</value>
   <data name="ModificationDescription_BetterEmoteWindow" xml:space="preserve">
     <value>Improves the Emote window layout and previews targeted and untargeted emote text.</value>
   </data>
+  <data name="ModificationDisplay_ChatInputSoftWrap" xml:space="preserve">
+    <value>Chat Input Soft-Wrap</value>
+  </data>
+  <data name="ModificationDescription_ChatInputSoftWrap" xml:space="preserve">
+    <value>Applies a soft-wrap to the chat input. The input box grows as the text wraps, and the chat log adjusts to fit around it.</value>
+  </data>
 </root>

@@ -5192,5 +5192,22 @@ namespace Resources {
                 return ResourceManager.GetString("WondrousTailsProbabilities_ShuffleAverageLabel", resourceCulture);
             }
         }
+        /// <summary>
+        ///   Looks up a localized string similar to Chat Input Soft-Wrap.
+        /// </summary>
+        internal static string ModificationDisplay_ChatInputSoftWrap {
+            get {
+                return ResourceManager.GetString("ModificationDisplay_ChatInputSoftWrap", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Applies a soft-wrap to the chat input. The input box grows as the text wraps, and the chat log adjusts to fit around it..
+        /// </summary>
+        internal static string ModificationDescription_ChatInputSoftWrap {
+            get {
+                return ResourceManager.GetString("ModificationDescription_ChatInputSoftWrap", resourceCulture);
+            }
+        }
     }
 }
