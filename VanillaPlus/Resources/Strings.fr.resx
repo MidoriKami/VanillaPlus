@@ -1721,4 +1721,126 @@ Pour participer aux festivités, rendez-vous dans la section « Saison » de Van
   <data name="ModificationDescription_GameConfigCommand" xml:space="preserve">
     <value>Ajoute la commande /gameconfig permettant de modifier les options de configuration du jeu.</value>
   </data>
+  <data name="ActionHighlight_ClassJobSearchTitle" xml:space="preserve">
+    <value>Class Job Search</value>
+  </data>
+  <data name="BiggerConfigWindows_ErrorHeightTooBig" xml:space="preserve">
+    <value>[BiggerConfigWindow] Unable to resize config window, height would be too big.</value>
+  </data>
+  <data name="CompatibilityModule_HaselTweaksActive" xml:space="preserve">
+    <value>The original version of this feature is already active in HaselTweaks Plugin.
+
+ID: {0}</value>
+  </data>
+  <data name="CompatibilityModule_QuestAwayAetherytesActive" xml:space="preserve">
+    <value>Not compatible with QuestAWAY's 'Aetherytes always in front' feature</value>
+  </data>
+  <data name="CurrencyOverlay_CurrencySearchTitle" xml:space="preserve">
+    <value>Currency Search</value>
+  </data>
+  <data name="CurrencyOverlay_LabelWarnBelowLimit" xml:space="preserve">
+    <value>Warn when below limit</value>
+  </data>
+  <data name="CurrencyOverlay_LabelWarnAboveLimit" xml:space="preserve">
+    <value>Warn when above limit</value>
+  </data>
+  <data name="CurrencyOverlay_LabelReverseIconPosition" xml:space="preserve">
+    <value>Reverse icon position</value>
+  </data>
+  <data name="CurrencyOverlay_LabelReverseTextPosition" xml:space="preserve">
+    <value>Reverse text position</value>
+  </data>
+  <data name="CurrencyOverlay_LabelEnableMoving" xml:space="preserve">
+    <value>Enable moving overlay element</value>
+  </data>
+  <data name="CurrencyOverlay_LabelScale" xml:space="preserve">
+    <value>Scale</value>
+  </data>
+  <data name="CurrencyOverlay_LabelFadeIfNoWarnings" xml:space="preserve">
+    <value>Fade if no warnings</value>
+  </data>
+  <data name="CurrencyWarning_LabelHideInDuties" xml:space="preserve">
+    <value>Hide in Duties</value>
+  </data>
+  <data name="CurrencyWarning_CategoryBelowTargetWarning" xml:space="preserve">
+    <value>Below Target Value Warning</value>
+  </data>
+  <data name="CurrencyWarning_CategoryAboveTargetWarning" xml:space="preserve">
+    <value>Above Target Value Warning</value>
+  </data>
+  <data name="CurrencyWarning_LabelTooltipTextColor" xml:space="preserve">
+    <value>Tooltip Text Color</value>
+  </data>
+  <data name="DutyLootPreview_WarningPendingRemoval" xml:space="preserve">
+    <value>Pending Removal in Patch 7.56</value>
+  </data>
+  <data name="Error_CriticalUnloadFailed" xml:space="preserve">
+    <value>Critical Error: Module failed to load, and errored again while unloading.</value>
+  </data>
+  <data name="FateEntry_StatusPending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="GameConfigCommand_CommandHelp" xml:space="preserve">
+    <value>Usage: /gameconfig &lt;system|ui|control&gt; &lt;option&gt; &lt;value&gt;</value>
+  </data>
+  <data name="GameConfigCommand_ErrorInCombat" xml:space="preserve">
+    <value>Game configuration cannot be changed while in combat.</value>
+  </data>
+  <data name="GameConfigCommand_ErrorInvalidCommand" xml:space="preserve">
+    <value>Error processing command for {0} {1}, check the arguments and try again.
+Usage: /gameconfig &lt;system|ui|control&gt; &lt;option&gt; &lt;value&gt;</value>
+  </data>
+  <data name="GameConfigCommand_ErrorNotSettable" xml:space="preserve">
+    <value>Config option {0} is not allowed to be set.</value>
+  </data>
+  <data name="GameConfigCommand_ErrorOutOfRange" xml:space="preserve">
+    <value>Argument for {0} must be between {1} and {2}.</value>
+  </data>
+  <data name="GameConfigCommand_UpdatedMessage" xml:space="preserve">
+    <value>Updated {0}.{1}.</value>
+  </data>
+  <data name="GameConfigCommand_ErrorDecimalRequired" xml:space="preserve">
+    <value>{0} requires a decimal value.</value>
+  </data>
+  <data name="GameConfigCommand_ErrorOption" xml:space="preserve">
+    <value>Error processing command for {0}, check the arguments and try again.</value>
+  </data>
+  <data name="GearsetRedirect_LabelSwitchToGearset" xml:space="preserve">
+    <value>Switch to Gearset</value>
+  </data>
+  <data name="GearsetRedirect_ButtonSelectGearset" xml:space="preserve">
+    <value>Select target Gearset</value>
+  </data>
+  <data name="GearsetRedirect_LabelWhenInZone" xml:space="preserve">
+    <value>When in Zone</value>
+  </data>
+  <data name="GearsetRedirect_ButtonSelectZone" xml:space="preserve">
+    <value>Select target Zone</value>
+  </data>
+  <data name="GearsetRedirect_InvalidGearsetTarget" xml:space="preserve">
+    <value>Invalid Gearset Target</value>
+  </data>
+  <data name="GearsetRedirect_WhenInZoneFormat" xml:space="preserve">
+    <value>When in {0} {1}</value>
+  </data>
+  <data name="HideMpBars_ConfigTitle" xml:space="preserve">
+    <value>Hide MP Bars Config</value>
+  </data>
+  <data name="HideMpBars_LabelHidePartyList" xml:space="preserve">
+    <value>Hide in Party List</value>
+  </data>
+  <data name="HideMpBars_LabelHideParameterWidget" xml:space="preserve">
+    <value>Hide in Parameter Widget</value>
+  </data>
+  <data name="ModificationDisplay_RightClickMapNav" xml:space="preserve">
+    <value>Right-Click Map Nav</value>
+  </data>
+  <data name="ModificationDescription_RightClickMapNav" xml:space="preserve">
+    <value>Allows you to navigate 'up' a layer by right clicking on the map.
+
+Must hold shift while right clicking to nav up.</value>
+  </data>
+  <data name="DutyLootPreview_SourceDungeonChest" xml:space="preserve">
+    <value>Dungeon Chest</value>
+  </data>
 </root>
