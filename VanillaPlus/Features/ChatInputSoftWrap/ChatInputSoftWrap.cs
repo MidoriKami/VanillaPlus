@@ -25,28 +25,25 @@ public class ChatInputSoftWrap : GameModification {
 
     private const uint BackgroundNodeId = 17;
     private const uint ImeCandidateNodeId = 4;
-    private const uint MaxLine = 10;
+    private const uint MaxLine = 20;
 
     private AddonController<AddonChatLog>? chatLogController;
     private List<ChatLogPanelResizer>? panelResizers;
+
+    private int currentDelta;
+    private float lastTextWidth;
+
+    private float textHeightGap;
+    private float channelTextGap;
+    private bool gapsKnown;
 
     private TextInputFlags2 savedFlags2;
     private TextFlags savedTextFlags;
     private uint savedMaxLine;
 
-    private float baseInputY;
-    private Vector2 baseInputSize;
-    private float baseTextHeight;
-    private float baseBackgroundHeight;
-    private float baseCollisionHeight;
-    private float baseChannelTextY;
-    private bool captured;
-
     private float baseCandidateX;
     private float baseCandidateY;
     private bool candidateMoved;
-
-    private int appliedDelta;
 
     public override async Task OnEnableAsync() {
         panelResizers = [];
@@ -62,6 +59,7 @@ public class ChatInputSoftWrap : GameModification {
                 AddonName = "ChatLog",
                 OnSetup = SetupChatLog,
                 OnPreUpdate = UpdateChatLog,
+                OnDraw = ReapplyInputDelta,
                 OnFinalize = ResetChatLog,
             };
         }
@@ -81,7 +79,6 @@ public class ChatInputSoftWrap : GameModification {
         }
 
         panelResizers = null;
-        appliedDelta = 0;
     }
 
     private unsafe void SetupChatLog(AddonChatLog* addon) {
@@ -95,8 +92,6 @@ public class ChatInputSoftWrap : GameModification {
         savedTextFlags = textNode->TextFlags;
         savedMaxLine = textInput->ComponentTextData.MaxLine;
 
-        CaptureStockGeometry(addon);
-
         // WordWrap alone wraps the display. MultiLine on the component would also let the user type
         // newlines, which chat cannot send, so it is left off.
         textInput->ComponentTextData.Flags2 = savedFlags2 | TextInputFlags2.WordWrap;
@@ -105,35 +100,46 @@ public class ChatInputSoftWrap : GameModification {
     }
 
     private unsafe void UpdateChatLog(AddonChatLog* addon) {
-        if (!captured) return;
-
         var textInput = addon->TextInput;
         if (textInput is null) return;
 
         var textNode = ((AtkComponentInputBase*)textInput)->AtkTextNode;
-        var inputNode = (AtkResNode*)((AtkComponentBase*)textInput)->OwnerNode;
-        if (textNode is null || inputNode is null) return;
+        if (textNode is null) return;
 
-        // A height that was not written here means the game laid the chat window out again, so
-        // what it left behind is the new stock geometry.
-        if (Math.Abs(inputNode->Size.Y - (baseInputSize.Y + appliedDelta)) > float.Epsilon) {
-            CaptureStockGeometry(addon);
+        // The game re-wraps the log text when the window is resized but not the input text, so the
+        // line count would be measured from a wrap that belongs to the old width.
+        var textWidth = ((AtkResNode*)textNode)->Size.X;
+        if (Math.Abs(textWidth - lastTextWidth) > 0.5f) {
+            lastTextWidth = textWidth;
+            textNode->ApplyTextFlow();
         }
 
-        var delta = MeasureExtraHeight(textNode);
+        // Never taller than the room above it, so a narrow window cannot push the box past the top
+        // of the chat window.
+        var stockTop = ((AtkResNode*)addon->TabBarStartImageNode)->Y - ((AtkResNode*)((AtkComponentBase*)textInput)->OwnerNode)->Size.Y;
+        var delta = Math.Min(MeasureExtraHeight(textNode), (int)Math.Max(0.0f, stockTop));
 
         // Written every frame rather than on change: the game rewrites parts of this layout on its
-        // own, and only the nodes it touches would be corrected otherwise, leaving the component
-        // and its collision node disagreeing about where the input box ends.
+        // own, and only the nodes it touches would be corrected otherwise.
+        currentDelta = delta;
+
         ApplyInputDelta(addon, delta);
-        ApplyPanelDelta(delta);
+        ApplyPanelDelta(addon, delta);
 
         UpdateCandidateWindow(textInput);
     }
 
+    /// <summary>
+    /// The game re-runs its own layout after the chat window has been resized, which lands after
+    /// the update pass and stretches the box back over the log. Writing it again before the frame
+    /// is drawn is what makes the box keep the height it was given.
+    /// </summary>
+    private unsafe void ReapplyInputDelta(AddonChatLog* addon)
+        => ApplyInputDelta(addon, currentDelta);
+
     private unsafe void ResetChatLog(AddonChatLog* addon) {
         ApplyInputDelta(addon, 0);
-        captured = false;
+        gapsKnown = false;
 
         var textInput = addon->TextInput;
         if (textInput is null) return;
@@ -156,32 +162,6 @@ public class ChatInputSoftWrap : GameModification {
         }
     }
 
-    private unsafe void CaptureStockGeometry(AddonChatLog* addon) {
-        var textInput = addon->TextInput;
-        if (textInput is null) return;
-
-        var inputNode = (AtkResNode*)((AtkComponentBase*)textInput)->OwnerNode;
-        var textNode = (AtkResNode*)((AtkComponentInputBase*)textInput)->AtkTextNode;
-        if (inputNode is null || textNode is null) return;
-
-        appliedDelta = 0;
-
-        baseInputY = inputNode->Y;
-        baseInputSize = inputNode->Size;
-        baseTextHeight = textNode->Size.Y;
-
-        var background = ((AtkComponentBase*)textInput)->GetNodeById(BackgroundNodeId);
-        baseBackgroundHeight = background is null ? 0.0f : background->Size.Y;
-
-        var collision = (AtkResNode*)((AtkComponentInputBase*)textInput)->CollisionNode;
-        baseCollisionHeight = collision is null ? 0.0f : collision->Size.Y;
-
-        var channelText = (AtkResNode*)addon->CurrentChannelTextNode;
-        baseChannelTextY = channelText is null ? 0.0f : channelText->Y;
-
-        captured = true;
-    }
-
     /// <summary>
     /// Extra height the wrapped text needs beyond the original single line. The measurement follows
     /// from the node width only, so growing the node does not feed back into it.
@@ -196,45 +176,78 @@ public class ChatInputSoftWrap : GameModification {
         return (lines - 1) * spacing;
     }
 
+    /// <summary>
+    /// Moves the input component up by the wrapped line count and grows what is drawn in it, while
+    /// leaving the component's own height alone.
+    ///
+    /// The window height the game works out is background + input height + tab row, and it works it
+    /// out again whenever the window is resized. A taller component there is added to the window,
+    /// which pushes the tab row and the dropdown down with it. Keeping the height it expects while
+    /// moving the component is what makes the box grow without the rest of the window following.
+    ///
+    /// The component is what moves, not what is inside it: the game places the caret and works out
+    /// what a click landed on from a fixed origin in the component, so what is drawn has to keep
+    /// the position it has within it.
+    /// </summary>
     private unsafe void ApplyInputDelta(AddonChatLog* addon, int delta) {
-        if (!captured) return;
-
         var textInput = addon->TextInput;
         if (textInput is null) return;
 
-        var inputNode = (AtkResNode*)((AtkComponentBase*)textInput)->OwnerNode;
+        var component = (AtkComponentBase*)textInput;
+        var componentNode = (AtkResNode*)component->OwnerNode;
         var textNode = (AtkResNode*)((AtkComponentInputBase*)textInput)->AtkTextNode;
-        if (inputNode is null || textNode is null) return;
+        var background = component->GetNodeById(BackgroundNodeId);
+        var tabRow = (AtkResNode*)addon->TabBarStartImageNode;
+        var channelText = (AtkResNode*)addon->CurrentChannelTextNode;
 
-        appliedDelta = delta;
+        if (componentNode is null || textNode is null || background is null || tabRow is null) return;
 
-        // Grows upward: the tab row sits directly below the input box.
-        inputNode->Position = new Vector2(inputNode->X, baseInputY - delta);
-        inputNode->Size = baseInputSize + new Vector2(0.0f, delta);
-        textNode->Size = new Vector2(textNode->Size.X, baseTextHeight + delta);
+        // The box sits on the tab row, and its height is never written here, so where it belongs
+        // follows from the two of them without anything being remembered.
+        var stockHeight = componentNode->Size.Y;
+        var stockTop = tabRow->Y - stockHeight;
 
-        var background = ((AtkComponentBase*)textInput)->GetNodeById(BackgroundNodeId);
-        if (background is not null) {
-            background->Size = new Vector2(background->Size.X, baseBackgroundHeight + delta);
+        componentNode->Position = new Vector2(componentNode->X, stockTop - delta);
+
+        // The background covers the box exactly, in every state the game leaves it in, so it needs
+        // nothing measured.
+        background->Size = new Vector2(background->Size.X, stockHeight + delta);
+
+        // How much shorter the text is than the box, read while the box is not grown. A text node
+        // taller than the box it sits in is one this grew on an earlier frame and has not put back
+        // yet, and measuring that would bake the growth in permanently.
+        if (delta is 0 && textNode->Size.Y <= stockHeight) {
+            textHeightGap = stockHeight - textNode->Size.Y;
+            channelTextGap = channelText is null ? 0.0f : stockTop - channelText->Y;
+            gapsKnown = true;
         }
 
-        var collision = (AtkResNode*)((AtkComponentInputBase*)textInput)->CollisionNode;
-        if (collision is not null) {
-            collision->Size = new Vector2(collision->Size.X, baseCollisionHeight + delta);
-        }
+        if (!gapsKnown) return;
+
+        // No collision node of its own: the text node is what the game hits, so it must not be
+        // grown twice.
+        textNode->Size = new Vector2(textNode->Size.X, stockHeight - textHeightGap + delta);
 
         // The channel name sits at the old top edge and would end up inside the grown box.
-        var channelText = (AtkResNode*)addon->CurrentChannelTextNode;
         if (channelText is not null) {
-            channelText->Position = new Vector2(channelText->X, baseChannelTextY - delta);
+            channelText->Position = new Vector2(channelText->X, stockTop - delta - channelTextGap);
         }
     }
 
-    private void ApplyPanelDelta(int delta) {
+    private unsafe void ApplyPanelDelta(AddonChatLog* addon, int delta) {
         if (panelResizers is null) return;
 
+        var textInput = addon->TextInput;
+        var tabRow = (AtkResNode*)addon->TabBarStartImageNode;
+        if (textInput is null || tabRow is null) return;
+
+        var componentNode = (AtkResNode*)((AtkComponentBase*)textInput)->OwnerNode;
+        if (componentNode is null) return;
+
+        var stockTop = tabRow->Y - componentNode->Size.Y;
+
         foreach (var resizer in panelResizers) {
-            resizer.Apply(delta);
+            resizer.Apply(stockTop, delta);
         }
     }
 

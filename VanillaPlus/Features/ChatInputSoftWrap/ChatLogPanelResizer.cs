@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Numerics;
 using System.Threading.Tasks;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
@@ -16,9 +15,8 @@ public class ChatLogPanelResizer : IAsyncDisposable {
     private readonly string addonName;
     private readonly AddonController<AddonChatLogPanel> addonController;
 
-    private Vector2 baseSize;
+    private float inputTopOffset;
     private bool captured;
-    private int appliedDelta;
 
     public unsafe ChatLogPanelResizer(string addonName) {
         this.addonName = addonName;
@@ -36,7 +34,16 @@ public class ChatLogPanelResizer : IAsyncDisposable {
     public async ValueTask DisposeAsync()
         => await addonController.DisposeAsyncSafe();
 
-    public unsafe void Apply(int delta) {
+    /// <summary>
+    /// Ends the panel where the input box begins, so the window height the game works out - log
+    /// plus input plus tab row - stays where it was.
+    ///
+    /// How far the panel reaches past the top of an untouched box is a constant of the layout: it
+    /// measured the same across window sizes twice as tall and half as wide. Reading it once is
+    /// enough, and the rest follows from where the game puts the box, so nothing has to be tracked
+    /// from frame to frame.
+    /// </summary>
+    public unsafe void Apply(float stockInputTop, int delta) {
         var panel = IGameGui.Get().GetAddonByName<AddonChatLogPanel>(addonName);
         if (panel is null || panel->AtkUnitBase.RootNode is null) return;
 
@@ -48,49 +55,42 @@ public class ChatLogPanelResizer : IAsyncDisposable {
             return;
         }
 
-        // A size that was not written here means the game resized the panel, so what it left behind
-        // is the new stock size.
-        var currentSize = panel->AtkUnitBase.RootSize;
-        if (!captured || Math.Abs(currentSize.Y - (baseSize.Y - appliedDelta)) > float.Epsilon) {
-            baseSize = currentSize;
-            appliedDelta = 0;
+        var size = panel->AtkUnitBase.RootSize;
+
+        if (!captured) {
+            if (delta is not 0) return;
+
+            inputTopOffset = size.Y - stockInputTop;
             captured = true;
         }
 
-        var height = (ushort)Math.Max(1.0f, baseSize.Y - delta);
-        appliedDelta = delta;
+        // Only shortened as far as it can still show a line of log. Past that the box grows over
+        // the log instead, which is the only thing left to give in a chat window this short.
+        var chatText = panel->LogViewer.ChatText;
+        var minHeight = inputTopOffset + (chatText is null ? 0.0f : chatText->LineSpacing);
 
-        if (panel->AtkUnitBase.RootNode->Height == height) return;
+        var height = (ushort)Math.Max(minHeight, stockInputTop + inputTopOffset - delta);
 
-        // SetSize rather than the Resize extension: the panel has no window node, and the panel
-        // lays out its own text area, scroll bar and background from this.
-        panel->AtkUnitBase.SetSize((ushort)baseSize.X, height);
-        InvalidateDisplayableLineCount(panel);
+        if (panel->AtkUnitBase.RootNode->Height != height) {
+            // SetSize rather than the Resize extension: the panel has no window node, and the panel
+            // lays out its own text area, scroll bar and background from this. The width is passed
+            // through as it is, the game owns that.
+            //
+            // The displayable line count it caches is deliberately left alone. The panel rebuilds its
+            // scroll bar when that count stops matching what the text area gives, so writing the
+            // count this is about to arrive at is what would leave the thumb behind.
+            panel->AtkUnitBase.SetSize((ushort)size.X, height);
+        }
+
+        // Read again once the panel is back to full height, never before: measuring a panel this
+        // has just shortened would take the shortening for the panel's own size and keep it.
+        if (delta is 0) inputTopOffset = panel->AtkUnitBase.RootNode->Size.Y - stockInputTop;
     }
 
     // A fresh panel carries its stock size, so nothing has been taken off it yet.
     private unsafe void OnPanelSetup(AddonChatLogPanel* addon)
         => captured = false;
 
-    private unsafe void OnPanelFinalize(AddonChatLogPanel* addon) {
-        Apply(0);
-        captured = false;
-    }
-
-    /// <summary>
-    /// The panel rebuilds its scroll bar only when the displayable line count it has cached stops
-    /// matching what the text node height gives. A log line is taller than an input line, so some
-    /// steps land on the same count and the thumb keeps the previous travel. Offsetting the count
-    /// the panel is about to arrive at makes it rebuild on its next update, which is the path that
-    /// places the thumb correctly.
-    /// </summary>
-    private static unsafe void InvalidateDisplayableLineCount(AddonChatLogPanel* panel) {
-        var chatText = panel->LogViewer.ChatText;
-        if (chatText is null) return;
-
-        var spacing = Math.Max((ushort)1, chatText->LineSpacing);
-        var lines = (ushort)(((AtkResNode*)chatText)->Height / spacing);
-
-        panel->LogViewer.DisplayableLineCount = (ushort)(lines + 1);
-    }
+    private unsafe void OnPanelFinalize(AddonChatLogPanel* addon)
+        => captured = false;
 }
