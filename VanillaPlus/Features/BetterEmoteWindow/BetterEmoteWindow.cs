@@ -13,6 +13,8 @@ public class BetterEmoteWindow : GameModification {
         Authors = ["MapleRecall"],
     };
 
+    public override string ImageName => "BetterEmoteWindow.png";
+
     private EmoteWindowLayoutController? layoutController;
     private EmoteTooltipController? tooltipController;
 
