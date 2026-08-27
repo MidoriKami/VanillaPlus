@@ -26,13 +26,19 @@ public class ShowActiveSigns : GameModification {
             addonController = new AddonController {
                 AddonName = "Marker",
                 OnUpdate = OnMarkerUpdate,
+                OnFinalize = OnMarkerFinalize,
             };
         }
 
         await addonController.EnableAsync();
     }
 
-    private unsafe void OnMarkerUpdate(AtkUnitBase* addon) {
+    public override async Task OnDisableAsync() {
+        await addonController.DisposeAsyncSafe();
+        addonController = null;
+    }
+
+    private static unsafe void OnMarkerUpdate(AtkUnitBase* addon) {
         var listNode = addon->GetComponentListById(13);
         if (listNode is null) return;
 
@@ -49,9 +55,19 @@ public class ShowActiveSigns : GameModification {
         }
     }
 
-    public override async Task OnDisableAsync() {
-        await addonController.DisposeAsyncSafe();
-        addonController = null;
+    private static unsafe void OnMarkerFinalize(AtkUnitBase* addon) {
+        var listNode = addon->GetComponentListById(13);
+        if (listNode is null) return;
+
+        foreach (var index in Enumerable.Range(0, MarkingController.Instance()->Markers.Length)) {
+            var itemRenderer = listNode->GetItemRenderer(index);
+            if (itemRenderer is null) continue;
+
+            var imageNode = itemRenderer->GetNodeById(2);
+            if (imageNode is null) continue;
+
+            imageNode->Visible = false;
+        }
     }
 
     // We have to shift 5,6,7 (signs 6, 7, 8) to the end because they were added later.
