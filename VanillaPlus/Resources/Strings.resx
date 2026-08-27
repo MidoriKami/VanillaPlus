@@ -1726,6 +1726,7 @@ To join in the festivities, check out the Seasonal section in VanillaPlus!</valu
   </data>
   <data name="ModificationDisplay_FauxHollowsHelper" xml:space="preserve">
     <value>Faux Hollows Helper</value>
+  </data>
   <data name="ActionHighlight_ClassJobSearchTitle" xml:space="preserve">
     <value>Class Job Search</value>
   </data>
@@ -1847,5 +1848,11 @@ Must hold shift while right clicking to nav up.</value>
   </data>
   <data name="DutyLootPreview_SourceDungeonChest" xml:space="preserve">
     <value>Dungeon Chest</value>
+  </data>
+  <data name="ModificationDisplay_BetterEmoteWindow" xml:space="preserve">
+    <value>Better Emote Window</value>
+  </data>
+  <data name="ModificationDescription_BetterEmoteWindow" xml:space="preserve">
+    <value>Improves the Emote window layout and previews targeted and untargeted emote text.</value>
   </data>
 </root>
