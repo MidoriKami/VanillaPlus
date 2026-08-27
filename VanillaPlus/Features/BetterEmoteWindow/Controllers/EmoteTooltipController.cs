@@ -5,12 +5,11 @@ using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Plugin.Services;
-using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using Lumina.Excel.Sheets;
-using VanillaPlus.Extensions;
+using VanillaPlus.Features.BetterEmoteWindow.Classes;
 
-namespace VanillaPlus.Features.BetterEmoteWindow;
+namespace VanillaPlus.Features.BetterEmoteWindow.Controllers;
 
 public class EmoteTooltipController : IAsyncDisposable {
     private bool emoteTooltipActive;
@@ -71,12 +70,7 @@ public class EmoteTooltipController : IAsyncDisposable {
             return;
         }
 
-        var preview = EmoteLogMessageFormatter.Format(
-            emote,
-            player.Name.ToString(),
-            player.CustomizeData.Sex,
-            targetName,
-            targetSex);
+        var preview = EmoteLogMessageFormatter.Format(emote, player.Name.ToString(), player.CustomizeData.Sex, targetName, targetSex);
         if (preview.Untargeted.IsEmpty && preview.Targeted.IsEmpty) {
             HideEmoteTooltip();
             return;
@@ -84,11 +78,16 @@ public class EmoteTooltipController : IAsyncDisposable {
 
         using var rentedStringBuilder = new RentedSeStringBuilder();
         var stringBuilder = rentedStringBuilder.Builder;
+
         if (preview.Untargeted.IsEmpty) {
-            stringBuilder.Append("- ").Append(preview.Targeted);
+            stringBuilder
+                .Append("- ")
+                .Append(preview.Targeted);
         }
         else if (preview.Targeted.IsEmpty || preview.Targeted == preview.Untargeted) {
-            stringBuilder.Append("- ").Append(preview.Untargeted);
+            stringBuilder
+                .Append("- ")
+                .Append(preview.Untargeted);
         }
         else {
             stringBuilder
@@ -97,10 +96,7 @@ public class EmoteTooltipController : IAsyncDisposable {
                 .Append("- ").Append(preview.Targeted);
         }
 
-        AtkStage.Instance()->TooltipManager.ShowTooltip(
-            addon->Id,
-            (AtkResNode*)renderer->OwnerNode,
-            stringBuilder.GetViewAsSpan());
+        AtkStage.Instance()->TooltipManager.ShowTooltip(addon->Id, (AtkResNode*)renderer->OwnerNode, stringBuilder.GetViewAsSpan());
         emoteTooltipAddonId = addon->Id;
         emoteTooltipActive = true;
     }
@@ -113,7 +109,7 @@ public class EmoteTooltipController : IAsyncDisposable {
         emoteTooltipAddonId = 0;
     }
 
-    private unsafe void OnEmoteFinalize(AddonEvent type, AddonArgs args) => HideEmoteTooltip();
+    private void OnEmoteFinalize(AddonEvent type, AddonArgs args) => HideEmoteTooltip();
 
     private static unsafe string GetRendererText(AtkComponentListItemRenderer* renderer) {
         if (renderer->ButtonTextNode is not null) {

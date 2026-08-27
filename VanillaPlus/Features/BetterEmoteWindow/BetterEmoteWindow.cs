@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
-using VanillaPlus.Extensions;
+using VanillaPlus.Features.BetterEmoteWindow.Controllers;
 
 namespace VanillaPlus.Features.BetterEmoteWindow;
 

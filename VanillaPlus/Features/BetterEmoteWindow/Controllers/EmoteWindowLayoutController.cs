@@ -7,9 +7,9 @@ using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
-using VanillaPlus.Extensions;
+using VanillaPlus.Features.BetterEmoteWindow.Classes;
 
-namespace VanillaPlus.Features.BetterEmoteWindow;
+namespace VanillaPlus.Features.BetterEmoteWindow.Controllers;
 
 public class EmoteWindowLayoutController : IAsyncDisposable {
     private AddonController? emoteController;
@@ -26,8 +26,8 @@ public class EmoteWindowLayoutController : IAsyncDisposable {
         unsafe {
             emoteController = new AddonController {
                 AddonName = "Emote",
-                OnSetup = ApplyLayout,
-                OnFinalize = FinalizeEmote,
+                OnSetup = OnEmoteSetup,
+                OnFinalize = OnEmoteFinalize,
             };
         }
 
@@ -36,8 +36,10 @@ public class EmoteWindowLayoutController : IAsyncDisposable {
 
     public async ValueTask DisposeAsync() {
         IAddonLifecycle.Get().UnregisterListener(OnEmotePreSetup);
+
         await emoteController.DisposeAsyncSafe();
         emoteController = null;
+
         ClearLayoutSnapshot();
     }
 
@@ -47,7 +49,7 @@ public class EmoteWindowLayoutController : IAsyncDisposable {
         list->SetVisibleRowCount((short)(nativeMainListRows + 3));
     }
 
-    private unsafe void ApplyLayout(AtkUnitBase* addon) {
+    private unsafe void OnEmoteSetup(AtkUnitBase* addon) {
         RestoreAppliedLayout(addon);
         ApplyMainListRowCount(addon, true);
 
@@ -57,12 +59,15 @@ public class EmoteWindowLayoutController : IAsyncDisposable {
         hiddenCategoryDescriptionHeight = Math.Max(0.0f, descriptionNode->Height - 8.0f);
         descriptionNode->ToggleVisibility(false);
 
-        foreach (var nodeId in new[] { 4u, 16u, 21u, 41u }) MoveCategoryNode(addon, nodeId);
+        foreach (var nodeId in new[] { 4u, 16u, 21u, 41u }) {
+            MoveCategoryNode(addon, nodeId);
+        }
+
         ResizeMainList(addon);
         addon->UpdateCollisionNodeList(false);
     }
 
-    private unsafe void FinalizeEmote(AtkUnitBase* addon) {
+    private unsafe void OnEmoteFinalize(AtkUnitBase* addon) {
         RestoreAppliedLayout(addon);
         ApplyMainListRowCount(addon, false);
         nativeMainListRows = 0;

@@ -2,43 +2,33 @@ using System;
 using System.Text;
 using Dalamud.Game.Text.Evaluator;
 using Dalamud.Plugin.Services;
-using Dalamud.Utility;
 using Lumina.Excel;
 using Lumina.Excel.Sheets;
 using Lumina.Text;
 using Lumina.Text.Expressions;
 using Lumina.Text.ReadOnly;
 
-namespace VanillaPlus.Features.BetterEmoteWindow;
+namespace VanillaPlus.Features.BetterEmoteWindow.Classes;
 
 public static class EmoteLogMessageFormatter {
-    public static EmoteLogMessagePreview Format(
-        Emote emote,
-        string playerName,
-        byte playerSex,
-        string targetName,
-        byte targetSex
-    ) {
+    public static EmoteLogMessagePreview Format(Emote emote, string playerName, byte playerSex, string targetName, byte targetSex) {
         var parameters = CreateParameters(playerName, playerSex, targetName, targetSex);
 
         return new EmoteLogMessagePreview(
             Format(emote.LogMessageUntargeted, parameters),
-            Format(emote.LogMessageTargeted, parameters));
+            Format(emote.LogMessageTargeted, parameters)
+        );
     }
 
     private static ReadOnlySeString Format(RowRef<LogMessage> logMessage, SeStringParameter[] parameters) {
-        if (logMessage.RowId is 0 || !logMessage.IsValid) return default;
+        if (logMessage.RowId is 0) return default;
+        if (!logMessage.IsValid) return default;
 
         var template = RewriteGlobalParameters(logMessage.Value.Text);
         return ISeStringEvaluator.Get().Evaluate(template, parameters);
     }
 
-    private static SeStringParameter[] CreateParameters(
-        string playerName,
-        byte playerSex,
-        string targetName,
-        byte targetSex
-    ) {
+    private static SeStringParameter[] CreateParameters(string playerName, byte playerSex, string targetName, byte targetSex) {
         var parameters = new SeStringParameter[67]; // Highest used parameter is gnum67.
 
         parameters[0] = string.Empty; // Viewer name; empty forces third-person grammar.
