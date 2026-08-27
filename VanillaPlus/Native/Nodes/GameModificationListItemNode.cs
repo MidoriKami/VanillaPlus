@@ -73,7 +73,6 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
             FontType = FontType.Axis,
             TextFlags = TextFlags.Ellipsis | TextFlags.UseFixedFontResolution,
             TextColor = ColorHelper.GetColor(3),
-            FontSize = 10,
         };
         authorTextNode.AttachNode(labelsContainerNode);
 
@@ -152,9 +151,11 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
         authorTextNode.String = Strings.Label_ModAuthorBy.Format(authorList);
         if (authorTextNode.String.ToString().Contains("...")) {
             authorTextNode.TextTooltip = Strings.Label_ModAuthorBy.Format(authorList);
+            authorTextNode.AddNodeFlags(NodeFlags.HasCollision);
         }
         else {
             authorTextNode.TextTooltip = string.Empty;
+            authorTextNode.RemoveNodeFlags(NodeFlags.HasCollision);
         }
 
         checkboxNode.IsChecked = itemData.State is LoadedState.Enabled;
