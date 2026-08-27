@@ -71,8 +71,9 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
 
         authorTextNode = new TextNode {
             FontType = FontType.Axis,
-            TextFlags = TextFlags.Ellipsis,
+            TextFlags = TextFlags.Ellipsis | TextFlags.UseFixedFontResolution,
             TextColor = ColorHelper.GetColor(3),
+            FontSize = 10,
         };
         authorTextNode.AttachNode(labelsContainerNode);
 
@@ -150,7 +151,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
         var authorList = string.Join(", ", itemData.Modification.ModificationInfo.Authors);
         authorTextNode.String = Strings.Label_ModAuthorBy.Format(authorList);
         if (authorTextNode.String.ToString().Contains("...")) {
-            authorTextNode.TextTooltip = authorTextNode.String;
+            authorTextNode.TextTooltip = Strings.Label_ModAuthorBy.Format(authorList);
         }
         else {
             authorTextNode.TextTooltip = string.Empty;
