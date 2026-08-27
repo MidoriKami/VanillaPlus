@@ -150,7 +150,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
         var authorList = string.Join(", ", itemData.Modification.ModificationInfo.Authors);
         authorTextNode.String = Strings.Label_ModAuthorBy.Format(authorList);
         if (authorTextNode.String.ToString().Contains("...")) {
-            authorTextNode.TextTooltip = Strings.Label_ModAuthorBy.Format(authorList);
+            authorTextNode.TextTooltip = authorTextNode.String;
         }
         else {
             authorTextNode.TextTooltip = string.Empty;
