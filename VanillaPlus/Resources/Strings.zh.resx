@@ -1721,6 +1721,12 @@ ID：{0}</value>
   <data name="ModificationDescription_GameConfigCommand" xml:space="preserve">
     <value>添加 /gameconfig 命令，用于更改游戏配置选项。</value>
   </data>
+  <data name="ModificationDescription_FauxHollowsHelper" xml:space="preserve">
+    <value>Highlights the best tiles to uncover in Faux Hollows, using community-sourced board patterns to rule out impossible locations and show where chests, swords, and foxes may be hidden.</value>
+  </data>
+  <data name="ModificationDisplay_FauxHollowsHelper" xml:space="preserve">
+    <value>Faux Hollows Helper</value>
+  </data>
   <data name="ActionHighlight_ClassJobSearchTitle" xml:space="preserve">
     <value>职业搜索</value>
   </data>
@@ -1842,5 +1848,11 @@ ID：{0}</value>
   </data>
   <data name="DutyLootPreview_SourceDungeonChest" xml:space="preserve">
     <value>副本宝箱</value>
+  </data>
+  <data name="ModificationDisplay_BetterEmoteWindow" xml:space="preserve">
+    <value>Better Emote Window</value>
+  </data>
+  <data name="ModificationDescription_BetterEmoteWindow" xml:space="preserve">
+    <value>Improves the Emote window layout and previews targeted and untargeted emote text.</value>
   </data>
 </root>
