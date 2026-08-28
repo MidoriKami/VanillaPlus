@@ -135,7 +135,7 @@ public class ConfigCategory : IDisposable {
 
         var initialValue = memberInfo.GetValue<object>(ConfigObject);
         var optionValues = Enum.GetValues<T>()
-            .Where(enumValue => !enumValue.IsObsolete())
+            .Distinct()
             .ToDictionary(enumValue => enumValue.Description, enumValue => (object)enumValue);
 
         configEntries.Add(new DropDownConfig {
