@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
@@ -51,7 +52,13 @@ public class ShowActiveSigns : GameModification {
 
             var signIndex = TranslateSignIndex(index);
 
-            imageNode->Visible = MarkingController.Instance()->Markers[signIndex].ObjectId is not 0xE0000000;
+            var targetObjectId = MarkingController.Instance()->Markers[signIndex].Id;
+            if (targetObjectId is 0xE0000000) {
+                imageNode->Visible = false;
+            }
+            else {
+                imageNode->Visible = IObjectTable.Get().SearchById(targetObjectId) is not null;
+            }
         }
     }
 
