@@ -1722,10 +1722,10 @@ ID：{0}</value>
     <value>添加 /gameconfig 命令，用于更改游戏配置选项。</value>
   </data>
   <data name="ModificationDescription_FauxHollowsHelper" xml:space="preserve">
-    <value>Highlights the best tiles to uncover in Faux Hollows, using community-sourced board patterns to rule out impossible locations and show where chests, swords, and foxes may be hidden.</value>
+    <value>在幻巧拼图中高亮最佳格子，利用社区分享的排列规律排除无效位置，并显示宝箱、宝剑和狐狸隐藏的位置。</value>
   </data>
   <data name="ModificationDisplay_FauxHollowsHelper" xml:space="preserve">
-    <value>Faux Hollows Helper</value>
+    <value>幻巧拼图助手</value>
   </data>
   <data name="ActionHighlight_ClassJobSearchTitle" xml:space="preserve">
     <value>职业搜索</value>
@@ -1850,9 +1850,9 @@ ID：{0}</value>
     <value>副本宝箱</value>
   </data>
   <data name="ModificationDisplay_BetterEmoteWindow" xml:space="preserve">
-    <value>Better Emote Window</value>
+    <value>更好的情感动作窗口</value>
   </data>
   <data name="ModificationDescription_BetterEmoteWindow" xml:space="preserve">
-    <value>Improves the Emote window layout and previews targeted and untargeted emote text.</value>
+    <value>优化情感动作窗口布局，并预览有目标与无目标时的情感动作文本。</value>
   </data>
 </root>
