@@ -11,8 +11,8 @@ using VanillaPlus.Features.AdditionalHotbars.Config;
 
 namespace VanillaPlus.Features.AdditionalHotbars.Nodes;
 
-public sealed class HotbarOverlayNode(AdditionalHotbarsConfig mainConfig, HotbarConfig config) : OverlayNode {
-    public readonly HotbarConfig Config = config;
+public sealed class HotbarOverlayNode : OverlayNode {
+    public readonly HotbarConfig Config;
 
     public override OverlayLayer OverlayLayer => OverlayLayer.BehindUserInterface;
 
@@ -30,9 +30,6 @@ public sealed class HotbarOverlayNode(AdditionalHotbarsConfig mainConfig, Hotbar
         }
 
         EnableMoving = Config.MovingEnabled;
-        OnMoveComplete = _ => {
-            Config.Position = Position;
-        };
 
         IGameConfig.Get().UiConfig.TryGetBool("HotbarLock", out var isHotbarLocked);
         IGameConfig.Get().UiControl.TryGetBool("HotbarEmptyVisible", out var isHotbarEmptyVisible);
@@ -116,5 +113,15 @@ public sealed class HotbarOverlayNode(AdditionalHotbarsConfig mainConfig, Hotbar
         mainConfig.Save();
     }
 
+    public HotbarOverlayNode(AdditionalHotbarsConfig mainConfig, HotbarConfig config) {
+        this.mainConfig = mainConfig;
+        Config = config;
+
+        OnMoveComplete = _ => {
+            Config.Position = Position;
+        };
+    }
+
     private readonly List<HotbarNode> hotbarNodes = [];
+    private readonly AdditionalHotbarsConfig mainConfig;
 }
