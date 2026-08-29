@@ -3,7 +3,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text.Json.Serialization;
 
-namespace VanillaPlus.Features.AdditionalHotbarSlots.Config;
+namespace VanillaPlus.Features.AdditionalHotbars.Config;
 
 public class HotbarConfig {
     public string Name { get; set; } = string.Empty;

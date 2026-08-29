@@ -4,9 +4,9 @@ using KamiToolKit.Components.ConfigurationNodes;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using Lumina.Text.ReadOnly;
-using VanillaPlus.Features.AdditionalHotbarSlots.Config;
+using VanillaPlus.Features.AdditionalHotbars.Config;
 
-namespace VanillaPlus.Features.AdditionalHotbarSlots.Nodes;
+namespace VanillaPlus.Features.AdditionalHotbars.Nodes;
 
 public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
 

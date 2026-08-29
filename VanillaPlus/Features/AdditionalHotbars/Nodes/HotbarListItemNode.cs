@@ -1,9 +1,9 @@
 ﻿using System.Numerics;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
-using VanillaPlus.Features.AdditionalHotbarSlots.Config;
+using VanillaPlus.Features.AdditionalHotbars.Config;
 
-namespace VanillaPlus.Features.AdditionalHotbarSlots.Nodes;
+namespace VanillaPlus.Features.AdditionalHotbars.Nodes;
 
 public class HotbarListItemNode : ListItemNode<HotbarConfig>, IListItemNode {
 

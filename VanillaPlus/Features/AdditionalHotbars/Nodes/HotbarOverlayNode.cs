@@ -7,9 +7,9 @@ using KamiToolKit.Classes;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.UiOverlay;
-using VanillaPlus.Features.AdditionalHotbarSlots.Config;
+using VanillaPlus.Features.AdditionalHotbars.Config;
 
-namespace VanillaPlus.Features.AdditionalHotbarSlots.Nodes;
+namespace VanillaPlus.Features.AdditionalHotbars.Nodes;
 
 public sealed class HotbarOverlayNode(AdditionalHotbarsConfig mainConfig, HotbarConfig config) : OverlayNode {
     public readonly HotbarConfig Config = config;

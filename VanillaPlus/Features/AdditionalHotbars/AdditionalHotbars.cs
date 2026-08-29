@@ -8,10 +8,10 @@ using KamiToolKit.Components.Configuration;
 using KamiToolKit.UiOverlay;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
-using VanillaPlus.Features.AdditionalHotbarSlots.Config;
-using VanillaPlus.Features.AdditionalHotbarSlots.Nodes;
+using VanillaPlus.Features.AdditionalHotbars.Config;
+using VanillaPlus.Features.AdditionalHotbars.Nodes;
 
-namespace VanillaPlus.Features.AdditionalHotbarSlots;
+namespace VanillaPlus.Features.AdditionalHotbars;
 
 public class AdditionalHotbars : GameModification {
     public override ModificationInfo ModificationInfo => new() {
