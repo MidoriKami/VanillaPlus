@@ -863,7 +863,7 @@ Cette modification corrige cela en déclenchant toujours le clic normal en plus 
     <value>Masquer Instructions Opération Guilde</value>
   </data>
   <data name="ModificationDisplay_HideMpBars" xml:space="preserve">
-    <value>Masquer les Barres de PM</value>
+    <value>Masquer Barres PM</value>
   </data>
   <data name="ModificationDisplay_HideUnwantedBanners" xml:space="preserve">
     <value>Masquer les Bannières Indésirables</value>
@@ -1728,131 +1728,131 @@ Pour participer aux festivités, rendez-vous dans la section « Saison » de Van
     <value>Aide Touché-Tourné</value>
   </data>
   <data name="ActionHighlight_ClassJobSearchTitle" xml:space="preserve">
-    <value>Class Job Search</value>
+    <value>Recherche de classe / job</value>
   </data>
   <data name="BiggerConfigWindows_ErrorHeightTooBig" xml:space="preserve">
-    <value>[BiggerConfigWindow] Unable to resize config window, height would be too big.</value>
+    <value>[Fenêtre de config plus grande] Impossible de redimensionner la fenêtre de configuration, la hauteur serait trop grande.</value>
   </data>
   <data name="CompatibilityModule_HaselTweaksActive" xml:space="preserve">
-    <value>The original version of this feature is already active in HaselTweaks Plugin.
+    <value>La version originale de cette fonctionnalité est déjà disponible dans le plugin HaselTweaks.
 
 ID: {0}</value>
   </data>
   <data name="CompatibilityModule_QuestAwayAetherytesActive" xml:space="preserve">
-    <value>Not compatible with QuestAWAY's 'Aetherytes always in front' feature</value>
+    <value>Non compatible avec la fonctionnalité « Éthérites toujours à l'avant » de QuestAWAY</value>
   </data>
   <data name="CurrencyOverlay_CurrencySearchTitle" xml:space="preserve">
-    <value>Currency Search</value>
+    <value>Recherche Devise</value>
   </data>
   <data name="CurrencyOverlay_LabelWarnBelowLimit" xml:space="preserve">
-    <value>Warn when below limit</value>
+    <value>Avertir lorsque la valeur est inférieure à la limite</value>
   </data>
   <data name="CurrencyOverlay_LabelWarnAboveLimit" xml:space="preserve">
-    <value>Warn when above limit</value>
+    <value>Avertir lorsque la valeur est supérieure à la limite</value>
   </data>
   <data name="CurrencyOverlay_LabelReverseIconPosition" xml:space="preserve">
-    <value>Reverse icon position</value>
+    <value>Inverser la position des icônes</value>
   </data>
   <data name="CurrencyOverlay_LabelReverseTextPosition" xml:space="preserve">
-    <value>Reverse text position</value>
+    <value>Inverser la position du texte</value>
   </data>
   <data name="CurrencyOverlay_LabelEnableMoving" xml:space="preserve">
-    <value>Enable moving overlay element</value>
+    <value>Active le déplacement de la devise</value>
   </data>
   <data name="CurrencyOverlay_LabelScale" xml:space="preserve">
-    <value>Scale</value>
+    <value>Échelle</value>
   </data>
   <data name="CurrencyOverlay_LabelFadeIfNoWarnings" xml:space="preserve">
-    <value>Fade if no warnings</value>
+    <value>Estomper s'il n'y a pas d'avertissements</value>
   </data>
   <data name="CurrencyWarning_LabelHideInDuties" xml:space="preserve">
-    <value>Hide in Duties</value>
+    <value>Masquer en mission</value>
   </data>
   <data name="CurrencyWarning_CategoryBelowTargetWarning" xml:space="preserve">
-    <value>Below Target Value Warning</value>
+    <value>Avertissement Valeur Inférieure</value>
   </data>
   <data name="CurrencyWarning_CategoryAboveTargetWarning" xml:space="preserve">
-    <value>Above Target Value Warning</value>
+    <value>Avertissement Valeur Supérieure</value>
   </data>
   <data name="CurrencyWarning_LabelTooltipTextColor" xml:space="preserve">
-    <value>Tooltip Text Color</value>
+    <value>Couleur du texte de l'info-bulle</value>
   </data>
   <data name="DutyLootPreview_WarningPendingRemoval" xml:space="preserve">
-    <value>Pending Removal in Patch 7.56</value>
+    <value>Suppression prévue dans la mise à jour 7.56</value>
   </data>
   <data name="Error_CriticalUnloadFailed" xml:space="preserve">
-    <value>Critical Error: Module failed to load, and errored again while unloading.</value>
+    <value>Erreur critique : le module n'a pas pu être chargé et une nouvelle erreur s'est produite lors de son déchargement.</value>
   </data>
   <data name="FateEntry_StatusPending" xml:space="preserve">
-    <value>Pending</value>
+    <value>En attente</value>
   </data>
   <data name="GameConfigCommand_CommandHelp" xml:space="preserve">
-    <value>Usage: /gameconfig &lt;system|ui|control&gt; &lt;option&gt; &lt;value&gt;</value>
+    <value>Utilisation : /gameconfig &lt;system|ui|control&gt; &lt;option&gt; &lt;value&gt;</value>
   </data>
   <data name="GameConfigCommand_ErrorInCombat" xml:space="preserve">
-    <value>Game configuration cannot be changed while in combat.</value>
+    <value>'Game Configuration' ne peut pas être modifiée pendant un combat.</value>
   </data>
   <data name="GameConfigCommand_ErrorInvalidCommand" xml:space="preserve">
-    <value>Error processing command for {0} {1}, check the arguments and try again.
-Usage: /gameconfig &lt;system|ui|control&gt; &lt;option&gt; &lt;value&gt;</value>
+    <value>Erreur lors du traitement de la commande {0} {1}, vérifiez les arguments et réessayez.
+Utilisation : /gameconfig &lt;system|ui|control&gt; &lt;option&gt; &lt;value&gt;</value>
   </data>
   <data name="GameConfigCommand_ErrorNotSettable" xml:space="preserve">
-    <value>Config option {0} is not allowed to be set.</value>
+    <value>L'option de configuration {0} ne peut pas être définie.</value>
   </data>
   <data name="GameConfigCommand_ErrorOutOfRange" xml:space="preserve">
-    <value>Argument for {0} must be between {1} and {2}.</value>
+    <value>L'argument de {0} doit être compris entre {1} et {2}.</value>
   </data>
   <data name="GameConfigCommand_UpdatedMessage" xml:space="preserve">
-    <value>Updated {0}.{1}.</value>
+    <value>Mis à jour {0}.{1}.</value>
   </data>
   <data name="GameConfigCommand_ErrorDecimalRequired" xml:space="preserve">
-    <value>{0} requires a decimal value.</value>
+    <value>{0} doit être une valeur décimale.</value>
   </data>
   <data name="GameConfigCommand_ErrorOption" xml:space="preserve">
-    <value>Error processing command for {0}, check the arguments and try again.</value>
+    <value>Erreur lors du traitement de la commande {0}, vérifiez les arguments et réessayez.</value>
   </data>
   <data name="GearsetRedirect_LabelSwitchToGearset" xml:space="preserve">
-    <value>Switch to Gearset</value>
+    <value>S'équiper de la tenue</value>
   </data>
   <data name="GearsetRedirect_ButtonSelectGearset" xml:space="preserve">
-    <value>Select target Gearset</value>
+    <value>Sélection tenue</value>
   </data>
   <data name="GearsetRedirect_LabelWhenInZone" xml:space="preserve">
-    <value>When in Zone</value>
+    <value>Lorsque vous êtes dans la zone</value>
   </data>
   <data name="GearsetRedirect_ButtonSelectZone" xml:space="preserve">
-    <value>Select target Zone</value>
+    <value>Sélection zone</value>
   </data>
   <data name="GearsetRedirect_InvalidGearsetTarget" xml:space="preserve">
-    <value>Invalid Gearset Target</value>
+    <value>Tenue non valide</value>
   </data>
   <data name="GearsetRedirect_WhenInZoneFormat" xml:space="preserve">
-    <value>When in {0} {1}</value>
+    <value>Lorsque vous êtes dans {0} {1}</value>
   </data>
   <data name="HideMpBars_ConfigTitle" xml:space="preserve">
-    <value>Hide MP Bars Config</value>
+    <value>Config Masquer Barres PM</value>
   </data>
   <data name="HideMpBars_LabelHidePartyList" xml:space="preserve">
-    <value>Hide in Party List</value>
+    <value>Masquer dans la liste du groupe</value>
   </data>
   <data name="HideMpBars_LabelHideParameterWidget" xml:space="preserve">
-    <value>Hide in Parameter Widget</value>
+    <value>Masquer dans le widget des paramètres</value>
   </data>
   <data name="ModificationDisplay_RightClickMapNav" xml:space="preserve">
-    <value>Right-Click Map Nav</value>
+    <value>Clic-Droit Nav Carte</value>
   </data>
   <data name="ModificationDescription_RightClickMapNav" xml:space="preserve">
-    <value>Allows you to navigate 'up' a layer by right clicking on the map.
+    <value>Permet de remonter d'un niveau en cliquant avec le bouton droit de la souris sur la carte.
 
-Must hold shift while right clicking to nav up.</value>
+Vous devez maintenir la touche Maj enfoncée tout en cliquant avec le bouton droit pour remonter d'un niveau.</value>
   </data>
   <data name="DutyLootPreview_SourceDungeonChest" xml:space="preserve">
-    <value>Dungeon Chest</value>
+    <value>Coffre de donjon</value>
   </data>
   <data name="ModificationDisplay_BetterEmoteWindow" xml:space="preserve">
-    <value>Better Emote Window</value>
+    <value>Amélioration Fenêtre Emotes</value>
   </data>
   <data name="ModificationDescription_BetterEmoteWindow" xml:space="preserve">
-    <value>Improves the Emote window layout and previews targeted and untargeted emote text.</value>
+    <value>Améliore la disposition de la fenêtre des emotes et permet de prévisualiser le texte des emotes ciblées et non ciblées.</value>
   </data>
 </root>
