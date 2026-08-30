@@ -30,7 +30,7 @@ public unsafe class KeybindConfigAddon : NativeAddon {
     private readonly HashSet<VirtualKey> combo = [VirtualKey.NO_KEY];
     private readonly List<InputId> conflicts = [];
 
-    public required Keybind InitialKeybind { get; init; }
+    public required Keybind InitialKeybind { get; set; }
 
     protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         base.OnSetup(addon, atkValueSpan);
@@ -166,5 +166,5 @@ public unsafe class KeybindConfigAddon : NativeAddon {
     protected override void OnFinalize(AtkUnitBase* addon)
         => System.KeyListener.OnKeyPressed -= KeyPressed;
 
-    public required Action<Keybind> OnKeybindChanged { get; init; }
+    public required Action<Keybind> OnKeybindChanged { get; set; }
 }

@@ -53,8 +53,8 @@ public sealed class HotbarOverlayNode : OverlayNode {
         }
         hotbarNodes.Clear();
 
-        foreach (var colum in Enumerable.Range(0, Config.Width)) {
-            foreach (var row in Enumerable.Range(0, Config.Height)) {
+        foreach (var row in Enumerable.Range(0, Config.Height)) {
+            foreach (var colum in Enumerable.Range(0, Config.Width)) {
                 var newHotbarNode = new HotbarNode {
                     Position = new Vector2(8.0f, 8.0f) +
                                new Vector2(44.0f * colum, 44.0f * row) +
@@ -71,6 +71,7 @@ public sealed class HotbarOverlayNode : OverlayNode {
                 var configForSlot = Config.Slots[nodeIndex];
 
                 newHotbarNode.SetSlot(configForSlot.DragDropType, configForSlot.Id);
+                newHotbarNode.KeyBind = configForSlot.Hotkey;
 
                 newHotbarNode.AttachNode(this);
             }
@@ -89,6 +90,8 @@ public sealed class HotbarOverlayNode : OverlayNode {
                     new Vector2(8.0f, 8.0f) +
                     new Vector2(44.0f * colum, 44.0f * row) +
                     new Vector2(Config.HorizontalSpacing * colum, Config.VerticalSpacing * row);
+
+                hotbarNodes[colum + row * Config.Width].KeyBind = Config.Slots[colum + row * Config.Width].Hotkey;
             }
         }
 

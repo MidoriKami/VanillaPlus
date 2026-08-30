@@ -1,10 +1,16 @@
 ﻿using System.Linq;
+using System.Numerics;
+using Dalamud.Game.ClientState.Keys;
+using FFXIVClientStructs.FFXIV.Client.System.Input;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.Classes;
 using KamiToolKit.Components.ConfigurationNodes;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using Lumina.Text.ReadOnly;
 using VanillaPlus.Features.AdditionalHotbars.Config;
+using VanillaPlus.Native.Addons;
+using Keybind = VanillaPlus.Classes.Keybind;
 
 namespace VanillaPlus.Features.AdditionalHotbars.Nodes;
 
@@ -40,6 +46,8 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
         movingToggleNode.OnClick = null;
         movingToggleNode.IsChecked = entry.MovingEnabled;
         movingToggleNode.OnClick = OnMovingToggled;
+
+        RebuildHotkeyList();
     }
 
     private void OnNameChanged(ReadOnlySeString newName) {
@@ -56,6 +64,8 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
         currentEntry.Slots.Clear();
         currentEntry.Slots = [.. Enumerable.Repeat(new SlotData(), newWidth * currentEntry.Height)];
 
+        RebuildHotkeyList();
+
         SaveConfig?.Invoke();
     }
 
@@ -66,6 +76,8 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
         currentEntry.NeedsRebuildLayout = true;
         currentEntry.Slots.Clear();
         currentEntry.Slots = [.. Enumerable.Repeat(new SlotData(), currentEntry.Width * newHeight)];
+
+        RebuildHotkeyList();
 
         SaveConfig?.Invoke();
     }
@@ -92,7 +104,27 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
     }
 
     public HotbarSettingsNode() {
-        layoutNode = new VerticalListNode {
+        tabBarNode = new TabBarNode {
+            InitialEntries = [
+                new TabBarEntry {
+                    Label = "Hotbar Settings",
+                    OnClick = () => {
+                        hotbarSettingsLayoutNode?.IsVisible = true;
+                        hotkeyListNode?.IsVisible = false;
+                    },
+                },
+                new TabBarEntry {
+                    Label = "Hotkeys",
+                    OnClick = () => {
+                        hotbarSettingsLayoutNode?.IsVisible = false;
+                        hotkeyListNode?.IsVisible = true;
+                    },
+                },
+            ],
+        };
+        tabBarNode.AttachNode(ConfigurationContentNode);
+
+        hotbarSettingsLayoutNode = new VerticalListNode {
             FitWidth = true,
             FirstItemSpacing = 10.0f,
             ItemSpacing = 4.0f,
@@ -191,18 +223,121 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
                 },
             ],
         };
-        layoutNode.AttachNode(ConfigurationContentNode);
+        hotbarSettingsLayoutNode.AttachNode(ConfigurationContentNode);
+
+        hotkeyListNode = new ScrollingNode<VerticalListNode> {
+            ContentNode = {
+                FitWidth = true,
+                FitContents = true,
+                FirstItemSpacing = 10.0f,
+                ItemSpacing = 2.0f,
+            },
+            AutoHideScrollBar = true,
+            IsVisible = false,
+        };
+        hotkeyListNode.AttachNode(ConfigurationContentNode);
     }
 
     protected override void OnSizeChanged() {
         base.OnSizeChanged();
 
-        layoutNode.Size = Size;
-        layoutNode.RecalculateLayout();
+        tabBarNode.Size = new Vector2(Width, 28.0f);
+        tabBarNode.Position = new Vector2(0.0f, 0.0f);
+
+        hotbarSettingsLayoutNode.Size = new Vector2(Width, Height - tabBarNode.Bounds.Bottom - 5.0f);
+        hotbarSettingsLayoutNode.Position = new Vector2(0.0f, tabBarNode.Bounds.Bottom + 5.0f);
+        hotbarSettingsLayoutNode.RecalculateLayout();
+
+        hotkeyListNode.Size = new Vector2(Width, Height - tabBarNode.Bounds.Bottom - 5.0f);
+        hotkeyListNode.Position = new Vector2(0.0f, tabBarNode.Bounds.Bottom + 5.0f);
+        hotkeyListNode.RecalculateSizes();
+    }
+
+    protected override void Dispose(bool isNativeDestructor) {
+        base.Dispose(isNativeDestructor);
+
+        keybindConfigAddon?.Dispose();
+    }
+
+    private void RebuildHotkeyList() {
+        if (currentEntry is null) return;
+
+        hotkeyListNode.ContentNode.Clear();
+
+        foreach (var (index, slotData) in currentEntry.Slots.Index()) {
+
+            hotkeyListNode.ContentNode.AddNode(new HorizontalFlexNode {
+                Height = 28.0f,
+                AlignmentFlags = FlexFlags.FitHeight | FlexFlags.FitWidth,
+                InitialNodes = [
+                    new TextNode {
+                        String = $"Slot #{index + 1}",
+                    },
+                    new TextButtonNode {
+                        LabelNode = {
+                            FontType = FontType.MiedingerMed,
+                        },
+
+                        String = slotData.Hotkey is null ? string.Empty : HotbarNode.GetKeybindText(slotData.Hotkey),
+                        OnClick = () => OnChangeKeybindClicked(slotData),
+                    },
+                ],
+            });
+        }
+
+        hotkeyListNode.RecalculateSizes();
+    }
+
+    private void OnChangeKeybindClicked(SlotData slotData) {
+        if (keybindConfigAddon is null) return;
+
+        VirtualKey? modifier = slotData.Hotkey?.KeyModifier switch {
+            null => null,
+            _ when slotData.Hotkey.Value.KeyModifier.HasFlag(KeyModifierFlag.Ctrl) => VirtualKey.CONTROL,
+            _ when slotData.Hotkey.Value.KeyModifier.HasFlag(KeyModifierFlag.Alt) => VirtualKey.MENU,
+            _ when slotData.Hotkey.Value.KeyModifier.HasFlag(KeyModifierFlag.Shift) => VirtualKey.SHIFT,
+            _ => null,
+        };
+
+        keybindConfigAddon.InitialKeybind = new Keybind {
+            Key = (VirtualKey?)slotData.Hotkey?.Key ?? VirtualKey.NO_KEY,
+            Modifiers = modifier is null ? [] : [ modifier.Value ],
+        };
+
+        keybindConfigAddon.OnKeybindChanged = newKeybind => OnKeybindChanged(newKeybind, slotData);
+
+        keybindConfigAddon.Open();
+    }
+
+    private void OnKeybindChanged(Keybind newKeybind, SlotData slotData) {
+        var rebindKeyModifier = KeyModifierFlag.None;
+
+        // Only allow one modifier key, with the following priority
+        if (newKeybind.Modifiers.Contains(VirtualKey.CONTROL)) {
+            rebindKeyModifier = KeyModifierFlag.Ctrl;
+        }
+        else if (newKeybind.Modifiers.Contains(VirtualKey.MENU)) {
+            rebindKeyModifier = KeyModifierFlag.Alt;
+        }
+        else if (newKeybind.Modifiers.Contains(VirtualKey.SHIFT)) {
+            rebindKeyModifier = KeyModifierFlag.Shift;
+        }
+
+        slotData.Hotkey = new KeySetting {
+            Key = (SeVirtualKey)newKeybind.Key,
+            KeyModifier = rebindKeyModifier,
+        };
+        SaveConfig?.Invoke();
+
+        currentEntry?.NeedsRecalcLayout = true;
+        RebuildHotkeyList();
     }
 
     private HotbarConfig? currentEntry;
-    private readonly VerticalListNode layoutNode;
+
+    private readonly TabBarNode tabBarNode;
+
+    private readonly VerticalListNode hotbarSettingsLayoutNode;
     private readonly TextInputNode nameInputNode;
     private readonly NumericInputNode widthInputNode;
     private readonly NumericInputNode heightInputNode;
@@ -210,4 +345,13 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
     private readonly NumericInputNode verticalSpacingInputNode;
     private readonly CheckboxNode movingToggleNode;
     private readonly CheckboxNode enableToggleNode;
+
+    private readonly ScrollingNode<VerticalListNode> hotkeyListNode;
+
+    private readonly KeybindConfigAddon? keybindConfigAddon = new() {
+        InternalName = "KeybindConfig",
+        Title = "Hotbar Slot Hotkey",
+        InitialKeybind = new Keybind(),
+        OnKeybindChanged = _ => { },
+    };
 }
