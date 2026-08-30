@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Game.Command;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Components.Configuration;
@@ -66,6 +68,24 @@ public class AdditionalHotbars : GameModification {
                 }
             }
         });
+
+        ICommandManager.Get().AddHandler("/plushotbar", new CommandInfo(OnHotbarCommand) {
+            AllowedInMacros = true,
+            HelpMessage = "show, hide, or toggle additional hotbars.",
+        });
+    }
+
+    public override async Task OnDisableAsync() {
+        ICommandManager.Get().RemoveHandler("/plushotbar");
+
+        await configAddon.DisposeAsyncSafe();
+        configAddon = null;
+
+        await IFramework.Get().Run( () => overlayController?.Dispose());
+        overlayController = null;
+        nodes = null;
+
+        config = null;
     }
 
     private void OnConfigChanged() {
@@ -112,14 +132,33 @@ public class AdditionalHotbars : GameModification {
         configAddon?.OptionsList = config.Hotbars;
     }
 
-    public override async Task OnDisableAsync() {
-        await configAddon.DisposeAsyncSafe();
-        configAddon = null;
+    private void OnHotbarCommand(string command, string arguments) {
+        if (command is not "/plushotbar") return;
 
-        await IFramework.Get().Run( () => overlayController?.Dispose());
-        overlayController = null;
-        nodes = null;
+        if (arguments.Split(" ", 2) is not [var action, var hotbarName]) return;
+        if (hotbarName.IsNullOrEmpty()) return;
 
-        config = null;
+        var configEntry = config?.Hotbars.FirstOrDefault(bar => bar.Name.Equals(hotbarName, StringComparison.OrdinalIgnoreCase));
+
+        if (configEntry is null) {
+            IChatGui.Get().PrintError($"Unable to find a hotbar by the name of '{hotbarName}'");
+            return;
+        }
+
+        switch (action.ToLower()) {
+            case "show":
+                configEntry.IsEnabled = true;
+                break;
+
+            case "hide":
+                configEntry.IsEnabled = false;
+                break;
+
+            case "toggle":
+                configEntry.IsEnabled = !configEntry.IsEnabled;
+                break;
+        }
+
+        config?.Save();
     }
 }

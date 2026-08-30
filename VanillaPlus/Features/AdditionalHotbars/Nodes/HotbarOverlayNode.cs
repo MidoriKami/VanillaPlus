@@ -18,6 +18,7 @@ public sealed class HotbarOverlayNode : OverlayNode {
 
     protected override unsafe void OnUpdate() {
         IsVisible = Config.IsEnabled;
+        if (!IsVisible) return;
 
         if (Config.NeedsRebuildLayout) {
             RebuildLayout();
