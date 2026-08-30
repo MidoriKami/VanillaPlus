@@ -1722,10 +1722,10 @@ Pour participer aux festivités, rendez-vous dans la section « Saison » de Van
     <value>Ajoute la commande /gameconfig permettant de modifier les options de configuration du jeu.</value>
   </data>
   <data name="ModificationDescription_FauxHollowsHelper" xml:space="preserve">
-    <value>Highlights the best tiles to uncover in Faux Hollows, using community-sourced board patterns to rule out impossible locations and show where chests, swords, and foxes may be hidden.</value>
+    <value>Met en avant les meilleures cases à découvrir dans Touché-Tourné, en s'appuyant sur des schémas de plateau fournis par la communauté pour éliminer les emplacements impossibles et indiquer où pourraient se cacher des coffres, des épées et des renards.</value>
   </data>
   <data name="ModificationDisplay_FauxHollowsHelper" xml:space="preserve">
-    <value>Faux Hollows Helper</value>
+    <value>Aide Touché-Tourné</value>
   </data>
   <data name="ActionHighlight_ClassJobSearchTitle" xml:space="preserve">
     <value>Class Job Search</value>
