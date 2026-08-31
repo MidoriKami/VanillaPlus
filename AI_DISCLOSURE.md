@@ -6,4 +6,4 @@ The extent of AI that is permitted in this project is limited to effectively an 
 
 No form of large scale generaitve AI will ever be permitted in this project.
 
-AI is a tool for humans to user, it is not a tool to replace humans.
+AI is a tool for humans to use, it is not a tool to replace humans.
