@@ -4,8 +4,8 @@ using Dalamud.Interface;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Components.ConfigurationNodes;
+using KamiToolKit.Components.DataConfigNodes;
 using KamiToolKit.Nodes;
-using VanillaPlus.Native.Nodes;
 
 namespace VanillaPlus.Features.WindowBackground.Nodes;
 
@@ -14,7 +14,7 @@ public class WindowBackgroundConfigNode : EntryConfigurationNode<WindowBackgroun
     private readonly TabbedVerticalListNode verticalListNode;
     private readonly TextNode windowNameTextNode;
     private readonly ColorEditNode colorEditNode;
-    private readonly Vector2EditWidget sizeEditWidget;
+    private readonly Vector4ConfigNode sizeEditWidget;
 
     public WindowBackgroundConfigNode() {
         windowNameTextNode = new TextNode {
@@ -37,8 +37,8 @@ public class WindowBackgroundConfigNode : EntryConfigurationNode<WindowBackgroun
                 new TabbedListEntry(0, new CategoryTextNode {
                     String = Strings.WindowBackground_CategoryPaddingSize,
                 }),
-                new TabbedListEntry(1, sizeEditWidget = new Vector2EditWidget {
-                    Height = 50.0f,
+                new TabbedListEntry(1, sizeEditWidget = new Vector4ConfigNode {
+                    Height = 100.0f,
                 }),
             ],
         };
@@ -63,9 +63,8 @@ public class WindowBackgroundConfigNode : EntryConfigurationNode<WindowBackgroun
         colorEditNode.DefaultColor = KnownColor.Black.Vector() with { W = 50.0f };
         colorEditNode.OnColorConfirmed = newColor => OnNewColorConfirmed(entry, newColor);
 
-        sizeEditWidget.Value = entry.Padding;
+        sizeEditWidget.Value = entry.PaddingVector;
         sizeEditWidget.OnValueChanged = newSize => OnSizeChanged(entry, newSize);
-
     }
 
     private void OnNewColorConfirmed(WindowBackgroundSetting entry, Vector4 newColor) {
@@ -73,8 +72,8 @@ public class WindowBackgroundConfigNode : EntryConfigurationNode<WindowBackgroun
         SaveConfig?.Invoke();
     }
 
-    private void OnSizeChanged(WindowBackgroundSetting entry, Vector2 newValue) {
-        entry.Padding = newValue;
+    private void OnSizeChanged(WindowBackgroundSetting entry, Vector4 newValue) {
+        entry.PaddingVector = newValue;
         SaveConfig?.Invoke();
     }
 }

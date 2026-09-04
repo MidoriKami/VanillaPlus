@@ -1,4 +1,5 @@
-﻿using Dalamud.Plugin.Services;
+﻿using System.Numerics;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
@@ -35,10 +36,14 @@ public unsafe class WindowBackgroundImageNode : OverlayNode {
 
         if (addon is not null) {
             colorImageNode.Color = Settings.Color;
-            Size = (addon->RootSize + Settings.Padding) * addon->Scale;
+
+            var padding = Settings.PaddingVector;
+            var sizeOffset = new Vector2(padding.X + padding.Z, padding.Y + padding.W);
+
+            Size = (addon->RootSize + sizeOffset) * addon->Scale;
 
             if (IsOverlayNode) {
-                Position = addon->Position - Settings.Padding / 2.0f;
+                Position = addon->Position - new Vector2(Settings.PaddingVector.X, Settings.PaddingVector.Y);
             }
         }
     }
