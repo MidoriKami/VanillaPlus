@@ -37,9 +37,7 @@ public class WindowBackgroundConfigNode : EntryConfigurationNode<WindowBackgroun
                 new TabbedListEntry(0, new CategoryTextNode {
                     String = Strings.WindowBackground_CategoryPaddingSize,
                 }),
-                new TabbedListEntry(1, sizeEditWidget = new Vector4ConfigNode {
-                    Height = 100.0f,
-                }),
+                new TabbedListEntry(1, sizeEditWidget = new Vector4ConfigNode()),
             ],
         };
         verticalListNode.AttachNode(ConfigurationContentNode);
