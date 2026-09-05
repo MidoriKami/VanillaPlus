@@ -40,7 +40,6 @@ public class ShowTreasureChests : GameModification {
 
     public override async Task OnDisableAsync() {
         await IFramework.Get().Run(() => mapOverlayController?.Dispose());
-        await IFramework.Get().Run(() => mapOverlayController?.Dispose());
         mapOverlayController = null;
     }
 }
