@@ -114,7 +114,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
                 IPluginLog.Get().Info($"Debug mode is now {(System.SystemConfig.IsDebugMode ? "Enabled" : "Disabled")}");
                 System.SystemConfig.Save();
 
-                if (!System.ModificationBrowserAddon.IsOpen) {
+                if (!System.ModificationBrowserAddon.IsOpen && System.SystemConfig.IsDebugMode) {
                     System.ModificationBrowserAddon.Open();
                 }
                 break;
