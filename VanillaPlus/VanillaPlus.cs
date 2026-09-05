@@ -23,7 +23,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
             IPluginLog.Get().Warning("VanillaPlus is in safe mode. Modules will be loaded sequentially.");
         }
 
-        KamiToolKitLibrary.Initialize(PluginInterface, "VanillaPlus");
+        await KamiToolKitLibrary.InitializeAsync(PluginInterface, "VanillaPlus");
         KamiToolKitLibrary.SetResourceManager(Strings.ResourceManager);
 
         SetCultureInfo(PluginInterface.UiLanguage);
@@ -82,7 +82,7 @@ public sealed class VanillaPlus : IAsyncDalamudPlugin {
         await System.ModificationBrowserAddon.DisposeAsync();
         await System.SeasonEventAddon.DisposeAsync();
         await System.ModificationManager.DisposeAsync();
-        await IFramework.Get().Run(KamiToolKitLibrary.Dispose);
+        await KamiToolKitLibrary.DisposeAsync();
     }
 
     private void OnLogin() {
