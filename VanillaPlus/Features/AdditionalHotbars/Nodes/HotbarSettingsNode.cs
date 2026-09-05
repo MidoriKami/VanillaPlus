@@ -1,12 +1,15 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using Dalamud.Game.ClientState.Keys;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.System.Input;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Components.ConfigurationNodes;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
+using Lumina.Excel.Sheets;
 using Lumina.Text.ReadOnly;
 using VanillaPlus.Features.AdditionalHotbars.Config;
 using VanillaPlus.Native.Addons;
@@ -39,6 +42,10 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
         verticalSpacingInputNode.Value = entry.VerticalSpacing;
         verticalSpacingInputNode.OnValueUpdate = OnVerticalSpacingChanged;
 
+        classJobDropDownNode.OnOptionSelected = null;
+        classJobDropDownNode.SelectedOption = IDataManager.Get().GetExcelSheet<ClassJob>().GetRow(entry.LinkedClassJob);
+        classJobDropDownNode.OnOptionSelected = OnLinkedClassJobChanged;
+
         enableToggleNode.OnClick = null;
         enableToggleNode.IsChecked = entry.IsEnabled;
         enableToggleNode.OnClick = OnEnableToggled;
@@ -62,7 +69,7 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
         currentEntry.NeedsRebuildLayout = true;
 
         currentEntry.Slots.Clear();
-        currentEntry.Slots = [.. Enumerable.Repeat(new SlotData(), newWidth * currentEntry.Height)];
+        currentEntry.Slots = List<SlotData>.CreateInitialized(newWidth * currentEntry.Height);
 
         RebuildHotkeyList();
 
@@ -75,7 +82,7 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
         currentEntry.Height = newHeight;
         currentEntry.NeedsRebuildLayout = true;
         currentEntry.Slots.Clear();
-        currentEntry.Slots = [.. Enumerable.Repeat(new SlotData(), currentEntry.Width * newHeight)];
+        currentEntry.Slots = List<SlotData>.CreateInitialized(newHeight * currentEntry.Width);
 
         RebuildHotkeyList();
 
@@ -91,6 +98,11 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
     private void OnVerticalSpacingChanged(int newVerticalSpacing) {
         currentEntry?.VerticalSpacing = newVerticalSpacing;
         currentEntry?.NeedsRecalcLayout = true;
+        SaveConfig?.Invoke();
+    }
+
+    private void OnLinkedClassJobChanged(ClassJob obj) {
+        currentEntry?.LinkedClassJob = obj.RowId;
         SaveConfig?.Invoke();
     }
 
@@ -213,6 +225,22 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
                     ],
                 },
                 new ResNode{ Height = 8.0f },
+                new CategoryTextNode {
+                    Height = 28.0f,
+                    String = "Only Show When Active ClassJob is:",
+                },
+                classJobDropDownNode = new DropDownNode<ClassJob> {
+                    Height = 28.0f,
+                    Options = [
+                        ..IDataManager.Get()
+                        .GetExcelSheet<ClassJob>()
+                        .Where(job => job.ClassJobCategory.RowId is not 0)
+                        .OrderBy(job => job.UIPriority),
+                    ],
+                    GetLabelFunction = GetClassJobLabel,
+                    MaxListOptions = 15,
+                },
+                new ResNode{ Height = 8.0f },
                 enableToggleNode = new CheckboxNode {
                     Height = 28.0f,
                     String = "Enable Hotbar",
@@ -236,6 +264,12 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
             IsVisible = false,
         };
         hotkeyListNode.AttachNode(ConfigurationContentNode);
+    }
+
+    private static ReadOnlySeString GetClassJobLabel(ClassJob entry) {
+        if (entry.RowId is 0) return "Any ClassJob";
+
+        return ISeStringEvaluator.Get().EvaluateFromAddon(698, [entry.RowId]);
     }
 
     protected override void OnSizeChanged() {
@@ -271,7 +305,7 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
                 AlignmentFlags = FlexFlags.FitHeight | FlexFlags.FitWidth,
                 InitialNodes = [
                     new TextNode {
-                        String = $"Slot #{index + 1}",
+                        String = $"Row {index / currentEntry.Width + 1, 2} Column {index % currentEntry.Width + 1, 2}",
                     },
                     new TextButtonNode {
                         LabelNode = {
@@ -327,6 +361,11 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
             Key = (SeVirtualKey)newKeybind.Key,
             KeyModifier = rebindKeyModifier,
         };
+
+        if (newKeybind.Key is VirtualKey.NO_KEY) {
+            slotData.Hotkey = null;
+        }
+
         SaveConfig?.Invoke();
 
         currentEntry?.NeedsRecalcLayout = true;
@@ -343,6 +382,7 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
     private readonly NumericInputNode heightInputNode;
     private readonly NumericInputNode horizontalSpacingInputNode;
     private readonly NumericInputNode verticalSpacingInputNode;
+    private readonly DropDownNode<ClassJob> classJobDropDownNode;
     private readonly CheckboxNode movingToggleNode;
     private readonly CheckboxNode enableToggleNode;
 

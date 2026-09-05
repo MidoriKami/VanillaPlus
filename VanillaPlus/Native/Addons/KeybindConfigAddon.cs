@@ -25,15 +25,18 @@ public unsafe class KeybindConfigAddon : NativeAddon {
 
     private HorizontalLineNode? buttonsLineNode;
     private TextButtonNode? confirmButtonNode;
+    private TextButtonNode? clearButtonNode;
     private TextButtonNode? cancelButtonNode;
 
-    private readonly HashSet<VirtualKey> combo = [VirtualKey.NO_KEY];
+    private HashSet<VirtualKey> combo = [ VirtualKey.NO_KEY ];
     private readonly List<InputId> conflicts = [];
 
     public required Keybind InitialKeybind { get; set; }
 
     protected override void OnSetup(AtkUnitBase* addon, Span<AtkValue> atkValueSpan) {
         base.OnSetup(addon, atkValueSpan);
+
+        combo = [ .. InitialKeybind.Modifiers, InitialKeybind.Key ];
 
         SetWindowSize(500.0f, 333.0f);
 
@@ -58,6 +61,10 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             String = Strings.KeybindConfig_CurrentPrompt,
         };
         currentComboTextNode.AttachNode(this);
+
+        if (combo.Any(key => key is not VirtualKey.NO_KEY)) {
+            currentComboTextNode.String = string.Join(" + ", combo);
+        }
 
         conflictsLabelNode = new CategoryTextNode {
             AlignmentType = AlignmentType.Left,
@@ -100,13 +107,34 @@ public unsafe class KeybindConfigAddon : NativeAddon {
             OnClick = () => {
                 var newKeybind = new Keybind {
                     Key = combo.FirstOrNull(key => key.IsKey) ?? VirtualKey.NO_KEY,
-                    Modifiers = combo.Where(key => key.IsModifier).ToHashSet(),
+                    Modifiers = [ .. combo.Where(key => key.IsModifier) ],
                 };
+
+                combo = [VirtualKey.NO_KEY];
+
                 OnKeybindChanged(newKeybind);
                 Close();
             },
         };
         confirmButtonNode.AttachNode(this);
+
+        clearButtonNode = new TextButtonNode {
+            Position = ContentStartPosition + new Vector2(ContentSize.X / 2.0f - 100.0f / 2.0f, ContentSize.Y - 26.0f),
+            Size = new Vector2(100.0f, 24.0f),
+            String = "Clear",
+            OnClick = () => {
+                var newKeybind = new Keybind {
+                    Key = VirtualKey.NO_KEY,
+                    Modifiers = [],
+                };
+
+                combo = [ VirtualKey.NO_KEY ];
+
+                OnKeybindChanged(newKeybind);
+                Close();
+            },
+        };
+        clearButtonNode.AttachNode(this);
 
         cancelButtonNode = new TextButtonNode {
             Position = ContentStartPosition + new Vector2(ContentSize.X - 100.0f, ContentSize.Y - 26.0f),

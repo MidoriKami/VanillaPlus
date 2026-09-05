@@ -102,7 +102,7 @@ public class AdditionalHotbars : GameModification {
             Name = "New Hotbar",
             Width = 12,
             Height = 1,
-            Slots = [.. Enumerable.Repeat(new SlotData(), 12)],
+            Slots = List<SlotData>.CreateInitialized(12),
         };
 
         unsafe {

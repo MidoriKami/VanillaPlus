@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 using System.Text.Json.Serialization;
 
@@ -18,6 +17,8 @@ public class HotbarConfig {
 
     public bool IsEnabled { get; set; } = true;
 
+    public uint LinkedClassJob { get; set; }
+
     [JsonIgnore]
     public bool MovingEnabled { get; set; }
 
@@ -27,5 +28,5 @@ public class HotbarConfig {
     [JsonIgnore]
     public bool NeedsRecalcLayout { get; set; }
 
-    public List<SlotData> Slots { get; set; } = [.. Enumerable.Repeat(new SlotData(), 12)];
+    public List<SlotData> Slots { get; set; } = List<SlotData>.CreateInitialized(12);
 }
