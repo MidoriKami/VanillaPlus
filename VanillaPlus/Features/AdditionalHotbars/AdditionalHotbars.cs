@@ -49,7 +49,7 @@ public class AdditionalHotbars : GameModification {
             AddClicked = OnAddConfigClicked,
             RemoveClicked = OnRemoveConfigClicked,
             OptionsList = config.Hotbars,
-            Size = new Vector2(750.0f, 500.0f),
+            Size = new Vector2(750.0f, 550.0f),
         };
 
         OpenConfigAction = configAddon.Toggle;

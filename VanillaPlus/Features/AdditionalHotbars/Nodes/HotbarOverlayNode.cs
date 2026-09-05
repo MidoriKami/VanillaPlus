@@ -18,9 +18,11 @@ public sealed class HotbarOverlayNode : OverlayNode {
 
     protected override unsafe void OnUpdate() {
         var isAllowedClassJob = Config.LinkedClassJob is 0 || Config.LinkedClassJob == IPlayerState.Get().ClassJob.RowId;
-        
+
         IsVisible = isAllowedClassJob && Config.IsEnabled;
         if (!IsVisible) return;
+
+        Scale = new Vector2(Config.Scale, Config.Scale);
 
         if (Config.NeedsRebuildLayout) {
             RebuildLayout();

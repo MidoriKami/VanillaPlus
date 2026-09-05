@@ -10,6 +10,8 @@ public class HotbarConfig {
     public int Width { get; set; } = 12;
     public int Height { get; set; } = 1;
 
+    public float Scale { get; set; } = 1.0f;
+
     public int VerticalSpacing { get; set; } = 4;
     public int HorizontalSpacing { get; set; }
 

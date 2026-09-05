@@ -46,6 +46,10 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
         classJobDropDownNode.SelectedOption = IDataManager.Get().GetExcelSheet<ClassJob>().GetRow(entry.LinkedClassJob);
         classJobDropDownNode.OnOptionSelected = OnLinkedClassJobChanged;
 
+        scaleNode.OnValueChanged = null;
+        scaleNode.Value = entry.Scale;
+        scaleNode.OnValueChanged = OnScaleChanged;
+
         enableToggleNode.OnClick = null;
         enableToggleNode.IsChecked = entry.IsEnabled;
         enableToggleNode.OnClick = OnEnableToggled;
@@ -103,6 +107,11 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
 
     private void OnLinkedClassJobChanged(ClassJob obj) {
         currentEntry?.LinkedClassJob = obj.RowId;
+        SaveConfig?.Invoke();
+    }
+
+    private void OnScaleChanged(float newScale) {
+        currentEntry?.Scale = newScale;
         SaveConfig?.Invoke();
     }
 
@@ -233,14 +242,32 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
                     Height = 28.0f,
                     Options = [
                         ..IDataManager.Get()
-                        .GetExcelSheet<ClassJob>()
-                        .Where(job => job.ClassJobCategory.RowId is not 0)
-                        .OrderBy(job => job.UIPriority),
+                            .GetExcelSheet<ClassJob>()
+                            .Where(job => job.ClassJobCategory.RowId is not 0)
+                            .OrderBy(job => job.UIPriority),
                     ],
                     GetLabelFunction = GetClassJobLabel,
                     MaxListOptions = 15,
                 },
                 new ResNode{ Height = 8.0f },
+                new HorizontalListNode {
+                    Height = 28.0f,
+                    ItemSpacing = 8.0f,
+                    FitHeight = true,
+                    InitialNodes = [
+                        scaleNode = new FloatSliderNode {
+                            Width = 300.0f,
+                            Min = 0.5f,
+                            Max = 2.5f,
+                        },
+                        new TextNode {
+                            String = "Scale",
+                            AlignmentType = AlignmentType.TopLeft,
+                            FontSize = 14,
+                            Width = 100.0f,
+                        },
+                    ],
+                },
                 enableToggleNode = new CheckboxNode {
                     Height = 28.0f,
                     String = "Enable Hotbar",
@@ -383,6 +410,7 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
     private readonly NumericInputNode horizontalSpacingInputNode;
     private readonly NumericInputNode verticalSpacingInputNode;
     private readonly DropDownNode<ClassJob> classJobDropDownNode;
+    private readonly FloatSliderNode scaleNode;
     private readonly CheckboxNode movingToggleNode;
     private readonly CheckboxNode enableToggleNode;
 
