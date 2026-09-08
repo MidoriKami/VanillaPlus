@@ -71,7 +71,7 @@ public class GameModificationListItemNode : ListItemNode<LoadedModification>, IL
 
         authorTextNode = new TextNode {
             FontType = FontType.Axis,
-            TextFlags = TextFlags.Ellipsis | TextFlags.UseFixedFontResolution,
+            TextFlags = TextFlags.Ellipsis,
             TextColor = ColorHelper.GetColor(3),
         };
         authorTextNode.AttachNode(labelsContainerNode);
