@@ -174,7 +174,7 @@ public class FadeUnavailableActions : GameModification {
     }
 
     private enum NumberArrayActionType : uint {
-        Action = 0x2F,
-        CraftAction = 0x37,
+        Action = 0x30,
+        CraftAction = 0x38,
     }
 }
