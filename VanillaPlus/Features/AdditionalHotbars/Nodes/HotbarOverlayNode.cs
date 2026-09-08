@@ -127,6 +127,7 @@ public sealed class HotbarOverlayNode : OverlayNode {
 
         OnMoveComplete = _ => {
             Config.Position = Position;
+            mainConfig.Save();
         };
     }
 
