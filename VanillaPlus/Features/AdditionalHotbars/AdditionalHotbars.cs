@@ -135,30 +135,36 @@ public class AdditionalHotbars : GameModification {
     private void OnHotbarCommand(string command, string arguments) {
         if (command is not "/plushotbar") return;
 
-        if (arguments.Split(" ", 2) is not [var action, var hotbarName]) return;
-        if (hotbarName.IsNullOrEmpty()) return;
+        switch (arguments.Split(" ")) {
+            case [ "config" ]:
+                configAddon?.Toggle();
+                break;
 
-        var configEntry = config?.Hotbars.FirstOrDefault(bar => bar.Name.Equals(hotbarName, StringComparison.OrdinalIgnoreCase));
+            case [var action, var hotbarName]:
+                if (hotbarName.IsNullOrEmpty()) return;
+                var configEntry = config?.Hotbars.FirstOrDefault(bar => bar.Name.Equals(hotbarName, StringComparison.OrdinalIgnoreCase));
 
-        if (configEntry is null) {
-            IChatGui.Get().PrintError($"Unable to find a hotbar by the name of '{hotbarName}'");
-            return;
+                if (configEntry is null) {
+                    IChatGui.Get().PrintError($"Unable to find a hotbar by the name of '{hotbarName}'");
+                    return;
+                }
+
+                switch (action.ToLower()) {
+                    case "show":
+                        configEntry.IsEnabled = true;
+                        break;
+
+                    case "hide":
+                        configEntry.IsEnabled = false;
+                        break;
+
+                    case "toggle":
+                        configEntry.IsEnabled = !configEntry.IsEnabled;
+                        break;
+                }
+
+                config?.Save();
+                break;
         }
-
-        switch (action.ToLower()) {
-            case "show":
-                configEntry.IsEnabled = true;
-                break;
-
-            case "hide":
-                configEntry.IsEnabled = false;
-                break;
-
-            case "toggle":
-                configEntry.IsEnabled = !configEntry.IsEnabled;
-                break;
-        }
-
-        config?.Save();
     }
 }

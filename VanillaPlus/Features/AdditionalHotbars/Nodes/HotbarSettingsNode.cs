@@ -58,6 +58,10 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
         movingToggleNode.IsChecked = entry.MovingEnabled;
         movingToggleNode.OnClick = OnMovingToggled;
 
+        padlockToggleNode.OnClick = null;
+        padlockToggleNode.IsChecked = entry.IncludePadlock;
+        padlockToggleNode.OnClick = OnPadlockButtonToggled;
+
         RebuildHotkeyList();
     }
 
@@ -124,18 +128,23 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
         SaveConfig?.Invoke();
     }
 
+    private void OnPadlockButtonToggled(bool includePadlock) {
+        currentEntry?.IncludePadlock = includePadlock;
+        SaveConfig?.Invoke();
+    }
+
     public HotbarSettingsNode() {
         tabBarNode = new TabBarNode {
             InitialEntries = [
                 new TabBarEntry {
-                    Label = "Hotbar Settings",
+                    Label = "Hotbar",
                     OnClick = () => {
                         hotbarSettingsLayoutNode?.IsVisible = true;
                         hotkeyListNode?.IsVisible = false;
                     },
                 },
                 new TabBarEntry {
-                    Label = "Hotkeys",
+                    Label = "Keybinds",
                     OnClick = () => {
                         hotbarSettingsLayoutNode?.IsVisible = false;
                         hotkeyListNode?.IsVisible = true;
@@ -276,6 +285,10 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
                     Height = 28.0f,
                     String = "Enable Moving Hotbar",
                 },
+                padlockToggleNode = new CheckboxNode {
+                    Height = 28.0f,
+                    String = "Enable Padlock Button",
+                },
             ],
         };
         hotbarSettingsLayoutNode.AttachNode(ConfigurationContentNode);
@@ -349,6 +362,21 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
         hotkeyListNode.RecalculateSizes();
     }
 
+    private void UpdateHotkeyList() {
+        if (currentEntry is null) return;
+
+        var textButtonNodes = hotkeyListNode.ContentNode
+            .GetNodes<HorizontalFlexNode>()
+            .SelectMany(flexNode => flexNode.GetNodes<TextButtonNode>())
+            .ToList();
+
+        foreach (var (index, slotData) in currentEntry.Slots.Index()) {
+            if (textButtonNodes.Count < index) continue;
+
+            textButtonNodes[index].String = slotData.Hotkey is null ? string.Empty : HotbarNode.GetKeybindText(slotData.Hotkey);
+        }
+    }
+
     private void OnChangeKeybindClicked(SlotData slotData) {
         if (keybindConfigAddon is null) return;
 
@@ -396,7 +424,7 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
         SaveConfig?.Invoke();
 
         currentEntry?.NeedsRecalcLayout = true;
-        RebuildHotkeyList();
+        UpdateHotkeyList();
     }
 
     private HotbarConfig? currentEntry;
@@ -413,6 +441,7 @@ public class HotbarSettingsNode : EntryConfigurationNode<HotbarConfig> {
     private readonly FloatSliderNode scaleNode;
     private readonly CheckboxNode movingToggleNode;
     private readonly CheckboxNode enableToggleNode;
+    private readonly CheckboxNode padlockToggleNode;
 
     private readonly ScrollingNode<VerticalListNode> hotkeyListNode;
 

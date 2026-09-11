@@ -8,6 +8,7 @@ using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.UiOverlay;
 using VanillaPlus.Features.AdditionalHotbars.Config;
+using VanillaPlus.Features.LockChatButton;
 
 namespace VanillaPlus.Features.AdditionalHotbars.Nodes;
 
@@ -39,6 +40,9 @@ public sealed class HotbarOverlayNode : OverlayNode {
         IGameConfig.Get().UiConfig.TryGetBool("HotbarLock", out var isHotbarLocked);
         IGameConfig.Get().UiControl.TryGetBool("HotbarEmptyVisible", out var isHotbarEmptyVisible);
 
+        padlockNode.IsVisible = Config.IncludePadlock;
+        padlockNode.IsLocked = isHotbarLocked;
+
         var configAddonExists = IGameGui.Get().GetAddonByName("AdditionalHotbarsConfig");
 
         ref var dragDropManager = ref AtkStage.Instance()->DragDropManager;
@@ -50,6 +54,26 @@ public sealed class HotbarOverlayNode : OverlayNode {
 
             node.Update();
         }
+    }
+
+    public unsafe HotbarOverlayNode(AdditionalHotbarsConfig mainConfig, HotbarConfig config) {
+        this.mainConfig = mainConfig;
+        Config = config;
+
+        padlockNode = new PadlockButtonNode {
+            Size = new Vector2(20.0f, 24.0f),
+            TextTooltip = "Left Click to lock/unlock hotbar slots.\n" +
+                          "Right Click to enable moving hotbar.\n" +
+                          "Control + Click to open config.",
+        };
+        padlockNode.AddEvent(AtkEventType.MouseClick, OnPadlockButtonClick);
+        padlockNode.RemoveEvent(AtkEventType.ButtonClick);
+        padlockNode.AttachNode(this);
+
+        OnMoveComplete = _ => {
+            Config.Position = Position;
+            mainConfig.Save();
+        };
     }
 
     private void RebuildLayout() {
@@ -86,6 +110,8 @@ public sealed class HotbarOverlayNode : OverlayNode {
             Config.Width * (44.0f + Config.HorizontalSpacing) + 16.0f,
             Config.Height * (44.0f + Config.VerticalSpacing) + 16.0f
         );
+
+        padlockNode.Position = Size + new Vector2(8.0f, -42.0f);
     }
 
     private void RecalcLayout() {
@@ -104,6 +130,8 @@ public sealed class HotbarOverlayNode : OverlayNode {
             Config.Width * (44.0f + Config.HorizontalSpacing) + 16.0f,
             Config.Height * (44.0f + Config.VerticalSpacing) + 16.0f
         );
+
+        padlockNode.Position = Size + new Vector2(8.0f, -42.0f);
     }
 
     private void OnPayloadAccepted(int index, DragDropPayload payload) {
@@ -119,16 +147,22 @@ public sealed class HotbarOverlayNode : OverlayNode {
         mainConfig.Save();
     }
 
-    public HotbarOverlayNode(AdditionalHotbarsConfig mainConfig, HotbarConfig config) {
-        this.mainConfig = mainConfig;
-        Config = config;
+    private unsafe void OnPadlockButtonClick(AtkEventListener* thisPtr, AtkEventType eventType, int eventParam, AtkEvent* atkEvent, AtkEventData* atkEventData) {
+        if (atkEventData->IsControlHeld) {
+            ICommandManager.Get().ProcessCommand("/plushotbar config");
+            return;
+        }
 
-        OnMoveComplete = _ => {
-            Config.Position = Position;
-            mainConfig.Save();
-        };
+        if (atkEventData->IsLeftClick) {
+            if (!IGameConfig.Get().UiConfig.TryGetBool("HotbarLock", out var isHotbarLocked)) return;
+            IGameConfig.Get().UiConfig.Set("HotbarLock", !isHotbarLocked);
+        }
+        else if (atkEventData->IsRightClick) {
+            Config.MovingEnabled = !Config.MovingEnabled;
+        }
     }
 
     private readonly List<HotbarNode> hotbarNodes = [];
+    private readonly PadlockButtonNode padlockNode;
     private readonly AdditionalHotbarsConfig mainConfig;
 }

@@ -21,6 +21,8 @@ public class HotbarConfig {
 
     public uint LinkedClassJob { get; set; }
 
+    public bool IncludePadlock { get; set; }
+
     [JsonIgnore]
     public bool MovingEnabled { get; set; }
 

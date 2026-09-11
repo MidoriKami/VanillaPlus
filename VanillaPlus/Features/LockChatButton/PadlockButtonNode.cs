@@ -9,7 +9,7 @@ public class PadlockButtonNode : TextureButtonNode {
 
     public PadlockButtonNode() {
         TexturePath = "ui/uld/ActionBar.tex";
-        TextureCoordinates = lockedCoordinate;
+        TextureCoordinates = unlockedCoordinate;
         TextureSize = new Vector2(20.0f, 24.0f);
 
         ImageNode.Scale = new Vector2(0.90f, 0.90f);
