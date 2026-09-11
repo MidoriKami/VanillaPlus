@@ -135,7 +135,7 @@ public class AdditionalHotbars : GameModification {
     private void OnHotbarCommand(string command, string arguments) {
         if (command is not "/plushotbar") return;
 
-        switch (arguments.Split(" ")) {
+        switch (arguments.Split(" ", 2)) {
             case [ "config" ]:
                 configAddon?.Toggle();
                 break;
