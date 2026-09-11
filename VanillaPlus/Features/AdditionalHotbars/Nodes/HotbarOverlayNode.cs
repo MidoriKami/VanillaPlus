@@ -107,10 +107,8 @@ public sealed class HotbarOverlayNode : OverlayNode {
     }
 
     private void OnPayloadAccepted(int index, DragDropPayload payload) {
-        Config.Slots[index] = new SlotData {
-            DragDropType = payload.Type,
-            Id = (uint) payload.Int2,
-        };
+        Config.Slots[index].DragDropType = payload.Type;
+        Config.Slots[index].Id = (uint) payload.Int2;
         mainConfig.Save();
     }
 
