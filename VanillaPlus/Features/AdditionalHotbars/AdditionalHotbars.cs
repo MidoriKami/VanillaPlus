@@ -36,8 +36,6 @@ public class AdditionalHotbars : GameModification {
     private List<HotbarOverlayNode>? nodes;
 
     public override async Task OnEnableAsync() {
-        IGameInteropProvider.Get().InitializeFromAttributes(this);
-
         nodes = [];
         config = await AdditionalHotbarsConfig.Load();
 
