@@ -98,35 +98,37 @@ public class ImageDescriptionInfoNode : ResNode {
                 imageContainerNode.IsVisible = false;
 
                 var texture = await ITextureProvider.Get().GetFromFile(Assets.GetAssetPath(imageName)).RentAsync();
-                imageNode.LoadTexture(texture);
-                imageNode.TextureSize = texture.Size;
+                await IFramework.Get().Run(() => {
+                    imageNode.LoadTexture(texture);
+                    imageNode.TextureSize = texture.Size;
 
-                if (texture.Width > texture.Height) {
-                    var ratio = texture.Width / imageContainerNode.Width;
-                    var multiplier = 1 / ratio;
+                    if (texture.Width > texture.Height) {
+                        var ratio = texture.Width / imageContainerNode.Width;
+                        var multiplier = 1 / ratio;
 
-                    imageNode.Width = imageContainerNode.Width;
-                    imageNode.Height = texture.Height * multiplier;
-                    imageNode.Y = (imageContainerNode.Width - imageContainerNode.Height) / 2.0f;
-                    imageNode.X = 0.0f;
-                }
-                else {
-                    var ratio = texture.Height / imageContainerNode.Width;
-                    var multiplier = 1 / ratio;
+                        imageNode.Width = imageContainerNode.Width;
+                        imageNode.Height = texture.Height * multiplier;
+                        imageNode.Y = (imageContainerNode.Width - imageContainerNode.Height) / 2.0f;
+                        imageNode.X = 0.0f;
+                    }
+                    else {
+                        var ratio = texture.Height / imageContainerNode.Width;
+                        var multiplier = 1 / ratio;
 
-                    imageNode.Height = imageContainerNode.Width;
-                    imageNode.Width = texture.Width * multiplier;
-                    imageNode.X = (imageContainerNode.Width - imageContainerNode.Width) / 2.0f;
-                    imageNode.Y = 0.0f;
-                }
+                        imageNode.Height = imageContainerNode.Width;
+                        imageNode.Width = texture.Width * multiplier;
+                        imageNode.X = (imageContainerNode.Width - imageContainerNode.Width) / 2.0f;
+                        imageNode.Y = 0.0f;
+                    }
 
-                frameNode.Position = new Vector2(-16.0f, -16.0f);
-                frameNode.Size = imageNode.Size + new Vector2(32.0f, 32.0f);
+                    frameNode.Position = new Vector2(-16.0f, -16.0f);
+                    frameNode.Size = imageNode.Size + new Vector2(32.0f, 32.0f);
 
-                imageNode.Position = imageContainerNode.Size / 2.0f - imageNode.Size / 2.0f;
-                imageNode.Origin = imageNode.Bounds.Center;
+                    imageNode.Position = imageContainerNode.Size / 2.0f - imageNode.Size / 2.0f;
+                    imageNode.Origin = imageNode.Bounds.Center;
 
-                imageContainerNode.IsVisible = true;
+                    imageContainerNode.IsVisible = true;
+                });
             });
         }
 
