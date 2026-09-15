@@ -24,7 +24,7 @@ public class FancyLoadingScreens : GameModification {
         Description = Strings.ModificationDescription_FancyLoadingScreens,
         Type = ModificationType.UserInterface,
         Authors = ["goat", "MapleRecall", "MidoriKami"],
-        CompatibilityModule = new PluginCompatibilityModule("Dalamud.LoadingImage"),
+        CompatibilityModule = new PluginCompatibilityModule("Dalamud.LoadingImage", "CustomLoadingScreens"),
     };
 
     private Hook<Telepo.Delegates.Teleport>? teleportHook;
