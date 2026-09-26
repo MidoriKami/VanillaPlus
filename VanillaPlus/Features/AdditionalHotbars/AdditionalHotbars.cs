@@ -17,10 +17,9 @@ namespace VanillaPlus.Features.AdditionalHotbars;
 
 public class AdditionalHotbars : GameModification {
     public override ModificationInfo ModificationInfo => new() {
-        DisplayName = "Additional Hotbars",
-        Description = "Allows you to add additional hotbars to the games UI.\n\n" +
-                      "Warning, this is a highly experimental feature that is still a work in progress. " +
-                      "Please submit feedback and issues to the XIVLauncher & Dalamud Discord thread for VanillaPlus.",
+        DisplayName = "Additional Hotbars (Pending Removal)",
+        Description = "A standalone version of this feature is now available as 'Expanded Hotbars' plugin.\n" +
+                      "This feature will be removed from VanillaPlus sometime in the near future.",
         Type = ModificationType.UserInterface,
         Authors = ["MidoriKami"],
     };
