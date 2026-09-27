@@ -1855,4 +1855,22 @@ Must hold shift while right clicking to nav up.</value>
   <data name="ModificationDescription_BetterEmoteWindow" xml:space="preserve">
     <value>Improves the Emote window layout and previews targeted and untargeted emote text.</value>
   </data>
+  <data name="ModificationDisplay_LogSubtitles" xml:space="preserve">
+      <value>Log Subtitles</value>
+  </data>
+  <data name="ModificationDescription_LogSubtitles" xml:space="preserve">
+      <value>Logs subtitles in the chat log.</value>
+  </data>
+  <data name="LogSubtitles_ConfigTitle" xml:space="preserve">
+      <value>Log Subtitles Config</value>
+  </data>
+  <data name="LogSubtitles_CategoryGeneral" xml:space="preserve">
+      <value>General</value>
+  </data>
+  <data name="LogSubtitles_OutputChannel" xml:space="preserve">
+      <value>Output Channel</value>
+  </data>
+  <data name="LogSubtitles_Narrator" xml:space="preserve">
+      <value>Narrator</value>
+  </data>
 </root>
