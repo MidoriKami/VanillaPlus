@@ -18,9 +18,7 @@ public class LogSubtitles : GameModification {
         Authors = ["beerpsi"],
     };
 
-    // public override string ImageName => "LogSubtitles.png";
-
-    // public override bool IsExperimental => true;
+    public override string ImageName => "LogSubtitles.png";
 
     private LogSubtitlesConfig? config;
     private ConfigAddon? configAddon;
@@ -29,7 +27,7 @@ public class LogSubtitles : GameModification {
         config = await LogSubtitlesConfig.Load();
         configAddon = new ConfigAddon {
             InternalName = "LogSubtitlesConfig",
-            Title = Strings.BiggerConfigWindows_ConfigTitle,
+            Title = Strings.LogSubtitles_ConfigTitle,
             Config = config,
         };
 
@@ -47,20 +45,21 @@ public class LogSubtitles : GameModification {
     public override async Task OnDisableAsync() {
         IAddonLifecycle.Get().UnregisterListener(AddonEvent.PostRefresh, OnAddonTalkSubtitleEvent);
         IAddonLifecycle.Get().UnregisterListener(AddonEvent.PostSetup, OnAddonTalkSubtitleEvent);
-        await configAddon.DisposeAsyncSafe();
 
+        await configAddon.DisposeAsyncSafe();
         configAddon = null;
+
         config = null;
     }
 
     private unsafe void OnAddonTalkSubtitleEvent(AddonEvent evt, AddonArgs args) {
         var addon = args.GetAddon<AddonTalkSubtitle>();
 
-        if (addon->SubtitleText.Length <= 0 || addon->IsShowSuppressed)
-            return;
+        if (addon->SubtitleText.IsEmpty) return;
+        if (addon->IsShowSuppressed) return;
 
         IChatGui.Get().Print(new XivChatEntry {
-            MessageBytes = addon->SubtitleText.AsSpan().ToArray(),
+            Message = addon->SubtitleText.AsReadOnlySeString().ToDalamudString(),
             Name = Strings.LogSubtitles_Narrator,
             Type = config?.Channel ?? XivChatType.NPCDialogueAnnouncements,
         });
