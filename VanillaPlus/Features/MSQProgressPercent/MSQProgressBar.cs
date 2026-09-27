@@ -113,7 +113,13 @@ public class MSQProgressBar : GameModification {
 
         if (addon->AtkValuesSpan[6].Type is not AtkValueType.String) {
             progressBarNode?.Progress = 1.0f;
-            progressBarNode?.TextTooltip = Strings.MSQProgressBar_TooltipGameComplete;
+
+            progressBarNode?.TextTooltip = config.Mode switch {
+                MSQProgressBarMode.EntireGame => Strings.MSQProgressBar_TooltipGameComplete,
+                MSQProgressBarMode.Expansion => "Expansion Complete! Good job.",
+                _ => "Error Parsing GameMode.",
+            };
+
             return;
         }
 
