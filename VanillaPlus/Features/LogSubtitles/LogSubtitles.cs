@@ -10,7 +10,6 @@ using VanillaPlus.Native.Addons;
 
 namespace VanillaPlus.Features.LogSubtitles;
 
-// Template GameModification for more easily creating your own, can copy this entire folder and rename it.
 public class LogSubtitles : GameModification {
     public override ModificationInfo ModificationInfo => new() {
         DisplayName = Strings.ModificationDisplay_LogSubtitles,
