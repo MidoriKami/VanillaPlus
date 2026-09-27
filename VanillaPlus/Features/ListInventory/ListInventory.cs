@@ -84,6 +84,7 @@ public class ListInventory : GameModification {
     private void OnAddonConfigChanged(AddonConfig addonConfig) {
         inventoryListAddon?.Size = addonConfig.GetWindowSizeWithDefault(new Vector2(500.0f, 510.0f));
         keybindListener?.IsEnabled = addonConfig.KeybindEnabled;
+        keybindListener?.DisableInCombat = addonConfig.KeybindEnabled;
         keybindListener?.Keybind = addonConfig.Keybind;
     }
 }
