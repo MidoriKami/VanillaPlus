@@ -25,6 +25,7 @@ public class LogSubtitles : GameModification {
 
     public override async Task OnEnableAsync() {
         config = await LogSubtitlesConfig.Load();
+
         configAddon = new ConfigAddon {
             InternalName = "LogSubtitlesConfig",
             Title = Strings.LogSubtitles_ConfigTitle,
@@ -43,8 +44,7 @@ public class LogSubtitles : GameModification {
     }
 
     public override async Task OnDisableAsync() {
-        IAddonLifecycle.Get().UnregisterListener(AddonEvent.PostRefresh, OnAddonTalkSubtitleEvent);
-        IAddonLifecycle.Get().UnregisterListener(AddonEvent.PostSetup, OnAddonTalkSubtitleEvent);
+        IAddonLifecycle.Get().UnregisterListener(OnAddonTalkSubtitleEvent);
 
         await configAddon.DisposeAsyncSafe();
         configAddon = null;
