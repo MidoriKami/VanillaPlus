@@ -54,12 +54,13 @@ public class LogSubtitles : GameModification {
 
     private unsafe void OnAddonTalkSubtitleEvent(AddonEvent evt, AddonArgs args) {
         var addon = args.GetAddon<AddonTalkSubtitle>();
+        var subtitleText = addon->SubtitleText.AsReadOnlySeStringSpan();
 
-        if (addon->SubtitleText.IsEmpty) return;
+        if (subtitleText.IsEmpty) return;
         if (addon->IsShowSuppressed) return;
 
         IChatGui.Get().Print(new XivChatEntry {
-            Message = addon->SubtitleText.AsReadOnlySeString().ToDalamudString(),
+            Message = subtitleText.ToDalamudString(),
             Name = Strings.LogSubtitles_Narrator,
             Type = config?.Channel ?? XivChatType.NPCDialogueAnnouncements,
         });
