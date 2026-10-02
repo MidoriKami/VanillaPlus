@@ -64,9 +64,6 @@ public static unsafe class Inventory {
         return items;
     }
 
-    public static List<InventoryItem> GetInventoryItems(string filterString, bool invert = false)
-        => GetInventoryItems().Where(item => item.IsRegexMatch(filterString) != invert).ToList();
-
     public static InventoryItem* GetItemForSorter(ItemOrderModuleSorter* sorter, int page, int slot) {
         var sorterItem = sorter->Items.FirstOrNull(item => item.Value->Page == page && item.Value->Slot == slot);
         if (sorterItem is null) return null;
