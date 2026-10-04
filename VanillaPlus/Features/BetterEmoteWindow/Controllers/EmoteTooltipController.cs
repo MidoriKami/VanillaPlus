@@ -132,7 +132,7 @@ public class EmoteTooltipController : IAsyncDisposable {
         if (renderer->RowTemplateNodeList is not null) {
             if (renderer->RowTemplateNodeCountByte is 1) {
                 var node = renderer->RowTemplateNode;
-                if (node is not null && node->GetNodeType() is not NodeType.Text) {
+                if (node is not null && node->GetNodeType() is NodeType.Text) {
                     var textNode = (AtkTextNode*)node;
                     var text = textNode->GetText().ToString();
 
