@@ -130,15 +130,28 @@ public class EmoteTooltipController : IAsyncDisposable {
         }
 
         if (renderer->RowTemplateNodeList is not null) {
-            for (var index = 0; index < renderer->RowTemplateNodeCountByte; index++) {
-                var node = renderer->RowTemplateNodeList[index];
-                if (node is null || node->GetNodeType() is not NodeType.Text) continue;
+            if (renderer->RowTemplateNodeCountByte is 1) {
+                var node = renderer->RowTemplateNode;
+                if (node is not null && node->GetNodeType() is not NodeType.Text) {
+                    var textNode = (AtkTextNode*)node;
+                    var text = textNode->GetText().ToString();
 
-                var textNode = (AtkTextNode*)node;
-                var text = textNode->GetText().ToString();
+                    if (!string.IsNullOrEmpty(text)) {
+                        return text;
+                    }
+                }
+            }
+            else {
+                for (var index = 0; index < renderer->RowTemplateNodeCountByte; index++) {
+                    var node = renderer->RowTemplateNodeList[index];
+                    if (node is null || node->GetNodeType() is not NodeType.Text) continue;
 
-                if (!string.IsNullOrEmpty(text)) {
-                    return text;
+                    var textNode = (AtkTextNode*)node;
+                    var text = textNode->GetText().ToString();
+
+                    if (!string.IsNullOrEmpty(text)) {
+                        return text;
+                    }
                 }
             }
         }
