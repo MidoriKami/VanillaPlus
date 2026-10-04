@@ -11,6 +11,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Native.Addons;
+using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule.HotbarUIIntermediate;
 using Action = Lumina.Excel.Sheets.Action;
 
 namespace VanillaPlus.Features.FadeUnavailableActions;
@@ -92,7 +93,7 @@ public class FadeUnavailableActions : GameModification {
 
         var numberArrayData = (ActionBarSlotNumberArray*)&numberArray->IntArray[numberArrayIndex];
 
-        if ((NumberArrayActionType)numberArrayData->ActionType is not (NumberArrayActionType.Action or NumberArrayActionType.CraftAction)) {
+        if (numberArrayData->Type is not (SlotType.Action or SlotType.CraftAction)) {
             ApplyColoring(hotBarSlotData, false, false);
             return;
         }
@@ -171,10 +172,5 @@ public class FadeUnavailableActions : GameModification {
                 }
             }
         }
-    }
-
-    private enum NumberArrayActionType : uint {
-        Action = 0x30,
-        CraftAction = 0x38,
     }
 }
