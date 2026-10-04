@@ -29,17 +29,24 @@ public class EmoteTooltipController : IAsyncDisposable {
     private unsafe void OnEmotePostReceiveEvent(AddonEvent type, AddonArgs args) {
         if (args is not AddonReceiveEventArgs receiveEventArgs) return;
 
-        switch ((AtkEventType)receiveEventArgs.AtkEventType) {
+        var eventType = (AtkEventType)receiveEventArgs.AtkEventType;
+        var eventData = (AtkEventData*)receiveEventArgs.AtkEventData;
+        var addon = args.GetAddon<AtkUnitBase>();
+
+        switch (eventType) {
             case AtkEventType.ListItemRollOut:
                 HideEmoteTooltip();
                 return;
 
             case AtkEventType.ListItemRollOver:
-                var listItemData = ((AtkEventData*)receiveEventArgs.AtkEventData)->ListItemData;
-                var addon = args.GetAddon<AtkUnitBase>();
-                var emoteName = GetRendererText(listItemData.ListItemRenderer);
+                var listItemData = eventData->ListItemData;
+
+                var itemRenderer = listItemData.ListItemRenderer;
+                if (itemRenderer is null) return;
+
+                var emoteName = GetRendererText(itemRenderer);
                 var emoteRowId = ResolveEmoteRowId(emoteName);
-                ShowEmoteTooltip(addon, listItemData.ListItemRenderer, emoteRowId);
+                ShowEmoteTooltip(addon, itemRenderer, emoteRowId);
                 return;
         }
     }
@@ -109,12 +116,17 @@ public class EmoteTooltipController : IAsyncDisposable {
         emoteTooltipAddonId = 0;
     }
 
-    private void OnEmoteFinalize(AddonEvent type, AddonArgs args) => HideEmoteTooltip();
+    private void OnEmoteFinalize(AddonEvent type, AddonArgs args)
+        => HideEmoteTooltip();
 
     private static unsafe string GetRendererText(AtkComponentListItemRenderer* renderer) {
+        if (renderer is null) return string.Empty;
+
         if (renderer->ButtonTextNode is not null) {
             var buttonText = renderer->ButtonTextNode->GetText().ToString();
-            if (!string.IsNullOrEmpty(buttonText)) return buttonText;
+            if (!string.IsNullOrEmpty(buttonText)) {
+                return buttonText;
+            }
         }
 
         if (renderer->RowTemplateNodeList is not null) {
@@ -122,17 +134,25 @@ public class EmoteTooltipController : IAsyncDisposable {
                 var node = renderer->RowTemplateNodeList[index];
                 if (node is null || node->GetNodeType() is not NodeType.Text) continue;
 
-                var text = ((AtkTextNode*)node)->GetText().ToString();
-                if (!string.IsNullOrEmpty(text)) return text;
+                var textNode = (AtkTextNode*)node;
+                var text = textNode->GetText().ToString();
+
+                if (!string.IsNullOrEmpty(text)) {
+                    return text;
+                }
             }
         }
 
         foreach (var nodePointer in renderer->UldManager.Nodes) {
-            var node = nodePointer.Value;
-            if (node is null || node->GetNodeType() is not NodeType.Text) continue;
+            if (nodePointer.IsNull) continue;
+            if (nodePointer.Value->GetNodeType() is not NodeType.Text) continue;
 
-            var text = ((AtkTextNode*)node)->GetText().ToString();
-            if (!string.IsNullOrEmpty(text)) return text;
+            var textNode = (AtkTextNode*)nodePointer.Value;
+            var text = textNode->GetText().ToString();
+
+            if (!string.IsNullOrEmpty(text)) {
+                return text;
+            }
         }
 
         return string.Empty;
