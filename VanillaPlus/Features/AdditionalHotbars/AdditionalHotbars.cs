@@ -22,6 +22,9 @@ public class AdditionalHotbars : GameModification {
                       "This feature will be removed from VanillaPlus sometime in the near future.",
         Type = ModificationType.UserInterface,
         Authors = ["MidoriKami"],
+        DisabledReason = "Disabled due to crashing issues.\n\n" +
+                         "Additionally pending removal from VanillaPlus.\n" +
+                         "Use 'ExpandedHotbars' standalone plugin available in testing.",
     };
 
     public override string ImageName => "AdditionalHotbars.png";

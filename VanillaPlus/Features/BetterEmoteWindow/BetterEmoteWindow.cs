@@ -14,6 +14,8 @@ public class BetterEmoteWindow : GameModification {
         Description = Strings.ModificationDescription_BetterEmoteWindow,
         Type = ModificationType.UserInterface,
         Authors = ["MapleRecall"],
+        DisabledReason = "Disabled due to crashing the game when using newly acquired emotes.\n" +
+                         "Will return once bugs are fixed. No ETA provided.",
     };
 
     public override string ImageName => "BetterEmoteWindow.png";
