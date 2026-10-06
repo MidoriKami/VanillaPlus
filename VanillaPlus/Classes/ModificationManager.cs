@@ -117,7 +117,7 @@ public class ModificationManager : IAsyncDisposable {
                 modification.State = LoadedState.ForceDisabled;
                 modification.ErrorMessage = disabledReason;
 
-                IPluginLog.Get().Warning($"[{modification.Name}] Force Disabled. {disabledReason}");
+                IPluginLog.Get().Warning($"[{modification.Name}] Force Disabled. \n{disabledReason}");
                 IPluginLog.Get().Warning($"Aborted enabling {modification.Name}");
                 return;
             }
