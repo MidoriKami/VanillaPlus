@@ -1865,10 +1865,10 @@ ID：{0}</value>
       <value>Log Subtitles Config</value>
   </data>
   <data name="LogSubtitles_CategoryGeneral" xml:space="preserve">
-      <value>General</value>
+      <value>通用</value>
   </data>
   <data name="LogSubtitles_OutputChannel" xml:space="preserve">
-      <value>Output Channel</value>
+      <value>输出频道</value>
   </data>
   <data name="LogSubtitles_Narrator" xml:space="preserve">
       <value>Narrator</value>
