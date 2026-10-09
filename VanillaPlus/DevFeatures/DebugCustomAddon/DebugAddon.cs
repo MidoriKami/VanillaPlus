@@ -20,7 +20,6 @@ public class DebugAddon : NativeAddon {
     protected override unsafe void OnFinalize(AtkUnitBase* addon) {
         base.OnFinalize(addon);
 
-
     }
 }
 #endif
