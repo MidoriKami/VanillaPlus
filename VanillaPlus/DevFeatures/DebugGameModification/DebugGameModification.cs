@@ -18,14 +18,12 @@ public unsafe class DebugGameModification : GameModification {
         Authors = ["YourNameHere"],
     };
 
-    public override Task OnEnableAsync() {
+    public override async Task OnEnableAsync() {
 
-        return Task.CompletedTask;
     }
 
-    public override Task OnDisableAsync() {
+    public override async Task OnDisableAsync() {
 
-        return Task.CompletedTask;
     }
 }
 #endif
