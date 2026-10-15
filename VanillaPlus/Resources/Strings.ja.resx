@@ -277,7 +277,7 @@
     <value>デバッグ</value>
   </data>
   <data name="ModificationType_NewWindow" xml:space="preserve">
-    <value>Custom Native Window</value>
+    <value>カスタムネイティブウィンドウ</value>
   </data>
   <data name="ModificationType_UserInterface" xml:space="preserve">
     <value>UI改造</value>
@@ -398,11 +398,11 @@ ID: {0}</value>
     <value>戦利品データを読み込み中...</value>
   </data>
   <data name="DutyLoot_NoItemsMessage" xml:space="preserve">
-    <value>No loot data found for this duty.
+    <value>このコンテンツの戦利品データが見つかりません。
 
-Data is provided by a external source and may be incomplete.
+データは外部ソースから提供されているため、不完全な場合があります。
 
-Data will be updated as it becomes available, do not request data updates.</value>
+データは入手でき次第更新されます。データの更新を要求しないでください。</value>
   </data>
   <data name="DutyLoot_NoResultsMessage" xml:space="preserve">
     <value>該当なし</value>
@@ -444,7 +444,7 @@ Data will be updated as it becomes available, do not request data updates.</valu
     <value>未選択</value>
   </data>
   <data name="HUDPresets_DeleteTooltip" xml:space="preserve">
-    <value>Deletes selected preset</value>
+    <value>選択したプリセットを削除</value>
   </data>
   <data name="HUDPresets_DropdownTooltip" xml:space="preserve">
     <value>HUDレイアウトプリセットを選択</value>
@@ -1301,16 +1301,16 @@ Data will be updated as it becomes available, do not request data updates.</valu
       <value>背景色設定</value>
   </data>
   <data name="ChatPlayerTooltip_DisplayName" xml:space="preserve">
-      <value>Chat Player Tooltip</value>
+      <value>チャットのプレイヤーツールチップ</value>
     </data>
   <data name="ChatPlayerTooltip_Description" xml:space="preserve">
       <value>チャットのプレイヤー名の上にマウスカーソルを合わせると、ツールチップとしてフルネームと所属ワールドが表示されます。</value>
     </data>
   <data name="EnhancedWardNavigation_DisplayName" xml:space="preserve">
-      <value>Enhanced Ward Navigation</value>
+      <value>区画移動機能の強化</value>
     </data>
   <data name="EnhancedWardNavigation_Description" xml:space="preserve">
-      <value>Adds previous and next buttons to the housing ward selection list.</value>
+      <value>ハウジングの区画選択リストに「前へ」「次へ」ボタンを追加します。</value>
     </data>
   <data name="EnhancedWardNavigation_ButtonPrevious" xml:space="preserve">
       <value>戻る</value>
@@ -1322,7 +1322,7 @@ Data will be updated as it becomes available, do not request data updates.</valu
       <value>通貨の警告</value>
     </data>
   <data name="CurrencyWarning_Description" xml:space="preserve">
-      <value>Shows an animated notification icon when tracked currencies approach or exceed set limits.</value>
+      <value>追跡中の通貨が設定した上限に近づくか、上限を超えたときに、アニメーション付きの通知アイコンを表示します。</value>
     </data>
   <data name="CurrencyWarning_ItemSearchTitle" xml:space="preserve">
       <value>通貨を検索</value>
@@ -1334,7 +1334,7 @@ Data will be updated as it becomes available, do not request data updates.</valu
       <value>ID</value>
     </data>
   <data name="CurrencyWarning_ListTitle" xml:space="preserve">
-      <value>Currency Warning Config</value>
+      <value>通貨警告の設定</value>
     </data>
   <data name="CurrencyWarning_ConfigTitle" xml:space="preserve">
       <value>通貨の警告設定</value>
@@ -1367,31 +1367,31 @@ Data will be updated as it becomes available, do not request data updates.</valu
       <value>通貨の選択</value>
     </data>
   <data name="CurrencyWarning_ConfigureButton" xml:space="preserve">
-      <value>Configure Tracked Currencies</value>
+      <value>追跡する通貨を設定</value>
     </data>
   <data name="CurrencyWarning_TooltipAboveLimit" xml:space="preserve">
-      <value>Above Limit</value>
+      <value>上限</value>
     </data>
   <data name="CurrencyWarning_TooltipBelowLimit" xml:space="preserve">
-      <value>Below Limit</value>
+      <value>下限</value>
     </data>
   <data name="BiggerConfigWindows_DisplayName" xml:space="preserve">
-      <value>Bigger Config Windows</value>
+      <value>より大きな設定ウィンドウ</value>
     </data>
   <data name="BiggerConfigWindows_Description" xml:space="preserve">
-      <value>Increases the vertical height of the game's character and system config windows.</value>
+      <value>ゲーム内のキャラクターコンフィグとシステムコンフィグのウィンドウの縦幅を拡大します。</value>
     </data>
   <data name="BiggerConfigWindows_ConfigTitle" xml:space="preserve">
-      <value>Bigger Config Windows Config</value>
+      <value>より大きな設定ウィンドウ設定</value>
     </data>
   <data name="BiggerConfigWindows_CategoryGeneral" xml:space="preserve">
-      <value>General</value>
+      <value>全般</value>
     </data>
   <data name="BiggerConfigWindows_SystemConfigAdditionalSize" xml:space="preserve">
-      <value>System Config Additional Size</value>
+      <value>システムコンフィグの追加サイズ</value>
     </data>
   <data name="BiggerConfigWindows_CharacterConfigAdditionalSize" xml:space="preserve">
-      <value>Character Config Additional Size</value>
+      <value>キャラクターコンフィグの追加サイズ</value>
     </data>
   <data name="MSQProgressBar_DisplayName" xml:space="preserve">
       <value>メインクエスト進捗率</value>
@@ -1412,70 +1412,70 @@ Data will be updated as it becomes available, do not request data updates.</valu
       <value>バーの色</value>
     </data>
   <data name="MSQProgressBar_ModeEntireGame" xml:space="preserve">
-      <value>Entire Game</value>
+      <value>ゲーム全体</value>
     </data>
   <data name="MSQProgressBar_ModeExpansion" xml:space="preserve">
-      <value>Expansion</value>
+      <value>拡張パッケージ</value>
     </data>
   <data name="MSQProgressBar_TooltipCurrentProgress" xml:space="preserve">
-      <value>Current Progress: {0}%</value>
+      <value>現在の進行状況：{0}%</value>
     </data>
   <data name="MSQProgressBar_TooltipGameComplete" xml:space="preserve">
-      <value>Game Complete! Good Job.</value>
+      <value>ゲームクリア！お疲れさまでした。</value>
     </data>
   <data name="MSQProgressBar_TooltipGameProgress" xml:space="preserve">
-      <value>Game Progress: {0:F}%</value>
+      <value>ゲームの進行状況：{0:F}%</value>
     </data>
   <data name="MSQProgressBar_TooltipExpansionProgress" xml:space="preserve">
-      <value>Expansion Progress: {0:F}%</value>
+      <value>拡張パッケージの進行状況：{0:F}%</value>
     </data>
   <data name="CommandPanelSync_DisplayName" xml:space="preserve">
-        <value>Command Panel Sync</value>
+        <value>コマンドパネルの同期</value>
       </data>
   <data name="CommandPanelSync_Description" xml:space="preserve">
-        <value>Synchronizes the command panel across all your characters.</value>
+        <value>すべてのキャラクター間でコマンドパネルを同期します。</value>
       </data>
   <data name="ModificationDisplay_CosmicExplorationProgressWindow" xml:space="preserve">
-      <value>Cosmic Exploration Dataset Progress</value>
+      <value>コスモエクスプローラーのデータセット進行状況</value>
   </data>
   <data name="ModificationDescription_CosmicExplorationProgressWindow" xml:space="preserve">
-      <value>A floating window that shows the Cosmic Exploration dataset progress for your current DoH/DoL job</value>
+      <value>現在のクラフター/ギャザラークラスのコスモエクスプローラーのデータセット進行状況を表示するフローティングウィンドウ</value>
   </data>
   <data name="CosmicExplorationProgressWindow_HudButtonTooltip" xml:space="preserve">
-      <value>[VanillaPlus] Show Research Progress</value>
+      <value>[VanillaPlus] 研究の進行状況を表示</value>
   </data>
   <data name="ModificationDisplay_InventoryCooldowns" xml:space="preserve">
-    <value>Inventory Cooldowns</value>
+    <value>所持品のクールダウン</value>
   </data>
   <data name="ModificationDescription_InventoryCooldowns" xml:space="preserve">
     <value>インベントリ内のアイテムにクールダウンを表示します。</value>
   </data>
   <data name="ModificationDisplay_SystemConfigSearchBar" xml:space="preserve">
-    <value>System Configuration Search Bar</value>
+    <value>システムコンフィグの検索バー</value>
   </data>
   <data name="ModificationDescription_SystemConfigSearchBar" xml:space="preserve">
-    <value>Adds a search bar to System Configuration Windows</value>
+    <value>システムコンフィグのウィンドウに検索バーを追加します</value>
   </data>
   <data name="SystemConfigSearchBar_ConfigTitle" xml:space="preserve">
-    <value>System Config Search Bar Config</value>
+    <value>システムコンフィグ検索バーの設定</value>
   </data>
   <data name="SystemConfigSearchBar_CategoryGeneral" xml:space="preserve">
     <value>全般</value>
   </data>
   <data name="SystemConfigSearchBar_LabelTabHighlight" xml:space="preserve">
-    <value>Tab Highlight</value>
+    <value>タブの強調表示</value>
   </data>
   <data name="SystemConfigSearchBar_LabelTextHighlight" xml:space="preserve">
-    <value>Text Highlight</value>
+    <value>テキストの強調表示</value>
   </data>
   <data name="ClockOverlay_CategoryVisualStyle" xml:space="preserve">
-    <value>Visual Style</value>
+    <value>表示スタイル</value>
   </data>
   <data name="ClockOverlay_LabelTextColor" xml:space="preserve">
     <value>文字色</value>
   </data>
   <data name="ClockOverlay_LabelTextOutline" xml:space="preserve">
-    <value>Text Outline</value>
+    <value>テキストの輪郭</value>
   </data>
   <data name="ClockOverlay_LabelFontSize" xml:space="preserve">
     <value>フォントサイズ</value>
@@ -1484,19 +1484,19 @@ Data will be updated as it becomes available, do not request data updates.</valu
     <value>フォント</value>
   </data>
   <data name="ClockOverlay_LabelAlignment" xml:space="preserve">
-    <value>Alignment</value>
+    <value>配置</value>
   </data>
   <data name="ModificationDisplay_LockChatButton" xml:space="preserve">
-    <value>Lock Chat Button</value>
+    <value>チャットボタンを固定</value>
   </data>
   <data name="ModificationDescription_LockChatButton" xml:space="preserve">
-    <value>Adds a button to chatlogs to lock them from moving.</value>
+    <value>チャットログに、移動をロックするボタンを追加します。</value>
   </data>
   <data name="LockChatButton_TooltipUnlock" xml:space="preserve">
-    <value>[VanillaPlus] Unlock Chat Movement</value>
+    <value>[VanillaPlus] チャット中の移動制限を解除</value>
   </data>
   <data name="LockChatButton_TooltipLock" xml:space="preserve">
-    <value>[VanillaPlus] Lock Chat Movement</value>
+    <value>[VanillaPlus] チャット中の移動を禁止</value>
   </data>
   <data name="ModificationDisplay_GearSetReorderButtons" xml:space="preserve">
     <value>ギアセットの並べ替えボタン</value>
@@ -1511,366 +1511,369 @@ Data will be updated as it becomes available, do not request data updates.</valu
     <value>ギアセットを下に移動。</value>
   </data>
   <data name="ModificationDisplay_BetterSelectString" xml:space="preserve">
-    <value>Better Select String</value>
+    <value>改良版文字列選択</value>
   </data>
   <data name="ModificationDescription_BetterSelectString" xml:space="preserve">
-    <value>Allows you to select one of multiple sentences via number.</value>
+    <value>番号を指定して、複数の文章から一つを選択できるようにします。</value>
   </data>
   <data name="ModificationDisplay_FlagOnCursor" xml:space="preserve">
-    <value>Place Flag on Cursor</value>
+    <value>カーソル位置にフラグを設置</value>
   </data>
   <data name="ModificationDescription_FlagOnCursor" xml:space="preserve">
-    <value>Places a flag on the map for where your cursor is pointing in the world via the command /placeflag.</value>
+    <value>コマンド/placeflagで、ワールド内のカーソル位置をマップ上にフラグとして設置します。</value>
   </data>
   <data name="FlagOnCursor_CommandHelpMessage" xml:space="preserve">
-    <value>Place a flag at mouse position</value>
+    <value>マウスカーソルの位置にフラグを設置</value>
   </data>
   <data name="ModificationDisplay_ReverseCharacterPanel" xml:space="preserve">
-    <value>Reverse Character Panel</value>
+    <value>キャラクターパネルを反転</value>
   </data>
   <data name="ModificationDescription_ReverseCharacterPanel" xml:space="preserve">
-    <value>Switches where the character information and character portraits are in the Character window.</value>
+    <value>キャラクターウィンドウ内のキャラクター情報とキャラクターポートレートの表示位置を入れ替えます。</value>
   </data>
   <data name="ModificationDisplay_ShowAetherytesOnTop" xml:space="preserve">
-    <value>Show Aetherytes on Top</value>
+    <value>エーテライトを最前面に表示</value>
   </data>
   <data name="ModificationDescription_ShowAetherytesOnTop" xml:space="preserve">
-    <value>Forces aetherytes to always show on top of other map markers.</value>
+    <value>エーテライトを常に他のマップマーカーより前面に表示します。</value>
   </data>
   <data name="ModificationDisplay_ShowEnemies" xml:space="preserve">
-    <value>Show Enemies</value>
+    <value>敵を表示</value>
   </data>
   <data name="ModificationDescription_ShowEnemies" xml:space="preserve">
-    <value>Shows icons for enemies on the map.</value>
+    <value>マップ上に敵のアイコンを表示します。</value>
   </data>
   <data name="ModificationDisplay_ShowGatheringPoints" xml:space="preserve">
-    <value>Show Gathering Points</value>
+    <value>採集ポイントを表示</value>
   </data>
   <data name="ModificationDescription_ShowGatheringPoints" xml:space="preserve">
-    <value>Shows icons for gathering points on the map.</value>
+    <value>マップ上に採集ポイントのアイコンを表示します。</value>
   </data>
   <data name="ModificationDisplay_ShowPlayers" xml:space="preserve">
-    <value>Show Players</value>
+    <value>プレイヤーを表示</value>
   </data>
   <data name="ModificationDescription_ShowPlayers" xml:space="preserve">
-    <value>Shows icons for other players on the map.</value>
+    <value>マップ上に他のプレイヤーのアイコンを表示します。</value>
   </data>
   <data name="ModificationDisplay_ShowTreasureChests" xml:space="preserve">
-    <value>Show Treasure Chests</value>
+    <value>宝箱を表示</value>
   </data>
   <data name="ModificationDescription_ShowTreasureChests" xml:space="preserve">
-    <value>Shows icons for treasure chests on the map.</value>
+    <value>マップ上に宝箱のアイコンを表示します。</value>
   </data>
   <data name="ModificationDisplay_SkipLoginConfirm" xml:space="preserve">
-    <value>Skip Login Confirm</value>
+    <value>ログイン確認をスキップ</value>
   </data>
   <data name="ModificationDescription_SkipLoginConfirm" xml:space="preserve">
-    <value>Skips the confirmation window that appears when logging in.</value>
+    <value>ログイン時に表示される確認ウィンドウをスキップします。</value>
   </data>
   <data name="ModificationDisplay_AetherwellProgress" xml:space="preserve">
-      <value>Aetherwell Progress</value>
+      <value>マギスフィアボードの進行状況</value>
   </data>
   <data name="ModificationDescription_AetherwellProgress" xml:space="preserve">
-      <value>Make your aetherwells fill up as you fill them</value>
+      <value>マギスフィアボードを満たすと、ゲージも溜まります</value>
   </data>
   <data name="ModificationDisplay_ResetDummyEnmity" xml:space="preserve">
-      <value>Reset Dummy Enmity</value>
+      <value>木人の敵視をリセット</value>
   </data>
   <data name="ModificationDescription_ResetDummyEnmity" xml:space="preserve">
-      <value>Adds a button in the enemy list to reset a Striking Dummy's enmity.</value>
+      <value>敵リストに、木人への敵視をリセットするボタンを追加します。</value>
   </data>
   <data name="ResetDummyEnmity_ResetEnmityToolTip" xml:space="preserve">
-      <value>[VanillaPlus] Reset Enmity</value>
+      <value>[VanillaPlus] 敵視をリセット</value>
   </data>
   <data name="ModificationDisplay_BetterTeleportWindow" xml:space="preserve">
-    <value>Better Teleport Window</value>
+    <value>改良版テレポートウィンドウ</value>
   </data>
   <data name="ModificationDescription_BetterTeleportWindow" xml:space="preserve">
-    <value>Replaces the games Teleport window with a better custom made version.</value>
+    <value>ゲーム標準のテレポウィンドウを、より使いやすい独自のウィンドウに置き換えます。</value>
   </data>
   <data name="BetterTeleportWindow_WindowTitle" xml:space="preserve">
-    <value>Teleport</value>
+    <value>テレポ</value>
   </data>
   <data name="BetterTeleportWindow_RenameTitle" xml:space="preserve">
-    <value>Rename Teleport</value>
+    <value>テレポの名前を変更</value>
   </data>
   <data name="BetterTeleportWindow_TooltipAutoFocus" xml:space="preserve">
-    <value>Toggle Auto Focus Searchbar</value>
+    <value>検索バーの自動フォーカスを切り替え</value>
   </data>
   <data name="BetterTeleportWindow_NoResults" xml:space="preserve">
-    <value>No Aetherytes Match Search</value>
+    <value>検索条件に一致するエーテライトがありません</value>
   </data>
   <data name="BetterTeleportWindow_ModeAll" xml:space="preserve">
-    <value>All</value>
+    <value>すべて</value>
   </data>
   <data name="BetterTeleportWindow_ModeHistory" xml:space="preserve">
-    <value>History</value>
+    <value>履歴</value>
   </data>
   <data name="BetterTeleportWindow_ModeFavorites" xml:space="preserve">
-    <value>Favorites</value>
+    <value>お気に入り</value>
   </data>
   <data name="BetterTeleportWindow_ModeCities" xml:space="preserve">
-    <value>Cities</value>
+    <value>都市</value>
   </data>
   <data name="ModificationDisplay_BorderlessCutscenes" xml:space="preserve">
-    <value>Borderless Cutscenes</value>
+    <value>ボーダーレスなカットシーン</value>
   </data>
   <data name="ModificationDescription_BorderlessCutscenes" xml:space="preserve">
-    <value>Removes the letterboxing in cutscenes when using ultrawide displays.</value>
+    <value>ウルトラワイドディスプレイを使用する際、カットシーンのレターボックス表示を解除します。</value>
   </data>
   <data name="ModificationDisplay_SuppressSharedBoards" xml:space="preserve">
-    <value>Suppress Shared Strategy Boards</value>
+    <value>共有ストラテジーボードを非表示にする</value>
   </data>
   <data name="ModificationDescription_SuppressSharedBoards" xml:space="preserve">
-    <value>Completely suppresses any shared Strategy Board.</value>
+    <value>共有されているストラテジーボードをすべて完全に非表示にします。</value>
   </data>
   <data name="ModificationDisplay_DutyPortalNameplateOffset" xml:space="preserve">
-    <value>Raise Duty Portal Nameplates</value>
+    <value>コンテンツポータルのネームプレートを上に移動</value>
   </data>
   <data name="ModificationDescription_DutyPortalNameplateOffset" xml:space="preserve">
-    <value>Raises certain duty-related interaction nameplates to improve visibility when crowded by player nameplates.</value>
+    <value>プレイヤーのネームプレートが密集している場所でも見やすくなるよう、一部のコンテンツ関連の操作対象のネームプレートを上方に移動します。</value>
   </data>
   <data name="ModificationBrowser_TabAll" xml:space="preserve">
-    <value>All</value>
+    <value>すべて</value>
   </data>
   <data name="ModificationBrowser_TabEnabled" xml:space="preserve">
-    <value>Enabled</value>
+    <value>有効</value>
   </data>
   <data name="ModificationBrowser_TabDisabled" xml:space="preserve">
-    <value>Disabled</value>
+    <value>無効</value>
   </data>
   <data name="ModificationBrowser_CategoryWindow" xml:space="preserve">
-    <value>Window</value>
+    <value>ウィンドウ</value>
   </data>
   <data name="ModificationBrowser_CategoryWindowTooltip" xml:space="preserve">
-    <value>New Windows or Overlays</value>
+    <value>新しいウィンドウまたはオーバーレイ</value>
   </data>
   <data name="ModificationBrowser_CategoryUi" xml:space="preserve">
     <value>UI</value>
   </data>
   <data name="ModificationBrowser_CategoryUiTooltip" xml:space="preserve">
-    <value>Modifies existing game UI</value>
+    <value>既存のゲームUIを変更</value>
   </data>
   <data name="ModificationBrowser_CategoryBehavior" xml:space="preserve">
-    <value>Behavior</value>
+    <value>動作</value>
   </data>
   <data name="ModificationBrowser_CategoryBehaviorTooltip" xml:space="preserve">
-    <value>Changes how parts of the game work</value>
+    <value>ゲームの一部の動作を変更</value>
   </data>
   <data name="ModificationBrowser_PersistSearchTooltip" xml:space="preserve">
-    <value>Persist Search Between Sessions</value>
+    <value>セッション間で検索条件を保持</value>
   </data>
   <data name="ModificationBrowser_NoResults" xml:space="preserve">
-    <value>No Results Match Search</value>
+    <value>検索条件に一致する結果がありません</value>
   </data>
   <data name="ModificationType_Seasonal" xml:space="preserve">
-    <value>Seasonal</value>
+    <value>シーズナル</value>
   </data>
   <data name="SeasonEventNotice_Title" xml:space="preserve">
-    <value>Seasonal Event Notice</value>
+    <value>シーズナルイベントのお知らせ</value>
   </data>
   <data name="SeasonEventNotice_Heading" xml:space="preserve">
-    <value>Seasonal Event</value>
+    <value>シーズナルイベント</value>
   </data>
   <data name="SeasonEventNotice_Body" xml:space="preserve">
-    <value>It's that time of year again! There is a seasonal event happening right now!
-To join in the festivities, check out the Seasonal section in VanillaPlus!</value>
+    <value>今年もこの季節がやってきました！ 現在、シーズナルイベントが開催中です！
+
+イベントに参加するには、VanillaPlusの「シーズナル」セクションを確認してください！</value>
   </data>
   <data name="SeasonEventNotice_DailyHint" xml:space="preserve">
-    <value>This will only show once on each day a seasonal event occurs</value>
+    <value>シーズナルイベントの開催期間中、1日につき1回のみ表示されます</value>
   </data>
   <data name="SeasonEventNotice_ButtonDismiss" xml:space="preserve">
-    <value>Go Away</value>
+    <value>あっちへ行け</value>
   </data>
   <data name="SeasonEventNotice_ButtonOpen" xml:space="preserve">
-    <value>Open VanillaPlus</value>
+    <value>VanillaPlusを開く</value>
   </data>
   <data name="AddonConfig_AdditionalOptions" xml:space="preserve">
-    <value>Additional Options</value>
+    <value>追加オプション</value>
   </data>
   <data name="AddonConfig_DisableKeybindInCombat" xml:space="preserve">
-    <value>Disable Keybind in Combat</value>
+    <value>戦闘中はキー割り当てを無効化</value>
   </data>
   <data name="ModificationDisplay_FancyLoadingScreens" xml:space="preserve">
-    <value>Fancy Loading Screens</value>
+    <value>豪華なロード画面</value>
   </data>
   <data name="ModificationDescription_FancyLoadingScreens" xml:space="preserve">
-    <value>Replaces the loading screen artwork with the destination zone's full-size loading image.</value>
+    <value>ロード画面の画像を、移動先のエリアのフルサイズのロード画像に置き換えます。</value>
   </data>
   <data name="FancyLoadingScreens_ConfigTitle" xml:space="preserve">
-    <value>Fancy Loading Screens</value>
+    <value>豪華なロード画面</value>
   </data>
   <data name="FancyLoadingScreens_CategoryGeneral" xml:space="preserve">
-    <value>General</value>
+    <value>全般</value>
   </data>
   <data name="FancyLoadingScreens_LabelInstancedLoad" xml:space="preserve">
-    <value>Show artwork on instance loads</value>
+    <value>インスタンス移動時にアートワークを表示</value>
   </data>
   <data name="FancyLoadingScreens_LabelInstancedLoadNote" xml:space="preserve">
-    <value>Shows the destination artwork when switching instanced areas (duties, housing, etc.). Note: the artwork covers the chat box, so you cannot chat while loading.</value>
+    <value>インスタンスエリア（コンテンツ、ハウジングなど）への移動時に、移動先のアートワークを表示します。
+
+注意：アートワークがチャット欄を覆うため、ロード中はチャットを使用できません。</value>
   </data>
   <data name="ModificationDisplay_ZoneTransitionLabels" xml:space="preserve">
-      <value>Zone Transition Labels</value>
+      <value>エリア移動時のラベル</value>
   </data>
   <data name="ModificationDescription_ZoneTransitionLabels" xml:space="preserve">
-      <value>Adds labels to zone lines to indicate where they lead. Designed to look like FFXII.</value>
+      <value>エリア間の境界線に、移動先を示すラベルを追加します。FFXII風のデザインです。</value>
   </data>
   <data name="ModificationDisplay_GameConfigCommand" xml:space="preserve">
-    <value>Game Config Command</value>
+    <value>ゲームコンフィグコマンド</value>
   </data>
   <data name="ModificationDescription_GameConfigCommand" xml:space="preserve">
-    <value>Adds the /gameconfig command for changing game configuration options.</value>
+    <value>ゲームの設定項目を変更するための/gameconfigコマンドを追加します。</value>
   </data>
   <data name="ModificationDescription_FauxHollowsHelper" xml:space="preserve">
-    <value>Highlights the best tiles to uncover in Faux Hollows, using community-sourced board patterns to rule out impossible locations and show where chests, swords, and foxes may be hidden.</value>
+    <value>コミュニティで共有されている盤面パターンをもとに、ソーチョーの幻想盤でめくるべきマスをハイライト表示します。あり得ない配置を除外し、宝箱、剣、キツネが隠れている可能性のある場所を示します。</value>
   </data>
   <data name="ModificationDisplay_FauxHollowsHelper" xml:space="preserve">
-    <value>Faux Hollows Helper</value>
+    <value>ソーチョーの幻想盤ヘルパー</value>
   </data>
   <data name="ActionHighlight_ClassJobSearchTitle" xml:space="preserve">
-    <value>Class Job Search</value>
+    <value>クラスジョブ検索</value>
   </data>
   <data name="BiggerConfigWindows_ErrorHeightTooBig" xml:space="preserve">
-    <value>[BiggerConfigWindow] Unable to resize config window, height would be too big.</value>
+    <value>[より大きな設定ウィンドウ] 設定ウィンドウを拡大できません。高さが大きくなりすぎます。</value>
   </data>
   <data name="CompatibilityModule_HaselTweaksActive" xml:space="preserve">
-    <value>The original version of this feature is already active in HaselTweaks Plugin.
+    <value>この機能のオリジナル版は、すでにHaselTweaksプラグインで有効になっています。
 
 ID: {0}</value>
   </data>
   <data name="CompatibilityModule_QuestAwayAetherytesActive" xml:space="preserve">
-    <value>Not compatible with QuestAWAY's 'Aetherytes always in front' feature</value>
+    <value>QuestAWAYの「エーテライトを常に前面に表示」機能とは併用できません</value>
   </data>
   <data name="CurrencyOverlay_CurrencySearchTitle" xml:space="preserve">
-    <value>Currency Search</value>
+    <value>通貨検索</value>
   </data>
   <data name="CurrencyOverlay_LabelWarnBelowLimit" xml:space="preserve">
-    <value>Warn when below limit</value>
+    <value>下限を下回ったときに警告</value>
   </data>
   <data name="CurrencyOverlay_LabelWarnAboveLimit" xml:space="preserve">
-    <value>Warn when above limit</value>
+    <value>上限を超えたときに警告</value>
   </data>
   <data name="CurrencyOverlay_LabelReverseIconPosition" xml:space="preserve">
-    <value>Reverse icon position</value>
+    <value>アイコンの位置を反転</value>
   </data>
   <data name="CurrencyOverlay_LabelReverseTextPosition" xml:space="preserve">
-    <value>Reverse text position</value>
+    <value>テキストの位置を反転</value>
   </data>
   <data name="CurrencyOverlay_LabelEnableMoving" xml:space="preserve">
-    <value>Enable moving overlay element</value>
+    <value>オーバーレイ要素の移動を有効化</value>
   </data>
   <data name="CurrencyOverlay_LabelScale" xml:space="preserve">
-    <value>Scale</value>
+    <value>大きさ</value>
   </data>
   <data name="CurrencyOverlay_LabelFadeIfNoWarnings" xml:space="preserve">
-    <value>Fade if no warnings</value>
+    <value>警告がない場合はフェードする</value>
   </data>
   <data name="CurrencyWarning_LabelHideInDuties" xml:space="preserve">
-    <value>Hide in Duties</value>
+    <value>コンテンツ中は非表示</value>
   </data>
   <data name="CurrencyWarning_CategoryBelowTargetWarning" xml:space="preserve">
-    <value>Below Target Value Warning</value>
+    <value>目標値を下回った場合の警告</value>
   </data>
   <data name="CurrencyWarning_CategoryAboveTargetWarning" xml:space="preserve">
-    <value>Above Target Value Warning</value>
+    <value>目標値を上回った場合の警告</value>
   </data>
   <data name="CurrencyWarning_LabelTooltipTextColor" xml:space="preserve">
-    <value>Tooltip Text Color</value>
+    <value>ツールチップの文字色</value>
   </data>
   <data name="DutyLootPreview_WarningPendingRemoval" xml:space="preserve">
-    <value>Pending Removal in Patch 7.56</value>
+    <value>パッチ7.56で削除予定</value>
   </data>
   <data name="Error_CriticalUnloadFailed" xml:space="preserve">
-    <value>Critical Error: Module failed to load, and errored again while unloading.</value>
+    <value>重大なエラー：モジュールの読み込みに失敗し、アンロード中にもエラーが発生しました。</value>
   </data>
   <data name="FateEntry_StatusPending" xml:space="preserve">
-    <value>Pending</value>
+    <value>保留中</value>
   </data>
   <data name="GameConfigCommand_CommandHelp" xml:space="preserve">
-    <value>Usage: /gameconfig &lt;system|ui|control&gt; &lt;option&gt; &lt;value&gt;</value>
+    <value>使用方法：/gameconfig &lt;system|ui|control&gt; &lt;option&gt; &lt;value&gt;</value>
   </data>
   <data name="GameConfigCommand_ErrorInCombat" xml:space="preserve">
-    <value>Game configuration cannot be changed while in combat.</value>
+    <value>戦闘中はゲーム設定を変更できません。</value>
   </data>
   <data name="GameConfigCommand_ErrorInvalidCommand" xml:space="preserve">
-    <value>Error processing command for {0} {1}, check the arguments and try again.
-Usage: /gameconfig &lt;system|ui|control&gt; &lt;option&gt; &lt;value&gt;</value>
+    <value>{0} {1}のコマンド処理中にエラーが発生しました。引数を確認して、もう一度お試しください。
+使用方法：/gameconfig &lt;system|ui|control&gt; &lt;option&gt; &lt;value&gt;</value>
   </data>
   <data name="GameConfigCommand_ErrorNotSettable" xml:space="preserve">
-    <value>Config option {0} is not allowed to be set.</value>
+    <value>設定オプション {0} は設定できません。</value>
   </data>
   <data name="GameConfigCommand_ErrorOutOfRange" xml:space="preserve">
-    <value>Argument for {0} must be between {1} and {2}.</value>
+    <value>{0} の引数は {1} と {2} の間でなければなりません。</value>
   </data>
   <data name="GameConfigCommand_UpdatedMessage" xml:space="preserve">
-    <value>Updated {0}.{1}.</value>
+    <value>{0}を更新しました.{1}。</value>
   </data>
   <data name="GameConfigCommand_ErrorDecimalRequired" xml:space="preserve">
-    <value>{0} requires a decimal value.</value>
+    <value>{0} には10進数が必要です。</value>
   </data>
   <data name="GameConfigCommand_ErrorOption" xml:space="preserve">
-    <value>Error processing command for {0}, check the arguments and try again.</value>
+    <value>{0}のコマンド処理中にエラーが発生しました。引数を確認して再試行してください。</value>
   </data>
   <data name="GearsetRedirect_LabelSwitchToGearset" xml:space="preserve">
-    <value>Switch to Gearset</value>
+    <value>ギアセットを切り替え</value>
   </data>
   <data name="GearsetRedirect_ButtonSelectGearset" xml:space="preserve">
-    <value>Select target Gearset</value>
+    <value>切り替え先のギアセットを選択</value>
   </data>
   <data name="GearsetRedirect_LabelWhenInZone" xml:space="preserve">
-    <value>When in Zone</value>
+    <value>エリア内にいるとき</value>
   </data>
   <data name="GearsetRedirect_ButtonSelectZone" xml:space="preserve">
-    <value>Select target Zone</value>
+    <value>対象エリアを選択</value>
   </data>
   <data name="GearsetRedirect_InvalidGearsetTarget" xml:space="preserve">
-    <value>Invalid Gearset Target</value>
+    <value>ギアセットの指定が無効です</value>
   </data>
   <data name="GearsetRedirect_WhenInZoneFormat" xml:space="preserve">
-    <value>When in {0} {1}</value>
+    <value>{0} {1} にいたとき</value>
   </data>
   <data name="HideMpBars_ConfigTitle" xml:space="preserve">
-    <value>Hide MP Bars Config</value>
+    <value>MPバー非表示の設定</value>
   </data>
   <data name="HideMpBars_LabelHidePartyList" xml:space="preserve">
-    <value>Hide in Party List</value>
+    <value>パーティリストでは非表示</value>
   </data>
   <data name="HideMpBars_LabelHideParameterWidget" xml:space="preserve">
-    <value>Hide in Parameter Widget</value>
+    <value>パラメータ表示では非表示</value>
   </data>
   <data name="ModificationDisplay_RightClickMapNav" xml:space="preserve">
-    <value>Right-Click Map Nav</value>
+    <value>マップの右クリックでナビゲーション</value>
   </data>
   <data name="ModificationDescription_RightClickMapNav" xml:space="preserve">
-    <value>Allows you to navigate 'up' a layer by right clicking on the map.
+    <value>マップを右クリックすると、1つ上の階層に移動できるようになります。
 
-Must hold shift while right clicking to nav up.</value>
+上の階層に移動するには、Shiftキーを押しながら右クリックしてください。</value>
   </data>
   <data name="DutyLootPreview_SourceDungeonChest" xml:space="preserve">
-    <value>Dungeon Chest</value>
+    <value>ダンジョンの宝箱</value>
   </data>
   <data name="ModificationDisplay_BetterEmoteWindow" xml:space="preserve">
-    <value>Better Emote Window</value>
+    <value>改良版エモートウィンドウ</value>
   </data>
   <data name="ModificationDescription_BetterEmoteWindow" xml:space="preserve">
-    <value>Improves the Emote window layout and previews targeted and untargeted emote text.</value>
+    <value>エモートウィンドウのレイアウトを改善し、ターゲット指定時と未指定時のエモートテキストをプレビュー表示します。</value>
   </data>
   <data name="ModificationDisplay_LogSubtitles" xml:space="preserve">
-      <value>Log Subtitles</value>
+      <value>字幕をログに記録</value>
   </data>
   <data name="ModificationDescription_LogSubtitles" xml:space="preserve">
-      <value>Logs subtitles in the chat log.</value>
+      <value>字幕をチャットログに記録します。</value>
   </data>
   <data name="LogSubtitles_ConfigTitle" xml:space="preserve">
-      <value>Log Subtitles Config</value>
+      <value>字幕ログの設定</value>
   </data>
   <data name="LogSubtitles_CategoryGeneral" xml:space="preserve">
-      <value>General</value>
+      <value>全般</value>
   </data>
   <data name="LogSubtitles_OutputChannel" xml:space="preserve">
-      <value>Output Channel</value>
+      <value>出力先チャンネル</value>
   </data>
   <data name="LogSubtitles_Narrator" xml:space="preserve">
-      <value>Narrator</value>
+      <value>ナレーター</value>
   </data>
 </root>
