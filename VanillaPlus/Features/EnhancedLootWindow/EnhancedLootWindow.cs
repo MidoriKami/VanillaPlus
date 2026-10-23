@@ -7,7 +7,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.Exd;
-using FFXIVClientStructs.FFXIV.Component.GUI;
+using KamiToolKit.BaseTypes;
 using KamiToolKit.Controllers;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
@@ -32,12 +32,13 @@ public class EnhancedLootWindow : GameModification {
     private EnhancedLootWindowConfig? config;
     private AddonController<AddonNeedGreed>? needGreedController;
 
-    private readonly List<ImageNode> crossNodes = [];
-    private readonly List<ImageNode> padlockNodes = [];
+    private List<NodeBase>? attachedNodes;
 
     public override string ImageName => "EnhancedLootWindow.png";
 
     public override async Task OnEnableAsync() {
+        IAddonLifecycle.Get().LogAddon("NeedGreed");
+
         config = await EnhancedLootWindowConfig.Load();
 
         configWindow = new ConfigAddon {
@@ -55,9 +56,8 @@ public class EnhancedLootWindow : GameModification {
         unsafe {
             needGreedController = new AddonController<AddonNeedGreed> {
                 AddonName = "NeedGreed",
-                OnSetup = SetupNeedGreed,
-                OnFinalize = FinalizeNeedGreed,
                 OnRefresh = RefreshNeedGreed,
+                OnFinalize = FinalizeNeedGreed,
             };
         }
 
@@ -74,104 +74,85 @@ public class EnhancedLootWindow : GameModification {
         config = null;
     }
 
-    private unsafe void SetupNeedGreed(AddonNeedGreed* addon) {
-        var listComponentNode = (AtkComponentNode*)addon->GetNodeById(6);
-        if (listComponentNode is null) return;
+    private unsafe void RefreshNeedGreed(AddonNeedGreed* addon) {
+        foreach (var attachedNode in attachedNodes ?? []) {
+            attachedNode.Dispose();
+        }
+        attachedNodes?.Clear();
+        attachedNodes = [];
 
-        var listComponent = (AtkComponentList*)listComponentNode->Component;
+        if (config is null) return;
+
+        var listComponent = addon->GetComponentListById(6);
         if (listComponent is null) return;
 
-        foreach (uint nodeId in Enumerable.Range(21001, 31).Prepend(2)) {
-            var listItemRenderer = listComponent->UldManager.SearchNodeById<AtkComponentNode>(nodeId);
-            if (listItemRenderer is null) continue;
-
-            var listItemRendererComponent = (AtkComponentListItemRenderer*)listItemRenderer->Component;
-            if (listItemRendererComponent is null) continue;
-
-            var targetPart = listItemRendererComponent->UldManager.SearchNodeById(12);
-            if (targetPart is null) continue;
-
-            var newCrossNode = new IconImageNode {
-                Size = new Vector2(40.0f, 40.0f),
-                Origin = new Vector2(20.0f, 20.0f),
-                Scale = new Vector2(0.80f, 0.80f),
-                Position = new Vector2(12.0f, 13.0f),
-                IconId = 61502,
-                FitTexture = true,
-            };
-
-            crossNodes.Add(newCrossNode);
-            newCrossNode.AttachNode(targetPart, NodePosition.AfterTarget);
-
-            var newPadlockNode = new SimpleImageNode {
-                TexturePath = "ui/uld/ActionBar.tex",
-                TextureCoordinates = new Vector2(48.0f, 0.0f),
-                TextureSize = new Vector2(20.0f, 24.0f),
-                Size = new Vector2(20.0f, 24.0f),
-                Position = new Vector2(22.0f, 20.0f),
-                WrapMode = WrapMode.Tile,
-            };
-
-            padlockNodes.Add(newPadlockNode);
-            newPadlockNode.AttachNode(targetPart, NodePosition.AfterTarget);
-        }
-    }
-
-    private unsafe void FinalizeNeedGreed(AddonNeedGreed* addon) {
-        foreach (var node in crossNodes) {
-            node.Dispose();
-        }
-        crossNodes.Clear();
-
-        foreach (var node in padlockNodes) {
-            node.Dispose();
-        }
-        padlockNodes.Clear();
-    }
-
-    private const int MinionCategory = 81;
-    private const int MountCategory = 63;
-    private const int MountSubCategory = 175;
-
-    private unsafe void RefreshNeedGreed(AddonNeedGreed* addon) {
         // For each possible item slot, get the item info
-        for (var index = 0; index < addon->Items.Length; index++) {
+        foreach (var index in Enumerable.Range(0, addon->Items.Length)) {
             ref var itemInfo = ref addon->Items[index];
             if (itemInfo.ItemId is 0) continue;
 
-            var adjustedItemId = itemInfo.ItemId > 1_000_000 ? itemInfo.ItemId - 1_000_000 : itemInfo.ItemId;
-
-            // If we can't match the item in lumina, skip.
-            var itemData = IDataManager.Get().GetExcelSheet<Item>().GetRowOrDefault(adjustedItemId);
+            var itemId = ItemUtil.GetBaseId(itemInfo.ItemId);
+            var itemData = IDataManager.Get().GetExcelSheet<Item>().GetRowOrDefault(itemId.ItemId);
             if (itemData is null) continue;
 
-            var crossNode = crossNodes[index];
-            var padlockNode = padlockNodes[index];
+            var rendererComponent = listComponent->GetItemRenderer(index);
+            if (rendererComponent is null) continue;
+
+            var targetPart = rendererComponent->UldManager.SearchNodeById(12);
+            if (targetPart is null) continue;
 
             switch (itemData) {
                 // Item is unique, and has no unlock action, and is unobtainable if we have any in our inventory
                 case { IsUnique: true, ItemAction.RowId: 0 } when InventoryManager.Instance()->PlayerHasItem(itemInfo.ItemId):
 
                 // Item is unobtainable if it's a minion/mount and already unlocked
-                case { ItemUICategory.RowId: MinionCategory } when IsItemAlreadyUnlocked(itemInfo.ItemId):
-                case { ItemUICategory.RowId: MountCategory, ItemSortCategory.RowId: MountSubCategory } when IsItemAlreadyUnlocked(itemInfo.ItemId):
-                    crossNode.IsVisible = config?.MarkUnobtainableItems ?? false;
-                    padlockNode.IsVisible = false;
+
+                // Check Minion Category
+                case { ItemUICategory.RowId: 81 } when IsItemAlreadyUnlocked(itemInfo.ItemId):
+
+                // Check MountCategory and MountSortCategory
+                case { ItemUICategory.RowId: 63, ItemSortCategory.RowId: 175 } when IsItemAlreadyUnlocked(itemInfo.ItemId):
+                    if (config.MarkUnobtainableItems) {
+                        var newCrossNode = new IconImageNode {
+                            Size = new Vector2(40.0f, 40.0f),
+                            Origin = new Vector2(20.0f, 20.0f),
+                            Scale = new Vector2(0.80f, 0.80f),
+                            Position = new Vector2(12.0f, 13.0f),
+                            IconId = 61502,
+                            FitTexture = true,
+                        };
+
+                        attachedNodes.Add(newCrossNode);
+                        newCrossNode.AttachNode(targetPart, NodePosition.AfterTarget);
+                    }
                     break;
 
                 // Item can be obtained if unlocked
                 case not null when IsItemAlreadyUnlocked(itemInfo.ItemId):
-                    padlockNode.IsVisible = config?.MarkAlreadyObtainedItems ?? false;
-                    crossNode.IsVisible = false;
-                    break;
+                    if (config.MarkAlreadyObtainedItems) {
+                        var newPadlockNode = new SimpleImageNode {
+                            TexturePath = "ui/uld/ActionBar.tex",
+                            TextureCoordinates = new Vector2(48.0f, 0.0f),
+                            TextureSize = new Vector2(20.0f, 24.0f),
+                            Size = new Vector2(20.0f, 24.0f),
+                            Position = new Vector2(22.0f, 20.0f),
+                            WrapMode = WrapMode.Tile,
+                        };
 
-                // Item can be obtained normally
-                default:
-                    crossNode.IsVisible = false;
-                    padlockNode.IsVisible = false;
+                        attachedNodes.Add(newPadlockNode);
+                        newPadlockNode.AttachNode(targetPart, NodePosition.AfterTarget);
+                    }
                     break;
             }
         }
+    }
+
+    private unsafe void FinalizeNeedGreed(AddonNeedGreed* addon) {
+        foreach (var attachedNode in attachedNodes ?? []) {
+            attachedNode.Dispose();
+        }
+        attachedNodes?.Clear();
+        attachedNodes = null;
     }
 
     private static unsafe bool IsItemAlreadyUnlocked(uint itemId) {
