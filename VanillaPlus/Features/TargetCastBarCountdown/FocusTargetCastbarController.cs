@@ -83,7 +83,7 @@ public class FocusTargetCastbarController : IAsyncDisposable {
             return;
         }
 
-        textNode?.String = ITargetManager.Get().GetTarget()?.GetCastTimeString;
+        textNode?.String = ITargetManager.Get().GetFocusTarget()?.GetCastTimeString;
     }
 
     private unsafe void OnAddonFinalize(AtkUnitBase* addon) {
