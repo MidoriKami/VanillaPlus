@@ -37,8 +37,6 @@ public class EnhancedLootWindow : GameModification {
     public override string ImageName => "EnhancedLootWindow.png";
 
     public override async Task OnEnableAsync() {
-        IAddonLifecycle.Get().LogAddon("NeedGreed");
-
         config = await EnhancedLootWindowConfig.Load();
 
         configWindow = new ConfigAddon {
