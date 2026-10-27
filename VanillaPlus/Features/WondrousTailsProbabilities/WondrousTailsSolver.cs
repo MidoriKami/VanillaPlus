@@ -178,61 +178,44 @@ public sealed unsafe partial class PerfectTails {
         }
 
         var valuePayloads = StringFormatDoubles(values);
-        var seString = stringBuilder
-            .Append(lineChancesLabel);
+        stringBuilder.Append(lineChancesLabel);
 
         if (samples != null) {
             foreach (var (value, sample, valuePayload) in Enumerable.Range(0, values.Length).Select(i => (values[i], samples[i], valuePayloads[i]))) {
                 const double bound = 0.05;
                 var sampleBoundLower = Math.Max(0, sample - bound);
-                // var sampleBoundUpper = Math.Min(1, sample + bound);
 
                 if (Math.Abs(value - 1) < 0.1f) {
-                    seString
-                        .PushEdgeColorType(2)
-                        .Append(valuePayload)
-                        .PopEdgeColorType();
+                    stringBuilder.AppendTextColored(valuePayload, 2);
                 }
                 else if (value < 1 && value >= sample) {
-                    seString
-                        .PushColorType(67)
-                        .Append(valuePayload)
-                        .PopColorType();
+                    stringBuilder.AppendTextColored(valuePayload, 67);
                 }
                 else if (sample > value && value > sampleBoundLower) {
-                    seString
-                        .PushColorType(66)
-                        .Append(valuePayload)
-                        .PopColorType();
+                    stringBuilder.AppendTextColored(valuePayload, 66);
                 }
                 else if (sampleBoundLower > value && value > 0) {
-                    seString
-                        .PushColorType(561)
-                        .Append(valuePayload)
-                        .PopColorType();
+                    stringBuilder.AppendTextColored(valuePayload, 561);
                 }
                 else if (value == 0) {
-                    seString
-                        .PushColorType(704)
-                        .Append(valuePayload)
-                        .PopColorType();
+                    stringBuilder.AppendTextColored(valuePayload, 704);
                 }
                 else {
-                    seString.Append(valuePayload);
+                    stringBuilder.Append(valuePayload);
                 }
 
-                seString.Append("  ");
+                stringBuilder.Append("  ");
             }
 
-            seString.Append("\r");
-            seString.Append(shuffleAverageLabel);
-            seString.Append(string.Join(" ", StringFormatDoubles(samples)));
+            stringBuilder.Append("\r");
+            stringBuilder.Append(shuffleAverageLabel);
+            stringBuilder.Append(string.Join(" ", StringFormatDoubles(samples)));
         }
         else {
-            seString.Append(string.Join(" ", valuePayloads));
+            stringBuilder.Append(string.Join(" ", valuePayloads));
         }
 
-        return seString.ToReadOnlySeString();
+        return stringBuilder.ToReadOnlySeString();
     }
 
     private static string[] StringFormatDoubles(IEnumerable<double> values)

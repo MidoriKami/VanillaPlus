@@ -69,16 +69,11 @@ public class AethernetTeleport : GameModification {
 
                 using var rentedStringBuilder = new RentedSeStringBuilder();
                 var teleportMessage = rentedStringBuilder
-                    .PushColorType(45)
-                    .Append("[VanillaPlus] ")
-                    .PopColorType()
-                    .PushColorType(62)
-                    .Append("[Teleport] ")
-                    .PopColorType()
+                    .AppendTextColored("[VanillaPlus] ", 45)
+                    .AppendTextColored("[Teleport] ", 62)
+                    .AppendTextColored("Teleporting to ", 576)
                     .Append("Teleporting to ")
-                    .PushColorType(576)
-                    .Append(mainAetheryte.Value.PlaceName.Value.Name.ToString())
-                    .PopColorType()
+                    .AppendTextColored(mainAetheryte.Value.PlaceName.Value.Name.ToString(), 576)
                     .ToReadOnlySeString();
 
                 Telepo.Instance()->Teleport(mainAetheryte.Value.RowId, 0);

@@ -46,8 +46,8 @@ public class BetterSelectString : GameModification {
                     if (item.ItemIndex > 9) return;
 
                     using var stringBuilder = new RentedSeStringBuilder();
-                    var builtString = stringBuilder
-                        .Builder.Append($"{(item.ItemIndex + 1) % 10}. ")
+                    var builtString = stringBuilder.Builder
+                        .Append($"{(item.ItemIndex + 1) % 10}. ")
                         .Append(textNode->GetText().AsReadOnlySeStringSpan())
                         .GetViewAsSpan();
 

@@ -29,13 +29,13 @@ public static class InventoryItemExtensions {
         }
 
         private ReadOnlySeString GetItemName() {
+            using var stringBuilder = new RentedSeStringBuilder();
+
             var itemId = item.GetItemId();
             var itemName = ItemUtil.GetItemName(itemId);
 
-            return new Lumina.Text.SeStringBuilder()
-                .PushColorType(ItemUtil.GetItemRarityColorType(itemId))
-                .Append(itemName)
-                .PopColorType()
+            return stringBuilder
+                .AppendTextColored(itemName, ItemUtil.GetItemRarityColorType(itemId))
                 .ToReadOnlySeString();
         }
 
