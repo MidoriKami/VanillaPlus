@@ -119,7 +119,7 @@ public class GearsetRedirect : GameModification {
     private unsafe int OnGearsetChanged(RaptureGearsetModule* thisPtr, int gearsetId, byte glamourPlateId) {
         try {
             if (config?.GearsetEntries.FirstOrDefault(entry => entry.TargetGearsetId == gearsetId) is { } redirection) {
-                var targetRedirection = redirection.Redirections.FirstOrDefault(info => IClientState.Get().TerritoryType == info.TerritoryType);
+                var targetRedirection = redirection.Redirections.FirstOrDefault(info => IClientState.Get().TerritoryType.RowId == info.TerritoryType);
                 if (targetRedirection is not null) {
                     gearsetId = targetRedirection.AlternateGearsetId;
                 }

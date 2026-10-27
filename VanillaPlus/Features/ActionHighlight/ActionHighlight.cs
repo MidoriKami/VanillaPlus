@@ -6,7 +6,7 @@ using Dalamud.Hooking;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using KamiToolKit.Components.Search;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.ActionHighlight.Config;

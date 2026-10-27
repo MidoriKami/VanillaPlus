@@ -8,7 +8,7 @@ using KamiToolKit.Components.Configuration;
 using KamiToolKit.Components.Search;
 using KamiToolKit.Enums;
 using KamiToolKit.UiOverlay;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.CurrencyOverlay.Nodes;

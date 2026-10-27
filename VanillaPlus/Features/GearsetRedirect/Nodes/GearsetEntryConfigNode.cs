@@ -8,7 +8,7 @@ using KamiToolKit.Components.ConfigurationNodes;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using Lumina.Data.Parsing.Uld;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using Lumina.Text.ReadOnly;
 using VanillaPlus.Features.GearsetRedirect.Config;
 

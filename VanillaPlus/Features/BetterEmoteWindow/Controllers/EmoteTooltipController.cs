@@ -6,7 +6,7 @@ using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using VanillaPlus.Features.BetterEmoteWindow.Classes;
 
 namespace VanillaPlus.Features.BetterEmoteWindow.Controllers;

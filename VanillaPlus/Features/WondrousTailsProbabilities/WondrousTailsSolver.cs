@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Dalamud.Game.Text.SeStringHandling;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Lumina.Text.ReadOnly;
 
@@ -164,20 +163,23 @@ public sealed unsafe partial class PerfectTails {
         if (stickersPlaced is > 0 and <= 7)
             samples = GetSample(stickersPlaced);
 
+        using var stringBuilder = new RentedSeStringBuilder();
+
         if (values == Error) {
             var errorPlaceholder = Strings.WondrousTailsProbabilities_ErrorPlaceholder;
-            return new SeStringBuilder()
-                .AddText(lineChancesLabel)
-                .AddUiForeground(errorPlaceholder, 704)
-                .AddUiForeground(errorPlaceholder, 704)
-                .AddUiForeground(errorPlaceholder, 704)
-                .Build()
-                .EncodeWithNullTerminator();
+            return stringBuilder
+                .Append(lineChancesLabel)
+                .PushColorType(704)
+                .Append(errorPlaceholder)
+                .Append(errorPlaceholder)
+                .Append(errorPlaceholder)
+                .PopColorType()
+                .ToReadOnlySeString();
         }
 
         var valuePayloads = StringFormatDoubles(values);
-        var seString = new SeStringBuilder()
-            .AddText(lineChancesLabel);
+        var seString = stringBuilder
+            .Append(lineChancesLabel);
 
         if (samples != null) {
             foreach (var (value, sample, valuePayload) in Enumerable.Range(0, values.Length).Select(i => (values[i], samples[i], valuePayloads[i]))) {
@@ -185,31 +187,52 @@ public sealed unsafe partial class PerfectTails {
                 var sampleBoundLower = Math.Max(0, sample - bound);
                 // var sampleBoundUpper = Math.Min(1, sample + bound);
 
-                if (Math.Abs(value - 1) < 0.1f)
-                    seString.AddUiGlow(valuePayload, 2);
-                else if (value < 1 && value >= sample)
-                    seString.AddUiForeground(valuePayload, 67);
-                else if (sample > value && value > sampleBoundLower)
-                    seString.AddUiForeground(valuePayload, 66);
-                else if (sampleBoundLower > value && value > 0)
-                    seString.AddUiForeground(valuePayload, 561);
-                else if (value == 0)
-                    seString.AddUiForeground(valuePayload, 704);
-                else
-                    seString.AddText(valuePayload);
+                if (Math.Abs(value - 1) < 0.1f) {
+                    seString
+                        .PushEdgeColorType(2)
+                        .Append(valuePayload)
+                        .PopEdgeColorType();
+                }
+                else if (value < 1 && value >= sample) {
+                    seString
+                        .PushColorType(67)
+                        .Append(valuePayload)
+                        .PopColorType();
+                }
+                else if (sample > value && value > sampleBoundLower) {
+                    seString
+                        .PushColorType(66)
+                        .Append(valuePayload)
+                        .PopColorType();
+                }
+                else if (sampleBoundLower > value && value > 0) {
+                    seString
+                        .PushColorType(561)
+                        .Append(valuePayload)
+                        .PopColorType();
+                }
+                else if (value == 0) {
+                    seString
+                        .PushColorType(704)
+                        .Append(valuePayload)
+                        .PopColorType();
+                }
+                else {
+                    seString.Append(valuePayload);
+                }
 
-                seString.AddText("  ");
+                seString.Append("  ");
             }
 
-            seString.AddText("\r");
-            seString.AddText(shuffleAverageLabel);
-            seString.AddText(string.Join(" ", StringFormatDoubles(samples)));
+            seString.Append("\r");
+            seString.Append(shuffleAverageLabel);
+            seString.Append(string.Join(" ", StringFormatDoubles(samples)));
         }
         else {
-            seString.AddText(string.Join(" ", valuePayloads));
+            seString.Append(string.Join(" ", valuePayloads));
         }
 
-        return seString.Build().EncodeWithNullTerminator();
+        return seString.ToReadOnlySeString();
     }
 
     private static string[] StringFormatDoubles(IEnumerable<double> values)

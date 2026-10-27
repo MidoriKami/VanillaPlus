@@ -24,13 +24,13 @@ public class PetSizeContextMenu : GameModification {
     public override string ImageName => "PetSizeContextMenu.png";
 
     public override Task OnEnableAsync() {
-        IContextMenu.Get().OnMenuOpened += OnMenuOpened;
+        IContextMenu.Get().MenuOpened += OnMenuOpened;
 
         return Task.CompletedTask;
     }
 
     public override Task OnDisableAsync() {
-        IContextMenu.Get().OnMenuOpened -= OnMenuOpened;
+        IContextMenu.Get().MenuOpened -= OnMenuOpened;
 
         return Task.CompletedTask;
     }

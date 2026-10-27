@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using Lumina.Text.ReadOnly;
 
 namespace VanillaPlus.Extensions;

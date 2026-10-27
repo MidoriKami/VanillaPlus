@@ -12,7 +12,7 @@ using KamiToolKit.Controllers;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Nodes.Simplified;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Native.Addons;

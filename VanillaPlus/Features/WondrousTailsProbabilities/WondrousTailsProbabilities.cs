@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Interface;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
@@ -14,6 +13,7 @@ using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Nodes.Simplified;
 using KamiToolKit.Timelines;
+using Lumina.Text.Payloads;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Utilities;
@@ -121,34 +121,26 @@ public class WondrousTailsProbabilities : GameModification {
 
     private unsafe void RefreshWeeklyBingo(AddonWeeklyBingo* addon) {
         if (perfectTails is null) return;
+
         var existingTextNode = addon->GetTextNodeById(34);
         if (existingTextNode is not null) {
-            var nodeText = SeString.Parse(existingTextNode->NodeText);
+            var nodeText = existingTextNode->NodeText.AsReadOnlySeString();
 
-            // Get the first index of the double-newline payloads
-            var lineBreakIndex = -1;
-            for (var index = 0; index < nodeText.Payloads.Count; index++) {
-                if (index > 0) {
-                    var previousPayload = nodeText.Payloads[index - 1];
-                    var payload = nodeText.Payloads[index];
+            // Finds the double newline, and strips everything after it.
+            // We wanna clear "※Applicable duties may be confirmed via the subcommand." to ensure there's room for our text.
+            using var stringBuilder = new RentedSeStringBuilder();
+            var wasNewLine = false;
 
-                    if (previousPayload.Type is PayloadType.NewLine && payload.Type is PayloadType.NewLine) {
-                        lineBreakIndex = index - 1;
-                        break;
-                    }
-                }
+            foreach (var payload in nodeText) {
+                var isNewLine = payload.IsMacro(MacroCode.NewLine);
+
+                if (isNewLine && wasNewLine) break;
+                wasNewLine |= isNewLine;
+
+                stringBuilder.Append(payload);
             }
 
-            // Copy all payloads up until the double-newline payload
-            if (lineBreakIndex is not -1) {
-                var newString = new SeStringBuilder();
-
-                for (var index = 0; index < lineBreakIndex; index++) {
-                    newString.Add(nodeText.Payloads[index]);
-                }
-
-                existingTextNode->SetText(newString.Encode());
-            }
+            existingTextNode->SetText(stringBuilder.GetViewAsSpan());
         }
 
         foreach (var index in Enumerable.Range(0, 16)) {
@@ -175,7 +167,7 @@ public class WondrousTailsProbabilities : GameModification {
 
     private unsafe void AdjustCurrentDutyIndicator(AddonWeeklyBingo* addon) {
         if (animationContainer is null || currentDutyNode is null) return;
-        if (GetTaskForCurrentTerritory(IClientState.Get().TerritoryType) is { } dutySlot) {
+        if (GetTaskForCurrentTerritory(IClientState.Get().TerritoryType.RowId) is { } dutySlot) {
             var nativeDutySlot = addon->DutySlotList[dutySlot].DutyButton->OwnerNode;
             var nativeDutySlotPosition = new Vector2(nativeDutySlot->X, nativeDutySlot->Y - 2.0f);
 

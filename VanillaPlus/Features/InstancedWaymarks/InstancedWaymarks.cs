@@ -14,7 +14,8 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
+using Lumina.Excel;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Native.Addons;
@@ -49,7 +50,7 @@ public class InstancedWaymarks : GameModification {
         };
 
         IClientState.Get().TerritoryChanged += OnTerritoryChanged;
-        IContextMenu.Get().OnMenuOpened += OnMenuOpened;
+        IContextMenu.Get().MenuOpened += OnMenuOpened;
 
         IAddonLifecycle.Get().RegisterListener(AddonEvent.PreDraw, "FieldMarker", OnFieldMarkerDraw);
 
@@ -67,7 +68,7 @@ public class InstancedWaymarks : GameModification {
     public override async Task OnDisableAsync() {
         IAddonLifecycle.Get().UnregisterListener(OnFieldMarkerDraw);
         IClientState.Get().TerritoryChanged -= OnTerritoryChanged;
-        IContextMenu.Get().OnMenuOpened -= OnMenuOpened;
+        IContextMenu.Get().MenuOpened -= OnMenuOpened;
 
         LoadWaymarks(0);
 
@@ -77,7 +78,7 @@ public class InstancedWaymarks : GameModification {
         config = null;
     }
 
-    private unsafe void OnTerritoryChanged(uint u) {
+    private unsafe void OnTerritoryChanged(RowRef<TerritoryType> rowRef) {
         var currentCfc = GameMain.Instance()->CurrentContentFinderConditionId;
 
         SaveWaymarks(previousCfc);

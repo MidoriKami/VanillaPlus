@@ -6,7 +6,7 @@ using FFXIVClientStructs.FFXIV.Client.LayoutEngine.Layer;
 using FFXIVClientStructs.FFXIV.Common.Component.BGCollision;
 using FFXIVClientStructs.Interop;
 using Lumina.Excel;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 
 namespace VanillaPlus.Features.ZoneTransitionLabels;
 

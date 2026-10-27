@@ -6,7 +6,8 @@ using Dalamud.Game.Text;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
+using Lumina.Excel;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -80,7 +81,7 @@ public class LocationDisplay : GameModification {
         config = null;
     }
 
-    private void OnZoneChange(uint u)
+    private void OnZoneChange(RowRef<TerritoryType> rowRef)
         => locationChanged = true;
 
     private void OnFrameworkUpdate(IFramework framework) {
@@ -171,8 +172,8 @@ public class LocationDisplay : GameModification {
     }
 
     private void UpdateTerritory() {
-        if (lastTerritory != IClientState.Get().TerritoryType) {
-            lastTerritory = IClientState.Get().TerritoryType;
+        if (lastTerritory != IClientState.Get().TerritoryType.RowId) {
+            lastTerritory = IClientState.Get().TerritoryType.RowId;
             var territory = GetCurrentTerritory();
 
             currentTerritory = territory.PlaceName.Value;
@@ -283,7 +284,7 @@ public class LocationDisplay : GameModification {
             return IDataManager.Get().GetExcelSheet<TerritoryType>().GetRow(HousingManager.GetOriginalHouseTerritoryTypeId());
         }
         else {
-            return IDataManager.Get().GetExcelSheet<TerritoryType>().GetRow(IClientState.Get().TerritoryType);
+            return IClientState.Get().TerritoryType.Value;
         }
     }
 }

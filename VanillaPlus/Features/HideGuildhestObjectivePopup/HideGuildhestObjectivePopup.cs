@@ -2,7 +2,7 @@
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Plugin.Services;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -32,7 +32,7 @@ public class HideGuildhestObjectivePopup : GameModification {
     }
 
     private static void OnJournalAcceptOpen(AddonEvent type, AddonArgs args) {
-        if (IDataManager.Get().GetExcelSheet<TerritoryType>().GetRow(IClientState.Get().TerritoryType) is not { TerritoryIntendedUse.RowId: 3 }) return;
+        if (IClientState.Get().TerritoryType.ValueNullable?.TerritoryIntendedUse.RowId is not 3) return;
 
         args.PreventOriginal();
     }

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Plugin.Services;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using Newtonsoft.Json.Linq;
 using VanillaPlus.Classes;
-using Action = Lumina.Excel.Sheets.Action;
+using Action = Dalamud.Excel.Sheets.Action;
 
 namespace VanillaPlus.Features.ActionHighlight.Config;
 

@@ -5,7 +5,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Classes;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Native.Nodes;
 

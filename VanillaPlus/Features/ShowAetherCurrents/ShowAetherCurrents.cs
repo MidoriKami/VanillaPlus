@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Dalamud.Plugin.Services;
 using KamiToolKit.MapOverlay;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using Lumina.Extensions;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;

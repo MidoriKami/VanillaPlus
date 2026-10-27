@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Numerics;
 using System.Threading.Tasks;
+using Dalamud.Excel.Sheets;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
+using Lumina.Excel;
 using VanillaPlus.Utilities;
 
 namespace VanillaPlus.Features.AprilFools;
@@ -51,6 +53,6 @@ public class JustMonikaFools : FoolsModule {
         monikaAddon = null;
     }
 
-    private void OnTerritoryChanged(uint u)
+    private void OnTerritoryChanged(RowRef<TerritoryType> rowRef)
         => monikaAddon?.Open();
 }

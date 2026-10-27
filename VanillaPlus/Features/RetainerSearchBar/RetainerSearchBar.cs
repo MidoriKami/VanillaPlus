@@ -62,8 +62,8 @@ public class RetainerSearchBar : GameModification {
         keybindListener = null;
     }
 
-    private void OnUiConfigChanged(object? sender, ConfigChangeEvent e) {
-        if (e.Option is not UiConfigOption.ItemInventryRetainerWindowSizeType) return;
+    private void OnUiConfigChanged(ConfigChangeEvent evt) {
+        if (evt.Option is not UiConfigOption.ItemInventryRetainerWindowSizeType) return;
 
         ReinitializeController();
     }

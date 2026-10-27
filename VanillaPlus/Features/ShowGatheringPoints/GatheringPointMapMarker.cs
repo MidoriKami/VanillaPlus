@@ -4,7 +4,7 @@ using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using KamiToolKit.MapOverlay;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 
 namespace VanillaPlus.Features.ShowGatheringPoints;
 

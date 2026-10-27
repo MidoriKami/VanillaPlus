@@ -9,7 +9,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Nodes;
 using KamiToolKit.Timelines;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 

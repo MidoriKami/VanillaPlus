@@ -19,6 +19,6 @@ public static unsafe class FateExtensions {
 
         public TimeSpan TimeRemainingSpan => TimeSpan.FromSeconds(fate.TimeRemaining);
         public string TimeRemainingString => fate.TimeRemainingSpan.ToString(@"mm\:ss");
-        public ReadOnlySeString NameString => fate.Name.EncodeWithNullTerminator();
+        public ReadOnlySeString NameString => new(fate.Name);
     }
 }

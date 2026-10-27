@@ -3,7 +3,7 @@ using System.Text;
 using Dalamud.Game.Text.Evaluator;
 using Dalamud.Plugin.Services;
 using Lumina.Excel;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using Lumina.Text;
 using Lumina.Text.Expressions;
 using Lumina.Text.ReadOnly;

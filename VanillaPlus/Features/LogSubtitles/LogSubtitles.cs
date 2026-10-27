@@ -1,9 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Game.Chat;
 using Dalamud.Game.Text;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
+using Lumina.Text.ReadOnly;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Native.Addons;
@@ -59,10 +61,10 @@ public class LogSubtitles : GameModification {
         if (subtitleText.IsEmpty) return;
         if (addon->IsShowSuppressed) return;
 
-        IChatGui.Get().Print(new XivChatEntry {
-            Message = subtitleText.ToDalamudString(),
-            Name = Strings.LogSubtitles_Narrator,
-            Type = config?.Channel ?? XivChatType.NPCDialogueAnnouncements,
+        IChatGui.Get().Print(new PrintableChatMessage {
+            Message = new ReadOnlySeString(subtitleText),
+            Sender = Strings.LogSubtitles_Narrator,
+            LogKind = config?.Channel ?? XivChatType.NPCDialogueAnnouncements,
         });
     }
 }

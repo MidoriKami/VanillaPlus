@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 using KamiToolKit.Classes;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 
 namespace VanillaPlus.Extensions;
 

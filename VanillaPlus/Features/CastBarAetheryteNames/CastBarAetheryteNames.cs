@@ -6,7 +6,8 @@ using Dalamud.Hooking;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
+using Lumina.Excel;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -48,7 +49,7 @@ public class CastBarAetheryteNames : GameModification {
         teleportInfo = null;
     }
 
-    private void OnTerritoryChanged(uint u)
+    private void OnTerritoryChanged(RowRef<TerritoryType> rowRef)
         => teleportInfo = null;
 
     private unsafe void OnCastBarRefresh(AddonEvent type, AddonArgs args) {

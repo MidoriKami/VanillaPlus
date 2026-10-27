@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Dalamud.Excel.Sheets;
 using Dalamud.Game.DutyState;
 using Dalamud.Plugin.Services;
+using Lumina.Excel;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -43,6 +45,6 @@ public class DutyTimer : GameModification {
         IChatGui.Get().Print(Strings.DutyTimer_CompletedMessage.Format(formattedDuration));
     }
 
-    private void OnTerritoryChanged(uint u)
+    private void OnTerritoryChanged(RowRef<TerritoryType> rowRef)
         => startTimestamp = DateTime.UtcNow;
 }

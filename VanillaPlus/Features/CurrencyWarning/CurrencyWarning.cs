@@ -5,7 +5,7 @@ using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Components.Search;
 using KamiToolKit.UiOverlay;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Features.CurrencyWarning.Nodes;
@@ -49,7 +49,9 @@ public class CurrencyWarning : GameModification {
             Title = Strings.CurrencyWarning_ItemSearchTitle,
             Size = new Vector2(350.0f, 500.0f),
             AllowMultiselect = true,
-            OptionsList = IDataManager.Get().GetCurrencyItems().ToList(),
+            OptionsList = [
+                .. IDataManager.Get().GetCurrencyItems(),
+            ],
         };
 
         configAddon = new CurrencyWarningConfigAddon {

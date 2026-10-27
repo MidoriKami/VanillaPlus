@@ -5,9 +5,9 @@ using Dalamud.Plugin.Services;
 using KamiToolKit.Components.ConfigurationNodes;
 using KamiToolKit.Nodes;
 using Lumina.Data.Parsing.Uld;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using VanillaPlus.Features.ActionHighlight.Config;
-using Action = Lumina.Excel.Sheets.Action;
+using Action = Dalamud.Excel.Sheets.Action;
 
 namespace VanillaPlus.Features.ActionHighlight.Nodes;
 

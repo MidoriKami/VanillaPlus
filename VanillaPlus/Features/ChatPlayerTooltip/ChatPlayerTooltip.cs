@@ -1,12 +1,12 @@
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using Lumina.Text.Payloads;
 using Lumina.Text.ReadOnly;
 using System;
 using System.Threading.Tasks;
-using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Game.Text;
 using Dalamud.Plugin.Services;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -72,7 +72,7 @@ public class ChatPlayerTooltip : GameModification {
                 var addon = args.GetAddon<AtkUnitBase>();
                 using var rentedStringBuilder = new RentedSeStringBuilder();
 
-                var tooltipString = rentedStringBuilder.Builder
+                var tooltipString = rentedStringBuilder
                     .Append(playerName)
                     .AppendIcon((uint)BitmapFontIcon.CrossWorld)
                     .Append(worldData.Name)

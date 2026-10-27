@@ -2,7 +2,7 @@
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using KamiToolKit.MapOverlay;
 using Lumina.Excel;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 
 namespace VanillaPlus.Features.ShowAetherCurrents;
 

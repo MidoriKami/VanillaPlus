@@ -6,7 +6,7 @@ using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Native.Addons;

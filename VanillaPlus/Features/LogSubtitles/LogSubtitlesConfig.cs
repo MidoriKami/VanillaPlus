@@ -1,4 +1,4 @@
-using Dalamud.Game.Text;
+using Dalamud.Game.Chat;
 using VanillaPlus.Classes;
 
 namespace VanillaPlus.Features.LogSubtitles;

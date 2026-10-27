@@ -1,6 +1,6 @@
 ﻿using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 
 namespace VanillaPlus.Extensions;
 

@@ -12,7 +12,8 @@ using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
 using KamiToolKit.Nodes.Simplified;
 using KamiToolKit.Timelines;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
+using Lumina.Excel;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -104,9 +105,9 @@ public class FancyLoadingScreens : GameModification {
         artworkImageNode = null;
     }
 
-    private void OnTerritoryChanged(uint territoryId) {
+    private void OnTerritoryChanged(RowRef<TerritoryType> rowRef) {
         if (!isTeleporting) {
-            SetLoadingScreenImage(territoryId);
+            SetLoadingScreenImage(rowRef.RowId);
         }
     }
 

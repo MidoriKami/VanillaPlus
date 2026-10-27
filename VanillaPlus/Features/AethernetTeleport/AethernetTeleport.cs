@@ -7,7 +7,7 @@ using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using Lumina.Extensions;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
@@ -83,7 +83,7 @@ public class AethernetTeleport : GameModification {
 
                 Telepo.Instance()->Teleport(mainAetheryte.Value.RowId, 0);
 
-                IChatGui.Get().Print(teleportMessage.ToDalamudString());
+                IChatGui.Get().Print(teleportMessage);
                 return;
             }
         }

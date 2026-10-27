@@ -8,7 +8,7 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.BaseTypes;
 using KamiToolKit.Nodes;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using VanillaPlus.Features.CosmicExplorationProgressWindow.Classes;
 using VanillaPlus.Features.CosmicExplorationProgressWindow.Nodes;
 

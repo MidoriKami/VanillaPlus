@@ -72,8 +72,8 @@ public class InventorySearchBar : GameModification {
         searchInputNode = null;
     }
 
-    private void OnUiConfigChanged(object? sender, ConfigChangeEvent e) {
-        if (e.Option is not UiConfigOption.ItemInventryWindowSizeType) return;
+    private void OnUiConfigChanged(ConfigChangeEvent evt) {
+        if (evt.Option is not UiConfigOption.ItemInventryWindowSizeType) return;
 
         ReinitializeController();
     }

@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Dalamud.Excel.Sheets;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.DutyState;
 using Dalamud.Plugin.Services;
+using Lumina.Excel;
 using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 
@@ -58,7 +60,7 @@ public class FocusTargetLock : GameModification {
         targetEntityId = ITargetManager.Get().FocusTarget?.EntityId;
     }
 
-    private void OnTerritoryChanged(uint u) {
+    private void OnTerritoryChanged(RowRef<TerritoryType> rowRef) {
         targetBaseId = null;
         targetEntityId = null;
     }

@@ -1,5 +1,5 @@
 ﻿using Dalamud.Plugin.Services;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 
 namespace VanillaPlus.Extensions;
 

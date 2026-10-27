@@ -1,4 +1,4 @@
-﻿using Lumina.Excel.Sheets;
+﻿using Dalamud.Excel.Sheets;
 using ExcelPage = Lumina.Excel.ExcelPage;
 
 namespace VanillaPlus.Extensions;

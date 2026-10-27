@@ -12,7 +12,7 @@ using VanillaPlus.Classes;
 using VanillaPlus.Enums;
 using VanillaPlus.Native.Addons;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule.HotbarUIIntermediate;
-using Action = Lumina.Excel.Sheets.Action;
+using Action = Dalamud.Excel.Sheets.Action;
 
 namespace VanillaPlus.Features.FadeUnavailableActions;
 

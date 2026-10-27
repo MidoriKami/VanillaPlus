@@ -4,7 +4,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Enums;
 using KamiToolKit.Interfaces;
 using KamiToolKit.Nodes;
-using Lumina.Excel.Sheets;
+using Dalamud.Excel.Sheets;
 using VanillaPlus.Features.ActionHighlight.Config;
 
 namespace VanillaPlus.Features.ActionHighlight.Nodes;
