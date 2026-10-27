@@ -129,15 +129,17 @@ public class WondrousTailsProbabilities : GameModification {
             // Finds the double newline, and strips everything after it.
             // We wanna clear "※Applicable duties may be confirmed via the subcommand." to ensure there's room for our text.
             using var stringBuilder = new RentedSeStringBuilder();
+
             var wasNewLine = false;
-
             foreach (var payload in nodeText) {
-                var isNewLine = payload.IsMacro(MacroCode.NewLine);
+	            var isNewLine = payload.IsMacro(MacroCode.NewLine);
 
-                if (isNewLine && wasNewLine) break;
-                wasNewLine |= isNewLine;
+	            if (wasNewLine && isNewLine) {
+		            break;
+	            }
 
-                stringBuilder.Append(payload);
+	            stringBuilder.Append(payload);
+                wasNewLine = isNewLine;
             }
 
             existingTextNode->SetText(stringBuilder.GetViewAsSpan());
